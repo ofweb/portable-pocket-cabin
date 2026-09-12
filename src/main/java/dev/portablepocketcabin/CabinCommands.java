@@ -52,6 +52,22 @@ final class CabinCommands {
 			.then(Commands.literal("preview").executes(context -> preview(context.getSource())))
 			.then(Commands.literal("deploy").executes(context -> deploy(context.getSource())))
 			.then(Commands.literal("pack").executes(context -> pack(context.getSource())))
+			.then(Commands.literal("trust")
+				.then(Commands.literal("add")
+					.then(Commands.argument("player", EntityArgument.player())
+						.executes(context -> trust(
+							context.getSource(), EntityArgument.getPlayer(context, "player"), true
+						))))
+				.then(Commands.literal("remove")
+					.then(Commands.argument("player", EntityArgument.player())
+						.executes(context -> trust(
+							context.getSource(), EntityArgument.getPlayer(context, "player"), false
+						)))))
+			.then(Commands.literal("access")
+				.then(Commands.literal("private")
+					.executes(context -> access(context.getSource(), CabinEntryPermission.OWNER_ONLY)))
+				.then(Commands.literal("trusted")
+					.executes(context -> access(context.getSource(), CabinEntryPermission.TRUSTED_PLAYERS))))
 			.then(Commands.literal("reconcile")
 				.then(Commands.argument("uuid", UuidArgument.uuid())
 					.executes(context -> reconcile(
@@ -75,7 +91,7 @@ final class CabinCommands {
 		CabinRegistry registry = CabinRegistry.get(source.getServer());
 		source.sendSuccess(() -> Component.literal(
 			"Portable Pocket Cabin " + PortablePocketCabin.VERSION
-				+ " | delivery=4 | pocket_dimension=" + (loaded ? "ready" : "missing")
+				+ " | delivery=5 | pocket_dimension=" + (loaded ? "ready" : "missing")
 				+ " | cabins=" + registry.size() + " | next_cell=" + registry.nextCellIndex()
 		), false);
 		return loaded ? 1 : 0;
@@ -164,7 +180,9 @@ final class CabinCommands {
 			.append(" center=" + center.getX() + "," + center.getY() + "," + center.getZ()
 				+ exterior + lastExterior + " interior_generated=" + cabin.interiorGenerated()
 				+ " item_generation=" + cabin.packedItemGeneration()
-				+ " cleanup_pending=" + cabin.exteriorCleanupPending()), false);
+				+ " cleanup_pending=" + cabin.exteriorCleanupPending()
+				+ " access=" + cabin.entryPermission().serializedName()
+				+ " trusted=" + cabin.trustedPlayers()), false);
 		return 1;
 	}
 
@@ -217,6 +235,8 @@ final class CabinCommands {
 			.append(copyableUuid(cabin.uuid()))
 			.append(" owner=" + cabin.owner() + " cell=" + cabin.cellIndex()
 				+ " state=" + cabin.lifecycle()
+				+ " access=" + cabin.entryPermission().serializedName()
+				+ " trusted=" + cabin.trustedPlayers().size()
 				+ cabin.exterior().map(value -> " exterior=" + value.dimension().identifier() + "@"
 					+ value.anchor().getX() + "," + value.anchor().getY() + "," + value.anchor().getZ())
 					.orElse(""));
@@ -253,6 +273,59 @@ final class CabinCommands {
 			return 0;
 		}
 		return CabinPacking.request(player);
+	}
+
+	private static int trust(CommandSourceStack source, ServerPlayer target, boolean add) {
+		ServerPlayer owner;
+		try {
+			owner = source.getPlayerOrException();
+		} catch (Exception exception) {
+			source.sendFailure(Component.literal("This command must be run by the cabin owner."));
+			return 0;
+		}
+		CabinRegistry registry = CabinRegistry.get(source.getServer());
+		CabinRecord cabin = registry.findByOwner(owner.getUUID()).orElse(null);
+		if (cabin == null) {
+			source.sendFailure(Component.literal("You do not own a cabin."));
+			return 0;
+		}
+
+		try {
+			if (add) {
+				registry.trust(cabin.uuid(), owner.getUUID(), target.getUUID());
+			} else {
+				registry.untrust(cabin.uuid(), owner.getUUID(), target.getUUID());
+			}
+			CabinRegistry.flush(source.getServer());
+		} catch (IllegalStateException exception) {
+			source.sendFailure(Component.literal(exception.getMessage()));
+			return 0;
+		}
+		source.sendSuccess(() -> Component.literal(
+			target.getGameProfile().name() + (add ? " is now trusted." : " is no longer trusted.")
+		), true);
+		return 1;
+	}
+
+	private static int access(CommandSourceStack source, CabinEntryPermission permission) {
+		ServerPlayer owner;
+		try {
+			owner = source.getPlayerOrException();
+		} catch (Exception exception) {
+			source.sendFailure(Component.literal("This command must be run by the cabin owner."));
+			return 0;
+		}
+		CabinRegistry registry = CabinRegistry.get(source.getServer());
+		CabinRecord cabin = registry.findByOwner(owner.getUUID()).orElse(null);
+		if (cabin == null) {
+			source.sendFailure(Component.literal("You do not own a cabin."));
+			return 0;
+		}
+		registry.setEntryPermission(cabin.uuid(), owner.getUUID(), permission);
+		CabinRegistry.flush(source.getServer());
+		source.sendSuccess(() -> Component.literal("Cabin entry is now "
+			+ (permission == CabinEntryPermission.OWNER_ONLY ? "private." : "open to trusted players.")), true);
+		return 1;
 	}
 
 	private static int reconcile(CommandSourceStack source, UUID cabinId) {

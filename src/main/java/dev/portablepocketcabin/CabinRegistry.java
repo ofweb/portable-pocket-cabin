@@ -115,7 +115,8 @@ public final class CabinRegistry extends SavedData {
 
 		CabinRecord deploying = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYING,
-			Optional.of(exterior), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false
+			Optional.of(exterior), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(deploying);
 		return deploying;
@@ -128,7 +129,8 @@ public final class CabinRegistry extends SavedData {
 		}
 		CabinRecord generated = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
-			cabin.lastExterior(), true, cabin.packedItemGeneration(), cabin.exteriorCleanupPending()
+			cabin.lastExterior(), true, cabin.packedItemGeneration(), cabin.exteriorCleanupPending(),
+			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(generated);
 		return generated;
@@ -144,7 +146,8 @@ public final class CabinRegistry extends SavedData {
 		}
 		CabinRecord deployed = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYED,
-			cabin.exterior(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false
+			cabin.exterior(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(deployed);
 		return deployed;
@@ -160,7 +163,8 @@ public final class CabinRegistry extends SavedData {
 		}
 		CabinRecord packing = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKING,
-			cabin.exterior(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false
+			cabin.exterior(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(packing);
 		return packing;
@@ -173,7 +177,8 @@ public final class CabinRegistry extends SavedData {
 		}
 		CabinRecord deployed = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYED,
-			cabin.exterior(), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false
+			cabin.exterior(), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(deployed);
 		return deployed;
@@ -189,7 +194,8 @@ public final class CabinRegistry extends SavedData {
 		}
 		CabinRecord packed = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKED,
-			Optional.empty(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration() + 1, true
+			Optional.empty(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration() + 1, true,
+			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(packed);
 		return packed;
@@ -202,7 +208,8 @@ public final class CabinRegistry extends SavedData {
 		}
 		CabinRecord cleaned = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
-			cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false
+			cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(cleaned);
 		return cleaned;
@@ -215,7 +222,8 @@ public final class CabinRegistry extends SavedData {
 		}
 		CabinRecord packed = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKED,
-			Optional.empty(), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false
+			Optional.empty(), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(packed);
 		return packed;
@@ -226,7 +234,8 @@ public final class CabinRegistry extends SavedData {
 		Optional<CabinExterior> lastExterior = cabin.exterior().isPresent() ? cabin.exterior() : cabin.lastExterior();
 		CabinRecord orphaned = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.ORPHANED,
-			Optional.empty(), lastExterior, cabin.interiorGenerated(), cabin.packedItemGeneration(), false
+			Optional.empty(), lastExterior, cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(orphaned);
 		return orphaned;
@@ -243,10 +252,43 @@ public final class CabinRegistry extends SavedData {
 		Optional<CabinExterior> lastExterior = cabin.exterior().isPresent() ? cabin.exterior() : cabin.lastExterior();
 		CabinRecord packed = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKED,
-			Optional.empty(), lastExterior, cabin.interiorGenerated(), cabin.packedItemGeneration() + 1, false
+			Optional.empty(), lastExterior, cabin.interiorGenerated(), cabin.packedItemGeneration() + 1, false,
+			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(packed);
 		return packed;
+	}
+
+	public synchronized CabinRecord setEntryPermission(
+		UUID cabinId, UUID owner, CabinEntryPermission permission
+	) {
+		CabinRecord cabin = requireOwned(cabinId, owner);
+		CabinRecord updated = copyAccess(cabin, permission, cabin.trustedPlayers());
+		replace(updated);
+		return updated;
+	}
+
+	public synchronized CabinRecord trust(UUID cabinId, UUID owner, UUID playerId) {
+		CabinRecord cabin = requireOwned(cabinId, owner);
+		if (playerId.equals(owner)) {
+			throw new IllegalStateException("The owner already has permanent cabin access");
+		}
+		List<UUID> trusted = new ArrayList<>(cabin.trustedPlayers());
+		if (!trusted.contains(playerId)) {
+			trusted.add(playerId);
+		}
+		CabinRecord updated = copyAccess(cabin, cabin.entryPermission(), trusted);
+		replace(updated);
+		return updated;
+	}
+
+	public synchronized CabinRecord untrust(UUID cabinId, UUID owner, UUID playerId) {
+		CabinRecord cabin = requireOwned(cabinId, owner);
+		List<UUID> trusted = new ArrayList<>(cabin.trustedPlayers());
+		trusted.remove(playerId);
+		CabinRecord updated = copyAccess(cabin, cabin.entryPermission(), trusted);
+		replace(updated);
+		return updated;
 	}
 
 	public synchronized List<CabinRecord> cabins() {
@@ -269,6 +311,24 @@ public final class CabinRegistry extends SavedData {
 			throw new IllegalStateException("No cabin record exists for " + cabinId);
 		}
 		return cabin;
+	}
+
+	private CabinRecord requireOwned(UUID cabinId, UUID owner) {
+		CabinRecord cabin = require(cabinId);
+		if (!cabin.owner().equals(owner)) {
+			throw new IllegalStateException("Only the cabin owner may change its access settings");
+		}
+		return cabin;
+	}
+
+	private static CabinRecord copyAccess(
+		CabinRecord cabin, CabinEntryPermission permission, List<UUID> trustedPlayers
+	) {
+		return new CabinRecord(
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
+			cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(),
+			cabin.exteriorCleanupPending(), permission, trustedPlayers
+		);
 	}
 
 	private void replace(CabinRecord cabin) {

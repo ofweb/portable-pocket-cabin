@@ -281,6 +281,99 @@ public final class PortablePocketCabinGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void trustedEntryIsPersistedAndOwnerControlled(GameTestHelper helper) {
+		CabinRegistry registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID();
+		UUID trustedPlayer = UUID.randomUUID();
+		UUID stranger = UUID.randomUUID();
+		CabinRecord cabin = registry.create(owner);
+
+		helper.assertTrue(cabin.canEnter(owner), "A cabin owner must always retain entry permission");
+		helper.assertTrue(!cabin.canEnter(trustedPlayer),
+			"A private cabin must reject players even when they will later be trusted");
+		registry.trust(cabin.uuid(), owner, trustedPlayer);
+		CabinRecord opened = registry.setEntryPermission(
+			cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS
+		);
+		helper.assertTrue(opened.canEnter(owner) && opened.canEnter(trustedPlayer),
+			"Trusted entry mode must admit the owner and explicitly trusted players");
+		helper.assertTrue(!opened.canEnter(stranger),
+			"Trusted entry mode must continue to reject strangers");
+
+		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
+		CabinRegistry restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
+		CabinRecord restoredCabin = restored.find(cabin.uuid()).orElseThrow();
+		helper.assertTrue(restoredCabin.entryPermission() == CabinEntryPermission.TRUSTED_PLAYERS
+			&& restoredCabin.trustedPlayers().equals(java.util.List.of(trustedPlayer)),
+			"Entry mode and trusted players must survive save/reload");
+
+		try {
+			restored.untrust(cabin.uuid(), stranger, trustedPlayer);
+			helper.fail("A non-owner must not be able to change trusted players");
+		} catch (IllegalStateException expected) {
+			helper.succeed();
+		}
+	}
+
+	@GameTest
+	public void lifecycleTransitionsPreserveAccessAndRejectRaces(GameTestHelper helper) {
+		CabinRegistry registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID();
+		UUID trustedPlayer = UUID.randomUUID();
+		CabinRecord cabin = registry.create(owner);
+		registry.trust(cabin.uuid(), owner, trustedPlayer);
+		registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS);
+		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, new BlockPos(12, 72, 12), Direction.NORTH);
+
+		registry.beginDeployment(cabin.uuid(), owner, exterior);
+		try {
+			registry.beginDeployment(cabin.uuid(), owner, exterior);
+			helper.fail("Only one simultaneous deployment attempt may journal a transition");
+		} catch (IllegalStateException expected) {
+			// The first transition owns the deployment journal.
+		}
+		registry.markInteriorGenerated(cabin.uuid());
+		CabinRecord deployed = registry.finishDeployment(cabin.uuid());
+		helper.assertTrue(deployed.canEnter(trustedPlayer),
+			"Deployment must preserve trusted-player access");
+
+		registry.beginPacking(cabin.uuid(), owner);
+		try {
+			registry.beginPacking(cabin.uuid(), owner);
+			helper.fail("Only one simultaneous packing attempt may journal a transition");
+		} catch (IllegalStateException expected) {
+			// The first transition owns the packing journal.
+		}
+		CabinRecord packed = registry.finishPacking(cabin.uuid());
+		helper.assertTrue(packed.canEnter(trustedPlayer)
+			&& packed.entryPermission() == CabinEntryPermission.TRUSTED_PLAYERS,
+			"Packing must preserve access settings without making the inactive entrance usable");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void offlineOccupantsRequireRecoveryWhenCabinIsInactive(GameTestHelper helper) {
+		UUID cabinId = UUID.randomUUID();
+		UUID owner = UUID.randomUUID();
+		long cell = 42;
+		BlockPos inside = PocketDimension.cellCenter(cell).above();
+		CabinRecord packed = new CabinRecord(cabinId, owner, cell, CabinLifecycle.PACKED);
+		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, BlockPos.ZERO, Direction.SOUTH);
+		CabinRecord deployed = new CabinRecord(
+			cabinId, owner, cell, CabinLifecycle.DEPLOYED,
+			Optional.of(exterior), Optional.of(exterior), true, 0
+		);
+
+		helper.assertTrue(CabinEvents.requiresLoginEvacuation(inside, packed),
+			"A player logging into a packed cabin cell must be evacuated");
+		helper.assertTrue(!CabinEvents.requiresLoginEvacuation(inside, deployed),
+			"A player may remain in a currently deployed cabin");
+		helper.assertTrue(!CabinEvents.requiresLoginEvacuation(PocketDimension.cellCenter(cell + 1), packed),
+			"Recovery must not confuse adjacent permanent cabin cells");
+		helper.succeed();
+	}
+
 	private static CabinRecord record(
 		UUID cabinId, UUID owner, CabinLifecycle lifecycle, CabinExterior exterior, boolean generated
 	) {

@@ -13,6 +13,7 @@ final class DedicatedServerStartupCheck {
 	private static final String PROPERTY = "portable-pocket-cabin.startup-test";
 	private static final UUID FIRST_OWNER = UUID.fromString("00000000-0000-0000-0000-000000000001");
 	private static final UUID SECOND_OWNER = UUID.fromString("00000000-0000-0000-0000-000000000002");
+	private static final UUID TRUSTED_PLAYER = UUID.fromString("00000000-0000-0000-0000-000000000099");
 
 	private DedicatedServerStartupCheck() {
 	}
@@ -50,6 +51,8 @@ final class DedicatedServerStartupCheck {
 		if (first.cellIndex() != 0 || registry.size() != 1 || registry.nextCellIndex() != 1) {
 			throw new IllegalStateException("Fresh registry did not allocate the first cabin at cell zero");
 		}
+		registry.trust(first.uuid(), FIRST_OWNER, TRUSTED_PLAYER);
+		registry.setEntryPermission(first.uuid(), FIRST_OWNER, CabinEntryPermission.TRUSTED_PLAYERS);
 
 		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, new BlockPos(0, 200, 0), Direction.NORTH);
 		registry.beginDeployment(first.uuid(), FIRST_OWNER, exterior);
@@ -76,7 +79,8 @@ final class DedicatedServerStartupCheck {
 			.orElseThrow(() -> new IllegalStateException("Seeded cabin was not persisted across restart"));
 		if (first.cellIndex() != 0 || registry.size() != 2 || registry.nextCellIndex() != 2
 			|| first.lifecycle() != CabinLifecycle.DEPLOYED || !first.interiorGenerated()
-			|| first.exterior().isEmpty()) {
+			|| first.exterior().isEmpty() || !first.canEnter(TRUSTED_PLAYER)
+			|| first.entryPermission() != CabinEntryPermission.TRUSTED_PLAYERS) {
 			throw new IllegalStateException("Reloaded registry does not match its persisted state");
 		}
 		CabinRecord rolledBack = registry.findByOwner(SECOND_OWNER)

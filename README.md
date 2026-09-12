@@ -22,6 +22,9 @@ The build runs both the server-side GameTests and the headless dedicated-server 
 /cabin preview
 /cabin deploy
 /cabin pack
+/cabin trust add <player>
+/cabin trust remove <player>
+/cabin access private|trusted
 /cabin reconcile <uuid>
 /cabin recover-item <uuid> <player>
 /cabin visit-test
@@ -102,3 +105,13 @@ The server world persists under `run/server`. `just server` provisions `ofweb` a
 6. Redeploy from that item at another clear Overworld site. Confirm the same interior contents remain and the old item was consumed.
 7. Run `/cabin reconcile <uuid>` on the valid deployment and confirm it remains unchanged. Confirm `/cabin recover-item <uuid> <owner>` refuses while that exterior is valid.
 8. Remove the controller with an operator `/setblock` command, run `/cabin reconcile <uuid>`, and confirm the cabin becomes `ORPHANED`. Then run `/cabin recover-item <uuid> <owner>` and confirm it becomes `PACKED` with a newer item generation.
+
+## Delivery 5 manual acceptance
+
+1. Join with two clients, create and deploy a cabin as its owner, and confirm the second player cannot enter while access is private.
+2. As the owner, run `/cabin trust add <second-player>` and `/cabin access trusted`; confirm the second player can enter.
+3. While the second player is outside, run `/cabin trust remove <second-player>` and confirm their next entry attempt is rejected. Add them again and confirm entry works without redeploying.
+4. Leave the second player inside and disconnect that client. Pack and redeploy the cabin elsewhere, then reconnect; confirm the returning player is moved safely to the new exterior.
+5. Repeat the disconnect test but leave the cabin packed; confirm reconnecting moves the player to the last safe campsite (or the Overworld spawn fallback).
+6. With both clients ready at the exterior, issue duplicate `/cabin deploy` or `/cabin pack` requests as closely together as possible. Confirm exactly one transition starts and no duplicate entrance or packed item becomes active.
+7. Start packing while the trusted player repeatedly interacts with the exterior entrance. Confirm entry is denied for the full countdown and all occupants are evacuated.

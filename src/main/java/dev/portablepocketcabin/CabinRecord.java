@@ -4,6 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.UUIDUtil;
 
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,7 +19,9 @@ public record CabinRecord(
 	Optional<CabinExterior> lastExterior,
 	boolean interiorGenerated,
 	long packedItemGeneration,
-	boolean exteriorCleanupPending
+	boolean exteriorCleanupPending,
+	CabinEntryPermission entryPermission,
+	List<UUID> trustedPlayers
 ) {
 	public static final Codec<CabinRecord> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 		UUIDUtil.STRING_CODEC.fieldOf("uuid").forGetter(CabinRecord::uuid),
@@ -28,18 +32,24 @@ public record CabinRecord(
 		CabinExterior.CODEC.optionalFieldOf("last_exterior").forGetter(CabinRecord::lastExterior),
 		Codec.BOOL.optionalFieldOf("interior_generated", false).forGetter(CabinRecord::interiorGenerated),
 		Codec.LONG.optionalFieldOf("packed_item_generation", 0L).forGetter(CabinRecord::packedItemGeneration),
-		Codec.BOOL.optionalFieldOf("exterior_cleanup_pending", false).forGetter(CabinRecord::exteriorCleanupPending)
+		Codec.BOOL.optionalFieldOf("exterior_cleanup_pending", false).forGetter(CabinRecord::exteriorCleanupPending),
+		CabinEntryPermission.CODEC.optionalFieldOf("entry_permission", CabinEntryPermission.OWNER_ONLY)
+			.forGetter(CabinRecord::entryPermission),
+		UUIDUtil.STRING_CODEC.listOf().optionalFieldOf("trusted_players", List.of())
+			.forGetter(CabinRecord::trustedPlayers)
 	).apply(instance, CabinRecord::new));
 
 	public CabinRecord(UUID uuid, UUID owner, long cellIndex, CabinLifecycle lifecycle) {
-		this(uuid, owner, cellIndex, lifecycle, Optional.empty(), Optional.empty(), false, 0L, false);
+		this(uuid, owner, cellIndex, lifecycle, Optional.empty(), Optional.empty(), false, 0L, false,
+			CabinEntryPermission.OWNER_ONLY, List.of());
 	}
 
 	public CabinRecord(
 		UUID uuid, UUID owner, long cellIndex, CabinLifecycle lifecycle,
 		Optional<CabinExterior> exterior, boolean interiorGenerated
 	) {
-		this(uuid, owner, cellIndex, lifecycle, exterior, Optional.empty(), interiorGenerated, 0L, false);
+		this(uuid, owner, cellIndex, lifecycle, exterior, Optional.empty(), interiorGenerated, 0L, false,
+			CabinEntryPermission.OWNER_ONLY, List.of());
 	}
 
 	public CabinRecord(
@@ -48,7 +58,16 @@ public record CabinRecord(
 		boolean interiorGenerated, long packedItemGeneration
 	) {
 		this(uuid, owner, cellIndex, lifecycle, exterior, lastExterior,
-			interiorGenerated, packedItemGeneration, false);
+			interiorGenerated, packedItemGeneration, false, CabinEntryPermission.OWNER_ONLY, List.of());
+	}
+
+	public CabinRecord(
+		UUID uuid, UUID owner, long cellIndex, CabinLifecycle lifecycle,
+		Optional<CabinExterior> exterior, Optional<CabinExterior> lastExterior,
+		boolean interiorGenerated, long packedItemGeneration, boolean exteriorCleanupPending
+	) {
+		this(uuid, owner, cellIndex, lifecycle, exterior, lastExterior, interiorGenerated,
+			packedItemGeneration, exteriorCleanupPending, CabinEntryPermission.OWNER_ONLY, List.of());
 	}
 
 	public CabinRecord {
@@ -57,6 +76,9 @@ public record CabinRecord(
 		Objects.requireNonNull(lifecycle, "lifecycle");
 		Objects.requireNonNull(exterior, "exterior");
 		Objects.requireNonNull(lastExterior, "lastExterior");
+		Objects.requireNonNull(entryPermission, "entryPermission");
+		Objects.requireNonNull(trustedPlayers, "trustedPlayers");
+		trustedPlayers = List.copyOf(new LinkedHashSet<>(trustedPlayers));
 		if (cellIndex < 0) {
 			throw new IllegalArgumentException("Cabin cell index must be non-negative");
 		}
@@ -71,5 +93,10 @@ public record CabinRecord(
 		if (exteriorCleanupPending && lifecycle != CabinLifecycle.PACKED) {
 			throw new IllegalArgumentException("Exterior cleanup can only be pending for a packed cabin");
 		}
+	}
+
+	boolean canEnter(UUID playerId) {
+		return owner.equals(playerId)
+			|| entryPermission == CabinEntryPermission.TRUSTED_PLAYERS && trustedPlayers.contains(playerId);
 	}
 }
