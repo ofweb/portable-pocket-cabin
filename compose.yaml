@@ -1,0 +1,25 @@
+name: portable-pocket-cabin
+
+services:
+  mc:
+    image: itzg/minecraft-server:latest
+    pull_policy: missing
+    tty: true
+    stdin_open: true
+    ports:
+      - "${PPC_PORT:-25565}:25565"
+    dns:
+      - "${PPC_DNS:-1.1.1.1}"
+    environment:
+      EULA: "TRUE"
+      TYPE: "FABRIC"
+      VERSION: "26.2"
+      FABRIC_LOADER_VERSION: "0.19.5"
+      MODRINTH_PROJECTS: "fabric-api:0.159.0+26.2"
+      MEMORY: "${PPC_MEMORY:-2G}"
+      MOTD: "Portable Pocket Cabin development server"
+      SPAWN_PROTECTION: "0"
+    volumes:
+      - ./run/server:/data
+      - ./build/dev-mods:/mods:ro
+    stop_grace_period: 1m

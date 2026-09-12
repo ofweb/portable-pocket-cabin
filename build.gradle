@@ -1,0 +1,92 @@
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+	id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = project.archives_base_name
+}
+
+repositories {
+}
+
+loom {
+	mixin {
+		useLegacyMixinAp = false
+	}
+
+	runs {
+		startupTest {
+			server()
+			name "Dedicated Server Startup Test"
+			runDir "build/startup-test"
+			vmArg "-Dportable-pocket-cabin.startup-test=true"
+			programArg "nogui"
+		}
+	}
+}
+
+fabricApi {
+	configureTests {
+		createSourceSet = true
+		modId = "portable-pocket-cabin-gametest"
+		enableGameTests = true
+		enableClientGameTests = false
+		eula = true
+	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.release = 25
+}
+
+java {
+	withSourcesJar()
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
+}
+
+tasks.named("runStartupTest").configure {
+	doFirst {
+		def runDirectory = layout.projectDirectory.dir("build/startup-test").asFile
+		runDirectory.mkdirs()
+		new File(runDirectory, "logs/latest.log").delete()
+		new File(runDirectory, "eula.txt").text = "eula=true\n"
+		new File(runDirectory, "server.properties").text = "server-port=0\nonline-mode=false\n"
+	}
+	doLast {
+		def logFile = layout.projectDirectory.file("build/startup-test/logs/latest.log").asFile
+		if (!logFile.exists() || !logFile.text.contains("DEDICATED_SERVER_STARTUP_TEST_PASSED")) {
+			throw new GradleException("Dedicated server did not complete the Portable Pocket Cabin startup check")
+		}
+	}
+}
+
+tasks.named("check").configure {
+	dependsOn tasks.named("runStartupTest")
+}
+
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			from components.java
+		}
+	}
+}

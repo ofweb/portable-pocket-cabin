@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "portable_pocket_cabin_gametest",
+  "version": "1.0.0",
+  "name": "Portable Pocket Cabin Game Tests",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-gametest": [
+      "dev.portablepocketcabin.PortablePocketCabinGameTest"
+    ]
+  },
+  "depends": {
+    "portable_pocket_cabin": "*",
+    "fabric-gametest-api-v1": "*"
+  }
+}
