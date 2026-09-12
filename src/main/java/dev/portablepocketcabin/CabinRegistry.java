@@ -39,6 +39,7 @@ public final class CabinRegistry extends SavedData {
 	private final Map<UUID, UUID> byOwner = new LinkedHashMap<>();
 	private final Map<Long, UUID> byCell = new LinkedHashMap<>();
 	private long nextCellIndex;
+	private long revision;
 
 	CabinRegistry() {
 	}
@@ -79,6 +80,7 @@ public final class CabinRegistry extends SavedData {
 		byId.put(cabin.uuid(), cabin);
 		byOwner.put(cabin.owner(), cabin.uuid());
 		byCell.put(cabin.cellIndex(), cabin.uuid());
+		revision++;
 		setDirty();
 		return cabin;
 	}
@@ -305,6 +307,10 @@ public final class CabinRegistry extends SavedData {
 		return nextCellIndex;
 	}
 
+	synchronized long revision() {
+		return revision;
+	}
+
 	private CabinRecord require(UUID cabinId) {
 		CabinRecord cabin = byId.get(cabinId);
 		if (cabin == null) {
@@ -333,6 +339,7 @@ public final class CabinRegistry extends SavedData {
 
 	private void replace(CabinRecord cabin) {
 		byId.put(cabin.uuid(), cabin);
+		revision++;
 		setDirty();
 	}
 

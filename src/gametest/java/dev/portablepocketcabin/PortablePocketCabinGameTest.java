@@ -9,9 +9,17 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -372,6 +380,78 @@ public final class PortablePocketCabinGameTest {
 		helper.assertTrue(!CabinEvents.requiresLoginEvacuation(PocketDimension.cellCenter(cell + 1), packed),
 			"Recovery must not confuse adjacent permanent cabin cells");
 		helper.succeed();
+	}
+
+	@GameTest
+	public void simulationTicketsCoverOnlyTheBoundedInterior(GameTestHelper helper) {
+		long cell = 19;
+		BlockPos center = PocketDimension.cellCenter(cell);
+		var chunks = CabinSimulation.chunksForCell(cell);
+		var expected = new HashSet<>(java.util.List.of(
+			ChunkPos.containing(center.offset(
+				-PocketDimension.INTERIOR_SHELL_RADIUS, 0, -PocketDimension.INTERIOR_SHELL_RADIUS)),
+			ChunkPos.containing(center.offset(
+				-PocketDimension.INTERIOR_SHELL_RADIUS, 0, PocketDimension.INTERIOR_SHELL_RADIUS)),
+			ChunkPos.containing(center.offset(
+				PocketDimension.INTERIOR_SHELL_RADIUS, 0, -PocketDimension.INTERIOR_SHELL_RADIUS)),
+			ChunkPos.containing(center.offset(
+				PocketDimension.INTERIOR_SHELL_RADIUS, 0, PocketDimension.INTERIOR_SHELL_RADIUS))
+		));
+		helper.assertTrue(new HashSet<>(chunks).equals(expected),
+			"Simulation tickets must cover exactly the chunks intersecting the 23x23 interior shell");
+
+		UUID owner = UUID.randomUUID();
+		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, BlockPos.ZERO, Direction.NORTH);
+		CabinRecord deployed = new CabinRecord(
+			UUID.randomUUID(), owner, cell, CabinLifecycle.DEPLOYED,
+			Optional.of(exterior), Optional.of(exterior), true, 0
+		);
+		CabinRecord packed = new CabinRecord(deployed.uuid(), owner, cell, CabinLifecycle.PACKED);
+		helper.assertTrue(CabinSimulation.shouldSimulate(deployed),
+			"A generated deployed interior must remain simulated");
+		helper.assertTrue(!CabinSimulation.shouldSimulate(packed),
+			"A packed interior must not retain a simulation ticket");
+		helper.succeed();
+	}
+
+	@GameTest(maxTicks = 260)
+	public void vanillaInteriorFixturesTickNormally(GameTestHelper helper) {
+		BlockPos crop = new BlockPos(1, 2, 1);
+		BlockPos farmland = crop.below();
+		BlockPos furnacePos = new BlockPos(3, 2, 1);
+		BlockPos chestPos = new BlockPos(1, 2, 3);
+		BlockPos waterPos = new BlockPos(3, 2, 3);
+
+		helper.setBlock(farmland, Blocks.FARMLAND.defaultBlockState()
+			.setValue(BlockStateProperties.MOISTURE, 7));
+		helper.setBlock(crop, Blocks.WHEAT.defaultBlockState());
+		helper.setBlock(crop.offset(0, 0, 1), Blocks.SEA_LANTERN);
+		helper.setBlock(furnacePos, Blocks.FURNACE);
+		helper.setBlock(chestPos, Blocks.CHEST);
+		helper.setBlock(waterPos.below(), Blocks.STONE);
+		helper.setBlock(waterPos, Blocks.WATER);
+
+		FurnaceBlockEntity furnace = helper.getBlockEntity(furnacePos, FurnaceBlockEntity.class);
+		furnace.setItem(0, new ItemStack(Items.RAW_IRON));
+		furnace.setItem(1, new ItemStack(Items.COAL));
+		ChestBlockEntity chest = helper.getBlockEntity(chestPos, ChestBlockEntity.class);
+		chest.setItem(0, new ItemStack(Items.DIAMOND, 3));
+
+		helper.onEachTick(() -> {
+			if (helper.getBlockState(crop).is(Blocks.WHEAT)) {
+				helper.randomTick(crop);
+			}
+		});
+		helper.succeedWhen(() -> {
+			int age = helper.getBlockState(crop).getValue(CropBlock.AGE);
+			helper.assertTrue(age > 0, "A lit, hydrated crop must receive random ticks");
+			helper.assertTrue(furnace.getItem(2).is(Items.IRON_INGOT),
+				"A vanilla furnace must complete recipes in a simulated interior");
+			helper.assertTrue(chest.getItem(0).is(Items.DIAMOND) && chest.getItem(0).getCount() == 3,
+				"Vanilla storage contents must remain intact while the interior simulates");
+			helper.assertTrue(helper.getBlockState(waterPos).is(Blocks.WATER),
+				"A vanilla water source must remain usable in the interior");
+		});
 	}
 
 	private static CabinRecord record(

@@ -115,3 +115,13 @@ The server world persists under `run/server`. `just server` provisions `ofweb` a
 5. Repeat the disconnect test but leave the cabin packed; confirm reconnecting moves the player to the last safe campsite (or the Overworld spawn fallback).
 6. With both clients ready at the exterior, issue duplicate `/cabin deploy` or `/cabin pack` requests as closely together as possible. Confirm exactly one transition starts and no duplicate entrance or packed item becomes active.
 7. Start packing while the trusted player repeatedly interacts with the exterior entrance. Confirm entry is denied for the full countdown and all occupants are evacuated.
+
+## Delivery 6 manual acceptance
+
+1. Deploy a cabin and place a chest containing named items, a lit furnace smelting a stack, a hydrated crop plot, and a contained water source inside the pocket interior.
+2. Leave the cabin empty and remain in the Overworld. After several minutes, return and confirm crops and the furnace continued progressing without a player in the pocket dimension.
+3. Run `/cabin status` and confirm `simulated_cabins=1` while the cabin is deployed.
+4. Pack the cabin and confirm `/cabin status` reports `simulated_cabins=0`. Leave it packed long enough that the same furnace stack would otherwise finish and confirm its progress stayed paused.
+5. Redeploy and confirm the chest items, furnace inventory/progress, water, farmland, and crops are unchanged apart from simulation that occurred while deployed.
+6. Confirm `/cabin status` returns to `simulated_cabins=1`, then verify the furnace and crops resume progressing without a player remaining inside.
+7. Restart the server once while deployed and once while packed; confirm simulation resumes only for the deployed state and all fixture contents survive both restarts.

@@ -91,8 +91,9 @@ final class CabinCommands {
 		CabinRegistry registry = CabinRegistry.get(source.getServer());
 		source.sendSuccess(() -> Component.literal(
 			"Portable Pocket Cabin " + PortablePocketCabin.VERSION
-				+ " | delivery=5 | pocket_dimension=" + (loaded ? "ready" : "missing")
+				+ " | delivery=6 | pocket_dimension=" + (loaded ? "ready" : "missing")
 				+ " | cabins=" + registry.size() + " | next_cell=" + registry.nextCellIndex()
+				+ " | simulated_cabins=" + CabinSimulation.ticketedCabinCount(source.getServer())
 		), false);
 		return loaded ? 1 : 0;
 	}
