@@ -15,6 +15,7 @@ public final class PortablePocketCabin implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		CommandRegistrationCallback.EVENT.register(CabinCommands::register);
+		CabinEvents.register();
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			CabinRegistry registry = CabinRegistry.get(server);
 			LOGGER.info("Portable Pocket Cabin {} ready; pocket dimension loaded={}", VERSION,

@@ -93,6 +93,55 @@ public final class CabinRegistry extends SavedData {
 		return cabinId == null ? Optional.empty() : Optional.ofNullable(byId.get(cabinId));
 	}
 
+	public synchronized CabinRecord beginDeployment(UUID cabinId, UUID owner, CabinExterior exterior) {
+		CabinRecord cabin = byId.get(cabinId);
+		if (cabin == null) {
+			throw new IllegalStateException("No cabin record exists for " + cabinId);
+		}
+		if (!cabin.owner().equals(owner)) {
+			throw new IllegalStateException("Only the cabin owner may deploy it");
+		}
+		if (cabin.lifecycle() != CabinLifecycle.PACKED) {
+			throw new IllegalStateException("Cabin must be PACKED before deployment; current state is "
+				+ cabin.lifecycle());
+		}
+
+		CabinRecord deploying = new CabinRecord(
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYING,
+			Optional.of(exterior), cabin.interiorGenerated()
+		);
+		replace(deploying);
+		return deploying;
+	}
+
+	public synchronized CabinRecord markInteriorGenerated(UUID cabinId) {
+		CabinRecord cabin = require(cabinId);
+		if (cabin.interiorGenerated()) {
+			return cabin;
+		}
+		CabinRecord generated = new CabinRecord(
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(), true
+		);
+		replace(generated);
+		return generated;
+	}
+
+	public synchronized CabinRecord finishDeployment(UUID cabinId) {
+		CabinRecord cabin = require(cabinId);
+		if (cabin.lifecycle() != CabinLifecycle.DEPLOYING) {
+			throw new IllegalStateException("Cabin must be DEPLOYING before it can become DEPLOYED");
+		}
+		if (!cabin.interiorGenerated()) {
+			throw new IllegalStateException("Cabin interior must be generated before deployment can finish");
+		}
+		CabinRecord deployed = new CabinRecord(
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYED,
+			cabin.exterior(), cabin.interiorGenerated()
+		);
+		replace(deployed);
+		return deployed;
+	}
+
 	public synchronized List<CabinRecord> cabins() {
 		return byId.values().stream()
 			.sorted(Comparator.comparingLong(CabinRecord::cellIndex))
@@ -105,6 +154,19 @@ public final class CabinRegistry extends SavedData {
 
 	public synchronized long nextCellIndex() {
 		return nextCellIndex;
+	}
+
+	private CabinRecord require(UUID cabinId) {
+		CabinRecord cabin = byId.get(cabinId);
+		if (cabin == null) {
+			throw new IllegalStateException("No cabin record exists for " + cabinId);
+		}
+		return cabin;
+	}
+
+	private void replace(CabinRecord cabin) {
+		byId.put(cabin.uuid(), cabin);
+		setDirty();
 	}
 
 	private synchronized RegistryData encode() {

@@ -12,6 +12,9 @@
       "dev.portablepocketcabin.PortablePocketCabin"
     ]
   },
+  "mixins": [
+    "portable_pocket_cabin.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.19.5",
     "minecraft": "~26.2",

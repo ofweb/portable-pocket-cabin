@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "dev.portablepocketcabin.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "PistonStructureResolverMixin",
+    "ServerExplosionMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

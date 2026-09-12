@@ -49,6 +49,8 @@ final class CabinCommands {
 						context.getSource(),
 						UuidArgument.getUuid(context, "uuid")
 					))))
+			.then(Commands.literal("preview").executes(context -> preview(context.getSource())))
+			.then(Commands.literal("deploy").executes(context -> deploy(context.getSource())))
 			.then(Commands.literal("visit-test").executes(context -> visitTest(context.getSource())))
 			.then(Commands.literal("leave-test").executes(context -> leaveTest(context.getSource()))));
 	}
@@ -58,7 +60,7 @@ final class CabinCommands {
 		CabinRegistry registry = CabinRegistry.get(source.getServer());
 		source.sendSuccess(() -> Component.literal(
 			"Portable Pocket Cabin " + PortablePocketCabin.VERSION
-				+ " | delivery=2 | pocket_dimension=" + (loaded ? "ready" : "missing")
+				+ " | delivery=3 | pocket_dimension=" + (loaded ? "ready" : "missing")
 				+ " | cabins=" + registry.size() + " | next_cell=" + registry.nextCellIndex()
 		), false);
 		return loaded ? 1 : 0;
@@ -122,8 +124,14 @@ final class CabinCommands {
 		}
 
 		var center = PocketDimension.cellCenter(cabin.cellIndex());
+		String exterior = cabin.exterior()
+			.map(value -> " exterior=" + value.dimension().identifier() + "@"
+				+ value.anchor().getX() + "," + value.anchor().getY() + "," + value.anchor().getZ()
+				+ "," + value.facing().getSerializedName())
+			.orElse(" exterior=none");
 		source.sendSuccess(() -> format(cabin).copy()
-			.append(" center=" + center.getX() + "," + center.getY() + "," + center.getZ()), false);
+			.append(" center=" + center.getX() + "," + center.getY() + "," + center.getZ()
+				+ exterior + " interior_generated=" + cabin.interiorGenerated()), false);
 		return 1;
 	}
 
@@ -148,13 +156,17 @@ final class CabinCommands {
 			return 0;
 		}
 
-		PocketDimension.ensureDebugMarker(pocket, cabin.cellIndex());
-		var center = PocketDimension.cellCenter(cabin.cellIndex());
+		if (!cabin.interiorGenerated()) {
+			PocketDimension.ensureDebugMarker(pocket, cabin.cellIndex());
+		}
+		var destination = cabin.interiorGenerated()
+			? PocketDimension.interiorEntrance(cabin.cellIndex())
+			: PocketDimension.cellCenter(cabin.cellIndex()).offset(0, 1, 2);
 		player.teleportTo(
 			pocket,
-			center.getX() + 0.5,
-			center.getY() + 1.0,
-			center.getZ() + 2.5,
+			destination.getX() + 0.5,
+			destination.getY(),
+			destination.getZ() + 0.5,
 			Set.of(),
 			180.0F,
 			0.0F,
@@ -162,7 +174,8 @@ final class CabinCommands {
 		);
 		source.sendSuccess(() -> Component.literal("Visited cabin ")
 			.append(copyableUuid(cabin.uuid()))
-			.append(" debug marker at cell " + cabin.cellIndex() + "."), false);
+			.append((cabin.interiorGenerated() ? " interior" : " debug marker")
+				+ " at cell " + cabin.cellIndex() + "."), false);
 		return 1;
 	}
 
@@ -170,7 +183,28 @@ final class CabinCommands {
 		return Component.empty()
 			.append(copyableUuid(cabin.uuid()))
 			.append(" owner=" + cabin.owner() + " cell=" + cabin.cellIndex()
-				+ " state=" + cabin.lifecycle());
+				+ " state=" + cabin.lifecycle()
+				+ cabin.exterior().map(value -> " exterior=" + value.dimension().identifier() + "@"
+					+ value.anchor().getX() + "," + value.anchor().getY() + "," + value.anchor().getZ())
+					.orElse(""));
+	}
+
+	private static int preview(CommandSourceStack source) {
+		try {
+			return CabinPlacement.preview(source.getPlayerOrException());
+		} catch (Exception exception) {
+			source.sendFailure(Component.literal("This command must be run by a player."));
+			return 0;
+		}
+	}
+
+	private static int deploy(CommandSourceStack source) {
+		try {
+			return CabinPlacement.deploy(source.getPlayerOrException());
+		} catch (Exception exception) {
+			source.sendFailure(Component.literal("This command must be run by a player."));
+			return 0;
+		}
 	}
 
 	private static Component copyableUuid(UUID cabinId) {

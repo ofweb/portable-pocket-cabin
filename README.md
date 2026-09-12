@@ -19,6 +19,8 @@ The build runs both the server-side GameTests and the headless dedicated-server 
 /cabin list
 /cabin inspect <uuid>
 /cabin visit <uuid>
+/cabin preview
+/cabin deploy
 /cabin visit-test
 /cabin leave-test
 ```
@@ -75,3 +77,14 @@ The server world persists under `run/server`. `just server` provisions `ofweb` a
 4. Run `/cabin inspect <uuid>` and `/cabin visit <uuid>`; confirm the reported coordinates agree and the pocket dimension contains a lit debug marker.
 5. Restart the server and confirm `/cabin list` still shows the same UUID, owner, cell and lifecycle.
 6. Join as a second player (or run `/cabin create <player>`) and confirm the new cabin receives cell `1`, then visit its distinct marker.
+
+## Delivery 3 manual acceptance
+
+1. Start a fresh development world, run `/cabin create`, and find a flat, clear patch of Overworld ground.
+2. Run `/cabin preview`; confirm particles trace the 5×5 footprint in front of you and the command reports whether it is clear.
+3. Run `/cabin deploy` within 30 seconds; confirm a small stone cabin appears with an iron door and lodestone controller.
+4. Interact with the exterior iron door or controller; confirm you enter a lit 21×21 pocket interior.
+5. Interact with the interior iron door; confirm you return outside the exterior doorway.
+6. In survival and creative mode, confirm the exterior and interior shell cannot be broken. Trigger an explosion and a piston beside the exterior and confirm its owned blocks remain intact.
+7. Restart the server, run `/cabin list` and `/cabin inspect <uuid>`, and confirm the cabin remains `DEPLOYED` with the same Overworld position and facing.
+8. Confirm `/cabin preview` refuses a second deployment and that a different player cannot enter the first player's cabin during this delivery.
