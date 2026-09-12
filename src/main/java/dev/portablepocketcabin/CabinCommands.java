@@ -51,6 +51,21 @@ final class CabinCommands {
 					))))
 			.then(Commands.literal("preview").executes(context -> preview(context.getSource())))
 			.then(Commands.literal("deploy").executes(context -> deploy(context.getSource())))
+			.then(Commands.literal("pack").executes(context -> pack(context.getSource())))
+			.then(Commands.literal("reconcile")
+				.then(Commands.argument("uuid", UuidArgument.uuid())
+					.executes(context -> reconcile(
+						context.getSource(),
+						UuidArgument.getUuid(context, "uuid")
+					))))
+			.then(Commands.literal("recover-item")
+				.then(Commands.argument("uuid", UuidArgument.uuid())
+					.then(Commands.argument("player", EntityArgument.player())
+						.executes(context -> recoverItem(
+							context.getSource(),
+							UuidArgument.getUuid(context, "uuid"),
+							EntityArgument.getPlayer(context, "player")
+						)))))
 			.then(Commands.literal("visit-test").executes(context -> visitTest(context.getSource())))
 			.then(Commands.literal("leave-test").executes(context -> leaveTest(context.getSource()))));
 	}
@@ -60,19 +75,21 @@ final class CabinCommands {
 		CabinRegistry registry = CabinRegistry.get(source.getServer());
 		source.sendSuccess(() -> Component.literal(
 			"Portable Pocket Cabin " + PortablePocketCabin.VERSION
-				+ " | delivery=3 | pocket_dimension=" + (loaded ? "ready" : "missing")
+				+ " | delivery=4 | pocket_dimension=" + (loaded ? "ready" : "missing")
 				+ " | cabins=" + registry.size() + " | next_cell=" + registry.nextCellIndex()
 		), false);
 		return loaded ? 1 : 0;
 	}
 
 	private static int createForSource(CommandSourceStack source) {
+		ServerPlayer player;
 		try {
-			return create(source, source.getPlayerOrException());
+			player = source.getPlayerOrException();
 		} catch (Exception exception) {
 			source.sendFailure(Component.literal("Specify an online player when running this command from the console."));
 			return 0;
 		}
+		return create(source, player);
 	}
 
 	private static int create(CommandSourceStack source, ServerPlayer owner) {
@@ -83,6 +100,11 @@ final class CabinCommands {
 				.append(copyableUuid(existing.uuid())));
 			return 0;
 		}
+		if (owner.getInventory().getFreeSlot() < 0) {
+			source.sendFailure(Component.literal(owner.getGameProfile().name()
+				+ " needs one free inventory slot for the packed cabin."));
+			return 0;
+		}
 
 		CabinRecord cabin;
 		try {
@@ -91,10 +113,15 @@ final class CabinCommands {
 			source.sendFailure(Component.literal(exception.getMessage()));
 			return 0;
 		}
+		CabinRegistry.flush(source.getServer());
 
 		ServerLevel pocket = source.getServer().getLevel(PocketDimension.LEVEL_KEY);
 		if (pocket != null) {
 			PocketDimension.ensureDebugMarker(pocket, cabin.cellIndex());
+		}
+		if (!CabinItems.give(owner.getInventory(),
+			CabinItems.createBound(cabin, cabin.packedItemGeneration(), false))) {
+			throw new IllegalStateException("Reserved packed-cabin inventory slot became unavailable");
 		}
 		source.sendSuccess(() -> Component.literal("Created cabin ")
 			.append(copyableUuid(cabin.uuid()))
@@ -129,9 +156,15 @@ final class CabinCommands {
 				+ value.anchor().getX() + "," + value.anchor().getY() + "," + value.anchor().getZ()
 				+ "," + value.facing().getSerializedName())
 			.orElse(" exterior=none");
+		String lastExterior = cabin.lastExterior()
+			.map(value -> " last_exterior=" + value.dimension().identifier() + "@"
+				+ value.anchor().getX() + "," + value.anchor().getY() + "," + value.anchor().getZ())
+			.orElse(" last_exterior=none");
 		source.sendSuccess(() -> format(cabin).copy()
 			.append(" center=" + center.getX() + "," + center.getY() + "," + center.getZ()
-				+ exterior + " interior_generated=" + cabin.interiorGenerated()), false);
+				+ exterior + lastExterior + " interior_generated=" + cabin.interiorGenerated()
+				+ " item_generation=" + cabin.packedItemGeneration()
+				+ " cleanup_pending=" + cabin.exteriorCleanupPending()), false);
 		return 1;
 	}
 
@@ -190,21 +223,85 @@ final class CabinCommands {
 	}
 
 	private static int preview(CommandSourceStack source) {
+		ServerPlayer player;
 		try {
-			return CabinPlacement.preview(source.getPlayerOrException());
+			player = source.getPlayerOrException();
 		} catch (Exception exception) {
 			source.sendFailure(Component.literal("This command must be run by a player."));
 			return 0;
 		}
+		return CabinPlacement.preview(player);
 	}
 
 	private static int deploy(CommandSourceStack source) {
+		ServerPlayer player;
 		try {
-			return CabinPlacement.deploy(source.getPlayerOrException());
+			player = source.getPlayerOrException();
 		} catch (Exception exception) {
 			source.sendFailure(Component.literal("This command must be run by a player."));
 			return 0;
 		}
+		return CabinPlacement.deploy(player);
+	}
+
+	private static int pack(CommandSourceStack source) {
+		ServerPlayer player;
+		try {
+			player = source.getPlayerOrException();
+		} catch (Exception exception) {
+			source.sendFailure(Component.literal("This command must be run by a player."));
+			return 0;
+		}
+		return CabinPacking.request(player);
+	}
+
+	private static int reconcile(CommandSourceStack source, UUID cabinId) {
+		if (CabinRegistry.get(source.getServer()).find(cabinId).isEmpty()) {
+			source.sendFailure(Component.literal("No cabin record exists for " + cabinId + "."));
+			return 0;
+		}
+		String result = CabinReconciliation.reconcile(source.getServer(), cabinId);
+		source.sendSuccess(() -> Component.literal("Cabin " + cabinId + ": " + result + "."), true);
+		return 1;
+	}
+
+	private static int recoverItem(CommandSourceStack source, UUID cabinId, ServerPlayer target) {
+		CabinRegistry registry = CabinRegistry.get(source.getServer());
+		CabinRecord cabin = registry.find(cabinId).orElse(null);
+		if (cabin == null) {
+			source.sendFailure(Component.literal("No cabin record exists for " + cabinId + "."));
+			return 0;
+		}
+		if (!cabin.owner().equals(target.getUUID())) {
+			source.sendFailure(Component.literal("Recovery target must be the cabin owner."));
+			return 0;
+		}
+		if (target.getInventory().getFreeSlot() < 0) {
+			source.sendFailure(Component.literal("The cabin owner needs one free inventory slot."));
+			return 0;
+		}
+		if (cabin.lifecycle() == CabinLifecycle.DEPLOYED
+			&& CabinReconciliation.hasValidProjection(source.getServer(), cabin)) {
+			source.sendFailure(Component.literal("Cannot recover an item while the deployed exterior is valid."));
+			return 0;
+		}
+
+		CabinReconciliation.reconcile(source.getServer(), cabinId);
+		cabin = registry.find(cabinId).orElseThrow();
+		if (cabin.lifecycle() == CabinLifecycle.DEPLOYED) {
+			source.sendFailure(Component.literal("Reconciliation restored the deployed exterior; no item was issued."));
+			return 0;
+		}
+		CabinRecord packed = registry.recoverPacked(cabinId);
+		CabinRegistry.flush(source.getServer());
+		if (!CabinItems.give(target.getInventory(),
+			CabinItems.createBound(packed, packed.packedItemGeneration(), false))) {
+			source.sendFailure(Component.literal("The packed item could not be delivered."));
+			return 0;
+		}
+		source.sendSuccess(() -> Component.literal("Issued packed cabin " + cabinId
+			+ " generation " + packed.packedItemGeneration() + " to " + target.getGameProfile().name() + "."), true);
+		return 1;
 	}
 
 	private static Component copyableUuid(UUID cabinId) {

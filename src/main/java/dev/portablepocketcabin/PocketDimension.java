@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.dimension.DimensionType;
 
+import java.util.OptionalLong;
+
 public final class PocketDimension {
 	public static final int CELL_SPACING = 512;
 	public static final int CELLS_PER_ROW = 1024;
@@ -160,5 +162,17 @@ public final class PocketDimension {
 		}
 		return pos.getY() > CELL_FLOOR_Y && pos.getY() < INTERIOR_CEILING_Y
 			&& (dx == INTERIOR_SHELL_RADIUS || dz == INTERIOR_SHELL_RADIUS);
+	}
+
+	public static OptionalLong cellIndexAt(BlockPos pos) {
+		long relativeX = (long) pos.getX() - CELL_ORIGIN_X;
+		long relativeZ = (long) pos.getZ() - CELL_ORIGIN_Z;
+		long column = Math.floorDiv(relativeX + CELL_SPACING / 2L, CELL_SPACING);
+		long row = Math.floorDiv(relativeZ + CELL_SPACING / 2L, CELL_SPACING);
+		if (column < 0 || column >= CELLS_PER_ROW || row < 0 || row >= 58_000L) {
+			return OptionalLong.empty();
+		}
+		long cellIndex = row * CELLS_PER_ROW + column;
+		return cellIndex <= MAX_CELL_INDEX ? OptionalLong.of(cellIndex) : OptionalLong.empty();
 	}
 }

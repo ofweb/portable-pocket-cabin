@@ -112,6 +112,23 @@ final class ExteriorCabin {
 		}
 	}
 
+	static boolean projectionValid(ServerLevel level, CabinExterior exterior) {
+		for (Map.Entry<BlockPos, BlockState> entry : blocks(exterior).entrySet()) {
+			if (!level.getBlockState(entry.getKey()).is(entry.getValue().getBlock())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	static void removeProjection(ServerLevel level, CabinExterior exterior) {
+		for (Map.Entry<BlockPos, BlockState> entry : blocks(exterior).entrySet()) {
+			if (level.getBlockState(entry.getKey()).is(entry.getValue().getBlock())) {
+				level.setBlockAndUpdate(entry.getKey(), Blocks.AIR.defaultBlockState());
+			}
+		}
+	}
+
 	static void showPreview(ServerLevel level, CabinExterior exterior, boolean valid) {
 		for (BlockPos pos : footprintOutline(exterior)) {
 			level.sendParticles(

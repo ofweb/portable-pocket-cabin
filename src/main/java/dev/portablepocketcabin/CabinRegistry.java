@@ -56,6 +56,10 @@ public final class CabinRegistry extends SavedData {
 		return server.overworld().getDataStorage().computeIfAbsent(TYPE);
 	}
 
+	public static void flush(MinecraftServer server) {
+		server.overworld().getDataStorage().saveAndJoin();
+	}
+
 	public synchronized CabinRecord create(UUID owner) {
 		CabinRecord existing = findByOwner(owner).orElse(null);
 		if (existing != null) {
@@ -105,10 +109,13 @@ public final class CabinRegistry extends SavedData {
 			throw new IllegalStateException("Cabin must be PACKED before deployment; current state is "
 				+ cabin.lifecycle());
 		}
+		if (cabin.exteriorCleanupPending()) {
+			throw new IllegalStateException("Cabin exterior cleanup must finish before redeployment");
+		}
 
 		CabinRecord deploying = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYING,
-			Optional.of(exterior), cabin.interiorGenerated()
+			Optional.of(exterior), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false
 		);
 		replace(deploying);
 		return deploying;
@@ -120,7 +127,8 @@ public final class CabinRegistry extends SavedData {
 			return cabin;
 		}
 		CabinRecord generated = new CabinRecord(
-			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(), true
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
+			cabin.lastExterior(), true, cabin.packedItemGeneration(), cabin.exteriorCleanupPending()
 		);
 		replace(generated);
 		return generated;
@@ -136,10 +144,109 @@ public final class CabinRegistry extends SavedData {
 		}
 		CabinRecord deployed = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYED,
-			cabin.exterior(), cabin.interiorGenerated()
+			cabin.exterior(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false
 		);
 		replace(deployed);
 		return deployed;
+	}
+
+	public synchronized CabinRecord beginPacking(UUID cabinId, UUID owner) {
+		CabinRecord cabin = require(cabinId);
+		if (!cabin.owner().equals(owner)) {
+			throw new IllegalStateException("Only the cabin owner may pack it");
+		}
+		if (cabin.lifecycle() != CabinLifecycle.DEPLOYED || cabin.exterior().isEmpty()) {
+			throw new IllegalStateException("Cabin must be DEPLOYED before packing");
+		}
+		CabinRecord packing = new CabinRecord(
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKING,
+			cabin.exterior(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false
+		);
+		replace(packing);
+		return packing;
+	}
+
+	public synchronized CabinRecord abortPacking(UUID cabinId) {
+		CabinRecord cabin = require(cabinId);
+		if (cabin.lifecycle() != CabinLifecycle.PACKING) {
+			return cabin;
+		}
+		CabinRecord deployed = new CabinRecord(
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYED,
+			cabin.exterior(), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false
+		);
+		replace(deployed);
+		return deployed;
+	}
+
+	public synchronized CabinRecord finishPacking(UUID cabinId) {
+		CabinRecord cabin = require(cabinId);
+		if (cabin.lifecycle() != CabinLifecycle.PACKING) {
+			throw new IllegalStateException("Cabin must be PACKING before it can become PACKED");
+		}
+		if (cabin.packedItemGeneration() == Long.MAX_VALUE) {
+			throw new IllegalStateException("Packed item generation is exhausted");
+		}
+		CabinRecord packed = new CabinRecord(
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKED,
+			Optional.empty(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration() + 1, true
+		);
+		replace(packed);
+		return packed;
+	}
+
+	public synchronized CabinRecord markExteriorCleanupComplete(UUID cabinId) {
+		CabinRecord cabin = require(cabinId);
+		if (!cabin.exteriorCleanupPending()) {
+			return cabin;
+		}
+		CabinRecord cleaned = new CabinRecord(
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
+			cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false
+		);
+		replace(cleaned);
+		return cleaned;
+	}
+
+	public synchronized CabinRecord rollbackDeployment(UUID cabinId) {
+		CabinRecord cabin = require(cabinId);
+		if (cabin.lifecycle() != CabinLifecycle.DEPLOYING) {
+			return cabin;
+		}
+		CabinRecord packed = new CabinRecord(
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKED,
+			Optional.empty(), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false
+		);
+		replace(packed);
+		return packed;
+	}
+
+	public synchronized CabinRecord markOrphaned(UUID cabinId) {
+		CabinRecord cabin = require(cabinId);
+		Optional<CabinExterior> lastExterior = cabin.exterior().isPresent() ? cabin.exterior() : cabin.lastExterior();
+		CabinRecord orphaned = new CabinRecord(
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.ORPHANED,
+			Optional.empty(), lastExterior, cabin.interiorGenerated(), cabin.packedItemGeneration(), false
+		);
+		replace(orphaned);
+		return orphaned;
+	}
+
+	public synchronized CabinRecord recoverPacked(UUID cabinId) {
+		CabinRecord cabin = require(cabinId);
+		if (cabin.lifecycle() == CabinLifecycle.DEPLOYED && cabin.exterior().isPresent()) {
+			throw new IllegalStateException("Cannot recover an item while a valid deployed exterior is registered");
+		}
+		if (cabin.packedItemGeneration() == Long.MAX_VALUE) {
+			throw new IllegalStateException("Packed item generation is exhausted");
+		}
+		Optional<CabinExterior> lastExterior = cabin.exterior().isPresent() ? cabin.exterior() : cabin.lastExterior();
+		CabinRecord packed = new CabinRecord(
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKED,
+			Optional.empty(), lastExterior, cabin.interiorGenerated(), cabin.packedItemGeneration() + 1, false
+		);
+		replace(packed);
+		return packed;
 	}
 
 	public synchronized List<CabinRecord> cabins() {

@@ -21,6 +21,9 @@ The build runs both the server-side GameTests and the headless dedicated-server 
 /cabin visit <uuid>
 /cabin preview
 /cabin deploy
+/cabin pack
+/cabin reconcile <uuid>
+/cabin recover-item <uuid> <player>
 /cabin visit-test
 /cabin leave-test
 ```
@@ -33,7 +36,7 @@ For a headless dedicated-server smoke check:
 ./gradlew runStartupTest
 ```
 
-The server stops itself after initialization and logs `DEDICATED_SERVER_STARTUP_TEST_PASSED` once the pocket dimension and registry are available. The full `./gradlew build` gate boots that saved world a second time and verifies the cabin survives before allocating a non-colliding second cell.
+The server stops itself after initialization and logs `DEDICATED_SERVER_STARTUP_TEST_PASSED` once the pocket dimension and registry are available. The full `./gradlew build` gate boots that saved world a second time, reconciles interrupted packing and deployment journals, verifies the exterior and interior survived, then packs and redeploys the cabin before checking monotonic cell allocation.
 
 ### Local server and Prism client
 
@@ -88,3 +91,14 @@ The server world persists under `run/server`. `just server` provisions `ofweb` a
 6. In survival and creative mode, confirm the exterior and interior shell cannot be broken. Trigger an explosion and a piston beside the exterior and confirm its owned blocks remain intact.
 7. Restart the server, run `/cabin list` and `/cabin inspect <uuid>`, and confirm the cabin remains `DEPLOYED` with the same Overworld position and facing.
 8. Confirm `/cabin preview` refuses a second deployment and that a different player cannot enter the first player's cabin during this delivery.
+
+## Delivery 4 manual acceptance
+
+1. Start a fresh world and run `/cabin create`; confirm a bound `Packed Cabin` item appears and its tooltip shows the cabin UUID and generation `0`.
+2. Preview and deploy the cabin. Confirm deployment consumes the bound item, then place a few blocks or items inside the pocket interior.
+3. Fill every owner inventory slot, stand outside within 10 blocks of the controller, and run `/cabin pack`; confirm packing is rejected before the lifecycle changes.
+4. Free one slot and run `/cabin pack` again. Confirm the entrance locks immediately, occupants see the five-second countdown, and online occupants are evacuated safely.
+5. Confirm the exterior's exact owned mask disappears without changing adjacent player blocks, the cabin becomes `PACKED`, and the reserved item becomes a valid generation `1` `Packed Cabin`.
+6. Redeploy from that item at another clear Overworld site. Confirm the same interior contents remain and the old item was consumed.
+7. Run `/cabin reconcile <uuid>` on the valid deployment and confirm it remains unchanged. Confirm `/cabin recover-item <uuid> <owner>` refuses while that exterior is valid.
+8. Remove the controller with an operator `/setblock` command, run `/cabin reconcile <uuid>`, and confirm the cabin becomes `ORPHANED`. Then run `/cabin recover-item <uuid> <owner>` and confirm it becomes `PACKED` with a newer item generation.

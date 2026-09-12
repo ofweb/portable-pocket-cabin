@@ -51,7 +51,7 @@ final class CabinEvents {
 			return InteractionResult.FAIL;
 		}
 		if (!cabin.owner().equals(player.getUUID())) {
-			player.sendSystemMessage(Component.literal("Only the owner may enter during Delivery 3."));
+			player.sendSystemMessage(Component.literal("Only the owner may enter during Delivery 4."));
 			return InteractionResult.FAIL;
 		}
 
@@ -81,24 +81,13 @@ final class CabinEvents {
 			return InteractionResult.FAIL;
 		}
 
-		CabinExterior exterior = cabin.exterior().get();
-		ServerLevel exteriorLevel = ((ServerLevel) player.level()).getServer().getLevel(exterior.dimension());
-		if (exteriorLevel == null) {
-			player.sendSystemMessage(Component.literal("The cabin exterior dimension is unavailable."));
+		var destination = SafeDestinationResolver.resolveForCabin(player, cabin);
+		if (destination.isEmpty()) {
+			player.sendSystemMessage(Component.literal("No safe cabin exit destination is currently available."));
 			return InteractionResult.FAIL;
 		}
-
-		var destination = ExteriorCabin.outsideDestination(exterior);
-		player.teleportTo(
-			exteriorLevel,
-			destination.getX() + 0.5,
-			destination.getY(),
-			destination.getZ() + 0.5,
-			Set.of(),
-			exterior.facing().toYRot(),
-			0.0F,
-			false
-		);
-		return InteractionResult.SUCCESS_SERVER;
+		return destination.get().teleport(player, cabin.exterior().get().facing().toYRot())
+			? InteractionResult.SUCCESS_SERVER
+			: InteractionResult.FAIL;
 	}
 }

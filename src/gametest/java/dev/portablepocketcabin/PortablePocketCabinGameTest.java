@@ -8,9 +8,11 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public final class PortablePocketCabinGameTest {
@@ -167,6 +169,125 @@ public final class PortablePocketCabinGameTest {
 		helper.assertTrue(PocketDimension.isInteriorExit(cell, PocketDimension.interiorExitDoorLower(cell)),
 			"Every interior must have a stable exit-door coordinate");
 		helper.succeed();
+	}
+
+	@GameTest
+	public void packingPreservesInteriorIdentityAndAdvancesItemGeneration(GameTestHelper helper) {
+		CabinRegistry registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID();
+		CabinRecord cabin = registry.create(owner);
+		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, new BlockPos(8, 72, 8), Direction.SOUTH);
+
+		registry.beginDeployment(cabin.uuid(), owner, exterior);
+		registry.markInteriorGenerated(cabin.uuid());
+		registry.finishDeployment(cabin.uuid());
+		registry.beginPacking(cabin.uuid(), owner);
+		CabinRecord packed = registry.finishPacking(cabin.uuid());
+
+		helper.assertTrue(packed.lifecycle() == CabinLifecycle.PACKED && packed.exterior().isEmpty(),
+			"Finished packing must disable the active exterior");
+		helper.assertTrue(packed.lastExterior().orElseThrow().equals(exterior),
+			"Packing must retain the last valid campsite");
+		helper.assertTrue(packed.interiorGenerated() && packed.cellIndex() == cabin.cellIndex(),
+			"Packing must not change interior identity");
+		helper.assertTrue(packed.packedItemGeneration() == 1,
+			"Every completed packing operation must advance the packed item generation");
+		helper.assertTrue(packed.exteriorCleanupPending(),
+			"Packing must journal physical exterior cleanup before removing blocks");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void boundCabinItemCarriesUuidAndGeneration(GameTestHelper helper) {
+		CabinRecord cabin = new CabinRecord(UUID.randomUUID(), UUID.randomUUID(), 3, CabinLifecycle.PACKED);
+		var stack = CabinItems.createBound(cabin, 7, false);
+		CabinItems.Binding binding = CabinItems.binding(stack).orElseThrow();
+
+		helper.assertTrue(binding.cabinId().equals(cabin.uuid()),
+			"A packed item must identify its authoritative cabin record");
+		helper.assertTrue(binding.generation() == 7 && !binding.pending(),
+			"A packed item must preserve its generation and pending status");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void reconciliationCoversEveryLifecycleTransition(GameTestHelper helper) {
+		UUID cabinId = UUID.randomUUID();
+		UUID owner = UUID.randomUUID();
+		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, BlockPos.ZERO, Direction.NORTH);
+		CabinRecord packed = new CabinRecord(cabinId, owner, 0, CabinLifecycle.PACKED);
+		CabinRecord packedCleanupPending = new CabinRecord(
+			cabinId, owner, 0, CabinLifecycle.PACKED,
+			Optional.empty(), Optional.of(exterior), true, 2, true
+		);
+		CabinRecord deployingReady = record(cabinId, owner, CabinLifecycle.DEPLOYING, exterior, true);
+		CabinRecord deployingIncomplete = record(cabinId, owner, CabinLifecycle.DEPLOYING, exterior, false);
+		CabinRecord deployed = record(cabinId, owner, CabinLifecycle.DEPLOYED, exterior, true);
+		CabinRecord packing = record(cabinId, owner, CabinLifecycle.PACKING, exterior, true);
+		CabinRecord orphaned = new CabinRecord(
+			cabinId, owner, 0, CabinLifecycle.ORPHANED,
+			Optional.empty(), Optional.of(exterior), true, 2
+		);
+
+		helper.assertTrue(CabinReconciliation.plan(packed, false) == CabinReconciliation.Action.NONE
+			&& CabinReconciliation.plan(packedCleanupPending, false) == CabinReconciliation.Action.ENSURE_PACKED,
+			"PACKED reconciliation must remove stale physical projections");
+		helper.assertTrue(CabinReconciliation.plan(deployingReady, true)
+			== CabinReconciliation.Action.FINISH_DEPLOYMENT,
+			"A complete interrupted deployment must commit idempotently");
+		helper.assertTrue(CabinReconciliation.plan(deployingIncomplete, false)
+			== CabinReconciliation.Action.ROLL_BACK_DEPLOYMENT,
+			"An incomplete interrupted deployment must roll back");
+		helper.assertTrue(CabinReconciliation.plan(deployed, true) == CabinReconciliation.Action.NONE
+			&& CabinReconciliation.plan(deployed, false) == CabinReconciliation.Action.ORPHAN,
+			"DEPLOYED reconciliation must distinguish a valid exterior from a missing one");
+		helper.assertTrue(CabinReconciliation.plan(packing, true) == CabinReconciliation.Action.ABORT_PACKING
+			&& CabinReconciliation.plan(packing, false) == CabinReconciliation.Action.ORPHAN,
+			"Interrupted packing must restore a valid exterior or orphan a missing one");
+		helper.assertTrue(CabinReconciliation.plan(orphaned, false) == CabinReconciliation.Action.NONE,
+			"ORPHANED reconciliation must remain stable");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void safeDestinationRejectsCollisionAndHazards(GameTestHelper helper) {
+		BlockPos relativeFeet = new BlockPos(1, 2, 1);
+		BlockPos absoluteFeet = helper.absolutePos(relativeFeet);
+		ServerPlayer player = helper.makeMockServerPlayerInLevel();
+		helper.setBlock(relativeFeet.below(), Blocks.STONE);
+		helper.setBlock(relativeFeet, Blocks.AIR);
+		helper.setBlock(relativeFeet.above(), Blocks.AIR);
+
+		helper.assertTrue(SafeDestinationResolver.isSafe(helper.getLevel(), absoluteFeet, player),
+			"A clear two-block space over solid ground must be safe");
+		helper.setBlock(relativeFeet, Blocks.FIRE);
+		helper.assertTrue(!SafeDestinationResolver.isSafe(helper.getLevel(), absoluteFeet, player),
+			"Fire must invalidate a destination");
+		helper.setBlock(relativeFeet, Blocks.AIR);
+		helper.setBlock(relativeFeet.above(), Blocks.STONE);
+		helper.assertTrue(!SafeDestinationResolver.isSafe(helper.getLevel(), absoluteFeet, player),
+			"A colliding head block must invalidate a destination");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void pocketCoordinatesResolveToPermanentCell(GameTestHelper helper) {
+		long cell = 1_237;
+		BlockPos center = PocketDimension.cellCenter(cell);
+		helper.assertTrue(PocketDimension.cellIndexAt(center.offset(200, 30, -200)).orElseThrow() == cell,
+			"Any position within a cell's isolation region must resolve to its permanent cell");
+		helper.assertTrue(PocketDimension.cellIndexAt(new BlockPos(-10_000, 64, -10_000)).isEmpty(),
+			"Coordinates outside the allocated cell grid must not resolve to a cabin");
+		helper.succeed();
+	}
+
+	private static CabinRecord record(
+		UUID cabinId, UUID owner, CabinLifecycle lifecycle, CabinExterior exterior, boolean generated
+	) {
+		return new CabinRecord(
+			cabinId, owner, 0, lifecycle,
+			Optional.of(exterior), Optional.of(exterior), generated, 2
+		);
 	}
 
 	@GameTest

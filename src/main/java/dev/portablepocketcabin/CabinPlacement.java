@@ -37,9 +37,13 @@ final class CabinPlacement {
 				+ cabin.lifecycle() + "."));
 			return 0;
 		}
+		if (CabinItems.findValid(player.getInventory(), cabin) < 0) {
+			player.sendSystemMessage(Component.literal("You need the current bound packed-cabin item to deploy it."));
+			return 0;
+		}
 
 		CabinExterior exterior = ExteriorCabin.previewFor(player);
-		ExteriorCabin.PlacementCheck check = ExteriorCabin.validate(level, exterior);
+		ExteriorCabin.PlacementCheck check = validate(level, exterior, player);
 		ExteriorCabin.showPreview(level, exterior, check.valid());
 		PREVIEWS.put(player.getUUID(), new Preview(
 			cabin.uuid(), exterior, level.getGameTime() + PREVIEW_LIFETIME_TICKS
@@ -70,7 +74,7 @@ final class CabinPlacement {
 			return 0;
 		}
 
-		ExteriorCabin.PlacementCheck check = ExteriorCabin.validate(exteriorLevel, preview.exterior());
+		ExteriorCabin.PlacementCheck check = validate(exteriorLevel, preview.exterior(), player);
 		if (!check.valid()) {
 			ExteriorCabin.showPreview(exteriorLevel, preview.exterior(), false);
 			player.sendSystemMessage(Component.literal(check.message() + ". Preview the cabin again after clearing it."));
@@ -82,12 +86,20 @@ final class CabinPlacement {
 			player.sendSystemMessage(Component.literal("Pocket dimension is unavailable."));
 			return 0;
 		}
+		int packedItemSlot = CabinItems.findValid(player.getInventory(), cabin);
+		if (packedItemSlot < 0) {
+			player.sendSystemMessage(Component.literal("The current bound packed-cabin item is no longer in your inventory."));
+			return 0;
+		}
 
 		try {
 			CabinRecord deploying = registry.beginDeployment(cabin.uuid(), player.getUUID(), preview.exterior());
+			CabinRegistry.flush(exteriorLevel.getServer());
+			player.getInventory().setItem(packedItemSlot, net.minecraft.world.item.ItemStack.EMPTY);
 			if (!deploying.interiorGenerated()) {
 				PocketDimension.ensureCabinInterior(pocket, deploying.cellIndex());
 				registry.markInteriorGenerated(deploying.uuid());
+				CabinRegistry.flush(exteriorLevel.getServer());
 			}
 			ExteriorCabin.place(exteriorLevel, preview.exterior());
 			registry.finishDeployment(deploying.uuid());
@@ -103,5 +115,21 @@ final class CabinPlacement {
 	private static String coordinates(CabinExterior exterior) {
 		return exterior.anchor().getX() + "," + exterior.anchor().getY() + "," + exterior.anchor().getZ()
 			+ " facing " + exterior.facing().getSerializedName();
+	}
+
+	private static ExteriorCabin.PlacementCheck validate(
+		ServerLevel level, CabinExterior exterior, ServerPlayer player
+	) {
+		ExteriorCabin.PlacementCheck structure = ExteriorCabin.validate(level, exterior);
+		if (!structure.valid()) {
+			return structure;
+		}
+		if (SafeDestinationResolver.resolveExact(
+			level, ExteriorCabin.outsideDestination(exterior), player
+		).isEmpty()) {
+			return new ExteriorCabin.PlacementCheck(false,
+				"The shared safe-destination resolver rejected the exterior doorway");
+		}
+		return structure;
 	}
 }

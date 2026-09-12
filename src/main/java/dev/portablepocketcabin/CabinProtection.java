@@ -18,7 +18,9 @@ public final class CabinProtection {
 			}
 			if (cabin.exterior().isPresent()
 				&& cabin.exterior().get().dimension().equals(level.dimension())
-				&& (cabin.lifecycle() == CabinLifecycle.DEPLOYING || cabin.lifecycle() == CabinLifecycle.DEPLOYED)
+				&& (cabin.lifecycle() == CabinLifecycle.DEPLOYING
+					|| cabin.lifecycle() == CabinLifecycle.DEPLOYED
+					|| cabin.lifecycle() == CabinLifecycle.PACKING)
 				&& ExteriorCabin.owns(cabin.exterior().get(), pos)) {
 				return true;
 			}
