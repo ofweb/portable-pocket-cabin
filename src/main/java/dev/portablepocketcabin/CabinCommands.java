@@ -1,16 +1,21 @@
 package dev.portablepocketcabin;
 
 import com.mojang.brigadier.CommandDispatcher;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.ChatFormatting;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.commands.arguments.UuidArgument;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Relative;
 
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 final class CabinCommands {
 	private CabinCommands() {
@@ -24,17 +29,157 @@ final class CabinCommands {
 		dispatcher.register(Commands.literal("cabin")
 			.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.literal("status").executes(context -> status(context.getSource())))
+			.then(Commands.literal("create")
+				.executes(context -> createForSource(context.getSource()))
+				.then(Commands.argument("player", EntityArgument.player())
+					.executes(context -> create(
+						context.getSource(),
+						EntityArgument.getPlayer(context, "player")
+					))))
+			.then(Commands.literal("list").executes(context -> list(context.getSource())))
+			.then(Commands.literal("inspect")
+				.then(Commands.argument("uuid", UuidArgument.uuid())
+					.executes(context -> inspect(
+						context.getSource(),
+						UuidArgument.getUuid(context, "uuid")
+					))))
+			.then(Commands.literal("visit")
+				.then(Commands.argument("uuid", UuidArgument.uuid())
+					.executes(context -> visit(
+						context.getSource(),
+						UuidArgument.getUuid(context, "uuid")
+					))))
 			.then(Commands.literal("visit-test").executes(context -> visitTest(context.getSource())))
 			.then(Commands.literal("leave-test").executes(context -> leaveTest(context.getSource()))));
 	}
 
 	private static int status(CommandSourceStack source) {
 		boolean loaded = source.getServer().getLevel(PocketDimension.LEVEL_KEY) != null;
+		CabinRegistry registry = CabinRegistry.get(source.getServer());
 		source.sendSuccess(() -> Component.literal(
 			"Portable Pocket Cabin " + PortablePocketCabin.VERSION
-				+ " | delivery=1 | pocket_dimension=" + (loaded ? "ready" : "missing")
+				+ " | delivery=2 | pocket_dimension=" + (loaded ? "ready" : "missing")
+				+ " | cabins=" + registry.size() + " | next_cell=" + registry.nextCellIndex()
 		), false);
 		return loaded ? 1 : 0;
+	}
+
+	private static int createForSource(CommandSourceStack source) {
+		try {
+			return create(source, source.getPlayerOrException());
+		} catch (Exception exception) {
+			source.sendFailure(Component.literal("Specify an online player when running this command from the console."));
+			return 0;
+		}
+	}
+
+	private static int create(CommandSourceStack source, ServerPlayer owner) {
+		CabinRegistry registry = CabinRegistry.get(source.getServer());
+		CabinRecord existing = registry.findByOwner(owner.getUUID()).orElse(null);
+		if (existing != null) {
+			source.sendFailure(Component.literal(owner.getGameProfile().name() + " already owns cabin ")
+				.append(copyableUuid(existing.uuid())));
+			return 0;
+		}
+
+		CabinRecord cabin;
+		try {
+			cabin = registry.create(owner.getUUID());
+		} catch (IllegalStateException exception) {
+			source.sendFailure(Component.literal(exception.getMessage()));
+			return 0;
+		}
+
+		ServerLevel pocket = source.getServer().getLevel(PocketDimension.LEVEL_KEY);
+		if (pocket != null) {
+			PocketDimension.ensureDebugMarker(pocket, cabin.cellIndex());
+		}
+		source.sendSuccess(() -> Component.literal("Created cabin ")
+			.append(copyableUuid(cabin.uuid()))
+			.append(" for " + owner.getGameProfile().name() + " at cell " + cabin.cellIndex() + "."), true);
+		return 1;
+	}
+
+	private static int list(CommandSourceStack source) {
+		List<CabinRecord> cabins = CabinRegistry.get(source.getServer()).cabins();
+		if (cabins.isEmpty()) {
+			source.sendSuccess(() -> Component.literal("No cabin records exist."), false);
+			return 1;
+		}
+
+		source.sendSuccess(() -> Component.literal("Cabin records (" + cabins.size() + "):"), false);
+		for (CabinRecord cabin : cabins) {
+			source.sendSuccess(() -> format(cabin), false);
+		}
+		return cabins.size();
+	}
+
+	private static int inspect(CommandSourceStack source, UUID cabinId) {
+		CabinRecord cabin = CabinRegistry.get(source.getServer()).find(cabinId).orElse(null);
+		if (cabin == null) {
+			source.sendFailure(Component.literal("No cabin record exists for " + cabinId + "."));
+			return 0;
+		}
+
+		var center = PocketDimension.cellCenter(cabin.cellIndex());
+		source.sendSuccess(() -> format(cabin).copy()
+			.append(" center=" + center.getX() + "," + center.getY() + "," + center.getZ()), false);
+		return 1;
+	}
+
+	private static int visit(CommandSourceStack source, UUID cabinId) {
+		ServerPlayer player;
+		try {
+			player = source.getPlayerOrException();
+		} catch (Exception exception) {
+			source.sendFailure(Component.literal("This command must be run by a player."));
+			return 0;
+		}
+
+		CabinRecord cabin = CabinRegistry.get(source.getServer()).find(cabinId).orElse(null);
+		if (cabin == null) {
+			source.sendFailure(Component.literal("No cabin record exists for " + cabinId + "."));
+			return 0;
+		}
+
+		ServerLevel pocket = source.getServer().getLevel(PocketDimension.LEVEL_KEY);
+		if (pocket == null) {
+			source.sendFailure(Component.literal("Pocket dimension is unavailable."));
+			return 0;
+		}
+
+		PocketDimension.ensureDebugMarker(pocket, cabin.cellIndex());
+		var center = PocketDimension.cellCenter(cabin.cellIndex());
+		player.teleportTo(
+			pocket,
+			center.getX() + 0.5,
+			center.getY() + 1.0,
+			center.getZ() + 2.5,
+			Set.of(),
+			180.0F,
+			0.0F,
+			false
+		);
+		source.sendSuccess(() -> Component.literal("Visited cabin ")
+			.append(copyableUuid(cabin.uuid()))
+			.append(" debug marker at cell " + cabin.cellIndex() + "."), false);
+		return 1;
+	}
+
+	static Component format(CabinRecord cabin) {
+		return Component.empty()
+			.append(copyableUuid(cabin.uuid()))
+			.append(" owner=" + cabin.owner() + " cell=" + cabin.cellIndex()
+				+ " state=" + cabin.lifecycle());
+	}
+
+	private static Component copyableUuid(UUID cabinId) {
+		String value = cabinId.toString();
+		return Component.literal(value).withStyle(style -> style
+			.withColor(ChatFormatting.AQUA)
+			.withUnderlined(true)
+			.withClickEvent(new ClickEvent.CopyToClipboard(value))
+			.withHoverEvent(new HoverEvent.ShowText(Component.literal("Click to copy cabin UUID"))));
 	}
 
 	private static int visitTest(CommandSourceStack source) {

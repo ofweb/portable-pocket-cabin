@@ -15,6 +15,10 @@ The build runs both the server-side GameTests and the headless dedicated-server 
 
 ```text
 /cabin status
+/cabin create [player]
+/cabin list
+/cabin inspect <uuid>
+/cabin visit <uuid>
 /cabin visit-test
 /cabin leave-test
 ```
@@ -27,7 +31,7 @@ For a headless dedicated-server smoke check:
 ./gradlew runStartupTest
 ```
 
-The server stops itself after initialization and logs `DEDICATED_SERVER_STARTUP_TEST_PASSED` once the pocket dimension is available.
+The server stops itself after initialization and logs `DEDICATED_SERVER_STARTUP_TEST_PASSED` once the pocket dimension and registry are available. The full `./gradlew build` gate boots that saved world a second time and verifies the cabin survives before allocating a non-colliding second cell.
 
 ### Local server and Prism client
 
@@ -62,3 +66,12 @@ The server world persists under `run/server`. `just server` provisions `ofweb` a
 3. Run `/cabin visit-test`; confirm the world is empty except for the generated safety platform.
 4. Run `/cabin leave-test`; confirm you return safely to the Overworld spawn.
 5. Stop and restart the server, then repeat steps 2–4.
+
+## Delivery 2 manual acceptance
+
+1. Start a fresh development world and run `/cabin create` as an operator.
+2. Confirm `/cabin list` shows one `PACKED` record with cell `0`, then copy its UUID.
+3. Confirm a second `/cabin create` is rejected because the player already owns a cabin.
+4. Run `/cabin inspect <uuid>` and `/cabin visit <uuid>`; confirm the reported coordinates agree and the pocket dimension contains a lit debug marker.
+5. Restart the server and confirm `/cabin list` still shows the same UUID, owner, cell and lifecycle.
+6. Join as a second player (or run `/cabin create <player>`) and confirm the new cabin receives cell `1`, then visit its distinct marker.

@@ -21,9 +21,16 @@ loom {
 	runs {
 		startupTest {
 			server()
-			name "Dedicated Server Startup Test"
+			name "Dedicated Server Startup Seed Test"
 			runDir "build/startup-test"
-			vmArg "-Dportable-pocket-cabin.startup-test=true"
+			vmArg "-Dportable-pocket-cabin.startup-test=seed"
+			programArg "nogui"
+		}
+		startupReloadTest {
+			server()
+			name "Dedicated Server Startup Reload Test"
+			runDir "build/startup-test"
+			vmArg "-Dportable-pocket-cabin.startup-test=verify"
 			programArg "nogui"
 		}
 	}
@@ -66,6 +73,7 @@ java {
 tasks.named("runStartupTest").configure {
 	doFirst {
 		def runDirectory = layout.projectDirectory.dir("build/startup-test").asFile
+		project.delete(new File(runDirectory, "world"))
 		runDirectory.mkdirs()
 		new File(runDirectory, "logs/latest.log").delete()
 		new File(runDirectory, "eula.txt").text = "eula=true\n"
@@ -79,8 +87,25 @@ tasks.named("runStartupTest").configure {
 	}
 }
 
-tasks.named("check").configure {
+tasks.named("runStartupReloadTest").configure {
 	dependsOn tasks.named("runStartupTest")
+	doFirst {
+		def runDirectory = layout.projectDirectory.dir("build/startup-test").asFile
+		runDirectory.mkdirs()
+		new File(runDirectory, "logs/latest.log").delete()
+		new File(runDirectory, "eula.txt").text = "eula=true\n"
+		new File(runDirectory, "server.properties").text = "server-port=0\nonline-mode=false\n"
+	}
+	doLast {
+		def logFile = layout.projectDirectory.file("build/startup-test/logs/latest.log").asFile
+		if (!logFile.exists() || !logFile.text.contains("DEDICATED_SERVER_RESTART_TEST_PASSED")) {
+			throw new GradleException("Dedicated server did not reload the persisted cabin registry")
+		}
+	}
+}
+
+tasks.named("check").configure {
+	dependsOn tasks.named("runStartupReloadTest")
 }
 
 publishing {

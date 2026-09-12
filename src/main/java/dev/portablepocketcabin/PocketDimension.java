@@ -9,6 +9,12 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.dimension.DimensionType;
 
 public final class PocketDimension {
+	public static final int CELL_SPACING = 512;
+	public static final int CELLS_PER_ROW = 1024;
+	public static final long MAX_CELL_INDEX = 58_000L * CELLS_PER_ROW - 1;
+	public static final int CELL_ORIGIN_X = 1024;
+	public static final int CELL_ORIGIN_Z = 1024;
+	public static final int CELL_FLOOR_Y = 63;
 	public static final ResourceKey<Level> LEVEL_KEY = ResourceKey.create(
 		Registries.DIMENSION,
 		PortablePocketCabin.id("pocket_home")
@@ -36,5 +42,36 @@ public final class PocketDimension {
 				}
 			}
 		}
+	}
+
+	public static BlockPos cellCenter(long cellIndex) {
+		if (cellIndex < 0 || cellIndex > MAX_CELL_INDEX) {
+			throw new IllegalArgumentException("Cabin cell index is outside the supported grid: " + cellIndex);
+		}
+		int column = (int) (cellIndex % CELLS_PER_ROW);
+		int row = (int) (cellIndex / CELLS_PER_ROW);
+		return new BlockPos(
+			CELL_ORIGIN_X + column * CELL_SPACING,
+			CELL_FLOOR_Y,
+			CELL_ORIGIN_Z + row * CELL_SPACING
+		);
+	}
+
+	public static void ensureDebugMarker(net.minecraft.server.level.ServerLevel level, long cellIndex) {
+		BlockPos center = cellCenter(cellIndex);
+		for (int x = -TEST_PLATFORM_RADIUS; x <= TEST_PLATFORM_RADIUS; x++) {
+			for (int z = -TEST_PLATFORM_RADIUS; z <= TEST_PLATFORM_RADIUS; z++) {
+				level.setBlockAndUpdate(center.offset(x, 0, z), Blocks.SMOOTH_STONE.defaultBlockState());
+				for (int y = 1; y <= 3; y++) {
+					level.setBlockAndUpdate(center.offset(x, y, z), Blocks.AIR.defaultBlockState());
+				}
+			}
+		}
+		level.setBlockAndUpdate(center, Blocks.GOLD_BLOCK.defaultBlockState());
+		level.setBlockAndUpdate(center.above(), Blocks.LODESTONE.defaultBlockState());
+		level.setBlockAndUpdate(center.offset(2, 1, 2), Blocks.SEA_LANTERN.defaultBlockState());
+		level.setBlockAndUpdate(center.offset(2, 1, -2), Blocks.SEA_LANTERN.defaultBlockState());
+		level.setBlockAndUpdate(center.offset(-2, 1, 2), Blocks.SEA_LANTERN.defaultBlockState());
+		level.setBlockAndUpdate(center.offset(-2, 1, -2), Blocks.SEA_LANTERN.defaultBlockState());
 	}
 }
