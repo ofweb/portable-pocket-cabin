@@ -17,6 +17,7 @@ services:
       FABRIC_LOADER_VERSION: "0.19.5"
       MODRINTH_PROJECTS: "fabric-api:0.159.0+26.2"
       MEMORY: "${PPC_MEMORY:-2G}"
+      OPS: "${PPC_OPS:-ofweb}"
       MOTD: "Portable Pocket Cabin development server"
       SPAWN_PROTECTION: "0"
     volumes:

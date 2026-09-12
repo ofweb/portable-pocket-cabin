@@ -45,7 +45,7 @@ just dev
 The current mod jar is rebuilt and copied into both environments before launch. Fabric API is downloaded by the server and copied into the Prism instance automatically. Useful commands:
 
 ```sh
-just server                 # start only the Docker server
+just server                 # start the Docker server and make ofweb an OP
 just client                 # launch Prism and join localhost:25565
 just client my-instance-id  # use a different Prism instance
 just op YourMinecraftName   # enable the development OP commands
@@ -53,7 +53,7 @@ just logs
 just stop
 ```
 
-The server world persists under `run/server`. Export `PPC_PORT`, `PPC_MEMORY`, `PPC_SERVER`, `PPC_DNS`, `PRISM_ROOT`, `PRISM_INSTANCE_DIR`, or `PRISM_BIN` when local defaults differ. The container defaults to `PPC_DNS=1.1.1.1` to avoid host-local DNS stubs that are unreachable from Docker.
+The server world persists under `run/server`. `just server` provisions `ofweb` as an operator on every startup; set `PPC_OPS` to a comma-separated list of other usernames or UUIDs when needed. Export `PPC_PORT`, `PPC_MEMORY`, `PPC_SERVER`, `PPC_DNS`, `PRISM_ROOT`, `PRISM_INSTANCE_DIR`, or `PRISM_BIN` when local defaults differ. The container defaults to `PPC_DNS=1.1.1.1` to avoid host-local DNS stubs that are unreachable from Docker.
 
 ## Delivery 1 manual acceptance
 
