@@ -2,6 +2,8 @@ package dev.portablepocketcabin;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
@@ -9,10 +11,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BedPart;
+import net.minecraft.world.level.block.state.properties.ChestType;
 
 import java.util.UUID;
 
@@ -182,33 +188,59 @@ final class DedicatedServerStartupCheck {
 		BlockPos waterPos = center.offset(1, 1, 0);
 		BlockPos farmlandPos = center.offset(3, 1, 0);
 		BlockPos cropPos = farmlandPos.above();
+		BlockPos doubleChestLeft = center.offset(-3, 1, 3);
+		BlockPos doubleChestRight = center.offset(-2, 1, 3);
+		BlockPos bedFoot = center.offset(0, 1, 3);
+		BlockPos bedHead = bedFoot.relative(Direction.SOUTH);
 		pocket.setBlockAndUpdate(chestPos, Blocks.CHEST.defaultBlockState());
+		pocket.setBlockAndUpdate(doubleChestLeft, Blocks.CHEST.defaultBlockState()
+			.setValue(ChestBlock.FACING, Direction.NORTH)
+			.setValue(ChestBlock.TYPE, ChestType.LEFT));
+		pocket.setBlockAndUpdate(doubleChestRight, Blocks.CHEST.defaultBlockState()
+			.setValue(ChestBlock.FACING, Direction.NORTH)
+			.setValue(ChestBlock.TYPE, ChestType.RIGHT));
 		pocket.setBlockAndUpdate(furnacePos, Blocks.FURNACE.defaultBlockState());
 		pocket.setBlockAndUpdate(waterPos, Blocks.WATER.defaultBlockState());
 		pocket.setBlockAndUpdate(farmlandPos, Blocks.FARMLAND.defaultBlockState()
 			.setValue(BlockStateProperties.MOISTURE, 7));
 		pocket.setBlockAndUpdate(cropPos, Blocks.WHEAT.defaultBlockState().setValue(CropBlock.AGE, 3));
+		pocket.setBlockAndUpdate(bedFoot, Blocks.BED.red().defaultBlockState()
+			.setValue(BedBlock.FACING, Direction.SOUTH)
+			.setValue(BedBlock.PART, BedPart.FOOT));
+		pocket.setBlockAndUpdate(bedHead, Blocks.BED.red().defaultBlockState()
+			.setValue(BedBlock.FACING, Direction.SOUTH)
+			.setValue(BedBlock.PART, BedPart.HEAD));
 
 		ChestBlockEntity chest = (ChestBlockEntity) pocket.getBlockEntity(chestPos);
+		ChestBlockEntity doubleChest = (ChestBlockEntity) pocket.getBlockEntity(doubleChestLeft);
 		FurnaceBlockEntity furnace = (FurnaceBlockEntity) pocket.getBlockEntity(furnacePos);
-		if (chest == null || furnace == null) {
+		if (chest == null || doubleChest == null || furnace == null) {
 			throw new IllegalStateException("Vanilla interior fixture block entities were not created");
 		}
-		chest.setItem(0, new ItemStack(Items.DIAMOND, 3));
+		ItemStack namedDiamonds = new ItemStack(Items.DIAMOND, 3);
+		namedDiamonds.set(DataComponents.CUSTOM_NAME, Component.literal("Travelling reserve"));
+		chest.setItem(0, namedDiamonds);
+		doubleChest.setItem(0, new ItemStack(Items.EMERALD, 5));
 		furnace.setItem(2, new ItemStack(Items.IRON_INGOT, 2));
 	}
 
 	private static void assertInteriorFixtures(ServerLevel pocket, long cellIndex) {
 		BlockPos center = PocketDimension.cellCenter(cellIndex);
 		ChestBlockEntity chest = (ChestBlockEntity) pocket.getBlockEntity(center.offset(-3, 1, 0));
+		ChestBlockEntity doubleChest = (ChestBlockEntity) pocket.getBlockEntity(center.offset(-3, 1, 3));
 		FurnaceBlockEntity furnace = (FurnaceBlockEntity) pocket.getBlockEntity(center.offset(-1, 1, 0));
 		if (chest == null || !chest.getItem(0).is(Items.DIAMOND) || chest.getItem(0).getCount() != 3
+			|| chest.getItem(0).get(DataComponents.CUSTOM_NAME) == null
+			|| doubleChest == null || !doubleChest.getItem(0).is(Items.EMERALD)
+			|| doubleChest.getItem(0).getCount() != 5
 			|| furnace == null || !furnace.getItem(2).is(Items.IRON_INGOT)
 			|| furnace.getItem(2).getCount() != 2
 			|| !pocket.getBlockState(center.offset(1, 1, 0)).is(Blocks.WATER)
 			|| !pocket.getBlockState(center.offset(3, 1, 0)).is(Blocks.FARMLAND)
 			|| !pocket.getBlockState(center.offset(3, 2, 0)).is(Blocks.WHEAT)
-			|| pocket.getBlockState(center.offset(3, 2, 0)).getValue(CropBlock.AGE) != 3) {
+			|| pocket.getBlockState(center.offset(3, 2, 0)).getValue(CropBlock.AGE) != 3
+			|| !pocket.getBlockState(center.offset(0, 1, 3)).is(Blocks.BED.red())
+			|| !pocket.getBlockState(center.offset(0, 1, 4)).is(Blocks.BED.red())) {
 			throw new IllegalStateException("Vanilla interior fixtures changed across packing or restart");
 		}
 	}

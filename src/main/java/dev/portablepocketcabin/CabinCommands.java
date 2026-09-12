@@ -27,23 +27,27 @@ final class CabinCommands {
 		Commands.CommandSelection environment
 	) {
 		dispatcher.register(Commands.literal("cabin")
-			.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.literal("status").executes(context -> status(context.getSource())))
 			.then(Commands.literal("create")
+				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 				.executes(context -> createForSource(context.getSource()))
 				.then(Commands.argument("player", EntityArgument.player())
 					.executes(context -> create(
 						context.getSource(),
 						EntityArgument.getPlayer(context, "player")
 					))))
-			.then(Commands.literal("list").executes(context -> list(context.getSource())))
+			.then(Commands.literal("list")
+				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+				.executes(context -> list(context.getSource())))
 			.then(Commands.literal("inspect")
+				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 				.then(Commands.argument("uuid", UuidArgument.uuid())
 					.executes(context -> inspect(
 						context.getSource(),
 						UuidArgument.getUuid(context, "uuid")
 					))))
 			.then(Commands.literal("visit")
+				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 				.then(Commands.argument("uuid", UuidArgument.uuid())
 					.executes(context -> visit(
 						context.getSource(),
@@ -69,12 +73,14 @@ final class CabinCommands {
 				.then(Commands.literal("trusted")
 					.executes(context -> access(context.getSource(), CabinEntryPermission.TRUSTED_PLAYERS))))
 			.then(Commands.literal("reconcile")
+				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 				.then(Commands.argument("uuid", UuidArgument.uuid())
 					.executes(context -> reconcile(
 						context.getSource(),
 						UuidArgument.getUuid(context, "uuid")
 					))))
 			.then(Commands.literal("recover-item")
+				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 				.then(Commands.argument("uuid", UuidArgument.uuid())
 					.then(Commands.argument("player", EntityArgument.player())
 						.executes(context -> recoverItem(
@@ -82,8 +88,12 @@ final class CabinCommands {
 							UuidArgument.getUuid(context, "uuid"),
 							EntityArgument.getPlayer(context, "player")
 						)))))
-			.then(Commands.literal("visit-test").executes(context -> visitTest(context.getSource())))
-			.then(Commands.literal("leave-test").executes(context -> leaveTest(context.getSource()))));
+			.then(Commands.literal("visit-test")
+				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+				.executes(context -> visitTest(context.getSource())))
+			.then(Commands.literal("leave-test")
+				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+				.executes(context -> leaveTest(context.getSource()))));
 	}
 
 	private static int status(CommandSourceStack source) {
@@ -95,7 +105,7 @@ final class CabinCommands {
 		);
 		source.sendSuccess(() -> Component.literal(
 			"Portable Pocket Cabin " + PortablePocketCabin.VERSION
-				+ " | delivery=7 | pocket_dimension=" + (loaded ? "ready" : "missing")
+				+ " | delivery=mvp | pocket_dimension=" + (loaded ? "ready" : "missing")
 				+ " | cabins=" + registry.size() + " | next_cell=" + registry.nextCellIndex()
 				+ " | simulated_cabins=" + CabinSimulation.ticketedCabinCount(source.getServer())
 				+ " | respawn_range=" + respawnMinimum + "-" + respawnMaximum

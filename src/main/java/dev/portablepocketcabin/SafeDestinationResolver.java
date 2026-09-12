@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 
 import java.util.ArrayList;
@@ -19,10 +20,12 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 final class SafeDestinationResolver {
 	private static final int SEARCH_RADIUS = 8;
 	private static final int TICKET_RADIUS = 1;
+	private static final long DEFAULT_SEARCH_BUDGET_NANOS = 250_000_000L;
 	private static final TicketType SAFE_SEARCH_TICKET = new TicketType(40L, TicketType.FLAG_LOADING);
 	private static final EntityDimensions STANDING_PLAYER = EntityDimensions.fixed(0.6F, 1.8F);
 	private static final int[] Y_OFFSETS = {0, 1, -1, 2, -2, 3, -3};
@@ -47,6 +50,7 @@ final class SafeDestinationResolver {
 
 	static Optional<Destination> resolveForCabin(ServerPlayer player, CabinRecord cabin) {
 		MinecraftServer server = ((ServerLevel) player.level()).getServer();
+		long deadline = deadlineAfter(DEFAULT_SEARCH_BUDGET_NANOS);
 		List<CabinExterior> campsites = new ArrayList<>();
 		cabin.exterior().ifPresent(campsites::add);
 		cabin.lastExterior().ifPresent(last -> {
@@ -60,8 +64,8 @@ final class SafeDestinationResolver {
 			if (level == null) {
 				continue;
 			}
-			Optional<Destination> destination = search(
-				level, ExteriorCabin.outsideDestination(campsite), player
+			Optional<Destination> destination = searchUntil(
+				level, ExteriorCabin.outsideDestination(campsite), player, SEARCH_RADIUS, deadline
 			);
 			if (destination.isPresent()) {
 				return destination;
@@ -69,11 +73,13 @@ final class SafeDestinationResolver {
 		}
 
 		ServerLevel overworld = server.overworld();
-		return search(overworld, overworld.getRespawnData().pos().above(), player);
+		return searchUntil(overworld, overworld.getRespawnData().pos().above(), player, SEARCH_RADIUS, deadline);
 	}
 
 	static Optional<Destination> search(ServerLevel level, BlockPos preferredFeet, ServerPlayer player) {
-		return search(level, preferredFeet, player, SEARCH_RADIUS);
+		return searchUntil(
+			level, preferredFeet, player, SEARCH_RADIUS, deadlineAfter(DEFAULT_SEARCH_BUDGET_NANOS)
+		);
 	}
 
 	static Optional<Destination> search(
@@ -82,27 +88,34 @@ final class SafeDestinationResolver {
 		if (radius < 0 || radius > SEARCH_RADIUS) {
 			throw new IllegalArgumentException("Safe destination radius must be between 0 and " + SEARCH_RADIUS);
 		}
-		return searchWithinRadius(level, preferredFeet, player, radius);
+		return searchUntil(level, preferredFeet, player, radius, deadlineAfter(DEFAULT_SEARCH_BUDGET_NANOS));
 	}
 
 	static Optional<Destination> resolveExact(ServerLevel level, BlockPos preferredFeet, ServerPlayer player) {
-		return searchWithinRadius(level, preferredFeet, player, 0);
+		return searchUntil(level, preferredFeet, player, 0, deadlineAfter(DEFAULT_SEARCH_BUDGET_NANOS));
 	}
 
-	private static Optional<Destination> searchWithinRadius(
-		ServerLevel level, BlockPos preferredFeet, ServerPlayer player, int radius
+	static Optional<Destination> searchUntil(
+		ServerLevel level, BlockPos preferredFeet, ServerPlayer player, int radius, long deadline
 	) {
+		if (radius < 0 || radius > SEARCH_RADIUS) {
+			throw new IllegalArgumentException("Safe destination radius must be between 0 and " + SEARCH_RADIUS);
+		}
 		Set<ChunkPos> ticketedChunks = new LinkedHashSet<>();
 		try {
+			boolean firstCandidate = true;
 			for (BlockPos candidate : candidates(preferredFeet, radius)) {
+				if (!firstCandidate && deadlineReached(deadline)) {
+					return Optional.empty();
+				}
+				firstCandidate = false;
 				if (!level.isInWorldBounds(candidate)
 					|| !level.getWorldBorder().isWithinBounds(candidate)) {
 					continue;
 				}
 				ChunkPos chunk = ChunkPos.containing(candidate);
-				if (ticketedChunks.add(chunk)) {
-					level.getChunkSource().addTicketWithRadius(SAFE_SEARCH_TICKET, chunk, TICKET_RADIUS);
-					level.getChunk(chunk.x(), chunk.z());
+				if (!ensureChunkLoaded(level, chunk, ticketedChunks, deadline)) {
+					return Optional.empty();
 				}
 				if (isSafe(level, candidate, player)) {
 					return Optional.of(new Destination(level, candidate.immutable()));
@@ -114,6 +127,88 @@ final class SafeDestinationResolver {
 				level.getChunkSource().removeTicketWithRadius(SAFE_SEARCH_TICKET, chunk, TICKET_RADIUS);
 			}
 		}
+	}
+
+	static Optional<Destination> searchSurfaceUntil(
+		ServerLevel level, int preferredX, int preferredZ, ServerPlayer player, int radius, long deadline
+	) {
+		if (radius < 0 || radius > SEARCH_RADIUS) {
+			throw new IllegalArgumentException("Safe destination radius must be between 0 and " + SEARCH_RADIUS);
+		}
+		Set<ChunkPos> ticketedChunks = new LinkedHashSet<>();
+		try {
+			boolean firstCandidate = true;
+			for (int ring = 0; ring <= radius; ring++) {
+				for (int dx = -ring; dx <= ring; dx++) {
+					for (int dz = -ring; dz <= ring; dz++) {
+						if (Math.max(Math.abs(dx), Math.abs(dz)) != ring) {
+							continue;
+						}
+						if (!firstCandidate && deadlineReached(deadline)) {
+							return Optional.empty();
+						}
+						firstCandidate = false;
+						int x = preferredX + dx;
+						int z = preferredZ + dz;
+						BlockPos horizontal = new BlockPos(x, level.getMinY(), z);
+						if (!level.getWorldBorder().isWithinBounds(horizontal)) {
+							continue;
+						}
+						ChunkPos chunk = ChunkPos.containing(horizontal);
+						if (!ensureChunkLoaded(level, chunk, ticketedChunks, deadline)) {
+							return Optional.empty();
+						}
+						int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+						for (int dy : Y_OFFSETS) {
+							BlockPos candidate = new BlockPos(x, surfaceY + dy, z);
+							if (isSafe(level, candidate, player)) {
+								return Optional.of(new Destination(level, candidate));
+							}
+						}
+					}
+				}
+			}
+			return Optional.empty();
+		} finally {
+			releaseTickets(level, ticketedChunks);
+		}
+	}
+
+	private static boolean ensureChunkLoaded(
+		ServerLevel level, ChunkPos chunk, Set<ChunkPos> ticketedChunks, long deadline
+	) {
+		if (ticketedChunks.contains(chunk)) {
+			return true;
+		}
+		if (level.getChunkSource().getChunkNow(chunk.x(), chunk.z()) != null) {
+			level.getChunkSource().addTicketWithRadius(SAFE_SEARCH_TICKET, chunk, TICKET_RADIUS);
+			ticketedChunks.add(chunk);
+			return true;
+		}
+		if (deadlineReached(deadline)) {
+			return false;
+		}
+
+		ticketedChunks.add(chunk);
+		CompletableFuture<?> loading = level.getChunkSource().addTicketAndLoadWithRadius(
+			SAFE_SEARCH_TICKET, chunk, TICKET_RADIUS
+		);
+		level.getServer().managedBlock(() -> loading.isDone() || deadlineReached(deadline));
+		return loading.isDone() && level.getChunkSource().getChunkNow(chunk.x(), chunk.z()) != null;
+	}
+
+	private static void releaseTickets(ServerLevel level, Set<ChunkPos> ticketedChunks) {
+		for (ChunkPos chunk : ticketedChunks) {
+			level.getChunkSource().removeTicketWithRadius(SAFE_SEARCH_TICKET, chunk, TICKET_RADIUS);
+		}
+	}
+
+	private static long deadlineAfter(long budgetNanos) {
+		return System.nanoTime() + budgetNanos;
+	}
+
+	private static boolean deadlineReached(long deadline) {
+		return System.nanoTime() - deadline >= 0;
 	}
 
 	static boolean isSafe(ServerLevel level, BlockPos feet, ServerPlayer player) {

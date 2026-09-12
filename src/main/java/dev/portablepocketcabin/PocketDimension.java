@@ -132,6 +132,7 @@ public final class PocketDimension {
 		level.setBlockAndUpdate(interiorExitDoorLower(cellIndex), lowerDoor);
 		level.setBlockAndUpdate(interiorExitDoorUpper(cellIndex),
 			lowerDoor.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
+		CabinWindows.initializeInactive(level, cellIndex);
 	}
 
 	public static BlockPos interiorEntrance(long cellIndex) {

@@ -2,6 +2,7 @@ package dev.portablepocketcabin;
 
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -50,6 +51,9 @@ final class CabinEvents {
 			ServerPlayer player = handler.player;
 			server.execute(() -> recoverOfflineOccupant(player));
 		});
+
+		ServerChunkEvents.CHUNK_LOAD.register((level, chunk, newlyGenerated) ->
+			CabinReconciliation.onChunkLoaded(level, chunk.getPos()));
 	}
 
 	private static InteractionResult enter(ServerPlayer player, CabinRecord cabin) {
@@ -84,7 +88,7 @@ final class CabinEvents {
 			return InteractionResult.FAIL;
 		}
 		var destination = PocketDimension.interiorEntrance(current.cellIndex());
-		player.teleportTo(
+		boolean teleported = player.teleportTo(
 			pocket,
 			destination.getX() + 0.5,
 			destination.getY(),
@@ -94,43 +98,73 @@ final class CabinEvents {
 			0.0F,
 			false
 		);
-		return InteractionResult.SUCCESS_SERVER;
+		if (teleported) {
+			CabinOccupancyData.get(exteriorLevel.getServer()).enter(player.getUUID(), current);
+		}
+		return teleported ? InteractionResult.SUCCESS_SERVER : InteractionResult.FAIL;
 	}
 
 	private static InteractionResult leave(ServerPlayer player, CabinRecord cabin) {
-		if (cabin.lifecycle() != CabinLifecycle.DEPLOYED || cabin.exterior().isEmpty()) {
+		ServerLevel pocket = (ServerLevel) player.level();
+		CabinRegistry registry = CabinRegistry.get(pocket.getServer());
+		CabinRecord current = registry.find(cabin.uuid()).orElse(null);
+		if (current == null || current.lifecycle() != CabinLifecycle.DEPLOYED || current.exterior().isEmpty()) {
 			player.sendSystemMessage(Component.literal("That cabin has no active exterior entrance."));
 			return InteractionResult.FAIL;
 		}
+		if (!CabinReconciliation.hasValidProjection(pocket.getServer(), current)) {
+			CabinReconciliation.reconcile(pocket.getServer(), current.uuid());
+			if (!player.level().dimension().equals(PocketDimension.LEVEL_KEY)) {
+				CabinOccupancyData.get(pocket.getServer()).clear(player.getUUID());
+				return InteractionResult.SUCCESS_SERVER;
+			}
+			current = registry.find(current.uuid()).orElse(null);
+			if (current == null) {
+				player.sendSystemMessage(Component.literal("That cabin could not be recovered."));
+				return InteractionResult.FAIL;
+			}
+		}
 
-		var destination = SafeDestinationResolver.resolveForCabin(player, cabin);
+		var destination = SafeDestinationResolver.resolveForCabin(player, current);
 		if (destination.isEmpty()) {
 			player.sendSystemMessage(Component.literal("No safe cabin exit destination is currently available."));
 			return InteractionResult.FAIL;
 		}
-		return destination.get().teleport(player, cabin.exterior().get().facing().toYRot())
-			? InteractionResult.SUCCESS_SERVER
-			: InteractionResult.FAIL;
+		var yawExterior = current.exterior().isPresent() ? current.exterior() : current.lastExterior();
+		float yaw = yawExterior
+			.map(exterior -> exterior.facing().toYRot())
+			.orElse(0.0F);
+		if (!destination.get().teleport(player, yaw)) {
+			return InteractionResult.FAIL;
+		}
+		CabinOccupancyData.get(pocket.getServer()).clear(player.getUUID());
+		return InteractionResult.SUCCESS_SERVER;
 	}
 
 	private static void recoverOfflineOccupant(ServerPlayer player) {
 		if (!player.level().dimension().equals(PocketDimension.LEVEL_KEY)) {
+			CabinOccupancyData.get(player.level().getServer()).clear(player.getUUID());
 			return;
 		}
 		ServerLevel pocket = (ServerLevel) player.level();
 		CabinRegistry registry = CabinRegistry.get(pocket.getServer());
 		long cellIndex = PocketDimension.cellIndexAt(player.blockPosition()).orElse(-1L);
 		CabinRecord cabin = registry.findByCell(cellIndex).orElse(null);
-		if (cabin == null || !requiresLoginEvacuation(player.blockPosition(), cabin)) {
+		CabinOccupancyData occupancy = CabinOccupancyData.get(pocket.getServer());
+		CabinOccupancyData.Stay stay = occupancy.find(player.getUUID()).orElse(null);
+		if (cabin == null || !requiresLoginEvacuation(player.blockPosition(), cabin, stay)) {
 			return;
 		}
 
 		var destination = SafeDestinationResolver.resolveForCabin(player, cabin);
 		CabinRecord rechecked = registry.find(cabin.uuid()).orElse(null);
-		if (rechecked == null || rechecked.lifecycle() == CabinLifecycle.DEPLOYED) {
+		CabinOccupancyData.Stay recheckedStay = occupancy.find(player.getUUID()).orElse(null);
+		if (rechecked == null
+			|| !requiresLoginEvacuation(player.blockPosition(), rechecked, recheckedStay)) {
 			return;
 		}
 		if (destination.isPresent() && destination.get().teleport(player, 0.0F)) {
+			occupancy.clear(player.getUUID());
 			player.sendSystemMessage(Component.literal(
 				"Your cabin moved while you were offline, so you were returned to a safe location."
 			));
@@ -141,8 +175,15 @@ final class CabinEvents {
 		}
 	}
 
-	static boolean requiresLoginEvacuation(BlockPos position, CabinRecord cabin) {
+	static boolean requiresLoginEvacuation(
+		BlockPos position, CabinRecord cabin, CabinOccupancyData.Stay stay
+	) {
+		if (PocketDimension.cellIndexAt(position).orElse(-1L) != cabin.cellIndex()) {
+			return false;
+		}
 		return cabin.lifecycle() != CabinLifecycle.DEPLOYED
-			&& PocketDimension.cellIndexAt(position).orElse(-1L) == cabin.cellIndex();
+			|| stay == null
+			|| !stay.cabinId().equals(cabin.uuid())
+			|| stay.packedItemGeneration() != cabin.packedItemGeneration();
 	}
 }

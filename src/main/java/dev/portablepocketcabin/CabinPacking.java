@@ -169,15 +169,18 @@ final class CabinPacking {
 		}
 
 		for (int index = 0; index < occupants.size(); index++) {
-			if (!destinations.get(index).teleport(occupants.get(index), 0.0F)) {
+			ServerPlayer occupant = occupants.get(index);
+			if (!destinations.get(index).teleport(occupant, 0.0F)) {
 				abort(server, task, owner, "an occupant could not be evacuated");
 				return;
 			}
+			CabinOccupancyData.get(server).clear(occupant.getUUID());
 		}
 
 		CabinExterior exterior = cabin.exterior().orElseThrow();
 		CabinRecord packed = CabinRegistry.get(server).finishPacking(cabin.uuid());
 		CabinRegistry.flush(server);
+		CabinWindows.update(server, packed);
 		ServerLevel exteriorLevel = server.getLevel(exterior.dimension());
 		if (exteriorLevel != null) {
 			ExteriorCabin.removeProjection(exteriorLevel, exterior);

@@ -74,6 +74,19 @@ final class CabinItems {
 		}
 	}
 
+	static boolean isUnbound(ItemStack stack) {
+		return stack.is(PACKED_CABIN) && binding(stack).isEmpty();
+	}
+
+	static int findUnbound(Inventory inventory) {
+		for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+			if (isUnbound(inventory.getItem(slot))) {
+				return slot;
+			}
+		}
+		return Inventory.NOT_FOUND_INDEX;
+	}
+
 	static int findValid(Inventory inventory, CabinRecord cabin) {
 		return find(inventory, cabin.uuid(), cabin.packedItemGeneration(), null);
 	}

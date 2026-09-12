@@ -1,6 +1,24 @@
 # Portable Pocket Cabin
 
-A Fabric 26.2 mod for a travelling play style. The full design and gated MVP deliveries live in [SPEC.md](SPEC.md).
+A Fabric 26.2 mod for a travelling play style. The MVP is implemented; its full design and delivery gates live in [SPEC.md](SPEC.md).
+
+## Playing
+
+Craft a `Cabin Kit` from six planks, two chests, and an ender pearl. Use the kit once to preview the 5×5 cabin footprint and again within 30 seconds to deploy it. Its first successful deployment permanently binds the cabin to you and creates its pocket interior. Pack it again with `/cabin pack` while outside and within 10 blocks of its controller.
+
+Cabins can be deployed in the Overworld, Nether, or End. Their protected interiors keep running while deployed and pause while packed. Two fake-window panels show dawn, day, sunset, night, rain, thunder, Nether, End, or closed-shutter states.
+
+Normal player commands are:
+
+```text
+/cabin status
+/cabin preview
+/cabin deploy
+/cabin pack
+/cabin trust add <player>
+/cabin trust remove <player>
+/cabin access private|trusted
+```
 
 ## Development
 
@@ -11,20 +29,13 @@ Requires JDK 25 or newer.
 ./gradlew runServer
 ```
 
-The build runs both the server-side GameTests and the headless dedicated-server startup check. In a development world, grant yourself operator permission and use:
+The build runs both the server-side GameTests and the headless dedicated-server startup check. In a development world, operators additionally have these inspection and recovery commands:
 
 ```text
-/cabin status
 /cabin create [player]
 /cabin list
 /cabin inspect <uuid>
 /cabin visit <uuid>
-/cabin preview
-/cabin deploy
-/cabin pack
-/cabin trust add <player>
-/cabin trust remove <player>
-/cabin access private|trusted
 /cabin reconcile <uuid>
 /cabin recover-item <uuid> <player>
 /cabin visit-test
@@ -144,3 +155,21 @@ The server world persists under `run/server`. `just server` provisions `ofweb` a
 5. Die inside the pocket dimension while the cabin is inactive and confirm near-death search never selects a pocket coordinate; the last exterior or Overworld spawn is used.
 6. Change both namespaced respawn-distance gamerules, run `/cabin status`, and confirm it reports the effective configured range.
 7. Die, leave the death screen open, and have packing begin before clicking Respawn; confirm the player is never returned inside the now-inactive cabin.
+
+## Delivery 8 manual acceptance
+
+1. Deploy and pack the same cabin once in each of the Overworld, Nether, and End. Confirm entry, exit, and occupant evacuation remain in the exterior dimension.
+2. In the Overworld, use `/time set` and `/weather` to confirm the interior panels distinguish dawn, day, sunset, night, rain, and thunder.
+3. Deploy in the Nether and End and confirm the panels use static red/orange and purple/magenta profiles respectively.
+4. Pack or orphan the cabin and confirm both panels become opaque wooden shutters.
+5. With a cabin-home binding inactive, die in each vanilla dimension and confirm near-death respawning stays in that same dimension before falling back to the last campsite.
+
+## Delivery 9 manual acceptance
+
+1. In survival, craft a Cabin Kit from six planks, two chests, and an ender pearl. Confirm its tooltip says it is unbound.
+2. Use it twice on clear, level ground. Confirm it is consumed, one cabin record is created, and the deployed cabin is immediately usable without operator permissions.
+3. Confirm a second unbound kit cannot create another cabin for the same player, while another player can bind it normally.
+4. Build the compatibility fixtures from the MVP spec inside the cabin. With Farmer's Delight Refabricated installed, include its crop and kitchen blocks; with Tom's Simple Storage installed, include a connected storage network.
+5. Pack, restart, redeploy, and repeat several times. Confirm every vanilla and modded inventory, progress state, crop, fluid, and network remains intact because the persistent interior is never serialized into the item.
+6. Remove an exterior controller with an operator command, reconcile it, and recover the new-generation item with `/cabin recover-item`.
+7. Run `./gradlew build` and confirm all GameTests and both dedicated-server persistence boots pass.

@@ -6,7 +6,7 @@ Create a Minecraft Fabric 26.2 mod for a travelling play style.
 
 Players should be able to settle somewhere for a while, establish a campsite, farm, cook, craft and collect large amounts of loot, then pack their important home infrastructure and move somewhere new.
 
-The portable part is deliberately limited to a small cabin with a larger fixed-size interior in a pocket dimension.
+The portable part is deliberately limited to a small cabin with a larger interior in a pocket dimension. The MVP interior is fixed-size; post-MVP progression may expand it and attach specialised rooms.
 
 The surrounding settlement remains part of the exterior world. Defences, walls, paths, animal pens, mines, docks and other local construction must be rebuilt at each new campsite.
 
@@ -152,7 +152,7 @@ Pocket Homes Dimension
 
 The dimension should be a void or otherwise inaccessible world except through cabin entrances.
 
-Every deployed cabin keeps only the chunks covering its bounded interior cell fully simulated. Packing the cabin removes those chunk tickets, pausing crops, furnaces, storage networks and other ticking blocks until it is deployed again.
+During the MVP, every deployed cabin keeps only the chunks covering its bounded interior cell fully simulated. Packing the cabin removes those chunk tickets, pausing crops, furnaces, storage networks and other ticking blocks until it is deployed again.
 
 The interior shell should prevent players from digging into the void or escaping into another cabin.
 
@@ -187,6 +187,8 @@ The cabin should face the direction chosen by the player.
 Rotation affects only the exterior and the relationship between the interior door/window state and outside location. The interior itself does not need to rotate.
 
 The MVP exterior is a fixed, protected multiblock structure with one controller block and an exact cabin-owned placement mask. Ordinary players cannot modify the owned blocks, and explosions cannot damage them. Packing removes only blocks in that mask and never clears an enclosing volume or nearby player construction.
+
+Placement never requires sky exposure. A cabin may be deployed underground in any supported dimension when the player has excavated enough room for the exact protected structure mask and a safe standing area outside its door. Placement validates this volume but never clears terrain on the player's behalf.
 
 # Safe destinations
 
@@ -227,7 +229,7 @@ Seamless rendered portals are explicitly unnecessary.
 
 # Packing a cabin
 
-Packing is performed from outside the cabin.
+During the MVP, packing is performed from outside the cabin. The post-MVP connection upgrade adds network-aware packing from inside as specified in [Cabin Network and Access](docs/specs/cabin-network-and-access.md).
 
 Only the cabin owner may pack it during the MVP. Before entering `PACKING`, the operation reserves enough owner inventory capacity for the bound packed item. If the owner disconnects or item delivery cannot be guaranteed, packing aborts and reconciliation restores `DEPLOYED`.
 
@@ -240,7 +242,7 @@ validate permission and evacuation destinations
 ↓
 atomically enter PACKING
 ↓
-disable the entrance and every inbound/outbound cabin link
+disable the exterior entrance
 ↓
 show occupants a short countdown
 ↓
@@ -263,7 +265,7 @@ Example:
 Cabin is being packed in 5 seconds…
 ```
 
-Once packed, nobody may enter the interior through normal gameplay.
+During the MVP, nobody may enter a packed interior through normal gameplay. A later connection upgrade deliberately supersedes this rule by retaining access through a shared connection hallway while removing only the exterior anchor.
 
 The interior itself remains completely untouched.
 
@@ -277,7 +279,7 @@ This must never prevent the owner from moving.
 
 Packing does not need to enumerate or modify offline player files. A player's pocket coordinates map unambiguously to a permanent cabin cell index.
 
-When the player next logs in:
+During the MVP, when the player next logs in:
 
 ```text
 player is inside a cabin whose lifecycle is not DEPLOYED
@@ -290,6 +292,8 @@ continue login normally
 ```
 
 This avoids both trapping players and preventing someone from packing a house because another player logged out days earlier.
+
+The post-MVP connection upgrade replaces this unconditional evacuation with a permission-aware check for a reachable deployed exterior in the cabin's hallway network.
 
 ---
 
@@ -370,9 +374,9 @@ Real see-through dimensional windows are outside the scope of the mod. Immersive
 
 The MVP has one fixed 21×21 usable base interior.
 
-Interior expansion and tier progression are deliberately unspecified until after the MVP. Later upgrades may enlarge the general-purpose interior or add persistent specialised rooms, such as a greenhouse, connected internally within the pocket dimension.
+After the MVP is stable, the progression release replaces the fixed starting layout with an upgradeable 4×4 usable interior and persistent specialised rooms. Its design is specified in [Cabin Progression and Functional Rooms](docs/specs/cabin-progression-and-rooms.md).
 
-The player's base interior and attached rooms together form that player's single cabin. The MVP does not promise save compatibility with this future room system; starting a new world for that later version is acceptable.
+The player's base interior and attached rooms together form that player's single cabin. The project is not yet released, so this progression release may replace MVP interior generation and persistence without a migration path.
 
 ---
 
@@ -390,15 +394,13 @@ A cabin remains owned by one player while trusted players may use it through the
 
 ## Future communal-access upgrade
 
-Persistent cabin-to-cabin links and communal-room access are not part of the MVP. A later communal-access upgrade may unlock them.
+Persistent connections are not part of the MVP. A later paid connection upgrade lets mutually consenting cabin owners join a persistent shared hallway, with one protected doorway per connected cabin.
 
-Two upgraded cabin owners may mutually approve a persistent link between their cabins. A link becomes usable whenever both cabins are `DEPLOYED`, including when their exteriors are far apart or in different supported dimensions.
+The hallway supplies the physical wall and common space for those doors. Players may furnish it with ordinary blocks, but it is not a combined storage or automation system. Destination-cabin permissions are rechecked at every doorway.
 
-Every traversal rechecks the destination cabin's current entry permission. A permitted player may enter the linked cabin interior and exit through its deployed exterior.
+Hallway access remains available when a member cabin is packed. Network-aware packing evacuates only occupants who would otherwise lose their final permitted route to a deployed exterior. This deliberately supersedes the MVP rule that packing disables all access to the interior.
 
-Packing closes every inbound and outbound link before the countdown and evacuation begin. A cabin in `PACKING`, `PACKED` or `ORPHANED` state cannot be reached through a link.
-
-These links intentionally provide limited social fast travel. The one-cabin-per-player rule bounds the network and keeps it distinct from a general waypoint system.
+The complete role, mailbox, connection and safe-packing rules are specified in [Cabin Network and Access](docs/specs/cabin-network-and-access.md).
 
 ---
 
@@ -441,7 +443,7 @@ Farmer's Delight Refabricated currently supports Fabric 26.2 and includes crops,
 
 Crop ticking and other block simulation behave continuously while the cabin is deployed because its bounded interior chunks remain fully simulated.
 
-Packed cabins do not need to keep farming while travelling. Pausing crop growth while packed is acceptable and may actually be preferable gameplay.
+MVP crop simulation pauses while a cabin is packed. Post-MVP functional rooms use bounded managed catch-up instead: designated greenhouse crops may mature while packed without ticking arbitrary blocks or machinery. See [Cabin Progression and Functional Rooms](docs/specs/cabin-progression-and-rooms.md).
 
 ---
 
@@ -456,6 +458,8 @@ The portable-home mod should know nothing about Tom's internal storage model.
 If Tom's works inside any normal Minecraft dimension, it should work inside a cabin.
 
 This principle should apply to other modded blocks wherever possible.
+
+Post-MVP cabin-owned storage and automation are an additional explicit system, not a replacement backend for ordinary chests or Tom's Simple Storage. Those rules are specified in [Cabin Storage and Automation](docs/specs/cabin-storage-and-automation.md).
 
 ---
 
@@ -654,18 +658,18 @@ Save compatibility is required between these nine deliveries because together th
 
 # Later features
 
-Once the basic model is stable:
+Once the basic model is stable, the larger design continues in three independent feature tracks:
+
+- [Cabin Progression and Functional Rooms](docs/specs/cabin-progression-and-rooms.md)
+- [Cabin Storage and Automation](docs/specs/cabin-storage-and-automation.md)
+- [Cabin Network and Access](docs/specs/cabin-network-and-access.md)
+
+Additional later possibilities include:
 
 ```text
-interior size upgrades, with no promised migration from the MVP
-
 several exterior cabin styles
 
 wood/material customisation
-
-communal-access upgrade with persistent cabin links
-
-shared specialised rooms
 
 shared ownership
 

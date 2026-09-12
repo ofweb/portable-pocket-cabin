@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public final class PortablePocketCabin implements ModInitializer {
 	public static final String MOD_ID = "portable_pocket_cabin";
-	public static final String VERSION = "0.1.0-alpha.1";
+	public static final String VERSION = "0.1.0";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
@@ -19,6 +19,7 @@ public final class PortablePocketCabin implements ModInitializer {
 		CabinEvents.register();
 		CabinPacking.register();
 		CabinSimulation.register();
+		CabinWindows.register();
 		CabinRespawning.register();
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			CabinRegistry registry = CabinRegistry.get(server);

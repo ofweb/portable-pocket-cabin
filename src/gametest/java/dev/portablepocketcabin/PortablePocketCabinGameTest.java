@@ -155,6 +155,12 @@ public final class PortablePocketCabinGameTest {
 				}
 			}
 		}
+		helper.assertTrue(ExteriorCabin.touchesChunk(
+			exterior, ChunkPos.containing(ExteriorCabin.controller(exterior))
+		), "Chunk-load reconciliation must recognize a chunk containing the exterior");
+		helper.assertTrue(!ExteriorCabin.touchesChunk(
+			exterior, new ChunkPos(10_000, 10_000)
+		), "Chunk-load reconciliation must ignore unrelated chunks");
 		helper.succeed();
 	}
 
@@ -219,6 +225,59 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void craftedCabinKitStartsUnbound(GameTestHelper helper) {
+		ItemStack kit = new ItemStack(CabinItems.PACKED_CABIN);
+		helper.assertTrue(CabinItems.isUnbound(kit) && CabinItems.binding(kit).isEmpty(),
+			"A crafted cabin kit must not claim an interior before its first successful deployment");
+		var recipeKey = net.minecraft.resources.ResourceKey.create(
+			Registries.RECIPE, PortablePocketCabin.id("cabin_kit")
+		);
+		helper.assertTrue(helper.getLevel().getServer().getRecipeManager().byKey(recipeKey).isPresent(),
+			"The survival cabin-kit recipe must be loaded");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void mvpSupportsVanillaExteriorDimensionsAndWindowProfiles(GameTestHelper helper) {
+		var unsupported = net.minecraft.resources.ResourceKey.create(
+			Registries.DIMENSION, PortablePocketCabin.id("unsupported")
+		);
+		helper.assertTrue(ExteriorCabin.isSupportedDimension(Level.OVERWORLD)
+			&& ExteriorCabin.isSupportedDimension(Level.NETHER)
+			&& ExteriorCabin.isSupportedDimension(Level.END)
+			&& !ExteriorCabin.isSupportedDimension(unsupported),
+			"Placement must allow exactly the three vanilla exterior dimensions");
+
+		helper.assertTrue(CabinWindows.profile(Level.OVERWORLD, 0, false, false, CabinLifecycle.DEPLOYED)
+			== CabinWindows.Profile.DAWN, "Dawn must have a distinct window profile");
+		helper.assertTrue(CabinWindows.profile(Level.OVERWORLD, 6_000, false, false, CabinLifecycle.DEPLOYED)
+			== CabinWindows.Profile.DAY, "Day must have a distinct window profile");
+		helper.assertTrue(CabinWindows.profile(Level.OVERWORLD, 13_000, false, false, CabinLifecycle.DEPLOYED)
+			== CabinWindows.Profile.SUNSET, "Sunset must have a distinct window profile");
+		helper.assertTrue(CabinWindows.profile(Level.OVERWORLD, 18_000, false, false, CabinLifecycle.DEPLOYED)
+			== CabinWindows.Profile.NIGHT, "Night must have a distinct window profile");
+		helper.assertTrue(CabinWindows.profile(Level.OVERWORLD, 6_000, true, false, CabinLifecycle.DEPLOYED)
+			== CabinWindows.Profile.RAIN, "Rain must override the clear-sky time profile");
+		helper.assertTrue(CabinWindows.profile(Level.OVERWORLD, 6_000, true, true, CabinLifecycle.DEPLOYED)
+			== CabinWindows.Profile.THUNDER, "Thunder must override the rain profile");
+		helper.assertTrue(CabinWindows.profile(Level.NETHER, 6_000, true, true, CabinLifecycle.DEPLOYED)
+			== CabinWindows.Profile.NETHER, "The Nether must use its static ambience");
+		helper.assertTrue(CabinWindows.profile(Level.END, 6_000, true, true, CabinLifecycle.DEPLOYED)
+			== CabinWindows.Profile.END, "The End must use its static ambience");
+		helper.assertTrue(CabinWindows.profile(Level.OVERWORLD, 6_000, false, false, CabinLifecycle.PACKED)
+			== CabinWindows.Profile.INACTIVE, "Packed cabins must close their fake windows");
+
+		var blocks = CabinWindows.blocks(7, CabinWindows.Profile.DAY);
+		helper.assertTrue(blocks.size() == 18,
+			"Each interior must have two complete three-by-three fake-window panels");
+		for (BlockPos position : blocks.keySet()) {
+			helper.assertTrue(PocketDimension.isInteriorShell(7, position),
+				"Every fake-window block must remain part of the protected interior shell");
+		}
+		helper.succeed();
+	}
+
+	@GameTest
 	public void reconciliationCoversEveryLifecycleTransition(GameTestHelper helper) {
 		UUID cabinId = UUID.randomUUID();
 		UUID owner = UUID.randomUUID();
@@ -268,6 +327,9 @@ public final class PortablePocketCabinGameTest {
 
 		helper.assertTrue(SafeDestinationResolver.isSafe(helper.getLevel(), absoluteFeet, player),
 			"A clear two-block space over solid ground must be safe");
+		helper.assertTrue(SafeDestinationResolver.resolveExact(
+			helper.getLevel(), absoluteFeet, player
+		).isPresent(), "The bounded resolver must accept a safe destination in an already-loaded chunk");
 		helper.setBlock(relativeFeet, Blocks.FIRE);
 		helper.assertTrue(!SafeDestinationResolver.isSafe(helper.getLevel(), absoluteFeet, player),
 			"Fire must invalidate a destination");
@@ -275,6 +337,18 @@ public final class PortablePocketCabinGameTest {
 		helper.setBlock(relativeFeet.above(), Blocks.STONE);
 		helper.assertTrue(!SafeDestinationResolver.isSafe(helper.getLevel(), absoluteFeet, player),
 			"A colliding head block must invalidate a destination");
+		BlockPos farAway = new BlockPos(1_600_000, 64, 1_600_000);
+		ChunkPos farChunk = ChunkPos.containing(farAway);
+		helper.assertTrue(helper.getLevel().getChunkSource().getChunkNow(farChunk.x(), farChunk.z()) == null,
+			"The deadline test requires an initially unloaded destination chunk");
+
+		var destination = SafeDestinationResolver.searchUntil(
+			helper.getLevel(), farAway, player, 0, System.nanoTime() - 1L
+		);
+		helper.assertTrue(destination.isEmpty(),
+			"An expired destination search must stop without synchronously loading another chunk");
+		helper.assertTrue(helper.getLevel().getChunkSource().getChunkNow(farChunk.x(), farChunk.z()) == null,
+			"An expired destination search must leave the destination chunk unloaded");
 		helper.succeed();
 	}
 
@@ -372,13 +446,44 @@ public final class PortablePocketCabinGameTest {
 			cabinId, owner, cell, CabinLifecycle.DEPLOYED,
 			Optional.of(exterior), Optional.of(exterior), true, 0
 		);
+		CabinRecord redeployed = new CabinRecord(
+			cabinId, owner, cell, CabinLifecycle.DEPLOYED,
+			Optional.of(exterior), Optional.of(exterior), true, 1
+		);
+		CabinOccupancyData.Stay originalStay = new CabinOccupancyData.Stay(owner, cabinId, 0);
 
-		helper.assertTrue(CabinEvents.requiresLoginEvacuation(inside, packed),
+		helper.assertTrue(CabinEvents.requiresLoginEvacuation(inside, packed, originalStay),
 			"A player logging into a packed cabin cell must be evacuated");
-		helper.assertTrue(!CabinEvents.requiresLoginEvacuation(inside, deployed),
+		helper.assertTrue(!CabinEvents.requiresLoginEvacuation(inside, deployed, originalStay),
 			"A player may remain in a currently deployed cabin");
-		helper.assertTrue(!CabinEvents.requiresLoginEvacuation(PocketDimension.cellCenter(cell + 1), packed),
+		helper.assertTrue(CabinEvents.requiresLoginEvacuation(inside, deployed, null),
+			"A legacy or untracked occupant must be recovered conservatively");
+		helper.assertTrue(CabinEvents.requiresLoginEvacuation(inside, redeployed, originalStay),
+			"A player who logged out before a pack and redeploy must be evacuated to the new exterior");
+		helper.assertTrue(!CabinEvents.requiresLoginEvacuation(
+			PocketDimension.cellCenter(cell + 1), packed, originalStay
+		),
 			"Recovery must not confuse adjacent permanent cabin cells");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void offlineOccupancyGenerationSurvivesSaveReload(GameTestHelper helper) {
+		UUID playerId = UUID.randomUUID();
+		CabinRecord cabin = new CabinRecord(UUID.randomUUID(), UUID.randomUUID(), 9, CabinLifecycle.PACKED);
+		CabinOccupancyData original = new CabinOccupancyData();
+		original.enter(playerId, cabin);
+
+		var encoded = CabinOccupancyData.CODEC.encodeStart(NbtOps.INSTANCE, original).getOrThrow();
+		CabinOccupancyData restored = CabinOccupancyData.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
+		CabinOccupancyData.Stay stay = restored.find(playerId).orElseThrow();
+
+		helper.assertTrue(stay.cabinId().equals(cabin.uuid())
+			&& stay.packedItemGeneration() == cabin.packedItemGeneration(),
+			"Offline cabin-entry generation must survive save/reload");
+		restored.clear(playerId);
+		helper.assertTrue(restored.find(playerId).isEmpty(),
+			"Evacuating an offline occupant must clear its persisted cabin stay");
 		helper.succeed();
 	}
 

@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -71,8 +72,8 @@ final class ExteriorCabin {
 	}
 
 	static PlacementCheck validate(ServerLevel level, CabinExterior exterior) {
-		if (!exterior.dimension().equals(Level.OVERWORLD)) {
-			return new PlacementCheck(false, "Delivery 3 cabins can only be deployed in the Overworld");
+		if (!isSupportedDimension(exterior.dimension()) || !level.dimension().equals(exterior.dimension())) {
+			return new PlacementCheck(false, "Cabins can only be deployed in the Overworld, Nether, or End");
 		}
 
 		for (BlockPos pos : clearance(exterior)) {
@@ -106,6 +107,12 @@ final class ExteriorCabin {
 		return new PlacementCheck(true, "Cabin footprint is clear");
 	}
 
+	static boolean isSupportedDimension(net.minecraft.resources.ResourceKey<Level> dimension) {
+		return dimension.equals(Level.OVERWORLD)
+			|| dimension.equals(Level.NETHER)
+			|| dimension.equals(Level.END);
+	}
+
 	static void place(ServerLevel level, CabinExterior exterior) {
 		for (Map.Entry<BlockPos, BlockState> entry : blocks(exterior).entrySet()) {
 			level.setBlockAndUpdate(entry.getKey(), entry.getValue());
@@ -119,6 +126,15 @@ final class ExteriorCabin {
 			}
 		}
 		return true;
+	}
+
+	static boolean touchesChunk(CabinExterior exterior, ChunkPos chunk) {
+		BlockPos anchor = exterior.anchor();
+		int maximumHorizontalExtent = CORE_DEPTH;
+		return anchor.getX() + maximumHorizontalExtent >= chunk.getMinBlockX()
+			&& anchor.getX() - maximumHorizontalExtent <= chunk.getMaxBlockX()
+			&& anchor.getZ() + maximumHorizontalExtent >= chunk.getMinBlockZ()
+			&& anchor.getZ() - maximumHorizontalExtent <= chunk.getMaxBlockZ();
 	}
 
 	static void removeProjection(ServerLevel level, CabinExterior exterior) {

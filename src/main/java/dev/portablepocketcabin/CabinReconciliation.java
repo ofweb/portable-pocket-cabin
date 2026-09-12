@@ -1,8 +1,15 @@
 package dev.portablepocketcabin;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.ChunkPos;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 final class CabinReconciliation {
 	enum Action {
@@ -27,6 +34,49 @@ final class CabinReconciliation {
 		}
 	}
 
+	static void onChunkLoaded(ServerLevel level, ChunkPos chunk) {
+		List<UUID> cabinIds = new ArrayList<>();
+		for (CabinRecord cabin : CabinRegistry.get(level.getServer()).cabins()) {
+			if (projectionForReconciliation(cabin)
+				.filter(exterior -> exterior.dimension().equals(level.dimension())
+					&& ExteriorCabin.touchesChunk(exterior, chunk))
+				.isPresent()) {
+				cabinIds.add(cabin.uuid());
+			}
+		}
+		if (cabinIds.isEmpty()) {
+			return;
+		}
+
+		MinecraftServer server = level.getServer();
+		server.schedule(new TickTask(server.getTickCount() + 1, () -> {
+			CabinRegistry registry = CabinRegistry.get(level.getServer());
+			for (UUID cabinId : cabinIds) {
+				CabinRecord cabin = registry.find(cabinId).orElse(null);
+				if (cabin == null || projectionForReconciliation(cabin)
+					.filter(exterior -> exterior.dimension().equals(level.dimension())
+						&& ExteriorCabin.touchesChunk(exterior, chunk))
+					.isEmpty()) {
+					continue;
+				}
+				String result = reconcile(level.getServer(), cabinId);
+				if (!"unchanged".equals(result)) {
+					PortablePocketCabin.LOGGER.info("Reconciled cabin {} after chunk load: {}", cabinId, result);
+				}
+			}
+		}));
+	}
+
+	private static Optional<CabinExterior> projectionForReconciliation(CabinRecord cabin) {
+		if (cabin.lifecycle() == CabinLifecycle.PACKED && cabin.exteriorCleanupPending()) {
+			return cabin.lastExterior();
+		}
+		return switch (cabin.lifecycle()) {
+			case DEPLOYING, DEPLOYED, PACKING -> cabin.exterior();
+			case PACKED, ORPHANED -> Optional.empty();
+		};
+	}
+
 	static String reconcile(MinecraftServer server, java.util.UUID cabinId) {
 		CabinRegistry registry = CabinRegistry.get(server);
 		CabinRecord cabin = registry.find(cabinId)
@@ -38,16 +88,19 @@ final class CabinReconciliation {
 			case NONE -> "unchanged";
 			case ENSURE_PACKED -> {
 				cabin.lastExterior().ifPresent(exterior -> removeProjection(server, exterior));
-				registry.markExteriorCleanupComplete(cabin.uuid());
+				CabinRecord packed = registry.markExteriorCleanupComplete(cabin.uuid());
+				CabinWindows.update(server, packed);
 				yield "packed projection cleaned";
 			}
 			case FINISH_DEPLOYMENT -> {
-				registry.finishDeployment(cabin.uuid());
+				CabinRecord deployed = registry.finishDeployment(cabin.uuid());
+				CabinWindows.update(server, deployed);
 				yield "interrupted deployment committed";
 			}
 			case ROLL_BACK_DEPLOYMENT -> {
 				cabin.exterior().ifPresent(exterior -> removeProjection(server, exterior));
-				registry.rollbackDeployment(cabin.uuid());
+				CabinRecord packed = registry.rollbackDeployment(cabin.uuid());
+				CabinWindows.update(server, packed);
 				yield "interrupted deployment rolled back to PACKED";
 			}
 			case ABORT_PACKING -> {
@@ -57,7 +110,8 @@ final class CabinReconciliation {
 			case ORPHAN -> {
 				evacuateOnlineOccupants(server, cabin);
 				cabin.exterior().ifPresent(exterior -> removeProjection(server, exterior));
-				registry.markOrphaned(cabin.uuid());
+				CabinRecord orphaned = registry.markOrphaned(cabin.uuid());
+				CabinWindows.update(server, orphaned);
 				yield "missing exterior marked ORPHANED";
 			}
 		};
@@ -95,8 +149,11 @@ final class CabinReconciliation {
 			if (!isOccupant(player, cabin)) {
 				continue;
 			}
-			SafeDestinationResolver.resolveForCabin(player, cabin)
-				.ifPresent(destination -> destination.teleport(player, 0.0F));
+			SafeDestinationResolver.resolveForCabin(player, cabin).ifPresent(destination -> {
+				if (destination.teleport(player, 0.0F)) {
+					CabinOccupancyData.get(server).clear(player.getUUID());
+				}
+			});
 		}
 	}
 

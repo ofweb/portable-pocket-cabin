@@ -3,9 +3,9 @@ package dev.portablepocketcabin;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -13,32 +13,32 @@ final class CabinPlacement {
 	private static final long PREVIEW_LIFETIME_TICKS = 30L * 20L;
 	private static final Map<UUID, Preview> PREVIEWS = new ConcurrentHashMap<>();
 
-	private record Preview(UUID cabinId, CabinExterior exterior, long expiresAt) {
+	private record Preview(Optional<UUID> cabinId, CabinExterior exterior, long expiresAt) {
 	}
 
 	private CabinPlacement() {
 	}
 
 	static int preview(ServerPlayer player) {
-		if (!player.level().dimension().equals(Level.OVERWORLD)) {
-			player.sendSystemMessage(Component.literal("Delivery 3 cabins can only be deployed in the Overworld."));
+		if (!ExteriorCabin.isSupportedDimension(player.level().dimension())) {
+			player.sendSystemMessage(Component.literal("Cabins can only be deployed in the Overworld, Nether, or End."));
 			return 0;
 		}
 
 		ServerLevel level = (ServerLevel) player.level();
 		CabinRegistry registry = CabinRegistry.get(level.getServer());
 		CabinRecord cabin = registry.findByOwner(player.getUUID()).orElse(null);
-		if (cabin == null) {
-			player.sendSystemMessage(Component.literal("You do not own a cabin. Use /cabin create first."));
-			return 0;
-		}
-		if (cabin.lifecycle() != CabinLifecycle.PACKED) {
+		if (cabin != null && cabin.lifecycle() != CabinLifecycle.PACKED) {
 			player.sendSystemMessage(Component.literal("Your cabin cannot be previewed while it is "
 				+ cabin.lifecycle() + "."));
 			return 0;
 		}
-		if (CabinItems.findValid(player.getInventory(), cabin) < 0) {
+		if (cabin != null && CabinItems.findValid(player.getInventory(), cabin) < 0) {
 			player.sendSystemMessage(Component.literal("You need the current bound packed-cabin item to deploy it."));
+			return 0;
+		}
+		if (cabin == null && CabinItems.findUnbound(player.getInventory()) < 0) {
+			player.sendSystemMessage(Component.literal("You need an unbound cabin kit to establish your first cabin."));
 			return 0;
 		}
 
@@ -46,7 +46,8 @@ final class CabinPlacement {
 		ExteriorCabin.PlacementCheck check = validate(level, exterior, player);
 		ExteriorCabin.showPreview(level, exterior, check.valid());
 		PREVIEWS.put(player.getUUID(), new Preview(
-			cabin.uuid(), exterior, level.getGameTime() + PREVIEW_LIFETIME_TICKS
+			cabin == null ? Optional.empty() : Optional.of(cabin.uuid()),
+			exterior, level.getGameTime() + PREVIEW_LIFETIME_TICKS
 		));
 
 		player.sendSystemMessage(Component.literal(check.message() + " at " + coordinates(exterior)
@@ -58,14 +59,15 @@ final class CabinPlacement {
 		ServerLevel exteriorLevel = (ServerLevel) player.level();
 		CabinRegistry registry = CabinRegistry.get(exteriorLevel.getServer());
 		CabinRecord cabin = registry.findByOwner(player.getUUID()).orElse(null);
-		if (cabin == null) {
-			player.sendSystemMessage(Component.literal("You do not own a cabin. Use /cabin create first."));
-			return 0;
-		}
 
 		Preview preview = PREVIEWS.remove(player.getUUID());
-		if (preview == null || !preview.cabinId().equals(cabin.uuid())) {
+		if (preview == null || preview.cabinId().isPresent()
+			&& (cabin == null || !preview.cabinId().get().equals(cabin.uuid()))) {
 			player.sendSystemMessage(Component.literal("Run /cabin preview before deploying your cabin."));
+			return 0;
+		}
+		if (preview.cabinId().isEmpty() && cabin != null) {
+			player.sendSystemMessage(Component.literal("Cabin ownership changed. Preview the cabin again."));
 			return 0;
 		}
 		if (!player.level().dimension().equals(preview.exterior().dimension())
@@ -86,13 +88,18 @@ final class CabinPlacement {
 			player.sendSystemMessage(Component.literal("Pocket dimension is unavailable."));
 			return 0;
 		}
-		int packedItemSlot = CabinItems.findValid(player.getInventory(), cabin);
+		int packedItemSlot = cabin == null
+			? CabinItems.findUnbound(player.getInventory())
+			: CabinItems.findValid(player.getInventory(), cabin);
 		if (packedItemSlot < 0) {
-			player.sendSystemMessage(Component.literal("The current bound packed-cabin item is no longer in your inventory."));
+			player.sendSystemMessage(Component.literal("The cabin item used for this preview is no longer in your inventory."));
 			return 0;
 		}
 
 		try {
+			if (cabin == null) {
+				cabin = registry.create(player.getUUID());
+			}
 			CabinRecord deploying = registry.beginDeployment(cabin.uuid(), player.getUUID(), preview.exterior());
 			CabinRegistry.flush(exteriorLevel.getServer());
 			player.getInventory().setItem(packedItemSlot, net.minecraft.world.item.ItemStack.EMPTY);
@@ -102,7 +109,8 @@ final class CabinPlacement {
 				CabinRegistry.flush(exteriorLevel.getServer());
 			}
 			ExteriorCabin.place(exteriorLevel, preview.exterior());
-			registry.finishDeployment(deploying.uuid());
+			CabinRecord deployed = registry.finishDeployment(deploying.uuid());
+			CabinWindows.update(exteriorLevel.getServer(), deployed);
 		} catch (IllegalStateException exception) {
 			player.sendSystemMessage(Component.literal(exception.getMessage()));
 			return 0;
@@ -110,6 +118,16 @@ final class CabinPlacement {
 
 		player.sendSystemMessage(Component.literal("Cabin deployed. Interact with its iron door or lodestone controller to enter."));
 		return 1;
+	}
+
+	static int previewOrDeploy(ServerPlayer player) {
+		Preview preview = PREVIEWS.get(player.getUUID());
+		if (preview != null
+			&& preview.exterior().dimension().equals(player.level().dimension())
+			&& player.level().getGameTime() <= preview.expiresAt()) {
+			return deploy(player);
+		}
+		return preview(player);
 	}
 
 	private static String coordinates(CabinExterior exterior) {

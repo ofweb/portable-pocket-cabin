@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.gamerules.GameRuleCategory;
-import net.minecraft.world.level.levelgen.Heightmap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +102,13 @@ final class CabinRespawning {
 		ServerLevel deathLevel = oldPlayer.level();
 		BlockPos deathPosition = oldPlayer.blockPosition().immutable();
 		if (tryCabinRespawn(newPlayer, deathLevel, deathPosition, binding, cabin)) {
+			CabinOccupancyData occupancy = CabinOccupancyData.get(server);
+			CabinRecord current = CabinRegistry.get(server).find(binding.cabinId()).orElse(null);
+			if (newPlayer.level().dimension().equals(PocketDimension.LEVEL_KEY) && current != null) {
+				occupancy.enter(newPlayer.getUUID(), current);
+			} else {
+				occupancy.clear(newPlayer.getUUID());
+			}
 			newPlayer.sendSystemMessage(Component.literal("You returned to your cabin home."));
 		}
 	}
@@ -252,12 +258,17 @@ final class CabinRespawning {
 			}
 			int x = deathPosition.getX() + offset.getX();
 			int z = deathPosition.getZ() + offset.getZ();
-			int y = deathLevel.dimension().equals(Level.NETHER)
-				? Math.clamp(deathPosition.getY(), deathLevel.getMinY() + 1, deathLevel.getMaxY() - 2)
-				: deathLevel.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
-			Optional<SafeDestinationResolver.Destination> destination = SafeDestinationResolver.search(
-				deathLevel, new BlockPos(x, y, z), player, REGION_SEARCH_RADIUS
-			);
+			Optional<SafeDestinationResolver.Destination> destination;
+			if (deathLevel.dimension().equals(Level.NETHER)) {
+				int y = Math.clamp(deathPosition.getY(), deathLevel.getMinY() + 1, deathLevel.getMaxY() - 2);
+				destination = SafeDestinationResolver.searchUntil(
+					deathLevel, new BlockPos(x, y, z), player, REGION_SEARCH_RADIUS, deadline
+				);
+			} else {
+				destination = SafeDestinationResolver.searchSurfaceUntil(
+					deathLevel, x, z, player, REGION_SEARCH_RADIUS, deadline
+				);
+			}
 			if (destination.isPresent()
 				&& withinHorizontalBounds(deathPosition, destination.get().feet(), minimum, maximum)) {
 				return destination;
