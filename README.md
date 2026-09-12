@@ -41,6 +41,15 @@ For a headless dedicated-server smoke check:
 
 The server stops itself after initialization and logs `DEDICATED_SERVER_STARTUP_TEST_PASSED` once the pocket dimension and registry are available. The full `./gradlew build` gate boots that saved world a second time, reconciles interrupted packing and deployment journals, verifies the exterior and interior survived, then packs and redeploys the cabin before checking monotonic cell allocation.
 
+Cabin near-death respawn distance defaults to 128–256 blocks. Operators can persist different bounds with the namespaced gamerules:
+
+```text
+/gamerule portable_pocket_cabin:respawn_min_distance 128
+/gamerule portable_pocket_cabin:respawn_max_distance 256
+```
+
+If the maximum is configured below the minimum, the effective maximum is clamped to the minimum; `/cabin status` reports the effective range.
+
 ### Local server and Prism client
 
 The development launcher uses `itzg/minecraft-server` for a persistent local server and Prism Launcher for the client. One-time setup:
@@ -125,3 +134,13 @@ The server world persists under `run/server`. `just server` provisions `ofweb` a
 5. Redeploy and confirm the chest items, furnace inventory/progress, water, farmland, and crops are unchanged apart from simulation that occurred while deployed.
 6. Confirm `/cabin status` returns to `simulated_cabins=1`, then verify the furnace and crops resume progressing without a player remaining inside.
 7. Restart the server once while deployed and once while packed; confirm simulation resumes only for the deployed state and all fixture contents survive both restarts.
+
+## Delivery 7 manual acceptance
+
+1. Place a bed inside a deployed cabin, sleep in it as the owner, and confirm the cabin-home binding message appears. Sleep in another bed in the same cabin and confirm the new bed replaces the previous home.
+2. Let a trusted visitor sleep in the cabin, then kill that visitor; confirm sleeping did not replace the visitor's existing respawn behavior.
+3. Die while the cabin is deployed and its bound bed has safe adjacent space; confirm respawning beside the bed. Obstruct or remove the bed, die again, and confirm respawning safely outside the current doorway.
+4. Pack the cabin, die in the Overworld, and confirm respawning at a safe point 128–256 horizontal blocks from the death position. Repeat after orphaning the cabin.
+5. Die inside the pocket dimension while the cabin is inactive and confirm near-death search never selects a pocket coordinate; the last exterior or Overworld spawn is used.
+6. Change both namespaced respawn-distance gamerules, run `/cabin status`, and confirm it reports the effective configured range.
+7. Die, leave the death screen open, and have packing begin before clicking Respawn; confirm the player is never returned inside the now-inactive cabin.

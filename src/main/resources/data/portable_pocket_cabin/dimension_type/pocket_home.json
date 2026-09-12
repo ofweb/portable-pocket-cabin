@@ -2,7 +2,7 @@
   "attributes": {
     "minecraft:gameplay/bed_rule": {
       "can_set_spawn": "never",
-      "can_sleep": "never"
+      "can_sleep": "always"
     },
     "minecraft:gameplay/nether_portal_spawns_piglin": false,
     "minecraft:gameplay/respawn_anchor_works": false,

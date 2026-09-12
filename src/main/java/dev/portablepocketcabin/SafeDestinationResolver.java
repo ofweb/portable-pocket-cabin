@@ -76,16 +76,29 @@ final class SafeDestinationResolver {
 		return search(level, preferredFeet, player, SEARCH_RADIUS);
 	}
 
-	static Optional<Destination> resolveExact(ServerLevel level, BlockPos preferredFeet, ServerPlayer player) {
-		return search(level, preferredFeet, player, 0);
+	static Optional<Destination> search(
+		ServerLevel level, BlockPos preferredFeet, ServerPlayer player, int radius
+	) {
+		if (radius < 0 || radius > SEARCH_RADIUS) {
+			throw new IllegalArgumentException("Safe destination radius must be between 0 and " + SEARCH_RADIUS);
+		}
+		return searchWithinRadius(level, preferredFeet, player, radius);
 	}
 
-	private static Optional<Destination> search(
+	static Optional<Destination> resolveExact(ServerLevel level, BlockPos preferredFeet, ServerPlayer player) {
+		return searchWithinRadius(level, preferredFeet, player, 0);
+	}
+
+	private static Optional<Destination> searchWithinRadius(
 		ServerLevel level, BlockPos preferredFeet, ServerPlayer player, int radius
 	) {
 		Set<ChunkPos> ticketedChunks = new LinkedHashSet<>();
 		try {
 			for (BlockPos candidate : candidates(preferredFeet, radius)) {
+				if (!level.isInWorldBounds(candidate)
+					|| !level.getWorldBorder().isWithinBounds(candidate)) {
+					continue;
+				}
 				ChunkPos chunk = ChunkPos.containing(candidate);
 				if (ticketedChunks.add(chunk)) {
 					level.getChunkSource().addTicketWithRadius(SAFE_SEARCH_TICKET, chunk, TICKET_RADIUS);

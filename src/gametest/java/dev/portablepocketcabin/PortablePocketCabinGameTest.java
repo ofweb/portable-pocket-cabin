@@ -464,6 +464,100 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void cabinHomeBindingSurvivesSaveReloadAndLatestBedWins(GameTestHelper helper) {
+		UUID owner = UUID.randomUUID();
+		UUID cabinId = UUID.randomUUID();
+		BlockPos firstBed = PocketDimension.cellCenter(3).offset(2, 1, 2);
+		BlockPos latestBed = firstBed.offset(4, 0, -1);
+		CabinRespawnData original = new CabinRespawnData();
+		original.bind(owner, cabinId, firstBed);
+		original.bind(owner, cabinId, latestBed);
+
+		var encoded = CabinRespawnData.CODEC.encodeStart(NbtOps.INSTANCE, original).getOrThrow();
+		CabinRespawnData restored = CabinRespawnData.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
+		CabinHomeBinding binding = restored.find(owner).orElseThrow();
+
+		helper.assertTrue(binding.cabinId().equals(cabinId) && binding.bedPosition().equals(latestBed),
+			"The latest cabin bed binding must replace and persist over the previous bed");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void onlyOwnerCanBindACabinBed(GameTestHelper helper) {
+		UUID owner = UUID.randomUUID();
+		UUID visitor = UUID.randomUUID();
+		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, BlockPos.ZERO, Direction.NORTH);
+		CabinRecord cabin = new CabinRecord(
+			UUID.randomUUID(), owner, 2, CabinLifecycle.DEPLOYED,
+			Optional.of(exterior), Optional.of(exterior), true, 0
+		);
+		CabinRespawnData data = new CabinRespawnData();
+		BlockPos bed = PocketDimension.cellCenter(2).above();
+
+		helper.assertTrue(!CabinRespawning.bindOwner(data, visitor, cabin, bed),
+			"A trusted visitor sleeping in a cabin must not gain a cabin-home binding");
+		helper.assertTrue(data.find(visitor).isEmpty(),
+			"A rejected visitor binding must not replace that player's home");
+		helper.assertTrue(CabinRespawning.bindOwner(data, owner, cabin, bed)
+			&& data.find(owner).orElseThrow().cabinId().equals(cabin.uuid()),
+			"A deployed cabin owner must be able to bind its bed");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void nearDeathSearchIsBoundedAndNeverTargetsPocketDimension(GameTestHelper helper) {
+		int minimum = 128;
+		int maximum = 256;
+		BlockPos origin = new BlockPos(40, 70, -90);
+		var candidates = CabinRespawning.candidateOffsets(UUID.randomUUID(), minimum, maximum);
+
+		helper.assertTrue(candidates.size() == CabinRespawning.MAX_CANDIDATE_REGIONS,
+			"Near-death respawning must inspect at most sixteen candidate regions");
+		for (BlockPos offset : candidates) {
+			helper.assertTrue(CabinRespawning.withinHorizontalBounds(
+				origin, origin.offset(offset), minimum, maximum
+			), "Every candidate region must be inside the configured distance annulus");
+		}
+		helper.assertTrue(CabinRespawning.allowsNearDeathSearch(Level.OVERWORLD)
+			&& CabinRespawning.allowsNearDeathSearch(Level.NETHER)
+			&& CabinRespawning.allowsNearDeathSearch(Level.END),
+			"Near-death respawning must support all three vanilla dimensions");
+		helper.assertTrue(!CabinRespawning.allowsNearDeathSearch(PocketDimension.LEVEL_KEY),
+			"Near-death respawning must never select the pocket-home dimension");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void packingDuringDeathScreenInvalidatesInteriorRespawn(GameTestHelper helper) {
+		UUID owner = UUID.randomUUID();
+		CabinRegistry registry = new CabinRegistry();
+		CabinRecord cabin = registry.create(owner);
+		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, BlockPos.ZERO, Direction.SOUTH);
+		registry.beginDeployment(cabin.uuid(), owner, exterior);
+		registry.markInteriorGenerated(cabin.uuid());
+		CabinRecord deployed = registry.finishDeployment(cabin.uuid());
+		CabinHomeBinding binding = new CabinHomeBinding(
+			owner, cabin.uuid(), PocketDimension.cellCenter(cabin.cellIndex()).above()
+		);
+
+		helper.assertTrue(CabinRespawning.canUseInterior(binding, deployed),
+			"A deployed bound cabin may initially select its bedside destination");
+		CabinRecord packing = registry.beginPacking(cabin.uuid(), owner);
+		helper.assertTrue(!CabinRespawning.canUseInterior(binding, packing),
+			"Starting packing while the death screen is open must invalidate a bedside respawn");
+		CabinRecord packed = registry.finishPacking(cabin.uuid());
+		helper.assertTrue(!CabinRespawning.canUseInterior(binding, packed),
+			"A completed packing race must continue through outside fallback destinations");
+		helper.assertTrue(CabinRespawning.shouldSearchNearDeath(packed),
+			"A packed cabin must use the near-death search before its last campsite");
+		CabinRecord orphaned = registry.markOrphaned(cabin.uuid());
+		helper.assertTrue(CabinRespawning.shouldSearchNearDeath(orphaned)
+			&& !CabinRespawning.canUseInterior(binding, orphaned),
+			"An orphaned cabin must use outside respawn fallbacks and never its interior");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void commandOutputMakesCabinUuidCopyable(GameTestHelper helper) {
 		UUID cabinId = UUID.randomUUID();
 		CabinRecord cabin = new CabinRecord(cabinId, UUID.randomUUID(), 4, CabinLifecycle.PACKED);

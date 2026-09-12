@@ -89,11 +89,16 @@ final class CabinCommands {
 	private static int status(CommandSourceStack source) {
 		boolean loaded = source.getServer().getLevel(PocketDimension.LEVEL_KEY) != null;
 		CabinRegistry registry = CabinRegistry.get(source.getServer());
+		int respawnMinimum = source.getServer().getGameRules().get(CabinRespawning.MIN_DISTANCE);
+		int respawnMaximum = Math.max(
+			respawnMinimum, source.getServer().getGameRules().get(CabinRespawning.MAX_DISTANCE)
+		);
 		source.sendSuccess(() -> Component.literal(
 			"Portable Pocket Cabin " + PortablePocketCabin.VERSION
-				+ " | delivery=6 | pocket_dimension=" + (loaded ? "ready" : "missing")
+				+ " | delivery=7 | pocket_dimension=" + (loaded ? "ready" : "missing")
 				+ " | cabins=" + registry.size() + " | next_cell=" + registry.nextCellIndex()
 				+ " | simulated_cabins=" + CabinSimulation.ticketedCabinCount(source.getServer())
+				+ " | respawn_range=" + respawnMinimum + "-" + respawnMaximum
 		), false);
 		return loaded ? 1 : 0;
 	}

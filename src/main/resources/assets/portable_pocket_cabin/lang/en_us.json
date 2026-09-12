@@ -1,3 +1,5 @@
 {
-  "item.portable_pocket_cabin.packed_cabin": "Packed Cabin"
+  "item.portable_pocket_cabin.packed_cabin": "Packed Cabin",
+  "gamerule.portable_pocket_cabin.respawn_min_distance": "Cabin respawn minimum near-death distance",
+  "gamerule.portable_pocket_cabin.respawn_max_distance": "Cabin respawn maximum near-death distance"
 }
