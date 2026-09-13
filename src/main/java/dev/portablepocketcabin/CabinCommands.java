@@ -109,12 +109,22 @@ final class CabinCommands {
 		int respawnMaximum = Math.max(
 			respawnMinimum, source.getServer().getGameRules().get(CabinRespawning.MAX_DISTANCE)
 		);
+		String attunement = registry.worldAttunement()
+			.map(value -> value.woodProfile() + "@v" + value.definitionVersion())
+			.orElse("unresolved");
+		String ownedProgression = source.getEntity() instanceof ServerPlayer player
+			? registry.findByOwner(player.getUUID())
+				.map(cabin -> " | general_space=" + cabin.progression().generalSize() + "x"
+					+ cabin.progression().generalSize() + " | rooms=" + cabin.progression().rooms().size())
+				.orElse("")
+			: "";
 		source.sendSuccess(() -> Component.literal(
 			"Portable Pocket Cabin " + PortablePocketCabin.VERSION
-				+ " | delivery=mvp | pocket_dimension=" + (loaded ? "ready" : "missing")
+				+ " | milestone=2-in-progress | pocket_dimension=" + (loaded ? "ready" : "missing")
 				+ " | cabins=" + registry.size() + " | next_cell=" + registry.nextCellIndex()
 				+ " | simulated_cabins=" + CabinSimulation.ticketedCabinCount(source.getServer())
 				+ " | respawn_range=" + respawnMinimum + "-" + respawnMaximum
+				+ " | world_attunement=" + attunement + ownedProgression
 		), false);
 		return loaded ? 1 : 0;
 	}
@@ -206,7 +216,9 @@ final class CabinCommands {
 				+ " palette=" + cabin.palette()
 				+ " item_delivery_pending=" + cabin.deploymentItemDeliveryPending()
 				+ " access=" + cabin.entryPermission().serializedName()
-				+ " trusted=" + cabin.trustedPlayers()), false);
+				+ " trusted=" + cabin.trustedPlayers()
+				+ " general_size=" + cabin.progression().generalSize()
+				+ " rooms=" + cabin.progression().rooms()), false);
 		return 1;
 	}
 

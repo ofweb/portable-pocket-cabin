@@ -9,10 +9,8 @@ import net.minecraft.world.level.ChunkPos;
 
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 final class CabinSimulation {
 	// Vanilla ticket level 31 (radius 2) is the entity-ticking level. Smaller radii
@@ -25,7 +23,7 @@ final class CabinSimulation {
 	private static final Map<MinecraftServer, State> STATES = new IdentityHashMap<>();
 
 	private static final class State {
-		private final Set<Long> activeCells = new LinkedHashSet<>();
+		private final Map<Long, Integer> activeCells = new java.util.LinkedHashMap<>();
 		private long registryRevision = Long.MIN_VALUE;
 	}
 
@@ -50,23 +48,25 @@ final class CabinSimulation {
 			return;
 		}
 
-		Set<Long> desired = new LinkedHashSet<>();
+		Map<Long, Integer> desired = new java.util.LinkedHashMap<>();
 		for (CabinRecord cabin : registry.cabins()) {
 			if (shouldSimulate(cabin)) {
-				desired.add(cabin.cellIndex());
+				desired.put(cabin.cellIndex(), cabin.progression().generalSize());
 			}
 		}
 
-		Set<Long> active = state.activeCells;
-		for (long cellIndex : new ArrayList<>(active)) {
-			if (!desired.contains(cellIndex)) {
-				removeTickets(pocket, cellIndex);
-				active.remove(cellIndex);
+		Map<Long, Integer> active = state.activeCells;
+		for (Map.Entry<Long, Integer> entry : new ArrayList<>(active.entrySet())) {
+			Integer desiredSize = desired.get(entry.getKey());
+			if (!entry.getValue().equals(desiredSize)) {
+				removeTickets(pocket, entry.getKey(), entry.getValue());
+				active.remove(entry.getKey());
 			}
 		}
-		for (long cellIndex : desired) {
-			if (active.add(cellIndex)) {
-				addTickets(pocket, cellIndex);
+		for (Map.Entry<Long, Integer> entry : desired.entrySet()) {
+			if (!active.containsKey(entry.getKey())) {
+				addTickets(pocket, entry.getKey(), entry.getValue());
+				active.put(entry.getKey(), entry.getValue());
 			}
 		}
 		state.registryRevision = revision;
@@ -77,11 +77,16 @@ final class CabinSimulation {
 	}
 
 	static List<ChunkPos> chunksForCell(long cellIndex) {
+		return chunksForCell(cellIndex, CabinProgression.INITIAL_GENERAL_SIZE);
+	}
+
+	static List<ChunkPos> chunksForCell(long cellIndex, int generalSize) {
 		var center = PocketDimension.cellCenter(cellIndex);
-		int minimumChunkX = Math.floorDiv(center.getX() - PocketDimension.INTERIOR_SHELL_RADIUS, 16);
-		int maximumChunkX = Math.floorDiv(center.getX() + PocketDimension.INTERIOR_SHELL_RADIUS, 16);
-		int minimumChunkZ = Math.floorDiv(center.getZ() - PocketDimension.INTERIOR_SHELL_RADIUS, 16);
-		int maximumChunkZ = Math.floorDiv(center.getZ() + PocketDimension.INTERIOR_SHELL_RADIUS, 16);
+		var bounds = PocketDimension.bounds(generalSize);
+		int minimumChunkX = Math.floorDiv(center.getX() + bounds.shellMinimumX(), 16);
+		int maximumChunkX = Math.floorDiv(center.getX() + bounds.shellMaximumX(), 16);
+		int minimumChunkZ = Math.floorDiv(center.getZ() + bounds.shellMinimumZ(), 16);
+		int maximumChunkZ = Math.floorDiv(center.getZ() + bounds.shellMaximumZ(), 16);
 		List<ChunkPos> chunks = new ArrayList<>();
 		for (int chunkX = minimumChunkX; chunkX <= maximumChunkX; chunkX++) {
 			for (int chunkZ = minimumChunkZ; chunkZ <= maximumChunkZ; chunkZ++) {
@@ -93,7 +98,7 @@ final class CabinSimulation {
 
 	static boolean isTicketed(MinecraftServer server, long cellIndex) {
 		State state = STATES.get(server);
-		return state != null && state.activeCells.contains(cellIndex);
+		return state != null && state.activeCells.containsKey(cellIndex);
 	}
 
 	static int ticketedCabinCount(MinecraftServer server) {
@@ -101,8 +106,8 @@ final class CabinSimulation {
 		return state == null ? 0 : state.activeCells.size();
 	}
 
-	private static void addTickets(ServerLevel pocket, long cellIndex) {
-		for (ChunkPos chunk : chunksForCell(cellIndex)) {
+	private static void addTickets(ServerLevel pocket, long cellIndex, int generalSize) {
+		for (ChunkPos chunk : chunksForCell(cellIndex, generalSize)) {
 			pocket.getChunkSource().addTicketWithRadius(
 				CABIN_SIMULATION_TICKET, chunk, FULL_SIMULATION_RADIUS
 			);
@@ -110,8 +115,8 @@ final class CabinSimulation {
 		}
 	}
 
-	private static void removeTickets(ServerLevel pocket, long cellIndex) {
-		for (ChunkPos chunk : chunksForCell(cellIndex)) {
+	private static void removeTickets(ServerLevel pocket, long cellIndex, int generalSize) {
+		for (ChunkPos chunk : chunksForCell(cellIndex, generalSize)) {
 			pocket.getChunkSource().removeTicketWithRadius(
 				CABIN_SIMULATION_TICKET, chunk, FULL_SIMULATION_RADIUS
 			);

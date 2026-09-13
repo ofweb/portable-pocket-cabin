@@ -88,6 +88,12 @@ final class CabinMaterialProfiles {
 		return current.doors.size();
 	}
 
+	static Optional<WoodProfile> woodProfile(Identifier profileId) {
+		return current.woodByPlanks.values().stream()
+			.filter(profile -> profile.selection().profileId().equals(profileId))
+			.findFirst();
+	}
+
 	private static ProfileSet load(PreparableReloadListener.SharedState state) {
 		List<WoodProfile> woods = new ArrayList<>();
 		List<DoorProfile> doors = new ArrayList<>();

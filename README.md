@@ -1,6 +1,6 @@
 # Portable Pocket Cabin
 
-A Fabric 26.2 mod for a travelling play style. The safe MVP and Milestone 1 survival-acquisition flow are implemented; the full design and delivery gates live in [SPEC.md](SPEC.md), and later implementation order lives in [ROADMAP.md](ROADMAP.md).
+A Fabric 26.2 mod for a travelling play style. The safe MVP and Milestone 1 survival-acquisition flow are complete, and Milestone 2 progression work is underway; the full design and delivery gates live in [SPEC.md](SPEC.md), and later implementation order lives in [ROADMAP.md](ROADMAP.md).
 
 ## Playing
 
@@ -9,6 +9,8 @@ Obtain a Block of Amethyst to reveal the three dimensional-core recipes. Craft a
 Use the Kit on the top of a solid terrain block. The first use previews the 5×5 cabin footprint; use the same top surface again within 30 seconds to deploy it. The clicked surface puts the front stair directly above that block, and the door faces back toward you. Its first successful deployment permanently binds the cabin and creates a pocket interior using the selected materials.
 
 Normal-use the exterior door or lodestone controller to enter. To pack, sneak-use the same exterior lodestone twice within 10 seconds. The existing five-second evacuation and packing countdown then runs without commands.
+
+New cabins now begin with a 4×4 usable interior. Normal-use the protected interior lodestone beside the exit to see the save's world-attuned wood and the exact materials for the next expansion. Sneak-use it with those materials to grow the room from 4×4 to 5×5, then one block per side-step up to the configured finite limit. Expansion always keeps the entrance wall fixed and refuses an obstructed target without consuming materials.
 
 Cabins can be deployed in the Overworld, Nether, or End. Their protected interiors keep running while deployed and pause while packed. Two fake-window panels show dawn, day, sunset, night, rain, thunder, Nether, End, or closed-shutter states.
 
@@ -90,6 +92,8 @@ just stop
 ```
 
 The server world persists under `run/server`. `just fresh-world` stops the server, moves `run/server/world` into a timestamped directory under `run/world-backups`, and starts a newly generated world; it does not delete the previous world. The local development server uses peaceful difficulty and disables natural mob spawning so gameplay cannot interrupt cabin testing. `just server` provisions `ofweb` as an operator on every startup; set `PPC_OPS` to a comma-separated list of other usernames or UUIDs when needed. Export `PPC_PORT`, `PPC_MEMORY`, `PPC_SERVER`, `PPC_DNS`, `PRISM_ROOT`, `PRISM_INSTANCE_DIR`, or `PRISM_BIN` when local defaults differ. The container defaults to `PPC_DNS=1.1.1.1` to avoid host-local DNS stubs that are unreachable from Docker.
+
+The delivery and Milestone 1 checklists below record their historical acceptance gates. Milestone 2 deliberately supersedes their 21×21 interior expectation with the current 4×4 progression shell.
 
 ## Delivery 1 manual acceptance
 

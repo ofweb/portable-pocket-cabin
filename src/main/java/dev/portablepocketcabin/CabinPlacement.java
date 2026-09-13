@@ -168,7 +168,9 @@ final class CabinPlacement {
 				deploying, deploying.packedItemGeneration(), true, preview.itemInstanceId()
 			));
 			if (!deploying.interiorGenerated()) {
-				PocketDimension.ensureCabinInterior(pocket, deploying.cellIndex(), deploying.palette());
+				PocketDimension.ensureCabinInterior(
+					pocket, deploying.cellIndex(), deploying.palette(), deploying.progression().generalSize()
+				);
 				registry.markInteriorGenerated(deploying.uuid());
 				CabinRegistry.flush(exteriorLevel.getServer());
 			}

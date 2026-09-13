@@ -48,6 +48,12 @@ final class CabinEvents {
 				return leave(serverPlayer, interiorCabin);
 			}
 
+			CabinRecord controlledCabin = CabinProtection.findInteriorController(serverLevel, hit.getBlockPos())
+				.orElse(null);
+			if (controlledCabin != null) {
+				return CabinUpgrades.useController(serverPlayer, controlledCabin);
+			}
+
 			return InteractionResult.PASS;
 		});
 

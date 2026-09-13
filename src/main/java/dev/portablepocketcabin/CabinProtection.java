@@ -13,7 +13,10 @@ public final class CabinProtection {
 		CabinRegistry registry = CabinRegistry.get(level.getServer());
 		for (CabinRecord cabin : registry.cabins()) {
 			if (level.dimension().equals(PocketDimension.LEVEL_KEY)
-				&& PocketDimension.isInteriorShell(cabin.cellIndex(), pos)) {
+				&& (PocketDimension.isInteriorShell(
+					cabin.cellIndex(), cabin.progression().generalSize(), pos
+				) || cabin.progression().rooms().stream()
+					.anyMatch(room -> PocketDimension.isInteriorShell(room.cellIndex(), pos)))) {
 				return true;
 			}
 			if (cabin.exterior().isPresent()
@@ -42,6 +45,15 @@ public final class CabinProtection {
 		}
 		return CabinRegistry.get(level.getServer()).cabins().stream()
 			.filter(cabin -> PocketDimension.isInteriorExit(cabin.cellIndex(), pos))
+			.findFirst();
+	}
+
+	static Optional<CabinRecord> findInteriorController(ServerLevel level, BlockPos pos) {
+		if (!level.dimension().equals(PocketDimension.LEVEL_KEY)) {
+			return Optional.empty();
+		}
+		return CabinRegistry.get(level.getServer()).cabins().stream()
+			.filter(cabin -> PocketDimension.isInteriorController(cabin.cellIndex(), pos))
 			.findFirst();
 	}
 }

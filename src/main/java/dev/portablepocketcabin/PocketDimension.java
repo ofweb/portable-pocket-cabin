@@ -9,9 +9,11 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.dimension.LevelStem;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.OptionalLong;
 
 public final class PocketDimension {
@@ -21,9 +23,9 @@ public final class PocketDimension {
 	public static final int CELL_ORIGIN_X = 1024;
 	public static final int CELL_ORIGIN_Z = 1024;
 	public static final int CELL_FLOOR_Y = 63;
-	public static final int INTERIOR_USABLE_RADIUS = 10;
-	public static final int INTERIOR_SHELL_RADIUS = INTERIOR_USABLE_RADIUS + 1;
 	public static final int INTERIOR_CEILING_Y = CELL_FLOOR_Y + 7;
+	public static final int INTERIOR_FRONT_USABLE_Z = 2;
+	public static final int INTERIOR_FRONT_WALL_Z = INTERIOR_FRONT_USABLE_Z + 1;
 	public static final ResourceKey<Level> LEVEL_KEY = ResourceKey.create(
 		Registries.DIMENSION,
 		PortablePocketCabin.id("pocket_home")
@@ -91,44 +93,128 @@ public final class PocketDimension {
 	public static void ensureCabinInterior(
 		net.minecraft.server.level.ServerLevel level, long cellIndex, CabinPalette palette
 	) {
-		BlockPos center = cellCenter(cellIndex);
-		BlockState floorState = palette.floor().planksBlock().defaultBlockState();
-		BlockState ceilingState = palette.roof().planksBlock().defaultBlockState();
-		BlockState wallState = palette.walls().planksBlock().defaultBlockState();
-		BlockState frameState = palette.walls().structuralWoodBlock().defaultBlockState();
+		ensureCabinInterior(level, cellIndex, palette, CabinProgression.INITIAL_GENERAL_SIZE);
+	}
 
-		for (int x = -INTERIOR_USABLE_RADIUS; x <= INTERIOR_USABLE_RADIUS; x++) {
-			for (int z = -INTERIOR_USABLE_RADIUS; z <= INTERIOR_USABLE_RADIUS; z++) {
+	public static void ensureCabinInterior(
+		net.minecraft.server.level.ServerLevel level, long cellIndex, CabinPalette palette, int generalSize
+	) {
+		BlockPos center = cellCenter(cellIndex);
+		InteriorBounds bounds = bounds(generalSize);
+		for (int x = bounds.minimumX(); x <= bounds.maximumX(); x++) {
+			for (int z = bounds.minimumZ(); z <= bounds.maximumZ(); z++) {
 				for (int y = CELL_FLOOR_Y + 1; y < INTERIOR_CEILING_Y; y++) {
 					level.setBlockAndUpdate(new BlockPos(center.getX() + x, y, center.getZ() + z),
 						Blocks.AIR.defaultBlockState());
 				}
 			}
 		}
+		placeShell(level, cellIndex, palette, generalSize);
+		CabinWindows.initializeInactive(level, cellIndex, generalSize);
+	}
 
-		for (int x = -INTERIOR_SHELL_RADIUS; x <= INTERIOR_SHELL_RADIUS; x++) {
-			for (int z = -INTERIOR_SHELL_RADIUS; z <= INTERIOR_SHELL_RADIUS; z++) {
-				BlockPos floor = new BlockPos(center.getX() + x, CELL_FLOOR_Y, center.getZ() + z);
-				BlockPos ceiling = new BlockPos(center.getX() + x, INTERIOR_CEILING_Y, center.getZ() + z);
-				level.setBlockAndUpdate(floor, floorState);
-				level.setBlockAndUpdate(ceiling, ceilingState);
+	static ExpansionCheck validateExpansion(
+		net.minecraft.server.level.ServerLevel level, long cellIndex, int currentSize, int targetSize
+	) {
+		return validateExpansion(
+			cellIndex, currentSize, targetSize, pos -> !level.getBlockState(pos).isAir()
+		);
+	}
+
+	static ExpansionCheck validateExpansion(
+		long cellIndex, int currentSize, int targetSize, java.util.function.Predicate<BlockPos> occupied
+	) {
+		if (targetSize != currentSize + 1) {
+			return new ExpansionCheck(false, "General space expands exactly one block at a time");
+		}
+		Map<BlockPos, BlockState> currentShell = shellBlocks(cellIndex, currentSize, CabinPalette.DEFAULT);
+		Map<BlockPos, BlockState> targetShell = shellBlocks(cellIndex, targetSize, CabinPalette.DEFAULT);
+		for (BlockPos pos : targetShell.keySet()) {
+			if (!currentShell.containsKey(pos) && occupied.test(pos)) {
+				return obstructed(pos);
 			}
 		}
-
-		for (int y = CELL_FLOOR_Y + 1; y < INTERIOR_CEILING_Y; y++) {
-			for (int offset = -INTERIOR_SHELL_RADIUS; offset <= INTERIOR_SHELL_RADIUS; offset++) {
-				BlockState state = isFrameOffset(offset) ? frameState : wallState;
-				level.setBlockAndUpdate(center.offset(-INTERIOR_SHELL_RADIUS, y - CELL_FLOOR_Y, offset), state);
-				level.setBlockAndUpdate(center.offset(INTERIOR_SHELL_RADIUS, y - CELL_FLOOR_Y, offset), state);
-				level.setBlockAndUpdate(center.offset(offset, y - CELL_FLOOR_Y, -INTERIOR_SHELL_RADIUS), state);
-				level.setBlockAndUpdate(center.offset(offset, y - CELL_FLOOR_Y, INTERIOR_SHELL_RADIUS), state);
+		InteriorBounds target = bounds(targetSize);
+		BlockPos center = cellCenter(cellIndex);
+		for (int x = target.minimumX(); x <= target.maximumX(); x++) {
+			for (int z = target.minimumZ(); z <= target.maximumZ(); z++) {
+				for (int y = CELL_FLOOR_Y + 1; y < INTERIOR_CEILING_Y; y++) {
+					BlockPos pos = new BlockPos(center.getX() + x, y, center.getZ() + z);
+					if (!isWithinUsable(cellIndex, currentSize, pos)
+						&& !currentShell.containsKey(pos) && occupied.test(pos)) {
+						return obstructed(pos);
+					}
+				}
 			}
 		}
+		return new ExpansionCheck(true, "Expansion volume is clear");
+	}
 
-		for (int x : new int[] {-7, 7}) {
-			for (int z : new int[] {-7, 7}) {
-				level.setBlockAndUpdate(center.offset(x, INTERIOR_CEILING_Y - CELL_FLOOR_Y, z),
-					Blocks.SEA_LANTERN.defaultBlockState());
+	private static ExpansionCheck obstructed(BlockPos pos) {
+		return new ExpansionCheck(false, "Expansion is obstructed at "
+			+ pos.getX() + ", " + pos.getY() + ", " + pos.getZ());
+	}
+
+	static void expandGeneralSpace(
+		net.minecraft.server.level.ServerLevel level, CabinRecord cabin, int targetSize
+	) {
+		int currentSize = cabin.progression().generalSize();
+		ExpansionCheck check = validateExpansion(level, cabin.cellIndex(), currentSize, targetSize);
+		if (!check.valid()) {
+			throw new IllegalStateException(check.message());
+		}
+		Map<BlockPos, BlockState> current = shellBlocks(cabin.cellIndex(), currentSize, cabin.palette());
+		Map<BlockPos, BlockState> target = shellBlocks(cabin.cellIndex(), targetSize, cabin.palette());
+		for (BlockPos position : current.keySet()) {
+			if (!target.containsKey(position)) {
+				level.setBlockAndUpdate(position, Blocks.AIR.defaultBlockState());
+			}
+		}
+		for (Map.Entry<BlockPos, BlockState> entry : target.entrySet()) {
+			level.setBlockAndUpdate(entry.getKey(), entry.getValue());
+		}
+
+		InteriorBounds targetBounds = bounds(targetSize);
+		BlockPos center = cellCenter(cabin.cellIndex());
+		for (int x = targetBounds.minimumX(); x <= targetBounds.maximumX(); x++) {
+			for (int z = targetBounds.minimumZ(); z <= targetBounds.maximumZ(); z++) {
+				for (int y = CELL_FLOOR_Y + 1; y < INTERIOR_CEILING_Y; y++) {
+					BlockPos pos = new BlockPos(center.getX() + x, y, center.getZ() + z);
+					if (!isWithinUsable(cabin.cellIndex(), currentSize, pos)) {
+						level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+					}
+				}
+			}
+		}
+	}
+
+	static Map<BlockPos, BlockState> shellBlocks(long cellIndex, int generalSize, CabinPalette palette) {
+		InteriorBounds bounds = bounds(generalSize);
+		BlockPos center = cellCenter(cellIndex);
+		Map<BlockPos, BlockState> result = new LinkedHashMap<>();
+		BlockState floorState = palette.floor().planksBlock().defaultBlockState();
+		BlockState ceilingState = palette.roof().planksBlock().defaultBlockState();
+		BlockState wallState = palette.walls().planksBlock().defaultBlockState();
+		BlockState frameState = palette.walls().structuralWoodBlock().defaultBlockState();
+
+		for (int x = bounds.shellMinimumX(); x <= bounds.shellMaximumX(); x++) {
+			for (int z = bounds.shellMinimumZ(); z <= bounds.shellMaximumZ(); z++) {
+				result.put(center.offset(x, 0, z), floorState);
+				result.put(center.offset(x, INTERIOR_CEILING_Y - CELL_FLOOR_Y, z), ceilingState);
+			}
+		}
+		for (int y = 1; y < INTERIOR_CEILING_Y - CELL_FLOOR_Y; y++) {
+			for (int x = bounds.shellMinimumX(); x <= bounds.shellMaximumX(); x++) {
+				result.put(center.offset(x, y, bounds.shellMinimumZ()),
+					frameOrWall(x, bounds, frameState, wallState));
+				result.put(center.offset(x, y, bounds.shellMaximumZ()),
+					frameOrWall(x, bounds, frameState, wallState));
+			}
+			for (int z = bounds.shellMinimumZ(); z <= bounds.shellMaximumZ(); z++) {
+				result.put(center.offset(bounds.shellMinimumX(), y, z),
+					frameOrWall(z, bounds, frameState, wallState));
+				result.put(center.offset(bounds.shellMaximumX(), y, z),
+					frameOrWall(z, bounds, frameState, wallState));
 			}
 		}
 
@@ -136,22 +222,37 @@ public final class PocketDimension {
 			.setValue(DoorBlock.FACING, net.minecraft.core.Direction.SOUTH)
 			.setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
 			.setValue(DoorBlock.HINGE, DoorHingeSide.LEFT);
-		level.setBlockAndUpdate(interiorExitDoorLower(cellIndex), lowerDoor);
-		level.setBlockAndUpdate(interiorExitDoorUpper(cellIndex),
-			lowerDoor.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
-		CabinWindows.initializeInactive(level, cellIndex);
+		result.put(interiorExitDoorLower(cellIndex), lowerDoor);
+		result.put(interiorExitDoorUpper(cellIndex), lowerDoor.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
+		result.put(interiorController(cellIndex), Blocks.LODESTONE.defaultBlockState());
+		result.put(center.offset(bounds.minimumX(), INTERIOR_CEILING_Y - CELL_FLOOR_Y, bounds.minimumZ()),
+			Blocks.SEA_LANTERN.defaultBlockState());
+		result.put(center.offset(bounds.maximumX(), INTERIOR_CEILING_Y - CELL_FLOOR_Y, bounds.minimumZ()),
+			Blocks.SEA_LANTERN.defaultBlockState());
+		return Map.copyOf(result);
 	}
 
-	private static boolean isFrameOffset(int offset) {
-		return Math.abs(offset) == INTERIOR_SHELL_RADIUS || offset % 5 == 0;
+	private static void placeShell(
+		net.minecraft.server.level.ServerLevel level, long cellIndex, CabinPalette palette, int generalSize
+	) {
+		for (Map.Entry<BlockPos, BlockState> entry : shellBlocks(cellIndex, generalSize, palette).entrySet()) {
+			level.setBlockAndUpdate(entry.getKey(), entry.getValue());
+		}
+	}
+
+	private static BlockState frameOrWall(
+		int offset, InteriorBounds bounds, BlockState frame, BlockState wall
+	) {
+		return offset == bounds.shellMinimumX() || offset == bounds.shellMaximumX()
+			|| offset == bounds.shellMinimumZ() || offset == bounds.shellMaximumZ() ? frame : wall;
 	}
 
 	public static BlockPos interiorEntrance(long cellIndex) {
-		return cellCenter(cellIndex).offset(0, 1, INTERIOR_USABLE_RADIUS - 1);
+		return cellCenter(cellIndex).offset(0, 1, INTERIOR_FRONT_USABLE_Z);
 	}
 
 	public static BlockPos interiorExitDoorLower(long cellIndex) {
-		return cellCenter(cellIndex).offset(0, 1, INTERIOR_SHELL_RADIUS);
+		return cellCenter(cellIndex).offset(0, 1, INTERIOR_FRONT_WALL_Z);
 	}
 
 	public static BlockPos interiorExitDoorUpper(long cellIndex) {
@@ -162,18 +263,64 @@ public final class PocketDimension {
 		return pos.equals(interiorExitDoorLower(cellIndex)) || pos.equals(interiorExitDoorUpper(cellIndex));
 	}
 
+	public static BlockPos interiorController(long cellIndex) {
+		return cellCenter(cellIndex).offset(-1, 1, INTERIOR_FRONT_WALL_Z);
+	}
+
+	public static boolean isInteriorController(long cellIndex, BlockPos pos) {
+		return pos.equals(interiorController(cellIndex));
+	}
+
 	public static boolean isInteriorShell(long cellIndex, BlockPos pos) {
+		return isInteriorShell(cellIndex, CabinProgression.INITIAL_GENERAL_SIZE, pos);
+	}
+
+	public static boolean isInteriorShell(long cellIndex, int generalSize, BlockPos pos) {
 		BlockPos center = cellCenter(cellIndex);
-		int dx = Math.abs(pos.getX() - center.getX());
-		int dz = Math.abs(pos.getZ() - center.getZ());
-		if (dx > INTERIOR_SHELL_RADIUS || dz > INTERIOR_SHELL_RADIUS) {
+		InteriorBounds bounds = bounds(generalSize);
+		int x = pos.getX() - center.getX();
+		int z = pos.getZ() - center.getZ();
+		if (x < bounds.shellMinimumX() || x > bounds.shellMaximumX()
+			|| z < bounds.shellMinimumZ() || z > bounds.shellMaximumZ()) {
 			return false;
 		}
 		if (pos.getY() == CELL_FLOOR_Y || pos.getY() == INTERIOR_CEILING_Y) {
 			return true;
 		}
 		return pos.getY() > CELL_FLOOR_Y && pos.getY() < INTERIOR_CEILING_Y
-			&& (dx == INTERIOR_SHELL_RADIUS || dz == INTERIOR_SHELL_RADIUS);
+			&& (x == bounds.shellMinimumX() || x == bounds.shellMaximumX()
+				|| z == bounds.shellMinimumZ() || z == bounds.shellMaximumZ());
+	}
+
+	static boolean isWithinUsable(long cellIndex, int generalSize, BlockPos pos) {
+		BlockPos center = cellCenter(cellIndex);
+		InteriorBounds bounds = bounds(generalSize);
+		int x = pos.getX() - center.getX();
+		int z = pos.getZ() - center.getZ();
+		return x >= bounds.minimumX() && x <= bounds.maximumX()
+			&& z >= bounds.minimumZ() && z <= bounds.maximumZ()
+			&& pos.getY() > CELL_FLOOR_Y && pos.getY() < INTERIOR_CEILING_Y;
+	}
+
+	static InteriorBounds bounds(int generalSize) {
+		if (generalSize < CabinProgression.INITIAL_GENERAL_SIZE
+			|| generalSize > CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE) {
+			throw new IllegalArgumentException("Unsupported general cabin size " + generalSize);
+		}
+		int minimumX = -((generalSize - 1) / 2);
+		int maximumX = generalSize / 2;
+		int minimumZ = INTERIOR_FRONT_USABLE_Z - generalSize + 1;
+		return new InteriorBounds(minimumX, maximumX, minimumZ, INTERIOR_FRONT_USABLE_Z);
+	}
+
+	record InteriorBounds(int minimumX, int maximumX, int minimumZ, int maximumZ) {
+		int shellMinimumX() { return minimumX - 1; }
+		int shellMaximumX() { return maximumX + 1; }
+		int shellMinimumZ() { return minimumZ - 1; }
+		int shellMaximumZ() { return maximumZ + 1; }
+	}
+
+	record ExpansionCheck(boolean valid, String message) {
 	}
 
 	public static OptionalLong cellIndexAt(BlockPos pos) {

@@ -24,7 +24,8 @@ public record CabinRecord(
 	Optional<UUID> lastDeploymentItemId,
 	boolean deploymentItemDeliveryPending,
 	CabinEntryPermission entryPermission,
-	List<UUID> trustedPlayers
+	List<UUID> trustedPlayers,
+	CabinProgression progression
 ) {
 	public static final Codec<CabinRecord> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 		UUIDUtil.STRING_CODEC.fieldOf("uuid").forGetter(CabinRecord::uuid),
@@ -44,12 +45,15 @@ public record CabinRecord(
 		CabinEntryPermission.CODEC.optionalFieldOf("entry_permission", CabinEntryPermission.OWNER_ONLY)
 			.forGetter(CabinRecord::entryPermission),
 		UUIDUtil.STRING_CODEC.listOf().optionalFieldOf("trusted_players", List.of())
-			.forGetter(CabinRecord::trustedPlayers)
+			.forGetter(CabinRecord::trustedPlayers),
+		CabinProgression.CODEC.optionalFieldOf("progression", CabinProgression.INITIAL)
+			.forGetter(CabinRecord::progression)
 	).apply(instance, CabinRecord::new));
 
 	public CabinRecord(UUID uuid, UUID owner, long cellIndex, CabinLifecycle lifecycle) {
 		this(uuid, owner, cellIndex, lifecycle, Optional.empty(), Optional.empty(), false, 0L, false,
-			CabinPalette.DEFAULT, Optional.empty(), false, CabinEntryPermission.OWNER_ONLY, List.of());
+			CabinPalette.DEFAULT, Optional.empty(), false, CabinEntryPermission.OWNER_ONLY, List.of(),
+			CabinProgression.INITIAL);
 	}
 
 	public CabinRecord(
@@ -57,7 +61,8 @@ public record CabinRecord(
 		Optional<CabinExterior> exterior, boolean interiorGenerated
 	) {
 		this(uuid, owner, cellIndex, lifecycle, exterior, Optional.empty(), interiorGenerated, 0L, false,
-			CabinPalette.DEFAULT, Optional.empty(), false, CabinEntryPermission.OWNER_ONLY, List.of());
+			CabinPalette.DEFAULT, Optional.empty(), false, CabinEntryPermission.OWNER_ONLY, List.of(),
+			CabinProgression.INITIAL);
 	}
 
 	public CabinRecord(
@@ -67,7 +72,7 @@ public record CabinRecord(
 	) {
 		this(uuid, owner, cellIndex, lifecycle, exterior, lastExterior,
 			interiorGenerated, packedItemGeneration, false, CabinPalette.DEFAULT, Optional.empty(), false,
-			CabinEntryPermission.OWNER_ONLY, List.of());
+			CabinEntryPermission.OWNER_ONLY, List.of(), CabinProgression.INITIAL);
 	}
 
 	public CabinRecord(
@@ -77,7 +82,7 @@ public record CabinRecord(
 	) {
 		this(uuid, owner, cellIndex, lifecycle, exterior, lastExterior, interiorGenerated,
 			packedItemGeneration, exteriorCleanupPending, CabinPalette.DEFAULT, Optional.empty(), false,
-			CabinEntryPermission.OWNER_ONLY, List.of());
+			CabinEntryPermission.OWNER_ONLY, List.of(), CabinProgression.INITIAL);
 	}
 
 	public CabinRecord {
@@ -90,6 +95,7 @@ public record CabinRecord(
 		Objects.requireNonNull(lastDeploymentItemId, "lastDeploymentItemId");
 		Objects.requireNonNull(entryPermission, "entryPermission");
 		Objects.requireNonNull(trustedPlayers, "trustedPlayers");
+		Objects.requireNonNull(progression, "progression");
 		trustedPlayers = List.copyOf(new LinkedHashSet<>(trustedPlayers));
 		if (cellIndex < 0) {
 			throw new IllegalArgumentException("Cabin cell index must be non-negative");

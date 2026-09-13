@@ -45,7 +45,11 @@ final class CabinWindows {
 	}
 
 	static void initializeInactive(ServerLevel pocket, long cellIndex) {
-		place(pocket, cellIndex, Profile.INACTIVE);
+		initializeInactive(pocket, cellIndex, CabinProgression.INITIAL_GENERAL_SIZE);
+	}
+
+	static void initializeInactive(ServerLevel pocket, long cellIndex, int generalSize) {
+		place(pocket, cellIndex, generalSize, Profile.INACTIVE);
 	}
 
 	static void update(MinecraftServer server, CabinRecord cabin) {
@@ -59,7 +63,7 @@ final class CabinWindows {
 		}
 		ServerLevel pocket = server.getLevel(PocketDimension.LEVEL_KEY);
 		if (pocket != null) {
-			place(pocket, cabin.cellIndex(), profile);
+			place(pocket, cabin.cellIndex(), cabin.progression().generalSize(), profile);
 		}
 	}
 
@@ -96,18 +100,31 @@ final class CabinWindows {
 	}
 
 	static Map<BlockPos, Block> blocks(long cellIndex, Profile profile) {
+		return blocks(cellIndex, CabinProgression.INITIAL_GENERAL_SIZE, profile);
+	}
+
+	static Map<BlockPos, Block> blocks(long cellIndex, int generalSize, Profile profile) {
 		Map<BlockPos, Block> result = new LinkedHashMap<>();
 		BlockPos center = PocketDimension.cellCenter(cellIndex);
+		PocketDimension.InteriorBounds bounds = PocketDimension.bounds(generalSize);
 		int index = 0;
-		for (int baseX : new int[] {-7, 5}) {
-			for (int y = 2; y <= 4; y++) {
-				for (int x = baseX; x < baseX + 3; x++) {
-					result.put(center.offset(x, y, -PocketDimension.INTERIOR_SHELL_RADIUS),
-						block(profile, index++));
-				}
+		int windowZ = Math.max(bounds.minimumZ(), bounds.maximumZ() - 1);
+		for (int x : new int[] {bounds.shellMinimumX(), bounds.shellMaximumX()}) {
+			for (int y = 2; y <= 3; y++) {
+				result.put(center.offset(x, y, windowZ), block(profile, index++));
 			}
 		}
 		return Map.copyOf(result);
+	}
+
+	static void refresh(MinecraftServer server, CabinRecord cabin) {
+		ServerLevel pocket = server.getLevel(PocketDimension.LEVEL_KEY);
+		if (pocket != null && cabin.interiorGenerated()) {
+			Profile profile = profile(server, cabin);
+			place(pocket, cabin.cellIndex(), cabin.progression().generalSize(), profile);
+			LAST_PROFILES.computeIfAbsent(server, ignored -> new LinkedHashMap<>())
+				.put(cabin.uuid(), profile);
+		}
 	}
 
 	private static Profile profile(MinecraftServer server, CabinRecord cabin) {
@@ -131,8 +148,8 @@ final class CabinWindows {
 		}
 	}
 
-	private static void place(ServerLevel pocket, long cellIndex, Profile profile) {
-		for (Map.Entry<BlockPos, Block> entry : blocks(cellIndex, profile).entrySet()) {
+	private static void place(ServerLevel pocket, long cellIndex, int generalSize, Profile profile) {
+		for (Map.Entry<BlockPos, Block> entry : blocks(cellIndex, generalSize, profile).entrySet()) {
 			if (!pocket.getBlockState(entry.getKey()).is(entry.getValue())) {
 				pocket.setBlockAndUpdate(entry.getKey(), entry.getValue().defaultBlockState());
 			}

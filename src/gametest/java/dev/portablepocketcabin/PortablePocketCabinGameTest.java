@@ -109,6 +109,60 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void worldAttunementIsSharedAndNeverRerollsOnReload(GameTestHelper helper) {
+		CabinUpgradeDefinitions.Definitions definitions = CabinUpgradeDefinitions.current();
+		WorldAttunement firstResolution = definitions.resolve(123456789L);
+		CabinRegistry registry = new CabinRegistry();
+		WorldAttunement firstPlayer = registry.resolveWorldAttunement(firstResolution);
+		WorldAttunement secondPlayer = registry.resolveWorldAttunement(definitions.resolve(-987654321L));
+
+		helper.assertTrue(firstPlayer.equals(secondPlayer),
+			"Every player and cabin in one save must share one persisted world attunement");
+		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
+		CabinRegistry restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
+		helper.assertTrue(restored.worldAttunement().orElseThrow().equals(firstResolution),
+			"Restart must preserve the exact resolved materials and definition version");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void generalSpaceUpgradeLadderReachesTwentyOneByTwentyOne(GameTestHelper helper) {
+		CabinUpgradeDefinitions.Definitions definitions = CabinUpgradeDefinitions.current();
+		helper.assertTrue(definitions.maximumGeneralSize() == 21,
+			"General-space progression must end at 21x21");
+		for (int size = 5; size <= 21; size++) {
+			helper.assertTrue(definitions.expansion(size) != null,
+				"Every one-block expansion through 21x21 must have an upgrade definition");
+		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void roomCellsArePermanentAndCannotCollide(GameTestHelper helper) {
+		CabinRegistry registry = new CabinRegistry();
+		UUID firstOwner = UUID.randomUUID();
+		UUID secondOwner = UUID.randomUUID();
+		CabinRecord first = registry.create(firstOwner);
+		CabinRecord second = registry.create(secondOwner);
+		CabinRoom firstRoom = registry.allocateRoom(
+			first.uuid(), firstOwner, PortablePocketCabin.id("test_annex")
+		);
+		CabinRoom secondRoom = registry.allocateRoom(
+			second.uuid(), secondOwner, PortablePocketCabin.id("test_annex")
+		);
+
+		helper.assertTrue(first.cellIndex() == 0 && second.cellIndex() == 1
+			&& firstRoom.cellIndex() == 2 && secondRoom.cellIndex() == 3,
+			"General rooms and disconnected room cells must share one collision-free allocator");
+		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
+		CabinRegistry restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
+		helper.assertTrue(restored.nextCellIndex() == 4
+			&& restored.findByCell(firstRoom.cellIndex()).orElseThrow().uuid().equals(first.uuid()),
+			"Room identity, ownership, and allocator position must survive restart");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void deploymentLifecycleAndExteriorSurviveSaveReload(GameTestHelper helper) {
 		CabinRegistry original = new CabinRegistry();
 		UUID owner = UUID.randomUUID();
@@ -186,23 +240,73 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
-	public void interiorGeometryProvidesTwentyOneByTwentyOneUsableRoom(GameTestHelper helper) {
+	public void progressionInteriorStartsFourByFourWithAnchoredEntrance(GameTestHelper helper) {
 		long cell = 7;
 		BlockPos center = PocketDimension.cellCenter(cell);
-		BlockPos innerCorner = center.offset(
-			PocketDimension.INTERIOR_USABLE_RADIUS, 1, PocketDimension.INTERIOR_USABLE_RADIUS
-		);
-		BlockPos wall = center.offset(PocketDimension.INTERIOR_SHELL_RADIUS, 1, 0);
+		var bounds = PocketDimension.bounds(CabinProgression.INITIAL_GENERAL_SIZE);
+		BlockPos innerCorner = center.offset(bounds.maximumX(), 1, bounds.maximumZ());
+		BlockPos wall = center.offset(bounds.shellMaximumX(), 1, 0);
 
-		helper.assertTrue(PocketDimension.INTERIOR_USABLE_RADIUS * 2 + 1 == 21,
-			"A base cabin interior must expose a 21x21 usable footprint");
+		helper.assertTrue(bounds.maximumX() - bounds.minimumX() + 1 == 4
+			&& bounds.maximumZ() - bounds.minimumZ() + 1 == 4,
+			"A new progression cabin must expose exactly a 4x4 usable footprint");
 		helper.assertTrue(!PocketDimension.isInteriorShell(cell, innerCorner),
-			"The 21x21 inner footprint must remain usable");
+			"The 4x4 inner footprint must remain usable");
 		helper.assertTrue(PocketDimension.isInteriorShell(cell, wall)
 			&& PocketDimension.isInteriorShell(cell, center),
 			"The room wall and floor must belong to the protected shell");
 		helper.assertTrue(PocketDimension.isInteriorExit(cell, PocketDimension.interiorExitDoorLower(cell)),
 			"Every interior must have a stable exit-door coordinate");
+		helper.assertTrue(PocketDimension.interiorExitDoorLower(cell).getZ()
+			== PocketDimension.cellCenter(cell).getZ() + PocketDimension.INTERIOR_FRONT_WALL_Z,
+			"The entrance wall must remain anchored while the rear and sides expand");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void expansionPatternGrowsOneBlockWithoutMovingTheEntrance(GameTestHelper helper) {
+		var four = PocketDimension.bounds(4);
+		var five = PocketDimension.bounds(5);
+		var six = PocketDimension.bounds(6);
+		helper.assertTrue(four.maximumZ() == five.maximumZ() && five.maximumZ() == six.maximumZ(),
+			"Every expansion must keep the entrance side anchored");
+		helper.assertTrue(five.minimumZ() == four.minimumZ() - 1 && six.minimumZ() == five.minimumZ() - 1,
+			"Every expansion must add exactly one row at the rear");
+		helper.assertTrue(five.minimumX() == four.minimumX() - 1 && five.maximumX() == four.maximumX(),
+			"The first lateral expansion must grow left deterministically");
+		helper.assertTrue(six.minimumX() == five.minimumX() && six.maximumX() == five.maximumX() + 1,
+			"The next lateral expansion must grow right deterministically");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void generalExpansionPreservesPlayerBlocksAndRejectsObstructions(GameTestHelper helper) {
+		long cell = 50;
+		BlockPos center = PocketDimension.cellCenter(cell);
+		BlockPos playerBlock = center.above();
+		BlockPos obstruction = center.offset(0, 1, PocketDimension.bounds(5).shellMinimumZ());
+
+		PocketDimension.ExpansionCheck blocked = PocketDimension.validateExpansion(
+			cell, 4, 5, obstruction::equals
+		);
+		helper.assertTrue(!blocked.valid(),
+			"An obstruction in the target shell must reject expansion before mutation");
+		helper.assertTrue(PocketDimension.isWithinUsable(cell, 4, playerBlock)
+			&& PocketDimension.isWithinUsable(cell, 5, playerBlock),
+			"Existing player blocks must remain in the unchanged usable-volume intersection");
+		helper.assertTrue(PocketDimension.isWithinUsable(cell, 5, center.offset(-2, 1, -2)),
+			"A successful 4x4 to 5x5 expansion must expose the deterministic new row and column");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void maximumRoomEnvelopesRemainIsolatedAcrossCabins(GameTestHelper helper) {
+		var first = PocketDimension.shellBlocks(0, CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE,
+			CabinPalette.DEFAULT).keySet();
+		var second = PocketDimension.shellBlocks(1, CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE,
+			CabinPalette.DEFAULT).keySet();
+		helper.assertTrue(java.util.Collections.disjoint(first, second),
+			"Declared maximum general rooms must never overlap an adjacent allocated cell");
 		helper.succeed();
 	}
 
@@ -340,8 +444,8 @@ public final class PortablePocketCabinGameTest {
 
 		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
 		var data = encoded.asCompound().orElseThrow();
-		helper.assertTrue(data.getIntOr("schema_version", 0) == 1,
-			"The fresh-world registry must publish explicit schema version 1");
+		helper.assertTrue(data.getIntOr("schema_version", 0) == 2,
+			"The Milestone 2 registry must publish explicit schema version 2");
 		CabinRecord restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow()
 			.find(cabin.uuid()).orElseThrow();
 		helper.assertTrue(restored.palette().equals(palette)
@@ -435,8 +539,8 @@ public final class PortablePocketCabinGameTest {
 			== CabinWindows.Profile.INACTIVE, "Packed cabins must close their fake windows");
 
 		var blocks = CabinWindows.blocks(7, CabinWindows.Profile.DAY);
-		helper.assertTrue(blocks.size() == 18,
-			"Each interior must have two complete three-by-three fake-window panels");
+		helper.assertTrue(blocks.size() == 4,
+			"The compact interior must retain two visible fake-window panels");
 		for (BlockPos position : blocks.keySet()) {
 			helper.assertTrue(PocketDimension.isInteriorShell(7, position),
 				"Every fake-window block must remain part of the protected interior shell");
@@ -658,19 +762,20 @@ public final class PortablePocketCabinGameTest {
 	public void simulationTicketsCoverOnlyTheBoundedInterior(GameTestHelper helper) {
 		long cell = 19;
 		BlockPos center = PocketDimension.cellCenter(cell);
-		var chunks = CabinSimulation.chunksForCell(cell);
-		var expected = new HashSet<>(java.util.List.of(
-			ChunkPos.containing(center.offset(
-				-PocketDimension.INTERIOR_SHELL_RADIUS, 0, -PocketDimension.INTERIOR_SHELL_RADIUS)),
-			ChunkPos.containing(center.offset(
-				-PocketDimension.INTERIOR_SHELL_RADIUS, 0, PocketDimension.INTERIOR_SHELL_RADIUS)),
-			ChunkPos.containing(center.offset(
-				PocketDimension.INTERIOR_SHELL_RADIUS, 0, -PocketDimension.INTERIOR_SHELL_RADIUS)),
-			ChunkPos.containing(center.offset(
-				PocketDimension.INTERIOR_SHELL_RADIUS, 0, PocketDimension.INTERIOR_SHELL_RADIUS))
-		));
+		var chunks = CabinSimulation.chunksForCell(cell, CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE);
+		var bounds = PocketDimension.bounds(CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE);
+		var expected = new HashSet<ChunkPos>();
+		int minimumChunkX = Math.floorDiv(center.getX() + bounds.shellMinimumX(), 16);
+		int maximumChunkX = Math.floorDiv(center.getX() + bounds.shellMaximumX(), 16);
+		int minimumChunkZ = Math.floorDiv(center.getZ() + bounds.shellMinimumZ(), 16);
+		int maximumChunkZ = Math.floorDiv(center.getZ() + bounds.shellMaximumZ(), 16);
+		for (int chunkX = minimumChunkX; chunkX <= maximumChunkX; chunkX++) {
+			for (int chunkZ = minimumChunkZ; chunkZ <= maximumChunkZ; chunkZ++) {
+				expected.add(new ChunkPos(chunkX, chunkZ));
+			}
+		}
 		helper.assertTrue(new HashSet<>(chunks).equals(expected),
-			"Simulation tickets must cover exactly the chunks intersecting the 23x23 interior shell");
+			"Simulation tickets must cover the declared finite expansion envelope");
 
 		UUID owner = UUID.randomUUID();
 		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, BlockPos.ZERO, Direction.NORTH);

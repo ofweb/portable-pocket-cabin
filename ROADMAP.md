@@ -20,8 +20,8 @@ The project has not been publicly released. Development worlds are disposable un
 | Milestone | Outcome | Status |
 | --- | --- | --- |
 | 0 | Safe portable-cabin MVP | Complete |
-| 1 | Survival crafting and command-free relocation | Implemented; manual acceptance pending |
-| 2 | World-attuned progression and expandable pocket spaces | Planned |
+| 1 | Survival crafting and command-free relocation | Complete |
+| 2 | World-attuned progression and expandable pocket spaces | In progress |
 | 3 | Household roles, mailbox and central storage | Planned |
 | 4 | Manual functional rooms, mounts and house cats | Planned |
 | 5 | Targeted production and room automation | Planned |

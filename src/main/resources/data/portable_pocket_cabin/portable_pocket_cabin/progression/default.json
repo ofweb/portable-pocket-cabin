@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "definition_version": 1,
+  "maximum_general_size": 21,
+  "wood_pool": [
+    "portable_pocket_cabin:vanilla/wood/oak",
+    "portable_pocket_cabin:vanilla/wood/spruce",
+    "portable_pocket_cabin:vanilla/wood/birch",
+    "portable_pocket_cabin:vanilla/wood/jungle",
+    "portable_pocket_cabin:vanilla/wood/acacia",
+    "portable_pocket_cabin:vanilla/wood/dark_oak",
+    "portable_pocket_cabin:vanilla/wood/mangrove",
+    "portable_pocket_cabin:vanilla/wood/cherry",
+    "portable_pocket_cabin:vanilla/wood/pale_oak",
+    "portable_pocket_cabin:vanilla/wood/bamboo",
+    "portable_pocket_cabin:biomesoplenty/wood/fir",
+    "portable_pocket_cabin:biomesoplenty/wood/redwood",
+    "portable_pocket_cabin:biomesoplenty/wood/jacaranda",
+    "portable_pocket_cabin:biomesoplenty/wood/mahogany",
+    "portable_pocket_cabin:biomesoplenty/wood/palm",
+    "portable_pocket_cabin:biomesoplenty/wood/willow"
+  ],
+  "general_expansions": [
+    {"target_size": 5, "ingredients": [{"attuned_slot": "planks", "count": 12}, {"item": "minecraft:amethyst_block", "count": 1}, {"item": "minecraft:obsidian", "count": 4}]},
+    {"target_size": 6, "ingredients": [{"attuned_slot": "planks", "count": 16}, {"item": "minecraft:amethyst_block", "count": 2}, {"item": "minecraft:obsidian", "count": 6}]},
+    {"target_size": 7, "ingredients": [{"attuned_slot": "planks", "count": 20}, {"item": "minecraft:amethyst_block", "count": 3}, {"item": "minecraft:obsidian", "count": 8}]},
+    {"target_size": 8, "ingredients": [{"attuned_slot": "planks", "count": 24}, {"item": "minecraft:amethyst_block", "count": 4}, {"item": "minecraft:obsidian", "count": 10}]},
+    {"target_size": 9, "ingredients": [{"attuned_slot": "planks", "count": 28}, {"item": "minecraft:amethyst_block", "count": 5}, {"item": "minecraft:obsidian", "count": 12}]},
+    {"target_size": 10, "ingredients": [{"attuned_slot": "planks", "count": 32}, {"item": "minecraft:amethyst_block", "count": 6}, {"item": "minecraft:obsidian", "count": 14}]},
+    {"target_size": 11, "ingredients": [{"attuned_slot": "planks", "count": 36}, {"item": "minecraft:amethyst_block", "count": 7}, {"item": "minecraft:obsidian", "count": 16}]},
+    {"target_size": 12, "ingredients": [{"attuned_slot": "planks", "count": 40}, {"item": "minecraft:amethyst_block", "count": 8}, {"item": "minecraft:obsidian", "count": 18}]},
+    {"target_size": 13, "ingredients": [{"attuned_slot": "planks", "count": 44}, {"item": "minecraft:amethyst_block", "count": 9}, {"item": "minecraft:obsidian", "count": 20}]},
+    {"target_size": 14, "ingredients": [{"attuned_slot": "planks", "count": 48}, {"item": "minecraft:amethyst_block", "count": 10}, {"item": "minecraft:obsidian", "count": 22}]},
+    {"target_size": 15, "ingredients": [{"attuned_slot": "planks", "count": 52}, {"item": "minecraft:amethyst_block", "count": 11}, {"item": "minecraft:obsidian", "count": 24}]},
+    {"target_size": 16, "ingredients": [{"attuned_slot": "planks", "count": 56}, {"item": "minecraft:amethyst_block", "count": 12}, {"item": "minecraft:obsidian", "count": 26}]},
+    {"target_size": 17, "ingredients": [{"attuned_slot": "planks", "count": 60}, {"item": "minecraft:amethyst_block", "count": 13}, {"item": "minecraft:obsidian", "count": 28}]},
+    {"target_size": 18, "ingredients": [{"attuned_slot": "planks", "count": 64}, {"item": "minecraft:amethyst_block", "count": 14}, {"item": "minecraft:obsidian", "count": 30}]},
+    {"target_size": 19, "ingredients": [{"attuned_slot": "planks", "count": 68}, {"item": "minecraft:amethyst_block", "count": 15}, {"item": "minecraft:obsidian", "count": 32}]},
+    {"target_size": 20, "ingredients": [{"attuned_slot": "planks", "count": 72}, {"item": "minecraft:amethyst_block", "count": 16}, {"item": "minecraft:obsidian", "count": 34}]},
+    {"target_size": 21, "ingredients": [{"attuned_slot": "planks", "count": 76}, {"item": "minecraft:amethyst_block", "count": 17}, {"item": "minecraft:obsidian", "count": 36}]}
+  ]
+}
