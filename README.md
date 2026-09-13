@@ -1,10 +1,14 @@
 # Portable Pocket Cabin
 
-A Fabric 26.2 mod for a travelling play style. The MVP is implemented; its full design and delivery gates live in [SPEC.md](SPEC.md).
+A Fabric 26.2 mod for a travelling play style. The safe MVP and Milestone 1 survival-acquisition flow are implemented; the full design and delivery gates live in [SPEC.md](SPEC.md), and later implementation order lives in [ROADMAP.md](ROADMAP.md).
 
 ## Playing
 
-Craft a `Cabin Kit` from six planks, two chests, and an ender pearl. Use the kit once to preview the 5×5 cabin footprint and again within 30 seconds to deploy it. Its first successful deployment permanently binds the cabin to you and creates its pocket interior. Pack it again with `/cabin pack` while outside and within 10 blocks of its controller.
+Obtain a Block of Amethyst to reveal the three dimensional-core recipes. Craft all three cores, combine them into a Dimensional Foundation, then use the Foundation with your chosen roof planks, structural wall wood, floor planks, and door to craft a palette-aware `Cabin Kit`.
+
+Use the Kit on the top of a solid terrain block. The first use previews the 5×5 cabin footprint; use the same top surface again within 30 seconds to deploy it. The clicked surface puts the front stair directly above that block, and the door faces back toward you. Its first successful deployment permanently binds the cabin and creates a pocket interior using the selected materials.
+
+Normal-use the exterior door or lodestone controller to enter. To pack, sneak-use the same exterior lodestone twice within 10 seconds. The existing five-second evacuation and packing countdown then runs without commands.
 
 Cabins can be deployed in the Overworld, Nether, or End. Their protected interiors keep running while deployed and pause while packed. Two fake-window panels show dawn, day, sunset, night, rain, thunder, Nether, End, or closed-shutter states.
 
@@ -12,13 +16,12 @@ Normal player commands are:
 
 ```text
 /cabin status
-/cabin preview
-/cabin deploy
-/cabin pack
 /cabin trust add <player>
 /cabin trust remove <player>
 /cabin access private|trusted
 ```
+
+The lifecycle commands `/cabin preview`, `/cabin deploy`, and `/cabin pack` remain available only to operators for debugging and recovery. Material-pack authors can extend the Cabin Kit recipe through the [version 1 material-profile format](docs/material-profiles.md).
 
 ## Development
 
@@ -81,11 +84,12 @@ just server                 # start the Docker server and make ofweb an OP
 just client                 # launch Prism and join localhost:25565
 just client my-instance-id  # use a different Prism instance
 just op YourMinecraftName   # enable the development OP commands
+just fresh-world            # archive the current world and start a clean one
 just logs
 just stop
 ```
 
-The server world persists under `run/server`. `just server` provisions `ofweb` as an operator on every startup; set `PPC_OPS` to a comma-separated list of other usernames or UUIDs when needed. Export `PPC_PORT`, `PPC_MEMORY`, `PPC_SERVER`, `PPC_DNS`, `PRISM_ROOT`, `PRISM_INSTANCE_DIR`, or `PRISM_BIN` when local defaults differ. The container defaults to `PPC_DNS=1.1.1.1` to avoid host-local DNS stubs that are unreachable from Docker.
+The server world persists under `run/server`. `just fresh-world` stops the server, moves `run/server/world` into a timestamped directory under `run/world-backups`, and starts a newly generated world; it does not delete the previous world. The local development server uses peaceful difficulty and disables natural mob spawning so gameplay cannot interrupt cabin testing. `just server` provisions `ofweb` as an operator on every startup; set `PPC_OPS` to a comma-separated list of other usernames or UUIDs when needed. Export `PPC_PORT`, `PPC_MEMORY`, `PPC_SERVER`, `PPC_DNS`, `PRISM_ROOT`, `PRISM_INSTANCE_DIR`, or `PRISM_BIN` when local defaults differ. The container defaults to `PPC_DNS=1.1.1.1` to avoid host-local DNS stubs that are unreachable from Docker.
 
 ## Delivery 1 manual acceptance
 
@@ -164,12 +168,14 @@ The server world persists under `run/server`. `just server` provisions `ofweb` a
 4. Pack or orphan the cabin and confirm both panels become opaque wooden shutters.
 5. With a cabin-home binding inactive, die in each vanilla dimension and confirm near-death respawning stays in that same dimension before falling back to the last campsite.
 
-## Delivery 9 manual acceptance
+## Milestone 1 manual acceptance
 
-1. In survival, craft a Cabin Kit from six planks, two chests, and an ender pearl. Confirm its tooltip says it is unbound.
-2. Use it twice on clear, level ground. Confirm it is consumed, one cabin record is created, and the deployed cabin is immediately usable without operator permissions.
-3. Confirm a second unbound kit cannot create another cabin for the same player, while another player can bind it normally.
-4. Build the compatibility fixtures from the MVP spec inside the cabin. With Farmer's Delight Refabricated installed, include its crop and kitchen blocks; with Tom's Simple Storage installed, include a connected storage network.
-5. Pack, restart, redeploy, and repeat several times. Confirm every vanilla and modded inventory, progress state, crop, fluid, and network remains intact because the persistent interior is never serialized into the item.
-6. Remove an exterior controller with an operator command, reconcile it, and recover the new-generation item with `/cabin recover-item`.
-7. Run `./gradlew build` and confirm all GameTests and both dedicated-server persistence boots pass.
+1. Use `just fresh-world`, join in survival, and obtain a Block of Amethyst. Confirm the three core recipes appear in the normal recipe book.
+2. Craft the Logic Core, Anchor, and Folding Core, then the Foundation. Confirm each discovery reveals the next recipe stage and that every amethyst ingredient is a full block.
+3. Craft a Cabin Kit with different supported roof, structural-wall, and floor woods plus a door. Confirm mismatched materials within one row are rejected.
+4. Use the Kit on the top of a clear solid block. Confirm the first use previews, the second use on that same surface deploys, the front stair occupies the block above the click, and the door faces you. Confirm placement over lava is rejected.
+5. Enter through the door or lodestone and confirm the exterior and 21×21 interior use the chosen palette and exact door. Confirm the protected wood does not burn and the portal doors stay closed under use and redstone.
+6. Sneak-use the exterior lodestone once, let the ten-second confirmation expire, and confirm nothing changes. Sneak-use it twice, then confirm the five-second transactional countdown packs the cabin and preserves its interior.
+7. Redeploy in each supported vanilla dimension, restart while deployed and packed, and confirm item identity, palette, cabin UUID, cell, contents, and one-active-exterior guarantees survive.
+8. With Biomes O' Plenty 26.2 installed, repeat the recipe with each bundled BOP family used in every material role. Add a test datapack profile and confirm it participates in the same recipe and structure pipeline.
+9. Run `./gradlew build` and confirm all GameTests and both dedicated-server persistence boots pass.

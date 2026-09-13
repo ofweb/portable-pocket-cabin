@@ -28,9 +28,15 @@ final class PackedCabinItem extends Item {
 		TooltipFlag flag
 	) {
 		var binding = CabinItems.binding(stack);
-		if (binding.isEmpty()) {
+		if (binding.isEmpty() && CabinItems.unbound(stack).isPresent()) {
 			textConsumer.accept(Component.literal("Unbound cabin kit").withStyle(ChatFormatting.GRAY));
-			textConsumer.accept(Component.literal("Use to preview, then use again to deploy")
+			textConsumer.accept(Component.literal("Use on a solid top surface twice to deploy")
+				.withStyle(ChatFormatting.DARK_GRAY));
+			return;
+		}
+		if (binding.isEmpty()) {
+			textConsumer.accept(Component.literal("Invalid cabin item").withStyle(ChatFormatting.RED));
+			textConsumer.accept(Component.literal("This item has no usable identity or palette")
 				.withStyle(ChatFormatting.DARK_GRAY));
 			return;
 		}
@@ -39,6 +45,11 @@ final class PackedCabinItem extends Item {
 			textConsumer.accept(Component.literal("Generation: " + value.generation()).withStyle(ChatFormatting.GRAY));
 			if (value.pending()) {
 				textConsumer.accept(Component.literal("Reserved until packing completes").withStyle(ChatFormatting.YELLOW));
+			} else {
+				textConsumer.accept(Component.literal("Use on a solid top surface twice to deploy")
+					.withStyle(ChatFormatting.DARK_GRAY));
+				textConsumer.accept(Component.literal("Sneak-use the deployed lodestone twice to pack")
+					.withStyle(ChatFormatting.DARK_GRAY));
 			}
 		});
 	}
@@ -49,7 +60,7 @@ final class PackedCabinItem extends Item {
 			return InteractionResult.SUCCESS;
 		}
 		if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-			CabinPlacement.previewOrDeploy(serverPlayer);
+			serverPlayer.sendSystemMessage(Component.literal("Use the cabin item on the top of a solid block."));
 			return InteractionResult.SUCCESS_SERVER;
 		}
 		return InteractionResult.PASS;
@@ -61,7 +72,9 @@ final class PackedCabinItem extends Item {
 			return InteractionResult.SUCCESS;
 		}
 		if (context.getPlayer() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-			CabinPlacement.previewOrDeploy(serverPlayer);
+			CabinPlacement.previewOrDeploy(
+				serverPlayer, context.getClickedPos(), context.getClickedFace(), context.getItemInHand()
+			);
 			return InteractionResult.SUCCESS_SERVER;
 		}
 		return InteractionResult.PASS;

@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "planks_ingredient": "minecraft:cherry_planks",
+  "structural_wood_ingredient": "minecraft:cherry_log",
+  "planks": "minecraft:cherry_planks",
+  "structural_wood": "minecraft:cherry_log",
+  "stairs": "minecraft:cherry_stairs",
+  "slab": "minecraft:cherry_slab"
+}

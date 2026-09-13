@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "type": "door",
+  "required_mod": "biomesoplenty",
+  "door_ingredient": "biomesoplenty:hellbark_door",
+  "door": "biomesoplenty:hellbark_door"
+}

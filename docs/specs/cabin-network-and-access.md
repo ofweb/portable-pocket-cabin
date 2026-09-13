@@ -111,9 +111,10 @@ Cabin networking is a permanent paid upgrade for each participating cabin.
 - Every cabin must purchase its own connection upgrade before joining a hallway.
 - The upgrade remains installed if the cabin later leaves; its cost is not refunded.
 - An upgraded cabin may later join another hallway without repurchasing the structural upgrade.
-- Obsidian is a core mid-game connection material.
+- Obsidian forms the dimensional anchor that keeps the hallway and cabin doorway fixed in the pocket dimension.
+- Amethyst resonance identifies destinations and performs the magical routing between anchors.
 - Stronger connection tiers may require Nether and End materials.
-- Exact recipes and progression gates are data-driven.
+- Exact recipes and progression gates are data-driven and resolve their variable ingredients through the persistent world attunement in the progression specification.
 
 Connection is never implied by physical proximity. Owners mutually approve creation or membership, and a cabin belongs to at most one hallway network at a time.
 

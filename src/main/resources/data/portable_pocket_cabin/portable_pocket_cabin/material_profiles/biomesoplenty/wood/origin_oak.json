@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "required_mod": "biomesoplenty",
+  "planks_ingredient": "biomesoplenty:origin_oak_planks",
+  "structural_wood_ingredient": "biomesoplenty:origin_oak_log",
+  "planks": "biomesoplenty:origin_oak_planks",
+  "structural_wood": "biomesoplenty:origin_oak_log",
+  "stairs": "biomesoplenty:origin_oak_stairs",
+  "slab": "biomesoplenty:origin_oak_slab"
+}

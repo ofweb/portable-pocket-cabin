@@ -1,18 +1,3 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "C": "minecraft:chest",
-    "E": "minecraft:ender_pearl",
-    "P": "#minecraft:planks"
-  },
-  "pattern": [
-    "PPP",
-    "CEC",
-    "PPP"
-  ],
-  "result": {
-    "id": "portable_pocket_cabin:packed_cabin"
-  },
-  "show_notification": true
+  "type": "portable_pocket_cabin:cabin_kit"
 }

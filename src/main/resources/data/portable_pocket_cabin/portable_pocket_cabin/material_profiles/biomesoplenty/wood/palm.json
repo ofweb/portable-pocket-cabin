@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "required_mod": "biomesoplenty",
+  "planks_ingredient": "biomesoplenty:palm_planks",
+  "structural_wood_ingredient": "biomesoplenty:palm_log",
+  "planks": "biomesoplenty:palm_planks",
+  "structural_wood": "biomesoplenty:palm_log",
+  "stairs": "biomesoplenty:palm_stairs",
+  "slab": "biomesoplenty:palm_slab"
+}

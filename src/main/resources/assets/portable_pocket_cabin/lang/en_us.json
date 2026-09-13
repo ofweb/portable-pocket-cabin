@@ -1,5 +1,9 @@
 {
   "item.portable_pocket_cabin.packed_cabin": "Cabin Kit",
+  "item.portable_pocket_cabin.dimensional_logic_core": "Dimensional Logic Core",
+  "item.portable_pocket_cabin.dimensional_anchor": "Dimensional Anchor",
+  "item.portable_pocket_cabin.dimensional_folding_core": "Dimensional Folding Core",
+  "item.portable_pocket_cabin.dimensional_foundation": "Dimensional Foundation",
   "gamerule.portable_pocket_cabin.respawn_min_distance": "Cabin respawn minimum near-death distance",
   "gamerule.portable_pocket_cabin.respawn_max_distance": "Cabin respawn maximum near-death distance"
 }

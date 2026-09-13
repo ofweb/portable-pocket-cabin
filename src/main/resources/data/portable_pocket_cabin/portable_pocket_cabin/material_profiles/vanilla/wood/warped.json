@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "planks_ingredient": "minecraft:warped_planks",
+  "structural_wood_ingredient": "minecraft:warped_stem",
+  "planks": "minecraft:warped_planks",
+  "structural_wood": "minecraft:warped_stem",
+  "stairs": "minecraft:warped_stairs",
+  "slab": "minecraft:warped_slab"
+}

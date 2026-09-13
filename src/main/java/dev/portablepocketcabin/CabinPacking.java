@@ -18,6 +18,11 @@ final class CabinPacking {
 	private static final int COUNTDOWN_TICKS = 5 * 20;
 	private static final double MAX_PACK_DISTANCE_SQUARED = 10.0 * 10.0;
 	private static final Map<UUID, PackingTask> TASKS = new LinkedHashMap<>();
+	private static final Map<UUID, ArmedPacking> ARMED = new LinkedHashMap<>();
+	private static final int ARM_TICKS = 10 * 20;
+
+	private record ArmedPacking(UUID cabinId, net.minecraft.core.BlockPos controller, int expiresAt) {
+	}
 
 	private static final class PackingTask {
 		private final UUID cabinId;
@@ -40,7 +45,11 @@ final class CabinPacking {
 	static void register() {
 		ServerTickEvents.END_SERVER_TICK.register(CabinPacking::tick);
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) ->
-			abortForOwner(server, handler.player));
+		{
+			ARMED.remove(handler.player.getUUID());
+			CabinPlacement.clearPreview(handler.player.getUUID());
+			abortForOwner(server, handler.player);
+		});
 	}
 
 	static int request(ServerPlayer owner) {
@@ -94,8 +103,9 @@ final class CabinPacking {
 		}
 
 		CabinRecord packing;
+		UUID pendingItemId = UUID.randomUUID();
 		try {
-			packing = registry.beginPacking(cabin.uuid(), owner.getUUID());
+			packing = registry.beginPacking(cabin.uuid(), owner.getUUID(), pendingItemId);
 			CabinRegistry.flush(server);
 		} catch (IllegalStateException exception) {
 			owner.sendSystemMessage(Component.literal(exception.getMessage()));
@@ -103,7 +113,8 @@ final class CabinPacking {
 		}
 
 		long pendingGeneration = packing.packedItemGeneration() + 1;
-		owner.getInventory().setItem(freeSlot, CabinItems.createBound(packing, pendingGeneration, true));
+		owner.getInventory().setItem(freeSlot,
+			CabinItems.createBound(packing, pendingGeneration, true, pendingItemId));
 		PackingTask task = new PackingTask(
 			packing.uuid(), owner.getUUID(), pendingGeneration, server.getTickCount() + COUNTDOWN_TICKS
 		);
@@ -114,7 +125,31 @@ final class CabinPacking {
 		return 1;
 	}
 
+	static net.minecraft.world.InteractionResult useController(
+		ServerPlayer player, CabinRecord cabin, net.minecraft.core.BlockPos controller
+	) {
+		if (!cabin.owner().equals(player.getUUID())) {
+			player.sendSystemMessage(Component.literal("Only the cabin owner can pack this cabin."));
+			return net.minecraft.world.InteractionResult.FAIL;
+		}
+		int now = player.level().getServer().getTickCount();
+		ArmedPacking armed = ARMED.get(player.getUUID());
+		if (armed != null && armed.expiresAt() >= now && armed.cabinId().equals(cabin.uuid())
+			&& armed.controller().equals(controller)) {
+			ARMED.remove(player.getUUID());
+			return request(player) == 1
+				? net.minecraft.world.InteractionResult.SUCCESS_SERVER
+				: net.minecraft.world.InteractionResult.FAIL;
+		}
+		ARMED.put(player.getUUID(), new ArmedPacking(cabin.uuid(), controller, now + ARM_TICKS));
+		player.sendSystemMessage(Component.literal(
+			"Packing armed for 10 seconds. Sneak-use this lodestone again to confirm."
+		));
+		return net.minecraft.world.InteractionResult.SUCCESS_SERVER;
+	}
+
 	private static void tick(MinecraftServer server) {
+		ARMED.entrySet().removeIf(entry -> entry.getValue().expiresAt() < server.getTickCount());
 		for (PackingTask task : new ArrayList<>(TASKS.values())) {
 			CabinRecord cabin = CabinRegistry.get(server).find(task.cabinId).orElse(null);
 			if (cabin == null) {
@@ -183,11 +218,13 @@ final class CabinPacking {
 		CabinWindows.update(server, packed);
 		ServerLevel exteriorLevel = server.getLevel(exterior.dimension());
 		if (exteriorLevel != null) {
-			ExteriorCabin.removeProjection(exteriorLevel, exterior);
+			ExteriorCabin.removeProjection(exteriorLevel, exterior, cabin.palette());
 		}
 		CabinRegistry.get(server).markExteriorCleanupComplete(cabin.uuid());
 		ItemStack reservedItem = owner.getInventory().getItem(pendingSlot);
 		CabinItems.activatePending(reservedItem);
+		CabinRegistry.get(server).resolveDeploymentItemDelivery(cabin.uuid());
+		CabinRegistry.flush(server);
 		TASKS.remove(task.cabinId);
 		owner.sendSystemMessage(Component.literal("Cabin packed. Its interior remains unchanged."));
 		PortablePocketCabin.LOGGER.info("Packed cabin {} at item generation {}", packed.uuid(), packed.packedItemGeneration());

@@ -85,7 +85,17 @@ public final class PocketDimension {
 	}
 
 	public static void ensureCabinInterior(net.minecraft.server.level.ServerLevel level, long cellIndex) {
+		ensureCabinInterior(level, cellIndex, CabinPalette.DEFAULT);
+	}
+
+	public static void ensureCabinInterior(
+		net.minecraft.server.level.ServerLevel level, long cellIndex, CabinPalette palette
+	) {
 		BlockPos center = cellCenter(cellIndex);
+		BlockState floorState = palette.floor().planksBlock().defaultBlockState();
+		BlockState ceilingState = palette.roof().planksBlock().defaultBlockState();
+		BlockState wallState = palette.walls().planksBlock().defaultBlockState();
+		BlockState frameState = palette.walls().structuralWoodBlock().defaultBlockState();
 
 		for (int x = -INTERIOR_USABLE_RADIUS; x <= INTERIOR_USABLE_RADIUS; x++) {
 			for (int z = -INTERIOR_USABLE_RADIUS; z <= INTERIOR_USABLE_RADIUS; z++) {
@@ -100,21 +110,18 @@ public final class PocketDimension {
 			for (int z = -INTERIOR_SHELL_RADIUS; z <= INTERIOR_SHELL_RADIUS; z++) {
 				BlockPos floor = new BlockPos(center.getX() + x, CELL_FLOOR_Y, center.getZ() + z);
 				BlockPos ceiling = new BlockPos(center.getX() + x, INTERIOR_CEILING_Y, center.getZ() + z);
-				level.setBlockAndUpdate(floor, Blocks.POLISHED_ANDESITE.defaultBlockState());
-				level.setBlockAndUpdate(ceiling, Blocks.STONE_BRICKS.defaultBlockState());
+				level.setBlockAndUpdate(floor, floorState);
+				level.setBlockAndUpdate(ceiling, ceilingState);
 			}
 		}
 
 		for (int y = CELL_FLOOR_Y + 1; y < INTERIOR_CEILING_Y; y++) {
 			for (int offset = -INTERIOR_SHELL_RADIUS; offset <= INTERIOR_SHELL_RADIUS; offset++) {
-				level.setBlockAndUpdate(center.offset(-INTERIOR_SHELL_RADIUS, y - CELL_FLOOR_Y, offset),
-					Blocks.STONE_BRICKS.defaultBlockState());
-				level.setBlockAndUpdate(center.offset(INTERIOR_SHELL_RADIUS, y - CELL_FLOOR_Y, offset),
-					Blocks.STONE_BRICKS.defaultBlockState());
-				level.setBlockAndUpdate(center.offset(offset, y - CELL_FLOOR_Y, -INTERIOR_SHELL_RADIUS),
-					Blocks.STONE_BRICKS.defaultBlockState());
-				level.setBlockAndUpdate(center.offset(offset, y - CELL_FLOOR_Y, INTERIOR_SHELL_RADIUS),
-					Blocks.STONE_BRICKS.defaultBlockState());
+				BlockState state = isFrameOffset(offset) ? frameState : wallState;
+				level.setBlockAndUpdate(center.offset(-INTERIOR_SHELL_RADIUS, y - CELL_FLOOR_Y, offset), state);
+				level.setBlockAndUpdate(center.offset(INTERIOR_SHELL_RADIUS, y - CELL_FLOOR_Y, offset), state);
+				level.setBlockAndUpdate(center.offset(offset, y - CELL_FLOOR_Y, -INTERIOR_SHELL_RADIUS), state);
+				level.setBlockAndUpdate(center.offset(offset, y - CELL_FLOOR_Y, INTERIOR_SHELL_RADIUS), state);
 			}
 		}
 
@@ -125,7 +132,7 @@ public final class PocketDimension {
 			}
 		}
 
-		BlockState lowerDoor = Blocks.IRON_DOOR.defaultBlockState()
+		BlockState lowerDoor = palette.door().doorBlock().defaultBlockState()
 			.setValue(DoorBlock.FACING, net.minecraft.core.Direction.SOUTH)
 			.setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
 			.setValue(DoorBlock.HINGE, DoorHingeSide.LEFT);
@@ -133,6 +140,10 @@ public final class PocketDimension {
 		level.setBlockAndUpdate(interiorExitDoorUpper(cellIndex),
 			lowerDoor.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
 		CabinWindows.initializeInactive(level, cellIndex);
+	}
+
+	private static boolean isFrameOffset(int offset) {
+		return Math.abs(offset) == INTERIOR_SHELL_RADIUS || offset % 5 == 0;
 	}
 
 	public static BlockPos interiorEntrance(long cellIndex) {

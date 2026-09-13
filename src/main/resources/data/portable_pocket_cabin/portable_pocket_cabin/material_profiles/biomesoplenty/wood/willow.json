@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "required_mod": "biomesoplenty",
+  "planks_ingredient": "biomesoplenty:willow_planks",
+  "structural_wood_ingredient": "biomesoplenty:willow_log",
+  "planks": "biomesoplenty:willow_planks",
+  "structural_wood": "biomesoplenty:willow_log",
+  "stairs": "biomesoplenty:willow_stairs",
+  "slab": "biomesoplenty:willow_slab"
+}

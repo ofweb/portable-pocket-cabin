@@ -4,7 +4,12 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.nbt.NbtAccounter;
+import net.minecraft.nbt.NbtIo;
 import net.minecraft.util.datafix.DataFixTypes;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 
@@ -15,10 +20,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 public final class CabinRegistry extends SavedData {
-	private record RegistryData(long nextCellIndex, List<CabinRecord> cabins) {
+	private static final int SCHEMA_VERSION = 1;
+
+	private record RegistryData(int schemaVersion, long nextCellIndex, List<CabinRecord> cabins) {
 		private static final Codec<RegistryData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.INT.optionalFieldOf("schema_version")
+				.xmap(value -> value.orElse(SCHEMA_VERSION), Optional::of)
+				.forGetter(RegistryData::schemaVersion),
 			Codec.LONG.optionalFieldOf("next_cell_index", 0L).forGetter(RegistryData::nextCellIndex),
 			CabinRecord.CODEC.listOf().optionalFieldOf("cabins", List.of()).forGetter(RegistryData::cabins)
 		).apply(instance, RegistryData::new));
@@ -40,6 +56,8 @@ public final class CabinRegistry extends SavedData {
 	private final Map<Long, UUID> byCell = new LinkedHashMap<>();
 	private long nextCellIndex;
 	private long revision;
+	private static final Set<MinecraftServer> VALIDATED_SERVERS =
+		Collections.newSetFromMap(new WeakHashMap<>());
 
 	CabinRegistry() {
 	}
@@ -54,7 +72,35 @@ public final class CabinRegistry extends SavedData {
 	}
 
 	public static CabinRegistry get(MinecraftServer server) {
+		validateWorldSchema(server);
 		return server.overworld().getDataStorage().computeIfAbsent(TYPE);
+	}
+
+	private static synchronized void validateWorldSchema(MinecraftServer server) {
+		if (VALIDATED_SERVERS.contains(server)) {
+			return;
+		}
+		Path levelFolder = DimensionType.getStorageFolder(Level.OVERWORLD, server.getWorldPath(LevelResource.ROOT));
+		Path registryFile = levelFolder.resolve("data").resolve(PortablePocketCabin.MOD_ID).resolve("cabins.dat");
+		if (Files.isRegularFile(registryFile)) {
+			try {
+				var root = NbtIo.readCompressed(registryFile, NbtAccounter.defaultQuota());
+				requireSupportedSchema(root, registryFile);
+			} catch (IOException exception) {
+				throw new IllegalStateException("Could not inspect cabin registry " + registryFile, exception);
+			}
+		}
+		VALIDATED_SERVERS.add(server);
+	}
+
+	static void requireSupportedSchema(net.minecraft.nbt.CompoundTag root, Path registryFile) {
+		var data = root.getCompoundOrEmpty("data");
+		int version = data.getIntOr("schema_version", 0);
+		if (version != SCHEMA_VERSION) {
+			throw new IllegalStateException("Unsupported cabin registry schema version " + version
+				+ " in " + registryFile + ". Back up this world and run `just fresh-world` before starting Milestone 1."
+			);
+		}
 	}
 
 	public static void flush(MinecraftServer server) {
@@ -62,6 +108,10 @@ public final class CabinRegistry extends SavedData {
 	}
 
 	public synchronized CabinRecord create(UUID owner) {
+		return create(owner, CabinPalette.DEFAULT);
+	}
+
+	public synchronized CabinRecord create(UUID owner, CabinPalette palette) {
 		CabinRecord existing = findByOwner(owner).orElse(null);
 		if (existing != null) {
 			throw new IllegalStateException("Player already owns cabin " + existing.uuid());
@@ -75,7 +125,11 @@ public final class CabinRegistry extends SavedData {
 			cabinId = UUID.randomUUID();
 		} while (byId.containsKey(cabinId));
 
-		CabinRecord cabin = new CabinRecord(cabinId, owner, nextCellIndex, CabinLifecycle.PACKED);
+		CabinRecord cabin = new CabinRecord(
+			cabinId, owner, nextCellIndex, CabinLifecycle.PACKED,
+			Optional.empty(), Optional.empty(), false, 0L, false, palette, Optional.empty(), false,
+			CabinEntryPermission.OWNER_ONLY, List.of()
+		);
 		nextCellIndex++;
 		byId.put(cabin.uuid(), cabin);
 		byOwner.put(cabin.owner(), cabin.uuid());
@@ -100,6 +154,12 @@ public final class CabinRegistry extends SavedData {
 	}
 
 	public synchronized CabinRecord beginDeployment(UUID cabinId, UUID owner, CabinExterior exterior) {
+		return beginDeployment(cabinId, owner, exterior, UUID.randomUUID());
+	}
+
+	public synchronized CabinRecord beginDeployment(
+		UUID cabinId, UUID owner, CabinExterior exterior, UUID itemInstanceId
+	) {
 		CabinRecord cabin = byId.get(cabinId);
 		if (cabin == null) {
 			throw new IllegalStateException("No cabin record exists for " + cabinId);
@@ -118,6 +178,7 @@ public final class CabinRegistry extends SavedData {
 		CabinRecord deploying = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYING,
 			Optional.of(exterior), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.palette(), Optional.of(itemInstanceId), true,
 			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(deploying);
@@ -132,6 +193,7 @@ public final class CabinRegistry extends SavedData {
 		CabinRecord generated = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
 			cabin.lastExterior(), true, cabin.packedItemGeneration(), cabin.exteriorCleanupPending(),
+			cabin.palette(), cabin.lastDeploymentItemId(), cabin.deploymentItemDeliveryPending(),
 			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(generated);
@@ -149,6 +211,7 @@ public final class CabinRegistry extends SavedData {
 		CabinRecord deployed = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYED,
 			cabin.exterior(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.palette(), cabin.lastDeploymentItemId(), false,
 			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(deployed);
@@ -156,6 +219,10 @@ public final class CabinRegistry extends SavedData {
 	}
 
 	public synchronized CabinRecord beginPacking(UUID cabinId, UUID owner) {
+		return beginPacking(cabinId, owner, UUID.randomUUID());
+	}
+
+	public synchronized CabinRecord beginPacking(UUID cabinId, UUID owner, UUID itemInstanceId) {
 		CabinRecord cabin = require(cabinId);
 		if (!cabin.owner().equals(owner)) {
 			throw new IllegalStateException("Only the cabin owner may pack it");
@@ -166,6 +233,7 @@ public final class CabinRegistry extends SavedData {
 		CabinRecord packing = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKING,
 			cabin.exterior(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.palette(), Optional.of(itemInstanceId), true,
 			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(packing);
@@ -180,6 +248,7 @@ public final class CabinRegistry extends SavedData {
 		CabinRecord deployed = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYED,
 			cabin.exterior(), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.palette(), cabin.lastDeploymentItemId(), false,
 			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(deployed);
@@ -197,6 +266,7 @@ public final class CabinRegistry extends SavedData {
 		CabinRecord packed = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKED,
 			Optional.empty(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration() + 1, true,
+			cabin.palette(), cabin.lastDeploymentItemId(), true,
 			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(packed);
@@ -211,6 +281,7 @@ public final class CabinRegistry extends SavedData {
 		CabinRecord cleaned = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
 			cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.palette(), cabin.lastDeploymentItemId(), cabin.deploymentItemDeliveryPending(),
 			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(cleaned);
@@ -225,10 +296,26 @@ public final class CabinRegistry extends SavedData {
 		CabinRecord packed = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKED,
 			Optional.empty(), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.palette(), cabin.lastDeploymentItemId(), true,
 			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(packed);
 		return packed;
+	}
+
+	public synchronized CabinRecord resolveDeploymentItemDelivery(UUID cabinId) {
+		CabinRecord cabin = require(cabinId);
+		if (!cabin.deploymentItemDeliveryPending()) {
+			return cabin;
+		}
+		CabinRecord resolved = new CabinRecord(
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
+			cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(),
+			cabin.exteriorCleanupPending(), cabin.palette(), cabin.lastDeploymentItemId(), false,
+			cabin.entryPermission(), cabin.trustedPlayers()
+		);
+		replace(resolved);
+		return resolved;
 	}
 
 	public synchronized CabinRecord markOrphaned(UUID cabinId) {
@@ -237,6 +324,7 @@ public final class CabinRegistry extends SavedData {
 		CabinRecord orphaned = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.ORPHANED,
 			Optional.empty(), lastExterior, cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
+			cabin.palette(), cabin.lastDeploymentItemId(), cabin.deploymentItemDeliveryPending(),
 			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(orphaned);
@@ -255,6 +343,7 @@ public final class CabinRegistry extends SavedData {
 		CabinRecord packed = new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKED,
 			Optional.empty(), lastExterior, cabin.interiorGenerated(), cabin.packedItemGeneration() + 1, false,
+			cabin.palette(), Optional.empty(), false,
 			cabin.entryPermission(), cabin.trustedPlayers()
 		);
 		replace(packed);
@@ -333,7 +422,8 @@ public final class CabinRegistry extends SavedData {
 		return new CabinRecord(
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
 			cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(),
-			cabin.exteriorCleanupPending(), permission, trustedPlayers
+			cabin.exteriorCleanupPending(), cabin.palette(), cabin.lastDeploymentItemId(),
+			cabin.deploymentItemDeliveryPending(), permission, trustedPlayers
 		);
 	}
 
@@ -344,10 +434,14 @@ public final class CabinRegistry extends SavedData {
 	}
 
 	private synchronized RegistryData encode() {
-		return new RegistryData(nextCellIndex, new ArrayList<>(byId.values()));
+		return new RegistryData(SCHEMA_VERSION, nextCellIndex, new ArrayList<>(byId.values()));
 	}
 
 	private static DataResult<CabinRegistry> decode(RegistryData data) {
+		if (data.schemaVersion() != SCHEMA_VERSION) {
+			return DataResult.error(() -> "Unsupported cabin registry schema version " + data.schemaVersion()
+				+ ". Back up this world and run `just fresh-world` before starting Milestone 1.");
+		}
 		if (data.nextCellIndex() < 0) {
 			return DataResult.error(() -> "Cabin next cell index must be non-negative");
 		}

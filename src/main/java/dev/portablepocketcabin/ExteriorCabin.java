@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -36,26 +37,48 @@ final class ExteriorCabin {
 		return new CabinExterior(player.level().dimension(), anchor, doorFacing);
 	}
 
+	static CabinExterior previewFor(
+		net.minecraft.server.level.ServerPlayer player, BlockPos supportBlock
+	) {
+		return exteriorFor(player.level().dimension(), supportBlock, player.getDirection());
+	}
+
+	static CabinExterior exteriorFor(
+		net.minecraft.resources.ResourceKey<Level> dimension, BlockPos supportBlock, Direction playerFacing
+	) {
+		Direction doorFacing = playerFacing.getOpposite();
+		BlockPos frontStep = supportBlock.above();
+		BlockPos anchor = frontStep.relative(doorFacing.getOpposite());
+		return new CabinExterior(dimension, anchor, doorFacing);
+	}
+
 	static Map<BlockPos, BlockState> blocks(CabinExterior exterior) {
+		return blocks(exterior, CabinPalette.DEFAULT);
+	}
+
+	static Map<BlockPos, BlockState> blocks(CabinExterior exterior, CabinPalette palette) {
 		Map<BlockPos, BlockState> blocks = new LinkedHashMap<>();
+		BlockState floor = palette.floor().planksBlock().defaultBlockState();
+		BlockState roof = palette.roof().planksBlock().defaultBlockState();
+		BlockState wall = palette.walls().planksBlock().defaultBlockState();
+		BlockState frame = palette.walls().structuralWoodBlock().defaultBlockState();
 
 		for (int lateral = -CORE_RADIUS; lateral <= CORE_RADIUS; lateral++) {
 			for (int depth = 0; depth <= CORE_DEPTH; depth++) {
-				blocks.put(local(exterior, lateral, depth, 0), Blocks.POLISHED_ANDESITE.defaultBlockState());
-				blocks.put(local(exterior, lateral, depth, ROOF_Y), Blocks.BRICKS.defaultBlockState());
+				blocks.put(local(exterior, lateral, depth, 0), floor);
+				blocks.put(local(exterior, lateral, depth, ROOF_Y), roof);
 
 				if (Math.abs(lateral) == CORE_RADIUS || depth == 0 || depth == CORE_DEPTH) {
 					for (int y = 1; y < ROOF_Y; y++) {
-						BlockState wall = Math.abs(lateral) == CORE_RADIUS && (depth == 0 || depth == CORE_DEPTH)
-							? Blocks.CHISELED_STONE_BRICKS.defaultBlockState()
-							: Blocks.STONE_BRICKS.defaultBlockState();
-						blocks.put(local(exterior, lateral, depth, y), wall);
+						boolean structural = Math.abs(lateral) == CORE_RADIUS
+							&& (depth == 0 || depth == CORE_DEPTH);
+						blocks.put(local(exterior, lateral, depth, y), structural ? frame : wall);
 					}
 				}
 			}
 		}
 
-		BlockState lowerDoor = Blocks.IRON_DOOR.defaultBlockState()
+		BlockState lowerDoor = palette.door().doorBlock().defaultBlockState()
 			.setValue(DoorBlock.FACING, exterior.facing())
 			.setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
 			.setValue(DoorBlock.HINGE, DoorHingeSide.LEFT);
@@ -67,13 +90,22 @@ final class ExteriorCabin {
 		blocks.put(local(exterior, -CORE_RADIUS, 2, 2), Blocks.GLASS.defaultBlockState());
 		blocks.put(local(exterior, CORE_RADIUS, 2, 2), Blocks.GLASS.defaultBlockState());
 		blocks.put(local(exterior, 0, CORE_DEPTH, 2), Blocks.GLASS.defaultBlockState());
-		blocks.put(frontStep(exterior), Blocks.STONE_BRICKS.defaultBlockState());
+		BlockState step = palette.floor().stairsBlock().defaultBlockState()
+			.setValue(StairBlock.FACING, exterior.facing().getOpposite());
+		blocks.put(frontStep(exterior), step);
 		return Collections.unmodifiableMap(new LinkedHashMap<>(blocks));
 	}
 
 	static PlacementCheck validate(ServerLevel level, CabinExterior exterior) {
 		if (!isSupportedDimension(exterior.dimension()) || !level.dimension().equals(exterior.dimension())) {
 			return new PlacementCheck(false, "Cabins can only be deployed in the Overworld, Nether, or End");
+		}
+		for (BlockPos floor : floorAndStep(exterior)) {
+			BlockPos support = floor.below();
+			if (level.getFluidState(floor).is(net.minecraft.tags.FluidTags.LAVA)
+				|| level.getFluidState(support).is(net.minecraft.tags.FluidTags.LAVA)) {
+				return new PlacementCheck(false, "Cabins cannot be deployed on lava");
+			}
 		}
 
 		for (BlockPos pos : clearance(exterior)) {
@@ -114,13 +146,21 @@ final class ExteriorCabin {
 	}
 
 	static void place(ServerLevel level, CabinExterior exterior) {
-		for (Map.Entry<BlockPos, BlockState> entry : blocks(exterior).entrySet()) {
+		place(level, exterior, CabinPalette.DEFAULT);
+	}
+
+	static void place(ServerLevel level, CabinExterior exterior, CabinPalette palette) {
+		for (Map.Entry<BlockPos, BlockState> entry : blocks(exterior, palette).entrySet()) {
 			level.setBlockAndUpdate(entry.getKey(), entry.getValue());
 		}
 	}
 
 	static boolean projectionValid(ServerLevel level, CabinExterior exterior) {
-		for (Map.Entry<BlockPos, BlockState> entry : blocks(exterior).entrySet()) {
+		return projectionValid(level, exterior, CabinPalette.DEFAULT);
+	}
+
+	static boolean projectionValid(ServerLevel level, CabinExterior exterior, CabinPalette palette) {
+		for (Map.Entry<BlockPos, BlockState> entry : blocks(exterior, palette).entrySet()) {
 			if (!level.getBlockState(entry.getKey()).is(entry.getValue().getBlock())) {
 				return false;
 			}
@@ -138,7 +178,11 @@ final class ExteriorCabin {
 	}
 
 	static void removeProjection(ServerLevel level, CabinExterior exterior) {
-		for (Map.Entry<BlockPos, BlockState> entry : blocks(exterior).entrySet()) {
+		removeProjection(level, exterior, CabinPalette.DEFAULT);
+	}
+
+	static void removeProjection(ServerLevel level, CabinExterior exterior, CabinPalette palette) {
+		for (Map.Entry<BlockPos, BlockState> entry : blocks(exterior, palette).entrySet()) {
 			if (level.getBlockState(entry.getKey()).is(entry.getValue().getBlock())) {
 				level.setBlockAndUpdate(entry.getKey(), Blocks.AIR.defaultBlockState());
 			}
@@ -180,6 +224,10 @@ final class ExteriorCabin {
 	static boolean isEntrance(CabinExterior exterior, BlockPos pos) {
 		return pos.equals(doorLower(exterior)) || pos.equals(doorUpper(exterior))
 			|| pos.equals(controller(exterior));
+	}
+
+	static boolean isController(CabinExterior exterior, BlockPos pos) {
+		return pos.equals(controller(exterior));
 	}
 
 	static BlockPos doorLower(CabinExterior exterior) {

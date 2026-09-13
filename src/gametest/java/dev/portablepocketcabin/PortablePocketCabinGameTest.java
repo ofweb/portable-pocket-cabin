@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ChunkPos;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -67,6 +69,25 @@ public final class PortablePocketCabinGameTest {
 		helper.assertTrue(restored.findByOwner(owner).orElseThrow().uuid().equals(cabin.uuid()),
 			"Owner index must survive save/reload");
 		helper.succeed();
+	}
+
+	@GameTest
+	public void legacyRegistryIsRejectedWithoutMutation(GameTestHelper helper) {
+		var root = new net.minecraft.nbt.CompoundTag();
+		var legacyData = new net.minecraft.nbt.CompoundTag();
+		legacyData.putLong("next_cell_index", 3L);
+		root.put("data", legacyData);
+		var unchanged = root.copy();
+		try {
+			CabinRegistry.requireSupportedSchema(root, java.nio.file.Path.of("legacy-cabins.dat"));
+			helper.fail("An unversioned MVP registry must fail before it can be loaded or replaced");
+		} catch (IllegalStateException expected) {
+			helper.assertTrue(expected.getMessage().contains("just fresh-world"),
+				"Legacy-world failure must explain the fresh-world recovery command");
+			helper.assertTrue(root.equals(unchanged),
+				"Rejecting a legacy registry must not mutate its NBT data");
+			helper.succeed();
+		}
 	}
 
 	@GameTest
@@ -195,7 +216,9 @@ public final class PortablePocketCabinGameTest {
 		registry.beginDeployment(cabin.uuid(), owner, exterior);
 		registry.markInteriorGenerated(cabin.uuid());
 		registry.finishDeployment(cabin.uuid());
-		registry.beginPacking(cabin.uuid(), owner);
+		CabinRecord packing = registry.beginPacking(cabin.uuid(), owner);
+		helper.assertTrue(packing.deploymentItemDeliveryPending() && packing.lastDeploymentItemId().isPresent(),
+			"Packing must journal its reserved physical item identity before inventory mutation");
 		CabinRecord packed = registry.finishPacking(cabin.uuid());
 
 		helper.assertTrue(packed.lifecycle() == CabinLifecycle.PACKED && packed.exterior().isEmpty(),
@@ -208,6 +231,10 @@ public final class PortablePocketCabinGameTest {
 			"Every completed packing operation must advance the packed item generation");
 		helper.assertTrue(packed.exteriorCleanupPending(),
 			"Packing must journal physical exterior cleanup before removing blocks");
+		helper.assertTrue(packed.deploymentItemDeliveryPending(),
+			"A completed pack must remain owed until its reserved item is activated");
+		helper.assertTrue(!registry.resolveDeploymentItemDelivery(cabin.uuid()).deploymentItemDeliveryPending(),
+			"Activating the packed item must resolve the persisted delivery obligation");
 		helper.succeed();
 	}
 
@@ -226,7 +253,7 @@ public final class PortablePocketCabinGameTest {
 
 	@GameTest
 	public void craftedCabinKitStartsUnbound(GameTestHelper helper) {
-		ItemStack kit = new ItemStack(CabinItems.PACKED_CABIN);
+		ItemStack kit = CabinItems.createUnbound(CabinPalette.DEFAULT);
 		helper.assertTrue(CabinItems.isUnbound(kit) && CabinItems.binding(kit).isEmpty(),
 			"A crafted cabin kit must not claim an interior before its first successful deployment");
 		var recipeKey = net.minecraft.resources.ResourceKey.create(
@@ -234,6 +261,146 @@ public final class PortablePocketCabinGameTest {
 		);
 		helper.assertTrue(helper.getLevel().getServer().getRecipeManager().byKey(recipeKey).isPresent(),
 			"The survival cabin-kit recipe must be loaded");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void componentRecipesAndMaterialProfilesLoad(GameTestHelper helper) {
+		var manager = helper.getLevel().getServer().getRecipeManager();
+		for (String recipe : List.of(
+			"dimensional_logic_core", "dimensional_anchor", "dimensional_folding_core",
+			"dimensional_foundation", "cabin_kit"
+		)) {
+			var key = net.minecraft.resources.ResourceKey.create(
+				Registries.RECIPE, PortablePocketCabin.id(recipe)
+			);
+			helper.assertTrue(manager.byKey(key).isPresent(), "Recipe must load: " + recipe);
+		}
+		helper.assertTrue(CabinMaterialProfiles.woodProfileCount() == 12,
+			"Every vanilla wood family must have one unambiguous loaded profile");
+		helper.assertTrue(CabinMaterialProfiles.doorProfileCount() == 21,
+			"Every vanilla wood, iron, and copper door variant must have a loaded profile");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void cabinKitRecipeCapturesIndependentPaletteRoles(GameTestHelper helper) {
+		CabinKitRecipe recipe = new CabinKitRecipe();
+		var input = net.minecraft.world.item.crafting.CraftingInput.of(3, 3, List.of(
+			new ItemStack(Items.SPRUCE_PLANKS), new ItemStack(Items.SPRUCE_PLANKS),
+			new ItemStack(Items.SPRUCE_PLANKS), new ItemStack(Items.BIRCH_LOG),
+			new ItemStack(Items.COPPER_DOOR.asList().getFirst()), new ItemStack(Items.BIRCH_LOG),
+			new ItemStack(Items.CHERRY_PLANKS), new ItemStack(CabinItems.DIMENSIONAL_FOUNDATION),
+			new ItemStack(Items.CHERRY_PLANKS)
+		));
+		helper.assertTrue(recipe.matches(input, helper.getLevel()),
+			"The custom recipe must accept independent supported roof, wall, floor, and door roles");
+		CabinItems.Unbound first = CabinItems.unbound(recipe.assemble(input)).orElseThrow();
+		CabinItems.Unbound second = CabinItems.unbound(recipe.assemble(input)).orElseThrow();
+		helper.assertTrue(first.palette().roof().planksBlock() == Blocks.SPRUCE_PLANKS
+			&& first.palette().walls().structuralWoodBlock() == Blocks.BIRCH_LOG
+			&& first.palette().floor().planksBlock() == Blocks.CHERRY_PLANKS
+			&& first.palette().door().doorBlock() == Blocks.COPPER_DOOR.asList().getFirst(),
+			"The crafted Kit must persist the exact recipe-selected material palette");
+		helper.assertTrue(!first.itemInstanceId().equals(second.itemInstanceId()),
+			"Every physical crafting result must receive an immutable unique Kit identity");
+		var mismatched = net.minecraft.world.item.crafting.CraftingInput.of(3, 3, List.of(
+			new ItemStack(Items.SPRUCE_PLANKS), new ItemStack(Items.OAK_PLANKS),
+			new ItemStack(Items.SPRUCE_PLANKS), new ItemStack(Items.BIRCH_LOG),
+			new ItemStack(Items.COPPER_DOOR.asList().getFirst()), new ItemStack(Items.BIRCH_LOG),
+			new ItemStack(Items.CHERRY_PLANKS), new ItemStack(CabinItems.DIMENSIONAL_FOUNDATION),
+			new ItemStack(Items.CHERRY_PLANKS)
+		));
+		helper.assertTrue(!recipe.matches(mismatched, helper.getLevel()),
+			"Mismatched ingredients within one palette role must be rejected");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void paletteAndDeploymentItemObligationSurviveRecovery(GameTestHelper helper) {
+		CabinPalette palette = new CabinPalette(
+			CabinMaterialProfiles.matchPlanks(new ItemStack(Items.CHERRY_PLANKS)).orElseThrow(),
+			CabinMaterialProfiles.matchStructuralWood(new ItemStack(Items.SPRUCE_LOG)).orElseThrow(),
+			CabinMaterialProfiles.matchPlanks(new ItemStack(Items.BAMBOO_PLANKS)).orElseThrow(),
+			CabinMaterialProfiles.matchDoor(new ItemStack(Items.IRON_DOOR)).orElseThrow()
+		);
+		CabinRegistry registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID();
+		UUID itemId = UUID.randomUUID();
+		CabinRecord cabin = registry.create(owner, palette);
+		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, BlockPos.ZERO, Direction.NORTH);
+		CabinRecord deploying = registry.beginDeployment(cabin.uuid(), owner, exterior, itemId);
+		helper.assertTrue(deploying.deploymentItemDeliveryPending()
+			&& deploying.lastDeploymentItemId().orElseThrow().equals(itemId),
+			"Deployment must journal the physical source item obligation before world mutation");
+		CabinRecord rolledBack = registry.rollbackDeployment(cabin.uuid());
+		helper.assertTrue(rolledBack.lifecycle() == CabinLifecycle.PACKED
+			&& rolledBack.deploymentItemDeliveryPending() && rolledBack.palette().equals(palette),
+			"Rollback must preserve the palette and keep delivery owed");
+
+		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
+		var data = encoded.asCompound().orElseThrow();
+		helper.assertTrue(data.getIntOr("schema_version", 0) == 1,
+			"The fresh-world registry must publish explicit schema version 1");
+		CabinRecord restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow()
+			.find(cabin.uuid()).orElseThrow();
+		helper.assertTrue(restored.palette().equals(palette)
+			&& restored.lastDeploymentItemId().orElseThrow().equals(itemId)
+			&& restored.deploymentItemDeliveryPending(),
+			"Palette and unresolved item delivery must survive save/reload");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void paletteDrivesExteriorBlocks(GameTestHelper helper) {
+		CabinPalette palette = new CabinPalette(
+			CabinMaterialProfiles.matchPlanks(new ItemStack(Items.CHERRY_PLANKS)).orElseThrow(),
+			CabinMaterialProfiles.matchStructuralWood(new ItemStack(Items.SPRUCE_LOG)).orElseThrow(),
+			CabinMaterialProfiles.matchPlanks(new ItemStack(Items.BAMBOO_PLANKS)).orElseThrow(),
+			CabinMaterialProfiles.matchDoor(new ItemStack(Items.OAK_DOOR)).orElseThrow()
+		);
+		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, new BlockPos(10, 70, 10), Direction.SOUTH);
+		var blocks = ExteriorCabin.blocks(exterior, palette);
+		helper.assertTrue(blocks.get(exterior.anchor()).is(Blocks.CHERRY_PLANKS),
+			"Exterior walking surfaces must use the selected floor planks");
+		helper.assertTrue(blocks.get(ExteriorCabin.local(exterior, -2, 0, 1)).is(Blocks.SPRUCE_LOG),
+			"Exterior framing must use the selected structural wood");
+		helper.assertTrue(blocks.get(ExteriorCabin.local(exterior, 0, 2, ExteriorCabin.ROOF_Y))
+			.is(Blocks.BAMBOO_PLANKS), "Exterior roof must use the selected roof family");
+		helper.assertTrue(blocks.get(ExteriorCabin.doorLower(exterior)).is(Blocks.OAK_DOOR),
+			"Exterior door must use the exact selected door variant");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void clickedSurfaceControlsStairAndDoorOrientation(GameTestHelper helper) {
+		BlockPos support = new BlockPos(40, 70, -20);
+		for (Direction playerFacing : Direction.Plane.HORIZONTAL) {
+			CabinExterior exterior = ExteriorCabin.exteriorFor(Level.OVERWORLD, support, playerFacing);
+			helper.assertTrue(ExteriorCabin.frontStep(exterior).equals(support.above()),
+				"The cabin-owned front stair must be directly above the clicked support block");
+			helper.assertTrue(exterior.facing() == playerFacing.getOpposite(),
+				"The cabin door must face outward toward the player at preview time");
+		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void placementRejectsLavaBelowOwnedSurface(GameTestHelper helper) {
+		ServerLevel level = helper.getLevel();
+		CabinExterior exterior = new CabinExterior(
+			level.dimension(), helper.absolutePos(new BlockPos(8, 3, 8)), Direction.NORTH
+		);
+		for (int lateral = -ExteriorCabin.CORE_RADIUS; lateral <= ExteriorCabin.CORE_RADIUS; lateral++) {
+			for (int depth = 0; depth <= ExteriorCabin.CORE_DEPTH; depth++) {
+				level.setBlockAndUpdate(ExteriorCabin.local(exterior, lateral, depth, 0).below(),
+					Blocks.STONE.defaultBlockState());
+			}
+		}
+		level.setBlockAndUpdate(ExteriorCabin.frontStep(exterior).below(), Blocks.LAVA.defaultBlockState());
+		ExteriorCabin.PlacementCheck check = ExteriorCabin.validate(level, exterior);
+		helper.assertTrue(!check.valid() && check.message().contains("lava"),
+			"A cabin must never deploy with an owned floor or stair supported by lava");
 		helper.succeed();
 	}
 

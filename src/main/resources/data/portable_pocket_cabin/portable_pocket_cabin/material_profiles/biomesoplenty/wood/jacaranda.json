@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "required_mod": "biomesoplenty",
+  "planks_ingredient": "biomesoplenty:jacaranda_planks",
+  "structural_wood_ingredient": "biomesoplenty:jacaranda_log",
+  "planks": "biomesoplenty:jacaranda_planks",
+  "structural_wood": "biomesoplenty:jacaranda_log",
+  "stairs": "biomesoplenty:jacaranda_stairs",
+  "slab": "biomesoplenty:jacaranda_slab"
+}

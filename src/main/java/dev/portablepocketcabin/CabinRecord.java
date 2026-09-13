@@ -20,6 +20,9 @@ public record CabinRecord(
 	boolean interiorGenerated,
 	long packedItemGeneration,
 	boolean exteriorCleanupPending,
+	CabinPalette palette,
+	Optional<UUID> lastDeploymentItemId,
+	boolean deploymentItemDeliveryPending,
 	CabinEntryPermission entryPermission,
 	List<UUID> trustedPlayers
 ) {
@@ -33,6 +36,11 @@ public record CabinRecord(
 		Codec.BOOL.optionalFieldOf("interior_generated", false).forGetter(CabinRecord::interiorGenerated),
 		Codec.LONG.optionalFieldOf("packed_item_generation", 0L).forGetter(CabinRecord::packedItemGeneration),
 		Codec.BOOL.optionalFieldOf("exterior_cleanup_pending", false).forGetter(CabinRecord::exteriorCleanupPending),
+		CabinPalette.CODEC.fieldOf("palette").forGetter(CabinRecord::palette),
+		UUIDUtil.STRING_CODEC.optionalFieldOf("last_deployment_item_uuid")
+			.forGetter(CabinRecord::lastDeploymentItemId),
+		Codec.BOOL.optionalFieldOf("deployment_item_delivery_pending", false)
+			.forGetter(CabinRecord::deploymentItemDeliveryPending),
 		CabinEntryPermission.CODEC.optionalFieldOf("entry_permission", CabinEntryPermission.OWNER_ONLY)
 			.forGetter(CabinRecord::entryPermission),
 		UUIDUtil.STRING_CODEC.listOf().optionalFieldOf("trusted_players", List.of())
@@ -41,7 +49,7 @@ public record CabinRecord(
 
 	public CabinRecord(UUID uuid, UUID owner, long cellIndex, CabinLifecycle lifecycle) {
 		this(uuid, owner, cellIndex, lifecycle, Optional.empty(), Optional.empty(), false, 0L, false,
-			CabinEntryPermission.OWNER_ONLY, List.of());
+			CabinPalette.DEFAULT, Optional.empty(), false, CabinEntryPermission.OWNER_ONLY, List.of());
 	}
 
 	public CabinRecord(
@@ -49,7 +57,7 @@ public record CabinRecord(
 		Optional<CabinExterior> exterior, boolean interiorGenerated
 	) {
 		this(uuid, owner, cellIndex, lifecycle, exterior, Optional.empty(), interiorGenerated, 0L, false,
-			CabinEntryPermission.OWNER_ONLY, List.of());
+			CabinPalette.DEFAULT, Optional.empty(), false, CabinEntryPermission.OWNER_ONLY, List.of());
 	}
 
 	public CabinRecord(
@@ -58,7 +66,8 @@ public record CabinRecord(
 		boolean interiorGenerated, long packedItemGeneration
 	) {
 		this(uuid, owner, cellIndex, lifecycle, exterior, lastExterior,
-			interiorGenerated, packedItemGeneration, false, CabinEntryPermission.OWNER_ONLY, List.of());
+			interiorGenerated, packedItemGeneration, false, CabinPalette.DEFAULT, Optional.empty(), false,
+			CabinEntryPermission.OWNER_ONLY, List.of());
 	}
 
 	public CabinRecord(
@@ -67,7 +76,8 @@ public record CabinRecord(
 		boolean interiorGenerated, long packedItemGeneration, boolean exteriorCleanupPending
 	) {
 		this(uuid, owner, cellIndex, lifecycle, exterior, lastExterior, interiorGenerated,
-			packedItemGeneration, exteriorCleanupPending, CabinEntryPermission.OWNER_ONLY, List.of());
+			packedItemGeneration, exteriorCleanupPending, CabinPalette.DEFAULT, Optional.empty(), false,
+			CabinEntryPermission.OWNER_ONLY, List.of());
 	}
 
 	public CabinRecord {
@@ -76,6 +86,8 @@ public record CabinRecord(
 		Objects.requireNonNull(lifecycle, "lifecycle");
 		Objects.requireNonNull(exterior, "exterior");
 		Objects.requireNonNull(lastExterior, "lastExterior");
+		Objects.requireNonNull(palette, "palette");
+		Objects.requireNonNull(lastDeploymentItemId, "lastDeploymentItemId");
 		Objects.requireNonNull(entryPermission, "entryPermission");
 		Objects.requireNonNull(trustedPlayers, "trustedPlayers");
 		trustedPlayers = List.copyOf(new LinkedHashSet<>(trustedPlayers));

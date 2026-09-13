@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IOI",
+    "OBO",
+    "IOI"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "O": "minecraft:obsidian",
+    "B": "minecraft:amethyst_block"
+  },
+  "result": {
+    "id": "portable_pocket_cabin:dimensional_anchor"
+  }
+}

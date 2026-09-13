@@ -8,7 +8,7 @@ Players should be able to settle somewhere for a while, establish a campsite, fa
 
 The portable part is deliberately limited to a small cabin with a larger interior in a pocket dimension. The MVP interior is fixed-size; post-MVP progression may expand it and attach specialised rooms.
 
-The surrounding settlement remains part of the exterior world. Defences, walls, paths, animal pens, mines, docks and other local construction must be rebuilt at each new campsite.
+The surrounding settlement remains part of the exterior world. Defences, walls, paths, ordinary animal pens, mines, docks and other local construction must be rebuilt at each new campsite. Household pets and animals deliberately checked into purchased functional rooms are narrow progression exceptions, not a way to carry an entire settlement.
 
 This should make moving convenient without making location irrelevant.
 
@@ -101,7 +101,7 @@ The UUID identifies:
 - dimension-qualified exterior position, when deployed
 - last valid dimension-qualified exterior position
 - permanent interior cell index
-- cosmetic variant
+- permanent Cabin palette
 
 A packed cabin item contains the UUID and display information.
 
@@ -164,11 +164,15 @@ The first cabin begins as a craftable unbound cabin kit with no UUID or interior
 
 On its first successful placement, the authoritative registry atomically verifies that the player does not already own a cabin, creates the permanent UUID and cell index, binds the player as owner and begins the `DEPLOYING` transition.
 
-A player who already owns a cabin cannot bind another unbound kit but may give it to a player who does not own one. The exact survival recipe is a release-balancing decision and may be represented by an OP-only development command in earlier implementation deliveries.
+A player who already owns a cabin cannot bind another unbound kit but may give it to a player who does not own one.
+
+The implemented MVP recipe is a functional placeholder. Its multi-stage replacement, material budget, palette-aware Cabin Kit recipe and fresh-world policy are specified in [Cabin Acquisition and Relocation](docs/specs/cabin-acquisition-and-relocation.md).
 
 # Cabin placement
 
 An unbound cabin kit or owner-held packed cabin can be placed in the Overworld, Nether or End. Only the owner may redeploy a bound cabin during the MVP. Modded dimensions are rejected in the MVP.
+
+The post-MVP acquisition release replaces player-facing placement commands with the predictable two-use surface interaction specified in [Cabin Acquisition and Relocation](docs/specs/cabin-acquisition-and-relocation.md): the clicked terrain supports the front stair, and the door faces the player.
 
 Each cabin UUID may have only one deployed exterior across all dimensions at a time.
 
@@ -230,6 +234,8 @@ Seamless rendered portals are explicitly unnecessary.
 # Packing a cabin
 
 During the MVP, packing is performed from outside the cabin. The post-MVP connection upgrade adds network-aware packing from inside as specified in [Cabin Network and Access](docs/specs/cabin-network-and-access.md).
+
+The acquisition release makes outside packing command-free: the owner sneak-uses the exterior controller twice before the existing validation and countdown begin. Commands remain operator tools. The complete interaction contract is specified in [Cabin Acquisition and Relocation](docs/specs/cabin-acquisition-and-relocation.md).
 
 Only the cabin owner may pack it during the MVP. Before entering `PACKING`, the operation reserves enough owner inventory capacity for the bound packed item. If the owner disconnects or item delivery cannot be guaranteed, packing aborts and reconciliation restores `DEPLOYED`.
 
@@ -327,6 +333,8 @@ Pocket interiors should contain windows that visually represent conditions outsi
 
 These are deliberately fake windows rather than rendered portals.
 
+The current window presentation is acceptable only as an MVP placeholder. A later visual pass should provide substantially more fidelity and a stronger sense of depth while preserving the lightweight fake-window architecture and its readable outside-condition cues. Exact art direction is deferred until after the core progression systems are established.
+
 They should communicate enough information that players can decide whether they want to leave.
 
 At minimum:
@@ -378,6 +386,10 @@ After the MVP is stable, the progression release replaces the fixed starting lay
 
 The player's base interior and attached rooms together form that player's single cabin. The project is not yet released, so this progression release may replace MVP interior generation and persistence without a migration path.
 
+Progression is grounded in a consistent material language: amethyst resonance performs the cabin's magical pattern work, including enchanting without experience, while obsidian anchors entrances, rooms and hallways to the pocket dimension. Upgrade requirements vary between world saves through one persistent world attunement shared by every cabin in that save.
+
+The progression cabin may also become a home for one previously tamed house cat. Stable upgrades preserve individual checked-in mounts, including a dedicated flooded aquatic berth for a tamed nautilus. These residents retain their identity and never become duplicated item data or generic production counts.
+
 ---
 
 # Multiple players and connected cabins
@@ -410,15 +422,7 @@ The exterior should look like a proper Minecraft cabin rather than a tent or tec
 
 The initial implementation uses the fixed, protected structure and ownership mask defined under Cabin placement.
 
-Possible later variations:
-
-- oak cottage
-- spruce cabin
-- dark-oak cottage
-- small stone house
-- woodland cabin
-
-All variants can represent the same underlying interior.
+The acquisition release replaces its fixed stone palette with a recipe-selected Cabin palette containing independent floor, wall/frame, roof/ceiling and door materials. The same palette appears inside and outside and persists with cabin identity. Vanilla materials and a bundled Biomes O' Plenty profile are specified in [Cabin Acquisition and Relocation](docs/specs/cabin-acquisition-and-relocation.md).
 
 Cosmetic variation should preferably use ordinary Minecraft blocks and/or resource-pack-friendly models.
 
@@ -658,11 +662,14 @@ Save compatibility is required between these nine deliveries because together th
 
 # Later features
 
-Once the basic model is stable, the larger design continues in three independent feature tracks:
+Once the basic model is stable, the larger design continues in four independent feature tracks:
 
+- [Cabin Acquisition and Relocation](docs/specs/cabin-acquisition-and-relocation.md)
 - [Cabin Progression and Functional Rooms](docs/specs/cabin-progression-and-rooms.md)
 - [Cabin Storage and Automation](docs/specs/cabin-storage-and-automation.md)
 - [Cabin Network and Access](docs/specs/cabin-network-and-access.md)
+
+Their implementation order and cross-feature dependencies are maintained in [the project roadmap](ROADMAP.md).
 
 Additional later possibilities include:
 
@@ -781,6 +788,8 @@ storage
 crafting
 farming
 possessions
+a tamed house cat
+deliberately checked-in stable residents
 ```
 
 It does not carry the settlement.
@@ -791,7 +800,7 @@ Every new location still asks the players to establish themselves there:
 make the area safe
 build defences
 create paths
-house animals
+build outdoor pens for ordinary animals
 explore
 mine
 adapt to the terrain

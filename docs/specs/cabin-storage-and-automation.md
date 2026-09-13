@@ -8,6 +8,8 @@ It complements ordinary Minecraft inventories rather than replacing them. Chests
 
 Functional-room production is specified in [Cabin Progression and Functional Rooms](cabin-progression-and-rooms.md). Roles, mailboxes and cabin connections are specified in [Cabin Network and Access](cabin-network-and-access.md).
 
+Recipes for installing storage, library and automation upgrades use the persistent world attunement defined by the progression specification. The ordinary crafting, cooking and brewing recipes executed after those systems are installed do not vary merely because cabin upgrades do.
+
 ## Central cabin storage
 
 Each cabin UUID owns one authoritative persistent virtual inventory.
@@ -167,8 +169,9 @@ Vanilla applicability and incompatibility rules remain authoritative. Modded enc
 
 Cabin enchanting is material-only and never consumes player experience.
 
-- Lapis and amethyst are the primary recurring resources.
-- Obsidian appears in stronger mid-game library and enchantment tiers.
+- Amethyst is the primary recurring resource: its resonance performs the pattern work that replaces experience levels.
+- Lapis remains a secondary enchanting reagent.
+- Obsidian is used to install and strengthen the library's dimensional anchor, but is not consumed as routine enchanting fuel.
 - Nether and End materials gate the highest tiers.
 - Cost scales with enchantment rarity, requested level, number of enchantments already applied and equipment tier.
 - Treasure enchantments still require prior extraction; materials alone cannot discover them.

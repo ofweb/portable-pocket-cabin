@@ -5,6 +5,8 @@ import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,90 @@ final class CabinReconciliation {
 			String result = reconcile(server, cabin.uuid());
 			if (!"unchanged".equals(result)) {
 				PortablePocketCabin.LOGGER.info("Reconciled cabin {}: {}", cabin.uuid(), result);
+			}
+		}
+	}
+
+	static void reconcileOwnerInventory(ServerPlayer owner) {
+		MinecraftServer server = owner.level().getServer();
+		CabinRegistry registry = CabinRegistry.get(server);
+		CabinRecord cabin = registry.findByOwner(owner.getUUID()).orElse(null);
+		if (cabin == null) {
+			return;
+		}
+
+		reconcile(server, cabin.uuid());
+		cabin = registry.find(cabin.uuid()).orElseThrow();
+		Inventory inventory = owner.getInventory();
+		if (cabin.lifecycle() == CabinLifecycle.DEPLOYED) {
+			cabin.lastDeploymentItemId().ifPresent(itemId -> CabinItems.removeByInstance(inventory, itemId));
+			removeCabinItems(inventory, cabin, false);
+			return;
+		}
+		if (cabin.lifecycle() != CabinLifecycle.PACKED) {
+			return;
+		}
+
+		int validSlot = firstCurrentBoundSlot(inventory, cabin);
+		if (cabin.deploymentItemDeliveryPending()) {
+			UUID itemId = cabin.lastDeploymentItemId().orElseGet(UUID::randomUUID);
+			int sourceSlot = CabinItems.findByInstance(inventory, itemId);
+			if (sourceSlot >= 0) {
+				inventory.setItem(sourceSlot,
+					CabinItems.createBound(cabin, cabin.packedItemGeneration(), false, itemId));
+				validSlot = sourceSlot;
+			} else if (validSlot < 0) {
+				int freeSlot = inventory.getFreeSlot();
+				if (freeSlot < 0) {
+					owner.sendSystemMessage(net.minecraft.network.chat.Component.literal(
+						"Your Packed Cabin is waiting for delivery. Free one inventory slot and reconnect."
+					));
+					return;
+				}
+				inventory.setItem(freeSlot,
+					CabinItems.createBound(cabin, cabin.packedItemGeneration(), false, itemId));
+				validSlot = freeSlot;
+			}
+			registry.resolveDeploymentItemDelivery(cabin.uuid());
+			CabinRegistry.flush(server);
+			owner.sendSystemMessage(net.minecraft.network.chat.Component.literal(
+				"Your interrupted cabin deployment was recovered as a Packed Cabin."
+			));
+		}
+		removeDuplicateCurrentItems(inventory, cabin, validSlot);
+	}
+
+	private static int firstCurrentBoundSlot(Inventory inventory, CabinRecord cabin) {
+		for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+			CabinItems.Binding binding = CabinItems.binding(inventory.getItem(slot)).orElse(null);
+			if (binding != null && !binding.pending() && binding.cabinId().equals(cabin.uuid())
+				&& binding.generation() == cabin.packedItemGeneration()
+				&& binding.palette().equals(cabin.palette())) {
+				return slot;
+			}
+		}
+		return Inventory.NOT_FOUND_INDEX;
+	}
+
+	private static void removeDuplicateCurrentItems(Inventory inventory, CabinRecord cabin, int keepSlot) {
+		for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+			if (slot == keepSlot) {
+				continue;
+			}
+			CabinItems.Binding binding = CabinItems.binding(inventory.getItem(slot)).orElse(null);
+			if (binding != null && binding.cabinId().equals(cabin.uuid())
+				&& binding.generation() == cabin.packedItemGeneration()) {
+				inventory.setItem(slot, ItemStack.EMPTY);
+			}
+		}
+	}
+
+	private static void removeCabinItems(Inventory inventory, CabinRecord cabin, boolean pendingOnly) {
+		for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+			CabinItems.Binding binding = CabinItems.binding(inventory.getItem(slot)).orElse(null);
+			if (binding != null && binding.cabinId().equals(cabin.uuid())
+				&& (!pendingOnly || binding.pending())) {
+				inventory.setItem(slot, ItemStack.EMPTY);
 			}
 		}
 	}
@@ -134,13 +220,18 @@ final class CabinReconciliation {
 		}
 		CabinExterior exterior = cabin.exterior().get();
 		ServerLevel level = server.getLevel(exterior.dimension());
-		return level != null && ExteriorCabin.projectionValid(level, exterior);
+		return level != null && ExteriorCabin.projectionValid(level, exterior, cabin.palette());
 	}
 
 	private static void removeProjection(MinecraftServer server, CabinExterior exterior) {
 		ServerLevel level = server.getLevel(exterior.dimension());
 		if (level != null) {
-			ExteriorCabin.removeProjection(level, exterior);
+			CabinRecord cabin = CabinRegistry.get(server).cabins().stream()
+				.filter(candidate -> candidate.exterior().filter(exterior::equals).isPresent()
+					|| candidate.lastExterior().filter(exterior::equals).isPresent())
+				.findFirst().orElse(null);
+			ExteriorCabin.removeProjection(level, exterior,
+				cabin == null ? CabinPalette.DEFAULT : cabin.palette());
 		}
 	}
 

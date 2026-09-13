@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "required_mod": "biomesoplenty",
+  "planks_ingredient": "biomesoplenty:redwood_planks",
+  "structural_wood_ingredient": "biomesoplenty:redwood_log",
+  "planks": "biomesoplenty:redwood_planks",
+  "structural_wood": "biomesoplenty:redwood_log",
+  "stairs": "biomesoplenty:redwood_stairs",
+  "slab": "biomesoplenty:redwood_slab"
+}

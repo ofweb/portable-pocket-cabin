@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "required_mod": "biomesoplenty",
+  "planks_ingredient": "biomesoplenty:magic_planks",
+  "structural_wood_ingredient": "biomesoplenty:magic_log",
+  "planks": "biomesoplenty:magic_planks",
+  "structural_wood": "biomesoplenty:magic_log",
+  "stairs": "biomesoplenty:magic_stairs",
+  "slab": "biomesoplenty:magic_slab"
+}

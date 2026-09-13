@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SAS",
+    "CLC",
+    "SFS"
+  ],
+  "key": {
+    "S": "minecraft:lodestone",
+    "A": "portable_pocket_cabin:dimensional_anchor",
+    "C": "minecraft:cut_copper",
+    "L": "portable_pocket_cabin:dimensional_logic_core",
+    "F": "portable_pocket_cabin:dimensional_folding_core"
+  },
+  "result": {
+    "id": "portable_pocket_cabin:dimensional_foundation"
+  }
+}

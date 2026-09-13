@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_foundation": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "portable_pocket_cabin:dimensional_foundation"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "portable_pocket_cabin:cabin_kit"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_foundation",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "portable_pocket_cabin:cabin_kit"
+    ]
+  }
+}

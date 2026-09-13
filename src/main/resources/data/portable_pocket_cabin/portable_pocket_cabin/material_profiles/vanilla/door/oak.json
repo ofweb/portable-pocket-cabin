@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "type": "door",
+  "door_ingredient": "minecraft:oak_door",
+  "door": "minecraft:oak_door"
+}

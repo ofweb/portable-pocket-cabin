@@ -14,6 +14,17 @@ build:
 test:
     ./gradlew build
 
+# Verify that the local development server cannot naturally spawn mobs.
+test-dev-config:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    compose_config="$(docker compose config)"
+    grep -Fq 'DIFFICULTY: peaceful' <<<"$compose_config"
+    grep -Fq 'SPAWN_ANIMALS: "false"' <<<"$compose_config"
+    grep -Fq 'SPAWN_MONSTERS: "false"' <<<"$compose_config"
+    grep -Fq 'SPAWN_NPCS: "false"' <<<"$compose_config"
+    grep -Fq 'gamerule spawn_mobs false' <<<"$compose_config"
+
 # Stage exactly one local mod jar for Docker and Prism.
 stage: build
     #!/usr/bin/env bash
@@ -63,6 +74,28 @@ client instance=prism_instance: stage
 
 # Start the server, then launch Prism and connect.
 dev: server client
+
+# Archive the current development world and start a fresh one.
+fresh-world:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    docker compose down
+    current_world="run/server/world"
+    if [[ -d "$current_world" ]]; then
+        backup_root="run/world-backups"
+        timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
+        archived_world="$backup_root/world-$timestamp"
+        if [[ -e "$archived_world" ]]; then
+            echo "Refusing to overwrite existing world backup: $archived_world" >&2
+            exit 1
+        fi
+        mkdir -p "$backup_root"
+        mv -- "$current_world" "$archived_world"
+        echo "Archived previous development world to $archived_world"
+    else
+        echo "No existing development world found; starting clean."
+    fi
+    just server
 
 # Follow the Minecraft server logs.
 logs:

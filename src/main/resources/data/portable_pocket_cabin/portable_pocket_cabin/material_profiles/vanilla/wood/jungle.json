@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "planks_ingredient": "minecraft:jungle_planks",
+  "structural_wood_ingredient": "minecraft:jungle_log",
+  "planks": "minecraft:jungle_planks",
+  "structural_wood": "minecraft:jungle_log",
+  "stairs": "minecraft:jungle_stairs",
+  "slab": "minecraft:jungle_slab"
+}

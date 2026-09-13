@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "type": "door",
+  "required_mod": "biomesoplenty",
+  "door_ingredient": "biomesoplenty:jacaranda_door",
+  "door": "biomesoplenty:jacaranda_door"
+}

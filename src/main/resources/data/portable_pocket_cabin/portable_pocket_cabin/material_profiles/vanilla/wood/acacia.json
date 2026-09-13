@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "planks_ingredient": "minecraft:acacia_planks",
+  "structural_wood_ingredient": "minecraft:acacia_log",
+  "planks": "minecraft:acacia_planks",
+  "structural_wood": "minecraft:acacia_log",
+  "stairs": "minecraft:acacia_stairs",
+  "slab": "minecraft:acacia_slab"
+}

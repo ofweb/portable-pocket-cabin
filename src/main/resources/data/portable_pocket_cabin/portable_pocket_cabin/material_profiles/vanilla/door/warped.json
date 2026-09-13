@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "type": "door",
+  "door_ingredient": "minecraft:warped_door",
+  "door": "minecraft:warped_door"
+}

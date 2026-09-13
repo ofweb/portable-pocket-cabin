@@ -19,7 +19,13 @@ services:
       MEMORY: "${PPC_MEMORY:-2G}"
       OPS: "${PPC_OPS:-ofweb}"
       MOTD: "Portable Pocket Cabin development server"
+      DIFFICULTY: "peaceful"
+      SPAWN_ANIMALS: "false"
+      SPAWN_MONSTERS: "false"
+      SPAWN_NPCS: "false"
       SPAWN_PROTECTION: "0"
+      RCON_CMDS_STARTUP: |-
+        gamerule spawn_mobs false
     volumes:
       - ./run/server:/data
       - ./build/dev-mods:/mods:ro

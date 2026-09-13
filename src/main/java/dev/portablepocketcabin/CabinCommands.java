@@ -53,9 +53,15 @@ final class CabinCommands {
 						context.getSource(),
 						UuidArgument.getUuid(context, "uuid")
 					))))
-			.then(Commands.literal("preview").executes(context -> preview(context.getSource())))
-			.then(Commands.literal("deploy").executes(context -> deploy(context.getSource())))
-			.then(Commands.literal("pack").executes(context -> pack(context.getSource())))
+			.then(Commands.literal("preview")
+				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+				.executes(context -> preview(context.getSource())))
+			.then(Commands.literal("deploy")
+				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+				.executes(context -> deploy(context.getSource())))
+			.then(Commands.literal("pack")
+				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+				.executes(context -> pack(context.getSource())))
 			.then(Commands.literal("trust")
 				.then(Commands.literal("add")
 					.then(Commands.argument("player", EntityArgument.player())
@@ -197,6 +203,8 @@ final class CabinCommands {
 				+ exterior + lastExterior + " interior_generated=" + cabin.interiorGenerated()
 				+ " item_generation=" + cabin.packedItemGeneration()
 				+ " cleanup_pending=" + cabin.exteriorCleanupPending()
+				+ " palette=" + cabin.palette()
+				+ " item_delivery_pending=" + cabin.deploymentItemDeliveryPending()
 				+ " access=" + cabin.entryPermission().serializedName()
 				+ " trusted=" + cabin.trustedPlayers()), false);
 		return 1;

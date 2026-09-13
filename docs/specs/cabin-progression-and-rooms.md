@@ -16,8 +16,9 @@ Progression should:
 
 - begin with a genuinely small but usable home
 - make every increase in general-purpose space valuable
-- reward travel through varied biomes, structures and dimensions
-- make obsidian a meaningful mid-game cabin material
+- reward travel through varied biomes, structures and dimensions, with different material requirements in different world saves
+- establish amethyst as the active magical medium of the cabin system
+- make obsidian the material that anchors rooms and connections to the pocket dimension
 - provide specialised rooms that players inhabit, operate and customise
 - remove repetitive resource chores gradually rather than granting an instant all-purpose factory
 - remain safe and bounded while cabins are packed or unoccupied
@@ -55,7 +56,16 @@ A cabin is a graph of persistent bounded spaces rather than one indefinitely exp
 
 This model lets individual rooms expand without moving neighbouring cabins or reserving the maximum possible compound for every owner.
 
-## Upgrade requirements
+## Cabin magic and material language
+
+Cabin progression uses two materials for different purposes:
+
+- **Amethyst carries resonance.** Amethyst preserves learned patterns and performs the magical work behind cabin control, enchanting and automation. It is the primary recurring magical material when the cabin computes or transforms something.
+- **Obsidian forms dimensional anchors.** Obsidian fixes entrances, rooms and hallway connections to the pocket dimension. It is primarily an installed structural cost when adding or strengthening dimensional capacity, not routine fuel for work the cabin performs.
+
+This distinction guides default recipes without requiring every upgrade to contain both materials. A room expansion may need more anchoring, an automation or enchanting operation may consume resonance, and a complex new room may need both.
+
+## World-attuned upgrade requirements
 
 Upgrade requirements are data-driven. A requirement set may specify:
 
@@ -68,13 +78,27 @@ Upgrade requirements are data-driven. A requirement set may specify:
 
 The default definitions must provide a vanilla progression. Optional integration profiles may replace or extend those definitions when compatible mods are installed. Servers and modpacks may override them with datapacks.
 
+Each world save creates one persistent **world attunement** before its first cabin upgrade is purchased. The attunement resolves declared variable slots in upgrade requirements, such as:
+
+- one specific wood family used by structural upgrades
+- offerings associated with selected Overworld biome families
+- materials associated with the Nether, End or supported modded exploration profiles
+
+For example, one world may ask for spruce components and a desert offering where another asks for dark-oak components and a cold-biome offering. A resolved wood slot requires the selected family rather than accepting any item in the general planks or logs tag.
+
+The same attunement applies to every cabin and player in the save. Its resolved material identifiers and definition version are persisted; restarts, seed reuse, configuration reloads and later mod or datapack changes must not silently reroll existing requirements. Deliberate administrative migration may replace invalid definitions, but it must be explicit and must report affected upgrades before committing.
+
+Attunement pools may contain only declared, loaded materials with a valid acquisition profile for that world configuration. Optional integrations contribute candidates only while their required content and world generation are present. Every pool must have a vanilla fallback, and the selection process must fail closed rather than produce an impossible recipe.
+
+All resolved requirements are visible through the recipe book or cabin progression interface from the beginning. Biome-associated requirements identify the broad environment to explore without revealing exact coordinates. World variation is intended to change exploration goals, not create hidden recipe guessing.
+
 Structure-exclusive treasure should normally be a discovery catalyst rather than a repeatedly consumed ingredient. This preserves the exploration gate without turning finite structure loot into an ongoing multiplayer bottleneck.
 
 The intended broad material arc is:
 
 1. common Overworld wood, stone and agricultural materials
 2. materials gathered from increasingly varied Overworld biomes
-3. rarer structure discoveries and obsidian
+3. rarer structure discoveries, stronger amethyst resonance and obsidian anchors
 4. Nether materials for stronger dimensional connections and magical infrastructure
 5. End materials for the highest cabin and automation tiers
 
@@ -187,6 +211,37 @@ Residents may store and retrieve their own mounts. A mount may be released only 
 
 Unsupported entities are rejected with a clear explanation. Stable upgrades add managed stalls and may unlock additional explicitly supported mount categories.
 
+### Aquatic berth and nautilus
+
+The base stable uses dry stalls. An **aquatic berth** upgrade adds a protected, fully flooded stall and explicitly supports a normal tamed nautilus as a stable resident.
+
+The nautilus must already have been tamed, must be owned by the player checking it in and must be dismounted. Check-in preserves the same global entity UUID, owner, health, custom name, saddle, nautilus armour and other allowlisted vanilla nautilus state. Wild nautiluses and zombie nautiluses are not eligible for the initial upgrade.
+
+While the stable room is active, the nautilus is visibly materialised in the berth with enough water to avoid suffocation. While inactive or packed, its authoritative stable record remains attached to the cabin like any other checked-in mount.
+
+Checkout uses an aquatic destination resolver. It requires sufficient connected water, collision-free space and no immediate environmental hazard at the destination. A dry exterior, shallow decorative pool or obstructed water volume is rejected without removing the nautilus from its berth. This allows a player to carry a checked-in nautilus between oceans without ever materialising it on land.
+
+The aquatic berth is a stable-capacity upgrade, not a livestock room: it does not breed nautiluses, generate shells or abstract the animal into production.
+
+## House cats
+
+A house cat is a companion resident of the general cabin interior, not a stable mount or livestock population. The base progression cabin supports one house cat without requiring a stable upgrade.
+
+The owner must first tame a cat normally in the exterior world. While the cabin is deployed, the owner can bring that same cat through the entrance and deliberately assign the cabin as its home at the interior controller. Wild cats, another player's cats and cats already homed to another cabin are rejected. Registration preserves the cat's global entity UUID, owner, appearance, custom name, health and other safe vanilla state.
+
+A homed cat behaves like a house cat rather than continuously following its owner:
+
+- it remains in the general interior when the owner leaves through the exterior or hallway
+- while not ordered to sit, it roams within the safe interior and favours beds, warm blocks, carpets, window perches and nearby owners
+- the owner can still tell it to sit or stand using normal pet interaction
+- it may sleep near its sleeping owner and produce vanilla cat gifts only from a real completed sleep event while the room is active
+- it never generates gifts, breeding progress or other outputs through packed-time catch-up
+- it cannot automatically cross a cabin exit, hallway door or functional-room boundary
+
+The room controller keeps the cat away from the protected exit and void boundary. A homed cat is protected from damage and is returned to its home position if pathfinding or an owner-built hazard leaves it outside the safe interior. Because it cannot accompany players outside, this protection cannot be used to create an invulnerable combat pet. Other players cannot move or release it.
+
+The owner may explicitly release the cat from its cabin home while the exterior is deployed. Release requires a safe exterior destination and removes the cabin protections; it never creates a second copy. Packing, hallway access and owner logout leave the cat safely at home.
+
 ## Livestock rooms
 
 Livestock production is a late-game feature purchased separately for each supported animal type.
@@ -248,6 +303,7 @@ A later kiln capability converts managed forestry output into charcoal through i
 At minimum, functional rooms must be able to explain:
 
 - missing or unsupported seed, sapling, animal or mount
+- wild, differently owned or already homed cat
 - missing feed or process input
 - full local fixture or cabin storage
 - population below the configured surplus threshold
@@ -261,6 +317,7 @@ These messages follow the visibility rules in the network and access specificati
 ## Balancing decisions intentionally left data-driven
 
 - exact upgrade recipes and quantities
+- world-attunement material pools, exclusions and selection weights
 - maximum general-room dimensions
 - functional-room dimensions and tier counts
 - catch-up duration caps

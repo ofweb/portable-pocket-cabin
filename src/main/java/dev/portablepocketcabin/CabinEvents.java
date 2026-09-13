@@ -35,6 +35,10 @@ final class CabinEvents {
 			CabinRecord exteriorCabin = CabinProtection.findExteriorEntrance(serverLevel, hit.getBlockPos())
 				.orElse(null);
 			if (exteriorCabin != null) {
+				if (player.isShiftKeyDown() && exteriorCabin.exterior().isPresent()
+					&& ExteriorCabin.isController(exteriorCabin.exterior().get(), hit.getBlockPos())) {
+					return CabinPacking.useController(serverPlayer, exteriorCabin, hit.getBlockPos());
+				}
 				return enter(serverPlayer, exteriorCabin);
 			}
 
@@ -49,7 +53,10 @@ final class CabinEvents {
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			ServerPlayer player = handler.player;
-			server.execute(() -> recoverOfflineOccupant(player));
+			server.execute(() -> {
+				CabinReconciliation.reconcileOwnerInventory(player);
+				recoverOfflineOccupant(player);
+			});
 		});
 
 		ServerChunkEvents.CHUNK_LOAD.register((level, chunk, newlyGenerated) ->
