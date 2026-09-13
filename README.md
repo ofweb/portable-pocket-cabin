@@ -1,6 +1,6 @@
 # Portable Pocket Cabin
 
-A Fabric 26.2 mod for a travelling play style. The safe MVP and Milestone 1 survival-acquisition flow are complete, and Milestone 2 progression work is underway; the full design and delivery gates live in [SPEC.md](SPEC.md), and later implementation order lives in [ROADMAP.md](ROADMAP.md).
+A Fabric 26.2 mod for a travelling play style. The safe MVP and Milestone 1 survival-acquisition flow are complete, and Milestone 2 progression work is underway. The [roadmap](ROADMAP.md) links each milestone's design, implementation plan, and acceptance gates.
 
 ## Playing
 
@@ -23,7 +23,7 @@ Normal player commands are:
 /cabin access private|trusted
 ```
 
-The lifecycle commands `/cabin preview`, `/cabin deploy`, and `/cabin pack` remain available only to operators for debugging and recovery. Material-pack authors can extend the Cabin Kit recipe through the [version 1 material-profile format](docs/material-profiles.md).
+The lifecycle commands `/cabin preview`, `/cabin deploy`, and `/cabin pack` remain available only to operators for debugging and recovery. Material-pack authors can extend the Cabin Kit recipe through the [version 1 material-profile format](docs/roadmap/01-acquisition-relocation.md#material-profile-format).
 
 ## Development
 
@@ -92,94 +92,3 @@ just stop
 ```
 
 The server world persists under `run/server`. `just fresh-world` stops the server, moves `run/server/world` into a timestamped directory under `run/world-backups`, and starts a newly generated world; it does not delete the previous world. The local development server uses peaceful difficulty and disables natural mob spawning so gameplay cannot interrupt cabin testing. `just server` provisions `ofweb` as an operator on every startup; set `PPC_OPS` to a comma-separated list of other usernames or UUIDs when needed. Export `PPC_PORT`, `PPC_MEMORY`, `PPC_SERVER`, `PPC_DNS`, `PRISM_ROOT`, `PRISM_INSTANCE_DIR`, or `PRISM_BIN` when local defaults differ. The container defaults to `PPC_DNS=1.1.1.1` to avoid host-local DNS stubs that are unreachable from Docker.
-
-The delivery and Milestone 1 checklists below record their historical acceptance gates. Milestone 2 deliberately supersedes their 21×21 interior expectation with the current 4×4 progression shell.
-
-## Delivery 1 manual acceptance
-
-1. Run `./gradlew runServer` and join with a Fabric 26.2 client carrying the same mod build.
-2. Confirm `/cabin status` reports `pocket_dimension=ready`.
-3. Run `/cabin visit-test`; confirm the world is empty except for the generated safety platform.
-4. Run `/cabin leave-test`; confirm you return safely to the Overworld spawn.
-5. Stop and restart the server, then repeat steps 2–4.
-
-## Delivery 2 manual acceptance
-
-1. Start a fresh development world and run `/cabin create` as an operator.
-2. Confirm `/cabin list` shows one `PACKED` record with cell `0`, then copy its UUID.
-3. Confirm a second `/cabin create` is rejected because the player already owns a cabin.
-4. Run `/cabin inspect <uuid>` and `/cabin visit <uuid>`; confirm the reported coordinates agree and the pocket dimension contains a lit debug marker.
-5. Restart the server and confirm `/cabin list` still shows the same UUID, owner, cell and lifecycle.
-6. Join as a second player (or run `/cabin create <player>`) and confirm the new cabin receives cell `1`, then visit its distinct marker.
-
-## Delivery 3 manual acceptance
-
-1. Start a fresh development world, run `/cabin create`, and find a flat, clear patch of Overworld ground.
-2. Run `/cabin preview`; confirm particles trace the 5×5 footprint in front of you and the command reports whether it is clear.
-3. Run `/cabin deploy` within 30 seconds; confirm a small stone cabin appears with an iron door and lodestone controller.
-4. Interact with the exterior iron door or controller; confirm you enter a lit 21×21 pocket interior.
-5. Interact with the interior iron door; confirm you return outside the exterior doorway.
-6. In survival and creative mode, confirm the exterior and interior shell cannot be broken. Trigger an explosion and a piston beside the exterior and confirm its owned blocks remain intact.
-7. Restart the server, run `/cabin list` and `/cabin inspect <uuid>`, and confirm the cabin remains `DEPLOYED` with the same Overworld position and facing.
-8. Confirm `/cabin preview` refuses a second deployment and that a different player cannot enter the first player's cabin during this delivery.
-
-## Delivery 4 manual acceptance
-
-1. Start a fresh world and run `/cabin create`; confirm a bound `Packed Cabin` item appears and its tooltip shows the cabin UUID and generation `0`.
-2. Preview and deploy the cabin. Confirm deployment consumes the bound item, then place a few blocks or items inside the pocket interior.
-3. Fill every owner inventory slot, stand outside within 10 blocks of the controller, and run `/cabin pack`; confirm packing is rejected before the lifecycle changes.
-4. Free one slot and run `/cabin pack` again. Confirm the entrance locks immediately, occupants see the five-second countdown, and online occupants are evacuated safely.
-5. Confirm the exterior's exact owned mask disappears without changing adjacent player blocks, the cabin becomes `PACKED`, and the reserved item becomes a valid generation `1` `Packed Cabin`.
-6. Redeploy from that item at another clear Overworld site. Confirm the same interior contents remain and the old item was consumed.
-7. Run `/cabin reconcile <uuid>` on the valid deployment and confirm it remains unchanged. Confirm `/cabin recover-item <uuid> <owner>` refuses while that exterior is valid.
-8. Remove the controller with an operator `/setblock` command, run `/cabin reconcile <uuid>`, and confirm the cabin becomes `ORPHANED`. Then run `/cabin recover-item <uuid> <owner>` and confirm it becomes `PACKED` with a newer item generation.
-
-## Delivery 5 manual acceptance
-
-1. Join with two clients, create and deploy a cabin as its owner, and confirm the second player cannot enter while access is private.
-2. As the owner, run `/cabin trust add <second-player>` and `/cabin access trusted`; confirm the second player can enter.
-3. While the second player is outside, run `/cabin trust remove <second-player>` and confirm their next entry attempt is rejected. Add them again and confirm entry works without redeploying.
-4. Leave the second player inside and disconnect that client. Pack and redeploy the cabin elsewhere, then reconnect; confirm the returning player is moved safely to the new exterior.
-5. Repeat the disconnect test but leave the cabin packed; confirm reconnecting moves the player to the last safe campsite (or the Overworld spawn fallback).
-6. With both clients ready at the exterior, issue duplicate `/cabin deploy` or `/cabin pack` requests as closely together as possible. Confirm exactly one transition starts and no duplicate entrance or packed item becomes active.
-7. Start packing while the trusted player repeatedly interacts with the exterior entrance. Confirm entry is denied for the full countdown and all occupants are evacuated.
-
-## Delivery 6 manual acceptance
-
-1. Deploy a cabin and place a chest containing named items, a lit furnace smelting a stack, a hydrated crop plot, and a contained water source inside the pocket interior.
-2. Leave the cabin empty and remain in the Overworld. After several minutes, return and confirm crops and the furnace continued progressing without a player in the pocket dimension.
-3. Run `/cabin status` and confirm `simulated_cabins=1` while the cabin is deployed.
-4. Pack the cabin and confirm `/cabin status` reports `simulated_cabins=0`. Leave it packed long enough that the same furnace stack would otherwise finish and confirm its progress stayed paused.
-5. Redeploy and confirm the chest items, furnace inventory/progress, water, farmland, and crops are unchanged apart from simulation that occurred while deployed.
-6. Confirm `/cabin status` returns to `simulated_cabins=1`, then verify the furnace and crops resume progressing without a player remaining inside.
-7. Restart the server once while deployed and once while packed; confirm simulation resumes only for the deployed state and all fixture contents survive both restarts.
-
-## Delivery 7 manual acceptance
-
-1. Place a bed inside a deployed cabin, sleep in it as the owner, and confirm the cabin-home binding message appears. Sleep in another bed in the same cabin and confirm the new bed replaces the previous home.
-2. Let a trusted visitor sleep in the cabin, then kill that visitor; confirm sleeping did not replace the visitor's existing respawn behavior.
-3. Die while the cabin is deployed and its bound bed has safe adjacent space; confirm respawning beside the bed. Obstruct or remove the bed, die again, and confirm respawning safely outside the current doorway.
-4. Pack the cabin, die in the Overworld, and confirm respawning at a safe point 128–256 horizontal blocks from the death position. Repeat after orphaning the cabin.
-5. Die inside the pocket dimension while the cabin is inactive and confirm near-death search never selects a pocket coordinate; the last exterior or Overworld spawn is used.
-6. Change both namespaced respawn-distance gamerules, run `/cabin status`, and confirm it reports the effective configured range.
-7. Die, leave the death screen open, and have packing begin before clicking Respawn; confirm the player is never returned inside the now-inactive cabin.
-
-## Delivery 8 manual acceptance
-
-1. Deploy and pack the same cabin once in each of the Overworld, Nether, and End. Confirm entry, exit, and occupant evacuation remain in the exterior dimension.
-2. In the Overworld, use `/time set` and `/weather` to confirm the interior panels distinguish dawn, day, sunset, night, rain, and thunder.
-3. Deploy in the Nether and End and confirm the panels use static red/orange and purple/magenta profiles respectively.
-4. Pack or orphan the cabin and confirm both panels become opaque wooden shutters.
-5. With a cabin-home binding inactive, die in each vanilla dimension and confirm near-death respawning stays in that same dimension before falling back to the last campsite.
-
-## Milestone 1 manual acceptance
-
-1. Use `just fresh-world`, join in survival, and obtain a Block of Amethyst. Confirm the three core recipes appear in the normal recipe book.
-2. Craft the Logic Core, Anchor, and Folding Core, then the Foundation. Confirm each discovery reveals the next recipe stage and that every amethyst ingredient is a full block.
-3. Craft a Cabin Kit with different supported roof, structural-wall, and floor woods plus a door. Confirm mismatched materials within one row are rejected.
-4. Use the Kit on the top of a clear solid block. Confirm the first use previews, the second use on that same surface deploys, the front stair occupies the block above the click, and the door faces you. Confirm placement over lava is rejected.
-5. Enter through the door or lodestone and confirm the exterior and 21×21 interior use the chosen palette and exact door. Confirm the protected wood does not burn and the portal doors stay closed under use and redstone.
-6. Sneak-use the exterior lodestone once, let the ten-second confirmation expire, and confirm nothing changes. Sneak-use it twice, then confirm the five-second transactional countdown packs the cabin and preserves its interior.
-7. Redeploy in each supported vanilla dimension, restart while deployed and packed, and confirm item identity, palette, cabin UUID, cell, contents, and one-active-exterior guarantees survive.
-8. With Biomes O' Plenty 26.2 installed, repeat the recipe with each bundled BOP family used in every material role. Add a test datapack profile and confirm it participates in the same recipe and structure pipeline.
-9. Run `./gradlew build` and confirm all GameTests and both dedicated-server persistence boots pass.

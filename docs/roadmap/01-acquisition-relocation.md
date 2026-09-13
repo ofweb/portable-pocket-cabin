@@ -1,18 +1,55 @@
-# Cabin Acquisition and Relocation
+# Milestone 1: Survival crafting and command-free relocation
 
-## Status and scope
+**Depends on:** Milestone 0.
+
+**Outcome:** A survival player crafts a palette-aware Cabin Kit through the complete dimensional-component chain, deploys it by using terrain twice and packs it by sneak-using the exterior controller twice. No ordinary lifecycle command is needed.
+
+Major scope:
+
+- Dimensional Logic Core, Dimensional Anchor, Dimensional Folding Core and Dimensional Foundation recipes
+- the nine-slot Cabin Kit recipe and its six-Block-of-Amethyst commitment
+- vanilla-style staged recipe-book discovery from Amethyst Block to cores, Foundation and Cabin Kit
+- persisted floor, wall/frame, roof/ceiling and exact door selections
+- all vanilla material profiles, bundled Biomes O' Plenty profiles and the versioned datapack profile extension point
+- palette-driven wooden exterior and interior shell, protected portal doors and fireproof cabin-owned wood
+- top-surface placement, player-facing orientation, exact preview confirmation and lava rejection
+- controller-driven packing while preserving the existing transactional countdown and recovery rules
+- operator-only lifecycle commands, player tooltips and first-use teaching messages
+- versioned, fail-fast fresh-world-only rollout with no stone-cabin migration
+
+Delivery order inside the milestone:
+
+1. Crafting components, recipe discovery, versioned material profiles and the palette codec used by the Kit and registry.
+2. Authoritative first binding, crash-safe item obligations, item-driven preview/deployment and controller-driven packing on the existing lifecycle services.
+3. Palette-driven structure generation and protected portal-door behavior.
+4. Vanilla and Biomes O' Plenty compatibility, survival balance and complete regression acceptance.
+
+**Red:** Add failing recipe, palette, interaction, rotation, lava, fire, stale-item, restart and packing-concurrency GameTests before each slice.
+
+**Green:** Implement only enough of each slice to make those player flows and inherited safety guarantees pass.
+
+**Refactor:** Remove player-facing command coupling, consolidate material-profile lookup and ensure item/controller entry points share the lifecycle services used by operator recovery commands.
+
+**Exit gate:** Every [acceptance criterion](#acceptance-criteria) passes in a fresh survival world and after restart.
+
+
+## Consolidated specification
+
+_Source: former `docs/specs/cabin-acquisition-and-relocation.md`._
+
+### Status and scope
 
 This document specifies the first post-MVP replacement for cabin acquisition, material appearance, deployment and packing interaction.
 
-It supersedes the MVP's single-step Cabin Kit recipe, fixed stone shell and player-facing `/cabin preview`, `/cabin deploy` and `/cabin pack` workflow. The authoritative cabin UUID, lifecycle, item-generation, crash-reconciliation, access-control and one-active-exterior invariants in [`SPEC.md`](../../SPEC.md) remain unchanged.
+It supersedes the MVP's single-step Cabin Kit recipe, fixed stone shell and player-facing `/cabin preview`, `/cabin deploy` and `/cabin pack` workflow. The authoritative cabin UUID, lifecycle, item-generation, crash-reconciliation, access-control and one-active-exterior invariants in [Milestone 0](00-safe-mvp.md) remain unchanged.
 
 This release intentionally requires a fresh world. Existing stone cabins and cabin records are not migrated.
 
 The Milestone 1 cabin registry has an explicit schema version. Loading an unversioned MVP registry or any unsupported registry version fails server startup with a clear message directing the developer to back up the world and use `just fresh-world`. The failed load must not create a replacement registry, apply a default palette or modify the legacy world files.
 
-Later cabin upgrades use the separate world-attuned upgrade system in [Cabin Progression and Functional Rooms](cabin-progression-and-rooms.md). They are not crafting-table recipes.
+Later cabin upgrades use the separate world-attuned upgrade system in [Cabin Progression and Functional Rooms](02-progression-space.md). They are not crafting-table recipes.
 
-## Goals
+### Goals
 
 The acquisition and relocation experience should:
 
@@ -25,7 +62,7 @@ The acquisition and relocation experience should:
 
 It should not introduce a general upgrade station, palette renovation, automatic emergency packing or arbitrary inference of modded material families yet.
 
-## Dimensional components
+### Dimensional components
 
 The recipes follow normal Minecraft recipe-book discovery. They are always craftable when their pattern is known, but hidden from the recipe book until their vanilla-style recipe advancement is completed:
 
@@ -37,7 +74,7 @@ The unlocks use ordinary recipe advancements and notifications. They do not requ
 
 The three cores and the Dimensional Foundation are non-placeable crafting components. The Foundation uses a chunky, block-like 3D item model so it reads as a dense slab of machinery and stone rather than another glowing core.
 
-### Dimensional Logic Core
+#### Dimensional Logic Core
 
 The Logic Core defines and controls the rules of the pocket space. Copper carries signals, redstone supplies logic and a concentrated amethyst block provides the resonance substrate.
 
@@ -53,7 +90,7 @@ C R C
 
 Result: one Dimensional Logic Core.
 
-### Dimensional Anchor
+#### Dimensional Anchor
 
 The Anchor gives the pocket space a stable identity and location. Iron provides structure, obsidian provides dimensional stability and amethyst holds the identity pattern.
 
@@ -69,7 +106,7 @@ I O I
 
 Result: one Dimensional Anchor.
 
-### Dimensional Folding Core
+#### Dimensional Folding Core
 
 The Folding Core creates the controlled connection between the exterior cabin and its anchored pocket space. The Ender Pearl supplies dimensional travel; copper and amethyst shape it into a repeatable connection.
 
@@ -87,7 +124,7 @@ Amethyst shards are not accepted directly.
 
 Result: one Dimensional Folding Core.
 
-### Dimensional Foundation
+#### Dimensional Foundation
 
 The Foundation combines all three dimensional functions into one cabin base.
 
@@ -105,7 +142,7 @@ S F S
 
 Result: one Dimensional Foundation.
 
-## Palette-aware Cabin Kit recipe
+### Palette-aware Cabin Kit recipe
 
 The final recipe uses all nine crafting-table slots as a small cross-section of the cabin:
 
@@ -127,7 +164,7 @@ Result: one unbound Cabin Kit carrying the resolved Cabin palette, an immutable 
 
 This is a custom palette-aware recipe presented through the normal crafting table and recipe book. It rejects mismatched ingredients within a role rather than silently selecting one of them.
 
-## Material support profiles
+### Material support profiles
 
 A material profile maps a selectable ingredient family to every block form required by the protected structure templates. Persisted palettes contain the resolved block identifiers needed for generation rather than depending only on a profile that may later be removed.
 
@@ -150,7 +187,7 @@ The mod never guesses relationships between arbitrary modded logs, planks, stair
 
 Doors with mutable cosmetic states use the exact supported variant selected by the recipe. The generated doors do not oxidise, wax, open or otherwise evolve independently after becoming protected cabin entrances.
 
-## Initial material budget
+### Initial material budget
 
 Before the selected door and palette wood, one Cabin Kit consumes the equivalent of:
 
@@ -166,7 +203,7 @@ The final palette adds five Planks, two Structural Wood items and one Door. Door
 
 This is the initial survival-balancing baseline. It deliberately asks the player to mine copper, iron and redstone, find and harvest an amethyst geode, obtain obsidian and acquire one Ender Pearl without requiring entry into the Nether. Exact quantities may change after survival playtesting, but the multi-stage structure and six-block amethyst commitment remain the intended starting point.
 
-## Cabin palette persistence
+### Cabin palette persistence
 
 A Cabin palette contains four independent selections:
 
@@ -181,7 +218,7 @@ After binding, the registry is authoritative. Every current-generation packed it
 
 The palette remains fixed across packing, restart and redeployment. A later controller-based renovation system may consume replacement materials and safely update it; palette renovation is not part of this release, and the packed item cannot be surrounded or recrafted to change materials.
 
-## Palette-driven structures
+### Palette-driven structures
 
 The exterior and pocket interior use the same Cabin palette:
 
@@ -199,7 +236,7 @@ The selected door is a portal door rather than an ordinary physical door. It rem
 
 The initial implementation updates the current 21×21 MVP interior shell. The later 4×4 progression interior and every expanded shell must consume the same persisted palette when they replace that geometry.
 
-## First deployment and binding
+### First deployment and binding
 
 An unbound Cabin Kit remains stack-limited to one. It may be carried, stored or given to another player before deployment.
 
@@ -223,11 +260,11 @@ Inventory persistence and world persistence are not assumed to be atomic. Reconc
 
 The registry retains an unresolved item-delivery obligation until it is fulfilled. On owner login, reconciliation checks the authoritative lifecycle, physical exterior and matching Kit, pending item or Packed Cabin identities in the player's inventory. It removes or invalidates duplicates, converts the matching item when possible and otherwise delivers the owed bound item. If the inventory cannot accept it, the obligation remains persisted, the owner receives an actionable message and delivery is retried later. Ordinary recovery never requires an operator command.
 
-## Item-driven deployment
+### Item-driven deployment
 
 Ordinary deployment requires only the Cabin Kit or current bound Packed Cabin item.
 
-### Selecting a site
+#### Selecting a site
 
 The player uses the item on the top face of a solid terrain block. That clicked block remains untouched and acts only as support. The air block directly above it is the position of the cabin-owned front stair.
 
@@ -244,7 +281,7 @@ Placement is rejected when:
 
 Adjacent lava does not burn the protected shell, but deployment directly on lava is never permitted.
 
-### Preview and confirmation
+#### Preview and confirmation
 
 The first valid use displays the exact footprint and records the support block, dimension, orientation, item identity and palette for 30 seconds.
 
@@ -255,7 +292,7 @@ The first valid use displays the exact footprint and records the support block, 
 
 Player-facing text says to use the same surface again; it never instructs an ordinary player to run `/cabin deploy`.
 
-## Controller-driven packing
+### Controller-driven packing
 
 Packing begins outside at the deployed cabin's Lodestone controller.
 
@@ -287,7 +324,7 @@ Discoverability is supported by:
 
 This interaction is provisional. If survival playtesting shows that players still fail to discover it, the later protected controller interface may replace it with an explicit Pack action.
 
-## Command policy
+### Command policy
 
 Ordinary players no longer need or receive the lifecycle-transition commands:
 
@@ -299,7 +336,7 @@ These commands remain available to operators as debug and recovery tools and mus
 
 Player commands for status, trust and access remain until their own interfaces replace them. Administrative inspection, reconciliation and item recovery commands remain unchanged.
 
-## Deferred features
+### Deferred features
 
 The following are recorded but intentionally excluded from this release:
 
@@ -311,9 +348,9 @@ The following are recorded but intentionally excluded from this release:
 
 Emergency fire-packing needs separate rules for offline owners, full inventories, unsafe evacuation and simultaneous lifecycle operations before it can be implemented safely.
 
-## Implementation plan
+### Implementation plan
 
-### Delivery 1: Components and recipes
+#### Delivery 1: Components and recipes
 
 - register the three core items and non-placeable Dimensional Foundation
 - add their four shaped recipes and vanilla-style recipe advancements
@@ -324,7 +361,7 @@ Emergency fire-packing needs separate rules for offline owners, full inventories
 - attach the resolved palette to the crafted unbound Kit
 - add recipe-discovery, recipe and invalid-material GameTests
 
-### Delivery 2: Palette persistence and generation
+#### Delivery 2: Palette persistence and generation
 
 - add the Cabin palette codec to items and cabin records
 - add the versioned registry format and fail-fast legacy-world handling
@@ -337,7 +374,7 @@ Emergency fire-packing needs separate rules for offline owners, full inventories
 - reject lava-supported placement
 - add persistence, palette, protection and fresh-world tests
 
-### Delivery 3: Predictable item deployment
+#### Delivery 3: Predictable item deployment
 
 - anchor placement to the clicked top surface and put the front stair directly above it
 - lock the door facing toward the player at preview time
@@ -346,7 +383,7 @@ Emergency fire-packing needs separate rules for offline owners, full inventories
 - make transition commands operator-only
 - add rotated-placement, replacement-preview and stale-item GameTests
 
-### Delivery 4: Controller packing
+#### Delivery 4: Controller packing
 
 - route owner sneak-use on the controller through a short-lived arming state
 - distinguish normal entry from packing regardless of held item
@@ -354,7 +391,7 @@ Emergency fire-packing needs separate rules for offline owners, full inventories
 - preserve countdown, inventory reservation, evacuation, concurrency and crash-recovery behavior
 - add permission, timeout, duplicate-use and failure-path GameTests
 
-### Delivery 5: Survival and integration acceptance
+#### Delivery 5: Survival and integration acceptance
 
 - craft the full chain in survival without commands
 - verify distinct floor, wall and roof families plus a selected door inside and outside
@@ -364,7 +401,7 @@ Emergency fire-packing needs separate rules for offline owners, full inventories
 - test fire, lava, redstone, explosion and piston boundaries
 - complete two-player occupied-packing and stale-item scenarios
 
-## Acceptance criteria
+### Acceptance criteria
 
 The release is complete only when:
 
@@ -384,7 +421,7 @@ The release is complete only when:
 14. An unversioned MVP registry fails startup with an actionable message and no world-file mutation.
 15. A fresh dedicated-server restart and the complete GameTest suite pass with no legacy-world migration path.
 
-## Playtest decisions
+### Playtest decisions
 
 These values are deliberately provisional rather than architecturally fixed:
 
@@ -393,3 +430,72 @@ These values are deliberately provisional rather than architecturally fixed:
 - whether the sneak-use gesture is discoverable enough to keep
 - exact distribution of logs, planks, stairs and slabs within each palette-driven structure mask
 - item models, textures, sounds and crafting feedback
+
+## Material-profile format
+
+_Source: former `docs/material-profiles.md`._
+
+
+Cabin material profiles are server datapack resources stored at
+`data/<namespace>/portable_pocket_cabin/material_profiles/<path>.json`. The resource path becomes the
+stable profile ID. For example, `data/example/portable_pocket_cabin/material_profiles/wood/cedar.json`
+defines `example:wood/cedar`.
+
+Version 1 deliberately uses exact item and block identifiers. The loader does not infer a family from
+tags or naming conventions.
+
+### Wood family
+
+```json
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "required_mod": "examplemod",
+  "planks_ingredient": "examplemod:cedar_planks",
+  "structural_wood_ingredient": "examplemod:cedar_log",
+  "planks": "examplemod:cedar_planks",
+  "structural_wood": "examplemod:cedar_log",
+  "stairs": "examplemod:cedar_stairs",
+  "slab": "examplemod:cedar_slab"
+}
+```
+
+`required_mod` is optional. When present, the profile is ignored if that Fabric mod ID is absent.
+`planks_ingredient` and `structural_wood_ingredient` must be the item forms of the corresponding
+blocks. All four block forms must exist.
+
+### Door
+
+```json
+{
+  "schema_version": 1,
+  "type": "door",
+  "required_mod": "examplemod",
+  "door_ingredient": "examplemod:cedar_door",
+  "door": "examplemod:cedar_door"
+}
+```
+
+The resolved block must be a door and `door_ingredient` must be that block's item form.
+
+Reload fails with an actionable error when a profile has an unsupported version or type, omits a
+required field, references a missing or unsuitable registry entry, or overlaps another loaded profile's
+planks, structural wood, or door ingredient. A failed reload leaves the previous successfully loaded
+profile set active.
+
+The bundled resources define all vanilla families and door variants. Biomes O' Plenty 26.2 profiles
+are conditional on the `biomesoplenty` mod ID and cover its complete wood-family set.
+
+## Manual acceptance
+
+### Milestone 1 manual acceptance
+
+1. Use `just fresh-world`, join in survival, and obtain a Block of Amethyst. Confirm the three core recipes appear in the normal recipe book.
+2. Craft the Logic Core, Anchor, and Folding Core, then the Foundation. Confirm each discovery reveals the next recipe stage and that every amethyst ingredient is a full block.
+3. Craft a Cabin Kit with different supported roof, structural-wall, and floor woods plus a door. Confirm mismatched materials within one row are rejected.
+4. Use the Kit on the top of a clear solid block. Confirm the first use previews, the second use on that same surface deploys, the front stair occupies the block above the click, and the door faces you. Confirm placement over lava is rejected.
+5. Enter through the door or lodestone and confirm the exterior and 21×21 interior use the chosen palette and exact door. Confirm the protected wood does not burn and the portal doors stay closed under use and redstone.
+6. Sneak-use the exterior lodestone once, let the ten-second confirmation expire, and confirm nothing changes. Sneak-use it twice, then confirm the five-second transactional countdown packs the cabin and preserves its interior.
+7. Redeploy in each supported vanilla dimension, restart while deployed and packed, and confirm item identity, palette, cabin UUID, cell, contents, and one-active-exterior guarantees survive.
+8. With Biomes O' Plenty 26.2 installed, repeat the recipe with each bundled BOP family used in every material role. Add a test datapack profile and confirm it participates in the same recipe and structure pipeline.
+9. Run `./gradlew build` and confirm all GameTests and both dedicated-server persistence boots pass.

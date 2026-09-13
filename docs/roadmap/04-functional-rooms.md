@@ -1,135 +1,35 @@
-# Cabin Progression and Functional Rooms
+# Milestone 4: Manual functional rooms, mounts and house cats
 
-## Status and relationship to the MVP
+**Depends on:** Milestones 2 and 3.
 
-This document specifies a post-MVP feature track for Portable Pocket Cabin.
+**Outcome:** Players purchase, inhabit and operate useful specialised rooms manually; their named animals remain individual, safe residents rather than serialized copies or generic production items.
 
-The nine MVP deliveries in [`SPEC.md`](../../SPEC.md) remain the implementation foundation. Once progression work begins, this document deliberately supersedes the MVP's fixed 21×21 starting interior and its rule that every packed interior is completely paused.
+Major scope:
 
-The project is not yet released. Progression may replace MVP interior generation and persistence without providing a migration path.
+- bounded managed-room controller, activation lifecycle and capped catch-up framework
+- greenhouse beds with manual planting and harvesting
+- stable stalls that preserve eligible mounts by global entity UUID
+- aquatic berth upgrade and safe check-in/check-out for a previously tamed nautilus
+- one previously tamed house cat living naturally in the general cabin interior
+- manual livestock populations founded by four real animals, with collection and deliberate surplus processing
+- forestry plots with manual felling and replanting
+- explicit species/crop/tree profiles, including supported Alex's Mobs Continued integration
+- role-aware room operation and actionable failure messages
 
-Storage, automation and learned-item behavior are specified in [Cabin Storage and Automation](cabin-storage-and-automation.md). Roles, shared hallways and packed-cabin access are specified in [Cabin Network and Access](cabin-network-and-access.md).
+**Red:** Add failing identity, duplicate-entity, packed catch-up, capacity, ownership, aquatic-destination, cat-boundary and concurrent-collection tests.
 
-## Goals
+**Green:** Deliver each room's manual loop before adding any automatic action.
 
-Progression should:
+**Refactor:** Reuse one managed-resident identity model and one bounded catch-up framework while retaining type-specific safety policies.
 
-- begin with a genuinely small but usable home
-- make every increase in general-purpose space valuable
-- reward travel through varied biomes, structures and dimensions, with different material requirements in different world saves
-- establish amethyst as the active magical medium of the cabin system
-- make obsidian the material that anchors rooms and connections to the pocket dimension
-- provide specialised rooms that players inhabit, operate and customise
-- remove repetitive resource chores gradually rather than granting an instant all-purpose factory
-- remain safe and bounded while cabins are packed or unoccupied
+**Exit gate:** Every manual room remains useful, bounded and restart-safe; managed animal state can never create a second materialised copy of a mount, nautilus or cat.
 
-It should not turn ordinary blocks anywhere in the pocket dimension into always-running machinery.
 
-## General interior size
+## Consolidated specification
 
-New progression cabins begin with approximately 4×4 blocks of usable floor space, excluding their protected shell.
+_Source: managed-room and animal sections of the former progression specification. Automatic room actions remain here beside their manual contracts and are gated by Milestone 5._
 
-Each size upgrade increases both usable dimensions by one block:
-
-```text
-4×4 → 5×5 → 6×6 → 7×7 → …
-```
-
-The entrance wall and doorway remain anchored. Expansion extends the rear boundary and uses a deterministic lateral pattern so existing player blocks never move. An upgrade must validate its target volume before modifying the shell and must abort without partial changes if that volume is not safe.
-
-Each successive expansion costs more than the previous one. Costs, the maximum general-room size and the exact lateral expansion pattern are data-driven balancing values, but a finite maximum must be declared before implementation so interior allocations cannot collide.
-
-General-purpose space remains ordinary Minecraft space. Players can furnish it with normal and compatible modded blocks; those blocks do not gain packed-time simulation merely because the room has been enlarged.
-
-## Pocket room graph
-
-A cabin is a graph of persistent bounded spaces rather than one indefinitely expanding cell.
-
-- The general interior has its own allocated cell.
-- Every purchased functional room receives a separate allocated cell.
-- Every shared connection hallway receives a separate allocation as described in the network specification.
-- Protected internal doors connect these spaces using short same-dimension teleports.
-- Door traversal must not expose pocket coordinates, the void or another cabin's unconnected rooms.
-- Unpurchased rooms allocate no cell.
-- Cell and room identifiers are permanent and are never reused while their persisted contents may remain recoverable.
-- Every room type declares a maximum footprint and the chunks needed for its active representation.
-
-This model lets individual rooms expand without moving neighbouring cabins or reserving the maximum possible compound for every owner.
-
-## Cabin magic and material language
-
-Cabin progression uses two materials for different purposes:
-
-- **Amethyst carries resonance.** Amethyst preserves learned patterns and performs the magical work behind cabin control, enchanting and automation. It is the primary recurring magical material when the cabin computes or transforms something.
-- **Obsidian forms dimensional anchors.** Obsidian fixes entrances, rooms and hallway connections to the pocket dimension. It is primarily an installed structural cost when adding or strengthening dimensional capacity, not routine fuel for work the cabin performs.
-
-This distinction guides default recipes without requiring every upgrade to contain both materials. A room expansion may need more anchoring, an automation or enchanting operation may consume resonance, and a complex new room may need both.
-
-## World-attuned upgrade requirements
-
-Upgrade requirements are data-driven. A requirement set may specify:
-
-- exact items
-- item tags or material categories
-- quantities
-- distinct biome or dimension material groups
-- a reusable discovery catalyst from a structure or treasure source
-- prerequisite room or cabin tiers
-
-The default definitions must provide a vanilla progression. Optional integration profiles may replace or extend those definitions when compatible mods are installed. Servers and modpacks may override them with datapacks.
-
-Each world save creates one persistent **world attunement** before its first cabin upgrade is purchased. The attunement resolves declared variable slots in upgrade requirements, such as:
-
-- one specific wood family used by structural upgrades
-- offerings associated with selected Overworld biome families
-- materials associated with the Nether, End or supported modded exploration profiles
-
-For example, one world may ask for spruce components and a desert offering where another asks for dark-oak components and a cold-biome offering. A resolved wood slot requires the selected family rather than accepting any item in the general planks or logs tag.
-
-The same attunement applies to every cabin and player in the save. Its resolved material identifiers and definition version are persisted; restarts, seed reuse, configuration reloads and later mod or datapack changes must not silently reroll existing requirements. Deliberate administrative migration may replace invalid definitions, but it must be explicit and must report affected upgrades before committing.
-
-Attunement pools may contain only declared, loaded materials with a valid acquisition profile for that world configuration. Optional integrations contribute candidates only while their required content and world generation are present. Every pool must have a vanilla fallback, and the selection process must fail closed rather than produce an impossible recipe.
-
-All resolved requirements are visible through the recipe book or cabin progression interface from the beginning. Biome-associated requirements identify the broad environment to explore without revealing exact coordinates. World variation is intended to change exploration goals, not create hidden recipe guessing.
-
-Structure-exclusive treasure should normally be a discovery catalyst rather than a repeatedly consumed ingredient. This preserves the exploration gate without turning finite structure loot into an ongoing multiplayer bottleneck.
-
-The intended broad material arc is:
-
-1. common Overworld wood, stone and agricultural materials
-2. materials gathered from increasingly varied Overworld biomes
-3. rarer structure discoveries, stronger amethyst resonance and obsidian anchors
-4. Nether materials for stronger dimensional connections and magical infrastructure
-5. End materials for the highest cabin and automation tiers
-
-Exact recipes and quantities are balancing data rather than architectural rules.
-
-## Optional content integrations
-
-Optional integrations must fail closed and never prevent the base mod from loading when an integrated mod is absent.
-
-### Biomes O' Plenty
-
-An integration profile may use biome-specific woods, plants, stones and other unusual materials in the intended modpack progression. Requirements remain data-driven and retain vanilla fallbacks outside that pack.
-
-### Alex's Mobs Continued
-
-An explicit integration profile may provide:
-
-- exploration catalysts tied to supported mobs, structures, advancements or loot
-- unusual upgrade materials
-- stable eligibility for declared rideable species
-- livestock production profiles for declared sustainable species and drops
-
-The cabin never infers that every entity is breedable, rideable or safe to manage. Each supported species needs an allowlisted profile describing the data that may be preserved and the actions the room supports.
-
-### Alex's Mobs Continued Delight
-
-An explicit cooking integration may expose declared ingredients and meals to kitchen learning and automation through compatible Farmer's Delight or Farmer's Delight Refabricated recipes.
-
-Unknown food remains storable as an ordinary item. It becomes reproducible only when its recipe and item components pass the safe-learning rules in the storage and automation specification.
-
-## Managed functional rooms
+### Managed functional rooms
 
 Functional rooms combine a physical player-facing room with an authoritative persisted controller.
 
@@ -154,20 +54,7 @@ Visitors see the same current physical projection whether the cabin is deployed 
 - Automated outputs go to that cabin's central storage.
 - Actionable failure reasons appear through the cabin status system.
 
-## Manual operation and targeted automation
-
-Every functional room provides useful manual behavior before automation is discovered.
-
-Automation books unlock small actions, not an all-or-nothing automated room. Examples include feeding, collecting, harvesting, replanting, felling and processing. Each action is installed knowledge, individually enabled per cabin by its owner, and subject to the bounded-job rules.
-
-When a room is packed without an action being automated:
-
-- passive growth or maturation may advance through catch-up
-- preloaded local inputs may be consumed where the room explicitly supports that behavior
-- outputs may accumulate only up to the fixture's small local capacity
-- an action that requires a player, such as harvesting or replanting, does not happen by itself
-
-## Greenhouse
+### Greenhouse
 
 The greenhouse is purchased separately from general interior space.
 
@@ -190,7 +77,7 @@ Later upgrades may add:
 
 Harvesting and replanting are separate automation abilities. Automatic replanting requires suitable seed stock; neither ability creates missing inputs.
 
-## Stable
+### Stable
 
 The stable holds specific individual rideable animals rather than abstracting them into a generic capacity count.
 
@@ -211,7 +98,7 @@ Residents may store and retrieve their own mounts. A mount may be released only 
 
 Unsupported entities are rejected with a clear explanation. Stable upgrades add managed stalls and may unlock additional explicitly supported mount categories.
 
-### Aquatic berth and nautilus
+#### Aquatic berth and nautilus
 
 The base stable uses dry stalls. An **aquatic berth** upgrade adds a protected, fully flooded stall and explicitly supports a normal tamed nautilus as a stable resident.
 
@@ -223,7 +110,7 @@ Checkout uses an aquatic destination resolver. It requires sufficient connected 
 
 The aquatic berth is a stable-capacity upgrade, not a livestock room: it does not breed nautiluses, generate shells or abstract the animal into production.
 
-## House cats
+### House cats
 
 A house cat is a companion resident of the general cabin interior, not a stable mount or livestock population. The base progression cabin supports one house cat without requiring a stable upgrade.
 
@@ -242,7 +129,7 @@ The room controller keeps the cat away from the protected exit and void boundary
 
 The owner may explicitly release the cat from its cabin home while the exterior is deployed. Release requires a safe exterior destination and removes the cabin protections; it never creates a second copy. Packing, hallway access and owner logout leave the cat safely at home.
 
-## Livestock rooms
+### Livestock rooms
 
 Livestock production is a late-game feature purchased separately for each supported animal type.
 
@@ -258,7 +145,7 @@ Each species profile declares:
 - visual representation
 - safe persisted data
 
-### Manual baseline
+#### Manual baseline
 
 - Players place feed into the room trough.
 - A fed population produces and breeds up to the room's limits.
@@ -270,7 +157,7 @@ Each species profile declares:
 
 Residents may tend the population and collect or process products, but cannot dismantle the founding population or change cabin-wide production rules.
 
-### Targeted automation
+#### Targeted automation
 
 The following are independent discoveries and owner-controlled toggles:
 
@@ -280,7 +167,7 @@ The following are independent discoveries and owner-controlled toggles:
 
 Every action stops when its inputs, output space or safety limits are unavailable and reports the exact reason.
 
-## Forestry room
+### Forestry room
 
 The forestry room provides renewable wood production after the player supplies each desired sapling variety.
 
@@ -298,7 +185,7 @@ Automatic felling and automatic replanting are separate discoveries. Replanting 
 
 A later kiln capability converts managed forestry output into charcoal through its own bounded job. It does not imply felling or replanting. A very late coal-synthesis upgrade may convert declared renewable inputs into actual coal for recipes that do not accept charcoal. Its recipe and rate are data-driven and require late dimensional progression; learning or storing coal alone does not unlock it.
 
-## Required status messages
+### Required status messages
 
 At minimum, functional rooms must be able to explain:
 
@@ -313,15 +200,3 @@ At minimum, functional rooms must be able to explain:
 - integration profile absent or incompatible
 
 These messages follow the visibility rules in the network and access specification.
-
-## Balancing decisions intentionally left data-driven
-
-- exact upgrade recipes and quantities
-- world-attunement material pools, exclusions and selection weights
-- maximum general-room dimensions
-- functional-room dimensions and tier counts
-- catch-up duration caps
-- growth, breeding and production rates
-- storage and local-fixture capacities
-- supported integration entries
-- charcoal and late coal-synthesis recipes
