@@ -4,7 +4,7 @@
 
 **Outcome:** Cabin upgrades are discoverable, understandable and purchased through a deliberate protected interface rather than provisional chat messages and sneak-use gestures.
 
-**Status:** Behavior, technical approach and pushback are aligned. Documentation and testing alignment remain before implementation.
+**Status:** Delivery 3.1 is implemented and passes automated acceptance; manual client acceptance remains. Delivery 3.2 is aligned but not implemented.
 
 ## Deliveries
 
@@ -20,7 +20,7 @@ The deliveries are intentionally separate coherent changes. Delivery 3.1 remains
 
 ## Existing behavior and rollout
 
-Normal-use of the interior Lodestone currently sends a chat message containing the cabin's current and maximum size, attuned wood and next expansion requirements. Sneak-use immediately attempts to purchase that expansion from the owner's inventory.
+Before Delivery 3.1, normal-use of the interior Lodestone sent a chat-only status message and sneak-use attempted an immediate inventory purchase. The implemented interface removes both legacy interactions.
 
 Delivery 3.1 replaces those interactions. The world-attunement, requirement-resolution, validation and expansion services remain authoritative; the delivery replaces their presentation and player interaction rather than the installed general-space state.
 
@@ -210,6 +210,18 @@ Window geometry is derived from current general size and the installed window st
 
 Delivery 3.1 acceptance updates the README's playable controller interaction, funding and general-expansion instructions. Delivery 3.2 acceptance updates its new-cabin, window-purchase, resizing and refund instructions. Milestones 0, 2, 4 and 7 link to the superseding tracking, contribution and future material-source rules rather than duplicating them.
 
+## Delivery 3.1 testing scope
+
+Delivery 3.1 requires confidence at five levels:
+
+- server-side GameTests for tracking, contribution caps, permissions, ejection, stale definitions, installation and failure atomicity
+- menu and network integration coverage for server-authoritative actions, stale requests, shared-view synchronization and access loss while open
+- schema-migration and restart coverage for schema 3 to 4, funded upgrades across packing and restart, and interrupted-installation reconciliation
+- the complete existing GameTest and dedicated-server startup suites as regression gates, including proof that Delivery 3.1 leaves automatic windows unchanged
+- manual client acceptance for navigation, item transfers, confirmations, actionable errors and owner/trusted-player cooperation
+
+Delivery 3.2 window-purchase tests are excluded from Delivery 3.1 except for preserving the currently installed automatic windows.
+
 ## Out of scope
 
 - a separate upgrade station or replaceable controller block
@@ -225,6 +237,5 @@ Delivery 3.1 acceptance updates the README's playable controller interaction, fu
 
 ## Deferred decisions
 
-- high-level automated, integration, regression, manual and acceptance testing scope
 - exact screen composition and visual styling within the aligned information hierarchy
 - later central-storage and autocrafting transaction details

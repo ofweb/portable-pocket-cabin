@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.ClickEvent;
@@ -72,6 +73,65 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void schemaThreeMigratesToEmptySchemaFourUpgradeState(GameTestHelper helper) {
+		CabinRegistry original = new CabinRegistry();
+		CabinRecord cabin = original.create(UUID.randomUUID());
+		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, original).getOrThrow();
+		encoded.asCompound().orElseThrow().putInt("schema_version", 3);
+
+		CabinRegistry restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
+		CabinRecord restoredCabin = restored.find(cabin.uuid()).orElseThrow();
+		var rewritten = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, restored).getOrThrow();
+
+		helper.assertTrue(restoredCabin.upgrades().equals(CabinUpgradeState.EMPTY),
+			"Schema 3 cabins must migrate with no tracked upgrade or fund");
+		helper.assertTrue(rewritten.asCompound().orElseThrow().getIntOr("schema_version", 0) == 4,
+			"Migrated registries must rewrite as schema 4");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void upgradeStateSurvivesCodecAndCabinLifecycleChanges(GameTestHelper helper) {
+		CabinRegistry registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID();
+		UUID trusted = UUID.randomUUID();
+		CabinRecord cabin = registry.create(owner);
+		ItemStack namedGlass = new ItemStack(Items.GLASS_PANE, 7);
+		namedGlass.set(DataComponents.CUSTOM_NAME, Component.literal("Committed panes"));
+		CabinUpgradeState state = new CabinUpgradeState(
+			Optional.of(new CabinUpgradeState.TrackedUpgrade(
+				CabinUpgradeState.Target.generalSpace(5),
+				List.of(
+					new CabinUpgradeState.Requirement(Items.GLASS_PANE.builtInRegistryHolder().key().identifier(), 12),
+					new CabinUpgradeState.Requirement(Items.AMETHYST_SHARD.builtInRegistryHolder().key().identifier(), 2)
+				),
+				List.of(namedGlass)
+			)),
+			Optional.empty()
+		);
+		registry.updateUpgradeState(cabin.uuid(), state);
+
+		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, new BlockPos(10, 100, 10), Direction.NORTH);
+		registry.trust(cabin.uuid(), owner, trusted);
+		assertUpgradeState(helper, state, registry.find(cabin.uuid()).orElseThrow().upgrades());
+		registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS);
+		assertUpgradeState(helper, state, registry.find(cabin.uuid()).orElseThrow().upgrades());
+		registry.beginDeployment(cabin.uuid(), owner, exterior);
+		registry.markInteriorGenerated(cabin.uuid());
+		registry.finishDeployment(cabin.uuid());
+		assertUpgradeState(helper, state, registry.find(cabin.uuid()).orElseThrow().upgrades());
+		registry.beginPacking(cabin.uuid(), owner);
+		registry.finishPacking(cabin.uuid());
+		registry.markExteriorCleanupComplete(cabin.uuid());
+		assertUpgradeState(helper, state, registry.find(cabin.uuid()).orElseThrow().upgrades());
+
+		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
+		CabinRegistry restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
+		assertUpgradeState(helper, state, restored.find(cabin.uuid()).orElseThrow().upgrades());
+		helper.succeed();
+	}
+
+	@GameTest
 	public void fixedHeightRegistryIsRejectedWithoutMutation(GameTestHelper helper) {
 		var root = new net.minecraft.nbt.CompoundTag();
 		var legacyData = new net.minecraft.nbt.CompoundTag();
@@ -88,10 +148,56 @@ public final class PortablePocketCabinGameTest {
 			helper.assertTrue(root.equals(unchanged),
 				"Rejecting a fixed-height registry must not mutate its NBT data");
 		}
+		var migratableRoot = new net.minecraft.nbt.CompoundTag();
+		var migratableData = new net.minecraft.nbt.CompoundTag();
+		migratableData.putInt("schema_version", 3);
+		migratableRoot.put("data", migratableData);
+		CabinRegistry.requireSupportedSchema(migratableRoot, java.nio.file.Path.of("schema-three-cabins.dat"));
 
 		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, new CabinRegistry()).getOrThrow();
-		helper.assertTrue(encoded.asCompound().orElseThrow().getIntOr("schema_version", 0) == 3,
-			"Variable-height registries must publish explicit schema version 3");
+		helper.assertTrue(encoded.asCompound().orElseThrow().getIntOr("schema_version", 0) == 4,
+			"Upgrade-fund registries must publish explicit schema version 4");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void upgradeMenuHasNoWithdrawableFundSlots(GameTestHelper helper) {
+		ServerPlayer player = helper.makeMockServerPlayerInLevel();
+		CabinUpgradeMenu menu = new CabinUpgradeMenu(41, player.getInventory(), UUID.randomUUID());
+
+		for (int slot = CabinUpgradeMenu.DEPOSIT_SLOT;
+			 slot < CabinUpgradeMenu.FIRST_PLAYER_SLOT; slot++) {
+			helper.assertTrue(!menu.getSlot(slot).mayPickup(player)
+				&& !menu.getSlot(slot).mayPlace(new ItemStack(Items.DIAMOND)),
+				"Upgrade display and deposit controls must never expose withdrawable storage slots");
+		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void interiorControllerAlwaysOpensMenuAndNeverPurchasesDirectly(GameTestHelper helper) {
+		ServerPlayer player = helper.makeMockServerPlayerInLevel();
+		CabinRegistry registry = new CabinRegistry();
+		CabinRecord cabin = deployRegistryCabin(registry, player.getUUID(), 34);
+		player.getInventory().setItem(0, new ItemStack(Items.OBSIDIAN, 64));
+
+		player.setShiftKeyDown(false);
+		helper.assertTrue(CabinUpgrades.useController(player, cabin, registry)
+			== net.minecraft.world.InteractionResult.SUCCESS_SERVER
+			&& player.containerMenu instanceof CabinUpgradeMenu,
+			"Normal-use of the interior controller must open Cabin Upgrades");
+		player.closeContainer();
+		player.setShiftKeyDown(true);
+		helper.assertTrue(CabinUpgrades.useController(player, cabin, registry)
+			== net.minecraft.world.InteractionResult.SUCCESS_SERVER
+			&& player.containerMenu instanceof CabinUpgradeMenu,
+			"Sneak-use of the interior controller must open the same interface");
+		CabinRecord unchanged = registry.find(cabin.uuid()).orElseThrow();
+		helper.assertTrue(unchanged.progression().generalSize() == CabinProgression.INITIAL_GENERAL_SIZE
+			&& unchanged.upgrades().equals(CabinUpgradeState.EMPTY)
+			&& player.getInventory().getItem(0).getCount() == 64,
+			"Opening either way must not scan inventory, fund, or install an upgrade");
+		player.closeContainer();
 		helper.succeed();
 	}
 
@@ -139,6 +245,164 @@ public final class PortablePocketCabinGameTest {
 			helper.assertTrue(definitions.expansion(size) != null,
 				"Every one-block expansion through 21x21 must have an upgrade definition");
 		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void upgradeCatalogConsolidatesRequirementsAndTrackingIsOwnerControlled(GameTestHelper helper) {
+		WorldAttunement attunement = CabinUpgradeDefinitions.current().resolve(17L);
+		CabinUpgradeDefinitions.Definitions definitions = testUpgradeDefinitions(attunement, 8, 4);
+		CabinRegistry registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID();
+		UUID visitor = UUID.randomUUID();
+		CabinRecord cabin = deployRegistryCabin(registry, owner, 30);
+
+		CabinUpgradeCatalog.Offer offer = CabinUpgradeCatalog.next(cabin, attunement, definitions).orElseThrow();
+		helper.assertTrue(offer.target().equals(CabinUpgradeState.Target.generalSpace(5)),
+			"The catalog must expose only the next general-space size");
+		helper.assertTrue(offer.requirements().size() == 2
+			&& offer.requirements().stream().filter(requirement -> requirement.itemId().equals(
+				Items.GLASS_PANE.builtInRegistryHolder().key().identifier()
+			)).findFirst().orElseThrow().count() == 12,
+			"Duplicate resolved item requirements must be consolidated");
+		helper.assertTrue(!CabinUpgradeService.track(registry, cabin.uuid(), visitor, offer.target(), attunement,
+			definitions).success(), "A visitor must not track an upgrade");
+		helper.assertTrue(CabinUpgradeService.track(registry, cabin.uuid(), owner, offer.target(), attunement,
+			definitions).success(), "The owner must be able to track the next expansion");
+		helper.assertTrue(!CabinUpgradeService.track(registry, cabin.uuid(), owner, offer.target(), attunement,
+			definitions).success(), "Tracking must never replace an existing target implicitly");
+
+		CabinUpgradeDefinitions.Definitions changed = testUpgradeDefinitions(attunement, 9, 4);
+		CabinRecord tracked = registry.find(cabin.uuid()).orElseThrow();
+		helper.assertTrue(CabinUpgradeCatalog.isStale(tracked.upgrades().tracked().orElseThrow(), tracked,
+			attunement, changed), "A changed resolved requirement must make the tracked upgrade stale");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void upgradeContributionsAreDeliberatePermissionedAndCapped(GameTestHelper helper) {
+		WorldAttunement attunement = CabinUpgradeDefinitions.current().resolve(23L);
+		CabinUpgradeDefinitions.Definitions definitions = testUpgradeDefinitions(attunement, 8, 4);
+		CabinRegistry registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID();
+		UUID trusted = UUID.randomUUID();
+		UUID outsider = UUID.randomUUID();
+		CabinRecord cabin = deployRegistryCabin(registry, owner, 31);
+		registry.trust(cabin.uuid(), owner, trusted);
+		registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS);
+		CabinUpgradeState.Target target = CabinUpgradeState.Target.generalSpace(5);
+		CabinUpgradeService.track(registry, cabin.uuid(), owner, target, attunement, definitions);
+
+		ItemStack namedPanes = new ItemStack(Items.GLASS_PANE, 10);
+		namedPanes.set(DataComponents.CUSTOM_NAME, Component.literal("Neighbour contribution"));
+		CabinUpgradeService.Contribution first = CabinUpgradeService.contribute(
+			registry, cabin.uuid(), trusted, namedPanes, attunement, definitions
+		);
+		helper.assertTrue(first.success() && first.accepted() == 10 && namedPanes.isEmpty(),
+			"A trusted player must deliberately contribute an offered required stack");
+
+		ItemStack excess = new ItemStack(Items.GLASS_PANE, 8);
+		CabinUpgradeService.Contribution capped = CabinUpgradeService.contribute(
+			registry, cabin.uuid(), owner, excess, attunement, definitions
+		);
+		helper.assertTrue(capped.success() && capped.accepted() == 2 && excess.getCount() == 6,
+			"Only the outstanding quantity may enter the fund");
+		ItemStack wrong = new ItemStack(Items.DIRT, 3);
+		helper.assertTrue(!CabinUpgradeService.contribute(
+			registry, cabin.uuid(), owner, wrong, attunement, definitions
+		).success() && wrong.getCount() == 3, "Wrong items must remain with the contributor");
+		ItemStack blocked = new ItemStack(Items.AMETHYST_SHARD, 4);
+		helper.assertTrue(!CabinUpgradeService.contribute(
+			registry, cabin.uuid(), outsider, blocked, attunement, definitions
+		).success() && blocked.getCount() == 4, "Untrusted players cannot contribute");
+
+		CabinUpgradeState.TrackedUpgrade tracked = registry.find(cabin.uuid()).orElseThrow()
+			.upgrades().tracked().orElseThrow();
+		helper.assertTrue(tracked.fundedCount(Items.GLASS_PANE.builtInRegistryHolder().key().identifier()) == 12,
+			"Concurrent contributions must never exceed the resolved requirement");
+		helper.assertTrue(tracked.fund().stream().anyMatch(stack ->
+			Component.literal("Neighbour contribution").equals(stack.get(DataComponents.CUSTOM_NAME))),
+			"The fund must preserve contributed stack components");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void stoppingTrackingIsOwnerOnlyAndEjectsTheWholeFund(GameTestHelper helper) {
+		WorldAttunement attunement = CabinUpgradeDefinitions.current().resolve(29L);
+		CabinUpgradeDefinitions.Definitions definitions = testUpgradeDefinitions(attunement, 8, 4);
+		CabinRegistry registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID();
+		UUID visitor = UUID.randomUUID();
+		CabinRecord cabin = deployRegistryCabin(registry, owner, 32);
+		CabinUpgradeService.track(registry, cabin.uuid(), owner,
+			CabinUpgradeState.Target.generalSpace(5), attunement, definitions);
+		ItemStack named = new ItemStack(Items.GLASS_PANE, 6);
+		named.set(DataComponents.CUSTOM_NAME, Component.literal("Shared fund"));
+		CabinUpgradeService.contribute(registry, cabin.uuid(), owner, named, attunement, definitions);
+
+		int[] ejections = {0};
+		helper.assertTrue(!CabinUpgradeService.stopTracking(
+			registry, cabin.uuid(), visitor, (ignored, stacks) -> {
+				ejections[0]++;
+				return true;
+			}
+		).success() && ejections[0] == 0, "A non-owner must not eject the fund");
+		helper.assertTrue(!CabinUpgradeService.stopTracking(
+			registry, cabin.uuid(), owner, (ignored, stacks) -> false
+		).success() && registry.find(cabin.uuid()).orElseThrow().upgrades().tracked().isPresent(),
+			"A failed ejection must leave tracking and the fund intact");
+
+		List<ItemStack> ejected = new java.util.ArrayList<>();
+		helper.assertTrue(CabinUpgradeService.stopTracking(
+			registry, cabin.uuid(), owner, (ignored, stacks) -> {
+				ejected.addAll(stacks);
+				return true;
+			}
+		).success(), "The owner must be able to confirm whole-fund ejection");
+		helper.assertTrue(registry.find(cabin.uuid()).orElseThrow().upgrades().equals(CabinUpgradeState.EMPTY)
+			&& ejected.size() == 1 && ejected.getFirst().getCount() == 6
+			&& Component.literal("Shared fund").equals(ejected.getFirst().get(DataComponents.CUSTOM_NAME)),
+			"Successful untracking must eject exact stacks and clear the tracked upgrade");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void installationIsOwnerCommittedValidatedAndRestartRecoverable(GameTestHelper helper) {
+		WorldAttunement attunement = CabinUpgradeDefinitions.current().resolve(31L);
+		CabinUpgradeDefinitions.Definitions definitions = testUpgradeDefinitions(attunement, 8, 4);
+		CabinRegistry registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID();
+		UUID visitor = UUID.randomUUID();
+		CabinRecord cabin = deployRegistryCabin(registry, owner, 33);
+		fundTestUpgrade(registry, cabin.uuid(), owner, attunement, definitions);
+
+		TestExpansionEffect blocked = new TestExpansionEffect(false, false);
+		helper.assertTrue(!CabinUpgradeService.install(
+			registry, cabin.uuid(), visitor, attunement, definitions, blocked, () -> { }
+		).success(), "A non-owner must not install a funded upgrade");
+		helper.assertTrue(!CabinUpgradeService.install(
+			registry, cabin.uuid(), owner, attunement, definitions, blocked, () -> { }
+		).success(), "An obstructed expansion must fail validation");
+		helper.assertTrue(registry.find(cabin.uuid()).orElseThrow().upgrades().tracked().isPresent(),
+			"Failed installation checks must retain the complete fund");
+
+		TestExpansionEffect interrupted = new TestExpansionEffect(true, true);
+		int[] flushes = {0};
+		helper.assertTrue(!CabinUpgradeService.install(
+			registry, cabin.uuid(), owner, attunement, definitions, interrupted, () -> flushes[0]++
+		).success(), "A world-effect interruption must remain recoverable");
+		helper.assertTrue(flushes[0] == 1
+			&& registry.find(cabin.uuid()).orElseThrow().upgrades().installation().isPresent(),
+			"Installation intent must be flushed before applying its world effect");
+
+		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
+		CabinRegistry restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
+		TestExpansionEffect resumed = new TestExpansionEffect(true, false);
+		CabinUpgradeService.reconcileInstallation(restored, cabin.uuid(), resumed, () -> flushes[0]++);
+		CabinRecord installed = restored.find(cabin.uuid()).orElseThrow();
+		helper.assertTrue(installed.progression().generalSize() == 5
+			&& installed.upgrades().equals(CabinUpgradeState.EMPTY) && resumed.applications == 1,
+			"Restart reconciliation must apply once, consume the fund and clear tracking");
 		helper.succeed();
 	}
 
@@ -991,5 +1255,88 @@ public final class PortablePocketCabinGameTest {
 			"Clicking a formatted cabin UUID must copy it to the clipboard"
 		);
 		helper.succeed();
+	}
+
+	private static void assertUpgradeState(
+		GameTestHelper helper, CabinUpgradeState expected, CabinUpgradeState actual
+	) {
+		var expectedTag = CabinUpgradeState.CODEC.encodeStart(NbtOps.INSTANCE, expected).getOrThrow();
+		var actualTag = CabinUpgradeState.CODEC.encodeStart(NbtOps.INSTANCE, actual).getOrThrow();
+		helper.assertTrue(actualTag.equals(expectedTag),
+			"Cabin upgrade tracking and contributed stack data must survive every transition");
+	}
+
+	private static CabinUpgradeDefinitions.Definitions testUpgradeDefinitions(
+		WorldAttunement attunement, int firstPaneCount, int secondPaneCount
+	) {
+		return new CabinUpgradeDefinitions.Definitions(
+			attunement.definitionVersion(), 5, List.of(attunement.woodProfile()),
+			List.of(new CabinUpgradeDefinitions.Expansion(5, List.of(
+				new CabinUpgradeDefinitions.Ingredient(
+					Items.GLASS_PANE.builtInRegistryHolder().key().identifier(), false, firstPaneCount
+				),
+				new CabinUpgradeDefinitions.Ingredient(
+					Items.GLASS_PANE.builtInRegistryHolder().key().identifier(), false, secondPaneCount
+				),
+				new CabinUpgradeDefinitions.Ingredient(
+					Items.AMETHYST_SHARD.builtInRegistryHolder().key().identifier(), false, 4
+				)
+			)))
+		);
+	}
+
+	private static CabinRecord deployRegistryCabin(CabinRegistry registry, UUID owner, int exteriorX) {
+		CabinRecord cabin = registry.create(owner);
+		CabinExterior exterior = new CabinExterior(
+			Level.OVERWORLD, new BlockPos(exteriorX, 100, 0), Direction.NORTH
+		);
+		registry.beginDeployment(cabin.uuid(), owner, exterior);
+		registry.markInteriorGenerated(cabin.uuid());
+		return registry.finishDeployment(cabin.uuid());
+	}
+
+	private static void fundTestUpgrade(
+		CabinRegistry registry,
+		UUID cabinId,
+		UUID owner,
+		WorldAttunement attunement,
+		CabinUpgradeDefinitions.Definitions definitions
+	) {
+		CabinUpgradeService.track(registry, cabinId, owner,
+			CabinUpgradeState.Target.generalSpace(5), attunement, definitions);
+		ItemStack panes = new ItemStack(Items.GLASS_PANE, 12);
+		ItemStack shards = new ItemStack(Items.AMETHYST_SHARD, 4);
+		CabinUpgradeService.contribute(registry, cabinId, owner, panes, attunement, definitions);
+		CabinUpgradeService.contribute(registry, cabinId, owner, shards, attunement, definitions);
+	}
+
+	private static final class TestExpansionEffect implements CabinUpgradeService.ExpansionEffect {
+		private final boolean valid;
+		private final boolean interrupt;
+		private int applications;
+
+		private TestExpansionEffect(boolean valid, boolean interrupt) {
+			this.valid = valid;
+			this.interrupt = interrupt;
+		}
+
+		@Override
+		public CabinUpgradeService.Outcome validate(CabinRecord cabin, int targetSize) {
+			return valid
+				? CabinUpgradeService.Outcome.success("Expansion volume is clear.")
+				: CabinUpgradeService.Outcome.failure("Expansion is obstructed.");
+		}
+
+		@Override
+		public void apply(CabinRecord cabin, int targetSize) {
+			applications++;
+			if (interrupt) {
+				throw new IllegalStateException("Simulated interruption");
+			}
+		}
+
+		@Override
+		public void refresh(CabinRecord cabin) {
+		}
 	}
 }

@@ -28,7 +28,8 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 public final class CabinRegistry extends SavedData {
-	private static final int SCHEMA_VERSION = 3;
+	private static final int SCHEMA_VERSION = 4;
+	private static final int MIGRATABLE_SCHEMA_VERSION = 3;
 
 	private record RegistryData(
 		int schemaVersion, long nextCellIndex, List<CabinRecord> cabins,
@@ -107,7 +108,7 @@ public final class CabinRegistry extends SavedData {
 	static void requireSupportedSchema(net.minecraft.nbt.CompoundTag root, Path registryFile) {
 		var data = root.getCompoundOrEmpty("data");
 		int version = data.getIntOr("schema_version", 0);
-		if (version != SCHEMA_VERSION) {
+		if (version != SCHEMA_VERSION && version != MIGRATABLE_SCHEMA_VERSION) {
 			throw new IllegalStateException("Unsupported cabin registry schema version " + version
 				+ " in " + registryFile + ". Back up this world and run `just fresh-world` before using this version."
 			);
@@ -139,7 +140,7 @@ public final class CabinRegistry extends SavedData {
 		CabinRecord cabin = new CabinRecord(
 			cabinId, owner, nextCellIndex, CabinLifecycle.PACKED,
 			Optional.empty(), Optional.empty(), false, 0L, false, palette, Optional.empty(), false,
-			CabinEntryPermission.OWNER_ONLY, List.of(), CabinProgression.INITIAL
+			CabinEntryPermission.OWNER_ONLY, List.of(), CabinProgression.INITIAL, CabinUpgradeState.EMPTY
 		);
 		nextCellIndex++;
 		byId.put(cabin.uuid(), cabin);
@@ -190,7 +191,7 @@ public final class CabinRegistry extends SavedData {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYING,
 			Optional.of(exterior), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
 			cabin.palette(), Optional.of(itemInstanceId), true,
-			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression()
+			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression(), cabin.upgrades()
 		);
 		replace(deploying);
 		return deploying;
@@ -205,7 +206,7 @@ public final class CabinRegistry extends SavedData {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
 			cabin.lastExterior(), true, cabin.packedItemGeneration(), cabin.exteriorCleanupPending(),
 			cabin.palette(), cabin.lastDeploymentItemId(), cabin.deploymentItemDeliveryPending(),
-			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression()
+			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression(), cabin.upgrades()
 		);
 		replace(generated);
 		return generated;
@@ -223,7 +224,7 @@ public final class CabinRegistry extends SavedData {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYED,
 			cabin.exterior(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
 			cabin.palette(), cabin.lastDeploymentItemId(), false,
-			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression()
+			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression(), cabin.upgrades()
 		);
 		replace(deployed);
 		return deployed;
@@ -245,7 +246,7 @@ public final class CabinRegistry extends SavedData {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKING,
 			cabin.exterior(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
 			cabin.palette(), Optional.of(itemInstanceId), true,
-			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression()
+			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression(), cabin.upgrades()
 		);
 		replace(packing);
 		return packing;
@@ -260,7 +261,7 @@ public final class CabinRegistry extends SavedData {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.DEPLOYED,
 			cabin.exterior(), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
 			cabin.palette(), cabin.lastDeploymentItemId(), false,
-			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression()
+			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression(), cabin.upgrades()
 		);
 		replace(deployed);
 		return deployed;
@@ -278,7 +279,7 @@ public final class CabinRegistry extends SavedData {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKED,
 			Optional.empty(), cabin.exterior(), cabin.interiorGenerated(), cabin.packedItemGeneration() + 1, true,
 			cabin.palette(), cabin.lastDeploymentItemId(), true,
-			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression()
+			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression(), cabin.upgrades()
 		);
 		replace(packed);
 		return packed;
@@ -293,7 +294,7 @@ public final class CabinRegistry extends SavedData {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
 			cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
 			cabin.palette(), cabin.lastDeploymentItemId(), cabin.deploymentItemDeliveryPending(),
-			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression()
+			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression(), cabin.upgrades()
 		);
 		replace(cleaned);
 		return cleaned;
@@ -308,7 +309,7 @@ public final class CabinRegistry extends SavedData {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKED,
 			Optional.empty(), cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
 			cabin.palette(), cabin.lastDeploymentItemId(), true,
-			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression()
+			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression(), cabin.upgrades()
 		);
 		replace(packed);
 		return packed;
@@ -323,7 +324,7 @@ public final class CabinRegistry extends SavedData {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
 			cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(),
 			cabin.exteriorCleanupPending(), cabin.palette(), cabin.lastDeploymentItemId(), false,
-			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression()
+			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression(), cabin.upgrades()
 		);
 		replace(resolved);
 		return resolved;
@@ -336,7 +337,7 @@ public final class CabinRegistry extends SavedData {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.ORPHANED,
 			Optional.empty(), lastExterior, cabin.interiorGenerated(), cabin.packedItemGeneration(), false,
 			cabin.palette(), cabin.lastDeploymentItemId(), cabin.deploymentItemDeliveryPending(),
-			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression()
+			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression(), cabin.upgrades()
 		);
 		replace(orphaned);
 		return orphaned;
@@ -355,7 +356,7 @@ public final class CabinRegistry extends SavedData {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), CabinLifecycle.PACKED,
 			Optional.empty(), lastExterior, cabin.interiorGenerated(), cabin.packedItemGeneration() + 1, false,
 			cabin.palette(), Optional.empty(), false,
-			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression()
+			cabin.entryPermission(), cabin.trustedPlayers(), cabin.progression(), cabin.upgrades()
 		);
 		replace(packed);
 		return packed;
@@ -436,6 +437,32 @@ public final class CabinRegistry extends SavedData {
 		return updated;
 	}
 
+	synchronized CabinRecord updateUpgradeState(UUID cabinId, CabinUpgradeState upgrades) {
+		CabinRecord cabin = require(cabinId);
+		CabinRecord updated = copyUpgrades(cabin, upgrades);
+		replace(updated);
+		return updated;
+	}
+
+	synchronized CabinRecord completeUpgradeInstallation(UUID cabinId, UUID operationId) {
+		CabinRecord cabin = require(cabinId);
+		CabinUpgradeState.Installation installation = cabin.upgrades().installation()
+			.orElseThrow(() -> new IllegalStateException("No upgrade installation is in progress"));
+		if (!installation.operationId().equals(operationId)) {
+			throw new IllegalStateException("Upgrade installation operation changed before commit");
+		}
+		int targetSize = installation.target().generalSpaceSize();
+		int currentSize = cabin.progression().generalSize();
+		if (currentSize != installation.expectedSize() && currentSize != targetSize) {
+			throw new IllegalStateException("Cabin size changed during upgrade installation");
+		}
+		CabinProgression progression = currentSize == targetSize
+			? cabin.progression() : cabin.progression().withGeneralSize(targetSize);
+		CabinRecord updated = copyProgressionAndUpgrades(cabin, progression, CabinUpgradeState.EMPTY);
+		replace(updated);
+		return updated;
+	}
+
 	public synchronized CabinRoom allocateRoom(UUID cabinId, UUID owner, net.minecraft.resources.Identifier type) {
 		CabinRecord cabin = requireOwned(cabinId, owner);
 		if (nextCellIndex > PocketDimension.MAX_CELL_INDEX) {
@@ -475,7 +502,7 @@ public final class CabinRegistry extends SavedData {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
 			cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(),
 			cabin.exteriorCleanupPending(), cabin.palette(), cabin.lastDeploymentItemId(),
-			cabin.deploymentItemDeliveryPending(), permission, trustedPlayers, cabin.progression()
+			cabin.deploymentItemDeliveryPending(), permission, trustedPlayers, cabin.progression(), cabin.upgrades()
 		);
 	}
 
@@ -484,7 +511,24 @@ public final class CabinRegistry extends SavedData {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
 			cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(),
 			cabin.exteriorCleanupPending(), cabin.palette(), cabin.lastDeploymentItemId(),
-			cabin.deploymentItemDeliveryPending(), cabin.entryPermission(), cabin.trustedPlayers(), progression
+			cabin.deploymentItemDeliveryPending(), cabin.entryPermission(), cabin.trustedPlayers(), progression,
+			cabin.upgrades()
+		);
+	}
+
+	private static CabinRecord copyUpgrades(CabinRecord cabin, CabinUpgradeState upgrades) {
+		return copyProgressionAndUpgrades(cabin, cabin.progression(), upgrades);
+	}
+
+	private static CabinRecord copyProgressionAndUpgrades(
+		CabinRecord cabin, CabinProgression progression, CabinUpgradeState upgrades
+	) {
+		return new CabinRecord(
+			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
+			cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(),
+			cabin.exteriorCleanupPending(), cabin.palette(), cabin.lastDeploymentItemId(),
+			cabin.deploymentItemDeliveryPending(), cabin.entryPermission(), cabin.trustedPlayers(),
+			progression, upgrades
 		);
 	}
 
@@ -499,7 +543,7 @@ public final class CabinRegistry extends SavedData {
 	}
 
 	private static DataResult<CabinRegistry> decode(RegistryData data) {
-		if (data.schemaVersion() != SCHEMA_VERSION) {
+		if (data.schemaVersion() != SCHEMA_VERSION && data.schemaVersion() != MIGRATABLE_SCHEMA_VERSION) {
 			return DataResult.error(() -> "Unsupported cabin registry schema version " + data.schemaVersion()
 				+ ". Back up this world and run `just fresh-world` before using this version.");
 		}
@@ -537,8 +581,12 @@ public final class CabinRegistry extends SavedData {
 		if (repairedNextCellIndex > PocketDimension.MAX_CELL_INDEX + 1) {
 			return DataResult.error(() -> "Cabin next cell index is outside the supported grid");
 		}
-		return DataResult.success(new CabinRegistry(
+		CabinRegistry registry = new CabinRegistry(
 			repairedNextCellIndex, data.cabins(), data.worldAttunement()
-		));
+		);
+		if (data.schemaVersion() == MIGRATABLE_SCHEMA_VERSION) {
+			registry.setDirty();
+		}
+		return DataResult.success(registry);
 	}
 }

@@ -166,6 +166,17 @@ public final class PocketDimension {
 		if (!check.valid()) {
 			throw new IllegalStateException(check.message());
 		}
+		applyGeneralSpaceExpansion(level, cabin, targetSize);
+	}
+
+	/** Applies a previously validated expansion deterministically; safe to replay during reconciliation. */
+	static void applyGeneralSpaceExpansion(
+		net.minecraft.server.level.ServerLevel level, CabinRecord cabin, int targetSize
+	) {
+		int currentSize = cabin.progression().generalSize();
+		if (targetSize != currentSize + 1) {
+			throw new IllegalStateException("General space expands exactly one block at a time");
+		}
 		Map<BlockPos, BlockState> current = shellBlocks(cabin.cellIndex(), currentSize, cabin.palette());
 		Map<BlockPos, BlockState> target = shellBlocks(cabin.cellIndex(), targetSize, cabin.palette());
 		for (BlockPos position : current.keySet()) {

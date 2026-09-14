@@ -3,6 +3,7 @@ package dev.portablepocketcabin;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.TickTask;
@@ -94,6 +95,7 @@ final class DedicatedServerStartupCheck {
 			throw new IllegalStateException("Startup test cabin did not complete deployment");
 		}
 		placeInteriorFixtures(pocket, first.cellIndex());
+		seedPartialUpgradeFund(server, registry, deployed);
 		CabinSimulation.sync(server);
 	}
 
@@ -126,6 +128,7 @@ final class DedicatedServerStartupCheck {
 			|| first.entryPermission() != CabinEntryPermission.TRUSTED_PLAYERS) {
 			throw new IllegalStateException("Reloaded registry does not match its persisted state");
 		}
+		assertPartialUpgradeFund(first);
 		if (!CabinSimulation.isTicketed(server, first.cellIndex())
 			|| !simulationIsActive(server.getLevel(PocketDimension.LEVEL_KEY), first.cellIndex())) {
 			throw new IllegalStateException("Reconciled deployed cabin did not restore simulation tickets");
@@ -156,6 +159,7 @@ final class DedicatedServerStartupCheck {
 			|| !pocket.getBlockState(PocketDimension.interiorExitDoorLower(first.cellIndex())).is(Blocks.IRON_DOOR)) {
 			throw new IllegalStateException("Packing changed the persistent interior or item generation incorrectly");
 		}
+		assertPartialUpgradeFund(registry.find(first.uuid()).orElseThrow());
 		if (CabinSimulation.isTicketed(server, first.cellIndex())) {
 			throw new IllegalStateException("Packed cabin retained interior simulation tickets");
 		}
@@ -173,6 +177,7 @@ final class DedicatedServerStartupCheck {
 			|| !CabinSimulation.isTicketed(server, first.cellIndex())) {
 			throw new IllegalStateException("Packed cabin could not be redeployed");
 		}
+		assertPartialUpgradeFund(redeployed);
 		assertInteriorFixtures(pocket, first.cellIndex());
 
 		CabinRecord third = registry.create(UUID.fromString("00000000-0000-0000-0000-000000000003"));
@@ -222,6 +227,75 @@ final class DedicatedServerStartupCheck {
 		chest.setItem(0, namedDiamonds);
 		doubleChest.setItem(0, new ItemStack(Items.EMERALD, 5));
 		furnace.setItem(2, new ItemStack(Items.IRON_INGOT, 2));
+	}
+
+	private static void seedPartialUpgradeFund(
+		MinecraftServer server, CabinRegistry registry, CabinRecord cabin
+	) {
+		CabinUpgradeDefinitions.Definitions definitions = CabinUpgradeDefinitions.current();
+		WorldAttunement attunement = registry.resolveWorldAttunement(
+			definitions.resolve(server.overworld().getSeed())
+		);
+		CabinUpgradeCatalog.Offer offer = CabinUpgradeCatalog.next(cabin, attunement, definitions).orElseThrow();
+		CabinUpgradeService.Outcome tracking = CabinUpgradeService.track(
+			registry, cabin.uuid(), cabin.owner(), offer.target(), attunement, definitions
+		);
+		if (!tracking.success()) {
+			throw new IllegalStateException(tracking.message());
+		}
+		for (CabinUpgradeState.Requirement requirement : offer.requirements()) {
+			var item = BuiltInRegistries.ITEM.getOptional(requirement.itemId()).orElseThrow();
+			ItemStack payment = new ItemStack(item, requirement.count());
+			CabinUpgradeService.Contribution contribution = CabinUpgradeService.contribute(
+				registry, cabin.uuid(), cabin.owner(), payment, attunement, definitions
+			);
+			if (!contribution.success() || !payment.isEmpty()) {
+				throw new IllegalStateException("Could not fully fund the startup installation");
+			}
+		}
+		ServerLevel pocket = server.getLevel(PocketDimension.LEVEL_KEY);
+		if (pocket == null) {
+			throw new IllegalStateException("Pocket dimension disappeared during upgrade test");
+		}
+		CabinUpgradeService.Outcome installed = CabinUpgradeService.install(
+			registry, cabin.uuid(), cabin.owner(), attunement, definitions,
+			new CabinGeneralSpaceEffect(server, pocket), () -> CabinRegistry.flush(server)
+		);
+		if (!installed.success()) {
+			throw new IllegalStateException(installed.message());
+		}
+
+		CabinRecord expanded = registry.find(cabin.uuid()).orElseThrow();
+		CabinUpgradeCatalog.Offer next = CabinUpgradeCatalog.next(expanded, attunement, definitions).orElseThrow();
+		tracking = CabinUpgradeService.track(
+			registry, expanded.uuid(), expanded.owner(), next.target(), attunement, definitions
+		);
+		if (!tracking.success()) {
+			throw new IllegalStateException(tracking.message());
+		}
+		CabinUpgradeState.Requirement requirement = next.requirements().getFirst();
+		var item = BuiltInRegistries.ITEM.getOptional(requirement.itemId()).orElseThrow();
+		ItemStack contribution = new ItemStack(item, Math.min(3, requirement.count()));
+		contribution.set(DataComponents.CUSTOM_NAME, Component.literal("Persisted upgrade contribution"));
+		CabinUpgradeService.Contribution result = CabinUpgradeService.contribute(
+			registry, cabin.uuid(), cabin.owner(), contribution, attunement, definitions
+		);
+		if (!result.success()) {
+			throw new IllegalStateException(result.message());
+		}
+	}
+
+	private static void assertPartialUpgradeFund(CabinRecord cabin) {
+		CabinUpgradeState.TrackedUpgrade tracked = cabin.upgrades().tracked()
+			.orElseThrow(() -> new IllegalStateException("Partially funded upgrade did not persist"));
+		if (cabin.progression().generalSize() != 5
+			|| !tracked.target().equals(CabinUpgradeState.Target.generalSpace(6))
+			|| tracked.fund().size() != 1
+			|| tracked.fund().getFirst().get(DataComponents.CUSTOM_NAME) == null
+			|| !tracked.fund().getFirst().get(DataComponents.CUSTOM_NAME).getString()
+				.equals("Persisted upgrade contribution")) {
+			throw new IllegalStateException("Persisted upgrade contribution changed across lifecycle or restart");
+		}
 	}
 
 	private static void assertInteriorFixtures(ServerLevel pocket, long cellIndex) {

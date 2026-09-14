@@ -1,6 +1,6 @@
 # Portable Pocket Cabin
 
-A Fabric 26.2 mod for a travelling play style. The safe MVP and Milestone 1 survival-acquisition flow are complete; Milestone 2's world-attuned expansion is implemented with retrospective acceptance still pending. The [roadmap](ROADMAP.md) links each milestone's design, implementation plan, and acceptance gates.
+A Fabric 26.2 mod for a travelling play style. The safe MVP and Milestone 1 survival-acquisition flow are complete; Milestone 2's world-attuned expansion and Milestone 3.1's tracked upgrade interface are implemented. The [roadmap](ROADMAP.md) links each milestone's design, implementation plan, and acceptance gates.
 
 ## Playing
 
@@ -10,9 +10,11 @@ Use the Kit on the top of a solid terrain block. The first use previews the 5×5
 
 Normal-use the exterior door or lodestone controller to enter. To pack, sneak-use the same exterior lodestone twice within 10 seconds. The existing five-second evacuation and packing countdown then runs without commands.
 
-New cabins now begin with a 4×4 usable interior. Normal-use the protected interior lodestone beside the exit to see the save's world-attuned wood and the exact materials for the next expansion. Sneak-use it with those materials to grow the room from 4×4 to 5×5, then one block per side-step up to the configured finite limit. Clear interior height starts at two blocks, grows by one block for every two size steps, and caps at ten blocks from size 20 onward. Expansion always keeps the entrance wall fixed and refuses an obstructed horizontal or vertical target without consuming materials.
+New cabins begin with a 4×4 usable interior. Normal-use or sneak-use the protected interior lodestone beside the exit to open **Cabin Upgrades**. Anyone currently allowed inside may inspect the next expansion and its world-attuned requirements. Only the owner may track, stop tracking, or install it; the owner and currently authorized trusted players may deliberately deposit held materials through the green control or shift-click them from their inventory. Only missing exact items are accepted, excess stays with the contributor, and creative mode follows the same rules.
 
-The variable-height interior uses cabin registry schema 3. Worlds created with the earlier fixed-height schema must be backed up and replaced with `just fresh-world`; automatic migration is intentionally unavailable because old generated ceiling blocks cannot be distinguished safely from player construction.
+A complete fund never installs automatically. The owner chooses **Install** after every requirement is funded; failed validation leaves the tracked upgrade and materials intact. **Stop tracking** requires a second confirmation and drops every contributed stack beside the interior controller like breaking a full chest. Expansion grows one block per step up to the configured limit, keeps the entrance wall fixed, and refuses obstructed horizontal or vertical space. Clear interior height starts at two blocks, grows by one block for every two size steps, and caps at ten blocks from size 20 onward.
+
+The tracked upgrade fund uses cabin registry schema 4 and automatically migrates variable-height schema 3 saves with no tracked upgrade or fund. Worlds using the earlier fixed-height schema 2 must still be backed up and replaced with `just fresh-world`; those generated ceiling blocks cannot be distinguished safely from player construction.
 
 Cabins can be deployed in the Overworld, Nether, or End. Their protected interiors keep running while deployed and pause while packed. Two fake-window panels show dawn, day, sunset, night, rain, thunder, Nether, End, or closed-shutter states.
 

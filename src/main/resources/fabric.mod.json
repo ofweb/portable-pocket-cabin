@@ -10,6 +10,9 @@
   "entrypoints": {
     "main": [
       "dev.portablepocketcabin.PortablePocketCabin"
+    ],
+    "client": [
+      "dev.portablepocketcabin.PortablePocketCabinClient"
     ]
   },
   "mixins": [

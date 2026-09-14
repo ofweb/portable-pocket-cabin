@@ -18,6 +18,7 @@ public final class PortablePocketCabin implements ModInitializer {
 		CabinRecipes.register();
 		CabinMaterialProfiles.register();
 		CabinUpgradeDefinitions.register();
+		CabinUpgradeMenu.register();
 		CommandRegistrationCallback.EVENT.register(CabinCommands::register);
 		CabinEvents.register();
 		CabinPacking.register();
@@ -27,6 +28,7 @@ public final class PortablePocketCabin implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			CabinRegistry registry = CabinRegistry.get(server);
 			CabinReconciliation.reconcileAll(server);
+			CabinUpgradeService.reconcileAll(server);
 			CabinSimulation.sync(server);
 			LOGGER.info("Portable Pocket Cabin {} ready; pocket dimension loaded={}", VERSION,
 				server.getLevel(PocketDimension.LEVEL_KEY) != null);
