@@ -230,6 +230,19 @@ The exterior and pocket interior use the same Cabin palette:
 
 The exact protected masks remain deterministic and rotation-safe. Palette selection changes block states, not structure dimensions or ownership boundaries.
 
+Every exterior and general-space interior corner uses an L-shaped vertical frame: the exact corner
+column plus the immediately adjacent column on each joining wall use the selected Structural Wood.
+Floors, ceilings and roofs remain their selected plank material. A Lodestone controller may replace
+one inner front-frame column as an explicit functional exception; doors and the existing automatic
+windows retain their declared positions. Configurable windows must fit entirely within the wall span
+between the inner edges of these frames and may never replace a frame block.
+
+Recognizable cabins built with the earlier single-column corner frame are upgraded in place. The
+migration accepts complete or partially migrated legacy projections, replaces only legacy wall
+planks at the new frame coordinates, and is safe to repeat after interruption. It does not rebuild a
+shell, change cabin dimensions, or repair unrelated damage. An unrecognizable exterior continues
+through the existing reconciliation rules.
+
 All cabin-owned wooden shell blocks are fireproof and cannot ignite or be consumed by fire. Player-placed wood remains governed by normal Minecraft fire behavior. Player breaking, piston and explosion protections continue to apply.
 
 The selected door is a portal door rather than an ordinary physical door. It remains visually closed, ignores redstone and ordinary open-state changes, and transports an authorised player when used. This prevents an open door from exposing the hollow exterior projection or behaving differently from its interior counterpart.
@@ -428,7 +441,7 @@ These values are deliberately provisional rather than architecturally fixed:
 - exact ingredient quantities after the first survival acquisition run
 - the 10-second packing-confirmation window
 - whether the sneak-use gesture is discoverable enough to keep
-- exact distribution of logs, planks, stairs and slabs within each palette-driven structure mask
+- exact distribution of stairs and slabs outside the locked L-shaped Structural Wood corner frames
 - item models, textures, sounds and crafting feedback
 
 ## Material-profile format

@@ -6,6 +6,11 @@
 
 **Status:** Implemented; automated acceptance passes and manual client acceptance remains.
 
+**Post-implementation correction:** Command-created cabins may carry the old smooth-stone debug
+platform into their permanent cell. Interior generation and controller opening remove only its
+recognizable exposed rim so it cannot block the first expansion. Fund ejection uses the usable-room
+side of the front-wall controller. Regression tests cover both coordinates and expansion validation.
+
 ## Design mapping
 
 - `CabinRecord` and `CabinRegistry` remain the authoritative durable owner of tracking, contributed stacks and an in-progress installation.

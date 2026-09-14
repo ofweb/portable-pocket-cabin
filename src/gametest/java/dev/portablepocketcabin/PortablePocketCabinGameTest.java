@@ -606,6 +606,38 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void legacyDebugPlatformDoesNotBlockFirstExpansion(GameTestHelper helper) {
+		long cell = 61;
+		ServerLevel level = helper.getLevel();
+		PocketDimension.ensureDebugMarker(level, cell);
+		PocketDimension.ensureCabinInterior(level, cell, CabinPalette.DEFAULT, 4);
+
+		PocketDimension.ExpansionCheck check = PocketDimension.validateExpansion(level, cell, 4, 5);
+		helper.assertTrue(check.valid(),
+			"The old command-created debug platform must not leave a rim in the first expansion footprint");
+		BlockPos isolatedSmoothStone = PocketDimension.cellCenter(cell).offset(-3, 0, 0);
+		level.setBlockAndUpdate(isolatedSmoothStone, Blocks.SMOOTH_STONE.defaultBlockState());
+		helper.assertTrue(PocketDimension.removeLegacyDebugPlatformResidue(level, cell, 4) == 0
+			&& level.getBlockState(isolatedSmoothStone).is(Blocks.SMOOTH_STONE),
+			"Cleanup must preserve smooth stone that does not form the complete legacy debug rim");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void upgradeFundEjectionPositionIsInsideTheCabin(GameTestHelper helper) {
+		long cell = 62;
+		CabinRecord cabin = new CabinRecord(UUID.randomUUID(), UUID.randomUUID(), cell, CabinLifecycle.PACKED);
+		BlockPos controller = PocketDimension.interiorController(cell);
+		BlockPos drop = CabinFundEjection.dropPosition(cabin);
+
+		helper.assertTrue(controller.distManhattan(drop) == 1,
+			"Refunded materials must appear beside the interior controller");
+		helper.assertTrue(PocketDimension.isWithinUsable(cell, CabinProgression.INITIAL_GENERAL_SIZE, drop),
+			"Refunded materials must appear on the room side of the controller wall");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void maximumRoomEnvelopesRemainIsolatedAcrossCabins(GameTestHelper helper) {
 		var first = PocketDimension.shellBlocks(0, CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE,
 			CabinPalette.DEFAULT).keySet();
@@ -780,6 +812,142 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void structuralCornerFramesWrapBothJoiningWalls(GameTestHelper helper) {
+		CabinPalette palette = CabinPalette.DEFAULT;
+		var frame = palette.walls().structuralWoodBlock();
+		for (Direction facing : Direction.Plane.HORIZONTAL) {
+			CabinExterior exterior = new CabinExterior(Level.OVERWORLD, BlockPos.ZERO, facing);
+			var exteriorBlocks = ExteriorCabin.blocks(exterior, palette);
+			for (int lateral : new int[] {-ExteriorCabin.CORE_RADIUS, ExteriorCabin.CORE_RADIUS}) {
+				for (int depth : new int[] {0, ExteriorCabin.CORE_DEPTH}) {
+					int inwardLateral = lateral < 0 ? lateral + 1 : lateral - 1;
+					int inwardDepth = depth == 0 ? depth + 1 : depth - 1;
+					for (BlockPos position : List.of(
+						ExteriorCabin.local(exterior, lateral, depth, 1),
+						ExteriorCabin.local(exterior, inwardLateral, depth, 1),
+						ExteriorCabin.local(exterior, lateral, inwardDepth, 1)
+					)) {
+						if (!position.equals(ExteriorCabin.controller(exterior))) {
+							helper.assertTrue(exteriorBlocks.get(position).is(frame),
+								"Each exterior corner must wrap one Structural Wood column onto both walls");
+						}
+					}
+				}
+			}
+		}
+
+		long cell = 63;
+		var bounds = PocketDimension.bounds(CabinProgression.INITIAL_GENERAL_SIZE);
+		var interiorBlocks = PocketDimension.shellBlocks(
+			cell, CabinProgression.INITIAL_GENERAL_SIZE, palette
+		);
+		BlockPos center = PocketDimension.cellCenter(cell);
+		for (int x : new int[] {bounds.shellMinimumX(), bounds.shellMaximumX()}) {
+			for (int z : new int[] {bounds.shellMinimumZ(), bounds.shellMaximumZ()}) {
+				int inwardX = x == bounds.shellMinimumX() ? x + 1 : x - 1;
+				int inwardZ = z == bounds.shellMinimumZ() ? z + 1 : z - 1;
+				for (BlockPos position : List.of(
+					center.offset(x, 1, z), center.offset(inwardX, 1, z), center.offset(x, 1, inwardZ)
+				)) {
+					if (!position.equals(PocketDimension.interiorController(cell))) {
+						helper.assertTrue(interiorBlocks.get(position).is(frame),
+							"Each interior corner must wrap one Structural Wood column onto both walls");
+					}
+				}
+			}
+		}
+
+		long expandedCell = 64;
+		var expandedBounds = PocketDimension.bounds(6);
+		var expanded = PocketDimension.shellBlocks(expandedCell, 6, palette);
+		BlockPos expandedCenter = PocketDimension.cellCenter(expandedCell);
+		for (int x = expandedBounds.shellMinimumX(); x <= expandedBounds.shellMaximumX(); x++) {
+			boolean shouldFrame = x - expandedBounds.shellMinimumX() < 2
+				|| expandedBounds.shellMaximumX() - x < 2;
+			helper.assertTrue(expanded.get(expandedCenter.offset(x, 1, expandedBounds.shellMinimumZ()))
+				.is(shouldFrame ? frame : palette.walls().planksBlock()),
+				"Expanded front and rear frames must use their own wall axis");
+		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void recognizableLegacyCornerFramesMigrateWithoutRebuilding(GameTestHelper helper) {
+		ServerLevel level = helper.getLevel();
+		CabinPalette palette = CabinPalette.DEFAULT;
+		CabinExterior exterior = new CabinExterior(
+			level.dimension(), helper.absolutePos(new BlockPos(5, 2, 5)), Direction.EAST
+		);
+		for (var entry : ExteriorCabin.legacyBlocks(exterior, palette).entrySet()) {
+			level.setBlockAndUpdate(entry.getKey(), entry.getValue());
+		}
+		BlockPos exteriorNewFrame = ExteriorCabin.local(exterior, -1, 0, 1);
+		helper.assertTrue(ExteriorCabin.projectionValid(level, exterior, palette),
+			"A complete legacy exterior must remain valid during migration");
+		helper.assertTrue(ExteriorCabin.upgradeLegacyCornerFrames(level, exterior, palette)
+			&& level.getBlockState(exteriorNewFrame).is(palette.walls().structuralWoodBlock()),
+			"Recognizable exterior wall planks must be upgraded to the new frame");
+		helper.assertTrue(!ExteriorCabin.upgradeLegacyCornerFrames(level, exterior, palette),
+			"Repeating an exterior frame migration must not change an already-current structure");
+
+		CabinExterior partiallyMigrated = new CabinExterior(
+			level.dimension(), helper.absolutePos(new BlockPos(20, 2, 5)), Direction.SOUTH
+		);
+		for (var entry : ExteriorCabin.legacyBlocks(partiallyMigrated, palette).entrySet()) {
+			level.setBlockAndUpdate(entry.getKey(), entry.getValue());
+		}
+		BlockPos alreadyMigrated = ExteriorCabin.local(partiallyMigrated, -1, 0, 1);
+		BlockPos remainingLegacyFrame = ExteriorCabin.local(
+			partiallyMigrated, 1, ExteriorCabin.CORE_DEPTH, 1
+		);
+		level.setBlockAndUpdate(alreadyMigrated,
+			ExteriorCabin.blocks(partiallyMigrated, palette).get(alreadyMigrated));
+		helper.assertTrue(ExteriorCabin.projectionValid(level, partiallyMigrated, palette)
+			&& ExteriorCabin.upgradeLegacyCornerFrames(level, partiallyMigrated, palette)
+			&& level.getBlockState(remainingLegacyFrame).is(palette.walls().structuralWoodBlock()),
+			"A partially migrated exterior must remain valid and finish migrating");
+
+		long interiorCell = 65;
+		CabinExterior recordExterior = new CabinExterior(Level.OVERWORLD, BlockPos.ZERO, Direction.NORTH);
+		CabinRecord cabin = new CabinRecord(
+			UUID.randomUUID(), UUID.randomUUID(), interiorCell, CabinLifecycle.DEPLOYED,
+			Optional.of(recordExterior), true
+		);
+		for (var entry : PocketDimension.legacyShellBlocks(interiorCell, 4, palette).entrySet()) {
+			level.setBlockAndUpdate(entry.getKey(), entry.getValue());
+		}
+		var bounds = PocketDimension.bounds(4);
+		BlockPos center = PocketDimension.cellCenter(interiorCell);
+		BlockPos interiorNewFrame = center.offset(
+			bounds.shellMinimumX() + 1, 1, bounds.shellMinimumZ()
+		);
+		helper.assertTrue(PocketDimension.upgradeLegacyCornerFrames(level, cabin)
+			&& level.getBlockState(interiorNewFrame).is(palette.walls().structuralWoodBlock()),
+			"Recognizable interior wall planks must be upgraded to the new frame");
+		helper.assertTrue(!PocketDimension.upgradeLegacyCornerFrames(level, cabin),
+			"Repeating an interior frame migration must not change an already-current structure");
+
+		long damagedCell = 66;
+		CabinRecord damaged = new CabinRecord(
+			UUID.randomUUID(), UUID.randomUUID(), damagedCell, CabinLifecycle.DEPLOYED,
+			Optional.of(recordExterior), true
+		);
+		for (var entry : PocketDimension.legacyShellBlocks(damagedCell, 4, palette).entrySet()) {
+			level.setBlockAndUpdate(entry.getKey(), entry.getValue());
+		}
+		BlockPos damagedCenter = PocketDimension.cellCenter(damagedCell);
+		BlockPos unrelatedDamage = damagedCenter.offset(0, 1, bounds.shellMinimumZ());
+		BlockPos untouchedCandidate = damagedCenter.offset(
+			bounds.shellMinimumX() + 1, 1, bounds.shellMinimumZ()
+		);
+		level.setBlockAndUpdate(unrelatedDamage, Blocks.AIR.defaultBlockState());
+		helper.assertTrue(!PocketDimension.upgradeLegacyCornerFrames(level, damaged)
+			&& level.getBlockState(untouchedCandidate).is(palette.walls().planksBlock()),
+			"An unrecognizable damaged interior must not be partly rebuilt by frame migration");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void clickedSurfaceControlsStairAndDoorOrientation(GameTestHelper helper) {
 		BlockPos support = new BlockPos(40, 70, -20);
 		for (Direction playerFacing : Direction.Plane.HORIZONTAL) {
@@ -852,6 +1020,21 @@ public final class PortablePocketCabinGameTest {
 				&& position.getY() - cabinCenter.getY()
 					<= PocketDimension.clearInteriorHeight(CabinProgression.INITIAL_GENERAL_SIZE),
 				"Starting-cabin windows must stay below the lowered ceiling");
+		}
+		for (int size = CabinProgression.INITIAL_GENERAL_SIZE;
+			 size <= CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE; size++) {
+			int checkedSize = size;
+			var structuralFrame = PocketDimension.shellBlocks(7, checkedSize, CabinPalette.DEFAULT)
+				.entrySet().stream()
+				.filter(entry -> entry.getValue().is(
+					CabinPalette.DEFAULT.walls().structuralWoodBlock()
+				))
+				.map(java.util.Map.Entry::getKey)
+				.collect(java.util.stream.Collectors.toSet());
+			helper.assertTrue(java.util.Collections.disjoint(
+				structuralFrame,
+				CabinWindows.blocks(7, checkedSize, CabinWindows.Profile.DAY).keySet()
+			), "Automatic windows must stay between the inner edges of the corner frames");
 		}
 		helper.succeed();
 	}

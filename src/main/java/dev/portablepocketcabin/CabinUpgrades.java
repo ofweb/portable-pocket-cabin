@@ -31,6 +31,10 @@ final class CabinUpgrades {
 			player.sendSystemMessage(Component.literal("You do not have permission to inspect this cabin."));
 			return InteractionResult.FAIL;
 		}
+		PocketDimension.removeLegacyDebugPlatformResidue(
+			player.level(), cabin.cellIndex(), cabin.progression().generalSize()
+		);
+		PocketDimension.upgradeLegacyCornerFrames(player.level(), cabin);
 
 		UUID cabinId = cabin.uuid();
 		return player.openMenu(new ExtendedMenuProvider<UUID>() {

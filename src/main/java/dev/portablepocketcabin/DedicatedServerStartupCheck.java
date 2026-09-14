@@ -96,6 +96,7 @@ final class DedicatedServerStartupCheck {
 		}
 		placeInteriorFixtures(pocket, first.cellIndex());
 		seedPartialUpgradeFund(server, registry, deployed);
+		seedLegacyCornerFrames(server, registry.find(first.uuid()).orElseThrow());
 		CabinSimulation.sync(server);
 	}
 
@@ -147,6 +148,7 @@ final class DedicatedServerStartupCheck {
 			|| !pocket.getBlockState(PocketDimension.interiorExitDoorLower(first.cellIndex())).is(Blocks.IRON_DOOR)) {
 			throw new IllegalStateException("Generated cabin interior did not persist across restart");
 		}
+		assertCornerFramesMigrated(server, pocket, first);
 		assertInteriorFixtures(pocket, first.cellIndex());
 
 		registry.beginPacking(first.uuid(), FIRST_OWNER);
@@ -282,6 +284,43 @@ final class DedicatedServerStartupCheck {
 		);
 		if (!result.success()) {
 			throw new IllegalStateException(result.message());
+		}
+	}
+
+	private static void seedLegacyCornerFrames(MinecraftServer server, CabinRecord cabin) {
+		CabinExterior exterior = cabin.exterior().orElseThrow();
+		ServerLevel exteriorLevel = server.getLevel(exterior.dimension());
+		ServerLevel pocket = server.getLevel(PocketDimension.LEVEL_KEY);
+		if (exteriorLevel == null || pocket == null) {
+			throw new IllegalStateException("Cabin levels disappeared while seeding legacy corner frames");
+		}
+		for (var entry : ExteriorCabin.legacyBlocks(exterior, cabin.palette()).entrySet()) {
+			exteriorLevel.setBlockAndUpdate(entry.getKey(), entry.getValue());
+		}
+		for (var entry : PocketDimension.legacyShellBlocks(
+			cabin.cellIndex(), cabin.progression().generalSize(), cabin.palette()
+		).entrySet()) {
+			pocket.setBlockAndUpdate(entry.getKey(), entry.getValue());
+		}
+		CabinWindows.refresh(server, cabin);
+	}
+
+	private static void assertCornerFramesMigrated(
+		MinecraftServer server, ServerLevel pocket, CabinRecord cabin
+	) {
+		CabinExterior exterior = cabin.exterior().orElseThrow();
+		ServerLevel exteriorLevel = server.getLevel(exterior.dimension());
+		BlockPos exteriorFrame = ExteriorCabin.local(exterior, -1, 0, 1);
+		PocketDimension.InteriorBounds bounds = PocketDimension.bounds(
+			cabin.progression().generalSize()
+		);
+		BlockPos interiorFrame = PocketDimension.cellCenter(cabin.cellIndex()).offset(
+			bounds.shellMinimumX() + 1, 1, bounds.shellMinimumZ()
+		);
+		if (exteriorLevel == null
+			|| !exteriorLevel.getBlockState(exteriorFrame).is(cabin.palette().walls().structuralWoodBlock())
+			|| !pocket.getBlockState(interiorFrame).is(cabin.palette().walls().structuralWoodBlock())) {
+			throw new IllegalStateException("Legacy corner frames were not migrated across restart");
 		}
 	}
 

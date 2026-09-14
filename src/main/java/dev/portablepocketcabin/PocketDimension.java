@@ -100,6 +100,7 @@ public final class PocketDimension {
 	public static void ensureCabinInterior(
 		net.minecraft.server.level.ServerLevel level, long cellIndex, CabinPalette palette, int generalSize
 	) {
+		removeLegacyDebugPlatformResidue(level, cellIndex, generalSize);
 		BlockPos center = cellCenter(cellIndex);
 		InteriorBounds bounds = bounds(generalSize);
 		int ceilingY = interiorCeilingY(generalSize);
@@ -113,6 +114,37 @@ public final class PocketDimension {
 		}
 		placeShell(level, cellIndex, palette, generalSize);
 		CabinWindows.initializeInactive(level, cellIndex, generalSize);
+	}
+
+	/** Removes only the exposed rim left by the old command-created 7x7 debug platform. */
+	static int removeLegacyDebugPlatformResidue(
+		net.minecraft.server.level.ServerLevel level, long cellIndex, int generalSize
+	) {
+		if (generalSize != CabinProgression.INITIAL_GENERAL_SIZE) {
+			return 0;
+		}
+		BlockPos center = cellCenter(cellIndex);
+		Map<BlockPos, BlockState> currentShell = shellBlocks(cellIndex, generalSize, CabinPalette.DEFAULT);
+		for (int x = -TEST_PLATFORM_RADIUS; x <= TEST_PLATFORM_RADIUS; x++) {
+			for (int z = -TEST_PLATFORM_RADIUS; z <= TEST_PLATFORM_RADIUS; z++) {
+				BlockPos position = center.offset(x, 0, z);
+				if (!currentShell.containsKey(position)
+					&& !level.getBlockState(position).is(Blocks.SMOOTH_STONE)) {
+					return 0;
+				}
+			}
+		}
+		int removed = 0;
+		for (int x = -TEST_PLATFORM_RADIUS; x <= TEST_PLATFORM_RADIUS; x++) {
+			for (int z = -TEST_PLATFORM_RADIUS; z <= TEST_PLATFORM_RADIUS; z++) {
+				BlockPos position = center.offset(x, 0, z);
+				if (!currentShell.containsKey(position)) {
+					level.setBlockAndUpdate(position, Blocks.AIR.defaultBlockState());
+					removed++;
+				}
+			}
+		}
+		return removed;
 	}
 
 	static ExpansionCheck validateExpansion(
@@ -204,6 +236,19 @@ public final class PocketDimension {
 	}
 
 	static Map<BlockPos, BlockState> shellBlocks(long cellIndex, int generalSize, CabinPalette palette) {
+		return shellBlocks(cellIndex, generalSize, palette, 2, false);
+	}
+
+	static Map<BlockPos, BlockState> legacyShellBlocks(
+		long cellIndex, int generalSize, CabinPalette palette
+	) {
+		return shellBlocks(cellIndex, generalSize, palette, 1, true);
+	}
+
+	private static Map<BlockPos, BlockState> shellBlocks(
+		long cellIndex, int generalSize, CabinPalette palette,
+		int cornerFrameDepth, boolean legacyMixedAxisCorners
+	) {
 		InteriorBounds bounds = bounds(generalSize);
 		BlockPos center = cellCenter(cellIndex);
 		Map<BlockPos, BlockState> result = new LinkedHashMap<>();
@@ -222,15 +267,19 @@ public final class PocketDimension {
 		for (int y = 1; y < ceilingOffset; y++) {
 			for (int x = bounds.shellMinimumX(); x <= bounds.shellMaximumX(); x++) {
 				result.put(center.offset(x, y, bounds.shellMinimumZ()),
-					frameOrWall(x, bounds, frameState, wallState));
+					frameOrWall(x, bounds.shellMinimumX(), bounds.shellMaximumX(), bounds,
+						frameState, wallState, cornerFrameDepth, legacyMixedAxisCorners));
 				result.put(center.offset(x, y, bounds.shellMaximumZ()),
-					frameOrWall(x, bounds, frameState, wallState));
+					frameOrWall(x, bounds.shellMinimumX(), bounds.shellMaximumX(), bounds,
+						frameState, wallState, cornerFrameDepth, legacyMixedAxisCorners));
 			}
 			for (int z = bounds.shellMinimumZ(); z <= bounds.shellMaximumZ(); z++) {
 				result.put(center.offset(bounds.shellMinimumX(), y, z),
-					frameOrWall(z, bounds, frameState, wallState));
+					frameOrWall(z, bounds.shellMinimumZ(), bounds.shellMaximumZ(), bounds,
+						frameState, wallState, cornerFrameDepth, legacyMixedAxisCorners));
 				result.put(center.offset(bounds.shellMaximumX(), y, z),
-					frameOrWall(z, bounds, frameState, wallState));
+					frameOrWall(z, bounds.shellMinimumZ(), bounds.shellMaximumZ(), bounds,
+						frameState, wallState, cornerFrameDepth, legacyMixedAxisCorners));
 			}
 		}
 
@@ -248,6 +297,43 @@ public final class PocketDimension {
 		return Map.copyOf(result);
 	}
 
+	static boolean upgradeLegacyCornerFrames(
+		net.minecraft.server.level.ServerLevel level, CabinRecord cabin
+	) {
+		if (!cabin.interiorGenerated()) {
+			return false;
+		}
+		Map<BlockPos, BlockState> legacy = legacyShellBlocks(
+			cabin.cellIndex(), cabin.progression().generalSize(), cabin.palette()
+		);
+		Map<BlockPos, BlockState> current = shellBlocks(
+			cabin.cellIndex(), cabin.progression().generalSize(), cabin.palette()
+		);
+		var windowPositions = CabinWindows.blocks(
+			cabin.cellIndex(), cabin.progression().generalSize(), CabinWindows.Profile.INACTIVE
+		).keySet();
+		for (Map.Entry<BlockPos, BlockState> entry : current.entrySet()) {
+			if (windowPositions.contains(entry.getKey())) {
+				continue;
+			}
+			BlockState actual = level.getBlockState(entry.getKey());
+			BlockState previous = legacy.get(entry.getKey());
+			if (!actual.is(entry.getValue().getBlock()) && !actual.is(previous.getBlock())) {
+				return false;
+			}
+		}
+		boolean changed = false;
+		for (Map.Entry<BlockPos, BlockState> entry : current.entrySet()) {
+			BlockState previous = legacy.get(entry.getKey());
+			if (!previous.is(entry.getValue().getBlock())
+				&& level.getBlockState(entry.getKey()).is(previous.getBlock())) {
+				level.setBlockAndUpdate(entry.getKey(), entry.getValue());
+				changed = true;
+			}
+		}
+		return changed;
+	}
+
 	private static void placeShell(
 		net.minecraft.server.level.ServerLevel level, long cellIndex, CabinPalette palette, int generalSize
 	) {
@@ -257,10 +343,14 @@ public final class PocketDimension {
 	}
 
 	private static BlockState frameOrWall(
-		int offset, InteriorBounds bounds, BlockState frame, BlockState wall
+		int offset, int minimum, int maximum, InteriorBounds bounds,
+		BlockState frame, BlockState wall, int cornerFrameDepth, boolean legacyMixedAxisCorners
 	) {
-		return offset == bounds.shellMinimumX() || offset == bounds.shellMaximumX()
-			|| offset == bounds.shellMinimumZ() || offset == bounds.shellMaximumZ() ? frame : wall;
+		if (legacyMixedAxisCorners) {
+			return offset == bounds.shellMinimumX() || offset == bounds.shellMaximumX()
+				|| offset == bounds.shellMinimumZ() || offset == bounds.shellMaximumZ() ? frame : wall;
+		}
+		return offset - minimum < cornerFrameDepth || maximum - offset < cornerFrameDepth ? frame : wall;
 	}
 
 	public static BlockPos interiorEntrance(long cellIndex) {

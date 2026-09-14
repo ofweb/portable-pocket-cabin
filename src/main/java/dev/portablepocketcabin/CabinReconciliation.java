@@ -167,6 +167,7 @@ final class CabinReconciliation {
 		CabinRegistry registry = CabinRegistry.get(server);
 		CabinRecord cabin = registry.find(cabinId)
 			.orElseThrow(() -> new IllegalStateException("No cabin record exists for " + cabinId));
+		upgradeLegacyCornerFrames(server, cabin);
 		boolean projectionValid = hasValidProjection(server, cabin);
 		Action action = plan(cabin, projectionValid);
 
@@ -201,6 +202,19 @@ final class CabinReconciliation {
 				yield "missing exterior marked ORPHANED";
 			}
 		};
+	}
+
+	private static void upgradeLegacyCornerFrames(MinecraftServer server, CabinRecord cabin) {
+		ServerLevel pocket = server.getLevel(PocketDimension.LEVEL_KEY);
+		if (pocket != null) {
+			PocketDimension.upgradeLegacyCornerFrames(pocket, cabin);
+		}
+		cabin.exterior().ifPresent(exterior -> {
+			ServerLevel exteriorLevel = server.getLevel(exterior.dimension());
+			if (exteriorLevel != null) {
+				ExteriorCabin.upgradeLegacyCornerFrames(exteriorLevel, exterior, cabin.palette());
+			}
+		});
 	}
 
 	static Action plan(CabinRecord cabin, boolean projectionValid) {

@@ -23,6 +23,8 @@ final class ExteriorCabin {
 	static final int CORE_RADIUS = 2;
 	static final int CORE_DEPTH = 4;
 	static final int ROOF_Y = 5;
+	private static final int LEGACY_CORNER_FRAME_DEPTH = 1;
+	private static final int CORNER_FRAME_DEPTH = 2;
 
 	record PlacementCheck(boolean valid, String message) {
 	}
@@ -57,6 +59,16 @@ final class ExteriorCabin {
 	}
 
 	static Map<BlockPos, BlockState> blocks(CabinExterior exterior, CabinPalette palette) {
+		return blocks(exterior, palette, CORNER_FRAME_DEPTH);
+	}
+
+	static Map<BlockPos, BlockState> legacyBlocks(CabinExterior exterior, CabinPalette palette) {
+		return blocks(exterior, palette, LEGACY_CORNER_FRAME_DEPTH);
+	}
+
+	private static Map<BlockPos, BlockState> blocks(
+		CabinExterior exterior, CabinPalette palette, int cornerFrameDepth
+	) {
 		Map<BlockPos, BlockState> blocks = new LinkedHashMap<>();
 		BlockState floor = palette.floor().planksBlock().defaultBlockState();
 		BlockState roof = palette.roof().planksBlock().defaultBlockState();
@@ -70,8 +82,7 @@ final class ExteriorCabin {
 
 				if (Math.abs(lateral) == CORE_RADIUS || depth == 0 || depth == CORE_DEPTH) {
 					for (int y = 1; y < ROOF_Y; y++) {
-						boolean structural = Math.abs(lateral) == CORE_RADIUS
-							&& (depth == 0 || depth == CORE_DEPTH);
+						boolean structural = isStructuralFrame(lateral, depth, cornerFrameDepth);
 						blocks.put(local(exterior, lateral, depth, y), structural ? frame : wall);
 					}
 				}
@@ -160,12 +171,59 @@ final class ExteriorCabin {
 	}
 
 	static boolean projectionValid(ServerLevel level, CabinExterior exterior, CabinPalette palette) {
-		for (Map.Entry<BlockPos, BlockState> entry : blocks(exterior, palette).entrySet()) {
-			if (!level.getBlockState(entry.getKey()).is(entry.getValue().getBlock())) {
+		return matchesCurrentOrLegacyProjection(level, exterior, palette);
+	}
+
+	static boolean upgradeLegacyCornerFrames(
+		ServerLevel level, CabinExterior exterior, CabinPalette palette
+	) {
+		Map<BlockPos, BlockState> legacy = legacyBlocks(exterior, palette);
+		Map<BlockPos, BlockState> current = blocks(exterior, palette);
+		if (!matchesCurrentOrLegacyProjection(level, legacy, current)) {
+			return false;
+		}
+		boolean changed = false;
+		for (Map.Entry<BlockPos, BlockState> entry : current.entrySet()) {
+			BlockState previous = legacy.get(entry.getKey());
+			if (!previous.is(entry.getValue().getBlock())
+				&& level.getBlockState(entry.getKey()).is(previous.getBlock())) {
+				level.setBlockAndUpdate(entry.getKey(), entry.getValue());
+				changed = true;
+			}
+		}
+		return changed;
+	}
+
+	private static boolean matchesCurrentOrLegacyProjection(
+		ServerLevel level, CabinExterior exterior, CabinPalette palette
+	) {
+		return matchesCurrentOrLegacyProjection(
+			level, legacyBlocks(exterior, palette), blocks(exterior, palette)
+		);
+	}
+
+	private static boolean matchesCurrentOrLegacyProjection(
+		ServerLevel level, Map<BlockPos, BlockState> legacy, Map<BlockPos, BlockState> current
+	) {
+		for (Map.Entry<BlockPos, BlockState> entry : current.entrySet()) {
+			BlockState actual = level.getBlockState(entry.getKey());
+			BlockState previous = legacy.get(entry.getKey());
+			if (!actual.is(entry.getValue().getBlock()) && !actual.is(previous.getBlock())) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	private static boolean isStructuralFrame(int lateral, int depth, int cornerFrameDepth) {
+		boolean sideWall = Math.abs(lateral) == CORE_RADIUS;
+		boolean endWall = depth == 0 || depth == CORE_DEPTH;
+		return sideWall && nearEdge(depth, 0, CORE_DEPTH, cornerFrameDepth)
+			|| endWall && nearEdge(lateral, -CORE_RADIUS, CORE_RADIUS, cornerFrameDepth);
+	}
+
+	private static boolean nearEdge(int value, int minimum, int maximum, int depth) {
+		return value - minimum < depth || maximum - value < depth;
 	}
 
 	static boolean touchesChunk(CabinExterior exterior, ChunkPos chunk) {

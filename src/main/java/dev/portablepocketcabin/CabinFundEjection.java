@@ -1,5 +1,6 @@
 package dev.portablepocketcabin;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -22,7 +23,7 @@ final class CabinFundEjection {
 		if (!level.getBlockState(controller).is(Blocks.LODESTONE)) {
 			return false;
 		}
-		var drop = controller.relative(Direction.SOUTH);
+		var drop = dropPosition(cabin);
 		List<ItemEntity> spawned = new ArrayList<>();
 		for (ItemStack stack : stacks) {
 			ItemEntity entity = new ItemEntity(
@@ -36,5 +37,9 @@ final class CabinFundEjection {
 			spawned.add(entity);
 		}
 		return true;
+	}
+
+	static BlockPos dropPosition(CabinRecord cabin) {
+		return PocketDimension.interiorController(cabin.cellIndex()).relative(Direction.NORTH);
 	}
 }
