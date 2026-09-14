@@ -1,4 +1,4 @@
-# Milestone 9: Compatibility, balance and presentation pass
+# Milestone 11: Compatibility, balance and presentation pass
 
 **Depends on:** The systems being tuned or presented.
 
@@ -20,6 +20,18 @@ Major scope:
 **Refactor:** Remove provisional interfaces only after their replacements preserve the same interaction contracts and diagnostics.
 
 **Exit gate:** A fresh modpack survival world can progress through every completed milestone without commands, silent data loss, impossible requirements or undocumented integration behavior.
+
+## Optional-mod compatibility obligations
+
+Milestone 11 owns all acceptance testing that requires optional mods. Earlier milestones define mod-agnostic behavior and may provide explicit integration profiles, but they do not claim that an optional-mod combination has passed until it appears in this milestone's compatibility matrix.
+
+The compatibility world must include, at minimum:
+
+- Farmer's Delight Refabricated crops, rich soil, kitchen and storage blocks
+- a Tom's Simple Storage network backed by ordinary inventories inside a cabin
+- every other integration named in this milestone's major scope
+
+For ordinary blocks and block entities, the preferred result is normal dimensional compatibility without knowledge of the other mod's internal storage or simulation model. Explicit profiles are reserved for features whose safe semantics cannot be inferred.
 
 
 ## Future decision gates and exploratory backlog
@@ -88,8 +100,8 @@ Once the basic model is stable, the larger design continues in four independent 
 
 - [Cabin Acquisition and Relocation](01-acquisition-relocation.md)
 - [Cabin Progression and Functional Rooms](02-progression-space.md)
-- [Cabin Storage and Automation](05-production-automation.md)
-- [Cabin Network and Access](07-connected-cabins.md)
+- [Cabin Storage and Automation](07-production-automation.md)
+- [Cabin Network and Access](09-connected-cabins.md)
 
 Their implementation order and cross-feature dependencies are maintained in [the project roadmap](../../ROADMAP.md).
 

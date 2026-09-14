@@ -1,6 +1,6 @@
-# Milestone 6: Enchanting, equipment requisitions and owner loadouts
+# Milestone 8: Enchanting, equipment requisitions and owner loadouts
 
-**Depends on:** Milestone 5's knowledge, job and storage systems.
+**Depends on:** Milestone 7's knowledge, job and storage systems.
 
 **Outcome:** The cabin can learn enchantments destructively, reproduce valid equipment using materials instead of experience and maintain explicit Factorio-style owner loadouts.
 

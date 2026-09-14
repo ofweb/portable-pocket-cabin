@@ -2,7 +2,7 @@
 
 **Outcome:** One UUID-backed cabin can be deployed, entered, simulated, packed, recovered and redeployed without moving or losing its persistent interior.
 
-This completed foundation includes lifecycle journalling and reconciliation, one active exterior, protected structure masks, safe destinations, occupant evacuation, stale-item generations, trust-based entry, offline recovery, cabin-bed respawning, vanilla-dimension support, fake-window states and ordinary block/mod compatibility inside the pocket dimension.
+This completed foundation includes lifecycle journalling and reconciliation, one active exterior, protected structure masks, safe destinations, occupant evacuation, stale-item generations, trust-based entry, offline recovery, cabin-bed respawning, vanilla-dimension support, fake-window states and ordinary vanilla block and block-entity compatibility inside the pocket dimension.
 
 The regression suite for these guarantees remains mandatory for every later milestone.
 
@@ -45,10 +45,8 @@ Typical contents:
 
 - beds
 - personal storage
-- Tom's Simple Storage network
 - crafting stations
 - furnaces
-- Farmer's Delight kitchen
 - indoor crop plots
 - decorations
 - other normal blocks and block entities
@@ -244,7 +242,7 @@ Seamless rendered portals are explicitly unnecessary.
 
 ## Packing a cabin
 
-During the MVP, packing is performed from outside the cabin. The post-MVP connection upgrade adds network-aware packing from inside as specified in [Cabin Network and Access](07-connected-cabins.md).
+During the MVP, packing is performed from outside the cabin. The post-MVP connection upgrade adds network-aware packing from inside as specified in [Cabin Network and Access](09-connected-cabins.md).
 
 The acquisition release makes outside packing command-free: the owner sneak-uses the exterior controller twice before the existing validation and countdown begin. Commands remain operator tools. The complete interaction contract is specified in [Cabin Acquisition and Relocation](01-acquisition-relocation.md).
 
@@ -344,7 +342,7 @@ Pocket interiors should contain windows that visually represent conditions outsi
 
 These are deliberately fake windows rather than rendered portals.
 
-The current window presentation is acceptable only as an MVP placeholder. A later visual pass should provide substantially more fidelity and a stronger sense of depth while preserving the lightweight fake-window architecture and its readable outside-condition cues. Exact art direction is deferred until after the core progression systems are established.
+Milestone 0 completes the functional state presentation: every required outside condition has a readable lightweight visual state. A later visual pass in [Milestone 11](11-compatibility-polish.md) provides substantially more fidelity and a stronger sense of depth without changing this state-driven architecture. Exact art direction is deferred until that milestone.
 
 They should communicate enough information that players can decide whether they want to leave.
 
@@ -423,7 +421,7 @@ The hallway supplies the physical wall and common space for those doors. Players
 
 Hallway access remains available when a member cabin is packed. Network-aware packing evacuates only occupants who would otherwise lose their final permitted route to a deployed exterior. This deliberately supersedes the MVP rule that packing disables all access to the interior.
 
-The complete role, mailbox, connection and safe-packing rules are specified in [Cabin Network and Access](07-connected-cabins.md).
+The complete role, mailbox, connection and safe-packing rules are specified in [Cabin Network and Access](09-connected-cabins.md).
 
 ---
 
@@ -451,10 +449,6 @@ The room should support normal blocks including:
 - farmland
 - water
 - crops
-- Farmer's Delight crops
-- Farmer's Delight kitchen/storage blocks
-
-Farmer's Delight Refabricated currently supports Fabric 26.2 and includes crops, rich soil and kitchen equipment, making it an important compatibility target.
 
 Crop ticking and other block simulation behave continuously while the cabin is deployed because its bounded interior chunks remain fully simulated.
 
@@ -464,17 +458,9 @@ MVP crop simulation pauses while a cabin is packed. Post-MVP functional rooms us
 
 ## Storage
 
-The interior should behave like ordinary Minecraft space so storage mods work without special integration.
+The interior should behave like ordinary Minecraft space. Milestone 0 validates vanilla inventories and block entities only. Optional storage-mod validation belongs to [Milestone 11](11-compatibility-polish.md) and should not require a special storage backend in this mod.
 
-Tom's Simple Storage is a particularly important compatibility target because the planned modpack uses it and it has a current Fabric 26.2 version. It provides connected storage and crafting terminals over ordinary inventories.
-
-The portable-home mod should know nothing about Tom's internal storage model.
-
-If Tom's works inside any normal Minecraft dimension, it should work inside a cabin.
-
-This principle should apply to other modded blocks wherever possible.
-
-Post-MVP cabin-owned storage and automation are an additional explicit system, not a replacement backend for ordinary chests or Tom's Simple Storage. Those rules are specified in [Cabin Storage and Automation](05-production-automation.md).
+Post-MVP cabin-owned storage and automation are an additional explicit system, not a replacement backend for ordinary chests or Tom's Simple Storage. Those rules are specified in [Cabin Storage and Automation](07-production-automation.md).
 
 ---
 
@@ -575,7 +561,7 @@ explicit OP inspection, reconciliation and item-recovery commands
 
 Do not implement progression until this version is stable.
 
-The first compatibility test world should contain:
+The Milestone 0 compatibility test world should contain only vanilla fixtures:
 
 ```text
 vanilla chest with items
@@ -585,9 +571,6 @@ bed
 water
 farmland
 growing crops
-Farmer's Delight crops
-Farmer's Delight kitchen
-Tom's Simple Storage network
 ```
 
 Pack/unpack the exterior repeatedly and verify that nothing inside changes.
@@ -658,12 +641,11 @@ The MVP is implemented as nine gated deliveries. After every delivery, an operat
 - same-dimension near-death respawning
 - Nether, End and inactive window profiles
 
-#### Delivery 9: Compatibility and release UX
+#### Delivery 9: Vanilla compatibility and release UX
 
 - survival crafting recipe
-- complete fake-window presentation
-- Farmer's Delight compatibility world
-- Tom's Simple Storage compatibility world
+- complete MVP fake-window state set
+- vanilla fixture compatibility world
 - admin recovery workflow
 - complete MVP regression test
 
@@ -748,3 +730,11 @@ Save compatibility is required between these nine deliveries because together th
 3. Deploy in the Nether and End and confirm the panels use static red/orange and purple/magenta profiles respectively.
 4. Pack or orphan the cabin and confirm both panels become opaque wooden shutters.
 5. With a cabin-home binding inactive, die in each vanilla dimension and confirm near-death respawning stays in that same dimension before falling back to the last campsite.
+
+### Delivery 9 manual acceptance
+
+1. In a fresh survival world, craft the Milestone 0 Cabin Kit without operator commands and deploy it successfully.
+2. Place a chest with named items, a double chest, furnace, bed, water, farmland and growing crops inside; confirm they behave normally while the cabin is deployed.
+3. Pack, restart and redeploy repeatedly; confirm every fixture and its contents remain intact and packed simulation remains paused.
+4. Exercise `/cabin inspect`, `/cabin reconcile` and `/cabin recover-item`; confirm recovery never creates a second active exterior or loses the interior.
+5. Run the complete GameTest and dedicated-server restart suite and confirm the functional fake-window state set and all Milestone 0 lifecycle regressions pass.

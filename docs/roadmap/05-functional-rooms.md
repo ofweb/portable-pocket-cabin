@@ -1,33 +1,58 @@
-# Milestone 4: Manual functional rooms, mounts and house cats
+# Milestone 5: Functional rooms
 
-**Depends on:** Milestones 2 and 3.
+**Depends on:** Milestones 3 and 4.
 
-**Outcome:** Players purchase, inhabit and operate useful specialised rooms manually; their named animals remain individual, safe residents rather than serialized copies or generic production items.
+**Outcome:** Players purchase, enter and manually operate useful specialised rooms that remain bounded, persistent and isolated from every other pocket space.
 
-Major scope:
+**Status:** Draft. Each delivery requires alignment before implementation.
 
-- bounded managed-room controller, activation lifecycle and capped catch-up framework
-- greenhouse beds with manual planting and harvesting
-- stable stalls that preserve eligible mounts by global entity UUID
-- aquatic berth upgrade and safe check-in/check-out for a previously tamed nautilus
-- one previously tamed house cat living naturally in the general cabin interior
-- manual livestock populations founded by four real animals, with collection and deliberate surplus processing
-- forestry plots with manual felling and replanting
-- explicit species/crop/tree profiles, including supported Alex's Mobs Continued integration
-- role-aware room operation and actionable failure messages
+## Deliveries
 
-**Red:** Add failing identity, duplicate-entity, packed catch-up, capacity, ownership, aquatic-destination, cat-boundary and concurrent-collection tests.
+### Delivery 5.1: Room installation and traversal — Draft
 
-**Green:** Deliver each room's manual loop before adding any automatic action.
+Purchase one generic empty room, allocate its permanent isolated cell, enter it through a protected internal door and return safely after restart. This delivery establishes the minimum room controller and traversal contract used by later room types.
 
-**Refactor:** Reuse one managed-resident identity model and one bounded catch-up framework while retaining type-specific safety policies.
+### Delivery 5.2: Greenhouse — Draft
 
-**Exit gate:** Every manual room remains useful, bounded and restart-safe; managed animal state can never create a second materialised copy of a mount, nautilus or cat.
+One greenhouse with manually planted and harvested managed beds.
+
+### Delivery 5.3: Stable — Draft
+
+One stable that checks eligible mounts in and out without changing or duplicating their identity.
+
+### Delivery 5.4: Aquatic berth — Draft
+
+One stable upgrade that safely houses and releases an eligible tamed nautilus.
+
+### Delivery 5.5: Livestock room — Draft
+
+One manually tended, bounded population for a single explicitly supported animal type.
+
+### Delivery 5.6: Forestry room — Draft
+
+One manually felled and replanted managed tree plot.
+
+**Milestone exit gate:** Every accepted room delivery remains bounded and restart-safe; no room exposes another pocket cell, and managed animals never have two simultaneously materialised representations.
 
 
 ## Consolidated specification
 
-_Source: managed-room and animal sections of the former progression specification. Automatic room actions remain here beside their manual contracts and are gated by Milestone 5._
+_Source: managed-room sections of the former progression specification. Automatic room actions remain here beside their manual contracts and are gated by Milestone 7._
+
+### Room installation and traversal
+
+A cabin is a graph of persistent bounded spaces rather than one indefinitely expanding cell.
+
+- The general interior has its own allocated cell.
+- Every purchased functional room receives a separate allocated cell.
+- Every shared connection hallway receives a separate allocation as described in the network specification.
+- Protected internal doors connect these spaces using short same-dimension teleports.
+- Door traversal must not expose pocket coordinates, the void or another cabin's unconnected rooms.
+- Unpurchased rooms allocate no cell.
+- Cell and room identifiers are permanent and are never reused while their persisted contents may remain recoverable.
+- Every room type declares a maximum footprint and the chunks needed for its active representation.
+
+This model lets individual rooms expand without moving neighbouring cabins or reserving the maximum possible compound for every owner.
 
 ### Managed functional rooms
 
@@ -110,25 +135,6 @@ Checkout uses an aquatic destination resolver. It requires sufficient connected 
 
 The aquatic berth is a stable-capacity upgrade, not a livestock room: it does not breed nautiluses, generate shells or abstract the animal into production.
 
-### House cats
-
-A house cat is a companion resident of the general cabin interior, not a stable mount or livestock population. The base progression cabin supports one house cat without requiring a stable upgrade.
-
-The owner must first tame a cat normally in the exterior world. While the cabin is deployed, the owner can bring that same cat through the entrance and deliberately assign the cabin as its home at the interior controller. Wild cats, another player's cats and cats already homed to another cabin are rejected. Registration preserves the cat's global entity UUID, owner, appearance, custom name, health and other safe vanilla state.
-
-A homed cat behaves like a house cat rather than continuously following its owner:
-
-- it remains in the general interior when the owner leaves through the exterior or hallway
-- while not ordered to sit, it roams within the safe interior and favours beds, warm blocks, carpets, window perches and nearby owners
-- the owner can still tell it to sit or stand using normal pet interaction
-- it may sleep near its sleeping owner and produce vanilla cat gifts only from a real completed sleep event while the room is active
-- it never generates gifts, breeding progress or other outputs through packed-time catch-up
-- it cannot automatically cross a cabin exit, hallway door or functional-room boundary
-
-The room controller keeps the cat away from the protected exit and void boundary. A homed cat is protected from damage and is returned to its home position if pathfinding or an owner-built hazard leaves it outside the safe interior. Because it cannot accompany players outside, this protection cannot be used to create an invulnerable combat pet. Other players cannot move or release it.
-
-The owner may explicitly release the cat from its cabin home while the exterior is deployed. Release requires a safe exterior destination and removes the cabin protections; it never creates a second copy. Packing, hallway access and owner logout leave the cat safely at home.
-
 ### Livestock rooms
 
 Livestock production is a late-game feature purchased separately for each supported animal type.
@@ -190,7 +196,6 @@ A later kiln capability converts managed forestry output into charcoal through i
 At minimum, functional rooms must be able to explain:
 
 - missing or unsupported seed, sapling, animal or mount
-- wild, differently owned or already homed cat
 - missing feed or process input
 - full local fixture or cabin storage
 - population below the configured surplus threshold
@@ -200,3 +205,14 @@ At minimum, functional rooms must be able to explain:
 - integration profile absent or incompatible
 
 These messages follow the visibility rules in the network and access specification.
+
+### Optional entity integrations
+
+The cabin never infers that every entity is breedable, rideable or safe to manage. Each supported species needs an allowlisted profile describing the data that may be preserved and the actions its room supports.
+
+An explicit Alex's Mobs Continued profile may provide:
+
+- exploration catalysts tied to supported mobs, structures, advancements or loot
+- unusual room-upgrade materials
+- stable eligibility for declared rideable species
+- livestock production profiles for declared sustainable species and drops

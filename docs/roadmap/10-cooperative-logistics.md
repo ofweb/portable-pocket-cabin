@@ -1,6 +1,6 @@
-# Milestone 8: Cooperative knowledge, mail and resource logistics
+# Milestone 10: Cooperative knowledge, mail and resource logistics
 
-**Depends on:** Milestones 5 through 7.
+**Depends on:** Milestones 7 through 9.
 
 **Outcome:** Connected cabins cooperate without becoming one inventory or leaking private household configuration.
 

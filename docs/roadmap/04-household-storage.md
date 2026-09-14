@@ -1,6 +1,6 @@
-# Milestone 3: Household roles, mailbox and central storage
+# Milestone 4: Household roles, mailbox and central storage
 
-**Depends on:** Milestone 2's controller and room identity model.
+**Depends on:** Milestone 2's controller foundation.
 
 **Outcome:** A cabin behaves as a household with clear owner, resident and guest boundaries, a safe public receiving mailbox and one authoritative cabin-owned inventory.
 
@@ -13,15 +13,6 @@ Major scope:
 - storage capacity upgrades, hard reserves and transaction-safe mutations
 - local status visibility that reveals only information appropriate to each role
 - the first storage/status interface, while ordinary chests and Tom's Simple Storage remain independent
-
-**Red:** Add failing permission-matrix, mailbox privacy/full-capacity, concurrent mutation, restart and rollback tests.
-
-**Green:** Implement one local household with usable mailbox and central storage, without networking or automation.
-
-**Refactor:** Route all cabin-owned inventory changes through one transaction boundary and all UI/status checks through the same role policy.
-
-**Exit gate:** Owners and residents can use shared storage, guests can safely deliver mail but cannot inspect resources, and interrupted transfers neither duplicate nor lose items.
-
 
 ## Household and mailbox specification
 
@@ -39,7 +30,7 @@ It deliberately supersedes these MVP restrictions once the relevant upgrades are
 
 The authoritative UUID, lifecycle, crash-consistency and one-active-exterior invariants in [Milestone 0](00-safe-mvp.md) still apply.
 
-Storage, sharing, loadouts and automation are specified in [Cabin Storage and Automation](05-production-automation.md). Functional rooms are specified in [Cabin Progression and Functional Rooms](02-progression-space.md).
+Storage, sharing, loadouts and automation are specified in [Cabin Storage and Automation](07-production-automation.md). Functional rooms are specified in [Cabin Progression and Functional Rooms](02-progression-space.md).
 
 ### Local roles
 
@@ -131,7 +122,6 @@ Later targeted mailbox automations may:
 
 Every automated delivery is bounded, atomic, attributable and rejected when the receiving mailbox is full.
 
-
 ## Central-storage specification
 
 _Source: central-storage and local-access sections of the former storage specification._
@@ -142,7 +132,7 @@ This document specifies the post-MVP cabin-owned storage, knowledge and automati
 
 It complements ordinary Minecraft inventories rather than replacing them. Chests, Tom's Simple Storage and other compatible blocks continue to behave normally inside active cabin rooms under the rules in [Milestone 0](00-safe-mvp.md).
 
-Functional-room production is specified in [Cabin Progression and Functional Rooms](02-progression-space.md). Roles, mailboxes and cabin connections are specified in [Cabin Network and Access](07-connected-cabins.md).
+Functional-room production is specified in [Cabin Progression and Functional Rooms](02-progression-space.md). Roles, mailboxes and cabin connections are specified in [Cabin Network and Access](09-connected-cabins.md).
 
 Recipes for installing storage, library and automation upgrades use the persistent world attunement defined by the progression specification. The ordinary crafting, cooking and brewing recipes executed after those systems are installed do not vary merely because cabin upgrades do.
 

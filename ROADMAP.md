@@ -15,22 +15,26 @@ The project has not been publicly released. Development worlds are disposable un
 
 ## Milestones
 
-| Milestone | Outcome | Status |
-| --- | --- | --- |
-| [0](docs/roadmap/00-safe-mvp.md) | Safe portable-cabin MVP | Complete |
-| [1](docs/roadmap/01-acquisition-relocation.md) | Survival crafting and command-free relocation | Complete |
-| [2](docs/roadmap/02-progression-space.md) | World-attuned progression and expandable pocket spaces | In progress |
-| [3](docs/roadmap/03-household-storage.md) | Household roles, mailbox and central storage | Planned |
-| [4](docs/roadmap/04-functional-rooms.md) | Manual functional rooms, mounts and house cats | Planned |
-| [5](docs/roadmap/05-production-automation.md) | Targeted production and room automation | Planned |
-| [6](docs/roadmap/06-enchanting-loadouts.md) | Enchanting, equipment requisitions and owner loadouts | Planned |
-| [7](docs/roadmap/07-connected-cabins.md) | Connected cabins and safe packed-cabin access | Planned |
-| [8](docs/roadmap/08-cooperative-logistics.md) | Cooperative knowledge, mail and resource logistics | Planned |
-| [9](docs/roadmap/09-compatibility-polish.md) | Compatibility, balance and presentation pass | Planned |
+| Milestone                                      | Outcome                                               | Status                                |
+| ---------------------------------------------- | ----------------------------------------------------- | ------------------------------------- |
+| [0](docs/roadmap/00-safe-mvp.md)               | Safe portable-cabin MVP                               | Complete                              |
+| [1](docs/roadmap/01-acquisition-relocation.md) | Survival crafting and command-free relocation         | Complete                              |
+| [2](docs/roadmap/02-progression-space.md)      | World-attuned expansion                               | Implemented; acceptance audit pending |
+| [3](docs/roadmap/03-upgrade-interface.md)      | Discoverable cabin upgrade interface                  | Draft                                 |
+| [4](docs/roadmap/04-household-storage.md)      | Household roles, mailbox and central storage          | Draft                                 |
+| [5](docs/roadmap/05-functional-rooms.md)       | Functional rooms                                      | Draft                                 |
+| [6](docs/roadmap/06-cabin-companions.md)       | Cabin companions                                      | Draft                                 |
+| [7](docs/roadmap/07-production-automation.md)  | Targeted production and room automation               | Draft                                 |
+| [8](docs/roadmap/08-enchanting-loadouts.md)    | Enchanting, equipment requisitions and owner loadouts | Draft                                 |
+| [9](docs/roadmap/09-connected-cabins.md)       | Connected cabins and safe packed-cabin access         | Draft                                 |
+| [10](docs/roadmap/10-cooperative-logistics.md) | Cooperative knowledge, mail and resource logistics    | Draft                                 |
+| [11](docs/roadmap/11-compatibility-polish.md)  | Compatibility, balance and presentation pass          | Draft                                 |
 
 ## Documentation contract
 
 - The milestone files are authoritative. Requirements and implementation work for a feature belong in the milestone that delivers it.
+- A milestone is a coherent player outcome and may contain many deliveries.
+- A delivery covers one player-visible feature, or one indivisible enabling capability needed by that feature. Independently useful or independently debatable behavior belongs in a separate delivery.
 - Later milestones may explicitly supersede earlier behavior. The later file must name the earlier rule it replaces.
 - Cross-milestone dependencies should be links, not duplicate specifications.
 - Data-driven decisions remain open only until the milestone that consumes them; that milestone's alignment pass must either settle them or explicitly defer the dependent work.

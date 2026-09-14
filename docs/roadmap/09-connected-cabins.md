@@ -1,6 +1,6 @@
-# Milestone 7: Connected cabins and safe packed-cabin access
+# Milestone 9: Connected cabins and safe packed-cabin access
 
-**Depends on:** Stable local permissions from Milestone 3 and lifecycle regression coverage from Milestone 1.
+**Depends on:** Stable local permissions from Milestone 4 and lifecycle regression coverage from Milestone 1.
 
 **Outcome:** Mutually consenting owners connect cabins through a persistent shared hallway, and a packed cabin remains reachable when the player still has a permitted route to another deployed exterior.
 

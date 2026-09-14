@@ -1,6 +1,6 @@
 # Portable Pocket Cabin
 
-A Fabric 26.2 mod for a travelling play style. The safe MVP and Milestone 1 survival-acquisition flow are complete, and Milestone 2 progression work is underway. The [roadmap](ROADMAP.md) links each milestone's design, implementation plan, and acceptance gates.
+A Fabric 26.2 mod for a travelling play style. The safe MVP and Milestone 1 survival-acquisition flow are complete; Milestone 2's world-attuned expansion is implemented with retrospective acceptance still pending. The [roadmap](ROADMAP.md) links each milestone's design, implementation plan, and acceptance gates.
 
 ## Playing
 

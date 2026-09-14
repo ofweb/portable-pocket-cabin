@@ -1,6 +1,6 @@
-# Milestone 5: Targeted production and room automation
+# Milestone 7: Targeted production and room automation
 
-**Depends on:** Milestones 3 and 4.
+**Depends on:** Milestones 4 and 5.
 
 **Outcome:** Exploration-discovered books unlock small, individually controlled automations that fulfil concrete jobs without turning the cabin into an unbounded factory.
 
@@ -146,3 +146,9 @@ Cooking automation never implies farming, animal feeding, slaughtering or ingred
 A potion must first be brewed or found and enter that cabin's central storage. The learned template includes only allowlisted potion identity and effect components.
 
 Reproduction requires a declared brewing path, ingredients, bottles and the installed brewing capability. Custom or modded potions require an explicit compatibility profile when their data cannot be handled safely.
+
+### Optional cooking integrations
+
+An explicit Alex's Mobs Continued Delight integration may expose declared ingredients and meals to kitchen learning and automation through compatible Farmer's Delight or Farmer's Delight Refabricated recipes.
+
+Unknown food remains storable as an ordinary item. It becomes reproducible only when its recipe and item components pass the safe-learning rules in this milestone.
