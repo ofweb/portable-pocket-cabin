@@ -128,6 +128,8 @@ In-progress jobs reserve their already committed inputs transactionally. On fail
 
 Crafting automation produces locally known safe item templates from stored materials through bounded jobs.
 
+For a tracked cabin upgrade, an owner may explicitly approve a displayed crafting plan for missing upgrade ingredients. The plan uses raw materials from central storage, obeys the same recipe-safety, recursion, reserve and capacity rules as other jobs, and does not move outputs into the upgrade fund as general inventory. Fund contributions are applied first and installation remains a separate owner action under [Milestone 3](03-upgrade-interface.md).
+
 - It may prepare known intermediate components recursively.
 - It cannot reproduce custom names, arbitrary data, durability or enchantments as part of ordinary crafting.
 - Container-return items and recipe by-products must be accounted for before starting.

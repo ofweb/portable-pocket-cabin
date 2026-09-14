@@ -340,6 +340,8 @@ The cabin lifecycle and selected destination must be revalidated immediately bef
 
 Pocket interiors should contain windows that visually represent conditions outside the currently deployed cabin.
 
+This remains the playable behavior throughout Delivery 3.1 of [Milestone 3](03-upgrade-interface.md). Delivery 3.2 supersedes automatic windows: cabins that already exist receive grandfathered side windows, while cabins created afterwards purchase individual functional windows through the tracked upgrade interface.
+
 These are deliberately fake windows rather than rendered portals.
 
 Milestone 0 completes the functional state presentation: every required outside condition has a readable lightweight visual state. A later visual pass in [Milestone 11](11-compatibility-polish.md) provides substantially more fidelity and a stronger sense of depth without changing this state-driven architecture. Exact art direction is deferred until that milestone.
