@@ -62,11 +62,29 @@ Each size upgrade increases both usable dimensions by one block:
 4×4 → 5×5 → 6×6 → 7×7 → …
 ```
 
+The clear interior height grows with the general-space size. A 4×4 or 5×5 cabin has two
+air blocks between its floor and ceiling. Every second size step adds one block of clear
+height, capped at ten blocks from size 20 onward:
+
+```text
+4–5 → 2, 6–7 → 3, …, 18–19 → 9, 20+ → 10
+```
+
+Height is derived only from the persisted general-space size, not from the datapack's
+configured maximum, so reloading progression definitions cannot reshape an existing cabin.
+An expansion that raises the ceiling validates the newly exposed vertical volume together
+with the horizontal extension and fails without consuming materials when either is obstructed.
+Existing player blocks inside the unchanged usable volume remain untouched.
+
 The entrance wall and doorway remain anchored. Expansion extends the rear boundary and uses a deterministic lateral pattern so existing player blocks never move. An upgrade must validate its target volume before modifying the shell and must abort without partial changes if that volume is not safe.
 
 Each successive expansion costs more than the previous one. Costs, the maximum general-room size and the exact lateral expansion pattern are data-driven balancing values, but a finite maximum must be declared before implementation so interior allocations cannot collide.
 
 General-purpose space remains ordinary Minecraft space. Players can furnish it with normal and compatible modded blocks; those blocks do not gain packed-time simulation merely because the room has been enlarged.
+
+This geometry change is fresh-world-only. Registries created with the earlier fixed-height
+interior schema fail closed with the existing backup-and-`just fresh-world` guidance; the mod
+does not guess which old ceiling-area blocks are generated shell and which are player-built.
 
 ### Cabin magic and material language
 

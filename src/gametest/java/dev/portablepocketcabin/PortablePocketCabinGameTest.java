@@ -72,22 +72,27 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
-	public void legacyRegistryIsRejectedWithoutMutation(GameTestHelper helper) {
+	public void fixedHeightRegistryIsRejectedWithoutMutation(GameTestHelper helper) {
 		var root = new net.minecraft.nbt.CompoundTag();
 		var legacyData = new net.minecraft.nbt.CompoundTag();
+		legacyData.putInt("schema_version", 2);
 		legacyData.putLong("next_cell_index", 3L);
 		root.put("data", legacyData);
 		var unchanged = root.copy();
 		try {
-			CabinRegistry.requireSupportedSchema(root, java.nio.file.Path.of("legacy-cabins.dat"));
-			helper.fail("An unversioned MVP registry must fail before it can be loaded or replaced");
+			CabinRegistry.requireSupportedSchema(root, java.nio.file.Path.of("fixed-height-cabins.dat"));
+			helper.fail("A fixed-height registry must fail before it can be loaded or replaced");
 		} catch (IllegalStateException expected) {
 			helper.assertTrue(expected.getMessage().contains("just fresh-world"),
-				"Legacy-world failure must explain the fresh-world recovery command");
+				"Fixed-height-world failure must explain the fresh-world recovery command");
 			helper.assertTrue(root.equals(unchanged),
-				"Rejecting a legacy registry must not mutate its NBT data");
-			helper.succeed();
+				"Rejecting a fixed-height registry must not mutate its NBT data");
 		}
+
+		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, new CabinRegistry()).getOrThrow();
+		helper.assertTrue(encoded.asCompound().orElseThrow().getIntOr("schema_version", 0) == 3,
+			"Variable-height registries must publish explicit schema version 3");
+		helper.succeed();
 	}
 
 	@GameTest
@@ -264,6 +269,32 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void ceilingHeightGrowsEverySecondSizeStepAndCapsAtTen(GameTestHelper helper) {
+		long cell = 8;
+		BlockPos center = PocketDimension.cellCenter(cell);
+		var sizeFour = PocketDimension.shellBlocks(cell, 4, CabinPalette.DEFAULT);
+		var sizeFive = PocketDimension.shellBlocks(cell, 5, CabinPalette.DEFAULT);
+		var sizeSix = PocketDimension.shellBlocks(cell, 6, CabinPalette.DEFAULT);
+		var sizeTwenty = PocketDimension.shellBlocks(cell, 20, CabinPalette.DEFAULT);
+		var maximum = PocketDimension.shellBlocks(
+			cell, CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE, CabinPalette.DEFAULT
+		);
+
+		helper.assertTrue(sizeFour.containsKey(center.offset(0, 3, 0))
+			&& sizeFive.containsKey(center.offset(0, 3, 0)),
+			"Sizes four and five must have two clear blocks below the ceiling");
+		helper.assertTrue(sizeSix.containsKey(center.offset(0, 4, 0)),
+			"Size six must gain its first block of clear height");
+		helper.assertTrue(sizeTwenty.containsKey(center.offset(0, 11, 0))
+			&& maximum.containsKey(center.offset(0, 11, 0)),
+			"Clear interior height must cap at ten blocks from size twenty onward");
+		helper.assertTrue(!sizeFour.containsKey(center.offset(0, 4, 0))
+			&& !maximum.containsKey(center.offset(0, 12, 0)),
+			"Cabin shells must not retain a ceiling above their size-derived height");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void expansionPatternGrowsOneBlockWithoutMovingTheEntrance(GameTestHelper helper) {
 		var four = PocketDimension.bounds(4);
 		var five = PocketDimension.bounds(5);
@@ -285,15 +316,26 @@ public final class PortablePocketCabinGameTest {
 		BlockPos center = PocketDimension.cellCenter(cell);
 		BlockPos playerBlock = center.above();
 		BlockPos obstruction = center.offset(0, 1, PocketDimension.bounds(5).shellMinimumZ());
+		BlockPos raisedCeilingObstruction = center.offset(
+			0, PocketDimension.clearInteriorHeight(6) + 1, 0
+		);
 
 		PocketDimension.ExpansionCheck blocked = PocketDimension.validateExpansion(
 			cell, 4, 5, obstruction::equals
 		);
 		helper.assertTrue(!blocked.valid(),
 			"An obstruction in the target shell must reject expansion before mutation");
+		PocketDimension.ExpansionCheck verticallyBlocked = PocketDimension.validateExpansion(
+			cell, 5, 6, raisedCeilingObstruction::equals
+		);
+		helper.assertTrue(!verticallyBlocked.valid(),
+			"An obstruction above the old ceiling must reject a height-growing expansion");
 		helper.assertTrue(PocketDimension.isWithinUsable(cell, 4, playerBlock)
 			&& PocketDimension.isWithinUsable(cell, 5, playerBlock),
 			"Existing player blocks must remain in the unchanged usable-volume intersection");
+		helper.assertTrue(!PocketDimension.isWithinUsable(cell, 5, center.offset(0, 3, 0))
+			&& PocketDimension.isWithinUsable(cell, 6, center.offset(0, 3, 0)),
+			"A height-growing expansion must expose the old ceiling layer as usable space");
 		helper.assertTrue(PocketDimension.isWithinUsable(cell, 5, center.offset(-2, 1, -2)),
 			"A successful 4x4 to 5x5 expansion must expose the deterministic new row and column");
 		helper.succeed();
@@ -443,9 +485,6 @@ public final class PortablePocketCabinGameTest {
 			"Rollback must preserve the palette and keep delivery owed");
 
 		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
-		var data = encoded.asCompound().orElseThrow();
-		helper.assertTrue(data.getIntOr("schema_version", 0) == 2,
-			"The Milestone 2 registry must publish explicit schema version 2");
 		CabinRecord restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow()
 			.find(cabin.uuid()).orElseThrow();
 		helper.assertTrue(restored.palette().equals(palette)
@@ -539,11 +578,16 @@ public final class PortablePocketCabinGameTest {
 			== CabinWindows.Profile.INACTIVE, "Packed cabins must close their fake windows");
 
 		var blocks = CabinWindows.blocks(7, CabinWindows.Profile.DAY);
+		BlockPos cabinCenter = PocketDimension.cellCenter(7);
 		helper.assertTrue(blocks.size() == 4,
 			"The compact interior must retain two visible fake-window panels");
 		for (BlockPos position : blocks.keySet()) {
 			helper.assertTrue(PocketDimension.isInteriorShell(7, position),
 				"Every fake-window block must remain part of the protected interior shell");
+			helper.assertTrue(position.getY() - cabinCenter.getY() >= 1
+				&& position.getY() - cabinCenter.getY()
+					<= PocketDimension.clearInteriorHeight(CabinProgression.INITIAL_GENERAL_SIZE),
+				"Starting-cabin windows must stay below the lowered ceiling");
 		}
 		helper.succeed();
 	}

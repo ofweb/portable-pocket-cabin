@@ -10,7 +10,9 @@ Use the Kit on the top of a solid terrain block. The first use previews the 5×5
 
 Normal-use the exterior door or lodestone controller to enter. To pack, sneak-use the same exterior lodestone twice within 10 seconds. The existing five-second evacuation and packing countdown then runs without commands.
 
-New cabins now begin with a 4×4 usable interior. Normal-use the protected interior lodestone beside the exit to see the save's world-attuned wood and the exact materials for the next expansion. Sneak-use it with those materials to grow the room from 4×4 to 5×5, then one block per side-step up to the configured finite limit. Expansion always keeps the entrance wall fixed and refuses an obstructed target without consuming materials.
+New cabins now begin with a 4×4 usable interior. Normal-use the protected interior lodestone beside the exit to see the save's world-attuned wood and the exact materials for the next expansion. Sneak-use it with those materials to grow the room from 4×4 to 5×5, then one block per side-step up to the configured finite limit. Clear interior height starts at two blocks, grows by one block for every two size steps, and caps at ten blocks from size 20 onward. Expansion always keeps the entrance wall fixed and refuses an obstructed horizontal or vertical target without consuming materials.
+
+The variable-height interior uses cabin registry schema 3. Worlds created with the earlier fixed-height schema must be backed up and replaced with `just fresh-world`; automatic migration is intentionally unavailable because old generated ceiling blocks cannot be distinguished safely from player construction.
 
 Cabins can be deployed in the Overworld, Nether, or End. Their protected interiors keep running while deployed and pause while packed. Two fake-window panels show dawn, day, sunset, night, rain, thunder, Nether, End, or closed-shutter states.
 

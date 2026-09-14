@@ -28,7 +28,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 public final class CabinRegistry extends SavedData {
-	private static final int SCHEMA_VERSION = 2;
+	private static final int SCHEMA_VERSION = 3;
 
 	private record RegistryData(
 		int schemaVersion, long nextCellIndex, List<CabinRecord> cabins,
@@ -109,7 +109,7 @@ public final class CabinRegistry extends SavedData {
 		int version = data.getIntOr("schema_version", 0);
 		if (version != SCHEMA_VERSION) {
 			throw new IllegalStateException("Unsupported cabin registry schema version " + version
-				+ " in " + registryFile + ". Back up this world and run `just fresh-world` before starting Milestone 2."
+				+ " in " + registryFile + ". Back up this world and run `just fresh-world` before using this version."
 			);
 		}
 	}
@@ -501,7 +501,7 @@ public final class CabinRegistry extends SavedData {
 	private static DataResult<CabinRegistry> decode(RegistryData data) {
 		if (data.schemaVersion() != SCHEMA_VERSION) {
 			return DataResult.error(() -> "Unsupported cabin registry schema version " + data.schemaVersion()
-				+ ". Back up this world and run `just fresh-world` before starting Milestone 2.");
+				+ ". Back up this world and run `just fresh-world` before using this version.");
 		}
 		if (data.nextCellIndex() < 0) {
 			return DataResult.error(() -> "Cabin next cell index must be non-negative");

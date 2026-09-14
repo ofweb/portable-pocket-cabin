@@ -23,7 +23,8 @@ public final class PocketDimension {
 	public static final int CELL_ORIGIN_X = 1024;
 	public static final int CELL_ORIGIN_Z = 1024;
 	public static final int CELL_FLOOR_Y = 63;
-	public static final int INTERIOR_CEILING_Y = CELL_FLOOR_Y + 7;
+	private static final int INITIAL_INTERIOR_CLEAR_HEIGHT = 2;
+	private static final int MAXIMUM_INTERIOR_CLEAR_HEIGHT = 10;
 	public static final int INTERIOR_FRONT_USABLE_Z = 2;
 	public static final int INTERIOR_FRONT_WALL_Z = INTERIOR_FRONT_USABLE_Z + 1;
 	public static final ResourceKey<Level> LEVEL_KEY = ResourceKey.create(
@@ -101,9 +102,10 @@ public final class PocketDimension {
 	) {
 		BlockPos center = cellCenter(cellIndex);
 		InteriorBounds bounds = bounds(generalSize);
+		int ceilingY = interiorCeilingY(generalSize);
 		for (int x = bounds.minimumX(); x <= bounds.maximumX(); x++) {
 			for (int z = bounds.minimumZ(); z <= bounds.maximumZ(); z++) {
-				for (int y = CELL_FLOOR_Y + 1; y < INTERIOR_CEILING_Y; y++) {
+				for (int y = CELL_FLOOR_Y + 1; y < ceilingY; y++) {
 					level.setBlockAndUpdate(new BlockPos(center.getX() + x, y, center.getZ() + z),
 						Blocks.AIR.defaultBlockState());
 				}
@@ -129,6 +131,7 @@ public final class PocketDimension {
 		}
 		Map<BlockPos, BlockState> currentShell = shellBlocks(cellIndex, currentSize, CabinPalette.DEFAULT);
 		Map<BlockPos, BlockState> targetShell = shellBlocks(cellIndex, targetSize, CabinPalette.DEFAULT);
+		int targetCeilingY = interiorCeilingY(targetSize);
 		for (BlockPos pos : targetShell.keySet()) {
 			if (!currentShell.containsKey(pos) && occupied.test(pos)) {
 				return obstructed(pos);
@@ -138,7 +141,7 @@ public final class PocketDimension {
 		BlockPos center = cellCenter(cellIndex);
 		for (int x = target.minimumX(); x <= target.maximumX(); x++) {
 			for (int z = target.minimumZ(); z <= target.maximumZ(); z++) {
-				for (int y = CELL_FLOOR_Y + 1; y < INTERIOR_CEILING_Y; y++) {
+				for (int y = CELL_FLOOR_Y + 1; y < targetCeilingY; y++) {
 					BlockPos pos = new BlockPos(center.getX() + x, y, center.getZ() + z);
 					if (!isWithinUsable(cellIndex, currentSize, pos)
 						&& !currentShell.containsKey(pos) && occupied.test(pos)) {
@@ -176,9 +179,10 @@ public final class PocketDimension {
 
 		InteriorBounds targetBounds = bounds(targetSize);
 		BlockPos center = cellCenter(cabin.cellIndex());
+		int targetCeilingY = interiorCeilingY(targetSize);
 		for (int x = targetBounds.minimumX(); x <= targetBounds.maximumX(); x++) {
 			for (int z = targetBounds.minimumZ(); z <= targetBounds.maximumZ(); z++) {
-				for (int y = CELL_FLOOR_Y + 1; y < INTERIOR_CEILING_Y; y++) {
+				for (int y = CELL_FLOOR_Y + 1; y < targetCeilingY; y++) {
 					BlockPos pos = new BlockPos(center.getX() + x, y, center.getZ() + z);
 					if (!isWithinUsable(cabin.cellIndex(), currentSize, pos)) {
 						level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
@@ -196,14 +200,15 @@ public final class PocketDimension {
 		BlockState ceilingState = palette.roof().planksBlock().defaultBlockState();
 		BlockState wallState = palette.walls().planksBlock().defaultBlockState();
 		BlockState frameState = palette.walls().structuralWoodBlock().defaultBlockState();
+		int ceilingOffset = interiorCeilingOffset(generalSize);
 
 		for (int x = bounds.shellMinimumX(); x <= bounds.shellMaximumX(); x++) {
 			for (int z = bounds.shellMinimumZ(); z <= bounds.shellMaximumZ(); z++) {
 				result.put(center.offset(x, 0, z), floorState);
-				result.put(center.offset(x, INTERIOR_CEILING_Y - CELL_FLOOR_Y, z), ceilingState);
+				result.put(center.offset(x, ceilingOffset, z), ceilingState);
 			}
 		}
-		for (int y = 1; y < INTERIOR_CEILING_Y - CELL_FLOOR_Y; y++) {
+		for (int y = 1; y < ceilingOffset; y++) {
 			for (int x = bounds.shellMinimumX(); x <= bounds.shellMaximumX(); x++) {
 				result.put(center.offset(x, y, bounds.shellMinimumZ()),
 					frameOrWall(x, bounds, frameState, wallState));
@@ -225,9 +230,9 @@ public final class PocketDimension {
 		result.put(interiorExitDoorLower(cellIndex), lowerDoor);
 		result.put(interiorExitDoorUpper(cellIndex), lowerDoor.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
 		result.put(interiorController(cellIndex), Blocks.LODESTONE.defaultBlockState());
-		result.put(center.offset(bounds.minimumX(), INTERIOR_CEILING_Y - CELL_FLOOR_Y, bounds.minimumZ()),
+		result.put(center.offset(bounds.minimumX(), ceilingOffset, bounds.minimumZ()),
 			Blocks.SEA_LANTERN.defaultBlockState());
-		result.put(center.offset(bounds.maximumX(), INTERIOR_CEILING_Y - CELL_FLOOR_Y, bounds.minimumZ()),
+		result.put(center.offset(bounds.maximumX(), ceilingOffset, bounds.minimumZ()),
 			Blocks.SEA_LANTERN.defaultBlockState());
 		return Map.copyOf(result);
 	}
@@ -278,16 +283,17 @@ public final class PocketDimension {
 	public static boolean isInteriorShell(long cellIndex, int generalSize, BlockPos pos) {
 		BlockPos center = cellCenter(cellIndex);
 		InteriorBounds bounds = bounds(generalSize);
+		int ceilingY = interiorCeilingY(generalSize);
 		int x = pos.getX() - center.getX();
 		int z = pos.getZ() - center.getZ();
 		if (x < bounds.shellMinimumX() || x > bounds.shellMaximumX()
 			|| z < bounds.shellMinimumZ() || z > bounds.shellMaximumZ()) {
 			return false;
 		}
-		if (pos.getY() == CELL_FLOOR_Y || pos.getY() == INTERIOR_CEILING_Y) {
+		if (pos.getY() == CELL_FLOOR_Y || pos.getY() == ceilingY) {
 			return true;
 		}
-		return pos.getY() > CELL_FLOOR_Y && pos.getY() < INTERIOR_CEILING_Y
+		return pos.getY() > CELL_FLOOR_Y && pos.getY() < ceilingY
 			&& (x == bounds.shellMinimumX() || x == bounds.shellMaximumX()
 				|| z == bounds.shellMinimumZ() || z == bounds.shellMaximumZ());
 	}
@@ -295,22 +301,44 @@ public final class PocketDimension {
 	static boolean isWithinUsable(long cellIndex, int generalSize, BlockPos pos) {
 		BlockPos center = cellCenter(cellIndex);
 		InteriorBounds bounds = bounds(generalSize);
+		int ceilingY = interiorCeilingY(generalSize);
 		int x = pos.getX() - center.getX();
 		int z = pos.getZ() - center.getZ();
 		return x >= bounds.minimumX() && x <= bounds.maximumX()
 			&& z >= bounds.minimumZ() && z <= bounds.maximumZ()
-			&& pos.getY() > CELL_FLOOR_Y && pos.getY() < INTERIOR_CEILING_Y;
+			&& pos.getY() > CELL_FLOOR_Y && pos.getY() < ceilingY;
+	}
+
+	static int clearInteriorHeight(int generalSize) {
+		requireSupportedGeneralSize(generalSize);
+		return Math.min(
+			MAXIMUM_INTERIOR_CLEAR_HEIGHT,
+			INITIAL_INTERIOR_CLEAR_HEIGHT
+				+ (generalSize - CabinProgression.INITIAL_GENERAL_SIZE) / 2
+		);
+	}
+
+	private static int interiorCeilingY(int generalSize) {
+		return CELL_FLOOR_Y + interiorCeilingOffset(generalSize);
+	}
+
+	private static int interiorCeilingOffset(int generalSize) {
+		return clearInteriorHeight(generalSize) + 1;
 	}
 
 	static InteriorBounds bounds(int generalSize) {
-		if (generalSize < CabinProgression.INITIAL_GENERAL_SIZE
-			|| generalSize > CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE) {
-			throw new IllegalArgumentException("Unsupported general cabin size " + generalSize);
-		}
+		requireSupportedGeneralSize(generalSize);
 		int minimumX = -((generalSize - 1) / 2);
 		int maximumX = generalSize / 2;
 		int minimumZ = INTERIOR_FRONT_USABLE_Z - generalSize + 1;
 		return new InteriorBounds(minimumX, maximumX, minimumZ, INTERIOR_FRONT_USABLE_Z);
+	}
+
+	private static void requireSupportedGeneralSize(int generalSize) {
+		if (generalSize < CabinProgression.INITIAL_GENERAL_SIZE
+			|| generalSize > CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE) {
+			throw new IllegalArgumentException("Unsupported general cabin size " + generalSize);
+		}
 	}
 
 	record InteriorBounds(int minimumX, int maximumX, int minimumZ, int maximumZ) {

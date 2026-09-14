@@ -110,7 +110,7 @@ final class CabinWindows {
 		int index = 0;
 		int windowZ = Math.max(bounds.minimumZ(), bounds.maximumZ() - 1);
 		for (int x : new int[] {bounds.shellMinimumX(), bounds.shellMaximumX()}) {
-			for (int y = 2; y <= 3; y++) {
+			for (int y = 1; y <= 2; y++) {
 				result.put(center.offset(x, y, windowZ), block(profile, index++));
 			}
 		}
