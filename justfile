@@ -1,5 +1,5 @@
 prism_instance := env_var_or_default("PRISM_INSTANCE", "portable-pocket-cabin-dev")
-server_port := env_var_or_default("PPC_PORT", "25565")
+server_port := env_var_or_default("PPC_PORT", "25566")
 server_address := env_var_or_default("PPC_SERVER", "localhost:" + server_port)
 
 # Show the available development commands.
@@ -18,12 +18,19 @@ test:
 test-dev-config:
     #!/usr/bin/env bash
     set -euo pipefail
-    compose_config="$(docker compose config)"
-    grep -Fq 'DIFFICULTY: peaceful' <<<"$compose_config"
-    grep -Fq 'SPAWN_ANIMALS: "false"' <<<"$compose_config"
-    grep -Fq 'SPAWN_MONSTERS: "false"' <<<"$compose_config"
-    grep -Fq 'SPAWN_NPCS: "false"' <<<"$compose_config"
-    grep -Fq 'gamerule spawn_mobs false' <<<"$compose_config"
+    default_compose_config="$(env -u PPC_PORT docker compose config)"
+    override_compose_config="$(PPC_PORT=25567 docker compose config)"
+    default_server_port="$(env -u PPC_PORT just --evaluate server_port)"
+    override_server_port="$(PPC_PORT=25567 just --evaluate server_port)"
+    grep -Fq 'DIFFICULTY: peaceful' <<<"$default_compose_config"
+    grep -Fq 'SPAWN_ANIMALS: "false"' <<<"$default_compose_config"
+    grep -Fq 'SPAWN_MONSTERS: "false"' <<<"$default_compose_config"
+    grep -Fq 'SPAWN_NPCS: "false"' <<<"$default_compose_config"
+    grep -Fq 'gamerule spawn_mobs false' <<<"$default_compose_config"
+    grep -Fq 'published: "25566"' <<<"$default_compose_config"
+    grep -Fq 'published: "25567"' <<<"$override_compose_config"
+    [[ "$default_server_port" == "25566" ]]
+    [[ "$override_server_port" == "25567" ]]
 
 # Stage exactly one local mod jar for Docker and Prism.
 stage: build
@@ -37,6 +44,8 @@ stage: build
 
 # Build and start the Fabric server in the background.
 server: stage
+    # Keep the bind-mount source owned by the host user instead of Docker.
+    mkdir -p run/server
     PPC_PORT="{{ server_port }}" docker compose up -d --wait
     @echo "Server ready at {{ server_address }}"
 

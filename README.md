@@ -83,7 +83,7 @@ The current mod jar is rebuilt and copied into both environments before launch. 
 
 ```sh
 just server                 # start the Docker server and make ofweb an OP
-just client                 # launch Prism and join localhost:25565
+just client                 # launch Prism and join localhost:25566
 just client my-instance-id  # use a different Prism instance
 just op YourMinecraftName   # enable the development OP commands
 just fresh-world            # archive the current world and start a clean one
@@ -91,4 +91,4 @@ just logs
 just stop
 ```
 
-The server world persists under `run/server`. `just fresh-world` stops the server, moves `run/server/world` into a timestamped directory under `run/world-backups`, and starts a newly generated world; it does not delete the previous world. The local development server uses peaceful difficulty and disables natural mob spawning so gameplay cannot interrupt cabin testing. `just server` provisions `ofweb` as an operator on every startup; set `PPC_OPS` to a comma-separated list of other usernames or UUIDs when needed. Export `PPC_PORT`, `PPC_MEMORY`, `PPC_SERVER`, `PPC_DNS`, `PRISM_ROOT`, `PRISM_INSTANCE_DIR`, or `PRISM_BIN` when local defaults differ. The container defaults to `PPC_DNS=1.1.1.1` to avoid host-local DNS stubs that are unreachable from Docker.
+The server world persists under `run/server`. `just fresh-world` stops the server, moves `run/server/world` into a timestamped directory under `run/world-backups`, and starts a newly generated world; it does not delete the previous world. The development server publishes on `localhost:25566` by default so it can coexist with a standard Minecraft server on port `25565`. The local development server uses peaceful difficulty and disables natural mob spawning so gameplay cannot interrupt cabin testing. `just server` provisions `ofweb` as an operator on every startup; set `PPC_OPS` to a comma-separated list of other usernames or UUIDs when needed. Export `PPC_PORT`, `PPC_MEMORY`, `PPC_SERVER`, `PPC_DNS`, `PRISM_ROOT`, `PRISM_INSTANCE_DIR`, or `PRISM_BIN` when local defaults differ. The container defaults to `PPC_DNS=1.1.1.1` to avoid host-local DNS stubs that are unreachable from Docker.

@@ -7,7 +7,7 @@ services:
     tty: true
     stdin_open: true
     ports:
-      - "${PPC_PORT:-25565}:25565"
+      - "${PPC_PORT:-25566}:25565"
     dns:
       - "${PPC_DNS:-1.1.1.1}"
     environment:
