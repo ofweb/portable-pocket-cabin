@@ -2,6 +2,7 @@ package dev.portablepocketcabin;
 
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -22,8 +23,10 @@ import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 public final class PortablePocketCabinGameTest {
@@ -73,7 +76,7 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
-	public void schemaThreeMigratesToEmptySchemaFiveUpgradeState(GameTestHelper helper) {
+	public void schemaThreeMigratesToSchemaSixWithGrandfatheredWindows(GameTestHelper helper) {
 		CabinRegistry original = new CabinRegistry();
 		CabinRecord cabin = original.create(UUID.randomUUID());
 		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, original).getOrThrow();
@@ -83,10 +86,12 @@ public final class PortablePocketCabinGameTest {
 		CabinRecord restoredCabin = restored.find(cabin.uuid()).orElseThrow();
 		var rewritten = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, restored).getOrThrow();
 
-		helper.assertTrue(restoredCabin.upgrades().equals(CabinUpgradeState.EMPTY),
+		helper.assertTrue(restoredCabin.upgrades().funds().isEmpty(),
 			"Schema 3 cabins must migrate with no upgrade fund");
-		helper.assertTrue(rewritten.asCompound().orElseThrow().getIntOr("schema_version", 0) == 5,
-			"Migrated registries must rewrite as schema 5");
+		helper.assertTrue(restoredCabin.upgrades().windows().equals(CabinWindowState.grandfathered()),
+			"Every pre-schema-6 cabin must receive its two grandfathered side windows");
+		helper.assertTrue(rewritten.asCompound().orElseThrow().getIntOr("schema_version", 0) == 6,
+			"Migrated registries must rewrite as schema 6");
 		helper.succeed();
 	}
 
@@ -176,6 +181,169 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void windowStatePreservesStableIdentityTiersAndExactReceipts(GameTestHelper helper) {
+		ItemStack named = new ItemStack(Items.GLASS_PANE, 16);
+		named.set(DataComponents.CUSTOM_NAME, Component.literal("Paid window panes"));
+		CabinWindowState.Identity identity = new CabinWindowState.Identity(CabinWindowState.Wall.REAR, 1);
+		CabinWindowState state = CabinWindowState.EMPTY
+			.install(identity, 0, List.of(named))
+			.install(identity, 1, List.of(new ItemStack(Items.AMETHYST_SHARD, 1)));
+		var encoded = CabinWindowState.CODEC.encodeStart(NbtOps.INSTANCE, state).getOrThrow();
+		CabinWindowState restored = CabinWindowState.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
+		CabinWindowState.Window window = restored.window(identity).orElseThrow();
+
+		helper.assertTrue(window.tier() == 2 && window.receipts().size() == 2,
+			"A cabin window must retain its stable identity and one receipt per paid tier");
+		helper.assertTrue(window.receipts().getFirst().stacks().getFirst().getCount() == 16
+			&& Component.literal("Paid window panes").equals(
+				window.receipts().getFirst().stacks().getFirst().get(DataComponents.CUSTOM_NAME)),
+			"Window receipts must preserve exact contributed stacks and components");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void windowGeometryCentersEveryWallAndPreservesDividerAndFrames(GameTestHelper helper) {
+		long cell = 12;
+		CabinWindowState.Identity leftFirst = new CabinWindowState.Identity(CabinWindowState.Wall.LEFT, 0);
+		CabinWindowState one = stateWithWindows(windowAtTier(leftFirst, 1));
+		CabinWindowLayout.Result centered = CabinWindowLayout.current(cell, 4, one);
+		BlockPos center = PocketDimension.cellCenter(cell);
+		PocketDimension.InteriorBounds bounds = PocketDimension.bounds(4);
+
+		helper.assertTrue(centered.valid() && centered.positions().equals(Set.of(
+			center.offset(bounds.shellMinimumX(), 1, 0),
+			center.offset(bounds.shellMinimumX(), 2, 0)
+		)), "A lone even-span window must use deterministic lower-coordinate centering");
+
+		CabinWindowLayout.Result pair = CabinWindowLayout.installing(
+			cell, 4, one, new CabinWindowState.Identity(CabinWindowState.Wall.LEFT, 1), 1
+		);
+		helper.assertTrue(pair.valid() && pair.windows().size() == 2,
+			"A wall must fit two tier-one windows with one divider block");
+		helper.assertTrue(!pair.positions().contains(center.offset(bounds.shellMinimumX(), 1, 0)),
+			"The centered pair must retain its solid one-block divider");
+
+		List<CabinWindowState.Window> maximum = new ArrayList<>();
+		for (CabinWindowState.Wall wall : CabinWindowState.Wall.values()) {
+			maximum.add(windowAtTier(new CabinWindowState.Identity(wall, 0), 6));
+			maximum.add(windowAtTier(new CabinWindowState.Identity(wall, 1), 6));
+		}
+		CabinWindowLayout.Result sizeNineteen = CabinWindowLayout.current(cell, 19, stateWithWindows(maximum));
+		helper.assertTrue(sizeNineteen.valid() && sizeNineteen.windows().size() == 6
+			&& sizeNineteen.windows().stream().allMatch(window -> window.positions().size() == 72),
+			"Two tier-six windows must fit on every eligible wall from general size 19");
+		for (BlockPos position : sizeNineteen.positions()) {
+			helper.assertTrue(PocketDimension.isInteriorShell(cell, 19, position),
+				"Derived windows must stay inside the protected shell");
+		}
+		helper.assertTrue(!CabinWindowLayout.current(cell, 18, stateWithWindows(maximum)).valid(),
+			"A pair of tier-six windows must not fit below general size 19");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void windowPurchaseConsumesOnlyItsFundAndStoresExactReceipt(GameTestHelper helper) {
+		WorldAttunement attunement = CabinUpgradeDefinitions.current().resolve(71L);
+		CabinUpgradeDefinitions.Definitions definitions = testUpgradeDefinitions(attunement, 8, 4);
+		CabinRegistry registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID();
+		CabinRecord cabin = deployRegistryCabin(registry, owner, 45);
+		CabinWindowState.Identity identity = new CabinWindowState.Identity(CabinWindowState.Wall.REAR, 0);
+		CabinUpgradeState.Target target = CabinUpgradeState.Target.window(identity);
+		CabinUpgradeCatalog.Offer offer = CabinUpgradeCatalog.offer(cabin, target, attunement, definitions)
+			.orElseThrow();
+		TestExpansionEffect clear = new TestExpansionEffect(true, false);
+
+		for (CabinUpgradeState.Requirement requirement : offer.requirements()) {
+			ItemStack contribution = new ItemStack(
+				BuiltInRegistries.ITEM.getOptional(requirement.itemId()).orElseThrow(), requirement.count()
+			);
+			if (contribution.is(Items.GLASS_PANE)) {
+				contribution.set(DataComponents.CUSTOM_NAME, Component.literal("Exact paid panes"));
+			}
+			helper.assertTrue(CabinUpgradeService.deposit(
+				registry, cabin.uuid(), owner, target, contribution, attunement, definitions, clear
+			).success(), "Every exact base-window requirement must be fundable");
+		}
+		long revision = registry.find(cabin.uuid()).orElseThrow().upgrades().fundRevision();
+		helper.assertTrue(CabinUpgradeService.install(
+			registry, cabin.uuid(), owner, target, revision, attunement, definitions, clear, () -> { }
+		).success(), "A complete valid base-window fund must install");
+
+		CabinRecord installed = registry.find(cabin.uuid()).orElseThrow();
+		CabinWindowState.Window window = installed.upgrades().windows().window(identity).orElseThrow();
+		helper.assertTrue(window.tier() == 1 && installed.upgrades().fund(target).isEmpty(),
+			"Window installation must advance exactly one tier and consume only its fund");
+		helper.assertTrue(window.receipts().getFirst().stacks().stream().anyMatch(stack ->
+			stack.is(Items.GLASS_PANE) && Component.literal("Exact paid panes").equals(
+				stack.get(DataComponents.CUSTOM_NAME)
+		)), "The installed tier must retain the exact component-bearing paid stack");
+		CabinUpgradeCatalog.Offer second = CabinUpgradeCatalog.offer(
+			installed,
+			CabinUpgradeState.Target.window(new CabinWindowState.Identity(CabinWindowState.Wall.REAR, 1)),
+			attunement,
+			definitions
+		).orElseThrow();
+		helper.assertTrue(!second.locked(), "Installing a wall's first window must unlock its second window");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void windowWorldEffectRejectsObstructionsAndMigratesLegacyPanels(GameTestHelper helper) {
+		ServerLevel level = helper.getLevel();
+		long cell = 90;
+		PocketDimension.ensureCabinInterior(level, cell, CabinPalette.DEFAULT, 4);
+		CabinRecord empty = cabinWithWindows(cell, CabinWindowState.EMPTY);
+		CabinWindowState.Identity rear = new CabinWindowState.Identity(CabinWindowState.Wall.REAR, 0);
+		CabinWindowWorld world = new CabinWindowWorld(level.getServer(), level);
+		CabinWindowLayout.Result target = CabinWindowLayout.installing(cell, 4, CabinWindowState.EMPTY, rear, 1);
+		BlockPos pane = target.positions().iterator().next();
+
+		helper.assertTrue(world.validateInstall(empty, rear, 1).success(),
+			"A palette wall with no attachments must accept a fitting window");
+		level.setBlockAndUpdate(pane, Blocks.CHEST.defaultBlockState());
+		helper.assertTrue(!world.validateInstall(empty, rear, 1).success(),
+			"A non-managed block in the footprint must obstruct installation");
+		level.setBlockAndUpdate(pane, CabinPalette.DEFAULT.walls().planksBlock().defaultBlockState());
+		BlockPos attached = pane.south();
+		level.setBlockAndUpdate(attached, Blocks.WALL_TORCH.defaultBlockState());
+		helper.assertTrue(!world.validateInstall(empty, rear, 1).success(),
+			"A wall attachment that could be displaced must obstruct installation");
+		level.setBlockAndUpdate(attached, Blocks.AIR.defaultBlockState());
+		world.applyInstall(empty, rear, 1);
+		helper.assertTrue(target.positions().stream().allMatch(position ->
+			CabinWindows.isManagedWindowBlock(level.getBlockState(position).getBlock())
+		), "A validated base installation must project functional panes across its full footprint");
+
+		long legacyCell = 91;
+		PocketDimension.ensureCabinInterior(level, legacyCell, CabinPalette.DEFAULT, 4);
+		PocketDimension.InteriorBounds bounds = PocketDimension.bounds(4);
+		BlockPos legacyCenter = PocketDimension.cellCenter(legacyCell);
+		int legacyZ = Math.max(bounds.minimumZ(), bounds.maximumZ() - 1);
+		for (int x : new int[] {bounds.shellMinimumX(), bounds.shellMaximumX()}) {
+			for (int y = 1; y <= 2; y++) {
+				level.setBlockAndUpdate(
+					legacyCenter.offset(x, y, legacyZ), Blocks.STAINED_GLASS.blue().defaultBlockState()
+				);
+			}
+		}
+		CabinRecord grandfathered = cabinWithWindows(legacyCell, CabinWindowState.grandfathered());
+		helper.assertTrue(new CabinWindowWorld(level.getServer(), level).reconcileProjection(grandfathered),
+			"Legacy automatic panels must reconcile into centered state-derived panes");
+		CabinWindowLayout.Result migrated = CabinWindowLayout.current(
+			legacyCell, 4, CabinWindowState.grandfathered()
+		);
+		helper.assertTrue(migrated.positions().stream().allMatch(position ->
+			CabinWindows.isManagedWindowBlock(level.getBlockState(position).getBlock())
+		), "Every grandfathered identity must receive its centered pane projection");
+		helper.assertTrue(level.getBlockState(
+		legacyCenter.offset(bounds.shellMinimumX(), 1, legacyZ)
+		).is(CabinPalette.DEFAULT.walls().planksBlock()),
+			"The superseded legacy panel position must return to its palette wall block");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void fixedHeightRegistryIsRejectedWithoutMutation(GameTestHelper helper) {
 		var root = new net.minecraft.nbt.CompoundTag();
 		var legacyData = new net.minecraft.nbt.CompoundTag();
@@ -199,19 +367,19 @@ public final class PortablePocketCabinGameTest {
 		CabinRegistry.requireSupportedSchema(migratableRoot, java.nio.file.Path.of("schema-three-cabins.dat"));
 		var futureRoot = new net.minecraft.nbt.CompoundTag();
 		var futureData = new net.minecraft.nbt.CompoundTag();
-		futureData.putInt("schema_version", 6);
+		futureData.putInt("schema_version", 7);
 		futureRoot.put("data", futureData);
 		try {
 			CabinRegistry.requireSupportedSchema(futureRoot, java.nio.file.Path.of("future-cabins.dat"));
 			helper.fail("A future registry schema must be rejected instead of guessed");
 		} catch (IllegalStateException expected) {
-			helper.assertTrue(expected.getMessage().contains("Unsupported cabin registry schema version 6"),
+			helper.assertTrue(expected.getMessage().contains("Unsupported cabin registry schema version 7"),
 				"Future-schema rejection must identify the unsupported version");
 		}
 
 		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, new CabinRegistry()).getOrThrow();
-		helper.assertTrue(encoded.asCompound().orElseThrow().getIntOr("schema_version", 0) == 5,
-			"Target-fund registries must publish explicit schema version 5");
+		helper.assertTrue(encoded.asCompound().orElseThrow().getIntOr("schema_version", 0) == 6,
+			"Window-state registries must publish explicit schema version 6");
 		helper.succeed();
 	}
 
@@ -330,8 +498,12 @@ public final class PortablePocketCabinGameTest {
 		CabinUpgradeCatalog.Offer offer = CabinUpgradeCatalog.next(cabin, attunement, definitions).orElseThrow();
 		List<CabinUpgradeCatalog.Group> groups = CabinUpgradeCatalog.groups(cabin, attunement, definitions);
 		helper.assertTrue(groups.size() == 1 && groups.getFirst().id().equals(CabinUpgradeCatalog.CABIN_GROUP)
-			&& groups.getFirst().panels().equals(List.of(offer)),
-			"Only the implemented non-empty Cabin group must be exposed to the interface");
+			&& groups.getFirst().panels().size() == 7
+			&& groups.getFirst().panels().getFirst().equals(offer),
+			"The Cabin group must expose general space followed by all six stable window panels");
+		helper.assertTrue(groups.getFirst().panels().stream().skip(1)
+			.map(CabinUpgradeCatalog.Offer::target).distinct().count() == 6,
+			"Every eligible wall and slot must have one distinct stable window target");
 		helper.assertTrue(offer.target().equals(CabinUpgradeState.Target.generalSpace(5)),
 			"The catalog must expose only the next general-space size");
 		helper.assertTrue(offer.requirements().size() == 2
@@ -1535,6 +1707,33 @@ public final class PortablePocketCabinGameTest {
 		);
 	}
 
+	private static CabinWindowState stateWithWindows(CabinWindowState.Window... windows) {
+		return stateWithWindows(List.of(windows));
+	}
+
+	private static CabinWindowState stateWithWindows(List<CabinWindowState.Window> windows) {
+		return new CabinWindowState(windows);
+	}
+
+	private static CabinWindowState.Window windowAtTier(CabinWindowState.Identity identity, int tier) {
+		List<CabinWindowState.Receipt> receipts = new ArrayList<>();
+		for (int current = 1; current <= tier; current++) {
+			receipts.add(new CabinWindowState.Receipt(
+				current, List.of(new ItemStack(Items.GLASS_PANE, 1))
+			));
+		}
+		return new CabinWindowState.Window(identity, tier, receipts);
+	}
+
+	private static CabinRecord cabinWithWindows(long cellIndex, CabinWindowState windows) {
+		return new CabinRecord(
+			UUID.randomUUID(), UUID.randomUUID(), cellIndex, CabinLifecycle.PACKED,
+			Optional.empty(), Optional.empty(), true, 0L, false, CabinPalette.DEFAULT,
+			Optional.empty(), false, CabinEntryPermission.OWNER_ONLY, List.of(), CabinProgression.INITIAL,
+			CabinUpgradeState.EMPTY.withWindows(windows)
+		);
+	}
+
 	@GameTest
 	public void cabinHomeBindingSurvivesSaveReloadAndLatestBedWins(GameTestHelper helper) {
 		UUID owner = UUID.randomUUID();
@@ -1743,7 +1942,7 @@ public final class PortablePocketCabinGameTest {
 		);
 	}
 
-	private static final class TestExpansionEffect implements CabinUpgradeService.ExpansionEffect {
+	private static final class TestExpansionEffect implements CabinUpgradeService.UpgradeEffect {
 		private final boolean valid;
 		private final boolean interrupt;
 		private int applications;
@@ -1754,14 +1953,14 @@ public final class PortablePocketCabinGameTest {
 		}
 
 		@Override
-		public CabinUpgradeService.Outcome validate(CabinRecord cabin, int targetSize) {
+		public CabinUpgradeService.Outcome validate(CabinRecord cabin, CabinUpgradeCatalog.Offer offer) {
 			return valid
 				? CabinUpgradeService.Outcome.success("Expansion volume is clear.")
 				: CabinUpgradeService.Outcome.failure("Expansion is obstructed.");
 		}
 
 		@Override
-		public void apply(CabinRecord cabin, int targetSize) {
+		public void apply(CabinRecord cabin, CabinUpgradeState.Installation installation) {
 			applications++;
 			if (interrupt) {
 				throw new IllegalStateException("Simulated interruption");

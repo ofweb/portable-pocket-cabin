@@ -54,12 +54,28 @@ final class CabinUpgradeDefinitions {
 		}
 	}
 
+	record WindowTier(int targetTier, List<Ingredient> ingredients) {
+		WindowTier {
+			ingredients = List.copyOf(ingredients);
+			if (targetTier < 2 || targetTier > CabinWindowState.MAX_TIER || ingredients.isEmpty()) {
+				throw new IllegalArgumentException("Each window tier must target tier 2 through 6 and have ingredients");
+			}
+		}
+	}
+
 	record Definitions(
-		int definitionVersion, int maximumGeneralSize, List<Identifier> woodPool, List<Expansion> expansions
+		int definitionVersion,
+		int maximumGeneralSize,
+		List<Identifier> woodPool,
+		List<Expansion> expansions,
+		List<Ingredient> windowBase,
+		List<WindowTier> windowTiers
 	) {
 		Definitions {
 			woodPool = List.copyOf(woodPool);
 			expansions = List.copyOf(expansions);
+			windowBase = List.copyOf(windowBase);
+			windowTiers = List.copyOf(windowTiers);
 			if (definitionVersion <= 0) {
 				throw new IllegalArgumentException("definition_version must be positive");
 			}
@@ -76,10 +92,36 @@ final class CabinUpgradeDefinitions {
 					throw new IllegalArgumentException("Missing general expansion definition for size " + size);
 				}
 			}
+			if (windowBase.isEmpty()) {
+				throw new IllegalArgumentException("window_base must have ingredients");
+			}
+			for (int tier = 2; tier <= CabinWindowState.MAX_TIER; tier++) {
+				int targetTier = tier;
+				if (windowTiers.stream().noneMatch(value -> value.targetTier() == targetTier)) {
+					throw new IllegalArgumentException("Missing cabin window definition for tier " + tier);
+				}
+			}
+		}
+
+		Definitions(
+			int definitionVersion, int maximumGeneralSize, List<Identifier> woodPool, List<Expansion> expansions
+		) {
+			this(definitionVersion, maximumGeneralSize, woodPool, expansions, builtInWindowBase(), builtInWindowTiers());
 		}
 
 		Expansion expansion(int targetSize) {
 			return expansions.stream().filter(value -> value.targetSize() == targetSize).findFirst().orElse(null);
+		}
+
+		List<Ingredient> windowIngredients(int targetTier) {
+			if (targetTier == 1) {
+				return windowBase;
+			}
+			return windowTiers.stream()
+				.filter(value -> value.targetTier() == targetTier)
+				.findFirst()
+				.orElseThrow(() -> new IllegalArgumentException("Unsupported cabin window tier " + targetTier))
+				.ingredients();
 		}
 
 		WorldAttunement resolve(long worldSeed) {
@@ -149,7 +191,7 @@ final class CabinUpgradeDefinitions {
 
 	static Definitions parse(JsonObject json) {
 		int schemaVersion = GsonHelper.getAsInt(json, "schema_version");
-		if (schemaVersion != 1) {
+		if (schemaVersion != 2) {
 			throw new IllegalArgumentException("Unsupported progression schema_version " + schemaVersion);
 		}
 		int definitionVersion = GsonHelper.getAsInt(json, "definition_version");
@@ -161,25 +203,38 @@ final class CabinUpgradeDefinitions {
 		List<Expansion> expansions = new ArrayList<>();
 		for (var expansionElement : GsonHelper.getAsJsonArray(json, "general_expansions")) {
 			JsonObject expansionJson = expansionElement.getAsJsonObject();
-			List<Ingredient> ingredients = new ArrayList<>();
-			JsonArray ingredientArray = GsonHelper.getAsJsonArray(expansionJson, "ingredients");
-			for (var ingredientElement : ingredientArray) {
-				JsonObject ingredient = ingredientElement.getAsJsonObject();
-				String slot = GsonHelper.getAsString(ingredient, "attuned_slot", "");
-				Identifier itemId = ingredient.has("item")
-					? Identifier.parse(GsonHelper.getAsString(ingredient, "item")) : null;
-				if (!slot.isEmpty() && !"planks".equals(slot)) {
-					throw new IllegalArgumentException("Unsupported attuned_slot " + slot);
-				}
-				ingredients.add(new Ingredient(
-					itemId, "planks".equals(slot), GsonHelper.getAsInt(ingredient, "count")
-				));
-			}
 			expansions.add(new Expansion(
-				GsonHelper.getAsInt(expansionJson, "target_size"), ingredients
+				GsonHelper.getAsInt(expansionJson, "target_size"),
+				parseIngredients(GsonHelper.getAsJsonArray(expansionJson, "ingredients"))
 			));
 		}
-		return new Definitions(definitionVersion, maximum, woodPool, expansions);
+		List<Ingredient> windowBase = parseIngredients(GsonHelper.getAsJsonArray(json, "window_base"));
+		List<WindowTier> windowTiers = new ArrayList<>();
+		for (var tierElement : GsonHelper.getAsJsonArray(json, "window_tiers")) {
+			JsonObject tier = tierElement.getAsJsonObject();
+			windowTiers.add(new WindowTier(
+				GsonHelper.getAsInt(tier, "target_tier"),
+				parseIngredients(GsonHelper.getAsJsonArray(tier, "ingredients"))
+			));
+		}
+		return new Definitions(definitionVersion, maximum, woodPool, expansions, windowBase, windowTiers);
+	}
+
+	private static List<Ingredient> parseIngredients(JsonArray ingredientArray) {
+		List<Ingredient> ingredients = new ArrayList<>();
+		for (var ingredientElement : ingredientArray) {
+			JsonObject ingredient = ingredientElement.getAsJsonObject();
+			String slot = GsonHelper.getAsString(ingredient, "attuned_slot", "");
+			Identifier itemId = ingredient.has("item")
+				? Identifier.parse(GsonHelper.getAsString(ingredient, "item")) : null;
+			if (!slot.isEmpty() && !"planks".equals(slot)) {
+				throw new IllegalArgumentException("Unsupported attuned_slot " + slot);
+			}
+			ingredients.add(new Ingredient(
+				itemId, "planks".equals(slot), GsonHelper.getAsInt(ingredient, "count")
+			));
+		}
+		return List.copyOf(ingredients);
 	}
 
 	private static Definitions builtIn() {
@@ -196,7 +251,38 @@ final class CabinUpgradeDefinitions {
 				new Ingredient(Identifier.parse("minecraft:obsidian"), false, 2 + step * 2)
 			)));
 		}
-		return new Definitions(1, DEFAULT_MAX_GENERAL_SIZE, woods, expansions);
+		return new Definitions(
+			1, DEFAULT_MAX_GENERAL_SIZE, woods, expansions, builtInWindowBase(), builtInWindowTiers()
+		);
+	}
+
+	private static List<Ingredient> builtInWindowBase() {
+		List<Ingredient> result = new ArrayList<>();
+		result.add(item("glass_pane", 16));
+		result.add(item("amethyst_shard", 4));
+		for (String dye : List.of(
+			"yellow_dye", "orange_dye", "white_dye", "light_blue_dye", "magenta_dye", "blue_dye",
+			"light_gray_dye", "cyan_dye", "gray_dye", "red_dye", "purple_dye"
+		)) {
+			result.add(item(dye, 1));
+		}
+		return List.copyOf(result);
+	}
+
+	private static List<WindowTier> builtInWindowTiers() {
+		int[] panes = {4, 8, 12, 24, 32};
+		int[] shards = {1, 2, 3, 6, 8};
+		List<WindowTier> result = new ArrayList<>();
+		for (int index = 0; index < panes.length; index++) {
+			result.add(new WindowTier(index + 2, List.of(
+				item("glass_pane", panes[index]), item("amethyst_shard", shards[index])
+			)));
+		}
+		return List.copyOf(result);
+	}
+
+	private static Ingredient item(String path, int count) {
+		return new Ingredient(Identifier.parse("minecraft:" + path), false, count);
 	}
 
 	private static Identifier wood(String name) {

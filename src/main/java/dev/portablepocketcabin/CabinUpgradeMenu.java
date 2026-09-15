@@ -255,7 +255,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			);
 			outcome = CabinUpgradeService.install(
 				registry, cabinId, actor.getUUID(), target, armedRevision, attunement, definitions,
-				new CabinGeneralSpaceEffect(actor.level().getServer(), actor.level()),
+				new CabinUpgradeEffect(actor.level().getServer(), actor.level()),
 				() -> CabinRegistry.flush(actor.level().getServer())
 			);
 		} catch (IllegalStateException exception) {
@@ -503,7 +503,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			);
 			CabinUpgradeService.Contribution result = CabinUpgradeService.deposit(
 				registry, cabinId, serverPlayer.getUUID(), target, offered, attunement, definitions,
-				new CabinGeneralSpaceEffect(serverPlayer.level().getServer(), serverPlayer.level())
+					new CabinUpgradeEffect(serverPlayer.level().getServer(), serverPlayer.level())
 			);
 			setActionMessage(result.message());
 			if (result.success()) {
@@ -585,7 +585,15 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 				CabinUpgradeState.Fund fund = cabin.upgrades().fund(target).orElse(null);
 				List<CabinUpgradeState.Requirement> displayedRequirements = fund == null
 					? offer.requirements() : fund.requirements();
-				if (displayedRequirements.size() > MAX_REQUIREMENTS) {
+					if (offer.complete()) {
+						flags |= FLAG_MAXIMUM;
+						contextualMessage = "This upgrade is fully installed.";
+						writeRequirements(List.of(), null);
+					} else if (offer.locked()) {
+						flags |= FLAG_BLOCKED;
+						contextualMessage = offer.prerequisite();
+						writeRequirements(offer.requirements(), fund);
+					} else if (displayedRequirements.size() > MAX_REQUIREMENTS) {
 					flags |= FLAG_BLOCKED | FLAG_OVERSIZED;
 					contextualMessage = "This upgrade requires " + displayedRequirements.size()
 						+ " material types; the interface supports at most " + MAX_REQUIREMENTS + ".";
@@ -595,9 +603,9 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 					contextualMessage = "Funded requirements no longer match the loaded definition.";
 					writeRequirements(fund.requirements(), fund);
 				} else {
-					CabinUpgradeService.Outcome validation = new CabinGeneralSpaceEffect(
+					CabinUpgradeService.Outcome validation = new CabinUpgradeEffect(
 						serverPlayer.level().getServer(), serverPlayer.level()
-					).validate(cabin, offer.targetSize());
+					).validate(cabin, offer);
 					if (!validation.success()) {
 						flags |= FLAG_BLOCKED;
 						contextualMessage = validation.message();

@@ -54,8 +54,9 @@ installation. Downgrade, removal, refunds and funded-target invalidation remain 
 
 ## Technical approach
 
-- Add a `CabinWindowState` value to `CabinRecord`. It owns a bounded collection of wall/slot windows;
-  each installed window stores its tier and one exact-stack receipt per paid step.
+- Add a `CabinWindowState` value to the cabin-owned upgrade state, keeping `CabinRecord` inside the
+  record-codec field limit. It owns a bounded collection of wall/slot windows; each installed window
+  stores its tier and one exact-stack receipt per paid step.
 - Advance the registry to schema 6. Decode schema-5 records with empty window fields, then explicitly
   map them to grandfathered side windows before constructing the registry. Never make grandfathering
   the codec default.

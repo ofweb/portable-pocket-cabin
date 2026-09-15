@@ -168,6 +168,7 @@ final class CabinReconciliation {
 		CabinRecord cabin = registry.find(cabinId)
 			.orElseThrow(() -> new IllegalStateException("No cabin record exists for " + cabinId));
 		upgradeLegacyCornerFrames(server, cabin);
+		reconcileWindows(server, cabin);
 		boolean projectionValid = hasValidProjection(server, cabin);
 		Action action = plan(cabin, projectionValid);
 
@@ -202,6 +203,13 @@ final class CabinReconciliation {
 				yield "missing exterior marked ORPHANED";
 			}
 		};
+	}
+
+	private static void reconcileWindows(MinecraftServer server, CabinRecord cabin) {
+		ServerLevel pocket = server.getLevel(PocketDimension.LEVEL_KEY);
+		if (pocket != null) {
+			new CabinWindowWorld(server, pocket).reconcileProjection(cabin);
+		}
 	}
 
 	private static void upgradeLegacyCornerFrames(MinecraftServer server, CabinRecord cabin) {

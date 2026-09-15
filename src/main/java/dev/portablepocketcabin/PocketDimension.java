@@ -113,7 +113,6 @@ public final class PocketDimension {
 			}
 		}
 		placeShell(level, cellIndex, palette, generalSize);
-		CabinWindows.initializeInactive(level, cellIndex, generalSize);
 	}
 
 	/** Removes only the exposed rim left by the old command-created 7x7 debug platform. */

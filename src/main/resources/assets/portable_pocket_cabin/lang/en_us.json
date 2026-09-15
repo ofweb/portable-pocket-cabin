@@ -5,7 +5,7 @@
   "screen.portable_pocket_cabin.install_tooltip": "Install upgrade (click twice to confirm)",
   "screen.portable_pocket_cabin.previous_upgrade": "Previous upgrade",
   "screen.portable_pocket_cabin.next_upgrade": "Next upgrade",
-  "screen.portable_pocket_cabin.maximum": "Maximum general-space size reached",
+  "screen.portable_pocket_cabin.maximum": "Maximum upgrade tier reached",
   "screen.portable_pocket_cabin.installing": "Installation recovery in progress",
   "screen.portable_pocket_cabin.obstructed": "The expansion space is obstructed",
   "screen.portable_pocket_cabin.ready": "Ready to install",

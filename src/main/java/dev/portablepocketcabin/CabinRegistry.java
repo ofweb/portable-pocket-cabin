@@ -451,15 +451,33 @@ public final class CabinRegistry extends SavedData {
 		if (!installation.operationId().equals(operationId)) {
 			throw new IllegalStateException("Upgrade installation operation changed before commit");
 		}
-		int targetSize = installation.target().generalSpaceSize();
-		int currentSize = cabin.progression().generalSize();
-		if (currentSize != installation.expectedSize() && currentSize != targetSize) {
-			throw new IllegalStateException("Cabin size changed during upgrade installation");
+		CabinUpgradeState.Fund fund = cabin.upgrades().fund(installation.target())
+			.orElseThrow(() -> new IllegalStateException("Upgrade installation lost its retained fund"));
+		CabinProgression progression = cabin.progression();
+		CabinWindowState windows = cabin.upgrades().windows();
+		if (installation.target().isGeneralSpace()) {
+			int currentSize = progression.generalSize();
+			if (currentSize != installation.expectedState() && currentSize != installation.targetState()) {
+				throw new IllegalStateException("Cabin size changed during upgrade installation");
+			}
+			if (currentSize != installation.targetState()) {
+				progression = progression.withGeneralSize(installation.targetState());
+			}
+		} else {
+			CabinWindowState.Identity identity = installation.target().windowIdentity();
+			int currentTier = windows.tier(identity);
+			if (currentTier != installation.expectedState() && currentTier != installation.targetState()) {
+				throw new IllegalStateException("Cabin window tier changed during upgrade installation");
+			}
+			if (currentTier != installation.targetState()) {
+				windows = windows.install(identity, installation.expectedState(), fund.stacks());
+			}
 		}
-		CabinProgression progression = currentSize == targetSize
-			? cabin.progression() : cabin.progression().withGeneralSize(targetSize);
+		CabinUpgradeState completed = cabin.upgrades()
+			.completeInstallation(installation.target())
+			.withWindows(windows);
 		CabinRecord updated = copyProgressionAndUpgrades(
-			cabin, progression, cabin.upgrades().completeInstallation(installation.target())
+			cabin, progression, completed
 		);
 		replace(updated);
 		return updated;
@@ -583,7 +601,7 @@ public final class CabinRegistry extends SavedData {
 		if (repairedNextCellIndex > PocketDimension.MAX_CELL_INDEX + 1) {
 			return DataResult.error(() -> "Cabin next cell index is outside the supported grid");
 		}
-		List<CabinRecord> cabins = data.schemaVersion() == 5
+		List<CabinRecord> cabins = data.schemaVersion() < SCHEMA_VERSION
 			? data.cabins().stream()
 				.map(cabin -> copyUpgrades(cabin, cabin.upgrades().withWindows(CabinWindowState.grandfathered())))
 				.toList()

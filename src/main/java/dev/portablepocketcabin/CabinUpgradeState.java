@@ -141,6 +141,7 @@ record CabinUpgradeState(
 
 	record Target(Identifier type, String key) {
 		private static final Identifier GENERAL_SPACE = PortablePocketCabin.id("general_space");
+		private static final Identifier WINDOW = PortablePocketCabin.id("window");
 		static final Codec<Target> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Identifier.CODEC.fieldOf("type").forGetter(Target::type),
 			Codec.STRING.fieldOf("key").forGetter(Target::key)
@@ -152,17 +153,20 @@ record CabinUpgradeState(
 			if (key.isBlank()) {
 				throw new IllegalArgumentException("Upgrade target key must not be blank");
 			}
-			if (!type.equals(GENERAL_SPACE)) {
-				throw new IllegalArgumentException("Unsupported schema 5 upgrade target type " + type);
-			}
-			try {
-				int size = Integer.parseInt(key);
-				if (size <= CabinProgression.INITIAL_GENERAL_SIZE
-					|| size > CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE) {
-					throw new IllegalArgumentException("General-space target is outside the supported range");
+			if (type.equals(GENERAL_SPACE)) {
+				try {
+					int size = Integer.parseInt(key);
+					if (size <= CabinProgression.INITIAL_GENERAL_SIZE
+						|| size > CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE) {
+						throw new IllegalArgumentException("General-space target is outside the supported range");
+					}
+				} catch (NumberFormatException exception) {
+					throw new IllegalArgumentException("General-space target key must be a size", exception);
 				}
-			} catch (NumberFormatException exception) {
-				throw new IllegalArgumentException("General-space target key must be a size", exception);
+			} else if (type.equals(WINDOW)) {
+				CabinWindowState.Identity.parse(key);
+			} else {
+				throw new IllegalArgumentException("Unsupported schema 6 upgrade target type " + type);
 			}
 		}
 
@@ -173,8 +177,23 @@ record CabinUpgradeState(
 			return new Target(GENERAL_SPACE, Integer.toString(targetSize));
 		}
 
+		static Target window(CabinWindowState.Identity identity) {
+			return new Target(WINDOW, identity.key());
+		}
+
 		boolean isGeneralSpace() {
 			return type.equals(GENERAL_SPACE);
+		}
+
+		boolean isWindow() {
+			return type.equals(WINDOW);
+		}
+
+		CabinWindowState.Identity windowIdentity() {
+			if (!isWindow()) {
+				throw new IllegalStateException("Upgrade target is not a cabin window");
+			}
+			return CabinWindowState.Identity.parse(key);
 		}
 
 		int generalSpaceSize() {
@@ -259,22 +278,47 @@ record CabinUpgradeState(
 		}
 	}
 
-	record Installation(UUID operationId, Target target, int expectedSize) {
-		static final Codec<Installation> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+	record Installation(UUID operationId, Target target, int expectedState, int targetState) {
+		private static final Codec<Installation> CURRENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			UUIDUtil.STRING_CODEC.fieldOf("operation_id").forGetter(Installation::operationId),
 			Target.CODEC.fieldOf("target").forGetter(Installation::target),
-			Codec.INT.fieldOf("expected_size").forGetter(Installation::expectedSize)
+			Codec.INT.fieldOf("expected_state").forGetter(Installation::expectedState),
+			Codec.INT.fieldOf("target_state").forGetter(Installation::targetState)
 		).apply(instance, Installation::new));
+		private static final Codec<Installation> LEGACY_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			UUIDUtil.STRING_CODEC.fieldOf("operation_id").forGetter(Installation::operationId),
+			Target.CODEC.fieldOf("target").forGetter(Installation::target),
+			Codec.INT.fieldOf("expected_size").forGetter(Installation::expectedState)
+		).apply(instance, (operationId, target, expectedSize) ->
+			new Installation(operationId, target, expectedSize, target.generalSpaceSize())
+		));
+		static final Codec<Installation> CODEC = Codec.withAlternative(CURRENT_CODEC, LEGACY_CODEC);
 
 		Installation {
 			Objects.requireNonNull(operationId, "operationId");
 			Objects.requireNonNull(target, "target");
-			if (expectedSize < CabinProgression.INITIAL_GENERAL_SIZE) {
-				throw new IllegalArgumentException("Installation expected size is invalid");
+			if (target.isGeneralSpace()) {
+				if (expectedState < CabinProgression.INITIAL_GENERAL_SIZE
+					|| targetState != expectedState + 1
+					|| target.generalSpaceSize() != targetState) {
+					throw new IllegalArgumentException("Installation must target the next general-space size");
+				}
+			} else if (target.isWindow()) {
+				if (expectedState < 0 || expectedState >= CabinWindowState.MAX_TIER
+					|| targetState != expectedState + 1) {
+					throw new IllegalArgumentException("Installation must target the next cabin window tier");
+				}
+			} else {
+				throw new IllegalArgumentException("Installation target type is unsupported");
 			}
-			if (!target.isGeneralSpace() || target.generalSpaceSize() != expectedSize + 1) {
-				throw new IllegalArgumentException("Installation target must be the next general-space size");
-			}
+		}
+
+		static Installation generalSpace(UUID operationId, Target target, int expectedSize) {
+			return new Installation(operationId, target, expectedSize, expectedSize + 1);
+		}
+
+		static Installation window(UUID operationId, Target target, int expectedTier) {
+			return new Installation(operationId, target, expectedTier, expectedTier + 1);
 		}
 	}
 

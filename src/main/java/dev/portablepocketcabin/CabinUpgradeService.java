@@ -12,10 +12,10 @@ import java.util.UUID;
 
 /** Server-side authority for target-keyed upgrade fund transactions and installation. */
 final class CabinUpgradeService {
-	interface ExpansionEffect {
-		Outcome validate(CabinRecord cabin, int targetSize);
+	interface UpgradeEffect {
+		Outcome validate(CabinRecord cabin, CabinUpgradeCatalog.Offer offer);
 
-		void apply(CabinRecord cabin, int targetSize);
+		void apply(CabinRecord cabin, CabinUpgradeState.Installation installation);
 
 		void refresh(CabinRecord cabin);
 	}
@@ -62,7 +62,7 @@ final class CabinUpgradeService {
 		ItemStack offered,
 		WorldAttunement attunement,
 		CabinUpgradeDefinitions.Definitions definitions,
-		ExpansionEffect effect
+		UpgradeEffect effect
 	) {
 		synchronized (registry) {
 			CabinRecord cabin = registry.find(cabinId).orElse(null);
@@ -75,12 +75,12 @@ final class CabinUpgradeService {
 			if (cabin.upgrades().installation().isPresent()) {
 				return Contribution.failure("An upgrade is currently being installed.");
 			}
-			CabinUpgradeCatalog.Offer offer = CabinUpgradeCatalog.next(cabin, attunement, definitions)
+			CabinUpgradeCatalog.Offer offer = CabinUpgradeCatalog.offer(cabin, target, attunement, definitions)
 				.orElse(null);
-			if (offer == null || !offer.target().equals(target)) {
+			if (offer == null || offer.complete() || offer.locked()) {
 				return Contribution.failure("That upgrade is not currently available.");
 			}
-			if (!effect.validate(cabin, offer.targetSize()).success()) {
+			if (!effect.validate(cabin, offer).success()) {
 				return Contribution.failure("That upgrade is currently obstructed.");
 			}
 			CabinUpgradeState.Fund existing = cabin.upgrades().fund(target).orElse(null);
@@ -173,7 +173,7 @@ final class CabinUpgradeService {
 		long expectedFundRevision,
 		WorldAttunement attunement,
 		CabinUpgradeDefinitions.Definitions definitions,
-		ExpansionEffect effect,
+		UpgradeEffect effect,
 		Runnable flush
 	) {
 		synchronized (registry) {
@@ -200,19 +200,27 @@ final class CabinUpgradeService {
 			if (!fund.isComplete()) {
 				return Outcome.failure("That upgrade is not fully funded.");
 			}
-			int targetSize = target.generalSpaceSize();
-			Outcome validation = effect.validate(cabin, targetSize);
+			CabinUpgradeCatalog.Offer offer = CabinUpgradeCatalog.offer(cabin, target, attunement, definitions)
+				.orElse(null);
+			if (offer == null || offer.complete() || offer.locked()) {
+				return Outcome.failure("That upgrade is no longer available.");
+			}
+			Outcome validation = effect.validate(cabin, offer);
 			if (!validation.success()) {
 				return validation;
 			}
 
-			CabinUpgradeState.Installation installation = new CabinUpgradeState.Installation(
-				UUID.randomUUID(), target, cabin.progression().generalSize()
-			);
+			CabinUpgradeState.Installation installation = target.isGeneralSpace()
+				? CabinUpgradeState.Installation.generalSpace(
+					UUID.randomUUID(), target, cabin.progression().generalSize()
+				)
+				: CabinUpgradeState.Installation.window(
+					UUID.randomUUID(), target, cabin.upgrades().windows().tier(target.windowIdentity())
+				);
 			registry.updateUpgradeState(cabinId, cabin.upgrades().withInstallation(installation));
 			flush.run();
 			try {
-				effect.apply(cabin, targetSize);
+				effect.apply(cabin, installation);
 			} catch (RuntimeException exception) {
 				return Outcome.failure("Installation was interrupted and will resume safely: "
 					+ exception.getMessage());
@@ -220,12 +228,15 @@ final class CabinUpgradeService {
 			CabinRecord installed = registry.completeUpgradeInstallation(cabinId, installation.operationId());
 			flush.run();
 			effect.refresh(installed);
-			return Outcome.success("Cabin general space expanded to " + targetSize + "x" + targetSize + ".");
+			return target.isGeneralSpace()
+				? Outcome.success("Cabin general space expanded to " + installation.targetState()
+					+ "x" + installation.targetState() + ".")
+				: Outcome.success("Cabin window installed at tier " + installation.targetState() + ".");
 		}
 	}
 
 	static void reconcileInstallation(
-		CabinRegistry registry, UUID cabinId, ExpansionEffect effect, Runnable flush
+		CabinRegistry registry, UUID cabinId, UpgradeEffect effect, Runnable flush
 	) {
 		synchronized (registry) {
 			CabinRecord cabin = registry.find(cabinId).orElse(null);
@@ -233,8 +244,7 @@ final class CabinUpgradeService {
 				return;
 			}
 			CabinUpgradeState.Installation installation = cabin.upgrades().installation().orElseThrow();
-			int targetSize = installation.target().generalSpaceSize();
-			effect.apply(cabin, targetSize);
+			effect.apply(cabin, installation);
 			CabinRecord installed = registry.completeUpgradeInstallation(cabinId, installation.operationId());
 			flush.run();
 			effect.refresh(installed);
@@ -250,7 +260,7 @@ final class CabinUpgradeService {
 		if (pocket == null) {
 			throw new IllegalStateException("Pocket dimension is unavailable during upgrade recovery");
 		}
-		ExpansionEffect effect = new CabinGeneralSpaceEffect(server, pocket);
+		UpgradeEffect effect = new CabinUpgradeEffect(server, pocket);
 		for (CabinRecord cabin : registry.cabins()) {
 			if (cabin.upgrades().installation().isEmpty()) {
 				continue;

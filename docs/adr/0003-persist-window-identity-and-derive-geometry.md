@@ -13,9 +13,11 @@ also need the exact materials paid for each purchased step.
 
 ## Decision
 
-Persist each window by its eligible wall and bounded slot identity, installed tier, and immutable
-paid-step receipts. Derive centered block geometry from the cabin's current general size and installed
-window state rather than storing coordinates. Extend the upgrade installation journal with typed
+Persist each window inside the cabin-owned upgrade state by its eligible wall and bounded slot
+identity, installed tier, and immutable paid-step receipts. Derive centered block geometry from the
+cabin's current general size and installed window state rather than storing coordinates. Nesting the
+window value under upgrade state keeps `CabinRecord` within Minecraft's 16-field record-codec limit.
+Extend the upgrade installation journal with typed
 general-space and window operations so deterministic world changes can be replayed before state and
 fund completion. Schema 5 cabins migrate to grandfathered tier-one left and right windows with empty
 base receipts; cabins created under schema 6 begin without windows.
@@ -53,7 +55,7 @@ base receipts; cabins created under schema 6 begin without windows.
 
 ### Negative
 
-- Schema 6 adds window state and a more general installation codec.
+- Schema 6 adds nested window state and a more general installation codec.
 - All world mutations must derive and validate both the old and resulting wall layouts.
 
 ### Risks

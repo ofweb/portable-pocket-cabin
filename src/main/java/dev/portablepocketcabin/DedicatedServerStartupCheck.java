@@ -243,7 +243,7 @@ final class DedicatedServerStartupCheck {
 		if (pocket == null) {
 			throw new IllegalStateException("Pocket dimension disappeared during upgrade test");
 		}
-		CabinGeneralSpaceEffect effect = new CabinGeneralSpaceEffect(server, pocket);
+		CabinUpgradeService.UpgradeEffect effect = new CabinUpgradeEffect(server, pocket);
 		for (CabinUpgradeState.Requirement requirement : offer.requirements()) {
 			var item = BuiltInRegistries.ITEM.getOptional(requirement.itemId()).orElseThrow();
 			ItemStack payment = new ItemStack(item, requirement.count());
