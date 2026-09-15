@@ -6,7 +6,8 @@
 protected interface rather than provisional chat messages and sneak-use gestures.
 
 **Status:** Deliveries 3.1a and 3.1b are implemented and pass automated acceptance; manual client
-acceptance remains. Delivery 3.2's configurable windows are aligned but not implemented.
+acceptance remains. Delivery 3.2a's purchasable windows are aligned but not implemented; reversible
+window actions remain Delivery 3.2b.
 
 ## Deliveries
 
@@ -36,15 +37,20 @@ Panel, category and confirmation selection remain ephemeral menu state. Changing
 cancels an armed action, and catalog refresh retains the selected stable target when it still exists.
 Delivery 3.1b changes no cabin save schema, upgrade costs, permissions or installed effects.
 
-### Delivery 3.2: Configurable cabin windows — Aligned
+### Delivery 3.2a: Purchasable cabin windows — Aligned
 
 Use the corrected interface and funds to purchase individual functional windows on the left, rear
-and right walls. Add independent size tiers, spatial validation, reversible purchased upgrades and
-exact material refunds.
+and right walls. Add independent upward size tiers, spatial validation, schema-5 grandfathering,
+exact paid-step receipts and exterior-condition pane projections.
+
+### Delivery 3.2b: Reversible cabin windows — Aligned
+
+Use the receipts persisted by Delivery 3.2a to downgrade or remove purchased windows, eject exact
+material refunds, and cancel and eject funds invalidated by the resulting wall layout.
 
 The deliveries remain separate coherent changes. Delivery 3.1a is playable with one general-space
-panel; Delivery 3.1b makes the interface capable of selecting several panels; Delivery 3.2 supplies
-the window panels and their behavior.
+panel; Delivery 3.1b makes the interface capable of selecting several panels; Delivery 3.2a supplies
+window purchasing and tiering; Delivery 3.2b supplies reversal and refunds.
 
 ## Existing behavior and rollout
 

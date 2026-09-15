@@ -21,14 +21,19 @@ import java.util.UUID;
 record CabinUpgradeState(
 	List<CabinUpgradeState.Fund> funds,
 	Optional<CabinUpgradeState.Installation> installation,
-	long fundRevision
+	long fundRevision,
+	CabinWindowState windows
 ) {
-	static final CabinUpgradeState EMPTY = new CabinUpgradeState(List.of(), Optional.empty(), 0L);
+	static final CabinUpgradeState EMPTY = new CabinUpgradeState(
+		List.of(), Optional.empty(), 0L, CabinWindowState.EMPTY
+	);
 
 	private static final Codec<CabinUpgradeState> CURRENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
 		Fund.CODEC.listOf().fieldOf("funds").forGetter(CabinUpgradeState::funds),
 		Installation.CODEC.optionalFieldOf("installation").forGetter(CabinUpgradeState::installation),
-		Codec.LONG.optionalFieldOf("fund_revision", 0L).forGetter(CabinUpgradeState::fundRevision)
+		Codec.LONG.optionalFieldOf("fund_revision", 0L).forGetter(CabinUpgradeState::fundRevision),
+		CabinWindowState.CODEC.optionalFieldOf("windows", CabinWindowState.EMPTY)
+			.forGetter(CabinUpgradeState::windows)
 	).apply(instance, CabinUpgradeState::new));
 
 	private static final Codec<CabinUpgradeState> LEGACY_CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -44,6 +49,7 @@ record CabinUpgradeState(
 	CabinUpgradeState {
 		Objects.requireNonNull(funds, "funds");
 		Objects.requireNonNull(installation, "installation");
+		Objects.requireNonNull(windows, "windows");
 		funds = List.copyOf(funds);
 		if (fundRevision < 0) {
 			throw new IllegalArgumentException("Upgrade fund revision must not be negative");
@@ -91,7 +97,7 @@ record CabinUpgradeState(
 		if (!replaced) {
 			updated.add(value);
 		}
-		return new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L));
+		return new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows);
 	}
 
 	CabinUpgradeState withoutFund(Target target) {
@@ -101,16 +107,24 @@ record CabinUpgradeState(
 		List<Fund> updated = funds.stream().filter(value -> !value.target().equals(target)).toList();
 		return updated.size() == funds.size()
 			? this
-			: new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L));
+			: new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows);
 	}
 
 	CabinUpgradeState withInstallation(Installation value) {
-		return new CabinUpgradeState(funds, Optional.of(value), fundRevision);
+		return new CabinUpgradeState(funds, Optional.of(value), fundRevision, windows);
 	}
 
 	CabinUpgradeState completeInstallation(Target target) {
 		List<Fund> remaining = funds.stream().filter(value -> !value.target().equals(target)).toList();
-		return new CabinUpgradeState(remaining, Optional.empty(), Math.addExact(fundRevision, 1L));
+		return new CabinUpgradeState(remaining, Optional.empty(), Math.addExact(fundRevision, 1L), windows);
+	}
+
+	CabinUpgradeState withWindows(CabinWindowState value) {
+		return new CabinUpgradeState(funds, installation, fundRevision, value);
+	}
+
+	CabinUpgradeState(List<Fund> funds, Optional<Installation> installation, long fundRevision) {
+		this(funds, installation, fundRevision, CabinWindowState.EMPTY);
 	}
 
 	private static CabinUpgradeState fromLegacy(
@@ -120,7 +134,9 @@ record CabinUpgradeState(
 			.filter(value -> !value.fund().isEmpty())
 			.map(value -> List.of(value.asFund()))
 			.orElse(List.of());
-		return new CabinUpgradeState(migrated, installation, migrated.isEmpty() ? 0L : 1L);
+		return new CabinUpgradeState(
+			migrated, installation, migrated.isEmpty() ? 0L : 1L, CabinWindowState.EMPTY
+		);
 	}
 
 	record Target(Identifier type, String key) {
