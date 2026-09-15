@@ -2,187 +2,181 @@ package dev.portablepocketcabin;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
-/** Compact first-pass upgrade overview; all decisions remain in the server menu and service. */
+import java.util.List;
+
+/** Compact, vanilla-inventory-shaped upgrade screen with icon-first controls. */
 final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu> {
-	private static final int REQUIREMENTS_PER_PAGE = 8;
+	private static final int PANEL_X = 38;
+	private static final int PANEL_Y = 20;
+	private static final int PANEL_WIDTH = 202;
+	private static final int PANEL_HEIGHT = 96;
 
-	private Button trackButton;
-	private Button stopButton;
 	private Button installButton;
-	private boolean confirmingStop;
-	private int requirementPage;
 
 	CabinUpgradeScreen(CabinUpgradeMenu menu, Inventory inventory, Component title) {
-		super(menu, inventory, title, 248, 276);
-		titleLabelX = 10;
-		titleLabelY = 8;
+		super(menu, inventory, title, 248, 220);
+		titleLabelX = 8;
+		titleLabelY = 7;
 		inventoryLabelX = 44;
-		inventoryLabelY = 182;
+		inventoryLabelY = 126;
 	}
 
 	@Override
 	protected void init() {
 		super.init();
-		trackButton = addRenderableWidget(Button.builder(
-			Component.translatable("screen.portable_pocket_cabin.track"),
-			button -> sendButton(CabinUpgradeMenu.BUTTON_TRACK)
-		).bounds(leftPos + 43, topPos + 121, 62, 20).build());
-		stopButton = addRenderableWidget(Button.builder(
-			Component.translatable("screen.portable_pocket_cabin.stop_tracking"),
-			button -> {
-				if (!confirmingStop) {
-					confirmingStop = true;
-					return;
-				}
-				sendButton(CabinUpgradeMenu.BUTTON_STOP_TRACKING);
-				confirmingStop = false;
-			}
-		).bounds(leftPos + 43, topPos + 121, 92, 20).build());
 		installButton = addRenderableWidget(Button.builder(
-			Component.translatable("screen.portable_pocket_cabin.install"),
-			button -> sendButton(CabinUpgradeMenu.BUTTON_INSTALL)
-		).bounds(leftPos + 140, topPos + 121, 64, 20).build());
-		refreshButtons();
+			Component.literal("✓"), button -> sendInstall()
+		).bounds(leftPos + 211, topPos + 87, 20, 20).build());
+		installButton.setTooltip(Tooltip.create(
+			Component.translatable("screen.portable_pocket_cabin.install_tooltip")
+		));
+		refreshButton();
 	}
 
 	@Override
 	protected void containerTick() {
 		super.containerTick();
-		requirementPage = Math.min(requirementPage, maximumRequirementPage());
-		if (!menu.isTracked()) {
-			confirmingStop = false;
-		}
-		refreshButtons();
+		refreshButton();
 	}
 
 	@Override
 	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-		graphics.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, 0xf0181b20);
-		graphics.outline(leftPos, topPos, imageWidth, imageHeight, 0xff8f9aa8);
-		graphics.fill(leftPos + 11, topPos + 109, leftPos + 35, topPos + 137, 0xff264f32);
-		graphics.outline(leftPos + 11, topPos + 109, 24, 28, 0xff72d68a);
-		graphics.fill(leftPos + 39, topPos + 188, leftPos + 209, topPos + 272, 0xff101216);
+		// Vanilla container palette and beveled borders keep the interface visually native.
+		graphics.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, 0xffc6c6c6);
+		graphics.outline(leftPos, topPos, imageWidth, imageHeight, 0xff373737);
+		bevel(graphics, leftPos + PANEL_X, topPos + PANEL_Y, PANEL_WIDTH, PANEL_HEIGHT);
+		bevel(graphics, leftPos + 6, topPos + 20, 26, 26);
+		graphics.fakeItem(new ItemStack(Items.OAK_DOOR), leftPos + 11, topPos + 25);
+		for (int index = 0; index < menu.requirementCount(); index++) {
+			bevel(graphics, leftPos + 54 + index * 22, topPos + 55, 18, 18);
+		}
+		for (int row = 0; row < 3; row++) {
+			for (int column = 0; column < 9; column++) {
+				bevel(graphics, leftPos + 43 + column * 18, topPos + 135 + row * 18, 18, 18);
+			}
+		}
+		for (int column = 0; column < 9; column++) {
+			bevel(graphics, leftPos + 43 + column * 18, topPos + 193, 18, 18);
+		}
 	}
 
 	@Override
 	protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-		graphics.text(font, title, titleLabelX, titleLabelY, 0xfff1f3f5, false);
-		graphics.text(font, Component.translatable(
-			"screen.portable_pocket_cabin.size", menu.currentSize(), menu.currentSize(),
-			menu.maximumSize(), menu.maximumSize()
-		), 10, 22, 0xffcbd2d9, false);
-
-		ItemStack attuned = menu.attunedStack();
-		Component wood = attuned.isEmpty()
-			? Component.translatable("screen.portable_pocket_cabin.unavailable") : attuned.getHoverName();
-		graphics.text(font, Component.translatable("screen.portable_pocket_cabin.attuned_wood", wood),
-			10, 34, 0xffcbd2d9, false);
+		graphics.text(font, title, titleLabelX, titleLabelY, 0xff404040, false);
+		graphics.text(font, Component.translatable("screen.portable_pocket_cabin.general_space"),
+			PANEL_X + 9, PANEL_Y + 8, 0xff404040, false);
 		if (menu.isAtMaximum()) {
-			graphics.text(font, Component.translatable("screen.portable_pocket_cabin.maximum"),
-				10, 47, 0xffffd27a, false);
+			graphics.text(font, Component.literal(menu.currentSize() + "×" + menu.currentSize()),
+				PANEL_X + 9, PANEL_Y + 23, 0xff606060, false);
 		} else {
-			graphics.text(font, Component.translatable(
-				"screen.portable_pocket_cabin.effect", menu.targetSize(), menu.targetSize()
-			), 10, 47, 0xffa9d8ff, false);
+			graphics.text(font, Component.literal(menu.currentSize() + "×" + menu.currentSize()
+				+ "  →  " + menu.targetSize() + "×" + menu.targetSize()),
+				PANEL_X + 9, PANEL_Y + 23, 0xff606060, false);
 		}
 
-		int firstRequirement = requirementPage * REQUIREMENTS_PER_PAGE;
-		int lastRequirement = Math.min(menu.requirementCount(), firstRequirement + REQUIREMENTS_PER_PAGE);
-		for (int index = firstRequirement; index < lastRequirement; index++) {
-			int visibleIndex = index - firstRequirement;
-			int x = 14 + (visibleIndex % 4) * 56;
-			int y = 65 + (visibleIndex / 4) * 24;
-			ItemStack stack = menu.requirementStack(index);
-			graphics.fakeItem(stack, x, y);
-			graphics.text(font, menu.fundedCount(index) + "/" + menu.requiredCount(index),
-				x + 18, y + 5, menu.fundedCount(index) >= menu.requiredCount(index)
-					? 0xff72d68a : 0xffe4e7eb, false);
+		for (int index = 0; index < menu.requirementCount(); index++) {
+			int x = 55 + index * 22;
+			int funded = menu.fundedCount(index);
+			int required = menu.requiredCount(index);
+			graphics.text(font, funded + "/" + required, x - 2, 76,
+				funded >= required ? 0xff207a20 : 0xff404040, false);
 		}
-		if (maximumRequirementPage() > 0) {
-			graphics.text(font, Component.translatable(
-				"screen.portable_pocket_cabin.requirement_page",
-				requirementPage + 1, maximumRequirementPage() + 1
-			), 188, 98, 0xff8f9aa8, false);
-		}
-		graphics.text(font, Component.translatable("screen.portable_pocket_cabin.deposit_hint"),
-			12, 98, menu.canContribute() ? 0xff72d68a : 0xff8f9aa8, false);
-		if (menu.isStale()) {
-			graphics.text(font, Component.translatable("screen.portable_pocket_cabin.stale"),
-				10, 144, 0xffff8c82, false);
-		} else if (!menu.statusMessage().getString().isEmpty()) {
-			graphics.textWithWordWrap(font, menu.statusMessage(), 10, 144, 225, 0xffd9dde2, false);
-		}
-		graphics.text(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0xffcbd2d9, false);
+		graphics.fakeItem(statusIcon(), PANEL_X + PANEL_WIDTH - 29, PANEL_Y + 8);
+		graphics.text(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0xff404040, false);
 	}
 
 	@Override
 	protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
 		super.extractTooltip(graphics, mouseX, mouseY);
-		int index = hoveredRequirement(mouseX, mouseY);
-		if (index >= 0) {
-			ItemStack stack = menu.requirementStack(index);
-			if (!stack.isEmpty()) {
-				graphics.setTooltipForNextFrame(font, stack, mouseX, mouseY);
-			}
-		}
-	}
-
-	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-		if (mouseX >= leftPos + 10 && mouseX < leftPos + 238
-			&& mouseY >= topPos + 60 && mouseY < topPos + 91 && maximumRequirementPage() > 0) {
-			int direction = scrollY < 0.0 ? 1 : scrollY > 0.0 ? -1 : 0;
-			requirementPage = Math.max(0, Math.min(maximumRequirementPage(), requirementPage + direction));
-			return direction != 0;
-		}
-		return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
-	}
-
-	private void refreshButtons() {
-		if (trackButton == null) {
-			return;
-		}
-		trackButton.visible = menu.isOwner() && !menu.isTracked() && !menu.isAtMaximum();
-		trackButton.active = trackButton.visible;
-		stopButton.visible = menu.isOwner() && menu.isTracked();
-		stopButton.active = stopButton.visible && !menu.installationInProgress();
-		stopButton.setMessage(Component.translatable(confirmingStop
-			? "screen.portable_pocket_cabin.confirm_eject"
-			: "screen.portable_pocket_cabin.stop_tracking"));
-		installButton.visible = menu.isOwner() && menu.isTracked();
-		installButton.active = installButton.visible && menu.isComplete()
-			&& !menu.isStale() && !menu.isBlocked() && !menu.installationInProgress();
-	}
-
-	private void sendButton(int button) {
-		if (minecraft != null && minecraft.gameMode != null) {
-			minecraft.gameMode.handleInventoryButtonClick(menu.containerId, button);
-		}
-	}
-
-	private int maximumRequirementPage() {
-		return Math.max(0, (menu.requirementCount() - 1) / REQUIREMENTS_PER_PAGE);
-	}
-
-	private int hoveredRequirement(int mouseX, int mouseY) {
 		int relativeX = mouseX - leftPos;
 		int relativeY = mouseY - topPos;
-		for (int visibleIndex = 0; visibleIndex < REQUIREMENTS_PER_PAGE; visibleIndex++) {
-			int index = requirementPage * REQUIREMENTS_PER_PAGE + visibleIndex;
-			if (index >= menu.requirementCount()) {
-				break;
-			}
-			int x = 14 + (visibleIndex % 4) * 56;
-			int y = 65 + (visibleIndex / 4) * 24;
-			if (relativeX >= x && relativeX < x + 16 && relativeY >= y && relativeY < y + 16) {
-				return index;
+		if (relativeX >= 6 && relativeX < 32 && relativeY >= 20 && relativeY < 46) {
+			graphics.setTooltipForNextFrame(
+				Component.translatable("screen.portable_pocket_cabin.cabin_tab"), mouseX, mouseY
+			);
+			return;
+		}
+		if (relativeX >= PANEL_X + PANEL_WIDTH - 30 && relativeX < PANEL_X + PANEL_WIDTH - 10
+			&& relativeY >= PANEL_Y + 7 && relativeY < PANEL_Y + 27) {
+			Component message = menu.statusMessage().getString().isEmpty()
+				? statusDescription() : menu.statusMessage();
+			graphics.setTooltipForNextFrame(message, mouseX, mouseY);
+			return;
+		}
+		for (int index = 0; index < menu.requirementCount(); index++) {
+			int x = 54 + index * 22;
+			if (relativeX >= x && relativeX < x + 18 && relativeY >= 55 && relativeY < 73) {
+				ItemStack stack = menu.requirementStack(index);
+				graphics.setComponentTooltipForNextFrame(font, List.of(
+					stack.getHoverName(),
+					Component.literal(menu.fundedCount(index) + " / " + menu.requiredCount(index)),
+					Component.translatable("screen.portable_pocket_cabin.fund_click"),
+					Component.translatable("screen.portable_pocket_cabin.fund_shift_click")
+				), mouseX, mouseY);
+				return;
 			}
 		}
-		return -1;
+	}
+
+	private void refreshButton() {
+		if (installButton == null) {
+			return;
+		}
+		installButton.visible = menu.isOwner() && !menu.isAtMaximum();
+		installButton.active = installButton.visible && menu.isComplete() && menu.isAvailable()
+			&& !menu.isStale() && !menu.isBlocked() && !menu.installationInProgress();
+		installButton.setMessage(Component.literal(menu.isArmed() ? "✓✓" : "✓"));
+	}
+
+	private ItemStack statusIcon() {
+		if (menu.isAtMaximum()) {
+			return new ItemStack(Items.NETHER_STAR);
+		}
+		if (menu.installationInProgress()) {
+			return new ItemStack(Items.CLOCK);
+		}
+		if (menu.isBlocked() || menu.isStale()) {
+			return new ItemStack(Items.BARRIER);
+		}
+		if (menu.isComplete()) {
+			return new ItemStack(Items.EMERALD);
+		}
+		return new ItemStack(Items.REDSTONE);
+	}
+
+	private Component statusDescription() {
+		if (menu.isAtMaximum()) {
+			return Component.translatable("screen.portable_pocket_cabin.maximum");
+		}
+		if (menu.installationInProgress()) {
+			return Component.translatable("screen.portable_pocket_cabin.installing");
+		}
+		if (menu.isBlocked()) {
+			return Component.translatable("screen.portable_pocket_cabin.obstructed");
+		}
+		if (menu.isComplete()) {
+			return Component.translatable("screen.portable_pocket_cabin.ready");
+		}
+		return Component.translatable("screen.portable_pocket_cabin.missing");
+	}
+
+	private void sendInstall() {
+		if (minecraft != null && minecraft.gameMode != null) {
+			minecraft.gameMode.handleInventoryButtonClick(menu.containerId, CabinUpgradeMenu.BUTTON_INSTALL);
+		}
+	}
+
+	private static void bevel(GuiGraphicsExtractor graphics, int x, int y, int width, int height) {
+		graphics.fill(x, y, x + width, y + height, 0xff8b8b8b);
+		graphics.fill(x + 1, y + 1, x + width - 1, y + height - 1, 0xffffffff);
+		graphics.fill(x + 2, y + 2, x + width - 1, y + height - 1, 0xff373737);
+		graphics.fill(x + 2, y + 2, x + width - 2, y + height - 2, 0xff8b8b8b);
 	}
 }

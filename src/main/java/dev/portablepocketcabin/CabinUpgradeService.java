@@ -1,6 +1,7 @@
 package dev.portablepocketcabin;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
@@ -9,13 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/** Server-side authority for tracking and funding cabin upgrades. */
+/** Server-side authority for target-keyed upgrade fund transactions and installation. */
 final class CabinUpgradeService {
-	@FunctionalInterface
-	interface FundEjector {
-		boolean eject(CabinRecord cabin, List<ItemStack> stacks);
-	}
-
 	interface ExpansionEffect {
 		Outcome validate(CabinRecord cabin, int targetSize);
 
@@ -44,126 +40,128 @@ final class CabinUpgradeService {
 		}
 	}
 
-	private CabinUpgradeService() {
-	}
+	record Withdrawal(boolean success, ItemStack stack, String message) {
+		static Withdrawal success(ItemStack stack) {
+			return new Withdrawal(true, stack, "Withdrew " + stack.getCount() + " upgrade materials.");
+		}
 
-	static Outcome track(
-		CabinRegistry registry,
-		UUID cabinId,
-		UUID actor,
-		CabinUpgradeState.Target requested,
-		WorldAttunement attunement,
-		CabinUpgradeDefinitions.Definitions definitions
-	) {
-		synchronized (registry) {
-			CabinRecord cabin = registry.find(cabinId).orElse(null);
-			if (!active(cabin)) {
-				return Outcome.failure("That cabin controller is not active.");
-			}
-			if (!cabin.owner().equals(actor)) {
-				return Outcome.failure("Only the cabin owner may track an upgrade.");
-			}
-			if (cabin.upgrades().tracked().isPresent()) {
-				return Outcome.failure("Stop tracking the current upgrade before selecting another.");
-			}
-			CabinUpgradeCatalog.Offer offer = CabinUpgradeCatalog.next(cabin, attunement, definitions)
-				.orElse(null);
-			if (offer == null) {
-				return Outcome.failure("This cabin has reached its general-space limit.");
-			}
-			if (!offer.target().equals(requested)) {
-				return Outcome.failure("That upgrade is no longer available.");
-			}
-			CabinUpgradeState.TrackedUpgrade tracked = new CabinUpgradeState.TrackedUpgrade(
-				offer.target(), offer.requirements(), List.of()
-			);
-			registry.updateUpgradeState(cabinId, cabin.upgrades().withTracked(tracked));
-			return Outcome.success("Upgrade tracking started.");
+		static Withdrawal failure(String message) {
+			return new Withdrawal(false, ItemStack.EMPTY, message);
 		}
 	}
 
-	/**
-	 * Moves at most the currently missing count from the deliberately offered stack into the fund.
-	 * The input stack is shrunk only after the durable cabin state has accepted the corresponding copy.
-	 */
-	static Contribution contribute(
+	private CabinUpgradeService() {
+	}
+
+	/** Deposits from one explicitly offered stack into one explicitly selected requirement icon. */
+	static Contribution deposit(
 		CabinRegistry registry,
 		UUID cabinId,
 		UUID actor,
+		CabinUpgradeState.Target target,
 		ItemStack offered,
 		WorldAttunement attunement,
-		CabinUpgradeDefinitions.Definitions definitions
+		CabinUpgradeDefinitions.Definitions definitions,
+		ExpansionEffect effect
 	) {
 		synchronized (registry) {
 			CabinRecord cabin = registry.find(cabinId).orElse(null);
 			if (!active(cabin)) {
 				return Contribution.failure("That cabin controller is not active.");
 			}
-			boolean trustedContributor = cabin.trustedPlayers().contains(actor) && cabin.canEnter(actor);
-			if (!cabin.owner().equals(actor) && !trustedContributor) {
+			if (!mayUseFund(cabin, actor)) {
 				return Contribution.failure("You may not contribute to this cabin.");
 			}
-			CabinUpgradeState.TrackedUpgrade tracked = cabin.upgrades().tracked().orElse(null);
-			if (tracked == null) {
-				return Contribution.failure("No upgrade is currently tracked.");
-			}
 			if (cabin.upgrades().installation().isPresent()) {
-				return Contribution.failure("That upgrade is currently being installed.");
+				return Contribution.failure("An upgrade is currently being installed.");
 			}
-			if (CabinUpgradeCatalog.isStale(tracked, cabin, attunement, definitions)) {
-				return Contribution.failure("The tracked upgrade changed after a datapack reload.");
+			CabinUpgradeCatalog.Offer offer = CabinUpgradeCatalog.next(cabin, attunement, definitions)
+				.orElse(null);
+			if (offer == null || !offer.target().equals(target)) {
+				return Contribution.failure("That upgrade is not currently available.");
+			}
+			if (!effect.validate(cabin, offer.targetSize()).success()) {
+				return Contribution.failure("That upgrade is currently obstructed.");
+			}
+			CabinUpgradeState.Fund existing = cabin.upgrades().fund(target).orElse(null);
+			if (existing != null && CabinUpgradeCatalog.isStale(existing, cabin, attunement, definitions)) {
+				return Contribution.failure("The funded upgrade requirements no longer match the loaded definition.");
 			}
 			if (offered.isEmpty()) {
 				return Contribution.failure("Offer a required item to contribute.");
 			}
 
-			var itemId = BuiltInRegistries.ITEM.getKey(offered.getItem());
-			CabinUpgradeState.Requirement requirement = tracked.requirements().stream()
+			List<CabinUpgradeState.Requirement> requirements = existing == null
+				? offer.requirements() : existing.requirements();
+			Identifier itemId = BuiltInRegistries.ITEM.getKey(offered.getItem());
+			CabinUpgradeState.Requirement requirement = requirements.stream()
 				.filter(value -> value.itemId().equals(itemId))
 				.findFirst()
 				.orElse(null);
 			if (requirement == null) {
-				return Contribution.failure("That item is not required by the tracked upgrade.");
+				return Contribution.failure("That item is not required by this upgrade.");
 			}
-			int missing = requirement.count() - tracked.fundedCount(itemId);
+			int funded = existing == null ? 0 : existing.fundedCount(itemId);
+			int missing = requirement.count() - funded;
 			if (missing <= 0) {
 				return Contribution.failure("That requirement is already fully funded.");
 			}
 			int accepted = Math.min(missing, offered.getCount());
-			List<ItemStack> fund = new ArrayList<>(tracked.fund());
-			fund.add(offered.copyWithCount(accepted));
-			CabinUpgradeState.TrackedUpgrade updated = tracked.withFund(fund);
-			registry.updateUpgradeState(cabinId, new CabinUpgradeState(
-				java.util.Optional.of(updated), cabin.upgrades().installation()
-			));
+			List<ItemStack> stacks = new ArrayList<>(existing == null ? List.of() : existing.stacks());
+			stacks.add(offered.copyWithCount(accepted));
+			CabinUpgradeState.Fund updated = new CabinUpgradeState.Fund(target, requirements, stacks);
+			registry.updateUpgradeState(cabinId, cabin.upgrades().withFund(updated));
 			offered.shrink(accepted);
 			return Contribution.success(accepted);
 		}
 	}
 
-	static Outcome stopTracking(
-		CabinRegistry registry, UUID cabinId, UUID actor, FundEjector ejector
+	/** Withdraws from the oldest matching contribution while preserving its exact components. */
+	static Withdrawal withdraw(
+		CabinRegistry registry,
+		UUID cabinId,
+		UUID actor,
+		CabinUpgradeState.Target target,
+		Identifier itemId,
+		int requested
 	) {
 		synchronized (registry) {
 			CabinRecord cabin = registry.find(cabinId).orElse(null);
 			if (!active(cabin)) {
-				return Outcome.failure("That cabin controller is not active.");
+				return Withdrawal.failure("That cabin controller is not active.");
 			}
-			if (!cabin.owner().equals(actor)) {
-				return Outcome.failure("Only the cabin owner may stop tracking an upgrade.");
-			}
-			CabinUpgradeState.TrackedUpgrade tracked = cabin.upgrades().tracked().orElse(null);
-			if (tracked == null) {
-				return Outcome.failure("No upgrade is currently tracked.");
+			if (!mayUseFund(cabin, actor)) {
+				return Withdrawal.failure("You may not withdraw from this cabin.");
 			}
 			if (cabin.upgrades().installation().isPresent()) {
-				return Outcome.failure("An installation already started and must be recovered.");
+				return Withdrawal.failure("An upgrade is currently being installed.");
 			}
-			if (!ejector.eject(cabin, tracked.fund())) {
-				return Outcome.failure("The upgrade fund could not be ejected; tracking was not changed.");
+			CabinUpgradeState.Fund fund = cabin.upgrades().fund(target).orElse(null);
+			if (fund == null || requested <= 0) {
+				return Withdrawal.failure("That upgrade fund has no matching materials.");
 			}
-			registry.updateUpgradeState(cabinId, CabinUpgradeState.EMPTY);
-			return Outcome.success("Stopped tracking and ejected the upgrade fund.");
+			List<ItemStack> stacks = new ArrayList<>(fund.stacks());
+			for (int index = 0; index < stacks.size(); index++) {
+				ItemStack stored = stacks.get(index);
+				if (!BuiltInRegistries.ITEM.getKey(stored.getItem()).equals(itemId)) {
+					continue;
+				}
+				int amount = Math.min(requested, stored.getCount());
+				ItemStack result = stored.copyWithCount(amount);
+				if (amount == stored.getCount()) {
+					stacks.remove(index);
+				} else {
+					ItemStack remainder = stored.copy();
+					remainder.shrink(amount);
+					stacks.set(index, remainder);
+				}
+				CabinUpgradeState updated = stacks.isEmpty()
+					? cabin.upgrades().withoutFund(target)
+					: cabin.upgrades().withFund(fund.withStacks(stacks));
+				registry.updateUpgradeState(cabinId, updated);
+				return Withdrawal.success(result);
+			}
+			return Withdrawal.failure("That upgrade fund has no matching materials.");
 		}
 	}
 
@@ -171,6 +169,8 @@ final class CabinUpgradeService {
 		CabinRegistry registry,
 		UUID cabinId,
 		UUID actor,
+		CabinUpgradeState.Target target,
+		long expectedFundRevision,
 		WorldAttunement attunement,
 		CabinUpgradeDefinitions.Definitions definitions,
 		ExpansionEffect effect,
@@ -184,30 +184,30 @@ final class CabinUpgradeService {
 			if (!cabin.owner().equals(actor)) {
 				return Outcome.failure("Only the cabin owner may install an upgrade.");
 			}
-			CabinUpgradeState.TrackedUpgrade tracked = cabin.upgrades().tracked().orElse(null);
-			if (tracked == null) {
-				return Outcome.failure("No upgrade is currently tracked.");
+			if (cabin.upgrades().fundRevision() != expectedFundRevision) {
+				return Outcome.failure("The upgrade fund changed; confirm the installation again.");
+			}
+			CabinUpgradeState.Fund fund = cabin.upgrades().fund(target).orElse(null);
+			if (fund == null) {
+				return Outcome.failure("That upgrade has no funded materials.");
 			}
 			if (cabin.upgrades().installation().isPresent()) {
-				return Outcome.failure("That upgrade installation is already in progress.");
+				return Outcome.failure("An upgrade installation is already in progress.");
 			}
-			if (CabinUpgradeCatalog.isStale(tracked, cabin, attunement, definitions)) {
-				return Outcome.failure("The tracked upgrade changed after a datapack reload.");
+			if (CabinUpgradeCatalog.isStale(fund, cabin, attunement, definitions)) {
+				return Outcome.failure("That upgrade is no longer available.");
 			}
-			if (!tracked.isComplete()) {
-				return Outcome.failure("The tracked upgrade is not fully funded.");
+			if (!fund.isComplete()) {
+				return Outcome.failure("That upgrade is not fully funded.");
 			}
-			if (!tracked.target().isGeneralSpace()) {
-				return Outcome.failure("That upgrade type cannot be installed by this service.");
-			}
-			int targetSize = tracked.target().generalSpaceSize();
+			int targetSize = target.generalSpaceSize();
 			Outcome validation = effect.validate(cabin, targetSize);
 			if (!validation.success()) {
 				return validation;
 			}
 
 			CabinUpgradeState.Installation installation = new CabinUpgradeState.Installation(
-				UUID.randomUUID(), tracked.target(), cabin.progression().generalSize()
+				UUID.randomUUID(), target, cabin.progression().generalSize()
 			);
 			registry.updateUpgradeState(cabinId, cabin.upgrades().withInstallation(installation));
 			flush.run();
@@ -263,6 +263,11 @@ final class CabinUpgradeService {
 				);
 			}
 		}
+	}
+
+	private static boolean mayUseFund(CabinRecord cabin, UUID actor) {
+		return cabin.owner().equals(actor)
+			|| (cabin.trustedPlayers().contains(actor) && cabin.canEnter(actor));
 	}
 
 	private static boolean active(CabinRecord cabin) {

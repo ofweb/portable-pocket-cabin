@@ -340,7 +340,7 @@ The cabin lifecycle and selected destination must be revalidated immediately bef
 
 Pocket interiors should contain windows that visually represent conditions outside the currently deployed cabin.
 
-This remains the playable behavior throughout Delivery 3.1 of [Milestone 3](03-upgrade-interface.md). Delivery 3.2 supersedes automatic windows: cabins that already exist receive grandfathered side windows, while cabins created afterwards purchase individual functional windows through the tracked upgrade interface.
+This remains the playable behavior throughout Delivery 3.1a of [Milestone 3](03-upgrade-interface.md). Delivery 3.2 supersedes automatic windows: cabins that already exist receive grandfathered side windows, while cabins created afterwards purchase individual functional windows through the per-upgrade fund interface.
 
 These are deliberately fake windows rather than rendered portals.
 

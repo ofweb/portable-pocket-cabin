@@ -28,8 +28,8 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 public final class CabinRegistry extends SavedData {
-	private static final int SCHEMA_VERSION = 4;
-	private static final int MIGRATABLE_SCHEMA_VERSION = 3;
+	private static final int SCHEMA_VERSION = 5;
+	private static final int OLDEST_MIGRATABLE_SCHEMA_VERSION = 3;
 
 	private record RegistryData(
 		int schemaVersion, long nextCellIndex, List<CabinRecord> cabins,
@@ -108,7 +108,7 @@ public final class CabinRegistry extends SavedData {
 	static void requireSupportedSchema(net.minecraft.nbt.CompoundTag root, Path registryFile) {
 		var data = root.getCompoundOrEmpty("data");
 		int version = data.getIntOr("schema_version", 0);
-		if (version != SCHEMA_VERSION && version != MIGRATABLE_SCHEMA_VERSION) {
+		if (!isSupportedSchema(version)) {
 			throw new IllegalStateException("Unsupported cabin registry schema version " + version
 				+ " in " + registryFile + ". Back up this world and run `just fresh-world` before using this version."
 			);
@@ -458,7 +458,9 @@ public final class CabinRegistry extends SavedData {
 		}
 		CabinProgression progression = currentSize == targetSize
 			? cabin.progression() : cabin.progression().withGeneralSize(targetSize);
-		CabinRecord updated = copyProgressionAndUpgrades(cabin, progression, CabinUpgradeState.EMPTY);
+		CabinRecord updated = copyProgressionAndUpgrades(
+			cabin, progression, cabin.upgrades().completeInstallation(installation.target())
+		);
 		replace(updated);
 		return updated;
 	}
@@ -543,7 +545,7 @@ public final class CabinRegistry extends SavedData {
 	}
 
 	private static DataResult<CabinRegistry> decode(RegistryData data) {
-		if (data.schemaVersion() != SCHEMA_VERSION && data.schemaVersion() != MIGRATABLE_SCHEMA_VERSION) {
+		if (!isSupportedSchema(data.schemaVersion())) {
 			return DataResult.error(() -> "Unsupported cabin registry schema version " + data.schemaVersion()
 				+ ". Back up this world and run `just fresh-world` before using this version.");
 		}
@@ -584,9 +586,13 @@ public final class CabinRegistry extends SavedData {
 		CabinRegistry registry = new CabinRegistry(
 			repairedNextCellIndex, data.cabins(), data.worldAttunement()
 		);
-		if (data.schemaVersion() == MIGRATABLE_SCHEMA_VERSION) {
+		if (data.schemaVersion() != SCHEMA_VERSION) {
 			registry.setDirty();
 		}
 		return DataResult.success(registry);
+	}
+
+	private static boolean isSupportedSchema(int version) {
+		return version >= OLDEST_MIGRATABLE_SCHEMA_VERSION && version <= SCHEMA_VERSION;
 	}
 }

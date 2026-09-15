@@ -239,29 +239,25 @@ final class DedicatedServerStartupCheck {
 			definitions.resolve(server.overworld().getSeed())
 		);
 		CabinUpgradeCatalog.Offer offer = CabinUpgradeCatalog.next(cabin, attunement, definitions).orElseThrow();
-		CabinUpgradeService.Outcome tracking = CabinUpgradeService.track(
-			registry, cabin.uuid(), cabin.owner(), offer.target(), attunement, definitions
-		);
-		if (!tracking.success()) {
-			throw new IllegalStateException(tracking.message());
+		ServerLevel pocket = server.getLevel(PocketDimension.LEVEL_KEY);
+		if (pocket == null) {
+			throw new IllegalStateException("Pocket dimension disappeared during upgrade test");
 		}
+		CabinGeneralSpaceEffect effect = new CabinGeneralSpaceEffect(server, pocket);
 		for (CabinUpgradeState.Requirement requirement : offer.requirements()) {
 			var item = BuiltInRegistries.ITEM.getOptional(requirement.itemId()).orElseThrow();
 			ItemStack payment = new ItemStack(item, requirement.count());
-			CabinUpgradeService.Contribution contribution = CabinUpgradeService.contribute(
-				registry, cabin.uuid(), cabin.owner(), payment, attunement, definitions
+			CabinUpgradeService.Contribution contribution = CabinUpgradeService.deposit(
+				registry, cabin.uuid(), cabin.owner(), offer.target(), payment, attunement, definitions, effect
 			);
 			if (!contribution.success() || !payment.isEmpty()) {
 				throw new IllegalStateException("Could not fully fund the startup installation");
 			}
 		}
-		ServerLevel pocket = server.getLevel(PocketDimension.LEVEL_KEY);
-		if (pocket == null) {
-			throw new IllegalStateException("Pocket dimension disappeared during upgrade test");
-		}
+		long revision = registry.find(cabin.uuid()).orElseThrow().upgrades().fundRevision();
 		CabinUpgradeService.Outcome installed = CabinUpgradeService.install(
-			registry, cabin.uuid(), cabin.owner(), attunement, definitions,
-			new CabinGeneralSpaceEffect(server, pocket), () -> CabinRegistry.flush(server)
+			registry, cabin.uuid(), cabin.owner(), offer.target(), revision, attunement, definitions,
+			effect, () -> CabinRegistry.flush(server)
 		);
 		if (!installed.success()) {
 			throw new IllegalStateException(installed.message());
@@ -269,18 +265,12 @@ final class DedicatedServerStartupCheck {
 
 		CabinRecord expanded = registry.find(cabin.uuid()).orElseThrow();
 		CabinUpgradeCatalog.Offer next = CabinUpgradeCatalog.next(expanded, attunement, definitions).orElseThrow();
-		tracking = CabinUpgradeService.track(
-			registry, expanded.uuid(), expanded.owner(), next.target(), attunement, definitions
-		);
-		if (!tracking.success()) {
-			throw new IllegalStateException(tracking.message());
-		}
 		CabinUpgradeState.Requirement requirement = next.requirements().getFirst();
 		var item = BuiltInRegistries.ITEM.getOptional(requirement.itemId()).orElseThrow();
 		ItemStack contribution = new ItemStack(item, Math.min(3, requirement.count()));
 		contribution.set(DataComponents.CUSTOM_NAME, Component.literal("Persisted upgrade contribution"));
-		CabinUpgradeService.Contribution result = CabinUpgradeService.contribute(
-			registry, cabin.uuid(), cabin.owner(), contribution, attunement, definitions
+		CabinUpgradeService.Contribution result = CabinUpgradeService.deposit(
+			registry, cabin.uuid(), cabin.owner(), next.target(), contribution, attunement, definitions, effect
 		);
 		if (!result.success()) {
 			throw new IllegalStateException(result.message());
@@ -325,13 +315,12 @@ final class DedicatedServerStartupCheck {
 	}
 
 	private static void assertPartialUpgradeFund(CabinRecord cabin) {
-		CabinUpgradeState.TrackedUpgrade tracked = cabin.upgrades().tracked()
+		CabinUpgradeState.Fund fund = cabin.upgrades().fund(CabinUpgradeState.Target.generalSpace(6))
 			.orElseThrow(() -> new IllegalStateException("Partially funded upgrade did not persist"));
 		if (cabin.progression().generalSize() != 5
-			|| !tracked.target().equals(CabinUpgradeState.Target.generalSpace(6))
-			|| tracked.fund().size() != 1
-			|| tracked.fund().getFirst().get(DataComponents.CUSTOM_NAME) == null
-			|| !tracked.fund().getFirst().get(DataComponents.CUSTOM_NAME).getString()
+			|| fund.stacks().size() != 1
+			|| fund.stacks().getFirst().get(DataComponents.CUSTOM_NAME) == null
+			|| !fund.stacks().getFirst().get(DataComponents.CUSTOM_NAME).getString()
 				.equals("Persisted upgrade contribution")) {
 			throw new IllegalStateException("Persisted upgrade contribution changed across lifecycle or restart");
 		}

@@ -56,7 +56,9 @@ The owner may:
 
 A resident lives in the cabin and uses its shared facilities.
 
-Milestone 3 temporarily treats the MVP's trusted-player list as resident-equivalent for contributions to the tracked upgrade fund. This milestone formalises that relationship and migrates those trusted players to residents without granting guests contribution access.
+Milestone 3 temporarily treats the MVP's trusted-player list as resident-equivalent for deposits into
+and withdrawals from target-specific upgrade funds. This milestone formalises that relationship and
+migrates those trusted players to residents without granting guests fund access.
 
 Residents may:
 
@@ -151,7 +153,10 @@ Each cabin UUID owns one authoritative persistent virtual inventory.
 
 Players deposit and retrieve items through protected cabin interfaces. Ordinary placed inventories are independent and are not scanned, merged or consumed automatically. Moving items between ordinary storage and cabin storage is always an explicit player action or a separately configured integration.
 
-After central storage is installed, the owner may explicitly authorise a tracked upgrade to consume its remaining exact requirements from central storage. Contributions already committed to the upgrade fund are used first. Storage never fills an upgrade fund or installs an upgrade automatically; the complete tracking and funding contract is defined in [Milestone 3](03-upgrade-interface.md).
+After central storage is installed, the owner may explicitly authorise one upgrade to consume its
+remaining exact requirements from central storage. Materials already committed to that target's fund
+are used first. Storage never fills funds or installs automatically; the complete funding contract is
+defined in [Milestone 3](03-upgrade-interface.md).
 
 Greenhouses, kitchens, crafting systems, brewing, enchanting and other cabin automation consume from and deposit into this central inventory through server-side transactions.
 

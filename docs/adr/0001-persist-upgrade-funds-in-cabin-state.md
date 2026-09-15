@@ -1,7 +1,7 @@
 # ADR-0001: Persist Upgrade Funds in Cabin State
 
 **Date**: 2026-09-14
-**Status**: accepted
+**Status**: superseded by [ADR-0002](0002-use-target-keyed-upgrade-funds.md)
 **Deciders**: Project owner and Codex
 
 ## Context
@@ -11,6 +11,9 @@ Cabin owners and residents need to contribute materials deliberately toward one 
 ## Decision
 
 Persist the tracked upgrade, its resolved requirement snapshot and its contributed item stacks in the authoritative cabin registry. Expose the fund only through a server-authoritative menu and do not publish it as a block inventory, hopper target, pipe endpoint or general storage capability.
+
+ADR-0002 retains registry ownership and the non-automation boundary, but replaces this ADR's single
+tracked fund and non-withdrawable contributions with target-keyed, restricted container slots.
 
 ## Alternatives Considered
 

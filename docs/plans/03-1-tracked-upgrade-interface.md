@@ -4,7 +4,11 @@
 
 **Scope:** Delivery 3.1 only. Configurable window purchasing, tiers, refunds and schema 5 state remain in Delivery 3.2. Existing automatic windows must remain unchanged.
 
-**Status:** Implemented; automated acceptance passes and manual client acceptance remains.
+**Status:** Implemented historical plan. Its one-tracked-fund interaction is superseded by the
+aligned [Delivery 3.1a correction](03-1a-per-upgrade-fund-interface.md), which is not yet implemented.
+
+This file records the design that produced the currently playable interface. It is not the action
+plan for further work and must not be used to restore tracking after Delivery 3.1a is accepted.
 
 **Post-implementation correction:** Command-created cabins may carry the old smooth-stone debug
 platform into their permanent cell. Interior generation and controller opening remove only its

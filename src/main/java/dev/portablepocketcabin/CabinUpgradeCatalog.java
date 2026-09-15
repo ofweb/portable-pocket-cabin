@@ -11,6 +11,17 @@ import java.util.Optional;
 
 /** Resolves the visible, code-defined upgrade offer from cabin state and reloadable costs. */
 final class CabinUpgradeCatalog {
+	static final net.minecraft.resources.Identifier CABIN_GROUP = PortablePocketCabin.id("cabin");
+
+	record Group(net.minecraft.resources.Identifier id, List<Offer> panels) {
+		Group {
+			panels = List.copyOf(panels);
+			if (panels.isEmpty()) {
+				throw new IllegalArgumentException("Empty upgrade groups must not be displayed");
+			}
+		}
+	}
+
 	record Offer(
 		CabinUpgradeState.Target target,
 		int currentSize,
@@ -67,16 +78,25 @@ final class CabinUpgradeCatalog {
 		));
 	}
 
+	/** Returns only implemented, non-empty groups; later deliveries can add panels without menu rewrites. */
+	static List<Group> groups(
+		CabinRecord cabin, WorldAttunement attunement, CabinUpgradeDefinitions.Definitions definitions
+	) {
+		return next(cabin, attunement, definitions)
+			.map(offer -> List.of(new Group(CABIN_GROUP, List.of(offer))))
+			.orElse(List.of());
+	}
+
 	static boolean isStale(
-		CabinUpgradeState.TrackedUpgrade tracked,
+		CabinUpgradeState.Fund fund,
 		CabinRecord cabin,
 		WorldAttunement attunement,
 		CabinUpgradeDefinitions.Definitions definitions
 	) {
 		Optional<Offer> current = next(cabin, attunement, definitions);
 		return current.isEmpty()
-			|| !current.get().target().equals(tracked.target())
-			|| !current.get().requirements().equals(tracked.requirements());
+			|| !current.get().target().equals(fund.target())
+			|| !current.get().requirements().equals(fund.requirements());
 	}
 
 	static List<CabinUpgradeState.Requirement> resolve(
