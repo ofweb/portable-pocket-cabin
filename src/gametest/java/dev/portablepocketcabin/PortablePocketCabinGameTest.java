@@ -360,6 +360,81 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void upgradePanelSelectionRetainsStableTargetsAndFallsBackDeterministically(GameTestHelper helper) {
+		CabinUpgradeCatalog.Group cabin = syntheticGroup(
+			"cabin", "Cabin", Items.OAK_DOOR,
+			syntheticOffer(5, 2), syntheticOffer(6, 13)
+		);
+		CabinUpgradeCatalog.Group room = syntheticGroup(
+			"stable", "Stable", Items.HAY_BLOCK,
+			syntheticOffer(7, 2)
+		);
+		List<CabinUpgradeCatalog.Group> groups = List.of(cabin, room);
+
+		CabinUpgradeSelection.Selected initial = CabinUpgradeSelection.resolve(
+			groups, null, CabinUpgradeState.Target.generalSpace(6)
+		).orElseThrow();
+		helper.assertTrue(initial.groupIndex() == 0 && initial.panelIndex() == 1,
+			"A refresh must retain the selected stable target while it remains visible");
+
+		CabinUpgradeSelection.Selected next = CabinUpgradeSelection.cyclePanel(groups, initial, 1)
+			.orElseThrow();
+		helper.assertTrue(next.offer().target().equals(CabinUpgradeState.Target.generalSpace(5)),
+			"Next-panel navigation must wrap within the active category");
+
+		CabinUpgradeSelection.Selected selectedRoom = CabinUpgradeSelection.selectGroup(groups, 1)
+			.orElseThrow();
+		helper.assertTrue(selectedRoom.group().id().equals(PortablePocketCabin.id("stable"))
+			&& selectedRoom.panelIndex() == 0,
+			"Selecting a side tab must show the first panel in that category");
+
+		List<CabinUpgradeCatalog.Group> refreshed = List.of(room);
+		CabinUpgradeSelection.Selected fallback = CabinUpgradeSelection.resolve(
+			refreshed, cabin.id(), initial.offer().target()
+		).orElseThrow();
+		helper.assertTrue(fallback.groupIndex() == 0 && fallback.panelIndex() == 0
+			&& fallback.group().id().equals(room.id()),
+			"A vanished target and category must fall back to the first visible panel");
+		helper.assertTrue(CabinUpgradeSelection.selectGroup(groups, -1).isEmpty()
+			&& CabinUpgradeSelection.selectGroup(groups, groups.size()).isEmpty(),
+			"Forged category indexes must be rejected");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void upgradeMenuSupportsThirteenRequirementsWithinSixteenSlotBoundary(GameTestHelper helper) {
+		ServerPlayer player = helper.makeMockServerPlayerInLevel();
+		CabinUpgradeMenu menu = new CabinUpgradeMenu(43, player.getInventory(), UUID.randomUUID());
+		CabinUpgradeCatalog.Offer thirteen = syntheticOffer(5, 13);
+		CabinUpgradeCatalog.Offer sixteen = syntheticOffer(6, 16);
+		CabinUpgradeCatalog.Offer seventeen = syntheticOffer(7, 17);
+
+		helper.assertTrue(CabinUpgradeMenu.MAX_REQUIREMENTS == 16,
+			"A window base purchase must fit thirteen exact requirements without paging");
+		helper.assertTrue(CabinUpgradeSelection.isPresentable(thirteen, CabinUpgradeMenu.MAX_REQUIREMENTS)
+			&& CabinUpgradeSelection.isPresentable(sixteen, CabinUpgradeMenu.MAX_REQUIREMENTS)
+			&& !CabinUpgradeSelection.isPresentable(seventeen, CabinUpgradeMenu.MAX_REQUIREMENTS),
+			"The panel boundary must support sixteen requirements and fail closed above it");
+		for (int index = 0; index < CabinUpgradeMenu.MAX_REQUIREMENTS; index++) {
+			var slot = menu.getSlot(CabinUpgradeMenu.FIRST_REQUIREMENT_SLOT + index);
+			helper.assertTrue(slot.x == CabinUpgradeLayout.requirementX(index)
+				&& slot.y == CabinUpgradeLayout.requirementY(index),
+				"Requirement slots must occupy two deterministic rows of eight");
+		}
+		helper.assertTrue(CabinUpgradeLayout.SCREEN_WIDTH == 248
+			&& CabinUpgradeLayout.SCREEN_HEIGHT == 220
+			&& CabinUpgradeLayout.TAB_X < 0
+			&& CabinUpgradeLayout.TAB_X + CabinUpgradeLayout.TAB_SIZE > 0
+			&& CabinUpgradeLayout.tabY(CabinUpgradeMenu.MAX_GROUPS - 1)
+				+ CabinUpgradeLayout.TAB_SIZE <= CabinUpgradeLayout.SCREEN_HEIGHT
+			&& CabinUpgradeLayout.PANEL_NAV_X < CabinUpgradeLayout.SCREEN_WIDTH
+			&& CabinUpgradeLayout.PANEL_NAV_X + CabinUpgradeLayout.TAB_SIZE
+				> CabinUpgradeLayout.SCREEN_WIDTH,
+			"Category and panel controls must attach to the fixed screen without exceeding its height");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void upgradeContributionsAreDeliberatePermissionedAndCapped(GameTestHelper helper) {
 		WorldAttunement attunement = CabinUpgradeDefinitions.current().resolve(23L);
 		CabinUpgradeDefinitions.Definitions definitions = testUpgradeDefinitions(attunement, 8, 4);
@@ -1594,6 +1669,48 @@ public final class PortablePocketCabinGameTest {
 					Items.AMETHYST_SHARD.builtInRegistryHolder().key().identifier(), false, 4
 				)
 			)))
+		);
+	}
+
+	private static CabinUpgradeCatalog.Group syntheticGroup(
+		String id, String title, net.minecraft.world.item.Item icon,
+		CabinUpgradeCatalog.Offer... offers
+	) {
+		return new CabinUpgradeCatalog.Group(
+			PortablePocketCabin.id(id), title,
+			icon.builtInRegistryHolder().key().identifier(), List.of(offers)
+		);
+	}
+
+	private static CabinUpgradeCatalog.Offer syntheticOffer(int targetSize, int requirementCount) {
+		List<net.minecraft.resources.Identifier> items = List.of(
+			net.minecraft.resources.Identifier.parse("minecraft:glass_pane"),
+			net.minecraft.resources.Identifier.parse("minecraft:amethyst_shard"),
+			net.minecraft.resources.Identifier.parse("minecraft:yellow_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:orange_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:white_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:light_blue_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:magenta_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:blue_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:light_gray_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:cyan_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:gray_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:red_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:purple_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:lime_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:pink_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:brown_dye"),
+			net.minecraft.resources.Identifier.parse("minecraft:black_dye")
+		);
+		List<CabinUpgradeState.Requirement> requirements = items.subList(0, requirementCount).stream()
+			.map(item -> new CabinUpgradeState.Requirement(item, 1))
+			.toList();
+		return new CabinUpgradeCatalog.Offer(
+			CabinUpgradeState.Target.generalSpace(targetSize),
+			"Synthetic " + targetSize,
+			"Synthetic effect " + targetSize,
+			Items.AMETHYST_BLOCK.builtInRegistryHolder().key().identifier(),
+			targetSize - 1, targetSize, requirements
 		);
 	}
 

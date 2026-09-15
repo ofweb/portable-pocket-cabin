@@ -28,19 +28,28 @@ import java.util.UUID;
 /** Synchronized menu whose requirement icons transact with durable, target-keyed funds. */
 final class CabinUpgradeMenu extends AbstractContainerMenu {
 	static final int BUTTON_INSTALL = 1;
-	static final int MAX_REQUIREMENTS = 8;
+	static final int BUTTON_PREVIOUS_PANEL = 2;
+	static final int BUTTON_NEXT_PANEL = 3;
+	static final int BUTTON_GROUP_BASE = 100;
+	static final int MAX_REQUIREMENTS = 16;
+	static final int REQUIREMENTS_PER_ROW = CabinUpgradeLayout.REQUIREMENT_COLUMNS;
+	static final int MAX_GROUPS = 8;
 	static final int FIRST_REQUIREMENT_SLOT = 0;
 	static final int ATTUNED_SLOT = MAX_REQUIREMENTS;
 	static final int STATUS_SLOT = ATTUNED_SLOT + 1;
-	static final int FIRST_PLAYER_SLOT = STATUS_SLOT + 1;
+	static final int PANEL_SLOT = STATUS_SLOT + 1;
+	static final int EFFECT_SLOT = PANEL_SLOT + 1;
+	static final int FIRST_GROUP_SLOT = EFFECT_SLOT + 1;
+	static final int FIRST_PLAYER_SLOT = FIRST_GROUP_SLOT + MAX_GROUPS;
 	static final int PLAYER_INVENTORY_SLOTS = 36;
 
-	private static final int DATA_CURRENT_SIZE = 0;
-	private static final int DATA_MAXIMUM_SIZE = 1;
-	private static final int DATA_TARGET_SIZE = 2;
-	private static final int DATA_FLAGS = 3;
-	private static final int DATA_REQUIREMENT_COUNT = 4;
-	private static final int DATA_REQUIREMENTS = 5;
+	private static final int DATA_FLAGS = 0;
+	private static final int DATA_REQUIREMENT_COUNT = 1;
+	private static final int DATA_GROUP_COUNT = 2;
+	private static final int DATA_SELECTED_GROUP = 3;
+	private static final int DATA_PANEL_COUNT = 4;
+	private static final int DATA_SELECTED_PANEL = 5;
+	private static final int DATA_REQUIREMENTS = 6;
 	private static final int DATA_COUNT = DATA_REQUIREMENTS + MAX_REQUIREMENTS * 2;
 
 	private static final int FLAG_OWNER = 1;
@@ -52,6 +61,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	private static final int FLAG_INSTALLING = 1 << 6;
 	private static final int FLAG_BLOCKED = 1 << 7;
 	private static final int FLAG_ARMED = 1 << 8;
+	private static final int FLAG_OVERSIZED = 1 << 9;
 	private static final long CONFIRMATION_TICKS = 100L;
 
 	static final MenuType<CabinUpgradeMenu> TYPE = Registry.register(
@@ -67,6 +77,8 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	private final Inventory playerInventory;
 	private final Set<Integer> quickFundSlots = new LinkedHashSet<>();
 	private CabinUpgradeState.Target target;
+	private Identifier selectedGroupId;
+	private CabinUpgradeSelection.Selected selection;
 	private CabinUpgradeState.Target armedTarget;
 	private long armedRevision = -1L;
 	private long armedUntil = -1L;
@@ -79,10 +91,19 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		this.serverPlayer = inventory.player instanceof ServerPlayer player ? player : null;
 
 		for (int index = 0; index < MAX_REQUIREMENTS; index++) {
-			addSlot(new DisplaySlot(display, index, 55 + index * 22, 56));
+			addSlot(new DisplaySlot(
+				display, index,
+				CabinUpgradeLayout.requirementX(index),
+				CabinUpgradeLayout.requirementY(index)
+			));
 		}
 		addSlot(new DisplaySlot(display, ATTUNED_SLOT, -1000, -1000));
 		addSlot(new DisplaySlot(display, STATUS_SLOT, -1000, -1000));
+		addSlot(new DisplaySlot(display, PANEL_SLOT, -1000, -1000));
+		addSlot(new DisplaySlot(display, EFFECT_SLOT, -1000, -1000));
+		for (int index = 0; index < MAX_GROUPS; index++) {
+			addSlot(new DisplaySlot(display, FIRST_GROUP_SLOT + index, -1000, -1000));
+		}
 		addStandardInventorySlots(inventory, 44, 136);
 		addDataSlots(data);
 		if (serverPlayer != null) {
@@ -98,20 +119,24 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		return cabinId;
 	}
 
-	int currentSize() {
-		return data.get(DATA_CURRENT_SIZE);
-	}
-
-	int maximumSize() {
-		return data.get(DATA_MAXIMUM_SIZE);
-	}
-
-	int targetSize() {
-		return data.get(DATA_TARGET_SIZE);
-	}
-
 	int requirementCount() {
 		return data.get(DATA_REQUIREMENT_COUNT);
+	}
+
+	int groupCount() {
+		return data.get(DATA_GROUP_COUNT);
+	}
+
+	int selectedGroupIndex() {
+		return data.get(DATA_SELECTED_GROUP);
+	}
+
+	int panelCount() {
+		return data.get(DATA_PANEL_COUNT);
+	}
+
+	int selectedPanelIndex() {
+		return data.get(DATA_SELECTED_PANEL);
 	}
 
 	int requiredCount(int index) {
@@ -128,6 +153,25 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 
 	ItemStack attunedStack() {
 		return display.getItem(ATTUNED_SLOT);
+	}
+
+	ItemStack groupStack(int index) {
+		return index < 0 || index >= MAX_GROUPS
+			? ItemStack.EMPTY : display.getItem(FIRST_GROUP_SLOT + index);
+	}
+
+	ItemStack panelStack() {
+		return display.getItem(PANEL_SLOT);
+	}
+
+	Component panelTitle() {
+		ItemStack stack = panelStack();
+		return stack.isEmpty() ? Component.empty() : stack.getHoverName();
+	}
+
+	Component panelEffect() {
+		ItemStack stack = display.getItem(EFFECT_SLOT);
+		return stack.isEmpty() ? Component.empty() : stack.getHoverName();
 	}
 
 	Component statusMessage() {
@@ -173,9 +217,11 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean clickMenuButton(Player player, int button) {
-		if (button != BUTTON_INSTALL || !(player instanceof ServerPlayer actor)
-			|| actor != serverPlayer || !stillValid(player)) {
+		if (!(player instanceof ServerPlayer actor) || actor != serverPlayer || !stillValid(player)) {
 			return false;
+		}
+		if (button != BUTTON_INSTALL) {
+			return navigate(actor, button);
 		}
 		CabinRegistry registry = CabinRegistry.get(actor.level().getServer());
 		CabinRecord cabin = registry.find(cabinId).orElse(null);
@@ -221,6 +267,59 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		refreshFromServer();
 		broadcastChanges();
 		return outcome.success();
+	}
+
+	private boolean navigate(ServerPlayer actor, int button) {
+		CabinRegistry registry = CabinRegistry.get(actor.level().getServer());
+		CabinRecord cabin = registry.find(cabinId).orElse(null);
+		if (cabin == null) {
+			return false;
+		}
+		try {
+			CabinUpgradeDefinitions.Definitions definitions = CabinUpgradeDefinitions.current();
+			WorldAttunement attunement = CabinUpgradeCatalog.resolveAttunement(
+				registry, actor.level(), definitions
+			);
+			List<CabinUpgradeCatalog.Group> groups = CabinUpgradeCatalog.groups(
+				cabin, attunement, definitions
+			);
+			if (groups.size() > MAX_GROUPS) {
+				return false;
+			}
+			CabinUpgradeSelection.Selected current = CabinUpgradeSelection.resolve(
+				groups, selectedGroupId, target
+			).orElse(null);
+			CabinUpgradeSelection.Selected requested;
+			if (button == BUTTON_PREVIOUS_PANEL) {
+				requested = CabinUpgradeSelection.cyclePanel(groups, current, -1).orElse(null);
+			} else if (button == BUTTON_NEXT_PANEL) {
+				requested = CabinUpgradeSelection.cyclePanel(groups, current, 1).orElse(null);
+			} else if (button >= BUTTON_GROUP_BASE && button < BUTTON_GROUP_BASE + MAX_GROUPS) {
+				requested = CabinUpgradeSelection.selectGroup(groups, button - BUTTON_GROUP_BASE).orElse(null);
+			} else {
+				return false;
+			}
+			if (requested == null) {
+				return false;
+			}
+			applySelection(requested);
+			refreshFromServer();
+			broadcastChanges();
+			return true;
+		} catch (IllegalStateException exception) {
+			setActionMessage(exception.getMessage());
+			return false;
+		}
+	}
+
+	private void applySelection(CabinUpgradeSelection.Selected selected) {
+		if (target == null || !target.equals(selected.offer().target())) {
+			clearArming();
+			actionMessage = "";
+		}
+		selection = selected;
+		selectedGroupId = selected.group().id();
+		target = selected.offer().target();
 	}
 
 	@Override
@@ -424,16 +523,17 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		CabinRegistry registry = CabinRegistry.get(serverPlayer.level().getServer());
 		CabinRecord cabin = registry.find(cabinId).orElse(null);
 		clearDisplay();
+		resetPresentationData();
 		if (cabin == null) {
 			target = null;
+			selection = null;
+			selectedGroupId = null;
 			setFlagData(0);
 			writeStatus("That cabin no longer exists.");
 			return;
 		}
 
 		CabinUpgradeDefinitions.Definitions definitions = CabinUpgradeDefinitions.current();
-		data.set(DATA_CURRENT_SIZE, cabin.progression().generalSize());
-		data.set(DATA_MAXIMUM_SIZE, definitions.maximumGeneralSize());
 		int flags = 0;
 		if (cabin.owner().equals(serverPlayer.getUUID())) {
 			flags |= FLAG_OWNER | FLAG_CONTRIBUTOR;
@@ -453,37 +553,66 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 				display.setItem(ATTUNED_SLOT, new ItemStack(profile.planksIngredient()))
 			);
 			List<CabinUpgradeCatalog.Group> groups = CabinUpgradeCatalog.groups(cabin, attunement, definitions);
-			CabinUpgradeCatalog.Offer offer = groups.isEmpty()
-				? null : groups.getFirst().panels().getFirst();
+			if (groups.size() > MAX_GROUPS) {
+				target = null;
+				selection = null;
+				clearArming();
+				flags |= FLAG_BLOCKED;
+				contextualMessage = "This cabin has too many upgrade categories for the interface.";
+				writeRequirements(List.of(), null);
+				setFlagData(flags);
+				writeStatus(contextualMessage);
+				return;
+			}
+			writeGroups(groups);
+			CabinUpgradeState.Target previousTarget = target;
+			selection = CabinUpgradeSelection.resolve(groups, selectedGroupId, target).orElse(null);
+			CabinUpgradeCatalog.Offer offer = selection == null ? null : selection.offer();
 			if (offer == null) {
 				target = null;
+				selectedGroupId = null;
 				flags |= FLAG_MAXIMUM;
-				data.set(DATA_TARGET_SIZE, 0);
 				writeRequirements(List.of(), null);
 			} else {
-				target = offer.target();
-				data.set(DATA_TARGET_SIZE, offer.targetSize());
+				applySelection(selection);
+				if (previousTarget != null && !previousTarget.equals(target)) {
+					clearArming();
+				}
+				data.set(DATA_SELECTED_GROUP, selection.groupIndex());
+				data.set(DATA_PANEL_COUNT, selection.group().panels().size());
+				data.set(DATA_SELECTED_PANEL, selection.panelIndex());
+				writePanel(offer);
 				CabinUpgradeState.Fund fund = cabin.upgrades().fund(target).orElse(null);
-				if (fund != null && CabinUpgradeCatalog.isStale(fund, cabin, attunement, definitions)) {
+				List<CabinUpgradeState.Requirement> displayedRequirements = fund == null
+					? offer.requirements() : fund.requirements();
+				if (displayedRequirements.size() > MAX_REQUIREMENTS) {
+					flags |= FLAG_BLOCKED | FLAG_OVERSIZED;
+					contextualMessage = "This upgrade requires " + displayedRequirements.size()
+						+ " material types; the interface supports at most " + MAX_REQUIREMENTS + ".";
+					writeRequirements(List.of(), null);
+				} else if (fund != null && CabinUpgradeCatalog.isStale(fund, cabin, attunement, definitions)) {
 					flags |= FLAG_STALE;
 					contextualMessage = "Funded requirements no longer match the loaded definition.";
+					writeRequirements(fund.requirements(), fund);
+				} else {
+					CabinUpgradeService.Outcome validation = new CabinGeneralSpaceEffect(
+						serverPlayer.level().getServer(), serverPlayer.level()
+					).validate(cabin, offer.targetSize());
+					if (!validation.success()) {
+						flags |= FLAG_BLOCKED;
+						contextualMessage = validation.message();
+					} else if ((flags & FLAG_INSTALLING) == 0) {
+						flags |= FLAG_AVAILABLE;
+					}
+					if (fund != null && fund.isComplete()) {
+						flags |= FLAG_COMPLETE;
+					}
+					writeRequirements(displayedRequirements, fund);
 				}
-				CabinUpgradeService.Outcome validation = new CabinGeneralSpaceEffect(
-					serverPlayer.level().getServer(), serverPlayer.level()
-				).validate(cabin, offer.targetSize());
-				if (!validation.success()) {
-					flags |= FLAG_BLOCKED;
-					contextualMessage = validation.message();
-				} else if ((flags & FLAG_STALE) == 0 && (flags & FLAG_INSTALLING) == 0) {
-					flags |= FLAG_AVAILABLE;
-				}
-				if (fund != null && fund.isComplete()) {
-					flags |= FLAG_COMPLETE;
-				}
-				writeRequirements(fund == null ? offer.requirements() : fund.requirements(), fund);
 			}
 		} catch (IllegalStateException exception) {
 			target = null;
+			selection = null;
 			flags |= FLAG_STALE;
 			contextualMessage = exception.getMessage();
 			writeRequirements(List.of(), null);
@@ -497,6 +626,40 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		}
 		setFlagData(flags);
 		writeStatus(contextualMessage.isEmpty() ? actionMessage : contextualMessage);
+	}
+
+	private void writeGroups(List<CabinUpgradeCatalog.Group> groups) {
+		data.set(DATA_GROUP_COUNT, groups.size());
+		for (int index = 0; index < groups.size(); index++) {
+			CabinUpgradeCatalog.Group group = groups.get(index);
+			display.setItem(FIRST_GROUP_SLOT + index, namedStack(group.iconItem(), group.title()));
+		}
+	}
+
+	private void writePanel(CabinUpgradeCatalog.Offer offer) {
+		display.setItem(PANEL_SLOT, namedStack(offer.iconItem(), offer.title()));
+		display.setItem(EFFECT_SLOT, namedStack(
+			Items.PAPER.builtInRegistryHolder().key().identifier(), offer.effect()
+		));
+	}
+
+	private static ItemStack namedStack(Identifier itemId, String name) {
+		var item = BuiltInRegistries.ITEM.getOptional(itemId).orElse(Items.BARRIER);
+		ItemStack stack = new ItemStack(item);
+		stack.set(DataComponents.CUSTOM_NAME, Component.literal(name));
+		return stack;
+	}
+
+	private void resetPresentationData() {
+		data.set(DATA_REQUIREMENT_COUNT, 0);
+		data.set(DATA_GROUP_COUNT, 0);
+		data.set(DATA_SELECTED_GROUP, 0);
+		data.set(DATA_PANEL_COUNT, 0);
+		data.set(DATA_SELECTED_PANEL, 0);
+		for (int index = 0; index < MAX_REQUIREMENTS; index++) {
+			data.set(DATA_REQUIREMENTS + index * 2, 0);
+			data.set(DATA_REQUIREMENTS + index * 2 + 1, 0);
+		}
 	}
 
 	private void writeRequirements(

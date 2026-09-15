@@ -12,10 +12,25 @@ import java.util.Optional;
 /** Resolves the visible, code-defined upgrade offer from cabin state and reloadable costs. */
 final class CabinUpgradeCatalog {
 	static final net.minecraft.resources.Identifier CABIN_GROUP = PortablePocketCabin.id("cabin");
+	private static final net.minecraft.resources.Identifier CABIN_ICON =
+		net.minecraft.resources.Identifier.parse("minecraft:oak_door");
+	private static final net.minecraft.resources.Identifier GENERAL_SPACE_ICON =
+		net.minecraft.resources.Identifier.parse("minecraft:amethyst_block");
 
-	record Group(net.minecraft.resources.Identifier id, List<Offer> panels) {
+	record Group(
+		net.minecraft.resources.Identifier id,
+		String title,
+		net.minecraft.resources.Identifier iconItem,
+		List<Offer> panels
+	) {
 		Group {
+			java.util.Objects.requireNonNull(id, "id");
+			java.util.Objects.requireNonNull(title, "title");
+			java.util.Objects.requireNonNull(iconItem, "iconItem");
 			panels = List.copyOf(panels);
+			if (title.isBlank()) {
+				throw new IllegalArgumentException("Upgrade group title must not be blank");
+			}
 			if (panels.isEmpty()) {
 				throw new IllegalArgumentException("Empty upgrade groups must not be displayed");
 			}
@@ -24,13 +39,22 @@ final class CabinUpgradeCatalog {
 
 	record Offer(
 		CabinUpgradeState.Target target,
+		String title,
+		String effect,
+		net.minecraft.resources.Identifier iconItem,
 		int currentSize,
 		int targetSize,
-		List<CabinUpgradeState.Requirement> requirements,
-		String effect
+		List<CabinUpgradeState.Requirement> requirements
 	) {
 		Offer {
+			java.util.Objects.requireNonNull(target, "target");
+			java.util.Objects.requireNonNull(title, "title");
+			java.util.Objects.requireNonNull(effect, "effect");
+			java.util.Objects.requireNonNull(iconItem, "iconItem");
 			requirements = List.copyOf(requirements);
+			if (title.isBlank() || effect.isBlank()) {
+				throw new IllegalArgumentException("Upgrade panel title and effect must not be blank");
+			}
 		}
 	}
 
@@ -71,10 +95,12 @@ final class CabinUpgradeCatalog {
 		}
 		return Optional.of(new Offer(
 			CabinUpgradeState.Target.generalSpace(targetSize),
+			"General Space",
+			"Expand the general cabin space to " + targetSize + "x" + targetSize,
+			GENERAL_SPACE_ICON,
 			currentSize,
 			targetSize,
-			resolve(expansion, attunement),
-			"Expand the general cabin space to " + targetSize + "x" + targetSize
+			resolve(expansion, attunement)
 		));
 	}
 
@@ -83,7 +109,7 @@ final class CabinUpgradeCatalog {
 		CabinRecord cabin, WorldAttunement attunement, CabinUpgradeDefinitions.Definitions definitions
 	) {
 		return next(cabin, attunement, definitions)
-			.map(offer -> List.of(new Group(CABIN_GROUP, List.of(offer))))
+			.map(offer -> List.of(new Group(CABIN_GROUP, "Cabin", CABIN_ICON, List.of(offer))))
 			.orElse(List.of());
 	}
 

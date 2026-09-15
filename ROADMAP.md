@@ -20,7 +20,7 @@ The project has not been publicly released. Development worlds are disposable un
 | [0](docs/roadmap/00-safe-mvp.md)               | Safe portable-cabin MVP                               | Complete                              |
 | [1](docs/roadmap/01-acquisition-relocation.md) | Survival crafting and command-free relocation         | Complete                              |
 | [2](docs/roadmap/02-progression-space.md)      | World-attuned expansion                               | Implemented; acceptance audit pending |
-| [3](docs/roadmap/03-upgrade-interface.md)      | Discoverable cabin upgrade interface                  | Delivery 3.1a implemented; manual client acceptance pending |
+| [3](docs/roadmap/03-upgrade-interface.md)      | Discoverable cabin upgrade interface                  | Deliveries 3.1a–b implemented; manual client acceptance pending |
 | [4](docs/roadmap/04-household-storage.md)      | Household roles, mailbox and central storage          | Draft                                 |
 | [5](docs/roadmap/05-functional-rooms.md)       | Functional rooms                                      | Draft                                 |
 | [6](docs/roadmap/06-cabin-companions.md)       | Cabin companions                                      | Draft                                 |

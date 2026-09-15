@@ -5,9 +5,8 @@
 **Outcome:** Cabin upgrades are discoverable, understandable and purchased through a deliberate
 protected interface rather than provisional chat messages and sneak-use gestures.
 
-**Status:** Delivery 3.1a's per-upgrade-fund correction is implemented and passes automated
-acceptance; manual client acceptance remains. Delivery 3.2's configurable windows are aligned but
-not implemented.
+**Status:** Deliveries 3.1a and 3.1b are implemented and pass automated acceptance; manual client
+acceptance remains. Delivery 3.2's configurable windows are aligned but not implemented.
 
 ## Deliveries
 
@@ -25,6 +24,18 @@ upgrade panels, icon tabs and the normal player inventory.
 This correction is limited to the existing general-space upgrade. It establishes the reusable
 interface and fund model without implementing configurable windows.
 
+### Delivery 3.1b: Multi-panel interface enablement — Implemented; manual acceptance pending
+
+Finish the interface boundary required by configurable windows. Keep vertical icon tabs attached to
+the side of the container for upgrade categories, show one upgrade panel at a time within the active
+category, and provide previous/next navigation when that category has several panels. Expand the
+visible material area to two rows of eight exact-requirement slots so a window's thirteen base
+requirements fit without another paging layer.
+
+Panel, category and confirmation selection remain ephemeral menu state. Changing category or panel
+cancels an armed action, and catalog refresh retains the selected stable target when it still exists.
+Delivery 3.1b changes no cabin save schema, upgrade costs, permissions or installed effects.
+
 ### Delivery 3.2: Configurable cabin windows — Aligned
 
 Use the corrected interface and funds to purchase individual functional windows on the left, rear
@@ -32,7 +43,8 @@ and right walls. Add independent size tiers, spatial validation, reversible purc
 exact material refunds.
 
 The deliveries remain separate coherent changes. Delivery 3.1a is playable with one general-space
-panel; Delivery 3.2 adds several window panels to its Cabin tab.
+panel; Delivery 3.1b makes the interface capable of selecting several panels; Delivery 3.2 supplies
+the window panels and their behavior.
 
 ## Existing behavior and rollout
 
@@ -63,14 +75,16 @@ while the menu remains open.
 The interface uses an approximately 248 by 220 logical-pixel Minecraft-style container:
 
 - the normal nine-column player inventory and hotbar remain fixed at the bottom
-- the upper area shows several compact stacked upgrade panels and scrolls independently when needed
-- vertical icon tabs group upgrades by the part of the cabin they affect
+- the upper area shows one compact upgrade panel at a time, with previous/next navigation when the
+  selected category contains several panels
+- vertical icon tabs attached to the container group upgrades by the part of the cabin they affect
 - the Cabin tab contains whole-cabin structure, size, window and storage upgrades
 - each implemented functional room receives its own tab, including automation specific to that room
 - empty or unimplemented categories do not appear
 
-Delivery 3.1a initially shows only the next general-space expansion in the Cabin tab. Delivery 3.2
-adds window panels without changing the layout.
+Delivery 3.1a initially shows only the next general-space expansion in the Cabin tab. Delivery 3.1b
+adds the reusable category and panel navigation plus sixteen visible material slots. Delivery 3.2
+populates the Cabin category with window panels without changing the layout.
 
 Permanent text stays minimal. Upgrade, tab, action and status icons provide hover tooltips. Each
 panel shows a short upgrade name, compact effect, material slots, status icon and owner action. The
