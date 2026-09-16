@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "type": "door",
+  "door_ingredient": "minecraft:waxed_copper_door",
+  "door": "minecraft:waxed_copper_door"
+}

@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "type": "door",
+  "required_mod": "biomesoplenty",
+  "door_ingredient": "biomesoplenty:umbran_door",
+  "door": "biomesoplenty:umbran_door"
+}

@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "dev.portablepocketcabin.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "DoorBlockMixin",
+    "FireBlockMixin",
+    "PistonStructureResolverMixin",
+    "ServerExplosionMixin",
+    "WeatheringCopperDoorBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

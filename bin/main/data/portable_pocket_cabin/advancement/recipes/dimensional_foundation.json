@@ -1,0 +1,38 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_cores": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "portable_pocket_cabin:dimensional_logic_core"
+          },
+          {
+            "items": "portable_pocket_cabin:dimensional_anchor"
+          },
+          {
+            "items": "portable_pocket_cabin:dimensional_folding_core"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "portable_pocket_cabin:dimensional_foundation"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cores",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "portable_pocket_cabin:dimensional_foundation"
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "required_mod": "biomesoplenty",
+  "planks_ingredient": "biomesoplenty:hellbark_planks",
+  "structural_wood_ingredient": "biomesoplenty:hellbark_log",
+  "planks": "biomesoplenty:hellbark_planks",
+  "structural_wood": "biomesoplenty:hellbark_log",
+  "stairs": "biomesoplenty:hellbark_stairs",
+  "slab": "biomesoplenty:hellbark_slab"
+}

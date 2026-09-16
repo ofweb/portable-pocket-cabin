@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "planks_ingredient": "minecraft:crimson_planks",
+  "structural_wood_ingredient": "minecraft:crimson_stem",
+  "planks": "minecraft:crimson_planks",
+  "structural_wood": "minecraft:crimson_stem",
+  "stairs": "minecraft:crimson_stairs",
+  "slab": "minecraft:crimson_slab"
+}

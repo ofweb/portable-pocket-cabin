@@ -1,6 +1,6 @@
 # Portable Pocket Cabin
 
-A Fabric 26.2 mod for a travelling play style. The safe MVP and Milestone 1 survival-acquisition flow are complete; Milestone 2's world-attuned expansion and Milestone 3.1a–3.2b's per-upgrade-fund interface and reversible cabin windows are implemented. The [roadmap](ROADMAP.md) links each milestone's design, implementation plan, and acceptance gates.
+A Fabric 26.2 mod for a travelling play style. The safe MVP and survival-acquisition flow are complete. World-attuned expansion, per-upgrade funding, and reversible cabin windows are implemented. The [roadmap](ROADMAP.md) links each milestone's design, implementation plan, and acceptance gates.
 
 ## Playing
 
@@ -8,19 +8,19 @@ Obtain a Block of Amethyst to reveal the three dimensional-core recipes. Craft a
 
 Use the Kit on the top of a solid terrain block. The first use previews the 5×5 cabin footprint; use the same top surface again within 30 seconds to deploy it. The clicked surface puts the front stair directly above that block, and the door faces back toward you. Its first successful deployment permanently binds the cabin and creates a pocket interior using the selected materials.
 
-Normal-use the exterior door or lodestone controller to enter. To pack, sneak-use the same exterior lodestone twice within 10 seconds. The existing five-second evacuation and packing countdown then runs without commands.
+Normal-use the exterior door or lodestone controller to enter. To pack, sneak-use the same exterior lodestone twice within 10 seconds. The five-second evacuation and packing countdown then runs without commands.
 
-New cabins begin with a 4×4 usable interior. Normal-use or sneak-use the protected interior lodestone beside the exit to open **Cabin Upgrades**. Anyone currently allowed inside may inspect the next expansion and its world-attuned requirements. The owner and currently authorized trusted players may place matching carried items on a material icon to deposit them, or click it empty-handed to withdraw. Right-click deposits one carried item or withdraws half of the oldest stored stack, and dragging works like a restricted container slot. Shift-clicking a material icon pulls only ordinary, unmodified matching stacks from the player inventory; shift-clicking a player stack remains ordinary inventory movement. Every icon accepts only its exact item up to the displayed requirement, preserves stack data, and creative mode follows the same rules.
+New cabins begin with a 4×4 usable interior. Normal-use or sneak-use the protected interior lodestone beside the exit to open **Cabin Upgrades**. Anyone allowed inside may inspect each upgrade and its requirements. The owner and trusted players currently allowed inside may place matching carried items on a material icon to deposit them or click it empty-handed to withdraw. Right-clicking deposits one carried item or withdraws half of the oldest stored stack. Dragging works like a restricted container slot. Shift-clicking a material icon deposits only ordinary, unmodified matching stacks from the player inventory; shift-clicking a player stack remains ordinary inventory movement. Each icon accepts only its exact item up to the displayed requirement and preserves stack data. Creative mode follows the same rules.
 
 A complete fund never installs automatically. Only the owner may install, using the check-mark button twice to confirm the same target and fund revision. Failed permission, funding, availability, or structural validation leaves every material in its target-specific fund, where an authorized player may withdraw it. Expansion grows one block per step up to the configured limit, keeps the entrance wall fixed, and refuses obstructed horizontal or vertical space. Clear interior height starts at two blocks, grows by one block for every two size steps, and caps at ten blocks from size 20 onward.
 
-The Cabin category also exposes two stable window panels for each left, rear, and right wall. A wall's first window can be purchased whenever its footprint fits; its second remains visible but locked until the first is installed and both fit between the structural corner frames. Each window advances independently through `1×2`, `2×2`, `3×3`, `5×4`, `7×6`, and `9×8` tiers. Installation refuses obstructions and attached decorations, preserves exact paid stacks, and recenters installed windows when general space expands.
+The Cabin category also exposes two stable window panels for the left, rear, and right walls. A wall's first window can be purchased whenever its footprint fits. Its second remains visible but cannot be purchased until the first is installed and both footprints fit between the structural corner frames. Each window advances independently through `1×2`, `2×2`, `3×3`, `5×4`, `7×6`, and `9×8` tiers. Installation refuses obstructions and attached decorations, preserves exact paid stacks, and recenters installed windows when general space expands.
 
-Only the owner can use the window panel's downgrade and remove controls, each with the same two-click confirmation as installation. Downgrade removes one tier and drops that tier's exact receipt beside the interior controller; remove returns every paid receipt and restores the wall. Grandfathered tier-one windows can be removed but return no materials. A remaining second window keeps its identity and recenters normally. The confirmation warns when the resulting window state would invalidate a funded target; confirming drops those exact fund stacks separately at the same controller-side location. Once materialized, all drops follow ordinary Minecraft pickup, obstruction, hazard, and despawn behavior.
+Only the owner can downgrade or remove a window; both actions require the same two-click confirmation as installation. Downgrading removes one tier and drops that tier's exact receipt beside the interior controller. Removing a window returns every paid receipt and restores the wall. A grandfathered tier-one window returns no materials. A remaining second window keeps its identity and recenters normally. If the change invalidates a funded target, the confirmation names it and drops its exact fund stacks separately at the same location. Once materialized, all drops follow ordinary Minecraft pickup, obstruction, hazard, and despawn behavior.
 
-Reversible windows use cabin registry schema 7. Schema-6 cabins retain their exact windows, receipts, funds, and any interrupted installation; schema 5 and older migratable cabins receive one grandfathered tier-one window on each side wall. Newly created cabins begin with solid walls and no windows. Schema 4 tracked funds migrate losslessly into their matching target fund, while variable-height schema 3 saves migrate with no fund. Worlds using the earlier fixed-height schema 2 must still be backed up and replaced with `just fresh-world`; those generated ceiling blocks cannot be distinguished safely from player construction.
+Reversible windows use cabin registry schema 7. Schema 6 cabins retain their exact windows, receipts, funds, and any interrupted installation. Migratable cabins from schema 5 or earlier receive one grandfathered tier-one window on each side wall. Newly created cabins begin with solid walls and no windows. Schema 4's tracked fund migrates losslessly into its matching target fund, while variable-height schema 3 saves migrate with no fund. Worlds using the earlier fixed-height schema 2 must still be backed up and replaced with `just fresh-world`; those generated ceiling blocks cannot be distinguished safely from player construction.
 
-Cabins can be deployed in the Overworld, Nether, or End. Their protected interiors keep running while deployed and pause while packed. Every installed window shows dawn, day, sunset, night, rain, thunder, Nether, End, or inactive states across its full pane footprint.
+Cabins can be deployed in the Overworld, Nether, or End. Their protected interiors run only while deployed. Every installed window shows dawn, day, sunset, night, rain, thunder, Nether, End, or inactive states across its full pane footprint.
 
 Normal player commands are:
 
@@ -63,7 +63,7 @@ For a headless dedicated-server smoke check:
 ./gradlew runStartupTest
 ```
 
-The server stops itself after initialization and logs `DEDICATED_SERVER_STARTUP_TEST_PASSED` once the pocket dimension and registry are available. The full `./gradlew build` gate boots that saved world a second time, reconciles interrupted packing and deployment journals, verifies the exterior and interior survived, then packs and redeploys the cabin before checking monotonic cell allocation.
+The server stops itself after initialization and logs `DEDICATED_SERVER_STARTUP_TEST_PASSED` once the pocket dimension and registry are available. The full `./gradlew build` gate boots that saved world a second time, reconciles interrupted packing and deployment operations, verifies that the exterior and interior survived, then packs and redeploys the cabin before checking monotonic cell allocation.
 
 Cabin near-death respawn distance defaults to 128–256 blocks. Operators can persist different bounds with the namespaced gamerules:
 
@@ -87,7 +87,7 @@ Then launch both sides and connect directly:
 just dev
 ```
 
-The current mod jar is rebuilt and copied into both environments before launch. Fabric API is downloaded by the server and copied into the Prism instance automatically. Useful commands:
+The mod jar is rebuilt, mounted into the server, and copied into the Prism instance before launch. When the Prism instance lacks Fabric API, `just dev` copies the server's downloaded jar. Useful commands:
 
 ```sh
 just server                 # start the Docker server and make ofweb an OP

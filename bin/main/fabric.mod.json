@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "portable_pocket_cabin",
+  "version": "${version}",
+  "name": "Portable Pocket Cabin",
+  "description": "A persistent pocket cabin for a travelling Minecraft play style.",
+  "authors": ["Portable Pocket Cabin contributors"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.portablepocketcabin.PortablePocketCabin"
+    ],
+    "client": [
+      "dev.portablepocketcabin.PortablePocketCabinClient"
+    ]
+  },
+  "mixins": [
+    "portable_pocket_cabin.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.2",
+    "java": ">=25",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "biomesoplenty": "*"
+  }
+}

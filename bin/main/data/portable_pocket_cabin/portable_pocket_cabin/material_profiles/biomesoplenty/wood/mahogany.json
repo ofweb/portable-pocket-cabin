@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "required_mod": "biomesoplenty",
+  "planks_ingredient": "biomesoplenty:mahogany_planks",
+  "structural_wood_ingredient": "biomesoplenty:mahogany_log",
+  "planks": "biomesoplenty:mahogany_planks",
+  "structural_wood": "biomesoplenty:mahogany_log",
+  "stairs": "biomesoplenty:mahogany_stairs",
+  "slab": "biomesoplenty:mahogany_slab"
+}

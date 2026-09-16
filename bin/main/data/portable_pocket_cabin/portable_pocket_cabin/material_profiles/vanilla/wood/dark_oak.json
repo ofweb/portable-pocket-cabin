@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "planks_ingredient": "minecraft:dark_oak_planks",
+  "structural_wood_ingredient": "minecraft:dark_oak_log",
+  "planks": "minecraft:dark_oak_planks",
+  "structural_wood": "minecraft:dark_oak_log",
+  "stairs": "minecraft:dark_oak_stairs",
+  "slab": "minecraft:dark_oak_slab"
+}

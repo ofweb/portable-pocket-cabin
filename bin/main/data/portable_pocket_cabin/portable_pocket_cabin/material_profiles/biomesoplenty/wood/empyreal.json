@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "required_mod": "biomesoplenty",
+  "planks_ingredient": "biomesoplenty:empyreal_planks",
+  "structural_wood_ingredient": "biomesoplenty:empyreal_log",
+  "planks": "biomesoplenty:empyreal_planks",
+  "structural_wood": "biomesoplenty:empyreal_log",
+  "stairs": "biomesoplenty:empyreal_stairs",
+  "slab": "biomesoplenty:empyreal_slab"
+}

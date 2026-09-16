@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "type": "door",
+  "required_mod": "biomesoplenty",
+  "door_ingredient": "biomesoplenty:palm_door",
+  "door": "biomesoplenty:palm_door"
+}

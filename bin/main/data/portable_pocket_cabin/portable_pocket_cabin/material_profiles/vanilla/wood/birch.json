@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "planks_ingredient": "minecraft:birch_planks",
+  "structural_wood_ingredient": "minecraft:birch_log",
+  "planks": "minecraft:birch_planks",
+  "structural_wood": "minecraft:birch_log",
+  "stairs": "minecraft:birch_stairs",
+  "slab": "minecraft:birch_slab"
+}

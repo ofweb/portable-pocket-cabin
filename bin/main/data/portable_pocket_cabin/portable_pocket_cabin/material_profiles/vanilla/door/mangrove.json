@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "type": "door",
+  "door_ingredient": "minecraft:mangrove_door",
+  "door": "minecraft:mangrove_door"
+}

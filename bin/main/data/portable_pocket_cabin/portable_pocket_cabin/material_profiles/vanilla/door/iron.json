@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "type": "door",
+  "door_ingredient": "minecraft:iron_door",
+  "door": "minecraft:iron_door"
+}

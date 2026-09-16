@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "type": "wood_family",
+  "planks_ingredient": "minecraft:mangrove_planks",
+  "structural_wood_ingredient": "minecraft:mangrove_log",
+  "planks": "minecraft:mangrove_planks",
+  "structural_wood": "minecraft:mangrove_log",
+  "stairs": "minecraft:mangrove_stairs",
+  "slab": "minecraft:mangrove_slab"
+}
