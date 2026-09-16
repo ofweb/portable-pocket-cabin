@@ -7,7 +7,7 @@ left, rear and right walls. Implement schema-6 state, schema-5 grandfathering, b
 upward tier, placement validation, exterior-condition panes, interface panels and recoverable
 installation. Downgrade, removal, refunds and funded-target invalidation remain Delivery 3.2b.
 
-**Status:** Aligned; implementation pending.
+**Status:** Implemented; automated acceptance passed; manual client acceptance pending.
 
 ## Agreed behavior
 
@@ -90,7 +90,7 @@ installation. Downgrade, removal, refunds and funded-target invalidation remain 
 - codec and invariant tests for window identities, tiers, exact receipt stacks, typed installations,
   schema-5 grandfathering, schema-6 new-cabin defaults, future-schema rejection and malformed state
 - pure geometry tests for every tier, all three wall orientations, odd/even centering, one/two-window
-  layouts, the one-block divider, frame preservation, clear-height limits and the size-19 tier-six pair
+  layouts, the one-block divider, frame preservation, clear-height limits and the size-21 tier-six pair
 - catalog and service GameTests for six stable panels, second-window prerequisites, base and sequential
   tier costs, target-specific funds, permissions, stale state and two-step installation
 - world GameTests for safe pane placement, obstruction and attached-decoration rejection, no partial

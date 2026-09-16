@@ -66,6 +66,19 @@ final class CabinWindowWorld {
 		return CabinUpgradeService.Outcome.success("Installed windows can be safely recentered");
 	}
 
+	CabinUpgradeService.Outcome validateChange(CabinRecord cabin, CabinWindowState resultingState) {
+		CabinWindowLayout.Result current = CabinWindowLayout.current(
+			cabin.cellIndex(), cabin.progression().generalSize(), cabin.upgrades().windows()
+		);
+		CabinWindowLayout.Result target = CabinWindowLayout.current(
+			cabin.cellIndex(), cabin.progression().generalSize(), resultingState
+		);
+		if (!target.valid()) {
+			return CabinUpgradeService.Outcome.failure(target.message());
+		}
+		return validateTransition(cabin, current.positions(), target.positions(), false);
+	}
+
 	void applyInstall(CabinRecord cabin, CabinWindowState.Identity identity, int targetTier) {
 		CabinWindowLayout.Result current = CabinWindowLayout.current(
 			cabin.cellIndex(), cabin.progression().generalSize(), cabin.upgrades().windows()
@@ -87,6 +100,19 @@ final class CabinWindowWorld {
 			throw new IllegalStateException(target.message());
 		}
 		placeProfile(target.positions(), CabinWindows.profile(server, cabin));
+	}
+
+	void applyChange(CabinRecord cabin, CabinWindowState resultingState) {
+		CabinWindowLayout.Result current = CabinWindowLayout.current(
+			cabin.cellIndex(), cabin.progression().generalSize(), cabin.upgrades().windows()
+		);
+		CabinWindowLayout.Result target = CabinWindowLayout.current(
+			cabin.cellIndex(), cabin.progression().generalSize(), resultingState
+		);
+		if (!target.valid()) {
+			throw new IllegalStateException(target.message());
+		}
+		applyTransition(cabin, current.positions(), target.positions());
 	}
 
 	boolean reconcileProjection(CabinRecord cabin) {

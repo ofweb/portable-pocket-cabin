@@ -30,6 +30,8 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	static final int BUTTON_INSTALL = 1;
 	static final int BUTTON_PREVIOUS_PANEL = 2;
 	static final int BUTTON_NEXT_PANEL = 3;
+	static final int BUTTON_DOWNGRADE = 4;
+	static final int BUTTON_REMOVE = 5;
 	static final int BUTTON_GROUP_BASE = 100;
 	static final int MAX_REQUIREMENTS = 16;
 	static final int REQUIREMENTS_PER_ROW = CabinUpgradeLayout.REQUIREMENT_COLUMNS;
@@ -39,7 +41,9 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	static final int STATUS_SLOT = ATTUNED_SLOT + 1;
 	static final int PANEL_SLOT = STATUS_SLOT + 1;
 	static final int EFFECT_SLOT = PANEL_SLOT + 1;
-	static final int FIRST_GROUP_SLOT = EFFECT_SLOT + 1;
+	static final int DOWNGRADE_STATUS_SLOT = EFFECT_SLOT + 1;
+	static final int REMOVE_STATUS_SLOT = DOWNGRADE_STATUS_SLOT + 1;
+	static final int FIRST_GROUP_SLOT = REMOVE_STATUS_SLOT + 1;
 	static final int FIRST_PLAYER_SLOT = FIRST_GROUP_SLOT + MAX_GROUPS;
 	static final int PLAYER_INVENTORY_SLOTS = 36;
 
@@ -62,6 +66,12 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	private static final int FLAG_BLOCKED = 1 << 7;
 	private static final int FLAG_ARMED = 1 << 8;
 	private static final int FLAG_OVERSIZED = 1 << 9;
+	private static final int FLAG_CAN_DOWNGRADE = 1 << 10;
+	private static final int FLAG_CAN_REMOVE = 1 << 11;
+	private static final int FLAG_ARMED_DOWNGRADE = 1 << 12;
+	private static final int FLAG_ARMED_REMOVE = 1 << 13;
+	private static final int FLAG_HAS_WINDOW = 1 << 14;
+	private static final int FLAG_HAS_DOWNGRADE = 1 << 15;
 	private static final long CONFIRMATION_TICKS = 100L;
 
 	static final MenuType<CabinUpgradeMenu> TYPE = Registry.register(
@@ -80,6 +90,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	private Identifier selectedGroupId;
 	private CabinUpgradeSelection.Selected selection;
 	private CabinUpgradeState.Target armedTarget;
+	private CabinUpgradeState.ReversalAction armedReversalAction;
 	private long armedRevision = -1L;
 	private long armedUntil = -1L;
 	private String actionMessage = "";
@@ -101,6 +112,8 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		addSlot(new DisplaySlot(display, STATUS_SLOT, -1000, -1000));
 		addSlot(new DisplaySlot(display, PANEL_SLOT, -1000, -1000));
 		addSlot(new DisplaySlot(display, EFFECT_SLOT, -1000, -1000));
+		addSlot(new DisplaySlot(display, DOWNGRADE_STATUS_SLOT, -1000, -1000));
+		addSlot(new DisplaySlot(display, REMOVE_STATUS_SLOT, -1000, -1000));
 		for (int index = 0; index < MAX_GROUPS; index++) {
 			addSlot(new DisplaySlot(display, FIRST_GROUP_SLOT + index, -1000, -1000));
 		}
@@ -179,6 +192,16 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		return stack.isEmpty() ? Component.empty() : stack.getHoverName();
 	}
 
+	Component downgradeStatusMessage() {
+		ItemStack stack = display.getItem(DOWNGRADE_STATUS_SLOT);
+		return stack.isEmpty() ? Component.empty() : stack.getHoverName();
+	}
+
+	Component removeStatusMessage() {
+		ItemStack stack = display.getItem(REMOVE_STATUS_SLOT);
+		return stack.isEmpty() ? Component.empty() : stack.getHoverName();
+	}
+
 	boolean isOwner() {
 		return flag(FLAG_OWNER);
 	}
@@ -215,10 +238,37 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		return flag(FLAG_ARMED);
 	}
 
+	boolean canDowngrade() {
+		return flag(FLAG_CAN_DOWNGRADE);
+	}
+
+	boolean canRemove() {
+		return flag(FLAG_CAN_REMOVE);
+	}
+
+	boolean isDowngradeArmed() {
+		return flag(FLAG_ARMED_DOWNGRADE);
+	}
+
+	boolean isRemoveArmed() {
+		return flag(FLAG_ARMED_REMOVE);
+	}
+
+	boolean hasInstalledWindow() {
+		return flag(FLAG_HAS_WINDOW);
+	}
+
+	boolean hasDowngradeAction() {
+		return flag(FLAG_HAS_DOWNGRADE);
+	}
+
 	@Override
 	public boolean clickMenuButton(Player player, int button) {
 		if (!(player instanceof ServerPlayer actor) || actor != serverPlayer || !stillValid(player)) {
 			return false;
+		}
+		if (button == BUTTON_DOWNGRADE || button == BUTTON_REMOVE) {
+			return reverseWindow(actor, button);
 		}
 		if (button != BUTTON_INSTALL) {
 			return navigate(actor, button);
@@ -237,8 +287,10 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		}
 		long revision = cabin.upgrades().fundRevision();
 		long now = actor.level().getGameTime();
-		if (!target.equals(armedTarget) || revision != armedRevision || now > armedUntil) {
+		if (!target.equals(armedTarget) || armedReversalAction != null
+			|| revision != armedRevision || now > armedUntil) {
 			armedTarget = target;
+			armedReversalAction = null;
 			armedRevision = revision;
 			armedUntil = now + CONFIRMATION_TICKS;
 			setActionMessage("Click install again to confirm.");
@@ -267,6 +319,91 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		refreshFromServer();
 		broadcastChanges();
 		return outcome.success();
+	}
+
+	private boolean reverseWindow(ServerPlayer actor, int button) {
+		CabinRegistry registry = CabinRegistry.get(actor.level().getServer());
+		CabinRecord cabin = registry.find(cabinId).orElse(null);
+		if (cabin == null || target == null || !target.isWindow()
+			|| !cabin.owner().equals(actor.getUUID())) {
+			return false;
+		}
+		if (cabin.upgrades().operationInProgress()) {
+			setActionMessage("A cabin upgrade operation is in progress.");
+			refreshFromServer();
+			broadcastChanges();
+			return false;
+		}
+		CabinUpgradeState.ReversalAction action = button == BUTTON_DOWNGRADE
+			? CabinUpgradeState.ReversalAction.DOWNGRADE : CabinUpgradeState.ReversalAction.REMOVE;
+		try {
+			CabinUpgradeDefinitions.Definitions definitions = CabinUpgradeDefinitions.current();
+			WorldAttunement attunement = CabinUpgradeCatalog.resolveAttunement(
+				registry, actor.level(), definitions
+			);
+			CabinWindowReversalEffect effect = new CabinWindowReversalEffect(
+				actor.level().getServer(), actor.level()
+			);
+			CabinWindowReversalService.Preview preview = CabinWindowReversalService.preview(
+				cabin, target, action, attunement, definitions, effect
+			);
+			if (!preview.available()) {
+				setActionMessage(preview.message());
+				refreshFromServer();
+				broadcastChanges();
+				return false;
+			}
+			long revision = cabin.upgrades().fundRevision();
+			long now = actor.level().getGameTime();
+			if (!target.equals(armedTarget) || action != armedReversalAction
+				|| revision != armedRevision || now > armedUntil) {
+				armedTarget = target;
+				armedReversalAction = action;
+				armedRevision = revision;
+				armedUntil = now + CONFIRMATION_TICKS;
+				String warning = preview.invalidatedFunds().isEmpty() ? "" : " Funded materials for "
+					+ invalidatedTitles(cabin, preview.invalidatedFunds(), attunement, definitions)
+					+ " will also be dropped.";
+				setActionMessage("Click " + action.name().toLowerCase(java.util.Locale.ROOT)
+					+ " again to confirm." + warning);
+				refreshFromServer();
+				broadcastChanges();
+				return true;
+			}
+
+			CabinWindowReversalService.Ejector ejector = (value, reversal) ->
+				CabinFundEjection.ejectMarked(
+					actor.level(), value, reversal.operationId(), reversal.payloadStacks()
+				);
+			CabinUpgradeService.Outcome outcome = CabinWindowReversalService.reverse(
+				registry, cabinId, actor.getUUID(), target, action, armedRevision, attunement,
+				definitions, effect, ejector, () -> CabinRegistry.flush(actor.level().getServer())
+			);
+			clearArming();
+			setActionMessage(outcome.message());
+			actor.sendSystemMessage(Component.literal(outcome.message()));
+			refreshFromServer();
+			broadcastChanges();
+			return outcome.success();
+		} catch (IllegalStateException exception) {
+			clearArming();
+			setActionMessage(exception.getMessage());
+			refreshFromServer();
+			broadcastChanges();
+			return false;
+		}
+	}
+
+	private static String invalidatedTitles(
+		CabinRecord cabin,
+		List<CabinUpgradeState.Fund> funds,
+		WorldAttunement attunement,
+		CabinUpgradeDefinitions.Definitions definitions
+	) {
+		return funds.stream().map(fund -> CabinUpgradeCatalog.offer(
+			cabin, fund.target(), attunement, definitions
+		).map(CabinUpgradeCatalog.Offer::title).orElse(fund.target().key()))
+			.collect(java.util.stream.Collectors.joining(", "));
 	}
 
 	private boolean navigate(ServerPlayer actor, int button) {
@@ -541,7 +678,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			&& cabin.canEnter(serverPlayer.getUUID())) {
 			flags |= FLAG_CONTRIBUTOR;
 		}
-		if (cabin.upgrades().installation().isPresent()) {
+		if (cabin.upgrades().operationInProgress()) {
 			flags |= FLAG_INSTALLING;
 		}
 		String contextualMessage = "";
@@ -617,6 +754,39 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 					}
 					writeRequirements(displayedRequirements, fund);
 				}
+				if (target.isWindow()) {
+					int installedTier = cabin.upgrades().windows().tier(target.windowIdentity());
+					if (installedTier > 0) {
+						flags |= FLAG_HAS_WINDOW;
+					}
+					if (installedTier > 1) {
+						flags |= FLAG_HAS_DOWNGRADE;
+					}
+					if ((flags & FLAG_INSTALLING) != 0) {
+						writeActionStatus(DOWNGRADE_STATUS_SLOT, "A cabin upgrade operation is in progress.");
+						writeActionStatus(REMOVE_STATUS_SLOT, "A cabin upgrade operation is in progress.");
+					} else {
+						CabinWindowReversalEffect reversalEffect = new CabinWindowReversalEffect(
+							serverPlayer.level().getServer(), serverPlayer.level()
+						);
+						CabinWindowReversalService.Preview downgrade = CabinWindowReversalService.preview(
+							cabin, target, CabinUpgradeState.ReversalAction.DOWNGRADE,
+							attunement, definitions, reversalEffect
+						);
+						CabinWindowReversalService.Preview remove = CabinWindowReversalService.preview(
+							cabin, target, CabinUpgradeState.ReversalAction.REMOVE,
+							attunement, definitions, reversalEffect
+						);
+						writeActionStatus(DOWNGRADE_STATUS_SLOT, downgrade.message());
+						writeActionStatus(REMOVE_STATUS_SLOT, remove.message());
+						if (downgrade.available()) {
+							flags |= FLAG_CAN_DOWNGRADE;
+						}
+						if (remove.available()) {
+							flags |= FLAG_CAN_REMOVE;
+						}
+					}
+				}
 			}
 		} catch (IllegalStateException exception) {
 			target = null;
@@ -628,7 +798,13 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		if (armedTarget != null && target != null && armedTarget.equals(target)
 			&& armedRevision == cabin.upgrades().fundRevision()
 			&& serverPlayer.level().getGameTime() <= armedUntil) {
-			flags |= FLAG_ARMED;
+			if (armedReversalAction == CabinUpgradeState.ReversalAction.DOWNGRADE) {
+				flags |= FLAG_ARMED_DOWNGRADE;
+			} else if (armedReversalAction == CabinUpgradeState.ReversalAction.REMOVE) {
+				flags |= FLAG_ARMED_REMOVE;
+			} else {
+				flags |= FLAG_ARMED;
+			}
 		} else {
 			clearArming();
 		}
@@ -713,8 +889,19 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		display.setItem(STATUS_SLOT, status);
 	}
 
+	private void writeActionStatus(int slot, String message) {
+		if (message == null || message.isEmpty()) {
+			display.setItem(slot, ItemStack.EMPTY);
+			return;
+		}
+		ItemStack status = new ItemStack(Items.PAPER);
+		status.set(DataComponents.CUSTOM_NAME, Component.literal(message));
+		display.setItem(slot, status);
+	}
+
 	private void clearArming() {
 		armedTarget = null;
+		armedReversalAction = null;
 		armedRevision = -1L;
 		armedUntil = -1L;
 	}

@@ -15,7 +15,10 @@ also need the exact materials paid for each purchased step.
 
 Persist each window inside the cabin-owned upgrade state by its eligible wall and bounded slot
 identity, installed tier, and immutable paid-step receipts. Derive centered block geometry from the
-cabin's current general size and installed window state rather than storing coordinates. Nesting the
+cabin's current general size, two-block-deep structural corner frames and installed window state
+rather than storing coordinates. The frame-preserving usable wall span is two blocks smaller than
+the general-space size, so two tier-one windows first fit at size 5 and two tier-six windows at size
+21. Nesting the
 window value under upgrade state keeps `CabinRecord` within Minecraft's 16-field record-codec limit.
 Extend the upgrade installation journal with typed
 general-space and window operations so deterministic world changes can be replayed before state and

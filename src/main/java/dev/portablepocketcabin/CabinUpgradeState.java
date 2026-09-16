@@ -22,10 +22,11 @@ record CabinUpgradeState(
 	List<CabinUpgradeState.Fund> funds,
 	Optional<CabinUpgradeState.Installation> installation,
 	long fundRevision,
-	CabinWindowState windows
+	CabinWindowState windows,
+	Optional<CabinUpgradeState.WindowReversal> reversal
 ) {
 	static final CabinUpgradeState EMPTY = new CabinUpgradeState(
-		List.of(), Optional.empty(), 0L, CabinWindowState.EMPTY
+		List.of(), Optional.empty(), 0L, CabinWindowState.EMPTY, Optional.empty()
 	);
 
 	private static final Codec<CabinUpgradeState> CURRENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -33,7 +34,8 @@ record CabinUpgradeState(
 		Installation.CODEC.optionalFieldOf("installation").forGetter(CabinUpgradeState::installation),
 		Codec.LONG.optionalFieldOf("fund_revision", 0L).forGetter(CabinUpgradeState::fundRevision),
 		CabinWindowState.CODEC.optionalFieldOf("windows", CabinWindowState.EMPTY)
-			.forGetter(CabinUpgradeState::windows)
+			.forGetter(CabinUpgradeState::windows),
+		WindowReversal.CODEC.optionalFieldOf("window_reversal").forGetter(CabinUpgradeState::reversal)
 	).apply(instance, CabinUpgradeState::new));
 
 	private static final Codec<CabinUpgradeState> LEGACY_CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -50,6 +52,7 @@ record CabinUpgradeState(
 		Objects.requireNonNull(funds, "funds");
 		Objects.requireNonNull(installation, "installation");
 		Objects.requireNonNull(windows, "windows");
+		Objects.requireNonNull(reversal, "reversal");
 		funds = List.copyOf(funds);
 		if (fundRevision < 0) {
 			throw new IllegalArgumentException("Upgrade fund revision must not be negative");
@@ -72,6 +75,38 @@ record CabinUpgradeState(
 				throw new IllegalArgumentException("An installation must retain a complete target fund");
 			}
 		}
+		if (installation.isPresent() && reversal.isPresent()) {
+			throw new IllegalArgumentException("A cabin may have only one upgrade operation in progress");
+		}
+		if (reversal.isPresent()) {
+			WindowReversal value = reversal.get();
+			int currentTier = windows.tier(value.target().windowIdentity());
+			int requiredTier = value.phase() == ReversalPhase.WORLD_PENDING
+				? value.expectedTier() : value.targetTier();
+			if (currentTier != requiredTier) {
+				throw new IllegalArgumentException("Window reversal phase does not match cabin window state");
+			}
+			for (Fund invalidated : value.invalidatedFunds()) {
+				Fund current = funds.stream()
+					.filter(fund -> fund.target().equals(invalidated.target()))
+					.findFirst().orElse(null);
+				boolean present = current != null;
+				if (present != (value.phase() == ReversalPhase.WORLD_PENDING)) {
+					throw new IllegalArgumentException("Window reversal phase does not match invalidated funds");
+				}
+				if (current != null && !fundMatches(current, invalidated)) {
+					throw new IllegalArgumentException("Window reversal invalidated fund payload changed");
+				}
+			}
+			if (value.phase() == ReversalPhase.WORLD_PENDING) {
+				CabinWindowState.ReversalResult expected = value.action() == ReversalAction.DOWNGRADE
+					? windows.downgrade(value.target().windowIdentity(), value.expectedTier())
+					: windows.remove(value.target().windowIdentity(), value.expectedTier());
+				if (!stacksMatch(expected.refundStacks(), value.receiptRefund())) {
+					throw new IllegalArgumentException("Window reversal receipt payload changed");
+				}
+			}
+		}
 	}
 
 	@Override
@@ -84,6 +119,9 @@ record CabinUpgradeState(
 	}
 
 	CabinUpgradeState withFund(Fund value) {
+		if (operationInProgress()) {
+			throw new IllegalStateException("Cabin upgrade state is locked by an active operation");
+		}
 		List<Fund> updated = new ArrayList<>(funds.size() + 1);
 		boolean replaced = false;
 		for (Fund existing : funds) {
@@ -97,34 +135,78 @@ record CabinUpgradeState(
 		if (!replaced) {
 			updated.add(value);
 		}
-		return new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows);
+		return new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows, reversal);
 	}
 
 	CabinUpgradeState withoutFund(Target target) {
-		if (installation.isPresent() && installation.get().target().equals(target)) {
-			throw new IllegalStateException("Cannot remove a fund while its installation is in progress");
+		if (operationInProgress()) {
+			throw new IllegalStateException("Cabin upgrade state is locked by an active operation");
 		}
 		List<Fund> updated = funds.stream().filter(value -> !value.target().equals(target)).toList();
 		return updated.size() == funds.size()
 			? this
-			: new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows);
+			: new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows, reversal);
 	}
 
 	CabinUpgradeState withInstallation(Installation value) {
-		return new CabinUpgradeState(funds, Optional.of(value), fundRevision, windows);
+		if (operationInProgress()) {
+			throw new IllegalStateException("A cabin upgrade operation is already in progress");
+		}
+		return new CabinUpgradeState(funds, Optional.of(value), fundRevision, windows, reversal);
 	}
 
 	CabinUpgradeState completeInstallation(Target target) {
 		List<Fund> remaining = funds.stream().filter(value -> !value.target().equals(target)).toList();
-		return new CabinUpgradeState(remaining, Optional.empty(), Math.addExact(fundRevision, 1L), windows);
+		return new CabinUpgradeState(
+			remaining, Optional.empty(), Math.addExact(fundRevision, 1L), windows, reversal
+		);
 	}
 
 	CabinUpgradeState withWindows(CabinWindowState value) {
-		return new CabinUpgradeState(funds, installation, fundRevision, value);
+		return new CabinUpgradeState(funds, installation, fundRevision, value, reversal);
+	}
+
+	boolean operationInProgress() {
+		return installation.isPresent() || reversal.isPresent();
+	}
+
+	CabinUpgradeState withReversal(WindowReversal value) {
+		if (operationInProgress()) {
+			throw new IllegalStateException("A cabin upgrade operation is already in progress");
+		}
+		return new CabinUpgradeState(funds, installation, fundRevision, windows, Optional.of(value));
+	}
+
+	CabinUpgradeState commitReversal(CabinWindowState resultingWindows) {
+		WindowReversal value = reversal.orElseThrow();
+		if (value.phase() != ReversalPhase.WORLD_PENDING) {
+			return this;
+		}
+		Set<Target> invalidated = value.invalidatedFunds().stream()
+			.map(Fund::target).collect(java.util.stream.Collectors.toSet());
+		List<Fund> remaining = funds.stream().filter(fund -> !invalidated.contains(fund.target())).toList();
+		return new CabinUpgradeState(
+			remaining, installation, Math.addExact(fundRevision, 1L), resultingWindows,
+			Optional.of(value.withPhase(ReversalPhase.EJECTION_PENDING))
+		);
+	}
+
+	CabinUpgradeState completeReversal() {
+		WindowReversal value = reversal.orElseThrow();
+		if (value.phase() != ReversalPhase.EJECTION_PENDING) {
+			throw new IllegalStateException("Window reversal has not reached refund ejection");
+		}
+		return new CabinUpgradeState(funds, installation, fundRevision, windows, Optional.empty());
 	}
 
 	CabinUpgradeState(List<Fund> funds, Optional<Installation> installation, long fundRevision) {
-		this(funds, installation, fundRevision, CabinWindowState.EMPTY);
+		this(funds, installation, fundRevision, CabinWindowState.EMPTY, Optional.empty());
+	}
+
+	CabinUpgradeState(
+		List<Fund> funds, Optional<Installation> installation, long fundRevision, CabinWindowState windows
+	) {
+		this(funds, installation, fundRevision, windows, Optional.empty());
 	}
 
 	private static CabinUpgradeState fromLegacy(
@@ -135,7 +217,7 @@ record CabinUpgradeState(
 			.map(value -> List.of(value.asFund()))
 			.orElse(List.of());
 		return new CabinUpgradeState(
-			migrated, installation, migrated.isEmpty() ? 0L : 1L, CabinWindowState.EMPTY
+			migrated, installation, migrated.isEmpty() ? 0L : 1L, CabinWindowState.EMPTY, Optional.empty()
 		);
 	}
 
@@ -166,7 +248,7 @@ record CabinUpgradeState(
 			} else if (type.equals(WINDOW)) {
 				CabinWindowState.Identity.parse(key);
 			} else {
-				throw new IllegalArgumentException("Unsupported schema 6 upgrade target type " + type);
+				throw new IllegalArgumentException("Unsupported cabin upgrade target type " + type);
 			}
 		}
 
@@ -278,6 +360,124 @@ record CabinUpgradeState(
 		}
 	}
 
+	enum ReversalAction {
+		DOWNGRADE("downgrade"),
+		REMOVE("remove");
+
+		static final Codec<ReversalAction> CODEC = Codec.STRING.xmap(ReversalAction::parse, value -> value.key);
+		private final String key;
+
+		ReversalAction(String key) {
+			this.key = key;
+		}
+
+		private static ReversalAction parse(String key) {
+			for (ReversalAction value : values()) {
+				if (value.key.equals(key)) {
+					return value;
+				}
+			}
+			throw new IllegalArgumentException("Unsupported window reversal action " + key);
+		}
+	}
+
+	enum ReversalPhase {
+		WORLD_PENDING("world_pending"),
+		EJECTION_PENDING("ejection_pending");
+
+		static final Codec<ReversalPhase> CODEC = Codec.STRING.xmap(ReversalPhase::parse, value -> value.key);
+		private final String key;
+
+		ReversalPhase(String key) {
+			this.key = key;
+		}
+
+		private static ReversalPhase parse(String key) {
+			for (ReversalPhase value : values()) {
+				if (value.key.equals(key)) {
+					return value;
+				}
+			}
+			throw new IllegalArgumentException("Unsupported window reversal phase " + key);
+		}
+	}
+
+	record WindowReversal(
+		UUID operationId,
+		ReversalAction action,
+		Target target,
+		int expectedTier,
+		int targetTier,
+		List<ItemStack> receiptRefund,
+		List<Fund> invalidatedFunds,
+		ReversalPhase phase
+	) {
+		static final Codec<WindowReversal> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			UUIDUtil.STRING_CODEC.fieldOf("operation_id").forGetter(WindowReversal::operationId),
+			ReversalAction.CODEC.fieldOf("action").forGetter(WindowReversal::action),
+			Target.CODEC.fieldOf("target").forGetter(WindowReversal::target),
+			Codec.INT.fieldOf("expected_tier").forGetter(WindowReversal::expectedTier),
+			Codec.INT.fieldOf("target_tier").forGetter(WindowReversal::targetTier),
+			ItemStack.CODEC.listOf().optionalFieldOf("receipt_refund", List.of())
+				.forGetter(WindowReversal::receiptRefund),
+			Fund.CODEC.listOf().optionalFieldOf("invalidated_funds", List.of())
+				.forGetter(WindowReversal::invalidatedFunds),
+			ReversalPhase.CODEC.fieldOf("phase").forGetter(WindowReversal::phase)
+		).apply(instance, WindowReversal::new));
+
+		WindowReversal {
+			Objects.requireNonNull(operationId, "operationId");
+			Objects.requireNonNull(action, "action");
+			Objects.requireNonNull(target, "target");
+			Objects.requireNonNull(receiptRefund, "receiptRefund");
+			Objects.requireNonNull(invalidatedFunds, "invalidatedFunds");
+			Objects.requireNonNull(phase, "phase");
+			if (!target.isWindow() || expectedTier < 1 || expectedTier > CabinWindowState.MAX_TIER) {
+				throw new IllegalArgumentException("Window reversal must target an installed cabin window");
+			}
+			if (action == ReversalAction.DOWNGRADE
+				&& (expectedTier == 1 || targetTier != expectedTier - 1)) {
+				throw new IllegalArgumentException("Window downgrade must remove exactly one tier");
+			}
+			if (action == ReversalAction.REMOVE && targetTier != 0) {
+				throw new IllegalArgumentException("Window removal must target the uninstalled state");
+			}
+			receiptRefund = copyStacks(receiptRefund);
+			invalidatedFunds = List.copyOf(invalidatedFunds);
+			Set<Target> invalidatedTargets = new HashSet<>();
+			for (Fund fund : invalidatedFunds) {
+				if (!invalidatedTargets.add(fund.target())) {
+					throw new IllegalArgumentException("Window reversal invalidated funds must be unique by target");
+				}
+			}
+		}
+
+		@Override
+		public List<ItemStack> receiptRefund() {
+			return copyStacks(receiptRefund);
+		}
+
+		@Override
+		public List<Fund> invalidatedFunds() {
+			return List.copyOf(invalidatedFunds);
+		}
+
+		List<ItemStack> payloadStacks() {
+			List<ItemStack> result = new ArrayList<>(receiptRefund);
+			for (Fund fund : invalidatedFunds) {
+				result.addAll(fund.stacks());
+			}
+			return copyStacks(result);
+		}
+
+		WindowReversal withPhase(ReversalPhase value) {
+			return new WindowReversal(
+				operationId, action, target, expectedTier, targetTier,
+				receiptRefund, invalidatedFunds, value
+			);
+		}
+	}
+
 	record Installation(UUID operationId, Target target, int expectedState, int targetState) {
 		private static final Codec<Installation> CURRENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			UUIDUtil.STRING_CODEC.fieldOf("operation_id").forGetter(Installation::operationId),
@@ -360,5 +560,23 @@ record CabinUpgradeState(
 			copies.add(stack.copy());
 		}
 		return List.copyOf(copies);
+	}
+
+	private static boolean fundMatches(Fund first, Fund second) {
+		return first.target().equals(second.target())
+			&& first.requirements().equals(second.requirements())
+			&& stacksMatch(first.stacks(), second.stacks());
+	}
+
+	private static boolean stacksMatch(List<ItemStack> first, List<ItemStack> second) {
+		if (first.size() != second.size()) {
+			return false;
+		}
+		for (int index = 0; index < first.size(); index++) {
+			if (!ItemStack.matches(first.get(index), second.get(index))) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

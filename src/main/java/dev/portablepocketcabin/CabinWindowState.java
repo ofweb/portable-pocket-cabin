@@ -67,6 +67,59 @@ record CabinWindowState(List<CabinWindowState.Window> windows) {
 		return new CabinWindowState(updated);
 	}
 
+	ReversalResult downgrade(Identity identity, int expectedTier) {
+		Window current = requireTier(identity, expectedTier);
+		if (expectedTier <= 1) {
+			throw new IllegalStateException("A tier-one cabin window cannot be downgraded");
+		}
+		Receipt removed = current.receipts().getLast();
+		List<Receipt> remainingReceipts = current.receipts().subList(0, current.receipts().size() - 1);
+		Window downgraded = new Window(identity, expectedTier - 1, remainingReceipts);
+		return new ReversalResult(replace(identity, Optional.of(downgraded)), removed.stacks());
+	}
+
+	ReversalResult remove(Identity identity, int expectedTier) {
+		Window current = requireTier(identity, expectedTier);
+		List<ItemStack> refund = new ArrayList<>();
+		for (Receipt receipt : current.receipts()) {
+			refund.addAll(receipt.stacks());
+		}
+		return new ReversalResult(replace(identity, Optional.empty()), refund);
+	}
+
+	private Window requireTier(Identity identity, int expectedTier) {
+		Window current = window(identity)
+			.orElseThrow(() -> new IllegalStateException("That cabin window is not installed"));
+		if (current.tier() != expectedTier) {
+			throw new IllegalStateException("Cabin window tier changed before reversal could commit");
+		}
+		return current;
+	}
+
+	private CabinWindowState replace(Identity identity, Optional<Window> replacement) {
+		List<Window> updated = new ArrayList<>(windows.size());
+		for (Window current : windows) {
+			if (current.identity().equals(identity)) {
+				replacement.ifPresent(updated::add);
+			} else {
+				updated.add(current);
+			}
+		}
+		return new CabinWindowState(updated);
+	}
+
+	record ReversalResult(CabinWindowState state, List<ItemStack> refundStacks) {
+		ReversalResult {
+			Objects.requireNonNull(state, "state");
+			refundStacks = copyStacks(refundStacks);
+		}
+
+		@Override
+		public List<ItemStack> refundStacks() {
+			return copyStacks(refundStacks);
+		}
+	}
+
 	enum Wall {
 		LEFT("left"),
 		REAR("rear"),

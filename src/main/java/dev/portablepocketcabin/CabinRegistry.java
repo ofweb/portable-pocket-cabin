@@ -28,7 +28,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 public final class CabinRegistry extends SavedData {
-	private static final int SCHEMA_VERSION = 6;
+	private static final int SCHEMA_VERSION = 7;
 	private static final int OLDEST_MIGRATABLE_SCHEMA_VERSION = 3;
 
 	private record RegistryData(
@@ -601,7 +601,7 @@ public final class CabinRegistry extends SavedData {
 		if (repairedNextCellIndex > PocketDimension.MAX_CELL_INDEX + 1) {
 			return DataResult.error(() -> "Cabin next cell index is outside the supported grid");
 		}
-		List<CabinRecord> cabins = data.schemaVersion() < SCHEMA_VERSION
+		List<CabinRecord> cabins = data.schemaVersion() < 6
 			? data.cabins().stream()
 				.map(cabin -> copyUpgrades(cabin, cabin.upgrades().withWindows(CabinWindowState.grandfathered())))
 				.toList()

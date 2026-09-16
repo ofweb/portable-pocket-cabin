@@ -25,6 +25,7 @@ public final class PocketDimension {
 	public static final int CELL_FLOOR_Y = 63;
 	private static final int INITIAL_INTERIOR_CLEAR_HEIGHT = 2;
 	private static final int MAXIMUM_INTERIOR_CLEAR_HEIGHT = 10;
+	static final int STRUCTURAL_CORNER_FRAME_DEPTH = 2;
 	public static final int INTERIOR_FRONT_USABLE_Z = 2;
 	public static final int INTERIOR_FRONT_WALL_Z = INTERIOR_FRONT_USABLE_Z + 1;
 	public static final ResourceKey<Level> LEVEL_KEY = ResourceKey.create(
@@ -235,7 +236,7 @@ public final class PocketDimension {
 	}
 
 	static Map<BlockPos, BlockState> shellBlocks(long cellIndex, int generalSize, CabinPalette palette) {
-		return shellBlocks(cellIndex, generalSize, palette, 2, false);
+		return shellBlocks(cellIndex, generalSize, palette, STRUCTURAL_CORNER_FRAME_DEPTH, false);
 	}
 
 	static Map<BlockPos, BlockState> legacyShellBlocks(

@@ -1,6 +1,6 @@
 # Portable Pocket Cabin
 
-A Fabric 26.2 mod for a travelling play style. The safe MVP and Milestone 1 survival-acquisition flow are complete; Milestone 2's world-attuned expansion and Milestone 3.1a–b's per-upgrade-fund and multi-panel interface are implemented. The [roadmap](ROADMAP.md) links each milestone's design, implementation plan, and acceptance gates.
+A Fabric 26.2 mod for a travelling play style. The safe MVP and Milestone 1 survival-acquisition flow are complete; Milestone 2's world-attuned expansion and Milestone 3.1a–3.2b's per-upgrade-fund interface and reversible cabin windows are implemented. The [roadmap](ROADMAP.md) links each milestone's design, implementation plan, and acceptance gates.
 
 ## Playing
 
@@ -14,9 +14,13 @@ New cabins begin with a 4×4 usable interior. Normal-use or sneak-use the protec
 
 A complete fund never installs automatically. Only the owner may install, using the check-mark button twice to confirm the same target and fund revision. Failed permission, funding, availability, or structural validation leaves every material in its target-specific fund, where an authorized player may withdraw it. Expansion grows one block per step up to the configured limit, keeps the entrance wall fixed, and refuses obstructed horizontal or vertical space. Clear interior height starts at two blocks, grows by one block for every two size steps, and caps at ten blocks from size 20 onward.
 
-Per-upgrade funds use cabin registry schema 5. Schema 4 tracked funds migrate losslessly into their matching target fund, while variable-height schema 3 saves migrate with no fund. Worlds using the earlier fixed-height schema 2 must still be backed up and replaced with `just fresh-world`; those generated ceiling blocks cannot be distinguished safely from player construction.
+The Cabin category also exposes two stable window panels for each left, rear, and right wall. A wall's first window can be purchased whenever its footprint fits; its second remains visible but locked until the first is installed and both fit between the structural corner frames. Each window advances independently through `1×2`, `2×2`, `3×3`, `5×4`, `7×6`, and `9×8` tiers. Installation refuses obstructions and attached decorations, preserves exact paid stacks, and recenters installed windows when general space expands.
 
-Cabins can be deployed in the Overworld, Nether, or End. Their protected interiors keep running while deployed and pause while packed. Two fake-window panels show dawn, day, sunset, night, rain, thunder, Nether, End, or closed-shutter states.
+Only the owner can use the window panel's downgrade and remove controls, each with the same two-click confirmation as installation. Downgrade removes one tier and drops that tier's exact receipt beside the interior controller; remove returns every paid receipt and restores the wall. Grandfathered tier-one windows can be removed but return no materials. A remaining second window keeps its identity and recenters normally. The confirmation warns when the resulting window state would invalidate a funded target; confirming drops those exact fund stacks separately at the same controller-side location. Once materialized, all drops follow ordinary Minecraft pickup, obstruction, hazard, and despawn behavior.
+
+Reversible windows use cabin registry schema 7. Schema-6 cabins retain their exact windows, receipts, funds, and any interrupted installation; schema 5 and older migratable cabins receive one grandfathered tier-one window on each side wall. Newly created cabins begin with solid walls and no windows. Schema 4 tracked funds migrate losslessly into their matching target fund, while variable-height schema 3 saves migrate with no fund. Worlds using the earlier fixed-height schema 2 must still be backed up and replaced with `just fresh-world`; those generated ceiling blocks cannot be distinguished safely from player construction.
+
+Cabins can be deployed in the Overworld, Nether, or End. Their protected interiors keep running while deployed and pause while packed. Every installed window shows dawn, day, sunset, night, rain, thunder, Nether, End, or inactive states across its full pane footprint.
 
 Normal player commands are:
 

@@ -18,6 +18,8 @@ import java.util.List;
 /** Compact, vanilla-inventory-shaped upgrade screen with icon-first controls. */
 final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu> {
 	private Button installButton;
+	private Button downgradeButton;
+	private Button removeButton;
 	private Button previousPanelButton;
 	private Button nextPanelButton;
 	private final List<CategoryTabButton> categoryButtons = new ArrayList<>();
@@ -59,6 +61,12 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 		installButton.setTooltip(Tooltip.create(
 			Component.translatable("screen.portable_pocket_cabin.install_tooltip")
 		));
+		downgradeButton = addRenderableWidget(Button.builder(
+			Component.literal("↓"), button -> sendMenuButton(CabinUpgradeMenu.BUTTON_DOWNGRADE)
+		).bounds(leftPos + 190, topPos + 23, 19, 18).build());
+		removeButton = addRenderableWidget(Button.builder(
+			Component.literal("×"), button -> sendMenuButton(CabinUpgradeMenu.BUTTON_REMOVE)
+		).bounds(leftPos + 168, topPos + 23, 19, 18).build());
 		categoryButtons.clear();
 		for (int index = 0; index < CabinUpgradeMenu.MAX_GROUPS; index++) {
 			CategoryTabButton button = addRenderableWidget(new CategoryTabButton(
@@ -135,7 +143,7 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 				funded >= required ? 0xff207a20 : 0xff404040, false);
 		}
 		graphics.fakeItem(statusIcon(), CabinUpgradeLayout.PANEL_X
-			+ CabinUpgradeLayout.PANEL_WIDTH - 51, CabinUpgradeLayout.PANEL_Y + 5);
+			+ CabinUpgradeLayout.PANEL_WIDTH - 95, CabinUpgradeLayout.PANEL_Y + 5);
 		graphics.text(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0xff404040, false);
 	}
 
@@ -144,8 +152,8 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 		super.extractTooltip(graphics, mouseX, mouseY);
 		int relativeX = mouseX - leftPos;
 		int relativeY = mouseY - topPos;
-		if (relativeX >= CabinUpgradeLayout.PANEL_X + CabinUpgradeLayout.PANEL_WIDTH - 52
-			&& relativeX < CabinUpgradeLayout.PANEL_X + CabinUpgradeLayout.PANEL_WIDTH - 32
+		if (relativeX >= CabinUpgradeLayout.PANEL_X + CabinUpgradeLayout.PANEL_WIDTH - 96
+			&& relativeX < CabinUpgradeLayout.PANEL_X + CabinUpgradeLayout.PANEL_WIDTH - 76
 			&& relativeY >= CabinUpgradeLayout.PANEL_Y + 4
 			&& relativeY < CabinUpgradeLayout.PANEL_Y + 24) {
 			Component message = menu.statusMessage().getString().isEmpty()
@@ -170,13 +178,28 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 	}
 
 	private void refreshButton() {
-		if (installButton == null || previousPanelButton == null || nextPanelButton == null) {
+		if (installButton == null || downgradeButton == null || removeButton == null
+			|| previousPanelButton == null || nextPanelButton == null) {
 			return;
 		}
 		installButton.visible = menu.isOwner() && !menu.isAtMaximum();
 		installButton.active = installButton.visible && menu.isComplete() && menu.isAvailable()
 			&& !menu.isStale() && !menu.isBlocked() && !menu.installationInProgress();
 		installButton.setMessage(Component.literal(menu.isArmed() ? "✓✓" : "✓"));
+		downgradeButton.visible = menu.isOwner() && menu.hasDowngradeAction();
+		downgradeButton.active = downgradeButton.visible && menu.canDowngrade();
+		downgradeButton.setMessage(Component.literal(menu.isDowngradeArmed() ? "↓↓" : "↓"));
+		Component downgradeStatus = menu.downgradeStatusMessage();
+		downgradeButton.setTooltip(Tooltip.create(downgradeStatus.getString().isEmpty()
+			? Component.translatable("screen.portable_pocket_cabin.downgrade_tooltip")
+			: downgradeStatus));
+		removeButton.visible = menu.isOwner() && menu.hasInstalledWindow();
+		removeButton.active = removeButton.visible && menu.canRemove();
+		removeButton.setMessage(Component.literal(menu.isRemoveArmed() ? "××" : "×"));
+		Component removeStatus = menu.removeStatusMessage();
+		removeButton.setTooltip(Tooltip.create(removeStatus.getString().isEmpty()
+			? Component.translatable("screen.portable_pocket_cabin.remove_tooltip")
+			: removeStatus));
 		boolean severalPanels = menu.panelCount() > 1;
 		previousPanelButton.visible = severalPanels;
 		nextPanelButton.visible = severalPanels;

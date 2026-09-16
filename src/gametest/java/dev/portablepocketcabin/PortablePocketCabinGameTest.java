@@ -76,7 +76,7 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
-	public void schemaThreeMigratesToSchemaSixWithGrandfatheredWindows(GameTestHelper helper) {
+	public void schemaThreeMigratesToSchemaSevenWithGrandfatheredWindows(GameTestHelper helper) {
 		CabinRegistry original = new CabinRegistry();
 		CabinRecord cabin = original.create(UUID.randomUUID());
 		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, original).getOrThrow();
@@ -90,8 +90,41 @@ public final class PortablePocketCabinGameTest {
 			"Schema 3 cabins must migrate with no upgrade fund");
 		helper.assertTrue(restoredCabin.upgrades().windows().equals(CabinWindowState.grandfathered()),
 			"Every pre-schema-6 cabin must receive its two grandfathered side windows");
-		helper.assertTrue(rewritten.asCompound().orElseThrow().getIntOr("schema_version", 0) == 6,
-			"Migrated registries must rewrite as schema 6");
+		helper.assertTrue(rewritten.asCompound().orElseThrow().getIntOr("schema_version", 0) == 7,
+			"Migrated registries must rewrite as schema 7");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void schemaSixPreservesWindowsFundsAndActiveInstallation(GameTestHelper helper) {
+		CabinRegistry registry = new CabinRegistry();
+		CabinRecord cabin = registry.create(UUID.randomUUID());
+		CabinWindowState.Identity identity = new CabinWindowState.Identity(CabinWindowState.Wall.RIGHT, 1);
+		CabinWindowState windows = CabinWindowState.EMPTY.install(
+			identity, 0, List.of(new ItemStack(Items.GLASS_PANE, 3))
+		);
+		CabinUpgradeState.Target target = CabinUpgradeState.Target.window(identity);
+		CabinUpgradeState.Requirement requirement = new CabinUpgradeState.Requirement(
+			Items.AMETHYST_SHARD.builtInRegistryHolder().key().identifier(), 2
+		);
+		CabinUpgradeState.Fund fund = new CabinUpgradeState.Fund(
+			target, List.of(requirement), List.of(new ItemStack(Items.AMETHYST_SHARD, 2))
+		);
+		CabinUpgradeState expected = new CabinUpgradeState(
+			List.of(fund),
+			Optional.of(CabinUpgradeState.Installation.window(UUID.randomUUID(), target, 1)),
+			4L,
+			windows
+		);
+		registry.updateUpgradeState(cabin.uuid(), expected);
+		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
+		encoded.asCompound().orElseThrow().putInt("schema_version", 6);
+
+		CabinRegistry restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
+		CabinUpgradeState actual = restored.find(cabin.uuid()).orElseThrow().upgrades();
+		assertUpgradeState(helper, expected, actual);
+		helper.assertTrue(actual.reversal().isEmpty(),
+			"Schema 6 must migrate with no invented window reversal journal");
 		helper.succeed();
 	}
 
@@ -202,6 +235,38 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void windowDowngradeAndRemovalReturnOnlyTheirExactReceipts(GameTestHelper helper) {
+		CabinWindowState.Identity identity = new CabinWindowState.Identity(CabinWindowState.Wall.REAR, 0);
+		ItemStack base = new ItemStack(Items.GLASS_PANE, 6);
+		base.set(DataComponents.CUSTOM_NAME, Component.literal("Base receipt"));
+		ItemStack second = new ItemStack(Items.AMETHYST_SHARD, 2);
+		second.set(DataComponents.CUSTOM_NAME, Component.literal("Latest receipt"));
+		CabinWindowState source = CabinWindowState.EMPTY
+			.install(identity, 0, List.of(base))
+			.install(identity, 1, List.of(second));
+
+		CabinWindowState.ReversalResult downgraded = source.downgrade(identity, 2);
+		helper.assertTrue(source.tier(identity) == 2 && downgraded.state().tier(identity) == 1,
+			"Downgrade must return a new state without mutating its source");
+		helper.assertTrue(downgraded.refundStacks().size() == 1
+			&& ItemStack.matches(downgraded.refundStacks().getFirst(), second),
+			"Downgrade must refund only the exact latest tier receipt");
+
+		CabinWindowState.ReversalResult removed = source.remove(identity, 2);
+		helper.assertTrue(removed.state().tier(identity) == 0 && removed.refundStacks().size() == 2
+			&& ItemStack.matches(removed.refundStacks().get(0), base)
+			&& ItemStack.matches(removed.refundStacks().get(1), second),
+			"Removal must refund every exact receipt in tier order");
+		CabinWindowState.Identity grandfatheredIdentity = new CabinWindowState.Identity(
+			CabinWindowState.Wall.LEFT, 0
+		);
+		helper.assertTrue(CabinWindowState.grandfathered()
+			.remove(grandfatheredIdentity, 1).refundStacks().isEmpty(),
+			"Removing a grandfathered base window must not invent a refund");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void windowGeometryCentersEveryWallAndPreservesDividerAndFrames(GameTestHelper helper) {
 		long cell = 12;
 		CabinWindowState.Identity leftFirst = new CabinWindowState.Identity(CabinWindowState.Wall.LEFT, 0);
@@ -218,9 +283,16 @@ public final class PortablePocketCabinGameTest {
 		CabinWindowLayout.Result pair = CabinWindowLayout.installing(
 			cell, 4, one, new CabinWindowState.Identity(CabinWindowState.Wall.LEFT, 1), 1
 		);
-		helper.assertTrue(pair.valid() && pair.windows().size() == 2,
-			"A wall must fit two tier-one windows with one divider block");
-		helper.assertTrue(!pair.positions().contains(center.offset(bounds.shellMinimumX(), 1, 0)),
+		helper.assertTrue(!pair.valid() && pair.message().contains("size 5"),
+			"Two tier-one windows must wait until they fit between the structural corner frames");
+		CabinWindowLayout.Result sizeFivePair = CabinWindowLayout.installing(
+			cell, 5, one, new CabinWindowState.Identity(CabinWindowState.Wall.LEFT, 1), 1
+		);
+		helper.assertTrue(sizeFivePair.valid() && sizeFivePair.windows().size() == 2,
+			"A size-five wall must fit two tier-one windows with one divider block");
+		helper.assertTrue(!sizeFivePair.positions().contains(
+			center.offset(PocketDimension.bounds(5).shellMinimumX(), 1, 0)
+		),
 			"The centered pair must retain its solid one-block divider");
 
 		List<CabinWindowState.Window> maximum = new ArrayList<>();
@@ -228,16 +300,23 @@ public final class PortablePocketCabinGameTest {
 			maximum.add(windowAtTier(new CabinWindowState.Identity(wall, 0), 6));
 			maximum.add(windowAtTier(new CabinWindowState.Identity(wall, 1), 6));
 		}
-		CabinWindowLayout.Result sizeNineteen = CabinWindowLayout.current(cell, 19, stateWithWindows(maximum));
-		helper.assertTrue(sizeNineteen.valid() && sizeNineteen.windows().size() == 6
-			&& sizeNineteen.windows().stream().allMatch(window -> window.positions().size() == 72),
-			"Two tier-six windows must fit on every eligible wall from general size 19");
-		for (BlockPos position : sizeNineteen.positions()) {
-			helper.assertTrue(PocketDimension.isInteriorShell(cell, 19, position),
+		CabinWindowLayout.Result sizeTwentyOne = CabinWindowLayout.current(cell, 21, stateWithWindows(maximum));
+		helper.assertTrue(sizeTwentyOne.valid() && sizeTwentyOne.windows().size() == 6
+			&& sizeTwentyOne.windows().stream().allMatch(window -> window.positions().size() == 72),
+			"Two tier-six windows must fit on every eligible wall from general size 21");
+		Set<BlockPos> structuralFrame = PocketDimension.shellBlocks(cell, 21, CabinPalette.DEFAULT)
+			.entrySet().stream()
+			.filter(entry -> entry.getValue().is(CabinPalette.DEFAULT.walls().structuralWoodBlock()))
+			.map(java.util.Map.Entry::getKey)
+			.collect(java.util.stream.Collectors.toSet());
+		for (BlockPos position : sizeTwentyOne.positions()) {
+			helper.assertTrue(PocketDimension.isInteriorShell(cell, 21, position),
 				"Derived windows must stay inside the protected shell");
 		}
-		helper.assertTrue(!CabinWindowLayout.current(cell, 18, stateWithWindows(maximum)).valid(),
-			"A pair of tier-six windows must not fit below general size 19");
+		helper.assertTrue(java.util.Collections.disjoint(structuralFrame, sizeTwentyOne.positions()),
+			"Derived windows must preserve every structural corner-frame block");
+		helper.assertTrue(!CabinWindowLayout.current(cell, 20, stateWithWindows(maximum)).valid(),
+			"A pair of tier-six windows must not fit below general size 21");
 		helper.succeed();
 	}
 
@@ -344,6 +423,43 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void windowRemovalRecentersTheRemainingSecondIdentityWithoutPartialMutation(GameTestHelper helper) {
+		ServerLevel level = helper.getLevel();
+		long cell = 92;
+		int size = 5;
+		PocketDimension.ensureCabinInterior(level, cell, CabinPalette.DEFAULT, size);
+		CabinWindowState.Identity first = new CabinWindowState.Identity(CabinWindowState.Wall.REAR, 0);
+		CabinWindowState.Identity second = new CabinWindowState.Identity(CabinWindowState.Wall.REAR, 1);
+		CabinWindowState windows = stateWithWindows(windowAtTier(first, 1), windowAtTier(second, 1));
+		CabinRecord cabin = cabinWithWindows(cell, size, windows);
+		CabinWindowWorld world = new CabinWindowWorld(level.getServer(), level);
+		helper.assertTrue(world.reconcileProjection(cabin),
+			"The test cabin must project both persisted windows before removal");
+		CabinWindowState resulting = windows.remove(first, 1).state();
+		CabinWindowLayout.Result oldLayout = CabinWindowLayout.current(cell, size, windows);
+		CabinWindowLayout.Result newLayout = CabinWindowLayout.current(cell, size, resulting);
+
+		helper.assertTrue(world.validateChange(cabin, resulting).success(),
+			"Removing slot one must allow slot two to remain and recenter");
+		world.applyChange(cabin, resulting);
+		helper.assertTrue(newLayout.positions().stream().allMatch(position ->
+			CabinWindows.isManagedWindowBlock(level.getBlockState(position).getBlock())),
+			"The lone slot-two identity must occupy the newly centered pane footprint");
+		helper.assertTrue(oldLayout.positions().stream()
+			.filter(position -> !newLayout.positions().contains(position))
+			.allMatch(position -> level.getBlockState(position).is(CabinPalette.DEFAULT.walls().planksBlock())),
+			"Every vacated pane must return to the cabin palette wall");
+
+		world.applyChange(cabin, windows);
+		BlockPos obstructed = oldLayout.positions().iterator().next();
+		level.setBlockAndUpdate(obstructed, Blocks.CHEST.defaultBlockState());
+		helper.assertTrue(!world.validateChange(cabin, resulting).success()
+			&& level.getBlockState(obstructed).is(Blocks.CHEST),
+			"A non-managed current pane must reject removal without mutating the obstruction");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void fixedHeightRegistryIsRejectedWithoutMutation(GameTestHelper helper) {
 		var root = new net.minecraft.nbt.CompoundTag();
 		var legacyData = new net.minecraft.nbt.CompoundTag();
@@ -367,19 +483,19 @@ public final class PortablePocketCabinGameTest {
 		CabinRegistry.requireSupportedSchema(migratableRoot, java.nio.file.Path.of("schema-three-cabins.dat"));
 		var futureRoot = new net.minecraft.nbt.CompoundTag();
 		var futureData = new net.minecraft.nbt.CompoundTag();
-		futureData.putInt("schema_version", 7);
+		futureData.putInt("schema_version", 8);
 		futureRoot.put("data", futureData);
 		try {
 			CabinRegistry.requireSupportedSchema(futureRoot, java.nio.file.Path.of("future-cabins.dat"));
 			helper.fail("A future registry schema must be rejected instead of guessed");
 		} catch (IllegalStateException expected) {
-			helper.assertTrue(expected.getMessage().contains("Unsupported cabin registry schema version 7"),
+			helper.assertTrue(expected.getMessage().contains("Unsupported cabin registry schema version 8"),
 				"Future-schema rejection must identify the unsupported version");
 		}
 
 		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, new CabinRegistry()).getOrThrow();
-		helper.assertTrue(encoded.asCompound().orElseThrow().getIntOr("schema_version", 0) == 6,
-			"Window-state registries must publish explicit schema version 6");
+		helper.assertTrue(encoded.asCompound().orElseThrow().getIntOr("schema_version", 0) == 7,
+			"Reversible-window registries must publish explicit schema version 7");
 		helper.succeed();
 	}
 
@@ -783,6 +899,109 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void windowReversalIsOwnerOnlyInvalidatesOnlyChangedFundsAndRecoversBothPhases(
+		GameTestHelper helper
+	) {
+		WorldAttunement attunement = CabinUpgradeDefinitions.current().resolve(73L);
+		CabinUpgradeDefinitions.Definitions definitions = CabinUpgradeDefinitions.current();
+		CabinRegistry registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID();
+		UUID trusted = UUID.randomUUID();
+		CabinRecord cabin = deployRegistryCabin(registry, owner, 46);
+		registry.trust(cabin.uuid(), owner, trusted);
+		registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS);
+		CabinWindowState.Identity identity = new CabinWindowState.Identity(CabinWindowState.Wall.REAR, 0);
+		CabinUpgradeState.Target target = CabinUpgradeState.Target.window(identity);
+		ItemStack baseReceipt = new ItemStack(Items.GLASS_PANE, 3);
+		ItemStack latestReceipt = new ItemStack(Items.AMETHYST_SHARD, 2);
+		latestReceipt.set(DataComponents.CUSTOM_NAME, Component.literal("Tier two refund"));
+		CabinWindowState windows = CabinWindowState.EMPTY
+			.install(identity, 0, List.of(baseReceipt))
+			.install(identity, 1, List.of(latestReceipt));
+		registry.updateUpgradeState(cabin.uuid(), CabinUpgradeState.EMPTY.withWindows(windows));
+		cabin = registry.find(cabin.uuid()).orElseThrow();
+
+		CabinUpgradeCatalog.Offer nextWindow = CabinUpgradeCatalog.offer(
+			cabin, target, attunement, definitions
+		).orElseThrow();
+		CabinUpgradeState.Target generalTarget = CabinUpgradeState.Target.generalSpace(5);
+		CabinUpgradeCatalog.Offer general = CabinUpgradeCatalog.offer(
+			cabin, generalTarget, attunement, definitions
+		).orElseThrow();
+		CabinUpgradeState.Fund invalidated = partialFund(nextWindow, 1);
+		CabinUpgradeState.Fund unaffected = partialFund(general, 1);
+		registry.updateUpgradeState(cabin.uuid(), new CabinUpgradeState(
+			List.of(invalidated, unaffected), Optional.empty(), 9L, windows
+		));
+		long revision = 9L;
+		TestReversalEffect interrupted = new TestReversalEffect(true, true);
+
+		helper.assertTrue(!CabinWindowReversalService.reverse(
+			registry, cabin.uuid(), trusted, target, CabinUpgradeState.ReversalAction.DOWNGRADE,
+			revision, attunement, definitions, interrupted, (value, reversal) -> true, () -> { }
+		).success(), "Trusted residents must not receive owner-only window reversal authority");
+		helper.assertTrue(!CabinWindowReversalService.reverse(
+			registry, cabin.uuid(), owner, target, CabinUpgradeState.ReversalAction.DOWNGRADE,
+			revision - 1, attunement, definitions, interrupted, (value, reversal) -> true, () -> { }
+		).success(), "A stale confirmation revision must not begin a window reversal");
+		CabinWindowReversalService.Preview preview = CabinWindowReversalService.preview(
+			registry.find(cabin.uuid()).orElseThrow(), target, CabinUpgradeState.ReversalAction.DOWNGRADE,
+			attunement, definitions, interrupted
+		);
+		helper.assertTrue(preview.available() && preview.invalidatedFunds().equals(List.of(invalidated)),
+			"Downgrade must invalidate the changed window fund while preserving an unaffected target fund");
+
+		int[] flushes = {0};
+		helper.assertTrue(!CabinWindowReversalService.reverse(
+			registry, cabin.uuid(), owner, target, CabinUpgradeState.ReversalAction.DOWNGRADE,
+			revision, attunement, definitions, interrupted, (value, reversal) -> true,
+			() -> flushes[0]++
+		).success(), "An interrupted world change must remain journaled for recovery");
+		CabinUpgradeState pending = registry.find(cabin.uuid()).orElseThrow().upgrades();
+		helper.assertTrue(flushes[0] == 1
+			&& pending.reversal().orElseThrow().phase() == CabinUpgradeState.ReversalPhase.WORLD_PENDING,
+			"World-pending intent must flush before any window blocks change");
+		ItemStack blockedDeposit = new ItemStack(
+			BuiltInRegistries.ITEM.getOptional(general.requirements().getFirst().itemId()).orElseThrow()
+		);
+		helper.assertTrue(!CabinUpgradeService.deposit(
+			registry, cabin.uuid(), trusted, generalTarget, blockedDeposit, attunement, definitions,
+			new TestExpansionEffect(true, false)
+		).success() && blockedDeposit.getCount() == 1,
+			"Either persisted operation journal must lock every cabin upgrade fund mutation");
+
+		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
+		CabinRegistry restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
+		TestReversalEffect resumed = new TestReversalEffect(true, false);
+		List<ItemStack> pendingPayload = new ArrayList<>();
+		helper.assertTrue(!CabinWindowReversalService.resume(
+			restored, cabin.uuid(), resumed, (value, reversal) -> {
+				pendingPayload.addAll(reversal.payloadStacks());
+				return false;
+			}, () -> flushes[0]++
+		).success(), "Failed refund materialisation must retain an ejection-pending journal");
+		CabinUpgradeState changed = restored.find(cabin.uuid()).orElseThrow().upgrades();
+		helper.assertTrue(changed.windows().tier(identity) == 1
+			&& changed.reversal().orElseThrow().phase() == CabinUpgradeState.ReversalPhase.EJECTION_PENDING
+			&& changed.fund(target).isEmpty() && changed.fund(generalTarget).isPresent()
+			&& resumed.applications == 1,
+			"World recovery must commit the downgrade and only remove its recorded invalidated fund");
+		helper.assertTrue(pendingPayload.size() == 2
+			&& ItemStack.matches(pendingPayload.getFirst(), latestReceipt)
+			&& ItemStack.matches(pendingPayload.get(1), invalidated.stacks().getFirst()),
+			"The pending payload must preserve the latest receipt separately from invalidated fund stacks");
+
+		helper.assertTrue(CabinWindowReversalService.resume(
+			restored, cabin.uuid(), resumed, (value, reversal) -> true, () -> flushes[0]++
+		).success(), "A later ejection retry must complete the persisted reversal");
+		CabinUpgradeState completed = restored.find(cabin.uuid()).orElseThrow().upgrades();
+		helper.assertTrue(completed.reversal().isEmpty() && completed.fund(generalTarget).isPresent()
+			&& resumed.applications == 1,
+			"Ejection-phase recovery must not reapply the already committed window change");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void roomCellsArePermanentAndCannotCollide(GameTestHelper helper) {
 		CabinRegistry registry = new CabinRegistry();
 		UUID firstOwner = UUID.randomUUID();
@@ -1010,6 +1229,45 @@ public final class PortablePocketCabinGameTest {
 			"Refunded materials must appear beside the interior controller");
 		helper.assertTrue(PocketDimension.isWithinUsable(cell, CabinProgression.INITIAL_GENERAL_SIZE, drop),
 			"Refunded materials must appear on the room side of the controller wall");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void markedRefundEjectionFillsOnlyMissingIndexesAndRejectsMismatches(GameTestHelper helper) {
+		ServerLevel level = helper.getLevel();
+		long cell = 63;
+		PocketDimension.ensureCabinInterior(level, cell, CabinPalette.DEFAULT, 4);
+		CabinRecord cabin = cabinWithWindows(cell, CabinWindowState.EMPTY);
+		BlockPos drop = CabinFundEjection.dropPosition(cabin);
+		level.setBlockAndUpdate(drop, Blocks.CHEST.defaultBlockState());
+		UUID operation = UUID.randomUUID();
+		ItemStack first = new ItemStack(Items.GLASS_PANE, 3);
+		first.set(DataComponents.CUSTOM_NAME, Component.literal("Indexed refund"));
+		ItemStack second = new ItemStack(Items.AMETHYST_SHARD, 2);
+
+		helper.assertTrue(CabinFundEjection.ejectMarkedInCabinLevel(level, cabin, operation, List.of(first)),
+			"A refund must materialise at the fixed drop position even when its block is occupied");
+		helper.assertTrue(CabinFundEjection.ejectMarkedInCabinLevel(
+			level, cabin, operation, List.of(first, second)
+		) && CabinFundEjection.ejectMarkedInCabinLevel(level, cabin, operation, List.of(first, second)),
+			"Recovery must create a missing indexed entry and accept an already complete batch");
+		String markerPrefix = PortablePocketCabin.MOD_ID + ".refund." + operation + ".";
+		List<net.minecraft.world.entity.item.ItemEntity> entities = level.getEntitiesOfClass(
+			net.minecraft.world.entity.item.ItemEntity.class,
+			new net.minecraft.world.phys.AABB(drop).inflate(2.0),
+			entity -> entity.entityTags().stream().anyMatch(tag -> tag.startsWith(markerPrefix))
+		);
+		helper.assertTrue(entities.size() == 2,
+			"Retrying a partial or complete marked batch must leave exactly one entity per payload index");
+		entities.stream().filter(entity -> entity.entityTags().contains(markerPrefix + "0"))
+			.findFirst().orElseThrow().setItem(new ItemStack(Items.DIRT));
+		try {
+			CabinFundEjection.ejectMarkedInCabinLevel(level, cabin, operation, List.of(first, second));
+			helper.fail("A mismatched persisted refund index must not be accepted");
+		} catch (IllegalStateException expected) {
+			helper.assertTrue(expected.getMessage().contains("index 0") && entities.size() == 2,
+				"A mismatched persisted index must report its index without spawning replacements");
+		}
 		helper.succeed();
 	}
 
@@ -1726,10 +1984,15 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	private static CabinRecord cabinWithWindows(long cellIndex, CabinWindowState windows) {
+		return cabinWithWindows(cellIndex, CabinProgression.INITIAL_GENERAL_SIZE, windows);
+	}
+
+	private static CabinRecord cabinWithWindows(long cellIndex, int generalSize, CabinWindowState windows) {
 		return new CabinRecord(
 			UUID.randomUUID(), UUID.randomUUID(), cellIndex, CabinLifecycle.PACKED,
 			Optional.empty(), Optional.empty(), true, 0L, false, CabinPalette.DEFAULT,
-			Optional.empty(), false, CabinEntryPermission.OWNER_ONLY, List.of(), CabinProgression.INITIAL,
+			Optional.empty(), false, CabinEntryPermission.OWNER_ONLY, List.of(),
+			new CabinProgression(generalSize, List.of()),
 			CabinUpgradeState.EMPTY.withWindows(windows)
 		);
 	}
@@ -1940,6 +2203,46 @@ public final class PortablePocketCabinGameTest {
 		CabinUpgradeService.deposit(
 			registry, cabinId, owner, target, shards, attunement, definitions, clear
 		);
+	}
+
+	private static CabinUpgradeState.Fund partialFund(CabinUpgradeCatalog.Offer offer, int count) {
+		CabinUpgradeState.Requirement requirement = offer.requirements().getFirst();
+		return new CabinUpgradeState.Fund(
+			offer.target(), offer.requirements(), List.of(new ItemStack(
+				BuiltInRegistries.ITEM.getOptional(requirement.itemId()).orElseThrow(),
+				Math.min(count, requirement.count())
+			))
+		);
+	}
+
+	private static final class TestReversalEffect implements CabinWindowReversalService.Effect {
+		private final boolean valid;
+		private final boolean interrupt;
+		private int applications;
+
+		private TestReversalEffect(boolean valid, boolean interrupt) {
+			this.valid = valid;
+			this.interrupt = interrupt;
+		}
+
+		@Override
+		public CabinUpgradeService.Outcome validate(CabinRecord cabin, CabinWindowState resultingState) {
+			return valid
+				? CabinUpgradeService.Outcome.success("Window wall is clear")
+				: CabinUpgradeService.Outcome.failure("Window wall is obstructed");
+		}
+
+		@Override
+		public void apply(CabinRecord cabin, CabinWindowState resultingState) {
+			applications++;
+			if (interrupt) {
+				throw new IllegalStateException("Simulated reversal interruption");
+			}
+		}
+
+		@Override
+		public void refresh(CabinRecord cabin) {
+		}
 	}
 
 	private static final class TestExpansionEffect implements CabinUpgradeService.UpgradeEffect {

@@ -3,6 +3,8 @@
   "screen.portable_pocket_cabin.cabin_tab": "Cabin upgrades",
   "screen.portable_pocket_cabin.general_space": "General space",
   "screen.portable_pocket_cabin.install_tooltip": "Install upgrade (click twice to confirm)",
+  "screen.portable_pocket_cabin.downgrade_tooltip": "Downgrade window (click twice to confirm)",
+  "screen.portable_pocket_cabin.remove_tooltip": "Remove window (click twice to confirm)",
   "screen.portable_pocket_cabin.previous_upgrade": "Previous upgrade",
   "screen.portable_pocket_cabin.next_upgrade": "Next upgrade",
   "screen.portable_pocket_cabin.maximum": "Maximum upgrade tier reached",

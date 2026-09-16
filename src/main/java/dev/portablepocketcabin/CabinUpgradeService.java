@@ -72,8 +72,8 @@ final class CabinUpgradeService {
 			if (!mayUseFund(cabin, actor)) {
 				return Contribution.failure("You may not contribute to this cabin.");
 			}
-			if (cabin.upgrades().installation().isPresent()) {
-				return Contribution.failure("An upgrade is currently being installed.");
+			if (cabin.upgrades().operationInProgress()) {
+				return Contribution.failure("A cabin upgrade operation is in progress.");
 			}
 			CabinUpgradeCatalog.Offer offer = CabinUpgradeCatalog.offer(cabin, target, attunement, definitions)
 				.orElse(null);
@@ -133,8 +133,8 @@ final class CabinUpgradeService {
 			if (!mayUseFund(cabin, actor)) {
 				return Withdrawal.failure("You may not withdraw from this cabin.");
 			}
-			if (cabin.upgrades().installation().isPresent()) {
-				return Withdrawal.failure("An upgrade is currently being installed.");
+			if (cabin.upgrades().operationInProgress()) {
+				return Withdrawal.failure("A cabin upgrade operation is in progress.");
 			}
 			CabinUpgradeState.Fund fund = cabin.upgrades().fund(target).orElse(null);
 			if (fund == null || requested <= 0) {
@@ -191,8 +191,8 @@ final class CabinUpgradeService {
 			if (fund == null) {
 				return Outcome.failure("That upgrade has no funded materials.");
 			}
-			if (cabin.upgrades().installation().isPresent()) {
-				return Outcome.failure("An upgrade installation is already in progress.");
+			if (cabin.upgrades().operationInProgress()) {
+				return Outcome.failure("A cabin upgrade operation is already in progress.");
 			}
 			if (CabinUpgradeCatalog.isStale(fund, cabin, attunement, definitions)) {
 				return Outcome.failure("That upgrade is no longer available.");

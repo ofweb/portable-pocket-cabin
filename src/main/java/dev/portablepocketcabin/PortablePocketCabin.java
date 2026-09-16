@@ -29,6 +29,7 @@ public final class PortablePocketCabin implements ModInitializer {
 			CabinRegistry registry = CabinRegistry.get(server);
 			CabinReconciliation.reconcileAll(server);
 			CabinUpgradeService.reconcileAll(server);
+			CabinWindowReversalService.reconcileAll(server);
 			CabinSimulation.sync(server);
 			LOGGER.info("Portable Pocket Cabin {} ready; pocket dimension loaded={}", VERSION,
 				server.getLevel(PocketDimension.LEVEL_KEY) != null);

@@ -112,7 +112,9 @@ final class CabinWindowLayout {
 			int totalWidth = wallWindows.stream()
 				.mapToInt(entry -> dimensions(entry.getValue()).width())
 				.sum() + wallWindows.size() - 1;
-			if (totalWidth > generalSize) {
+			int frameInset = PocketDimension.STRUCTURAL_CORNER_FRAME_DEPTH - 1;
+			int availableWidth = generalSize - frameInset * 2;
+			if (totalWidth > availableWidth) {
 				return invalidSize(generalSize, wall, totalWidth);
 			}
 			for (var entry : wallWindows) {
@@ -124,8 +126,9 @@ final class CabinWindowLayout {
 			}
 
 			PocketDimension.InteriorBounds bounds = PocketDimension.bounds(generalSize);
-			int minimum = wall == CabinWindowState.Wall.REAR ? bounds.minimumX() : bounds.minimumZ();
-			int cursor = minimum + Math.floorDiv(generalSize - totalWidth, 2);
+			int minimum = (wall == CabinWindowState.Wall.REAR ? bounds.minimumX() : bounds.minimumZ())
+				+ frameInset;
+			int cursor = minimum + Math.floorDiv(availableWidth - totalWidth, 2);
 			for (var entry : wallWindows) {
 				Dimensions dimensions = dimensions(entry.getValue());
 				Set<BlockPos> positions = new LinkedHashSet<>();
@@ -142,7 +145,8 @@ final class CabinWindowLayout {
 	}
 
 	private static Result invalidSize(int generalSize, CabinWindowState.Wall wall, int required) {
-		return new Result(false, title(wall) + " windows need general-space size " + required
+		int minimumSize = required + (PocketDimension.STRUCTURAL_CORNER_FRAME_DEPTH - 1) * 2;
+		return new Result(false, title(wall) + " windows need general-space size " + minimumSize
 			+ " (current size " + generalSize + ")", List.of());
 	}
 

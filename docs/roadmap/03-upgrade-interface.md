@@ -5,9 +5,8 @@
 **Outcome:** Cabin upgrades are discoverable, understandable and purchased through a deliberate
 protected interface rather than provisional chat messages and sneak-use gestures.
 
-**Status:** Deliveries 3.1a and 3.1b are implemented and pass automated acceptance; manual client
-acceptance remains. Delivery 3.2a's purchasable windows are aligned but not implemented; reversible
-window actions remain Delivery 3.2b.
+**Status:** Deliveries 3.1a through 3.2b are implemented and pass automated acceptance; manual client
+acceptance remains.
 
 ## Deliveries
 
@@ -37,13 +36,13 @@ Panel, category and confirmation selection remain ephemeral menu state. Changing
 cancels an armed action, and catalog refresh retains the selected stable target when it still exists.
 Delivery 3.1b changes no cabin save schema, upgrade costs, permissions or installed effects.
 
-### Delivery 3.2a: Purchasable cabin windows — Aligned
+### Delivery 3.2a: Purchasable cabin windows — Implemented; manual acceptance pending
 
 Use the corrected interface and funds to purchase individual functional windows on the left, rear
 and right walls. Add independent upward size tiers, spatial validation, schema-5 grandfathering,
 exact paid-step receipts and exterior-condition pane projections.
 
-### Delivery 3.2b: Reversible cabin windows — Aligned
+### Delivery 3.2b: Reversible cabin windows — Implemented; manual acceptance pending
 
 Use the receipts persisted by Delivery 3.2a to downgrade or remove purchased windows, eject exact
 material refunds, and cancel and eject funds invalidated by the resulting wall layout.
@@ -61,8 +60,8 @@ introduced the currently implemented tracked fund.
 Delivery 3.1a migrates every schema-4 tracked fund into the equivalent per-upgrade fund without
 changing its requirement snapshot or contributed stacks. No material is ejected or discarded.
 
-Milestone 0 currently gives every generated interior two functional fake-window panels. Delivery
-3.1a preserves that behavior. Delivery 3.2 then:
+Milestone 0 gave every generated interior two functional fake-window panels. Delivery 3.1a
+preserved that behavior. Delivery 3.2a now:
 
 - migrates every cabin that already exists to one grandfathered tier-one window on each side wall
 - recentres those windows under the new placement rules and changes their glass blocks to the new
@@ -88,9 +87,9 @@ The interface uses an approximately 248 by 220 logical-pixel Minecraft-style con
 - each implemented functional room receives its own tab, including automation specific to that room
 - empty or unimplemented categories do not appear
 
-Delivery 3.1a initially shows only the next general-space expansion in the Cabin tab. Delivery 3.1b
-adds the reusable category and panel navigation plus sixteen visible material slots. Delivery 3.2
-populates the Cabin category with window panels without changing the layout.
+Delivery 3.1a initially showed only the next general-space expansion in the Cabin tab. Delivery 3.1b
+added the reusable category and panel navigation plus sixteen visible material slots. Delivery 3.2a
+populates the Cabin category with six window panels without changing the layout.
 
 Permanent text stays minimal. Upgrade, tab, action and status icons provide hover tooltips. Each
 panel shows a short upgrade name, compact effect, material slots, status icon and owner action. The
@@ -214,8 +213,9 @@ installation:
 - two windows satisfy `first width + one-block divider + second width <= general cabin size`
 - no affected block or attached decoration would be destroyed or displaced
 
-The status tooltip shows the minimum required general-space size or other blocking reason. Two
-tier-six windows fit on one wall from general size 19 onward.
+The status tooltip shows the minimum required general-space size or other blocking reason. The
+two-block-deep structural corner frames reduce the usable wall span by two blocks, so two tier-one
+windows fit from general size 5 and two tier-six windows fit from general size 21.
 
 ### Costs and exterior-condition signal
 
@@ -255,7 +255,9 @@ The owner may use either confirmed action:
   tier receipt.
 
 Both actions validate the resulting wall first. Refund stacks are physically ejected beside the
-interior controller and never enter an upgrade fund or player inventory.
+interior controller and never enter an upgrade fund or player inventory. The fixed drop block is not
+required to be clear or hazard-free; materialized entities use ordinary Minecraft pickup, movement,
+fire, lava and despawn behavior.
 
 Purchased-upgrade refunds and uninstalled funds are otherwise independent. If the resulting cabin
 state invalidates funded targets, the confirmation warns about them and the handled operation ejects
@@ -289,11 +291,13 @@ Upgrade behavior is divided into:
   block inventory; each visible slot aggregates a queue of preserved real stacks
 - upgrade-specific world services applying validated general-space and window effects
 
-Schema 5 persists a collection of non-empty funds keyed by stable target. Each fund contains its
-resolved requirement snapshot and contributed item stacks. Empty fund panels resolve from the current
-catalog and need no saved record. Schema 4 migrates its optional tracked fund into the equivalent
-schema-5 fund, preserving target, requirements and stacks. Schema 3 chains through the existing
-migration; older and future schemas remain rejected.
+Schema 7 persists a collection of non-empty funds keyed by stable target, per-window identity, tier
+and paid-step receipts, plus a recoverable window-reversal journal. Each fund contains its resolved
+requirement snapshot and contributed item stacks. Empty fund panels resolve from the current catalog
+and need no saved record. Schema 6 retains its windows, receipts, funds and active installation while
+adding no reversal journal. Schema 5 cabins receive their grandfathered side windows; schema 4
+migrates its optional tracked fund into the equivalent target-keyed fund while preserving requirements
+and stacks. Schema 3 chains through the existing migration; older and future schemas remain rejected.
 
 Fund-slot clicks are intercepted as complete server-side transactions rather than independent
 `Slot` callbacks. Each transaction computes and validates the cursor, player inventory and fund
@@ -305,13 +309,16 @@ Each cabin's synchronized fund revision changes after a successful fund mutation
 menu records target and revision when Install is first armed, rejects forged final clicks without an
 arm, and cancels the arm after a revision change, target change or timeout.
 
-Installation keeps the existing persisted transition around deterministic, idempotent world changes.
-Delivery 3.2 advances schema 5 to schema 6 for per-window state and receipts.
+Installation keeps one typed persisted transition around deterministic, idempotent general-space or
+window world changes. Window reversal uses a separate, mutually exclusive two-phase journal through
+world mutation and indexed refund ejection. Either journal locks all upgrade and fund actions until
+startup or live recovery completes it.
 
 ## Documentation impact
 
-Delivery 3.1a acceptance replaces the README's currently playable tracking instructions with the new
-fund-slot interactions. Delivery 3.2 acceptance adds window purchasing, resizing and refund guidance.
+Delivery 3.1a acceptance replaced the README's tracking instructions with the new fund-slot
+interactions. Delivery 3.2a added window purchasing and upward resizing guidance; Delivery 3.2b adds
+downgrade, removal, refund, invalidated-fund and recovery guidance.
 Milestones 0, 4 and 7 link to these rules rather than duplicating them.
 
 ## Delivery 3.1a testing scope
