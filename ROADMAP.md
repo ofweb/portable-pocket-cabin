@@ -1,8 +1,8 @@
 # Portable Pocket Cabin Roadmap
 
-This is the documentation entry point and implementation order for Portable Pocket Cabin. Each milestone has one authoritative file containing its outcome, scope, detailed specification, delivery plan, acceptance criteria, and deferred decisions.
+This is the documentation entry point and implementation order for Portable Pocket Cabin. Each milestone's authoritative file contains its outcome, scope, specification, delivery plan, acceptance criteria, and deferred decisions.
 
-The project has not been publicly released. Development worlds are disposable until a milestone explicitly introduces a migration contract. Every milestone must work in a fresh world and survive a server restart before work advances.
+The project has not been publicly released. The [README](README.md) defines current save compatibility and replacement requirements. A delivery is complete only after it works in a fresh world and survives a server restart. Later work may begin while manual acceptance or a retrospective audit remains pending, but the status table must say so.
 
 ## Ordering principles
 
@@ -19,8 +19,8 @@ The project has not been publicly released. Development worlds are disposable un
 | ---------------------------------------------- | ----------------------------------------------------- | ------------------------------------- |
 | [0](docs/roadmap/00-safe-mvp.md)               | Safe portable-cabin MVP                               | Complete                              |
 | [1](docs/roadmap/01-acquisition-relocation.md) | Survival crafting and command-free relocation         | Complete                              |
-| [2](docs/roadmap/02-progression-space.md)      | World-attuned expansion                               | Implemented; acceptance audit pending |
-| [3](docs/roadmap/03-upgrade-interface.md)      | Discoverable cabin upgrade interface                  | Deliveries 3.1a–3.2b implemented; manual client acceptance pending |
+| [2](docs/roadmap/02-progression-space.md)      | World-attuned expansion                               | Implemented; retrospective acceptance audit pending |
+| [3](docs/roadmap/03-upgrade-interface.md)      | Discoverable cabin upgrade interface                  | 3.1a–3.2b implemented; manual client acceptance pending |
 | [4](docs/roadmap/04-household-storage.md)      | Household roles, mailbox and central storage          | Draft                                 |
 | [5](docs/roadmap/05-functional-rooms.md)       | Functional rooms                                      | Draft                                 |
 | [6](docs/roadmap/06-cabin-companions.md)       | Cabin companions                                      | Draft                                 |
@@ -34,13 +34,13 @@ The project has not been publicly released. Development worlds are disposable un
 
 - The milestone files are authoritative. Requirements and implementation work for a feature belong in the milestone that delivers it.
 - A milestone is a coherent player outcome and may contain many deliveries.
-- A delivery covers one player-visible feature, or one indivisible enabling capability needed by that feature. Independently useful or independently debatable behavior belongs in a separate delivery.
+- A delivery covers one player-visible feature or one indivisible enabling capability needed by that feature. Independently useful or debatable behavior belongs in a separate delivery.
 - Later milestones may explicitly supersede earlier behavior. The later file must name the earlier rule it replaces.
 - Cross-milestone dependencies should be links, not duplicate specifications.
 - Data-driven decisions remain open only until the milestone that consumes them; that milestone's alignment pass must either settle them or explicitly defer the dependent work.
 - The [README](README.md) describes the currently playable build and development workflow, not future design.
 
-The milestone files initially preserve the former root specification, roadmap sections, feature specifications, material-profile reference, and manual acceptance checklists. Their first alignment pass will remove contradictions, close gaps, and record decisions without losing source intent.
+Draft milestone files preserve source intent from earlier root and feature specifications until their first alignment pass removes contradictions, closes gaps, and records decisions.
 
 ## Domain language
 

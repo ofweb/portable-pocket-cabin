@@ -15,6 +15,7 @@ State the architectural decision clearly.
 ## Alternatives Considered
 
 ### Alternative 1: Name
+
 - **Pros**: Benefits
 - **Cons**: Drawbacks
 - **Why not**: Reason for rejection
@@ -22,10 +23,13 @@ State the architectural decision clearly.
 ## Consequences
 
 ### Positive
+
 - Benefit
 
 ### Negative
+
 - Trade-off
 
 ### Risks
+
 - Risk and mitigation

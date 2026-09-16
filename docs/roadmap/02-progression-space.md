@@ -1,124 +1,89 @@
 # Milestone 2: World-attuned expansion
 
-**Depends on:** Milestone 1 palette persistence and structure generation.
+**Depends on:** [Milestone 1](01-acquisition-relocation.md).
 
-**Outcome:** A new cabin starts as a genuinely small 4×4 home and can grow through visible, world-specific upgrade requirements without moving player blocks or risking another cabin's space.
+**Outcome:** A new cabin starts as a 4×4 home and can grow through world-specific material requirements without moving player blocks or risking another cabin's space.
 
 **Status:** Implemented; retrospective acceptance audit pending.
 
-## Deliveries
+## Scope
 
-### Delivery 2.1: Small progression interior — Implemented
+This milestone replaces the MVP's fixed 21×21 interior with:
 
-Replace the MVP's 21×21 starting interior with a palette-aware 4×4 usable shell whose entrance wall remains anchored.
+- a palette-aware 4×4 starting room
+- one-block general-space expansions
+- height growth derived from room size
+- one persisted material attunement shared by the world
+- data-defined expansion costs and maximum size
 
-### Delivery 2.2: World attunement — Implemented
+[Milestone 0](00-safe-mvp.md) remains authoritative for identity, cell isolation, lifecycle and simulation. [Milestone 3](03-upgrade-interface.md) owns the current funding and installation interface. Storage, automation, roles and connected access belong to their later milestones.
 
-Resolve one persisted material attunement per world save, shared by every player and stable across restart and configuration reloads. Invalid saved attunements fail closed rather than silently rerolling.
+## General-space geometry
 
-### Delivery 2.3: General-space expansion — Implemented
-
-Show the next expansion's requirements at the protected interior controller and grow the general interior exactly one block per dimension without moving player blocks or consuming materials after failed validation.
-
-The normal-use status message and sneak-use purchase gesture are provisional. [Milestone 3](03-upgrade-interface.md) replaces them with the aligned upgrade interface.
-
-**Exit gate:** Two players can receive the same world attunement, independently expand their cabins to the configured limit and restart without rerolls, overlap or moved blocks.
-
-
-## Consolidated specification
-
-_Source: progression specification sections governing shared progression foundations._
-
-### Status and relationship to the MVP
-
-This document specifies a post-MVP feature track for Portable Pocket Cabin.
-
-The nine MVP deliveries in [Milestone 0](00-safe-mvp.md) remain the implementation foundation. This milestone deliberately supersedes the MVP's fixed 21×21 starting interior. Functional-room milestones may later supersede packed-time behavior for their own managed fixtures.
-
-The project is not yet released. Progression may replace MVP interior generation and persistence without providing a migration path.
-
-Storage, automation and learned-item behavior are specified in [Cabin Storage and Automation](07-production-automation.md). Roles, shared hallways and packed-cabin access are specified in [Cabin Network and Access](09-connected-cabins.md).
-
-### Goals
-
-Progression should:
-
-- begin with a genuinely small but usable home
-- make every increase in general-purpose space valuable
-- reward travel through varied biomes, structures and dimensions, with different material requirements in different world saves
-- establish amethyst as the active magical medium of the cabin system
-- make obsidian the material that anchors dimensional expansion
-- remain safe and bounded while cabins are packed or unoccupied
-
-It should not turn ordinary blocks anywhere in the pocket dimension into always-running machinery.
-
-### General interior size
-
-New progression cabins begin with approximately 4×4 blocks of usable floor space, excluding their protected shell.
-
-Each size upgrade increases both usable dimensions by one block:
+New cabins have 4×4 usable floor space, excluding the protected shell. Each upgrade increases both dimensions by one block:
 
 ```text
 4×4 → 5×5 → 6×6 → 7×7 → …
 ```
 
-The clear interior height grows with the general-space size. A 4×4 or 5×5 cabin has two
-air blocks between its floor and ceiling. Every second size step adds one block of clear
-height, capped at ten blocks from size 20 onward:
+The entrance wall and doorway stay fixed. Each step adds one rear row and a deterministically alternating side column, so existing player blocks never move.
+
+Clear interior height is derived only from persisted general-space size:
 
 ```text
-4–5 → 2, 6–7 → 3, …, 18–19 → 9, 20+ → 10
+sizes 4–5   → 2 blocks
+sizes 6–7   → 3 blocks
+…
+sizes 18–19 → 9 blocks
+size 20+    → 10 blocks
 ```
 
-Height is derived only from the persisted general-space size, not from the datapack's
-configured maximum, so reloading progression definitions cannot reshape an existing cabin.
-An expansion that raises the ceiling validates the newly exposed vertical volume together
-with the horizontal extension and fails without consuming materials when either is obstructed.
-Existing player blocks inside the unchanged usable volume remain untouched.
+Changing the configured maximum cannot reshape an existing cabin. An expansion validates every new shell and usable-volume position, including newly exposed height. Any obstruction aborts before world mutation or material consumption. The unchanged usable volume and its player blocks remain untouched.
 
-The entrance wall and doorway remain anchored. Expansion extends the rear boundary and uses a deterministic lateral pattern so existing player blocks never move. An upgrade must validate its target volume before modifying the shell and must abort without partial changes if that volume is not safe.
+The definition sets expansion costs and the maximum general size. The bundled maximum is 21; the implementation rejects configured values above the absolute cell-safety cap of 32. Definitions must provide every one-block step from size 5 through their maximum. Lateral geometry is deterministic implementation behavior, not datapack configuration.
 
-Each successive expansion costs more than the previous one. Costs, the maximum general-room size and the exact lateral expansion pattern are data-driven balancing values, but a finite maximum must be declared before implementation so interior allocations cannot collide.
+General space remains ordinary Minecraft space. Compatible blocks may be placed normally, but enlargement does not grant packed-time simulation. Milestone 0's deployed-only simulation rule still applies outside explicitly managed future fixtures.
 
-General-purpose space remains ordinary Minecraft space. Players can furnish it with normal and compatible modded blocks; those blocks do not gain packed-time simulation merely because the room has been enlarged.
+The variable-height geometry is fresh-world-only from the earlier fixed-height schema. Unsupported saves fail closed with backup and `just fresh-world` guidance because generated ceiling blocks cannot be distinguished safely from player construction. The [README](../../README.md) is authoritative for the current schema migration matrix.
 
-This geometry change is fresh-world-only. Registries created with the earlier fixed-height
-interior schema fail closed with the existing backup-and-`just fresh-world` guidance; the mod
-does not guess which old ceiling-area blocks are generated shell and which are player-built.
+## Material language
 
-### Cabin magic and material language
+- **Amethyst carries resonance:** it preserves patterns and powers cabin computation, enchanting and automation.
+- **Obsidian anchors dimensions:** it installs or strengthens entrances, rooms and connections.
 
-Cabin progression uses two materials for different purposes:
+An upgrade may require either or both. This distinction guides default costs without making both materials mandatory for every feature.
 
-- **Amethyst carries resonance.** Amethyst preserves learned patterns and performs the magical work behind cabin control, enchanting and automation. It is the primary recurring magical material when the cabin computes or transforms something.
-- **Obsidian forms dimensional anchors.** Obsidian fixes entrances, rooms and hallway connections to the pocket dimension. It is primarily an installed structural cost when adding or strengthening dimensional capacity, not routine fuel for work the cabin performs.
+## World attunement
 
-This distinction guides default recipes without requiring every upgrade to contain both materials. A room expansion may need more anchoring, an automation or enchanting operation may consume resonance, and a complex new room may need both.
+Expansion requirements may contain exact item quantities and one world-attuned Planks requirement. The attuned slot resolves to one specific loaded wood profile, not the general Planks tag.
 
-### World-attuned upgrade requirements
+The first progression lookup creates one attunement for the save. Its definition version and resolved wood profile are persisted and shared by every cabin and player. Restart, configuration reload and later datapack or mod changes must not reroll it. If the saved definition version or profile is no longer valid, upgrades stop with an actionable error instead of selecting a replacement.
 
-Upgrade requirements are data-driven. A requirement set may specify:
+Candidate wood profiles must be declared in the definition and available through [Milestone 1's material-profile system](01-acquisition-relocation.md#material-profile-format). The bundled pool includes vanilla candidates and conditional Biomes O' Plenty profiles. Missing optional mods do not prevent the base mod from loading. A custom pool with no loaded candidate fails closed rather than producing an impossible requirement.
 
-- exact items
-- quantities
-- the world's attuned planks selection
+The shared progression definition is replaceable at:
 
-The version 1 definitions provide a vanilla-compatible expansion ladder using exact items and one attuned-planks slot. Servers and modpacks may override that ladder with datapacks using the same schema.
+```text
+data/portable_pocket_cabin/portable_pocket_cabin/progression/default.json
+```
 
-Each world save creates one persistent **world attunement** before its first cabin upgrade is purchased. Version 1 resolves one specific wood family for structural upgrades. A resolved wood slot requires that family's planks rather than accepting any item in the general planks tag.
+Milestone 2 owns its `definition_version`, `maximum_general_size`, `wood_pool` and `general_expansions` fields. Each expansion declares a `target_size` and positive-count ingredients that select either an exact `item` or `"attuned_slot": "planks"`. The current schema also contains window costs owned by Milestone 3; overrides must retain all fields required by the loaded schema.
 
-The same attunement applies to every cabin and player in the save. Its resolved material identifiers and definition version are persisted; restarts, seed reuse, configuration reloads and later mod or datapack changes must not silently reroll existing requirements. An incompatible saved attunement disables further upgrades with an actionable error. No attunement-migration tooling or save-migration contract is required before public release.
+Item tags, more attuned slots, biome or dimension groups, discovery catalysts and prerequisite tiers remain out of scope until a feature requires them.
 
-Attunement pools may contain only declared, loaded materials with a valid acquisition profile for that world configuration. Optional integrations contribute candidates only while their required content and world generation are present. Every pool must have a vanilla fallback, and the selection process must fail closed rather than produce an impossible recipe.
+## Evergreen acceptance contract
 
-The protected controller shows the current size, maximum size, attuned wood and exact requirements for the next expansion. The complete interaction is provisional until Milestone 3.
+Milestone 2 remains accepted only while automated tests and targeted manual checks establish that:
 
-Item tags, additional attuned slots, biome or dimension groups, discovery catalysts and prerequisite tiers are outside Milestone 2. A later delivery adds one of those capabilities only after the feature that needs it has been aligned.
+1. New cabins generate a protected, palette-aware 4×4 usable interior.
+2. Each expansion grows to exactly the next square size while keeping the entrance fixed and existing player blocks unmoved.
+3. Horizontal or vertical obstructions abort without changing the shell, progression state or funded materials.
+4. Clear height follows the persisted size formula and caps at ten blocks from size 20.
+5. Definitions reject missing size steps, invalid ingredients and maxima outside the supported range.
+6. One attunement is shared by multiple players and survives restart and reload without rerolling.
+7. Bundled definitions retain usable vanilla candidates when optional profiles are absent; unavailable saved attunements stop upgrades with an actionable error.
+8. Cabins at the configured maximum offer no further general-space expansion.
+9. Separate cabin cells cannot overlap at any supported size, and simulation tickets track the current bounds.
+10. Unsupported fixed-height saves fail without overwriting their registry or pocket-space blocks.
 
-### Optional content integrations
-
-Optional integrations must fail closed and never prevent the base mod from loading when an integrated mod is absent.
-
-#### Biomes O' Plenty
-
-Loaded Biomes O' Plenty wood profiles may participate in the attuned wood pool. The pool retains vanilla candidates when the mod is absent.
+The GameTest and dedicated-server restart suites are the normal automated gates. Manual checks cover the current Milestone 3 interface, visual geometry and multiplayer presentation.
