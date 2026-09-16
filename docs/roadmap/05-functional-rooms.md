@@ -1,218 +1,210 @@
 # Milestone 5: Functional rooms
 
-**Depends on:** Milestones 3 and 4.
+**Depends on:** [Milestone 3](03-upgrade-interface.md) installation and [Milestone 4](04-household-storage.md) roles and storage.
 
 **Outcome:** Players purchase, enter and manually operate useful specialised rooms that remain bounded, persistent and isolated from every other pocket space.
 
 **Status:** Draft. Each delivery requires alignment before implementation.
 
+## Scope
+
+This milestone establishes the room model and delivers manual versions of:
+
+- a greenhouse with managed growing beds
+- a stable for individual eligible mounts
+- an aquatic stable berth for a tamed nautilus
+- a livestock room with exact founders and bounded offspring
+- a forestry room with managed tree plots
+
+Rooms may apply bounded passive catch-up while inactive. Actions that require a player never happen automatically. [Milestone 7](07-production-automation.md) owns automatic feeding, collection, harvesting, slaughtering, felling, replanting and processing.
+
 ## Deliveries
 
-### Delivery 5.1: Room installation and traversal — Draft
+| Delivery | Result |
+| --- | --- |
+| 5.1 | Purchase one empty room, allocate its isolated cell and traverse its protected internal door after restart. |
+| 5.2 | Manually plant and harvest one greenhouse's managed beds. |
+| 5.3 | Check eligible mounts into and out of one stable without changing or duplicating identity. |
+| 5.4 | House and release an eligible tamed nautilus through one aquatic berth. |
+| 5.5 | Manually tend a bounded population of one supported livestock species. |
+| 5.6 | Manually fell and replant one managed forestry plot. |
 
-Purchase one generic empty room, allocate its permanent isolated cell, enter it through a protected internal door and return safely after restart. This delivery establishes the minimum room controller and traversal contract used by later room types.
+Each delivery must remain independently playable and restart-safe.
 
-### Delivery 5.2: Greenhouse — Draft
+## Room installation and traversal
 
-One greenhouse with manually planted and harvested managed beds.
+A cabin is a graph of persistent bounded spaces, not one indefinitely expanding cell.
 
-### Delivery 5.3: Stable — Draft
+- the general interior retains its existing cell
+- every purchased room receives a separate permanent cell and room identifier
+- unpurchased rooms allocate nothing
+- room and cell identifiers are never reused while their contents may remain recoverable
+- each room type declares its maximum footprint and required active chunks
+- protected internal doors use short same-dimension teleports
+- traversal never exposes pocket coordinates, the void or another cabin's space
 
-One stable that checks eligible mounts in and out without changing or duplicating their identity.
+Separate cells let rooms expand within their declared bounds without moving neighbouring spaces or reserving every possible room for each cabin. [Milestone 9](09-connected-cabins.md) owns hallway allocation and packed-cabin traversal.
 
-### Delivery 5.4: Aquatic berth — Draft
+## Managed-room lifecycle
 
-One stable upgrade that safely houses and releases an eligible tamed nautilus.
+Each functional room combines a physical room with an authoritative persisted controller. The controller owns only declared fixtures, managed positions and managed residents. Those elements are protected from pistons, explosions and unauthorized mutation; the remaining space accepts ordinary player construction.
 
-### Delivery 5.5: Livestock room — Draft
+When a room becomes active, the server:
 
-One manually tended, bounded population for a single explicitly supported animal type.
-
-### Delivery 5.6: Forestry room — Draft
-
-One manually felled and replanted managed tree plot.
-
-**Milestone exit gate:** Every accepted room delivery remains bounded and restart-safe; no room exposes another pocket cell, and managed animals never have two simultaneously materialised representations.
-
-
-## Consolidated specification
-
-_Source: managed-room sections of the former progression specification. Automatic room actions remain here beside their manual contracts and are gated by Milestone 7._
-
-### Room installation and traversal
-
-A cabin is a graph of persistent bounded spaces rather than one indefinitely expanding cell.
-
-- The general interior has its own allocated cell.
-- Every purchased functional room receives a separate allocated cell.
-- Every shared connection hallway receives a separate allocation as described in the network specification.
-- Protected internal doors connect these spaces using short same-dimension teleports.
-- Door traversal must not expose pocket coordinates, the void or another cabin's unconnected rooms.
-- Unpurchased rooms allocate no cell.
-- Cell and room identifiers are permanent and are never reused while their persisted contents may remain recoverable.
-- Every room type declares a maximum footprint and the chunks needed for its active representation.
-
-This model lets individual rooms expand without moving neighbouring cabins or reserving the maximum possible compound for every owner.
-
-### Managed functional rooms
-
-Functional rooms combine a physical player-facing room with an authoritative persisted controller.
-
-The controller owns only declared fixtures and managed positions. Those fixtures are protected from pistons, explosions and unauthorised modification. The remainder of the room is ordinary customisable space.
-
-When a managed room becomes active, the server:
-
-1. computes bounded catch-up since its last persisted timestamp
-2. applies only work supported by the room's installed and enabled capabilities
-3. updates fixtures and visible managed contents to match authoritative state
-4. runs normal active-room updates while the cell remains loaded
+1. computes passive catch-up since the last persisted timestamp, capped by configured duration
+2. stops catch-up at any input, feed, seed, output, storage or population limit
+3. projects authoritative fixtures and managed residents into the room
+4. runs ordinary active-room updates while its cell remains loaded
 5. persists state and a new timestamp when the room becomes inactive
 
-The room controller, not a displayed crop block or entity, decides whether an output has already been collected. All state-changing interactions are resolved server-side so concurrent visitors cannot collect the same result twice.
+The controller, not a displayed crop block or entity, decides whether an output was collected. State-changing interactions are server-authoritative and atomic so concurrent visitors cannot collect the same result twice.
 
-Catch-up has a configurable maximum duration and stops cleanly when it reaches an input, feed, seed, storage, local-output or population limit. It never ticks arbitrary player blocks, furnaces or modded machines.
+Catch-up never ticks arbitrary player blocks, furnaces or modded machines. It may advance declared passive growth, maturation, breeding or production, but it cannot plant, harvest, feed, slaughter, fell, replant or process without the automation delivered by Milestone 7.
 
-Visitors see the same current physical projection whether the cabin is deployed or reached through a hallway while packed.
+[Milestone 4](04-household-storage.md) permissions apply:
 
-- Owners and residents may operate shared room facilities.
-- Guests may enter and inspect but cannot change managed fixtures, harvest managed products or remove animals.
-- Automated outputs go to that cabin's central storage.
-- Actionable failure reasons appear through the cabin status system.
+- owners and residents may operate shared room facilities
+- guests may inspect but cannot mutate managed fixtures, harvest products or remove animals
+- failures expose only the status detail allowed for the viewer's role
 
-### Greenhouse
+## Greenhouse
 
-The greenhouse is purchased separately from general interior space.
+The greenhouse is purchased separately from general space. Its initial room contains protected growing beds and supporting fixtures but no crops.
 
-Its initial form includes protected growing beds and the infrastructure needed to support them, but no crops. Players supply and plant all seeds, saplings or crop items.
+- owners and residents supply, plant and harvest supported crops manually
+- supported crops may mature through bounded passive catch-up
+- mature crops remain unharvested until collected
+- unsupported crops behave as ordinary blocks and pause while the room is inactive
 
-Without automation:
+Later room upgrades may add beds, usable space, supported crop categories and local output capacity. Automatic harvesting and replanting remain separate Milestone 7 capabilities and never create missing seeds.
 
-- owners and residents plant and harvest supported managed beds manually
-- supported crops mature while packed through bounded catch-up
-- mature crops remain unharvested until a player collects them
-- unsupported crops behave as ordinary blocks and pause when the room is not active
+## Stable
 
-Later upgrades may add:
+The stable houses exact individual mounts rather than converting them into a capacity count. Each supported mount type requires an allowlisted profile for identity and state preservation.
 
-- more beds and usable room space
-- additional supported crop categories
-- increased local output capacity
-- automatic harvesting
-- automatic replanting
+### Check-in
 
-Harvesting and replanting are separate automation abilities. Automatic replanting requires suitable seed stock; neither ability creates missing inputs.
+Check-in uses a protected stable control while the cabin is deployed. It accepts one nearby mount that is:
 
-### Stable
+- eligible under a loaded profile
+- owned by the acting player
+- dismounted
+- outside near the current cabin exterior
+- not already managed by another cabin or system
 
-The stable holds specific individual rideable animals rather than abstracting them into a generic capacity count.
+The resulting stable record preserves the mount's global entity UUID and allowlisted state, including type, owner, health, custom name, equipment, inventory and declared mod-specific data. A recoverable transition creates the record and removes the exterior entity exactly once.
 
-An eligible mount is deliberately checked into a managed stall while dismounted. The stable preserves its global entity UUID and all integration-approved identity data, including:
+The stable record is authoritative while the mount is checked in. An active room displays a protected projection with the same UUID and state. Reconciliation removes duplicate projections before completing the recorded state. Packing, carrying, restart and owner logout never remove, copy or release the mount.
 
-- entity type and owner
-- health
-- custom name
-- equipment
-- inventory
-- declared mod-specific state
+### Release
 
-The mount is visibly materialised in its stall while the room is active, protected from damage and prevented from accidentally leaving the managed area. Checking it out rematerialises the same mount at a validated destination. The stored and released forms must never exist simultaneously.
+Release is an explicit action at the stable control:
 
-Stable records remain attached to the cabin UUID while its exterior is packed. Carrying the packed cabin by foot, boat or other ordinary transport does not remove, copy or rematerialise stored mounts.
+1. Require the cabin to have a deployed exterior.
+2. Allow a resident to release their own mount and the cabin owner to release any stable resident.
+3. Find a bounded, collision-free and hazard-free egress position beside the exterior.
+4. Persist a pending release before removing the interior projection.
+5. Materialize the same entity UUID and state outside.
+6. Remove the stable record only after successful materialization.
 
-Residents may store and retrieve their own mounts. A mount may be released only by its owner or the cabin owner. Guests and unrelated residents cannot remove it.
+Failure leaves the mount checked in and reports the reason. Startup and live reconciliation complete the pending transition without producing both a record and an independent entity. A packed cabin cannot release mounts and explains that it must be redeployed first.
 
-Unsupported entities are rejected with a clear explanation. Stable upgrades add managed stalls and may unlock additional explicitly supported mount categories.
+Guests and unrelated residents cannot release a mount. Stable upgrades may add managed stalls or explicitly supported mount categories.
 
-#### Aquatic berth and nautilus
+### Aquatic berth
 
-The base stable uses dry stalls. An **aquatic berth** upgrade adds a protected, fully flooded stall and explicitly supports a normal tamed nautilus as a stable resident.
+An aquatic berth is a protected, fully flooded stable upgrade for a normal tamed nautilus. Wild and zombie nautiluses are ineligible.
 
-The nautilus must already have been tamed, must be owned by the player checking it in and must be dismounted. Check-in preserves the same global entity UUID, owner, health, custom name, saddle, nautilus armour and other allowlisted vanilla nautilus state. Wild nautiluses and zombie nautiluses are not eligible for the initial upgrade.
+Check-in requires a dismounted nautilus owned by the acting player and preserves its UUID, owner, health, custom name, saddle, nautilus armour and other allowlisted vanilla state. The active projection has enough water to prevent suffocation.
 
-While the stable room is active, the nautilus is visibly materialised in the berth with enough water to avoid suffocation. While inactive or packed, its authoritative stable record remains attached to the cabin like any other checked-in mount.
+Release uses the stable transaction but requires sufficient connected water, collision-free space and no immediate environmental hazard. Dry terrain, shallow decorative water and obstructed volumes fail without changing the record. The berth never breeds nautiluses, generates shells or treats the animal as livestock.
 
-Checkout uses an aquatic destination resolver. It requires sufficient connected water, collision-free space and no immediate environmental hazard at the destination. A dry exterior, shallow decorative pool or obstructed water volume is rejected without removing the nautilus from its berth. This allows a player to carry a checked-in nautilus between oceans without ever materialising it on land.
+## Livestock room
 
-The aquatic berth is a stable-capacity upgrade, not a livestock room: it does not breed nautiluses, generate shells or abstract the animal into production.
+Each livestock room supports one explicitly profiled species. Four eligible animals establish its breeding population.
 
-### Livestock rooms
+The controller preserves every founder's UUID and allowlisted state. Founders remain exact managed residents, never enter the offspring count and are never selected for slaughter. Only the cabin owner may dismantle the population; recovery requires a deployed exterior and safe egress for every founder.
 
-Livestock production is a late-game feature purchased separately for each supported animal type.
+Later offspring are bounded aggregate counts. Each species profile declares:
 
-Four eligible animals establish a room's breeding population. The founders become managed residents of that room and cannot simultaneously exist elsewhere. Only the cabin owner may dismantle the population and recover them; dismantling stops production. Founders are never selected for slaughter.
-
-Each species profile declares:
-
-- valid founders
+- eligible founders and preserved data
 - acceptable feed
-- passive products and their cycles
-- surplus-population rules
+- passive products and cycles
+- population and surplus limits
 - slaughter products
-- visual representation
-- safe persisted data
+- active-room projection
 
-#### Manual baseline
+Manual operation follows these rules:
 
-- Players place feed into the room trough.
-- A fed population produces and breeds up to the room's limits.
-- Running out of feed pauses production; animals do not starve or die.
-- Eggs, wool, milk, feathers and similar passive products accumulate in appropriate room fixtures up to a small local limit.
-- Owners and residents collect those products manually.
-- Surplus offspring accumulate as a managed count.
-- A player deliberately uses the butchery station to convert eligible surplus into meat, leather and declared species drops.
+- players place feed in the trough
+- a fed population breeds and produces only within declared limits
+- missing feed pauses production without starvation or death
+- passive products accumulate in local fixtures up to their capacity
+- owners and residents collect products manually
+- surplus offspring remain a managed count
+- a player deliberately uses the butchery fixture to convert eligible surplus into declared drops
 
-Residents may tend the population and collect or process products, but cannot dismantle the founding population or change cabin-wide production rules.
+Residents may tend the population and process surplus but cannot dismantle founders or change cabin-wide production rules.
 
-#### Targeted automation
+## Forestry room
 
-The following are independent discoveries and owner-controlled toggles:
+The forestry room grows supported trees after players supply each sapling variety.
 
-- **Automatic feeding:** moves declared feed from cabin storage into the room trough.
-- **Automatic collection:** transfers eligible passive products into cabin storage.
-- **Automatic slaughtering:** processes surplus above an owner-configured retained-population threshold.
+- supported trees may mature through bounded passive catch-up
+- owners and residents fell and replant them manually
+- unsupported trees behave as ordinary blocks
+- upgrades may add plots, room space, supported varieties and local output capacity
 
-Every action stops when its inputs, output space or safety limits are unavailable and reports the exact reason.
+Automatic felling, replanting, kiln processing and coal synthesis belong to Milestone 7. Replanting and processing must consume their declared inputs when delivered.
 
-### Forestry room
+## Status and compatibility
 
-The forestry room provides renewable wood production after the player supplies each desired sapling variety.
-
-Without automation, supported managed trees may mature during bounded packed catch-up, but owners and residents must fell them and replant saplings manually. Unsupported trees behave as ordinary blocks.
-
-Upgrades may increase:
-
-- managed plot count
-- room space
-- number of simultaneously configured tree varieties
-- local output capacity
-- growth or processing throughput
-
-Automatic felling and automatic replanting are separate discoveries. Replanting consumes a suitable sapling from local fixtures or cabin storage.
-
-A later kiln capability converts managed forestry output into charcoal through its own bounded job. It does not imply felling or replanting. A very late coal-synthesis upgrade may convert declared renewable inputs into actual coal for recipes that do not accept charcoal. Its recipe and rate are data-driven and require late dimensional progression; learning or storing coal alone does not unlock it.
-
-### Required status messages
-
-At minimum, functional rooms must be able to explain:
+Room status must distinguish:
 
 - missing or unsupported seed, sapling, animal or mount
 - missing feed or process input
-- full local fixture or cabin storage
-- population below the configured surplus threshold
-- automation unknown, unavailable or disabled
-- catch-up limit reached
-- room tier or capacity too low
-- integration profile absent or incompatible
+- full local fixture or central storage
+- population below a required surplus threshold
+- catch-up duration exhausted
+- insufficient room tier or capacity
+- absent or incompatible integration profile
+- packed cabin or unsafe release destination
 
-These messages follow the visibility rules in the network and access specification.
+The cabin never infers that every entity is breedable, rideable or safe to manage. Optional content requires an explicit profile defining preserved data, supported actions and failure behavior. Missing optional mods or profiles disable only their content and never prevent the base mod from loading.
 
-### Optional entity integrations
+An Alex's Mobs Continued profile may add declared exploration catalysts, upgrade materials, stable eligibility and sustainable livestock species or drops.
 
-The cabin never infers that every entity is breedable, rideable or safe to manage. Each supported species needs an allowlisted profile describing the data that may be preserved and the actions its room supports.
+## Technical approach
 
-An explicit Alex's Mobs Continued profile may provide:
+The cabin registry owns room identities, cell allocations, controller state, timestamps and managed-resident records. Physical fixtures, crops and entities are validated projections of that state. Room-specific services apply bounded catch-up and world mutations; shared traversal and destination services enforce cell isolation and safe egress.
 
-- exploration catalysts tied to supported mobs, structures, advancements or loot
-- unusual room-upgrade materials
-- stable eligibility for declared rideable species
-- livestock production profiles for declared sustainable species and drops
+Check-in, release, founder recovery and any other identity transfer use typed persisted transitions. Each transition records enough source, destination and entity identity to reconcile interruption without duplication or loss. Room activation locks or serializes controller mutations before projecting state.
+
+## Evergreen acceptance contract
+
+Milestone 5 remains accepted only while automated tests and targeted manual checks establish that:
+
+1. Purchased rooms receive permanent isolated cells; unpurchased rooms allocate nothing.
+2. Internal traversal survives restart without exposing the void, coordinates or unrelated cells.
+3. Catch-up is bounded, stops at every declared limit and never ticks ordinary player blocks or performs manual actions.
+4. Role checks prevent guests and unauthorized players from mutating fixtures or collecting managed output.
+5. Greenhouse crops mature passively but require manual planting and harvesting.
+6. Stable check-in and release preserve exact UUID and allowlisted state across restart, packing and interrupted transitions.
+7. Stable reconciliation never leaves an authoritative record and an independent copy of the same mount.
+8. Aquatic release succeeds only at a safe connected-water destination.
+9. Livestock preserves exact founders, bounds offspring and products, and recovers founders safely on owner-confirmed dismantling.
+10. Forestry matures only supported trees and requires manual felling and replanting.
+11. Missing optional profiles fail locally with actionable status and do not prevent base startup.
+12. Separate room cells and active chunk bounds cannot overlap another cabin or room.
+
+Codec, controller-service, traversal, identity-transition, GameTest and dedicated-server restart suites are the automated gates. Manual acceptance covers room presentation, animal behavior, destination safety and multiplayer interaction.
+
+## Out of scope
+
+- automatic room actions, processing jobs and central-storage transfers
+- connection hallways and packed-cabin traversal
+- house cats and other general-interior companions
+- inferred support for arbitrary crops, trees, mounts or livestock
+- arbitrary player-block ticking during inactive time
+- mount release while packed or without a safe exterior destination
+- exact room geometry, costs, capacities and optional profile contents before delivery alignment
