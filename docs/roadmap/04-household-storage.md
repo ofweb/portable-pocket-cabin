@@ -1,170 +1,166 @@
 # Milestone 4: Household roles, mailbox and central storage
 
-**Depends on:** Milestone 2's controller foundation.
+**Depends on:** [Milestone 0](00-safe-mvp.md) identity and access; [Milestone 3](03-upgrade-interface.md) upgrade funding.
 
-**Outcome:** A cabin behaves as a household with clear owner, resident and guest boundaries, a safe public receiving mailbox and one authoritative cabin-owned inventory.
+**Outcome:** Each cabin has clear household roles, a safe public receiving mailbox and one authoritative cabin-owned inventory.
 
-Major scope:
+**Status:** Draft. Alignment is required before implementation.
 
-- local owner, resident and guest roles with destination-specific permission checks
-- the bounded exterior receiving mailbox with insert-only public access and owner collection
-- atomic, slot-based central cabin storage with explicit protected interfaces
-- role-aware deposit, withdrawal, facility use and configuration permissions
-- storage capacity upgrades, hard reserves and transaction-safe mutations
-- local status visibility that reveals only information appropriate to each role
-- the first storage/status interface, while ordinary chests and Tom's Simple Storage remain independent
+## Scope
 
-## Household and mailbox specification
+This milestone adds:
 
-_Source: local-role and receiving-mailbox sections of the former network specification._
+- cabin-local owner, resident and guest roles with fixed capabilities
+- migration from trusted players to residents without changing entry policy
+- a bounded public mailbox with owner-only collection
+- slot-based central storage through protected interfaces
+- storage capacity upgrades and atomic mutations
+- role-filtered local storage and status information
 
-### Status and relationship to the MVP
+Ordinary inventories, including chests and Tom's Simple Storage, remain independent. [Milestone 7](07-production-automation.md) owns reserves and automation, [Milestone 9](09-connected-cabins.md) owns connected and packed-cabin access, and [Milestone 10](10-cooperative-logistics.md) owns inter-cabin logistics.
 
-This document specifies post-MVP roles, mailboxes, connection hallways, packed-cabin access and network-aware packing.
+## Household roles
 
-It deliberately supersedes these MVP restrictions once the relevant upgrades are present:
+Roles belong to one cabin. A role in one cabin grants nothing in another, and every action rechecks the destination cabin's current role and entry policy.
 
-- packing may be initiated from inside rather than only outside
-- a packed cabin may remain accessible through an upgraded connection
-- occupants need evacuation only when packing would remove their final permitted exterior route
+Each cabin has exactly one owner. The owner assigns or removes resident and guest roles. Role capabilities are fixed; Milestone 4 does not add per-player or customizable permission matrices.
 
-The authoritative UUID, lifecycle, crash-consistency and one-active-exterior invariants in [Milestone 0](00-safe-mvp.md) still apply.
+### Entry-policy migration
 
-Storage, sharing, loadouts and automation are specified in [Cabin Storage and Automation](07-production-automation.md). Functional rooms are specified in [Cabin Progression and Functional Rooms](02-progression-space.md).
+The existing trusted-player list migrates to the resident list. Entry policy remains independent:
 
-### Local roles
+- `OWNER_ONLY` remains owner-only
+- `TRUSTED_PLAYERS` becomes resident access
+- residence does not override a closed entry policy
+- guest access must be explicitly permitted
 
-Roles belong to one cabin. A role in one connected cabin never grants the same role in another cabin. Every destination doorway rechecks that cabin's current permissions.
+Role capabilities apply only after entry is permitted. Migration must not grant a previously disabled player access.
 
-Each cabin has exactly one owner.
-
-#### Owner
-
-The owner controls the cabin itself.
+### Owner
 
 The owner may:
 
-- change roles and permissions
-- install structural, room and storage upgrades
-- install and configure automation
-- configure storage sharing
-- create or leave hallway connections
-- pack and deploy the cabin
-- use personal loadouts, automatic restocking and saved requisition rules
+- assign household roles and configure entry policy
+- install cabin, room and storage upgrades
+- deposit into, browse and withdraw from central storage
+- inspect and collect mailbox contents
+- configure storage capacity and later owner-only systems
+- pack and deploy the cabin under [Milestone 0](00-safe-mvp.md)
 
-#### Resident
+Later milestones add network, automation, sharing and loadout controls without changing ownership.
 
-A resident lives in the cabin and uses its shared facilities.
+### Resident
 
-Milestone 3 temporarily treats the MVP's trusted-player list as resident-equivalent for deposits into
-and withdrawals from target-specific upgrade funds. This milestone formalises that relationship and
-migrates those trusted players to residents without granting guests fund access.
+A resident may, subject to entry policy:
 
-Residents may:
-
-- enter through the exterior or hallway
-- deposit into and withdraw from main storage
-- consume cabin resources through normal use
+- enter the cabin
+- deposit into, browse and withdraw from central storage
+- consume cabin resources through permitted shared facilities
 - use shared crafting, kitchen, brewing, enchanting, stable and functional-room systems
 - store and retrieve their own eligible mounts
 
-Residents may not:
+A resident may not:
 
-- use the owner's personal loadouts, automatic restocking or saved requisition rules
-- change cabin-wide configuration or roles
+- change roles, entry policy or cabin-wide configuration
 - install upgrades
-- alter network membership or doorway configuration
-- change storage-sharing rules
+- configure storage capacity, sharing, automation or owner loadouts
 - pack or deploy the cabin
 - dismantle managed livestock populations
 
-#### Guest
+### Guest
 
-A guest may visit without receiving access to the household's main resources.
+A guest may, subject to entry policy:
 
-Guests may:
-
-- enter through permitted exterior and hallway doors
-- inspect the physical cabin and shared hallway
-- use ordinary non-resource-consuming facilities
+- enter and inspect the physical cabin
+- use ordinary facilities that consume no cabin resources
 - see plain-language operational warnings and shortages
-- deposit items into the owner's protected receiving mailbox
+- deposit items into the public mailbox
 
-Guests may not:
+A guest may not:
 
-- browse, deposit into or withdraw from main storage
+- browse, deposit into or withdraw from central storage
 - consume cabin resources through crafting or automation
 - harvest managed rooms or remove animals
-- inspect exact storage quantities, private loadouts or mailbox contents
-- change any cabin or network configuration
+- inspect exact storage quantities, private owner configuration or mailbox contents
+- change cabin configuration
 
-### Receiving mailbox
+Public mailbox delivery does not require a household role, cabin entry or central-storage permission.
 
-Every cabin owner has one protected receiving mailbox from the beginning. It is not a guest-specific compartment and is separate from central cabin storage.
+## Receiving mailbox
 
-The mailbox initially appears as an exterior interface:
+Every cabin begins with one protected receiving mailbox separate from central storage. Its initial interface appears on the deployed exterior.
 
 - anyone may insert items
-- senders cannot inspect existing contents
-- senders cannot withdraw previously inserted items
-- only the cabin owner may inspect or collect contents
-- capacity is bounded and a full mailbox rejects additional delivery without deleting anything
+- senders cannot inspect contents or withdraw deposited items
+- only the owner may inspect or collect contents
+- capacity is bounded
+- a full mailbox rejects the complete attempted delivery without deleting or displacing items
+- contents persist through restart, packing, redeployment and exterior loss
 
-To give another player an item manually, a player visits that player's deployed cabin and places the item into its mailbox. Manual delivery does not require cabin-entry or main-storage permission.
+Packing removes the exterior interface but not the mailbox or its contents. An unconnected packed cabin has no manual mailbox interface until redeployed. [Milestone 9](09-connected-cabins.md) may project the same logical mailbox beside a connected hallway door; multiple interfaces must never copy or shuttle stacks between inventories.
 
-Once the cabin joins a connection hallway, the same logical inbox also appears beside its labelled hallway door. Both interfaces address one persisted mailbox inventory; they never copy or shuttle stacks between separate containers.
+Mailbox contents remain unavailable to storage and automation until the owner collects or explicitly accepts them. [Milestone 10](10-cooperative-logistics.md) owns request fulfilment, surplus delivery and other automated transfers. Every later automated delivery must remain bounded, atomic, attributable and reject a full destination without loss.
 
-When packed, the exterior mailbox interface disappears with the exterior anchor while the hallway interface remains usable. An unconnected packed cabin has no manual mailbox interface until redeployed.
+## Central storage
 
-Mailbox contents do not become available to storage or automation until the owner collects or explicitly accepts them.
+After installation, each cabin UUID owns one authoritative persistent virtual inventory:
 
-Later targeted mailbox automations may:
+- capacity is measured in Minecraft-style slots
+- each item obeys its normal maximum stack size
+- non-stackable and unique stacks occupy one slot each
+- only storage upgrades increase capacity
+- packing, deployment, exterior loss and later network membership do not change ownership
+- interrupted or concurrent mutations cannot duplicate, lose or partially move items
 
-- fulfil explicitly configured incoming requests
-- transfer configured resources
-- deliver eligible shared surplus between connected cabin mailboxes
+Players use protected cabin interfaces to deposit and retrieve items. Ordinary placed inventories are never scanned, merged or consumed automatically. Moving items between them and central storage requires an explicit player action or a later configured integration.
 
-Every automated delivery is bounded, atomic, attributable and rejected when the receiving mailbox is full.
+The owner may explicitly authorize one cabin upgrade to take its remaining exact requirements from central storage. Materials already committed to that target's fund are used first. Storage never fills funds or installs upgrades automatically; [Milestone 3](03-upgrade-interface.md) remains authoritative for funding and installation.
 
-## Central-storage specification
+Later greenhouses, kitchens, crafting systems, brewing, enchanting and room automation use server-side storage transactions defined by their owning milestones.
 
-_Source: central-storage and local-access sections of the former storage specification._
+## Access and status
 
-### Status and relationship to the MVP
+- Owners and residents may deposit, browse, withdraw and consume resources through permitted shared facilities.
+- Guests cannot browse, deposit into or withdraw from central storage.
+- Guest exchange uses the mailbox.
+- Only the owner may change capacity or later automation, sharing, reserve and loadout configuration.
+- Owners see exact storage, mailbox and configuration status.
+- Residents see exact shared-storage state and actionable failures for facilities they may use.
+- Guests see plain-language warnings without exact quantities or private configuration.
 
-This document specifies the post-MVP cabin-owned storage, knowledge and automation track.
+Losing permission invalidates an open interaction. Every mutation rechecks cabin identity, lifecycle, role, entry policy, capacity and offered stacks immediately before commit. Failure leaves every involved inventory unchanged and returns an actionable reason.
 
-It complements ordinary Minecraft inventories rather than replacing them. Chests, Tom's Simple Storage and other compatible blocks continue to behave normally inside active cabin rooms under the rules in [Milestone 0](00-safe-mvp.md).
+## Technical approach
 
-Functional-room production is specified in [Cabin Progression and Functional Rooms](02-progression-space.md). Roles, mailboxes and cabin connections are specified in [Cabin Network and Access](09-connected-cabins.md).
+The cabin registry persists role assignments, the independent entry policy, mailbox contents, central-storage contents and capacity. New schema migrations transform trusted players into residents while preserving `OWNER_ONLY` and trusted-player access behavior.
 
-Recipes for installing storage, library and automation upgrades use the persistent world attunement defined by the progression specification. The ordinary crafting, cooking and brewing recipes executed after those systems are installed do not vary merely because cabin upgrades do.
+Mailbox and central storage are cabin-owned virtual inventories, not exposed block entities. Protected menus synchronize their state, but the server owns permission and mutation decisions. Each transfer validates its complete source and destination result before one atomic commit; multi-step or recoverable operations persist enough intent to complete without duplication or loss after interruption.
 
-### Central cabin storage
+## Evergreen acceptance contract
 
-Each cabin UUID owns one authoritative persistent virtual inventory.
+Milestone 4 remains accepted only while automated tests and targeted manual checks establish that:
 
-- Capacity is measured in Minecraft-style slots.
-- Every item obeys its normal maximum stack size.
-- Non-stackable and unique stacks occupy one slot each.
-- Capacity increases only through explicit storage upgrades.
-- Packing, deployment, exterior loss and hallway membership never transfer ownership of this inventory.
-- Storage mutations are journalled or otherwise atomic so interrupted automation and network transfers cannot duplicate or delete items.
+1. Migration converts trusted players to residents without opening an `OWNER_ONLY` cabin.
+2. Owner, resident and guest actions follow the fixed role matrix and independent entry policy.
+3. Permission loss closes or invalidates open mailbox and storage interactions before another mutation.
+4. Public mailbox insertion reveals no contents, permits no withdrawal and rejects full deliveries without item loss.
+5. Only the owner can inspect or collect mailbox contents.
+6. Central storage enforces slot capacity, normal stack limits and unique-stack occupancy.
+7. Concurrent, stale and interrupted transfers commit completely once or leave source and destination unchanged.
+8. Roles, policies, capacity and exact mailbox and storage stacks survive restart, packing and redeployment.
+9. Owner-authorized upgrade funding consumes existing fund contents first and never installs automatically.
+10. Ordinary inventories remain independent, and no role exposes private quantities or configuration beyond its status rules.
 
-Players deposit and retrieve items through protected cabin interfaces. Ordinary placed inventories are independent and are not scanned, merged or consumed automatically. Moving items between ordinary storage and cabin storage is always an explicit player action or a separately configured integration.
+Codec, service, menu-integration and dedicated-server restart tests are the automated gates. Manual acceptance covers the protected interfaces, permission changes, status visibility and multiplayer concurrency.
 
-After central storage is installed, the owner may explicitly authorise one upgrade to consume its
-remaining exact requirements from central storage. Materials already committed to that target's fund
-are used first. Storage never fills funds or installs automatically; the complete funding contract is
-defined in [Milestone 3](03-upgrade-interface.md).
+## Out of scope
 
-Greenhouses, kitchens, crafting systems, brewing, enchanting and other cabin automation consume from and deposit into this central inventory through server-side transactions.
-
-### Storage access
-
-The role matrix in the network specification applies.
-
-- Owners and residents may deposit, withdraw and consume resources through shared facilities.
-- Guests cannot browse, deposit into or withdraw from main storage.
-- Guest exchange uses the mailbox rather than main storage.
-- Only the owner may change capacity, automation, sharing, reserve and loadout configuration.
+- customizable capability matrices or per-player overrides
+- connection hallways, packed-cabin access and network-aware packing
+- storage sharing and inter-cabin resource transfer
+- hard reserves, learned templates and production automation
+- owner loadouts and automatic restocking
+- automated mailbox fulfilment or surplus delivery
+- automatic scanning or merging of ordinary inventories
+- final interface art, dimensions and widgets
+- exact initial mailbox and storage capacities or upgrade costs
