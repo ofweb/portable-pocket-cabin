@@ -119,3 +119,17 @@ gate.
   title, effect or first requirement row.
 - [ ] A dedicated server and ordinary client can connect and open the menu without protocol or slot
   index errors.
+
+## Post-acceptance layout correction
+
+Manual screenshots at a large GUI scale showed that the original fixed geometry did not satisfy the
+no-overlap acceptance criteria: the 38-pixel panel inset left excessive border space, 22-pixel
+requirement columns allowed longer progress labels to collide, and the title, page count, status icon
+and action controls shared the same header area.
+
+The agreed correction retains the 248 by 220 container, fixed player inventory, side tabs, navigation
+and vanilla-style bevels. The inner panel instead uses four-pixel side insets, requirement columns use
+28-pixel spacing with centered progress labels, and the description and requirement rows receive
+separate vertical space. Header content uses bounded title, page, status and action zones so those
+elements cannot overlap. This is presentation-only: menu slots, protocol indexes, permissions,
+transactions and persisted state remain unchanged.

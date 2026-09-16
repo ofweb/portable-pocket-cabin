@@ -711,6 +711,15 @@ public final class PortablePocketCabinGameTest {
 		}
 		helper.assertTrue(CabinUpgradeLayout.SCREEN_WIDTH == 248
 			&& CabinUpgradeLayout.SCREEN_HEIGHT == 220
+			&& CabinUpgradeLayout.PANEL_X == 4
+			&& CabinUpgradeLayout.PANEL_WIDTH == 240
+			&& CabinUpgradeLayout.PANEL_HEIGHT == 100
+			&& CabinUpgradeLayout.REQUIREMENT_X == 12
+			&& CabinUpgradeLayout.REQUIREMENT_Y == 56
+			&& CabinUpgradeLayout.REQUIREMENT_X_STEP == 28
+			&& CabinUpgradeLayout.REQUIREMENT_Y_STEP == 30
+			&& CabinUpgradeLayout.requirementX(7) + 18
+				<= CabinUpgradeLayout.PANEL_X + CabinUpgradeLayout.PANEL_WIDTH
 			&& CabinUpgradeLayout.TAB_X < 0
 			&& CabinUpgradeLayout.TAB_X + CabinUpgradeLayout.TAB_SIZE > 0
 			&& CabinUpgradeLayout.tabY(CabinUpgradeMenu.MAX_GROUPS - 1)

@@ -57,16 +57,31 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 		));
 		installButton = addRenderableWidget(Button.builder(
 			Component.literal("✓"), button -> sendInstall()
-		).bounds(leftPos + 212, topPos + 23, 19, 18).build());
+		).bounds(
+			leftPos + CabinUpgradeLayout.INSTALL_X,
+			topPos + CabinUpgradeLayout.ACTION_Y,
+			CabinUpgradeLayout.ACTION_WIDTH,
+			CabinUpgradeLayout.ACTION_HEIGHT
+		).build());
 		installButton.setTooltip(Tooltip.create(
 			Component.translatable("screen.portable_pocket_cabin.install_tooltip")
 		));
 		downgradeButton = addRenderableWidget(Button.builder(
 			Component.literal("↓"), button -> sendMenuButton(CabinUpgradeMenu.BUTTON_DOWNGRADE)
-		).bounds(leftPos + 190, topPos + 23, 19, 18).build());
+		).bounds(
+			leftPos + CabinUpgradeLayout.DOWNGRADE_X,
+			topPos + CabinUpgradeLayout.ACTION_Y,
+			CabinUpgradeLayout.ACTION_WIDTH,
+			CabinUpgradeLayout.ACTION_HEIGHT
+		).build());
 		removeButton = addRenderableWidget(Button.builder(
 			Component.literal("×"), button -> sendMenuButton(CabinUpgradeMenu.BUTTON_REMOVE)
-		).bounds(leftPos + 168, topPos + 23, 19, 18).build());
+		).bounds(
+			leftPos + CabinUpgradeLayout.REMOVE_X,
+			topPos + CabinUpgradeLayout.ACTION_Y,
+			CabinUpgradeLayout.ACTION_WIDTH,
+			CabinUpgradeLayout.ACTION_HEIGHT
+		).build());
 		categoryButtons.clear();
 		for (int index = 0; index < CabinUpgradeMenu.MAX_GROUPS; index++) {
 			CategoryTabButton button = addRenderableWidget(new CategoryTabButton(
@@ -118,19 +133,32 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 	protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
 		graphics.text(font, title, titleLabelX, titleLabelY, 0xff404040, false);
 		if (!menu.panelStack().isEmpty()) {
-			graphics.fakeItem(menu.panelStack(), CabinUpgradeLayout.PANEL_X + 8, CabinUpgradeLayout.PANEL_Y + 5);
-			graphics.text(font, menu.panelTitle(),
-				CabinUpgradeLayout.PANEL_X + 28, CabinUpgradeLayout.PANEL_Y + 8, 0xff404040, false);
-			List<net.minecraft.util.FormattedCharSequence> effect = font.split(menu.panelEffect(), 176);
+			graphics.fakeItem(
+				menu.panelStack(), CabinUpgradeLayout.PANEL_ICON_X, CabinUpgradeLayout.PANEL_ICON_Y
+			);
+			List<net.minecraft.util.FormattedCharSequence> panelTitle = font.split(
+				menu.panelTitle(), CabinUpgradeLayout.PANEL_TITLE_WIDTH
+			);
+			if (!panelTitle.isEmpty()) {
+				graphics.text(font, panelTitle.getFirst(),
+					CabinUpgradeLayout.PANEL_TITLE_X, CabinUpgradeLayout.PANEL_TITLE_Y,
+					0xff404040, false);
+			}
+			List<net.minecraft.util.FormattedCharSequence> effect = font.split(
+				menu.panelEffect(), CabinUpgradeLayout.EFFECT_WIDTH
+			);
 			if (!effect.isEmpty()) {
-				graphics.text(font, effect.getFirst(), CabinUpgradeLayout.PANEL_X + 9,
-					CabinUpgradeLayout.PANEL_Y + 24, 0xff606060, false);
+				graphics.text(font, effect.getFirst(),
+					CabinUpgradeLayout.EFFECT_X, CabinUpgradeLayout.EFFECT_Y, 0xff606060, false);
 			}
 			if (menu.panelCount() > 1) {
-				graphics.text(font, Component.literal(
+				Component page = Component.literal(
 					(menu.selectedPanelIndex() + 1) + "/" + menu.panelCount()
-				), CabinUpgradeLayout.PANEL_X + 113,
-					CabinUpgradeLayout.PANEL_Y + 8, 0xff606060, false);
+				);
+				graphics.text(font, page,
+					CabinUpgradeLayout.PANEL_PAGE_X + CabinUpgradeLayout.PANEL_PAGE_WIDTH
+						- font.width(page),
+					CabinUpgradeLayout.PANEL_PAGE_Y, 0xff606060, false);
 			}
 		}
 
@@ -139,11 +167,11 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 			int y = CabinUpgradeLayout.requirementY(index) + 20;
 			int funded = menu.fundedCount(index);
 			int required = menu.requiredCount(index);
-			graphics.text(font, funded + "/" + required, x - 2, y,
+			String progress = funded + "/" + required;
+			graphics.text(font, progress, x + 8 - font.width(progress) / 2, y,
 				funded >= required ? 0xff207a20 : 0xff404040, false);
 		}
-		graphics.fakeItem(statusIcon(), CabinUpgradeLayout.PANEL_X
-			+ CabinUpgradeLayout.PANEL_WIDTH - 95, CabinUpgradeLayout.PANEL_Y + 5);
+		graphics.fakeItem(statusIcon(), CabinUpgradeLayout.STATUS_X, CabinUpgradeLayout.STATUS_Y);
 		graphics.text(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0xff404040, false);
 	}
 
@@ -152,10 +180,10 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 		super.extractTooltip(graphics, mouseX, mouseY);
 		int relativeX = mouseX - leftPos;
 		int relativeY = mouseY - topPos;
-		if (relativeX >= CabinUpgradeLayout.PANEL_X + CabinUpgradeLayout.PANEL_WIDTH - 96
-			&& relativeX < CabinUpgradeLayout.PANEL_X + CabinUpgradeLayout.PANEL_WIDTH - 76
-			&& relativeY >= CabinUpgradeLayout.PANEL_Y + 4
-			&& relativeY < CabinUpgradeLayout.PANEL_Y + 24) {
+		if (relativeX >= CabinUpgradeLayout.STATUS_X - 1
+			&& relativeX < CabinUpgradeLayout.STATUS_X + 17
+			&& relativeY >= CabinUpgradeLayout.STATUS_Y - 1
+			&& relativeY < CabinUpgradeLayout.STATUS_Y + 17) {
 			Component message = menu.statusMessage().getString().isEmpty()
 				? statusDescription() : menu.statusMessage();
 			graphics.setTooltipForNextFrame(message, mouseX, mouseY);
