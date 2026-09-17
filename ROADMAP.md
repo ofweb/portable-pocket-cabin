@@ -1,6 +1,6 @@
 # Portable Pocket Cabin Roadmap
 
-This is the documentation entry point and implementation order for Portable Pocket Cabin. Each milestone's authoritative file contains its outcome, scope, specification, delivery plan, acceptance criteria, and deferred decisions.
+This is the documentation entry point and implementation order. Each linked milestone is authoritative for its outcome, scope, behavior, technical boundaries and acceptance contract.
 
 The project has not been publicly released. The [README](README.md) defines current save compatibility and replacement requirements. A delivery is complete only after it works in a fresh world and survives a server restart. Later work may begin while manual acceptance or a retrospective audit remains pending, but the status table must say so.
 
@@ -28,7 +28,7 @@ The project has not been publicly released. The [README](README.md) defines curr
 | [8](docs/roadmap/08-enchanting-loadouts.md)    | Enchanting, equipment requisitions and owner loadouts | Draft                                 |
 | [9](docs/roadmap/09-connected-cabins.md)       | Connected cabins and safe packed-cabin access         | Draft                                 |
 | [10](docs/roadmap/10-cooperative-logistics.md) | Cooperative knowledge, mail and resource logistics    | Draft                                 |
-| [11](docs/roadmap/11-compatibility-polish.md)  | Compatibility, balance and presentation pass          | Draft                                 |
+| [11](docs/roadmap/11-compatibility-polish.md)  | Compatibility, balance and presentation               | Draft                                 |
 
 ## Documentation contract
 
@@ -40,7 +40,7 @@ The project has not been publicly released. The [README](README.md) defines curr
 - Data-driven decisions remain open only until the milestone that consumes them; that milestone's alignment pass must either settle them or explicitly defer the dependent work.
 - The [README](README.md) describes the currently playable build and development workflow, not future design.
 
-Draft milestone files preserve source intent from earlier root and feature specifications until their first alignment pass removes contradictions, closes gaps, and records decisions.
+Draft files must mark unresolved decisions explicitly and align each delivery before implementation.
 
 ## Domain language
 
