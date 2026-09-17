@@ -1,58 +1,43 @@
 # Milestone 7: Targeted production and room automation
 
-**Depends on:** Milestones 4 and 5.
+**Depends on:** [Milestone 4](04-household-storage.md) storage and permissions; [Milestone 5](05-functional-rooms.md) managed rooms.
 
 **Outcome:** Exploration-discovered books unlock small, individually controlled automations that fulfil concrete jobs without turning the cabin into an unbounded factory.
 
-Major scope:
+**Status:** Draft. Each delivery requires alignment before implementation.
 
-- safe learned item, prepared-meal and potion templates
-- installable automation books and per-cabin enablement
-- bounded job planning, recursion, cycle rejection, transactional inputs and exact blocking reasons
-- owner reserves, committed inputs and output/by-product capacity checks
-- crafting, cooking and brewing jobs
-- Farmer's Delight and declared delight integration profiles
-- automatic greenhouse harvesting/replanting
-- stable/livestock feeding, collection and surplus processing
-- forestry felling/replanting, later kiln processing and late coal synthesis
-- storage, automation and job-status interfaces
+## Scope
 
-**Red:** Add failing unsafe-template, cyclic-recipe, reserve, full-output, missing-input, duplicate-result, pause/resume and integration-absence tests.
+This milestone adds:
 
-**Green:** Implement one bounded job type at a time and add each room action independently.
+- safe, permanent item, prepared-meal and potion templates
+- consumable automation books and per-cabin capabilities
+- bounded recursive job planning with explicit recipe selection
+- persisted timed work, hard reserves and transactional inputs and outputs
+- local crafting, cooking and brewing
+- owner-configured local stock targets
+- automatic room actions delivered separately from manual room behavior
+- explicit Farmer's Delight and other optional process profiles
 
-**Refactor:** Share planning and transaction primitives without treating arbitrary blocks, entities or mod recipes as trusted automation definitions.
+[Milestone 8](08-enchanting-loadouts.md) owns equipment requisitions and loadout restocking. [Milestone 10](10-cooperative-logistics.md) owns mailbox fulfilment, surplus delivery, storage sharing and remote jobs. This milestone exposes job and reserve primitives to them without defining their triggers.
 
-**Exit gate:** Every automation starts from an explicit request or enabled bounded action, stops cleanly at limits and explains why it cannot continue.
+## Delivery sequence
 
+| Delivery | Result |
+| --- | --- |
+| 7.1 | Learn safe product templates and consume one discovery book to install one capability. |
+| 7.2 | Plan, persist and execute bounded crafting jobs with reserves and timed work. |
+| 7.3 | Add profiled cooking and brewing jobs. |
+| 7.4 | Add each greenhouse, livestock and forestry action independently. |
+| 7.5 | Add optional cooking profiles, kiln processing and late coal synthesis. |
 
-## Room-automation boundary
+Each delivery must remain useful without the later triggers in Milestones 8 and 10.
 
-_Source: manual-operation and targeted-automation boundary from the former progression specification._
+## Product knowledge
 
-### Manual operation and targeted automation
+The first eligible item stack entering central storage teaches that cabin a safe canonical product template. Removing every matching item does not erase the template. Recipe discovery or viewing alone teaches nothing.
 
-Every functional room provides useful manual behavior before automation is discovered.
-
-Automation books unlock small actions, not an all-or-nothing automated room. Examples include feeding, collecting, harvesting, replanting, felling and processing. Each action is installed knowledge, individually enabled per cabin by its owner, and subject to the bounded-job rules.
-
-When a room is packed without an action being automated:
-
-- passive growth or maturation may advance through catch-up
-- preloaded local inputs may be consumed where the room explicitly supports that behavior
-- outputs may accumulate only up to the fixture's small local capacity
-- an action that requires a player, such as harvesting or replanting, does not happen by itself
-
-
-## Production and automation specification
-
-_Source: learning, automation-book, bounded-job, reserve, crafting, cooking and brewing sections of the former storage specification._
-
-### Learned item templates
-
-An item entering central storage for the first time teaches that cabin a safe canonical product template. Merely unlocking or viewing a recipe is insufficient.
-
-Learning records only approved item identity and variant components. It never copies:
+A template records only approved identity and variant components. It never copies:
 
 - container contents
 - arbitrary mod data
@@ -61,100 +46,155 @@ Learning records only approved item identity and variant components. It never co
 - enchantments
 - unsafe nested item data
 
-Unsupported variants remain storable but report that they cannot be learned. Compatibility profiles may allow additional components only when their preservation and reproduction semantics are explicit.
+Unsupported variants remain storable but report why they cannot be learned. Compatibility profiles may allow components only when their preservation and reproduction semantics are explicit.
 
-An item being known is a discovery gate, not permission to create it freely. Production also requires:
+Knowing a product does not create it. Production also requires a supported recipe or process, the installed capability, inputs, destination capacity, sufficient work time and every tier or resource prerequisite.
 
-- a valid supported recipe or process
-- the relevant installed automation ability
-- every required input
-- sufficient destination capacity
-- satisfaction of tier and resource costs
+Prepared meals and potions use the same local-knowledge rule with their specialized profiles below. Ordinary product, meal and potion knowledge never propagates automatically to another cabin.
 
-Enchantments, meals and potions add their own learning rules below.
+## Automation books
 
-### Automation books
+Automation capabilities are discovered as distinctive enchanted treasure books. They are cabin discoveries, not ordinary enchantments.
 
-Automation abilities are discovered as distinctive enchanted treasure books while exploring. They are cabin items, not ordinary enchantments.
+- storing a book does not install it
+- installation is an owner action at a protected cabin interface
+- each book installs one named capability
+- successful installation consumes the physical book
+- failed validation and duplicate knowledge leave the book untouched
+- duplicate capabilities provide no additional power
+- installed knowledge persists with the cabin and remains individually enabled or disabled
+- loot placement and rarity are data-driven
 
-- Storing a book does not install it.
-- Installation is a deliberate action at a cabin interface.
-- Each book teaches one small, named capability.
-- Duplicate discoveries do not stack into additional power.
-- Capabilities remain individually controllable per cabin.
-- Loot placement and rarity are data-driven so modpack structures may participate.
+Capabilities remain narrow: feeding, collection, harvesting, replanting, felling, cooking and brewing are separate discoveries. No generic “automate room” capability exists.
 
-Examples include automatic feeding, collection, slaughtering, harvesting, replanting, felling, cooking, brewing, mailbox fulfilment and surplus delivery. A single generic "automate room" discovery does not exist.
+## Permissions
 
-Whether installation consumes the physical discovery book is a balancing decision to settle before implementing loot tables; it does not change permanent knowledge semantics.
+- Only the owner may install capabilities, enable room actions, configure stock targets or reserves, and approve a plan that funds an upgrade.
+- Owners and residents may submit explicit local crafting, cooking and brewing requests through enabled facilities.
+- Every resident job obeys owner reserves, installed capabilities and the same planning limits as an owner job.
+- Guests cannot submit jobs, configure automation or consume central-storage resources.
 
-### Bounded automation jobs
+Permission loss invalidates an uncommitted request. A committed job retains its reserved resources but pauses before further owner-restricted configuration or delivery decisions.
 
-Automation runs only in response to a concrete job:
+## Bounded job planning
 
-- an explicit production or equipment request
-- an owner loadout restock
-- an owner-configured stock target
+Automation starts only from:
+
+- an explicit local production request
+- an owner-configured local stock target
 - one enabled functional-room action
-- one enabled mailbox request or delivery rule
+- an owner-approved cabin-upgrade funding plan
 
-There is no opportunistic "craft everything known" mode.
+There is no opportunistic “craft everything known” mode.
 
-A job may recursively produce known intermediate ingredients, subject to configured maximum depth and operation counts. Cyclic and net-positive recipe paths are rejected. The plan selects only declared supported recipes and does not silently substitute valuable variants.
+A plan may recursively produce known intermediates within configured depth, operation and output limits. It rejects cyclic and net-positive paths, including cycles hidden through container returns or by-products.
 
-Explicit equipment requisitions show their complete projected material cost before confirmation.
+When several supported recipe paths can produce the result, the interface shows their complete plans. The requesting owner or resident selects one before a local job starts. Inventory order never selects a recipe. Unattended stock targets and room actions use an owner-selected recipe or explicit process profile and pause if the choice becomes ambiguous.
 
-Jobs pause without losing their request when blocked by:
+Every plan reports:
 
-- missing ingredients
+- exact inputs and intermediates
+- outputs, container returns and by-products
+- reserved quantities and protected reserves
+- total work and expected duration at the installed tier
+- unsupported, unknown or ambiguous steps
+- destination-capacity requirements
+
+## Timed execution
+
+Automation is persisted work, not instant crafting. Each crafting operation costs:
+
+```text
+base recipe work + consumed ingredient units
+```
+
+Recursive plans sum every intermediate operation. Multiple recipe batches multiply that work. Installed automation tier determines work completed per game tick. Base work and throughput are data-driven balancing values.
+
+Cooking, brewing, kiln and room processes use explicit profile durations instead of the crafting formula.
+
+Before work begins, the job reserves every required input and enough destination capacity for outputs, returned containers and by-products. Reserved inputs are unavailable to other jobs and players. A successful job commits all outputs atomically. Cancellation or unrecoverable failure returns unused inputs and releases capacity to the same cabin storage.
+
+Jobs persist their plan, selected recipes, committed inputs, reserved capacity, completed work and blocking reason. Restart, packing and redeployment preserve that state.
+
+Central crafting, cooking and brewing advance through bounded server work even while the cabin is packed. Catch-up uses elapsed game time, caps both elapsed duration and operations per pass, and never loads cabin chunks or ticks simulated blocks. Server downtime advances no game time.
+
+Room automation uses [Milestone 5](05-functional-rooms.md) activation and bounded catch-up. Packing never grants ordinary blocks, furnaces or modded machines background simulation.
+
+## Blocking and reserves
+
+Jobs pause without losing their request or committed state when blocked by:
+
+- missing uncommitted inputs
 - unknown product or intermediate template
 - unsupported or ambiguous recipe
-- unavailable or disabled automation
+- unavailable or disabled capability
 - protected reserve
-- insufficient storage or room output space
+- insufficient output or by-product capacity
 - unmet progression tier
+- exhausted catch-up budget
 
-Every paused job exposes the exact blocking reason through local status.
+Every pause exposes one actionable reason through role-filtered local status.
 
-### Reserves and execution priority
+Owners may define hard item reserves. Cabin-controlled jobs cannot commit resources below them. Manual owner and resident withdrawals remain possible; reserves constrain automation, not people. Changing a reserve does not reclaim inputs already committed to an active job.
 
-Owners may define hard item reserves. Automated jobs and storage sharing cannot consume below those reserves. Manual actions by an owner or resident remain possible; reserves constrain cabin-controlled behavior, not people.
+## Crafting automation
 
-Loadout-restock commitments are evaluated before items become shareable. A rule such as "share wood only after five complete loadout restocks" computes the full material requirement of five current owner manifests, including craftable intermediates, before exposing surplus.
+Crafting produces locally known safe templates from central-storage materials. It cannot reproduce custom names, arbitrary data, durability or enchantments. Returned containers and by-products must have reserved destinations before the job starts.
 
-In-progress jobs reserve their already committed inputs transactionally. On failure or cancellation, unused inputs return to the same cabin storage.
+For a cabin upgrade, only the owner may approve the displayed plan for missing ingredients. Existing target-fund materials count first, and completed outputs enter only that capped fund. Funding never installs the upgrade; [Milestone 3](03-upgrade-interface.md) remains authoritative for installation.
 
-### Crafting automation
+## Cooking and brewing
 
-Crafting automation produces locally known safe item templates from stored materials through bounded jobs.
+A prepared meal must enter central storage before the cabin learns it. Reproduction requires a supported process profile, installed cooking capability, exact ingredients, destination capacity and timed work. Cooking never implies farming, feeding, slaughtering or ingredient acquisition.
 
-For a specific cabin upgrade, an owner may explicitly approve a displayed crafting plan for missing
-ingredients. The plan uses raw materials from central storage, obeys the same recipe-safety,
-recursion, reserve and capacity rules as other jobs, and commits outputs only to that target's capped
-fund. Existing fund materials are applied first and installation remains a separate owner action
-under [Milestone 3](03-upgrade-interface.md).
+A potion must likewise enter central storage. Its template retains only allowlisted potion identity and effects. Reproduction requires a declared brewing path, bottles, ingredients and the brewing capability. Custom and modded potions require explicit compatibility profiles when their data cannot be handled safely.
 
-- It may prepare known intermediate components recursively.
-- It cannot reproduce custom names, arbitrary data, durability or enchantments as part of ordinary crafting.
-- Container-return items and recipe by-products must be accounted for before starting.
-- A job does not start unless all outputs and by-products have a valid destination.
+Farmer's Delight and compatible delight integrations contribute declared processes rather than exposing arbitrary block behavior. An Alex's Mobs Continued Delight profile may add declared ingredients and meals through Farmer's Delight or Farmer's Delight Refabricated recipes. Missing integrations leave unknown food storable but not reproducible and never prevent base startup.
 
-### Cooking automation
+## Room automation
 
-A prepared food must be cooked, found or otherwise obtained and then enter that cabin's central storage before the cabin knows the meal.
+Every [Milestone 5](05-functional-rooms.md) room remains useful manually. Each automatic action is installed and enabled separately:
 
-The cabin must also have a supported cooking recipe and the relevant targeted automation. Farmer's Delight and optional delight integrations provide explicit process profiles rather than being inferred from arbitrary block behavior.
+- greenhouse harvesting and replanting
+- livestock feeding, passive-product collection and surplus slaughtering
+- forestry felling and replanting
+- declared local-fixture and central-storage transfers required by those actions
 
-Cooking automation never implies farming, animal feeding, slaughtering or ingredient acquisition. Those are separate manual actions or automation capabilities.
+An action stops at missing input, full output, population, safety, reserve or catch-up limits and reports the reason. Replanting consumes suitable seed or sapling stock; no action creates inputs.
 
-### Brewing automation
+Later forestry capabilities may process managed wood into charcoal and, at a late progression tier, declared renewable inputs into coal. Their recipes, rates, work and tier requirements are data-driven. Knowing or storing coal does not unlock synthesis.
 
-A potion must first be brewed or found and enter that cabin's central storage. The learned template includes only allowlisted potion identity and effect components.
+## Technical approach
 
-Reproduction requires a declared brewing path, ingredients, bottles and the installed brewing capability. Custom or modded potions require an explicit compatibility profile when their data cannot be handled safely.
+The cabin registry persists product knowledge, installed capabilities, owner configuration, reserves and jobs. A planner resolves safe recipe graphs and immutable work plans. A bounded scheduler advances persisted work from game time. Storage transactions own reservations, cancellation and atomic output commits. Room-specific services adapt the same work and transaction primitives to managed fixtures.
 
-### Optional cooking integrations
+All planning and mutation decisions are server-authoritative. Client interfaces render synchronized plans, choices, progress and blocking reasons. Optional profiles must fail locally when their content is absent or invalid.
 
-An explicit Alex's Mobs Continued Delight integration may expose declared ingredients and meals to kitchen learning and automation through compatible Farmer's Delight or Farmer's Delight Refabricated recipes.
+## Evergreen acceptance contract
 
-Unknown food remains storable as an ordinary item. It becomes reproducible only when its recipe and item components pass the safe-learning rules in this milestone.
+Milestone 7 remains accepted only while automated tests and targeted manual checks establish that:
+
+1. Safe templates persist after their source item leaves storage; unsafe components are never learned or reproduced.
+2. Successful capability installation consumes one book, while duplicate or failed installation consumes nothing.
+3. Owners and residents may request permitted local jobs; only owners change automation configuration, reserves and upgrade-funding plans.
+4. Recursive planning respects limits, rejects cyclic or net-positive paths and accounts for every return and by-product.
+5. Ambiguous supported recipes require explicit selection and never depend on inventory or registry order.
+6. Work scales with ingredient units and recipe batches; process profiles use their declared durations.
+7. Inputs and output capacity reserve before work, survive restart and return cleanly on cancellation.
+8. Hard reserves block cabin-controlled commitment without blocking manual withdrawals or reclaiming active-job inputs.
+9. Packed central jobs advance only through bounded game-time work without loading chunks; ordinary blocks remain paused.
+10. Upgrade jobs fill only the selected capped fund and never install it.
+11. Each room action requires its own installed and enabled capability and stops at every declared limit.
+12. Missing optional integrations disable only their profiles and leave base startup and storage usable.
+
+Codec, template-safety, planner, transaction, scheduler, room-service, GameTest and dedicated-server restart suites are the automated gates. Manual acceptance covers plan selection, progress, cancellation, status visibility and multiplayer requests.
+
+## Out of scope
+
+- enchantment learning, equipment requisitions and owner loadouts
+- mailbox fulfilment, surplus delivery and inter-cabin transfers
+- remote jobs or combined network storage
+- arbitrary recipe, block, entity or component inference
+- unbounded recursion, work, catch-up or background chunk loading
+- automatic installation of produced cabin upgrades
+- exact balancing values, loot tables and final interface art before delivery alignment
