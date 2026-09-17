@@ -1,135 +1,116 @@
 # Milestone 9: Connected cabins and safe packed-cabin access
 
-**Depends on:** Stable local permissions from Milestone 4 and lifecycle regression coverage from Milestone 1.
+**Depends on:** [Milestone 0](00-safe-mvp.md) lifecycle safety and [Milestone 4](04-household-storage.md) household permissions.
 
-**Outcome:** Mutually consenting owners connect cabins through a persistent shared hallway, and a packed cabin remains reachable when the player still has a permitted route to another deployed exterior.
+**Outcome:** Mutually consenting owners connect cabins through a persistent shared hallway, and packed cabins remain reachable while each player retains a permitted route to a deployed exterior.
 
-Major scope:
+**Status:** Draft. Each delivery requires alignment before implementation.
 
-- connection upgrade, mutual consent and persistent hallway membership graph
-- separately allocated shared hallways with labelled protected cabin doors
-- ordinary, non-cabin-owned hallway furnishing behavior
-- permission rechecks at every destination doorway
-- hallway access to packed cabins without permanently loading empty rooms
-- packing initiated from the protected interior interface
-- graph-locked, per-occupant reachability checks and network-aware evacuation
-- hallway mailbox projection backed by the same logical inbox
-- explicit safe membership removal, doorway sealing and administrative recovery
+## Scope
 
-**Red:** Add failing consent, permission-revocation, simultaneous-pack, last-exit, offline-login, stale-network-generation and hallway-removal tests.
+This milestone adds:
 
-**Green:** Connect two cabins first, then permit one to pack only when every affected player retains a safe route or can be evacuated.
+- a permanent connection upgrade and mutually approved hallway membership
+- one separately allocated shared hallway with protected cabin doors
+- permission-checked access to connected packed cabins
+- interior packing with graph-locked reachability and evacuation
+- hallway projections of existing mailboxes
+- safe membership removal and administrative recovery
 
-**Refactor:** Centralise graph locking and route validation so exterior entry, interior packing and login recovery cannot disagree.
+Hallways never combine cabin storage, automation, roles or resource ownership. [Milestone 10](10-cooperative-logistics.md) owns discovery sharing, requests, surplus offers and inter-cabin transfers.
 
-**Exit gate:** Concurrent packing cannot strand a player, expose an unauthorised destination, remove another cabin's doorway or delete hallway furnishings.
+## Connection upgrade
 
+Each participating cabin must purchase its own permanent connection upgrade before joining a hallway. Leaving retains the installed upgrade without refund, so the cabin may join another hallway later.
 
-## Consolidated specification
+Obsidian anchors the hallway and doorway; amethyst resonance identifies and routes destinations. Higher tiers may require Nether and End materials. Recipes and progression gates are data-driven and use the world's persisted attunement.
 
-_Source: connection, hallway, packed-access and network-safe packing sections of the former network specification._
+Physical proximity never creates a connection. Owners mutually approve creation and membership, and a cabin belongs to at most one hallway network. Once connected, supported exterior dimension and distance do not affect hallway access. Networks connect member cabins only, never arbitrary world waypoints.
 
-### Connection upgrade
+## Shared hallway
 
-Cabin networking is a permanent paid upgrade for each participating cabin.
+The first accepted connection creates one permanent hallway cell and network UUID. Its persisted record contains membership, cell identity, doorway allocations, graph generation and recovery state.
 
-- Every cabin must purchase its own connection upgrade before joining a hallway.
-- The upgrade remains installed if the cabin later leaves; its cost is not refunded.
-- An upgraded cabin may later join another hallway without repurchasing the structural upgrade.
-- Obsidian forms the dimensional anchor that keeps the hallway and cabin doorway fixed in the pocket dimension.
-- Amethyst resonance identifies destinations and performs the magical routing between anchors.
-- Stronger connection tiers may require Nether and End materials.
-- Exact recipes and progression gates are data-driven and resolve their variable ingredients through the persistent world attunement in the progression specification.
+Each member has one protected, labelled doorway. Traversal rechecks the destination cabin's role and entry policy before loading and entering its general interior.
 
-Connection is never implied by physical proximity. Owners mutually approve creation or membership, and a cabin belongs to at most one hallway network at a time.
+The shell and cabin doorways resist ordinary breaking, explosions and pistons. All other hallway space accepts ordinary Minecraft blocks:
 
-Once joined, hallway access is independent of the distance or supported exterior dimension between member cabins. It is deliberately limited fast travel: the network connects one personal cabin per member and never creates arbitrary world waypoints.
+- furnishings do not belong to cabin storage
+- cabin roles grant no automatic protection
+- cabin automation never consumes hallway inventories
+- ordinary multiplayer trust and external protection mods govern player blocks
 
-### Shared connection hallway
+Removing a member seals and removes only its protected doorway. It never deletes the cabin, hallway or player furnishings. A small or inactive network persists until owners explicitly dismantle it or an administrator performs recovery.
 
-The first accepted connection creates a persistent hallway allocation and lightweight network UUID. The record exists to preserve:
+## Packed-cabin access
 
-- membership
-- hallway cell identity
-- protected doorway allocations
-- access checks
-- packing reachability
-- crash recovery
+Packing removes a cabin's exterior anchor but retains its interior and hallway doorway. A connected upgraded cabin remains reachable while `PACKED`.
 
-It does not own a combined storage, automation or resource ledger.
+Entry loads only the required cabin or room cell, applies its bounded managed catch-up and rechecks destination permissions. Empty packed cabins receive no permanent chunk ticket, and ordinary blocks remain paused while inactive.
 
-Every member cabin has one protected, labelled doorway in the hallway. Traversing it enters that cabin's interior after rechecking the traveller's local role and entry permission.
+A packed cabin has no exterior exit. Its occupants leave through the hallway and another cabin whose entry policy permits them to reach a valid deployed exterior.
 
-The hallway's protected shell and cabin doorways cannot be broken or moved by ordinary players. The remaining space may be furnished with ordinary Minecraft blocks.
+Hallway entry uses the same destination-local behavior as exterior entry. It projects [Milestone 4's](04-household-storage.md) single logical mailbox beside the cabin door and triggers [Milestone 8](08-enchanting-loadouts.md) owner-loadout reconciliation without copying either state.
 
-Player-placed hallway blocks behave as they would in a normal shared world:
+## Packing from inside
 
-- they are not part of any cabin's central storage
-- they are not automatically protected by cabin roles
-- inventories are not consumed by cabin automation
-- ordinary multiplayer trust and any external claim/protection mods govern their use
+The connection upgrade lets the owner initiate packing from a protected interior interface. Validation still requires:
 
-Removing a cabin from the hallway seals and removes only its protected doorway projection. It never deletes the cabin interior, hallway or other players' furnishings. Hallway records are not automatically destroyed merely because membership becomes small or temporarily inactive; dismantling and administrative recovery must be explicit and safe.
+- a packable lifecycle state and current owner authority
+- guaranteed delivery of the bound packed item
+- a reconciled exterior projection
+- safe destinations for every occupant who would lose their final permitted exit
 
-### Packed-cabin access
+The owner may remain inside when another permitted route to a deployed exterior survives.
 
-Packing removes a cabin's exterior anchor, not its interior or hallway doorway.
+## Network-aware packing
 
-An upgraded connected cabin remains reachable through its hallway while `PACKED`. Entering loads the required room cell, applies bounded managed catch-up and rechecks the destination cabin's permissions.
+Packing is one transaction against the hallway graph:
 
-Ordinary cabin blocks remain paused while the cell is unoccupied and otherwise inactive. Access through a hallway does not cause an empty packed cabin to remain permanently chunk-loaded.
+1. Lock affected membership and cabin lifecycle transitions.
+2. Reject new entry through the exterior being removed.
+3. Compute deployed-exterior reachability for each online occupant under that player's destination permissions.
+4. Validate evacuation only for occupants losing their final permitted route.
+5. Recheck graph generation, roles, exteriors and lifecycle.
+6. Evacuate those occupants, commit `PACKED`, remove the exterior and activate the packed item.
+7. Retain the hallway doorway and release all locks.
 
-A packed cabin's ordinary exterior exit is unavailable. Occupants leave through its hallway door and another permitted cabin with a deployed exterior.
+Failure to guarantee any required evacuation aborts before exterior removal. Concurrent packing cannot let two owners each rely on the other's disappearing exterior.
 
-### Packing from inside
+A usable route requires active membership, destination entry permission, a valid `DEPLOYED` exterior and a safe loaded position outside it.
 
-The owner may initiate packing from a protected internal cabin interface after purchasing the connection upgrade.
+Offline players do not block packing. Login revalidates occupancy, graph generation and permitted routes. A player without a valid exit uses [Milestone 0's](00-safe-mvp.md) emergency destination chain.
 
-The normal validation still applies:
+Membership removal and network dismantling use the same graph lock and per-player reachability checks. They seal only affected protected projections and fail before stranding an online occupant.
 
-- the cabin must be in a packable lifecycle state
-- the owner must have authority
-- delivery of the current bound packed item must be guaranteed
-- the exterior projection must reconcile successfully
-- every required evacuation destination must be safe
+## Technical approach
 
-Packing from inside does not require evacuating the owner when another permitted deployed exterior remains reachable through the hallway.
+One server-authoritative graph service owns network UUIDs, generations, membership and doorway allocations. Traversal, packing, login recovery and membership changes share its route resolver and lock order. Persisted transitions make doorway projection and graph mutation idempotent after interruption.
 
-### Transactional network-aware packing
+Status remains cabin-specific and follows [Milestone 4's](04-household-storage.md) visibility rules. Inspecting a connected cabin never grants more information than inspecting it locally.
 
-Packing is evaluated as a transaction against the hallway graph. This prevents two owners from simultaneously packing what each initially believes is the other's remaining exit.
+## Evergreen acceptance contract
 
-The operation:
+Milestone 9 remains accepted only while automated tests and targeted manual checks establish that:
 
-1. locks the affected hallway membership and relevant cabin lifecycle transitions
-2. rejects new entry through the exterior being removed
-3. computes exterior reachability separately for every online occupant using that player's destination-cabin permissions
-4. identifies only occupants who would lose their final permitted route to a deployed exterior
-5. validates safe evacuation destinations for those occupants
-6. rechecks the graph, roles, exteriors and cabin lifecycle immediately before commit
-7. evacuates only the occupants who would otherwise be stranded
-8. commits `PACKED`, removes the exterior projection and activates the bound packed item
-9. retains the hallway doorway and internal access
-10. releases all graph and lifecycle locks
+1. Only upgraded cabins join through mutual owner consent, and each cabin belongs to at most one network.
+2. Hallway allocation, membership and protected doorway identity survive restart without exposing another cell.
+3. Destination roles and entry policy are rechecked on every traversal and permission change.
+4. Packed access loads only required cells and never grants ordinary inactive blocks background simulation.
+5. Mailbox and loadout projections use existing cabin state without copying it.
+6. Concurrent packing preserves at least one permitted exit per occupant or evacuates that occupant safely.
+7. Failed packing, membership removal or dismantling leaves exteriors, graph state and furnishings unchanged.
+8. Login after graph or permission changes returns stranded players through the emergency destination chain.
+9. Removing one member seals only its doorway and never deletes cabin or player-owned blocks.
+10. Dedicated-server recovery completes interrupted graph and doorway transitions idempotently.
 
-If any required evacuation cannot be guaranteed, packing aborts without removing the exterior.
+Graph, route, permission, lifecycle, concurrency, GameTest and dedicated-server restart suites are the automated gates. Manual acceptance covers labelled doors, hallway furnishing, traversal presentation and multiplayer timing.
 
-A route counts only when:
+## Out of scope
 
-- every traversed connection remains active
-- the destination cabin permits that player to enter
-- the destination cabin has a valid `DEPLOYED` exterior
-- the exterior safe-destination resolver succeeds
-
-Offline players do not block movement. On login, occupancy and network generation are revalidated. If the player no longer has a permitted hallway route to a deployed exterior, the shared emergency destination fallback from the core spec is used.
-
-### Cabin-specific status
-
-Status remains separated by cabin even inside a hallway network.
-
-- Owners see complete diagnostics for their cabin.
-- Residents see actionable shared-facility status but not private owner configuration.
-- Guests may see plain-language warnings and shortages without gaining storage access or exact inventory visibility.
-- Inspecting another connected cabin applies that destination's local visibility rules.
-- Owners may publish exact resource requests or surplus offers to the hallway.
-- The default interface never combines every cabin's shortages into one mandatory task list.
+- combined storage, roles, automation or status ledgers
+- arbitrary world waypoints
+- resource requests, surplus offers or inter-cabin transfers
+- automatic destruction of small or inactive networks
+- cabin ownership transfer
+- final hallway geometry, connection costs and interface art before delivery alignment
