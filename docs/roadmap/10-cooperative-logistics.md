@@ -1,94 +1,88 @@
 # Milestone 10: Cooperative knowledge, mail and resource logistics
 
-**Depends on:** Milestones 7 through 9.
+**Depends on:** [Milestone 7](07-production-automation.md) jobs and reserves, [Milestone 8](08-enchanting-loadouts.md) knowledge and loadouts, and [Milestone 9](09-connected-cabins.md) hallway networks.
 
-**Outcome:** Connected cabins cooperate without becoming one inventory or leaking private household configuration.
+**Outcome:** Connected cabins cooperate without becoming one inventory or exposing private household configuration.
 
-Major scope:
+**Status:** Draft. Each delivery requires alignment before implementation.
 
-- permanent propagation of installed automation discoveries and learned enchantments
-- cabin-local ordinary item, meal and potion knowledge
-- owner-published requests and surplus offers
-- reserve-aware, attributable and atomic inter-cabin storage transfers
-- mailbox fulfilment and surplus-delivery automation
-- cabin-specific network status and visibility
-- leaving a network without revoking already copied shared discoveries
+## Shared discoveries
 
-**Red:** Add failing privacy, reserve, partial-transfer, disconnect, capacity, discovery-propagation and attribution tests.
+Connection and active hallway membership propagate two kinds of permanent knowledge:
 
-**Green:** Move one explicitly requested stack between two cabins transactionally before enabling automated fulfilment.
+- installed automation capabilities become known to every member cabin but remain disabled until that cabin's owner enables them
+- learned enchantments enter each member's known library at the highest shared level but never occupy an active slot automatically
 
-**Refactor:** Keep all remote transfers request-based; no automation may read or consume donor storage directly.
+Ordinary products, prepared meals and potion variants never propagate. Connecting temporarily may spread shared discoveries throughout a group; this is intended progression. Leaving retains every copied capability and enchantment.
 
-**Exit gate:** Every shared item changes ownership atomically and visibly, every permission is evaluated at the destination cabin, and no combined network inventory exists.
+Sharing knowledge transfers no book, item, material, active-slot selection, automation setting or private configuration.
 
+## Requests and surplus
 
-## Shared-discovery specification
+Every cabin retains its own storage and resource ownership. No interface or job sees a combined network inventory.
 
-_Source: shared-discovery section of the former network specification._
+An owner may publish an exact request or expose surplus through rules such as:
 
-### Shared discoveries
+- share an item above a fixed quantity
+- retain enough inputs for a configured number of complete owner-loadout restocks
+- transfer a configured amount after an explicit request
 
-When cabins connect through a hallway, installed automation discoveries and learned enchantments propagate permanently according to the storage and automation specification.
+Donor evaluation includes [Milestone 7](07-production-automation.md) hard reserves, committed jobs and [Milestone 8](08-enchanting-loadouts.md) loadout commitments. Manual player withdrawals remain outside automatic sharing rules.
 
-Ordinary learned items, meals and potions do not propagate. Leaving the hallway never removes knowledge already copied.
+Remote automation never reads or consumes donor storage directly. One transfer performs:
 
+1. Persist a recipient request with its destination and attribution.
+2. Let each donor independently evaluate current sharing, reserve and permission rules.
+3. Reserve one eligible amount at the donor and capacity at the recipient storage or mailbox.
+4. Commit removal and deposit atomically.
+5. Roll back both sides on failure or interruption.
 
-## Knowledge-sharing boundary
+The recipient owns the items only after commit. Its jobs cannot consume in-transit resources. Every success records source cabin, destination cabin, rule, item, amount and initiating request.
 
-_Source: shared-versus-local knowledge rules from the former storage specification._
+## Mail automation
 
-### Scope of shared knowledge
+An owner may enable a narrow mailbox capability to fulfil declared incoming requests or deliver eligible surplus. Each rule names its item, amount, destination and limit; no rule grants general remote storage access.
 
-Knowledge is divided deliberately:
+Delivery stops at missing capability, permission, donor surplus, reserve, recipient capacity or mailbox capacity. A full destination rejects the transfer without materializing partial ownership or deleting items.
 
-- **Shared discoveries:** installed automation books and learned enchantments copy permanently to cabins connected through the same hallway network.
-- **Local product knowledge:** ordinary item templates, prepared meals and potion variants remain specific to the cabin whose storage received them.
+## Status and privacy
 
-Connecting temporarily is allowed to spread shared discoveries throughout a small friend group. A cabin retains copied discoveries after leaving the network. This is intended cooperative progression.
+Status remains grouped by cabin, request and job:
 
-Every cabin owner independently enables or disables each usable automation. Knowing an ability never silently activates it.
+- owners see their complete storage, reserve, sharing, mailbox and transfer diagnostics
+- residents see actionable status for facilities they may use, without owner sharing or loadout configuration
+- guests see plain-language warnings without exact quantities, catalogues or private configuration
+- remote inspection reveals no more than the same player could see at the destination cabin locally
 
+The network never merges every cabin's shortages into a mandatory task list. Failures identify the cabin, request or job and one concrete blocking reason.
 
-## Resource-logistics specification
+## Technical approach
 
-_Source: cabin-owned storage-sharing and status sections of the former storage specification._
+A network-logistics service consumes [Milestone 9's](09-connected-cabins.md) stable membership generation but owns no hallway lifecycle. Discovery propagation is idempotent and monotonic. Transfer journals reference immutable request, donor, recipient and payload identities so restart recovery commits once or rolls back both reservations.
 
-### Cabin-owned storage sharing
+All donor policy and destination permission checks run server-side against current state immediately before commit. Stale membership, changed rules or lost capacity abort safely.
 
-Every cabin retains ownership of its storage. There is no combined network inventory.
+## Evergreen acceptance contract
 
-An owner may expose surplus through rules such as:
+Milestone 10 remains accepted only while automated tests and targeted manual checks establish that:
 
-- share this item above a fixed quantity
-- retain enough inputs for a configured number of complete owner loadout restocks
-- transfer a configured amount on request
+1. Automation capabilities and enchantments propagate permanently without enabling capabilities or active slots.
+2. Product, meal and potion templates remain cabin-local.
+3. Disconnecting retains copied knowledge but stops future propagation and transfers.
+4. Donors expose only owner-approved surplus after reserves, jobs and loadout commitments.
+5. Transfers commit equal item and component data at both cabins or change neither side.
+6. Full storage, full mailbox, permission loss and stale membership cannot lose or duplicate items.
+7. Recipient jobs cannot consume resources before transfer commit.
+8. Every transfer remains attributable and visible under local role-based privacy rules.
+9. Remote inspection never exposes exact data hidden from that player locally.
 
-Remote automation never consumes directly from donor storage. Instead:
+Discovery, policy, reservation, transfer-journal, permission, concurrency and dedicated-server restart tests are the automated gates. Manual acceptance covers publishing, attribution, status grouping and multiplayer visibility.
 
-1. A recipient creates a transfer request.
-2. Each donor independently evaluates its current sharing and reserve rules.
-3. An eligible amount is atomically removed from the donor.
-4. The same amount is atomically deposited into the recipient cabin or its configured mailbox destination.
-5. Failure rolls the transaction back without partial movement.
+## Out of scope
 
-Every completed transfer is attributable and visible to both cabins. A recipient job consumes the items only after they have become local storage.
-
-### Status and inspection
-
-Status is always grouped by cabin and job. The system never merges every connected cabin's shortages into one mandatory list.
-
-- Owners see full storage, automation, loadout, reserve, sharing, mailbox, room and network diagnostics.
-- Residents see actionable status for facilities they may use, without private owner loadout or sharing configuration.
-- Guests may see plain-language cabin warnings and shortages but cannot browse the storage catalogue, exact quantities, private loadouts or mailbox contents.
-- Remote inspection exposes no more detail than the inspecting player could see for that destination cabin locally.
-- Owners may publish exact requests or surplus quantities to the hallway network.
-
-Failures should name the cabin, job and concrete reason, for example:
-
-```text
-Sune's Cabin / Dinner restock: missing mutton
-Adam's Cabin / Diamond pickaxe: enchantment Efficiency V is unknown
-Alex's Cabin / Greenhouse collection: central storage has no free slot
-Sam's Cabin / Shared wood request: retained for five owner loadout restocks
-```
+- combined or remotely browsable storage
+- propagation of ordinary product, meal or potion knowledge
+- automatic activation of shared capabilities or enchantments
+- direct remote consumption by recipient jobs
+- anonymous or unattributed transfers
+- final sharing limits, transfer rates and interface art before delivery alignment
