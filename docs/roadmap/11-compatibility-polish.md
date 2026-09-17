@@ -1,243 +1,126 @@
-# Milestone 11: Compatibility, balance and presentation pass
+# Milestone 11: Compatibility, balance and presentation
 
-**Depends on:** The systems being tuned or presented.
+**Depends on:** Every completed system being tuned, integrated or presented.
 
-**Outcome:** The complete feature set feels coherent in survival and remains reliable in the intended modpack.
+**Outcome:** The completed feature set feels coherent in survival and remains reliable in the supported modpack.
 
-Major scope:
+**Status:** Draft. Compatibility claims require testing in the declared release versions.
 
-- full vanilla, Biomes O' Plenty, Farmer's Delight Refabricated, Tom's Simple Storage, Alex's Mobs Continued and Alex's Mobs Continued Delight compatibility matrix
-- survival tuning for acquisition recipes, attunement pools, room costs, capacities, catch-up caps, production rates, automation loot and enchanting formulas
-- higher-fidelity fake windows while retaining the lightweight state-driven architecture
-- consistent models, textures, sounds, tooltips, interfaces and actionable status messages
-- multiplayer soak tests, repeated restart/reconciliation tests and administrative recovery rehearsal
-- documented supported versions, datapack/profile extension points and failure behavior when optional mods are absent
+## Scope
 
-**Red:** Add compatibility and regression cases for every declared integration and visual state before final tuning.
+This milestone owns:
 
-**Green:** Resolve compatibility and presentation gaps without weakening lifecycle or transaction invariants.
+- the optional-mod compatibility matrix and release-version claims
+- survival tuning of recipes, capacities, rates, limits, loot and costs
+- higher-fidelity fake windows within the existing state-driven architecture
+- consistent models, textures, sounds, tooltips, interfaces and status messages
+- multiplayer soak, restart, reconciliation and administrative-recovery testing
+- documentation of supported versions, extension points and optional-content failure behavior
 
-**Refactor:** Remove provisional interfaces only after their replacements preserve the same interaction contracts and diagnostics.
+Earlier milestones define integration contracts but cannot claim tested compatibility until their combinations pass here.
 
-**Exit gate:** A fresh modpack survival world can progress through every completed milestone without commands, silent data loss, impossible requirements or undocumented integration behavior.
+## Compatibility matrix
 
-## Optional-mod compatibility obligations
+The release matrix must cover:
 
-Milestone 11 owns all acceptance testing that requires optional mods. Earlier milestones define mod-agnostic behavior and may provide explicit integration profiles, but they do not claim that an optional-mod combination has passed until it appears in this milestone's compatibility matrix.
+| Content | Required acceptance |
+| --- | --- |
+| Vanilla | Every completed milestone and baseline regression fixture |
+| Biomes O' Plenty | Declared palette, door and attunement profiles; absence leaves vanilla usable |
+| Farmer's Delight Refabricated | Ordinary crops, rich soil, kitchen and storage blocks; declared cooking profiles |
+| Tom's Simple Storage | Ordinary in-cabin networks remain independent of central cabin storage |
+| Alex's Mobs Continued | Only profiled catalysts, stable residents and livestock species are managed |
+| Alex's Mobs Continued Delight | Only declared ingredients, meals and supported processes become reproducible |
 
-The compatibility world must include, at minimum:
+Ordinary blocks and block entities should work through normal Minecraft persistence without knowledge of another mod's internals. Features that preserve entities, components or production semantics require explicit profiles.
 
-- Farmer's Delight Refabricated crops, rich soil, kitchen and storage blocks
-- a Tom's Simple Storage network backed by ordinary inventories inside a cabin
-- every other integration named in this milestone's major scope
+Missing optional mods or profiles must disable only their content. They must not prevent base startup, reroll persisted attunement, substitute materials silently or corrupt saved state.
 
-For ordinary blocks and block entities, the preferred result is normal dimensional compatibility without knowledge of the other mod's internal storage or simulation model. Explicit profiles are reserved for features whose safe semantics cannot be inferred.
+## Balance ownership
 
+Milestone 11 settles data-driven values left open by accepted feature contracts.
 
-## Future decision gates and exploratory backlog
+### Progression and rooms
 
-These ideas are recorded so they are not lost, but they are not committed milestones until their open safety, UX or scope questions are specified:
-
-- controller-based Cabin palette renovation after the progression controller is stable
-- automatic emergency fire-packing after offline-owner, full-inventory, evacuation and network-race behavior is specified
-- additional exterior styles and specialised-room exterior designs
-- biome-aware fake-window scenery and richer weather animation
-- cabin naming and map/waypoint integration
-- making cabin sleep affect the exterior world's night
-- shared ownership, which would require deliberately replacing the current exactly-one-owner role model
-- inferred arbitrary modded-material support, which remains rejected in favor of explicit profiles unless a safe contract is designed
-
-Upgrade recipes remain in the world-attuned controller system rather than the crafting table. True rendered cross-dimensional windows remain outside the project scope.
-
-Before beginning a milestone, settle only its listed data-driven decisions and expand that milestone into implementation-sized tasks. Do not prematurely freeze balance values belonging to later systems.
-
-## Progression balance decisions
-
-### Balancing decisions intentionally left data-driven
-
-- exact upgrade recipes and quantities
-- world-attunement material pools, exclusions and selection weights
-- maximum general-room dimensions
-- functional-room dimensions and tier counts
-- catch-up duration caps
-- growth, breeding and production rates
+- upgrade recipes, quantities and attunement-pool weights
+- maximum supported room dimensions and tier counts
+- room costs, catch-up caps, growth, breeding and production rates
 - storage and local-fixture capacities
-- supported integration entries
-- charcoal and late coal-synthesis recipes
+- charcoal and coal-synthesis recipes and work
+- supported material, crop, tree, mount and livestock profiles
 
-## Network balance and interface decisions
+### Storage, automation and enchanting
 
-### Balancing and interface decisions intentionally deferred
-
-- exact connection-upgrade recipes and tiers
-- hallway dimensions and visual variants
-- maximum cabins per hallway, if a practical server limit is needed
-- mailbox slot count
-- hallway creation, invitation and departure screen layout
-- explicit hallway dismantling and administrative-recovery commands
-- whether residents may bind their respawn point to a cabin bed
-
-## Storage and automation balance decisions
-
-### Balancing decisions intentionally left data-driven
-
-- storage slots per upgrade tier
+- storage capacity per tier and mailbox slots
 - automation-book loot sources and rarity
-- job depth and operation limits
+- job depth, operation, work and catch-up limits
 - hard-reserve defaults
-- enchantment material-cost formulas
-- library slots per tier
-- supported crafting, cooking, brewing and enchanting integrations
-- whether installing an automation book consumes the physical book
+- enchanting material formulas, work and active slots per tier
+- supported crafting, cooking, brewing and enchanting profiles
 
-## Later-feature context and references
+### Connections
 
-_Source: later-feature, inspiration and design-principle sections of the former root specification._
+- connection recipes and tiers
+- hallway dimensions, presentation variants and practical membership limits
+- invitation, departure, dismantling and recovery interface details
 
-## Later features
+Changing a value must preserve saved identities, paid receipts, committed jobs and current compatibility promises. Balance reloads must fail explicitly where live migration is unsupported.
 
-Once the basic model is stable, the larger design continues in four independent feature tracks:
+## Presentation
 
-- [Cabin Acquisition and Relocation](01-acquisition-relocation.md)
-- [Cabin Progression and Functional Rooms](02-progression-space.md)
-- [Cabin Storage and Automation](07-production-automation.md)
-- [Cabin Network and Access](09-connected-cabins.md)
+Fake windows retain the lightweight exterior-condition projection from Milestones 0 and 3. Improvements may add better textures, transitions, biome cues and weather animation but not rendered cross-dimensional portals or terrain views.
 
-Their implementation order and cross-feature dependencies are maintained in [the project roadmap](../../ROADMAP.md).
+Every protected interface must use consistent controls, role-filtered status and actionable failure text. Models, textures and sounds must distinguish interactive cabin systems from ordinary decoration without obscuring their Minecraft behavior.
 
-Additional later possibilities include:
+## Release verification
 
-```text
-several exterior cabin styles
+The compatibility world includes every matrix entry in its supported release versions. Verification covers:
 
-wood/material customisation
+- fresh survival progression through every completed milestone without commands
+- optional integrations present individually and together
+- optional integrations removed from a copied test world under each documented support policy
+- repeated packing, restart, schema migration and interrupted-transition recovery
+- concurrent multiplayer entry, packing, storage, automation and network operations
+- administrative diagnosis and recovery from damaged projections and stale items
+- datapack and profile overrides with valid, missing and malformed content
 
-shared ownership
+Release documentation records exact supported versions, known incompatibilities, save-migration boundaries and extension schemas.
 
-biome-aware fake windows
+## Evergreen acceptance contract
 
-weather animation
+Milestone 11 remains accepted only while release testing establishes that:
 
-sleeping inside affects overworld night
+1. Every compatibility-matrix combination starts, plays and reloads under its documented policy.
+2. Missing optional content fails locally without impossible base requirements or silent substitution.
+3. A fresh survival world reaches every completed feature without operator commands.
+4. Balance values remain finite, attainable and bounded under ordinary survival play.
+5. Presentation exposes every important state and failure without weakening server authority.
+6. Multiplayer soak and repeated restart tests preserve identity, ownership, resources and lifecycle invariants.
+7. Administrative recovery repairs projections without deleting interiors, rooms, storage or managed residents.
+8. Supported datapack and profile extensions validate early and fail with actionable diagnostics.
+9. Public documentation matches the tested release versions, migrations and integration behavior.
 
-named cabins
+Automated compatibility, GameTest and dedicated-server restart suites are release gates. Manual survival, GUI, audio, visual and multiplayer acceptance complete the matrix.
 
-map/waypoint integration
+## Exploratory backlog
 
-specialised greenhouse/workshop exterior designs
-```
+These ideas are not committed milestones:
 
-True rendered windows into the overworld remain intentionally outside the plan unless there is a very compelling reason later.
+- palette renovation
+- automatic emergency fire-packing
+- more exterior and room styles
+- cabin naming and map integration
+- cabin sleep affecting exterior night
+- shared ownership
+- inferred arbitrary modded-material support
 
----
+Each requires a separate scope, safety and compatibility alignment. Shared ownership must deliberately replace the one-owner model; inferred integrations remain rejected until they have a safe contract.
 
-## Inspiration / related mods
+The cabin carries the home, not the settlement. Outdoor defenses, paths, pens, mines and terrain adaptation remain local to each campsite.
 
-### Pocket Dimension
+## Out of scope
 
-Closest inspiration for the interior architecture.
-
-It gives players persistent personal rooms accessed through portable Pocket blocks, limits players to one active entrance and has explicit handling for what happens when an entrance disappears while occupants are inside.
-
-Useful ideas to examine:
-
-```text
-interior allocation
-persistent dimension ownership
-entrance ↔ interior mapping
-occupant recovery
-one-active-entrance rule
-```
-
-Our design differs by making the entrance a physical cabin and deliberately connecting the interior visually to exterior time/weather.
-
-### Simply Tents
-
-Useful inspiration for the player interaction and ownership side.
-
-It supports deployable structures, ownership, multiple sizes, packing and interior preservation.
-
-Useful ideas:
-
-```text
-placement validation
-owner-only packing
-size progression
-cosmetic/material variation
-pack interaction
-```
-
-The visual tent design and physically stored interior are specifically things this mod does differently from our design.
-
-### AreaScale
-
-Useful reference for robust interaction around portable builds.
-
-AreaScale can select and capture an arbitrary region into an item, including block-entity contents and entities.
-
-Useful ideas:
-
-```text
-placement preview
-space validation
-safe world mutation
-visual bounding boxes
-```
-
-Our cabin avoids needing to serialize arbitrary structures because the real base never moves.
-
-### MoveYourHouse
-
-Useful inspiration for treating relocation as an explicit gameplay action tied to a house/territory rather than simply carrying a portal block.
-
-The mod currently supports Fabric 26.2 and exposes a house block, permissions and a move-house action.
-
-Useful ideas:
-
-```text
-house ownership
-permissions
-relocation UX
-multiplayer access
-```
-
-### Immersive Portals
-
-Reference only.
-
-It demonstrates genuine see-through portals between dimensions and seamless dimensional transitions.
-
-It is useful evidence for what would technically be possible, but that rendering complexity is specifically excluded from this project. Fake windows provide the useful part of the experience much more cheaply.
-
----
-
-## Design principle
-
-The portable cabin carries the things that make a location feel like home:
-
-```text
-your room
-food
-storage
-crafting
-farming
-possessions
-a tamed house cat
-deliberately checked-in stable residents
-```
-
-It does not carry the settlement.
-
-Every new location still asks the players to establish themselves there:
-
-```text
-make the area safe
-build defences
-create paths
-build outdoor pens for ordinary animals
-explore
-mine
-adapt to the terrain
-```
-
-The cabin makes moving pleasant without removing the reason to settle somewhere in the first place.
+- rendered cross-dimensional windows or portals
+- undocumented support for arbitrary mod internals
+- silent fallback from missing persisted content
+- balance changes that invalidate paid or committed state without migration
