@@ -1,129 +1,122 @@
 # Milestone 8: Enchanting, equipment requisitions and owner loadouts
 
-**Depends on:** Milestone 7's knowledge, job and storage systems.
+**Depends on:** [Milestone 7](07-production-automation.md) knowledge, timed jobs and storage transactions.
 
-**Outcome:** The cabin can learn enchantments destructively, reproduce valid equipment using materials instead of experience and maintain explicit Factorio-style owner loadouts.
+**Outcome:** Cabins learn enchantments destructively, reproduce valid equipment with materials instead of experience and maintain explicit owner loadouts.
 
-Major scope:
+**Status:** Draft. Each delivery requires alignment before implementation.
 
-- capacity-limited enchantment library with one selected extraction per destroyed source item
-- level improvement, pending shared discoveries and vanilla/modded applicability rules
-- amethyst-and-lapis enchanting costs with obsidian as installed infrastructure rather than fuel
-- exact equipment requisitions with full cost preview
-- named owner loadout groups, effective min/max rules and optional automated production
-- protected slots, durability/enchantment requirements and the advanced deposit-unlisted control
-- Take for this trip, Take back and entry transaction summaries
+[Milestone 9](09-connected-cabins.md) extends loadout triggers to hallway entry. [Milestone 10](10-cooperative-logistics.md) owns discovery propagation and multi-restock sharing reserves.
 
-**Red:** Add failing destructive-extraction, capacity, incompatibility, cost, protected-item, competing-group and temporary-exception tests.
+## Enchantment library
 
-**Green:** Build manual enchantment learning and requisition first, then add entry-triggered loadout exchange.
+Placing an enchanted item in storage teaches nothing. An owner or resident learns one enchantment through a deliberate extraction:
 
-**Refactor:** Use canonical safe templates and the bounded-job engine for both requisitions and restocking.
+1. Supply one enchanted source item and one blank book.
+2. Select one useful enchantment and level.
+3. Validate the source, library state and selected level.
+4. Destroy the source and consume the blank book.
+5. Add or improve only the selected enchantment; all others on the source are lost.
 
-**Exit gate:** Loadouts never alter unspecified or unsafe items, enchanting never consumes experience, and every planned material cost is visible before commitment.
+Validation failure consumes nothing. Extracting a known enchantment at the same or a lower level is rejected.
 
+### Known and active enchantments
 
-## Consolidated specification
+The **known library** is permanent and uncapped. Each enchantment family has one entry at its highest learned level; learning level III permits levels I–III. Known enchantments cannot be forgotten.
 
-_Source: enchantment, equipment-requisition, loadout and provisional-interface sections of the former storage specification._
+The library has a capacity-limited set of **active slots**:
 
-### Enchantment library
+- only active enchantments may be applied or advance requisition jobs
+- upgrades add active slots, not knowledge capacity
+- the owner may activate or deactivate any known enchantment
+- deactivation pauses dependent jobs without losing materials, work or plans; reactivation resumes them
+- shared discoveries become known but never activate automatically
 
-Placing enchanted equipment or an enchanted book in ordinary or central storage does not teach its enchantments. Learning is a deliberate destructive action at the enchantment-library interface.
+The Enchanting section of **Cabin Upgrades** shows the known catalogue and active slots. Selection is server-authoritative and changing it never consumes the learned enchantment.
 
-For each extraction:
+Vanilla applicability and incompatibility rules remain authoritative. Modded enchantments require explicit profiles. Curses may be learned but apply only when explicitly requested.
 
-1. The player supplies one enchanted source item, such as equipment or an enchanted book, and one blank book.
-2. The interface shows the enchantments that can be learned or improved.
-3. The player selects exactly one enchantment.
-4. Validation checks library capacity and whether the selected level is useful.
-5. A successful extraction destroys the enchanted source item and consumes the blank book.
-6. Only the selected enchantment is learned; every other enchantment on the item is lost.
+## Enchanting costs
 
-The operation rejects before consuming anything when the cabin already knows the same or a higher level.
+Cabin enchanting consumes materials and timed work, never player experience. Amethyst provides recurring resonance, lapis is a secondary reagent, and obsidian installs or strengthens library infrastructure rather than serving as routine fuel. Nether and End materials gate the highest tiers.
 
-Each enchantment family occupies one library slot regardless of level. Learning level III permits requisitioning levels I through III. Extracting a higher level improves the existing entry without consuming another slot. Library upgrades add slots.
+Cost scales with rarity, level, existing enchantments and equipment tier. Treasure enchantments require prior learning. Exact formulas, quantities and work durations are data-driven.
 
-Shared enchantment discoveries that exceed a receiving cabin's local capacity enter a permanent pending-discoveries list. After expanding the library, the owner chooses which pending discoveries to install. Learned entries cannot be forgotten.
+## Equipment requisitions
 
-Vanilla applicability and incompatibility rules remain authoritative. Modded enchantments require an explicit profile. Curses may be learned but are never applied unless explicitly requested.
+Only the owner may request a quantity of a locally known base-item variant with selected active enchantments and levels.
 
-#### Enchanting costs
+Before commitment, the interface shows the complete crafting, enchanting, material and time plan. Validation reports unknown items, inactive or missing enchantments, incompatible combinations, unavailable capabilities, protected reserves and insufficient materials separately.
 
-Cabin enchanting is material-only and never consumes player experience.
+Requisitions use Milestone 7's selected recipes, reservations, timed work and atomic output commit. Deactivating a required enchantment pauses the job. Residents may contribute enchantments and use active enchantments manually but cannot save requisitions or change active slots.
 
-- Amethyst is the primary recurring resource: its resonance performs the pattern work that replaces experience levels.
-- Lapis remains a secondary enchanting reagent.
-- Obsidian is used to install and strengthen the library's dimensional anchor, but is not consumed as routine enchanting fuel.
-- Nether and End materials gate the highest tiers.
-- Cost scales with enchantment rarity, requested level, number of enchantments already applied and equipment tier.
-- Treasure enchantments still require prior extraction; materials alone cannot discover them.
+## Owner loadouts
 
-Exact formulas and material quantities are data-driven balancing values.
-
-### Equipment requisition
-
-The cabin owner may request an exact equipment template containing:
-
-- a locally known base item
-- a supported material or item variant
-- specific learned enchantments and levels
-- a requested quantity
-
-The cabin validates the complete recipe and enchanting plan before accepting the job. It reports unknown items, missing enchantments, incompatible combinations, unavailable automation and insufficient materials separately.
-
-Residents may use shared crafting and enchanting facilities manually but do not gain the owner's personal requisition rules, automatic restocking or saved loadouts from that cabin.
-
-### Owner loadouts
-
-Loadouts are personal to the cabin owner. They run when the owner enters their own cabin, including through its hallway door while the exterior is packed.
-
-Each rule contains:
+Loadouts belong only to the cabin owner and reconcile when that owner enters the cabin. Each rule contains:
 
 - a safe item template
-- minimum desired quantity
-- maximum retained quantity
-- preferred inventory slots, when relevant
+- minimum and maximum retained quantities
+- preferred inventory slots when needed
 - whether automated production is permitted
 - optional durability or enchantment requirements
 
-Behavior follows Factorio-style personal logistics:
+Rules behave as follows:
 
-- below the minimum, withdraw or produce enough to reach it
+- below the minimum, withdraw or produce the deficit
 - above the maximum, deposit the excess
-- minimum `0` and maximum `0` means deposit all matching items
-- no rule means leave that item alone
-- equal minimum and maximum maintains an exact quantity
+- minimum `0` and maximum `0` deposits every matching item
+- equal minimum and maximum maintains that quantity
+- no rule leaves the item unchanged
 
-Named groups such as `Everyday`, `Mining`, `Building` and `Nether` may be enabled independently. When active groups mention the same item, the highest requested minimum and maximum win. An item absent from a group does not impose a limit.
+Named groups such as `Everyday`, `Mining`, `Building` and `Nether` may be enabled independently. When active groups mention one item, the highest minimum and highest maximum form its effective rule.
 
-Depositing every unlisted item is an explicit advanced toggle and is off by default. Equipped items, protected slots, named items, container items and unsupported custom-data items remain untouched unless an exact rule includes them. Damaged equipment is not replaced or deposited without a specific durability rule.
+`Deposit unlisted` is an advanced option that remains off by default and visibly warns while enabled. Equipped items, protected slots, named items, container items and unsupported custom-data items remain untouched unless an exact rule includes them. Damaged equipment moves only under a matching durability rule.
 
-Loadout processing uses existing stored items before creating bounded production jobs. Unresolved entries remain unchanged and produce status messages.
+### Entry processing
 
-#### Temporary exceptions
+Each effective item rule is one atomic transfer:
 
-The storage interface provides **Take for this trip**:
+- a blocked rule leaves that item unchanged and reports why
+- independent rules may still succeed
+- existing central-storage items satisfy minimums before production begins
+- storage overflow leaves excess items with the player
+- completed transfers appear in the entry summary
 
-- it requests an item once without modifying saved loadouts
-- it overrides automatic deposit rules for that item
-- it remains active until the owner leaves and later returns to their cabin, or clears it manually
-- it does not count toward multi-restock sharing reserves
+Restocking is idempotent. Each owner and item template has at most one outstanding restock request. Reconciliation counts matching player inventory, central-storage stock and committed loadout output, then updates the remaining deficit instead of queuing another job.
 
-The entry exchange summary lists deposited and restored items. **Take back** creates the same temporary exception for an automatically deposited item.
+### Temporary exceptions
 
-### Provisional storage and loadout interface
+**Take for this trip** requests an item once without changing saved groups. It overrides automatic deposit for that template until the owner leaves and later returns or clears the exception manually. It does not count toward future multi-restock sharing reserves.
 
-The protected cabin terminal provides separate pages for storage, loadouts, automation and status. The exact art, dimensions and widgets remain an implementation design task, but the interaction contract is fixed.
+**Take back** attempts to reverse one available transfer from the latest entry summary and creates the same temporary exception. It commits only if the deposited item remains available and the player inventory can accept it; failure moves nothing and explains why.
 
-The loadout page provides:
+The protected storage interface provides loadout groups, searchable ghost slots, minimum and maximum controls, a distinct deposit-all state, effective-rule previews, warnings, temporary actions and the latest entry summary. Exact art and dimensions remain a delivery-level decision.
 
-- named group selectors with independent enabled states
-- searchable ghost item slots
-- minimum and maximum controls on one item row
-- a clear `deposit all` state for a zero maximum
-- visible warnings for contradictory or unsupported rules
-- an advanced `deposit unlisted` control with a persistent visible warning while enabled
-- a preview of the effective combined loadout
+The cabin registry persists known and active enchantments, loadout groups, protected settings, temporary exceptions, entry summaries and coalesced restock requests. Enchantment selection, extraction, entry transfers and reversals use server-authoritative transactions and survive restart, packing and redeployment.
 
-The normal storage page exposes **Take for this trip** without requiring the owner to edit a saved group. The latest entry transaction remains available as a concise summary with **Take back** actions.
+## Evergreen acceptance contract
+
+Milestone 8 remains accepted only while automated tests and targeted manual checks establish that:
+
+1. Extraction consumes one selected source and blank book only after successful validation.
+2. Higher levels improve permanent known entries; lower or equal levels consume nothing.
+3. Only the owner changes active slots, while owners and residents may extract and use active enchantments.
+4. Shared discoveries never activate automatically, and inactive knowledge is never lost.
+5. Deactivation pauses dependent jobs with their plan, work and materials intact.
+6. Requisitions reject invalid combinations and show complete material, recipe and time costs before commitment.
+7. Effective loadout rules merge deterministically and never alter unspecified or protected items.
+8. Each item rule transfers atomically; blocked rules do not prevent independent safe transfers.
+9. Repeated entry coalesces restocking and counts committed output without duplicating jobs.
+10. Temporary exceptions and Take back survive races without duplicating or replacing unavailable items.
+
+Codec, extraction, applicability, transaction, loadout, scheduler, GameTest and dedicated-server restart suites are the automated gates. Manual acceptance covers the known/active interface, effective loadout preview, warnings and entry summary.
+
+## Out of scope
+
+- automatic discovery from stored enchanted items
+- player-experience costs
+- resident or guest loadouts and saved requisitions
+- automatic activation of shared enchantments
+- inter-cabin discovery propagation or resource sharing
+- arbitrary modded-enchantment inference
+- exact costs, active-slot counts and final interface art before delivery alignment
