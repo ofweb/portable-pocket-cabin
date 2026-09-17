@@ -1,26 +1,26 @@
 # Portable Pocket Cabin
 
-A Fabric 26.2 mod for a travelling play style. The safe MVP and survival-acquisition flow are complete. World-attuned expansion, per-upgrade funding, and reversible cabin windows are implemented. The [roadmap](ROADMAP.md) links each milestone's design, implementation plan, and acceptance gates.
+A Fabric 26.2 mod for a travelling play style. Players can craft, deploy, expand, customize, pack, and relocate a persistent pocket cabin. The [roadmap](ROADMAP.md) links each milestone's design, implementation plan, and acceptance gates.
 
 ## Playing
 
-Obtain a Block of Amethyst to reveal the three dimensional-core recipes. Craft all three cores, combine them into a Dimensional Foundation, then use the Foundation with your chosen roof planks, structural wall wood, floor planks, and door to craft a palette-aware `Cabin Kit`.
+Obtain a Block of Amethyst to reveal the three dimensional-core recipes. Combine all three cores into a Dimensional Foundation, then craft a palette-aware `Cabin Kit` with your chosen roof planks, wall wood, floor planks, and door.
 
-Use the Kit on the top of a solid terrain block. The first use previews the 5×5 cabin footprint; use the same top surface again within 30 seconds to deploy it. The clicked surface puts the front stair directly above that block, and the door faces back toward you. Its first successful deployment permanently binds the cabin and creates a pocket interior using the selected materials.
+Use the Kit on top of a solid terrain block. The first use previews the 5×5 footprint; use the same surface again within 30 seconds to deploy. The front stair appears above the selected block, and the door faces you. The first successful deployment permanently binds the cabin and creates its pocket interior.
 
-Normal-use the exterior door or lodestone controller to enter. To pack, sneak-use the same exterior lodestone twice within 10 seconds. The five-second evacuation and packing countdown then runs without commands.
+Use the exterior door or lodestone to enter. To pack, sneak-use the exterior lodestone twice within 10 seconds. A five-second evacuation and packing countdown follows.
 
-New cabins begin with a 4×4 usable interior. Normal-use or sneak-use the protected interior lodestone beside the exit to open **Cabin Upgrades**. Anyone allowed inside may inspect each upgrade and its requirements. The owner and trusted players currently allowed inside may place matching carried items on a material icon to deposit them or click it empty-handed to withdraw. Right-clicking deposits one carried item or withdraws half of the oldest stored stack. Dragging works like a restricted container slot. Shift-clicking a material icon deposits only ordinary, unmodified matching stacks from the player inventory; shift-clicking a player stack remains ordinary inventory movement. Each icon accepts only its exact item up to the displayed requirement and preserves stack data. Creative mode follows the same rules.
+New cabins have a 4×4 usable interior. Use the protected interior lodestone beside the exit to open **Cabin Upgrades**. Allowed visitors may inspect upgrades; the owner and trusted players may deposit or withdraw required materials. Left-click deposits a carried stack or withdraws one, right-click moves one item or half of the oldest stored stack, and shift-click deposits ordinary matching stacks from the inventory. Each icon accepts only its exact requirement and preserves stack data. Creative mode follows the same rules.
 
-A complete fund never installs automatically. Only the owner may install, using the check-mark button twice to confirm the same target and fund revision. Failed permission, funding, availability, or structural validation leaves every material in its target-specific fund, where an authorized player may withdraw it. Expansion grows one block per step up to the configured limit, keeps the entrance wall fixed, and refuses obstructed horizontal or vertical space. Clear interior height starts at two blocks, grows by one block for every two size steps, and caps at ten blocks from size 20 onward.
+Only the owner may install a fully funded upgrade, using the check-mark button twice to confirm the unchanged target and fund. A failed installation leaves its materials available for withdrawal. Expansion keeps the entrance wall fixed, grows one block per step up to the configured limit, and refuses obstructed space.
 
-The Cabin category also exposes two stable window panels for the left, rear, and right walls. A wall's first window can be purchased whenever its footprint fits. Its second remains visible but cannot be purchased until the first is installed and both footprints fit between the structural corner frames. Each window advances independently through `1×2`, `2×2`, `3×3`, `5×4`, `7×6`, and `9×8` tiers. Installation refuses obstructions and attached decorations, preserves exact paid stacks, and recenters installed windows when general space expands.
+The Cabin category provides two independent windows for each side and rear wall. Windows grow through `1×2`, `2×2`, `3×3`, `5×4`, `7×6`, and `9×8` tiers, refuse obstructed footprints, and recenter after expansion. A wall's second window becomes available after its first is installed and both footprints fit.
 
-Only the owner can downgrade or remove a window; both actions require the same two-click confirmation as installation. Downgrading removes one tier and drops that tier's exact receipt beside the interior controller. Removing a window returns every paid receipt and restores the wall. A grandfathered tier-one window returns no materials. A remaining second window keeps its identity and recenters normally. If the change invalidates a funded target, the confirmation names it and drops its exact fund stacks separately at the same location. Once materialized, all drops follow ordinary Minecraft pickup, obstruction, hazard, and despawn behavior.
+Only the owner can downgrade or remove a window, with two-click confirmation. The change returns exact paid materials beside the interior controller and restores the wall. Grandfathered tier-one windows return no materials. Any newly invalid fund is named during confirmation and returned separately. Dropped items then follow ordinary Minecraft behavior.
 
-Reversible windows use cabin registry schema 7. Schema 6 cabins retain their exact windows, receipts, funds, and any interrupted installation. Migratable cabins from schema 5 or earlier receive one grandfathered tier-one window on each side wall. Newly created cabins begin with solid walls and no windows. Schema 4's tracked fund migrates losslessly into its matching target fund, while variable-height schema 3 saves migrate with no fund. Worlds using the earlier fixed-height schema 2 must still be backed up and replaced with `just fresh-world`; those generated ceiling blocks cannot be distinguished safely from player construction.
+The registry uses schema 7. Schema 6 cabins retain their windows, receipts, funds, and interrupted installations. Schemas 3–5 migrate and receive one grandfathered tier-one window on each side wall; schema 4 also retains its tracked fund. New cabins begin with solid walls. Schema 2 worlds cannot migrate safely: back them up and replace the development world with `just fresh-world`.
 
-Cabins can be deployed in the Overworld, Nether, or End. Their protected interiors run only while deployed. Every installed window shows dawn, day, sunset, night, rain, thunder, Nether, End, or inactive states across its full pane footprint.
+Cabins deploy in the Overworld, Nether, or End, and their protected interiors run only while deployed. Installed windows reflect the cabin's dimension, time, weather, or inactive state.
 
 Normal player commands are:
 
@@ -42,7 +42,7 @@ Requires JDK 25 or newer.
 ./gradlew runServer
 ```
 
-The build runs both the server-side GameTests and the headless dedicated-server startup check. In a development world, operators additionally have these inspection and recovery commands:
+The build runs server-side GameTests and headless dedicated-server startup and reload checks. Development-world operators also have these inspection and recovery commands:
 
 ```text
 /cabin create [player]
@@ -63,7 +63,7 @@ For a headless dedicated-server smoke check:
 ./gradlew runStartupTest
 ```
 
-The server stops itself after initialization and logs `DEDICATED_SERVER_STARTUP_TEST_PASSED` once the pocket dimension and registry are available. The full `./gradlew build` gate boots that saved world a second time, reconciles interrupted packing and deployment operations, verifies that the exterior and interior survived, then packs and redeploys the cabin before checking monotonic cell allocation.
+The server stops after initialization and logs `DEDICATED_SERVER_STARTUP_TEST_PASSED` once the pocket dimension and registry are available. The full build also reloads that world and checks recovery, persistence, packing, redeployment, and cell allocation.
 
 Cabin near-death respawn distance defaults to 128–256 blocks. Operators can persist different bounds with the namespaced gamerules:
 
@@ -87,7 +87,7 @@ Then launch both sides and connect directly:
 just dev
 ```
 
-The mod jar is rebuilt, mounted into the server, and copied into the Prism instance before launch. When the Prism instance lacks Fabric API, `just dev` copies the server's downloaded jar. Useful commands:
+The mod jar is rebuilt, mounted into the server, and copied into the Prism instance before launch. If the instance lacks Fabric API, `just dev` copies the server's downloaded jar. Useful commands:
 
 ```sh
 just server                 # start the Docker server and make ofweb an OP
@@ -99,4 +99,4 @@ just logs
 just stop
 ```
 
-The server world persists under `run/server`. `just fresh-world` stops the server, moves `run/server/world` into a timestamped directory under `run/world-backups`, and starts a newly generated world; it does not delete the previous world. The development server publishes on `localhost:25566` by default so it can coexist with a standard Minecraft server on port `25565`. The local development server uses peaceful difficulty and disables natural mob spawning so gameplay cannot interrupt cabin testing. `just server` provisions `ofweb` as an operator on every startup; set `PPC_OPS` to a comma-separated list of other usernames or UUIDs when needed. Export `PPC_PORT`, `PPC_MEMORY`, `PPC_SERVER`, `PPC_DNS`, `PRISM_ROOT`, `PRISM_INSTANCE_DIR`, or `PRISM_BIN` when local defaults differ. The container defaults to `PPC_DNS=1.1.1.1` to avoid host-local DNS stubs that are unreachable from Docker.
+The server world persists under `run/server`. `just fresh-world` archives it under `run/world-backups` before generating a replacement. The server defaults to `localhost:25566`, peaceful difficulty, and no natural mob spawning. It grants operator status to `ofweb`; set `PPC_OPS` to a comma-separated list of other usernames or UUIDs. Override local defaults with `PPC_PORT`, `PPC_MEMORY`, `PPC_SERVER`, `PPC_DNS`, `PRISM_ROOT`, `PRISM_INSTANCE_DIR`, or `PRISM_BIN`. The container defaults to public DNS at `1.1.1.1` because host-local DNS stubs may be unreachable from Docker.
