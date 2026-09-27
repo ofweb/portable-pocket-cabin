@@ -3512,6 +3512,8 @@
         "alexsmobs:crocodile_scute",
         "minecraft:dead_bush",
         "minecraft:lily_pad",
+        "minecraft:mangrove_roots",
+        "minecraft:muddy_mangrove_roots",
         "minecraft:seagrass"
       ],
       "mobs": [
@@ -3744,7 +3746,8 @@
       "id": "minecraft:old_growth_pine_taiga",
       "materials": [
         "alexsmobs:banana_slug_slime",
-        "minecraft:dead_bush"
+        "minecraft:dead_bush",
+        "minecraft:podzol"
       ],
       "mobs": [
         "alexsmobs:banana_slug",
@@ -3792,7 +3795,8 @@
       "id": "minecraft:old_growth_spruce_taiga",
       "materials": [
         "alexsmobs:banana_slug_slime",
-        "minecraft:dead_bush"
+        "minecraft:dead_bush",
+        "minecraft:podzol"
       ],
       "mobs": [
         "alexsmobs:banana_slug",

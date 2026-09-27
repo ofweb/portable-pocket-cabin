@@ -130,10 +130,10 @@ def main():
                 if not placed:
                     continue
                 configured_id = placed.get("feature", "").split(":")[-1]
-                pending = [configured_id]
+                pending = [(configured_id, (path, placed_path))]
                 seen = set()
                 while pending:
-                    key = pending.pop()
+                    key, route_paths = pending.pop()
                     if key in seen:
                         continue
                     seen.add(key)
@@ -148,20 +148,25 @@ def main():
                         loot_path = "data/minecraft/loot_tables/blocks/" + block.split(":")[-1] + ".json"
                         for item in block_items(block, get_json(z, loot_path)):
                             add(item, ident, "aquatic" if block != "minecraft:bamboo" else "plant", block,
-                                files=(path, placed_path, configured_path, loot_path), note="Built-in feature type names generated block")
+                                files=route_paths + (configured_path, loot_path), note="Built-in feature type names generated block")
                     for node in walk(configured):
                         if "Name" in node and isinstance(node["Name"], str) and ":" in node["Name"]:
                             block = node["Name"]
                             loot_path = "data/minecraft/loot_tables/blocks/" + block.split(":")[-1] + ".json"
                             loot = get_json(z, loot_path)
                             for item in block_items(block, loot):
-                                add(item, ident, "tree" if block.endswith(("_log", "_stem", "_wood", "_hyphae")) else "aquatic" if any(x in block for x in ("coral", "kelp", "seagrass", "sea_pickle")) else "plant" if any(x in block for x in ("flower", "grass", "bush", "fungus", "mushroom", "fern", "vine", "leaves", "sapling")) else "environmental", block, files=(path, placed_path, configured_path, loot_path) if loot else (path, placed_path, configured_path), note="Generated block or its block-loot item")
+                                add(item, ident, "tree" if block.endswith(("_log", "_stem", "_wood", "_hyphae")) else "aquatic" if any(x in block for x in ("coral", "kelp", "seagrass", "sea_pickle")) else "plant" if any(x in block for x in ("flower", "grass", "bush", "fungus", "mushroom", "fern", "vine", "leaves", "sapling")) else "environmental", block, files=route_paths + (configured_path, loot_path) if loot else route_paths + (configured_path,), note="Generated block or its block-loot item")
                         for key2 in ("feature", "default", "features"):
                             value = node.get(key2)
                             if isinstance(value, str) and value.startswith("minecraft:"):
                                 candidate = value.split(":")[-1]
-                                if "data/minecraft/worldgen/configured_feature/" + candidate + ".json" in zpaths:
-                                    pending.append(candidate)
+                                nested_configured = "data/minecraft/worldgen/configured_feature/" + candidate + ".json"
+                                nested_placed = "data/minecraft/worldgen/placed_feature/" + candidate + ".json"
+                                if nested_configured in zpaths:
+                                    pending.append((candidate, route_paths + (configured_path,)))
+                                elif nested_placed in zpaths:
+                                    nested = get_json(z, nested_placed)
+                                    pending.append((nested["feature"].split(":")[-1], route_paths + (configured_path, nested_placed)))
 
     # Resolve all available biome tags. Missing Forge base tags stay unresolved.
     tag_defs = {}
@@ -482,6 +487,12 @@ def main():
         elif namespace == "biomesoplenty" and re.search(r"\b" + base.upper() + r"_PLANKS\b", bop_blocks):
             group["planks_item_id"] = planks
             group["source_files"].add("src/main/java/biomesoplenty/api/block/BOPBlocks.java")
+    bamboo = next((x for x in selected if x["item_id"] == "minecraft:bamboo"), None)
+    if bamboo:
+        wood_types["minecraft:bamboo"] = {"wood_id": "minecraft:bamboo", "display_name": "Bamboo",
+            "biome_ids": set(bamboo["biome_ids"]), "logs": {"minecraft:bamboo"}, "saplings": set(),
+            "planks_item_id": "minecraft:bamboo_planks", "source_files": set(bamboo["source_files"]) |
+            {"data/minecraft/loot_tables/blocks/bamboo_planks.json"}}
     grouped = []
     for group in wood_types.values():
         for key in ("biome_ids", "logs", "saplings", "source_files"):

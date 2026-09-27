@@ -2370,7 +2370,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:barley",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/barley.json"
           ],
           "source_mob": null
@@ -2381,7 +2384,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:barley",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/barley.json"
           ],
           "source_mob": null
@@ -2394,7 +2400,10 @@
         "biomesoplenty:barley"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/barley.json"
       ],
       "source_mobs": [],
@@ -2421,7 +2430,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:blue_hydrangea",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/blue_hydrangea.json"
           ],
           "source_mob": null
@@ -2432,7 +2444,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:blue_hydrangea",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/blue_hydrangea.json"
           ],
           "source_mob": null
@@ -2449,7 +2464,10 @@
         "biomesoplenty:blue_hydrangea"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/blue_hydrangea.json"
       ],
       "source_mobs": [],
@@ -2479,7 +2497,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:bush",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/bush.json"
           ],
           "source_mob": null
@@ -2490,7 +2511,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:bush",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/bush.json"
           ],
           "source_mob": null
@@ -2501,7 +2525,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:bush",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/bush.json"
           ],
           "source_mob": null
@@ -2512,7 +2539,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:bush",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/bush.json"
           ],
           "source_mob": null
@@ -2523,7 +2553,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:bush",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/bush.json"
           ],
           "source_mob": null
@@ -2536,7 +2569,10 @@
         "biomesoplenty:bush"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/bush.json"
       ],
       "source_mobs": [],
@@ -2563,7 +2599,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:cattail",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/cattail.json"
           ],
           "source_mob": null
@@ -2574,7 +2613,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:cattail",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/cattail.json"
           ],
           "source_mob": null
@@ -2590,7 +2632,10 @@
         "biomesoplenty:cattail"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/cattail.json"
       ],
       "source_mobs": [],
@@ -2618,7 +2663,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:clover",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/clover.json"
           ],
           "source_mob": null
@@ -2629,7 +2677,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:clover",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/clover.json"
           ],
           "source_mob": null
@@ -2640,7 +2691,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:clover",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/clover.json"
           ],
           "source_mob": null
@@ -2655,7 +2709,10 @@
         "biomesoplenty:clover"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/clover.json"
       ],
       "source_mobs": [],
@@ -2685,7 +2742,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:dead_grass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_grass.json"
           ],
           "source_mob": null
@@ -2696,7 +2756,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:dead_grass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_grass.json"
           ],
           "source_mob": null
@@ -2707,7 +2770,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:dead_grass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPNetherBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPNetherFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPNetherPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_grass.json"
           ],
           "source_mob": null
@@ -2718,7 +2784,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:dead_grass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_grass.json"
           ],
           "source_mob": null
@@ -2729,7 +2798,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:dead_grass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_grass.json"
           ],
           "source_mob": null
@@ -2742,8 +2814,13 @@
         "biomesoplenty:dead_grass"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPNetherBiomes.java",
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPNetherFeatures.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPNetherPlacements.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_grass.json"
       ],
       "source_mobs": [],
@@ -2773,7 +2850,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:desert_grass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/desert_grass.json"
           ],
           "source_mob": null
@@ -2784,7 +2864,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:desert_grass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/desert_grass.json"
           ],
           "source_mob": null
@@ -2795,7 +2878,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:desert_grass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/desert_grass.json"
           ],
           "source_mob": null
@@ -2806,7 +2892,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:desert_grass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/desert_grass.json"
           ],
           "source_mob": null
@@ -2817,7 +2906,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:desert_grass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/desert_grass.json"
           ],
           "source_mob": null
@@ -2832,7 +2924,10 @@
         "biomesoplenty:desert_grass"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/desert_grass.json"
       ],
       "source_mobs": [],
@@ -2859,7 +2954,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:dune_grass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/dune_grass.json"
           ],
           "source_mob": null
@@ -2870,7 +2968,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:dune_grass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/dune_grass.json"
           ],
           "source_mob": null
@@ -2886,7 +2987,10 @@
         "biomesoplenty:dune_grass"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/dune_grass.json"
       ],
       "source_mobs": [],
@@ -2917,7 +3021,12 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:flowering_oak_leaves",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPTreePlacements.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
           ],
           "source_mob": null
@@ -2928,7 +3037,12 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:flowering_oak_leaves",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPTreePlacements.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
           ],
           "source_mob": null
@@ -2939,7 +3053,12 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:flowering_oak_leaves",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPTreePlacements.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
           ],
           "source_mob": null
@@ -2950,7 +3069,12 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:flowering_oak_leaves",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPTreePlacements.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
           ],
           "source_mob": null
@@ -2961,7 +3085,12 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:flowering_oak_leaves",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPTreePlacements.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
           ],
           "source_mob": null
@@ -2972,7 +3101,12 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:flowering_oak_leaves",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPTreePlacements.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
           ],
           "source_mob": null
@@ -2985,7 +3119,12 @@
         "biomesoplenty:flowering_oak_leaves"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPTreePlacements.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
       ],
       "source_mobs": [],
@@ -3011,7 +3150,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:glowflower",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/glowflower.json"
           ],
           "source_mob": null
@@ -3030,7 +3172,10 @@
         "biomesoplenty:glowflower"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/glowflower.json"
       ],
       "source_mobs": [],
@@ -3056,7 +3201,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:icy_iris",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/icy_iris.json"
           ],
           "source_mob": null
@@ -3074,7 +3222,10 @@
         "biomesoplenty:icy_iris"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/icy_iris.json"
       ],
       "source_mobs": [],
@@ -3101,7 +3252,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:lavender",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/lavender.json"
           ],
           "source_mob": null
@@ -3112,7 +3266,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:lavender",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/lavender.json"
           ],
           "source_mob": null
@@ -3127,7 +3284,10 @@
         "biomesoplenty:lavender"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/lavender.json"
       ],
       "source_mobs": [],
@@ -3160,7 +3320,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:reed",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/reed.json"
           ],
           "source_mob": null
@@ -3171,7 +3334,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:reed",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/reed.json"
           ],
           "source_mob": null
@@ -3182,7 +3348,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:reed",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/reed.json"
           ],
           "source_mob": null
@@ -3193,7 +3362,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:reed",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/reed.json"
           ],
           "source_mob": null
@@ -3204,7 +3376,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:reed",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/reed.json"
           ],
           "source_mob": null
@@ -3215,7 +3390,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:reed",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/reed.json"
           ],
           "source_mob": null
@@ -3226,7 +3404,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:reed",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/reed.json"
           ],
           "source_mob": null
@@ -3237,7 +3418,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:reed",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/reed.json"
           ],
           "source_mob": null
@@ -3250,7 +3434,10 @@
         "biomesoplenty:reed"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/reed.json"
       ],
       "source_mobs": [],
@@ -3276,7 +3463,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:spider_egg",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPCaveFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPCavePlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/spider_egg.json"
           ],
           "source_mob": null
@@ -3293,7 +3483,10 @@
         "biomesoplenty:spider_egg"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPCaveFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPCavePlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/spider_egg.json"
       ],
       "source_mobs": [],
@@ -3320,7 +3513,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:tall_lavender",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/tall_lavender.json"
           ],
           "source_mob": null
@@ -3331,7 +3527,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:tall_lavender",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/tall_lavender.json"
           ],
           "source_mob": null
@@ -3346,7 +3545,10 @@
         "biomesoplenty:tall_lavender"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/tall_lavender.json"
       ],
       "source_mobs": [],
@@ -3380,7 +3582,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:toadstool",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/toadstool.json"
           ],
           "source_mob": null
@@ -3391,7 +3596,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:toadstool",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/toadstool.json"
           ],
           "source_mob": null
@@ -3402,7 +3610,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:toadstool",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/toadstool.json"
           ],
           "source_mob": null
@@ -3413,7 +3624,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:toadstool",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/toadstool.json"
           ],
           "source_mob": null
@@ -3424,7 +3638,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:toadstool",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/toadstool.json"
           ],
           "source_mob": null
@@ -3435,7 +3652,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:toadstool",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/toadstool.json"
           ],
           "source_mob": null
@@ -3446,7 +3666,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:toadstool",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/toadstool.json"
           ],
           "source_mob": null
@@ -3457,7 +3680,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:toadstool",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/toadstool.json"
           ],
           "source_mob": null
@@ -3468,7 +3694,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:toadstool",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/toadstool.json"
           ],
           "source_mob": null
@@ -3481,7 +3710,10 @@
         "biomesoplenty:toadstool"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/toadstool.json"
       ],
       "source_mobs": [],
@@ -3512,7 +3744,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:watergrass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/watergrass.json"
           ],
           "source_mob": null
@@ -3523,7 +3758,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:watergrass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/watergrass.json"
           ],
           "source_mob": null
@@ -3534,7 +3772,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:watergrass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/watergrass.json"
           ],
           "source_mob": null
@@ -3545,7 +3786,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:watergrass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/watergrass.json"
           ],
           "source_mob": null
@@ -3556,7 +3800,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:watergrass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/watergrass.json"
           ],
           "source_mob": null
@@ -3567,7 +3814,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:watergrass",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/watergrass.json"
           ],
           "source_mob": null
@@ -3582,7 +3832,10 @@
         "biomesoplenty:watergrass"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/watergrass.json"
       ],
       "source_mobs": [],
@@ -3608,7 +3861,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:waterlily",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/waterlily.json"
           ],
           "source_mob": null
@@ -3627,7 +3883,10 @@
         "biomesoplenty:waterlily"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/waterlily.json"
       ],
       "source_mobs": [],
@@ -3654,7 +3913,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:wildflower",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/wildflower.json"
           ],
           "source_mob": null
@@ -3665,7 +3927,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:wildflower",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/wildflower.json"
           ],
           "source_mob": null
@@ -3680,7 +3945,10 @@
         "biomesoplenty:wildflower"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/wildflower.json"
       ],
       "source_mobs": [],
@@ -3706,7 +3974,12 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:willow_vine",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPTreePlacements.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/willow_vine.json"
           ],
           "source_mob": null
@@ -3722,7 +3995,12 @@
         "biomesoplenty:willow_vine"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPTreePlacements.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/willow_vine.json"
       ],
       "source_mobs": [],
@@ -3748,7 +4026,10 @@
           "note": "BOP configured feature",
           "source_block": "biomesoplenty:wilted_lily",
           "source_files": [
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
             "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java",
             "src/main/resources/data/biomesoplenty/loot_tables/blocks/wilted_lily.json"
           ],
           "source_mob": null
@@ -3766,7 +4047,10 @@
         "biomesoplenty:wilted_lily"
       ],
       "source_files": [
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
         "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java",
         "src/main/resources/data/biomesoplenty/loot_tables/blocks/wilted_lily.json"
       ],
       "source_mobs": [],
@@ -3882,7 +4166,9 @@
           "source_files": [
             "data/minecraft/loot_tables/blocks/big_dripleaf.json",
             "data/minecraft/worldgen/biome/lush_caves.json",
+            "data/minecraft/worldgen/configured_feature/clay_with_dripleaves.json",
             "data/minecraft/worldgen/configured_feature/dripleaf.json",
+            "data/minecraft/worldgen/configured_feature/lush_caves_clay.json",
             "data/minecraft/worldgen/placed_feature/lush_caves_clay.json"
           ],
           "source_mob": null
@@ -3895,7 +4181,9 @@
           "source_files": [
             "data/minecraft/loot_tables/blocks/big_dripleaf_stem.json",
             "data/minecraft/worldgen/biome/lush_caves.json",
+            "data/minecraft/worldgen/configured_feature/clay_with_dripleaves.json",
             "data/minecraft/worldgen/configured_feature/dripleaf.json",
+            "data/minecraft/worldgen/configured_feature/lush_caves_clay.json",
             "data/minecraft/worldgen/placed_feature/lush_caves_clay.json"
           ],
           "source_mob": null
@@ -3912,7 +4200,9 @@
         "data/minecraft/loot_tables/blocks/big_dripleaf.json",
         "data/minecraft/loot_tables/blocks/big_dripleaf_stem.json",
         "data/minecraft/worldgen/biome/lush_caves.json",
+        "data/minecraft/worldgen/configured_feature/clay_with_dripleaves.json",
         "data/minecraft/worldgen/configured_feature/dripleaf.json",
+        "data/minecraft/worldgen/configured_feature/lush_caves_clay.json",
         "data/minecraft/worldgen/placed_feature/lush_caves_clay.json"
       ],
       "source_mobs": [],
@@ -4028,7 +4318,12 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:cocoa",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPTreePlacements.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -4038,7 +4333,12 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:cocoa",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPTreePlacements.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         }
@@ -4054,7 +4354,12 @@
         "minecraft:cocoa"
       ],
       "source_files": [
-        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPTreePlacements.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java"
       ],
       "source_mobs": [],
       "source_mod": "vanilla"
@@ -4090,7 +4395,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:cornflower",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -4100,7 +4408,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:cornflower",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -4110,7 +4421,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:cornflower",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -4120,7 +4434,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:cornflower",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -4130,7 +4447,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:cornflower",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -4233,7 +4553,10 @@
         "data/minecraft/worldgen/placed_feature/flower_flower_forest.json",
         "data/minecraft/worldgen/placed_feature/flower_meadow.json",
         "data/minecraft/worldgen/placed_feature/flower_plains.json",
-        "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java"
       ],
       "source_mobs": [],
       "source_mod": "vanilla"
@@ -4547,6 +4870,7 @@
           "source_files": [
             "data/minecraft/loot_tables/blocks/flowering_azalea.json",
             "data/minecraft/worldgen/biome/lush_caves.json",
+            "data/minecraft/worldgen/configured_feature/moss_patch.json",
             "data/minecraft/worldgen/configured_feature/moss_vegetation.json",
             "data/minecraft/worldgen/placed_feature/lush_caves_vegetation.json"
           ],
@@ -4561,6 +4885,7 @@
             "data/minecraft/loot_tables/blocks/flowering_azalea_leaves.json",
             "data/minecraft/worldgen/biome/lush_caves.json",
             "data/minecraft/worldgen/configured_feature/azalea_tree.json",
+            "data/minecraft/worldgen/configured_feature/rooted_azalea_tree.json",
             "data/minecraft/worldgen/placed_feature/rooted_azalea_tree.json"
           ],
           "source_mob": null
@@ -4578,7 +4903,9 @@
         "data/minecraft/loot_tables/blocks/flowering_azalea_leaves.json",
         "data/minecraft/worldgen/biome/lush_caves.json",
         "data/minecraft/worldgen/configured_feature/azalea_tree.json",
+        "data/minecraft/worldgen/configured_feature/moss_patch.json",
         "data/minecraft/worldgen/configured_feature/moss_vegetation.json",
+        "data/minecraft/worldgen/configured_feature/rooted_azalea_tree.json",
         "data/minecraft/worldgen/placed_feature/lush_caves_vegetation.json",
         "data/minecraft/worldgen/placed_feature/rooted_azalea_tree.json"
       ],
@@ -4608,6 +4935,7 @@
             "data/minecraft/loot_tables/blocks/flowering_azalea_leaves.json",
             "data/minecraft/worldgen/biome/lush_caves.json",
             "data/minecraft/worldgen/configured_feature/azalea_tree.json",
+            "data/minecraft/worldgen/configured_feature/rooted_azalea_tree.json",
             "data/minecraft/worldgen/placed_feature/rooted_azalea_tree.json"
           ],
           "source_mob": null
@@ -4623,6 +4951,7 @@
         "data/minecraft/loot_tables/blocks/flowering_azalea_leaves.json",
         "data/minecraft/worldgen/biome/lush_caves.json",
         "data/minecraft/worldgen/configured_feature/azalea_tree.json",
+        "data/minecraft/worldgen/configured_feature/rooted_azalea_tree.json",
         "data/minecraft/worldgen/placed_feature/rooted_azalea_tree.json"
       ],
       "source_mobs": [],
@@ -5134,7 +5463,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:lily_of_the_valley",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -5144,7 +5476,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:lily_of_the_valley",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -5154,7 +5489,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:lily_of_the_valley",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         }
@@ -5177,7 +5515,10 @@
         "data/minecraft/worldgen/placed_feature/flower_flower_forest.json",
         "data/minecraft/worldgen/placed_feature/flower_forest_flowers.json",
         "data/minecraft/worldgen/placed_feature/forest_flowers.json",
-        "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java"
       ],
       "source_mobs": [],
       "source_mod": "vanilla"
@@ -5236,6 +5577,70 @@
         "data/minecraft/worldgen/biome/swamp.json",
         "data/minecraft/worldgen/configured_feature/patch_waterlily.json",
         "data/minecraft/worldgen/placed_feature/patch_waterlily.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "Generated block or its block-loot item"
+      ],
+      "acquisition_type": "environmental",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "minecraft:mangrove_swamp"
+      ],
+      "display_name": "Mangrove Roots",
+      "easy_outside_biomes": null,
+      "eligible_biome_count": 1,
+      "item_id": "minecraft:mangrove_roots",
+      "occurrences": [
+        {
+          "acquisition_type": "environmental",
+          "biome_id": "minecraft:mangrove_swamp",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:mangrove_roots",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/mangrove_roots.json",
+            "data/minecraft/worldgen/biome/mangrove_swamp.json",
+            "data/minecraft/worldgen/configured_feature/mangrove.json",
+            "data/minecraft/worldgen/configured_feature/mangrove_vegetation.json",
+            "data/minecraft/worldgen/placed_feature/mangrove_checked.json",
+            "data/minecraft/worldgen/placed_feature/trees_mangrove.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "environmental",
+          "biome_id": "minecraft:mangrove_swamp",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:mangrove_roots",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/mangrove_roots.json",
+            "data/minecraft/worldgen/biome/mangrove_swamp.json",
+            "data/minecraft/worldgen/configured_feature/mangrove_vegetation.json",
+            "data/minecraft/worldgen/configured_feature/tall_mangrove.json",
+            "data/minecraft/worldgen/placed_feature/tall_mangrove_checked.json",
+            "data/minecraft/worldgen/placed_feature/trees_mangrove.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": false,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "minecraft:mangrove_roots"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/mangrove_roots.json",
+        "data/minecraft/worldgen/biome/mangrove_swamp.json",
+        "data/minecraft/worldgen/configured_feature/mangrove.json",
+        "data/minecraft/worldgen/configured_feature/mangrove_vegetation.json",
+        "data/minecraft/worldgen/configured_feature/tall_mangrove.json",
+        "data/minecraft/worldgen/placed_feature/mangrove_checked.json",
+        "data/minecraft/worldgen/placed_feature/tall_mangrove_checked.json",
+        "data/minecraft/worldgen/placed_feature/trees_mangrove.json"
       ],
       "source_mobs": [],
       "source_mod": "vanilla"
@@ -5397,6 +5802,70 @@
         "Generated block or its block-loot item"
       ],
       "acquisition_type": "environmental",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "minecraft:mangrove_swamp"
+      ],
+      "display_name": "Muddy Mangrove Roots",
+      "easy_outside_biomes": null,
+      "eligible_biome_count": 1,
+      "item_id": "minecraft:muddy_mangrove_roots",
+      "occurrences": [
+        {
+          "acquisition_type": "environmental",
+          "biome_id": "minecraft:mangrove_swamp",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:muddy_mangrove_roots",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/muddy_mangrove_roots.json",
+            "data/minecraft/worldgen/biome/mangrove_swamp.json",
+            "data/minecraft/worldgen/configured_feature/mangrove.json",
+            "data/minecraft/worldgen/configured_feature/mangrove_vegetation.json",
+            "data/minecraft/worldgen/placed_feature/mangrove_checked.json",
+            "data/minecraft/worldgen/placed_feature/trees_mangrove.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "environmental",
+          "biome_id": "minecraft:mangrove_swamp",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:muddy_mangrove_roots",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/muddy_mangrove_roots.json",
+            "data/minecraft/worldgen/biome/mangrove_swamp.json",
+            "data/minecraft/worldgen/configured_feature/mangrove_vegetation.json",
+            "data/minecraft/worldgen/configured_feature/tall_mangrove.json",
+            "data/minecraft/worldgen/placed_feature/tall_mangrove_checked.json",
+            "data/minecraft/worldgen/placed_feature/trees_mangrove.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": false,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "minecraft:muddy_mangrove_roots"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/muddy_mangrove_roots.json",
+        "data/minecraft/worldgen/biome/mangrove_swamp.json",
+        "data/minecraft/worldgen/configured_feature/mangrove.json",
+        "data/minecraft/worldgen/configured_feature/mangrove_vegetation.json",
+        "data/minecraft/worldgen/configured_feature/tall_mangrove.json",
+        "data/minecraft/worldgen/placed_feature/mangrove_checked.json",
+        "data/minecraft/worldgen/placed_feature/tall_mangrove_checked.json",
+        "data/minecraft/worldgen/placed_feature/trees_mangrove.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "Generated block or its block-loot item"
+      ],
+      "acquisition_type": "environmental",
       "biome_family_scope": "many or unclassified families",
       "biome_ids": [
         "minecraft:dark_forest",
@@ -5415,6 +5884,7 @@
           "source_files": [
             "data/minecraft/loot_tables/blocks/mushroom_stem.json",
             "data/minecraft/worldgen/biome/dark_forest.json",
+            "data/minecraft/worldgen/configured_feature/dark_forest_vegetation.json",
             "data/minecraft/worldgen/configured_feature/huge_brown_mushroom.json",
             "data/minecraft/worldgen/placed_feature/dark_forest_vegetation.json"
           ],
@@ -5428,6 +5898,7 @@
           "source_files": [
             "data/minecraft/loot_tables/blocks/mushroom_stem.json",
             "data/minecraft/worldgen/biome/dark_forest.json",
+            "data/minecraft/worldgen/configured_feature/dark_forest_vegetation.json",
             "data/minecraft/worldgen/configured_feature/huge_red_mushroom.json",
             "data/minecraft/worldgen/placed_feature/dark_forest_vegetation.json"
           ],
@@ -5442,6 +5913,7 @@
             "data/minecraft/loot_tables/blocks/mushroom_stem.json",
             "data/minecraft/worldgen/biome/mushroom_fields.json",
             "data/minecraft/worldgen/configured_feature/huge_brown_mushroom.json",
+            "data/minecraft/worldgen/configured_feature/mushroom_island_vegetation.json",
             "data/minecraft/worldgen/placed_feature/mushroom_island_vegetation.json"
           ],
           "source_mob": null
@@ -5455,6 +5927,7 @@
             "data/minecraft/loot_tables/blocks/mushroom_stem.json",
             "data/minecraft/worldgen/biome/mushroom_fields.json",
             "data/minecraft/worldgen/configured_feature/huge_red_mushroom.json",
+            "data/minecraft/worldgen/configured_feature/mushroom_island_vegetation.json",
             "data/minecraft/worldgen/placed_feature/mushroom_island_vegetation.json"
           ],
           "source_mob": null
@@ -5470,8 +5943,10 @@
         "data/minecraft/loot_tables/blocks/mushroom_stem.json",
         "data/minecraft/worldgen/biome/dark_forest.json",
         "data/minecraft/worldgen/biome/mushroom_fields.json",
+        "data/minecraft/worldgen/configured_feature/dark_forest_vegetation.json",
         "data/minecraft/worldgen/configured_feature/huge_brown_mushroom.json",
         "data/minecraft/worldgen/configured_feature/huge_red_mushroom.json",
+        "data/minecraft/worldgen/configured_feature/mushroom_island_vegetation.json",
         "data/minecraft/worldgen/placed_feature/dark_forest_vegetation.json",
         "data/minecraft/worldgen/placed_feature/mushroom_island_vegetation.json"
       ],
@@ -5566,39 +6041,102 @@
     },
     {
       "acquisition_notes": [
-        "BOP configured feature"
+        "BOP configured feature",
+        "Generated block or its block-loot item"
       ],
       "acquisition_type": "plant",
-      "biome_family_scope": "one biome",
+      "biome_family_scope": "many or unclassified families",
       "biome_ids": [
-        "biomesoplenty:mediterranean_forest"
+        "biomesoplenty:mediterranean_forest",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga"
       ],
       "display_name": "Podzol",
       "easy_outside_biomes": null,
-      "eligible_biome_count": 1,
+      "eligible_biome_count": 3,
       "item_id": "minecraft:podzol",
       "occurrences": [
+        {
+          "acquisition_type": "environmental",
+          "biome_id": "minecraft:old_growth_pine_taiga",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:podzol",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/podzol.json",
+            "data/minecraft/worldgen/biome/old_growth_pine_taiga.json",
+            "data/minecraft/worldgen/configured_feature/mega_pine.json",
+            "data/minecraft/worldgen/configured_feature/trees_old_growth_pine_taiga.json",
+            "data/minecraft/worldgen/placed_feature/mega_pine_checked.json",
+            "data/minecraft/worldgen/placed_feature/trees_old_growth_pine_taiga.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "environmental",
+          "biome_id": "minecraft:old_growth_pine_taiga",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:podzol",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/podzol.json",
+            "data/minecraft/worldgen/biome/old_growth_pine_taiga.json",
+            "data/minecraft/worldgen/configured_feature/mega_spruce.json",
+            "data/minecraft/worldgen/configured_feature/trees_old_growth_pine_taiga.json",
+            "data/minecraft/worldgen/placed_feature/mega_spruce_checked.json",
+            "data/minecraft/worldgen/placed_feature/trees_old_growth_pine_taiga.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "environmental",
+          "biome_id": "minecraft:old_growth_spruce_taiga",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:podzol",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/podzol.json",
+            "data/minecraft/worldgen/biome/old_growth_spruce_taiga.json",
+            "data/minecraft/worldgen/configured_feature/mega_spruce.json",
+            "data/minecraft/worldgen/configured_feature/trees_old_growth_spruce_taiga.json",
+            "data/minecraft/worldgen/placed_feature/mega_spruce_checked.json",
+            "data/minecraft/worldgen/placed_feature/trees_old_growth_spruce_taiga.json"
+          ],
+          "source_mob": null
+        },
         {
           "acquisition_type": "plant",
           "biome_id": "biomesoplenty:mediterranean_forest",
           "note": "BOP configured feature",
           "source_block": "minecraft:podzol",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPMiscOverworldFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPMiscOverworldFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPMiscOverworldPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         }
       ],
-      "rarity": "rare",
+      "rarity": "uncommon",
       "renewable_after_discovery": false,
-      "shared_family_tags": [
-        "minecraft:is_forest"
-      ],
+      "shared_family_tags": [],
       "source_blocks": [
         "minecraft:podzol"
       ],
       "source_files": [
-        "src/main/java/biomesoplenty/common/worldgen/feature/BOPMiscOverworldFeatures.java"
+        "data/minecraft/loot_tables/blocks/podzol.json",
+        "data/minecraft/worldgen/biome/old_growth_pine_taiga.json",
+        "data/minecraft/worldgen/biome/old_growth_spruce_taiga.json",
+        "data/minecraft/worldgen/configured_feature/mega_pine.json",
+        "data/minecraft/worldgen/configured_feature/mega_spruce.json",
+        "data/minecraft/worldgen/configured_feature/trees_old_growth_pine_taiga.json",
+        "data/minecraft/worldgen/configured_feature/trees_old_growth_spruce_taiga.json",
+        "data/minecraft/worldgen/placed_feature/mega_pine_checked.json",
+        "data/minecraft/worldgen/placed_feature/mega_spruce_checked.json",
+        "data/minecraft/worldgen/placed_feature/trees_old_growth_pine_taiga.json",
+        "data/minecraft/worldgen/placed_feature/trees_old_growth_spruce_taiga.json",
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPMiscOverworldFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPMiscOverworldPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java"
       ],
       "source_mobs": [],
       "source_mod": "vanilla"
@@ -5635,7 +6173,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:rose_bush",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -5645,7 +6186,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:rose_bush",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -5655,7 +6199,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:rose_bush",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -5665,7 +6212,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:rose_bush",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -5675,7 +6225,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:rose_bush",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -5685,7 +6238,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:rose_bush",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -5695,7 +6251,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:rose_bush",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -5781,7 +6340,10 @@
         "data/minecraft/worldgen/configured_feature/forest_flowers.json",
         "data/minecraft/worldgen/placed_feature/flower_forest_flowers.json",
         "data/minecraft/worldgen/placed_feature/forest_flowers.json",
-        "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java"
       ],
       "source_mobs": [],
       "source_mod": "vanilla"
@@ -6126,7 +6688,9 @@
           "source_files": [
             "data/minecraft/loot_tables/blocks/small_dripleaf.json",
             "data/minecraft/worldgen/biome/lush_caves.json",
+            "data/minecraft/worldgen/configured_feature/clay_with_dripleaves.json",
             "data/minecraft/worldgen/configured_feature/dripleaf.json",
+            "data/minecraft/worldgen/configured_feature/lush_caves_clay.json",
             "data/minecraft/worldgen/placed_feature/lush_caves_clay.json"
           ],
           "source_mob": null
@@ -6141,7 +6705,9 @@
       "source_files": [
         "data/minecraft/loot_tables/blocks/small_dripleaf.json",
         "data/minecraft/worldgen/biome/lush_caves.json",
+        "data/minecraft/worldgen/configured_feature/clay_with_dripleaves.json",
         "data/minecraft/worldgen/configured_feature/dripleaf.json",
+        "data/minecraft/worldgen/configured_feature/lush_caves_clay.json",
         "data/minecraft/worldgen/placed_feature/lush_caves_clay.json"
       ],
       "source_mobs": [],
@@ -6231,7 +6797,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:sunflower",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -6241,7 +6810,10 @@
           "note": "BOP configured feature",
           "source_block": "minecraft:sunflower",
           "source_files": [
-            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+            "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+            "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+            "src/main/java/biomesoplenty/init/ModBiomes.java"
           ],
           "source_mob": null
         },
@@ -6270,7 +6842,10 @@
         "data/minecraft/worldgen/biome/sunflower_plains.json",
         "data/minecraft/worldgen/configured_feature/patch_sunflower.json",
         "data/minecraft/worldgen/placed_feature/patch_sunflower.json",
-        "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java"
+        "src/main/java/biomesoplenty/common/biome/BOPOverworldBiomes.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPVegetationFeatures.java",
+        "src/main/java/biomesoplenty/common/worldgen/placement/BOPVegetationPlacements.java",
+        "src/main/java/biomesoplenty/init/ModBiomes.java"
       ],
       "source_mobs": [],
       "source_mod": "vanilla"
