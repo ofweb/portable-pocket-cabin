@@ -1,6 +1,6 @@
 # Milestone 2: World-attuned expansion
 
-**Depends on:** [Milestone 1](01-acquisition-relocation.md).
+**Depends on:** The [survival acquisition decision](../../.workflow/decisions/pdr/0004-survival-acquisition-and-relocation.md) and [saved palette decision](../../.workflow/decisions/pdr/0005-keep-the-chosen-cabin-palette.md).
 
 **Outcome:** A new cabin starts as a 4×4 home and can grow through world-specific material requirements without moving player blocks or risking another cabin's space.
 
@@ -16,7 +16,7 @@ This milestone replaces the MVP's fixed 21×21 interior with:
 - one persisted material attunement shared by the world
 - data-defined expansion costs and maximum size
 
-[Milestone 0](00-safe-mvp.md) remains authoritative for identity, cell isolation, lifecycle and simulation. [Milestone 3](03-upgrade-interface.md) owns the current funding and installation interface. Storage, automation, roles and connected access belong to their later milestones.
+[PDR-0001](../../.workflow/decisions/pdr/0001-preserve-the-portable-home.md) remains authoritative for identity, interior persistence and simulation. [ADR-0005](../../.workflow/decisions/adr/0005-authoritative-cabin-registry.md) owns the registry and lifecycle model. [Milestone 3](03-upgrade-interface.md) owns the current funding and installation interface. Storage, automation, roles and connected access belong to their later milestones.
 
 ## General-space geometry
 
@@ -42,7 +42,7 @@ Changing the configured maximum cannot reshape an existing cabin. An expansion v
 
 The definition sets expansion costs and the maximum general size. The bundled maximum is 21; the implementation rejects configured values above the absolute cell-safety cap of 32. Definitions must provide every one-block step from size 5 through their maximum. Lateral geometry is deterministic implementation behavior, not datapack configuration.
 
-General space remains ordinary Minecraft space. Compatible blocks may be placed normally, but enlargement does not grant packed-time simulation. Milestone 0's deployed-only simulation rule still applies outside explicitly managed future fixtures.
+General space remains ordinary Minecraft space. Compatible blocks may be placed normally, but enlargement does not grant packed-time simulation. [PDR-0001's](../../.workflow/decisions/pdr/0001-preserve-the-portable-home.md) deployed-only simulation rule still applies outside explicitly managed future fixtures.
 
 The variable-height geometry is fresh-world-only from the earlier fixed-height schema. Unsupported saves fail closed with backup and `just fresh-world` guidance because generated ceiling blocks cannot be distinguished safely from player construction. The [README](../../README.md) is authoritative for the current schema migration matrix.
 
@@ -59,7 +59,7 @@ Expansion requirements may contain exact item quantities and one world-attuned P
 
 The first progression lookup creates one attunement for the save. Its definition version and resolved wood profile are persisted and shared by every cabin and player. Restart, configuration reload and later datapack or mod changes must not reroll it. If the saved definition version or profile is no longer valid, upgrades stop with an actionable error instead of selecting a replacement.
 
-Candidate wood profiles must be declared in the definition and available through [Milestone 1's material-profile system](01-acquisition-relocation.md#material-profile-format). The bundled pool includes vanilla candidates and conditional Biomes O' Plenty profiles. Missing optional mods do not prevent the base mod from loading. A custom pool with no loaded candidate fails closed rather than producing an impossible requirement.
+Candidate wood profiles must be declared in the definition and available through the [material-profile system](../reference/material-profiles.md). The bundled pool includes vanilla candidates and conditional Biomes O' Plenty profiles. Missing optional mods do not prevent the base mod from loading. A custom pool with no loaded candidate fails closed rather than producing an impossible requirement.
 
 The shared progression definition is replaceable at:
 

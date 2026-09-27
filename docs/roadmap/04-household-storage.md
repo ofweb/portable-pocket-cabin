@@ -1,6 +1,6 @@
 # Milestone 4: Household roles, mailbox and central storage
 
-**Depends on:** [Milestone 0](00-safe-mvp.md) identity and access; [Milestone 3](03-upgrade-interface.md) upgrade funding.
+**Depends on:** [PDR-0001](../../.workflow/decisions/pdr/0001-preserve-the-portable-home.md) cabin identity and [PDR-0002](../../.workflow/decisions/pdr/0002-safe-cabin-travel.md) safe access; [Milestone 3](03-upgrade-interface.md) upgrade funding.
 
 **Outcome:** Each cabin has clear household roles, a safe public receiving mailbox and one authoritative cabin-owned inventory.
 
@@ -35,7 +35,7 @@ The owner may:
 - deposit into, browse and withdraw from central storage
 - inspect and collect mailbox contents
 - configure storage capacity and later owner-only systems
-- pack and deploy the cabin under [Milestone 0](00-safe-mvp.md)
+- pack and deploy the cabin under the [safe-travel decision](../../.workflow/decisions/pdr/0002-safe-cabin-travel.md)
 
 Later milestones add network, automation, sharing and loadout controls without changing ownership.
 

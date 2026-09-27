@@ -41,7 +41,7 @@ Only an upgrade whose prerequisites and spatial requirements pass accepts materi
 
 ## Per-upgrade funds
 
-Each available upgrade owns a separate [upgrade fund](../../CONTEXT.md) keyed by its stable target. Persistent cabin state has no tracked or selected upgrade. Viewing a panel or changing tabs has no gameplay effect, and several upgrades may hold materials concurrently.
+Each available upgrade owns a separate [upgrade fund](../../.workflow/context.md#upgrade-fund) keyed by its stable target. Persistent cabin state has no tracked or selected upgrade. Viewing a panel or changing tabs has no gameplay effect, and several upgrades may hold materials concurrently.
 
 Each material icon is an interactive fund slot:
 

@@ -1,6 +1,6 @@
 # Milestone 9: Connected cabins and safe packed-cabin access
 
-**Depends on:** [Milestone 0](00-safe-mvp.md) lifecycle safety and [Milestone 4](04-household-storage.md) household permissions.
+**Depends on:** [PDR-0002](../../.workflow/decisions/pdr/0002-safe-cabin-travel.md) lifecycle safety and [Milestone 4](04-household-storage.md) household permissions.
 
 **Outcome:** Mutually consenting owners connect cabins through a persistent shared hallway, and packed cabins remain reachable while each player retains a permitted route to a deployed exterior.
 
@@ -79,7 +79,7 @@ Failure to guarantee any required evacuation aborts before exterior removal. Con
 
 A usable route requires active membership, destination entry permission, a valid `DEPLOYED` exterior and a safe loaded position outside it.
 
-Offline players do not block packing. Login revalidates occupancy, graph generation and permitted routes. A player without a valid exit uses [Milestone 0's](00-safe-mvp.md) emergency destination chain.
+Offline players do not block packing. Login revalidates occupancy, graph generation and permitted routes. A player without a valid exit uses [PDR-0002's](../../.workflow/decisions/pdr/0002-safe-cabin-travel.md) emergency destination chain.
 
 Membership removal and network dismantling use the same graph lock and per-player reachability checks. They seal only affected protected projections and fail before stranding an online occupant.
 

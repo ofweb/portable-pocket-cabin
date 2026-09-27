@@ -1,10 +1,10 @@
 # Portable Pocket Cabin
 
-A Fabric 26.2 mod for a travelling play style. Players can craft, deploy, expand, customize, pack, and relocate a persistent pocket cabin. The [roadmap](ROADMAP.md) links each milestone's design, implementation plan, and acceptance gates.
+A Fabric 26.2 mod for a travelling play style. Players can craft, deploy, expand, customize, pack, and relocate a persistent pocket cabin. [Direction](.workflow/direction.md) describes the intended end state. The [Backlog](.workflow/backlog.md) records possible work. [Earlier milestone documents](docs/roadmap/README.md) retain detailed specifications and acceptance history.
 
 ## Playing
 
-Obtain a Block of Amethyst to reveal the three dimensional-core recipes. Combine all three cores into a Dimensional Foundation, then craft a palette-aware `Cabin Kit` with your chosen roof planks, wall wood, floor planks, and door.
+Obtain a Block of Amethyst to reveal the three dimensional-core recipes. Combine all three cores into a Dimensional Foundation, then craft a palette-aware `Cabin Kit` with your chosen roof planks, wall wood, floor planks, and door. The [crafting and moving guide](docs/guides/crafting-and-moving.md) shows the recipes and controls.
 
 Use the Kit on top of a solid terrain block. The first use previews the 5×5 footprint; use the same surface again within 30 seconds to deploy. The front stair appears above the selected block, and the door faces you. The first successful deployment permanently binds the cabin and creates its pocket interior.
 
@@ -22,6 +22,14 @@ The registry uses schema 7. Schema 6 cabins retain their windows, receipts, fund
 
 Cabins deploy in the Overworld, Nether, or End, and their protected interiors run only while deployed. Installed windows reflect the cabin's dimension, time, weather, or inactive state.
 
+## Persistence and safety
+
+Packing moves the entrance but keeps the cabin interior and its contents in place. Ordinary interior blocks pause while the cabin is packed. One cabin can have only one active exterior. Deployment rejects blocked or unsafe sites without clearing terrain. Packing removes only cabin-owned exterior blocks.
+
+Packing stops if an occupant has no safe evacuation destination or the packed item cannot be delivered. A player who logged out inside an inactive cabin returns to a safe destination on login. If the exterior or packed item is lost, an operator can inspect and recover the cabin without deleting its interior.
+
+Sleeping in a cabin bed makes it the owner's cabin home. If that bed is unavailable, respawning tries the current exterior, then a safe position near the death site for an inactive cabin. The last campsite and Overworld spawn remain fallbacks. A trusted visitor can sleep without changing their own home.
+
 Normal player commands are:
 
 ```text
@@ -31,7 +39,7 @@ Normal player commands are:
 /cabin access private|trusted
 ```
 
-The lifecycle commands `/cabin preview`, `/cabin deploy`, and `/cabin pack` remain available only to operators for debugging and recovery. Material-pack authors can extend the Cabin Kit recipe through the [version 1 material-profile format](docs/roadmap/01-acquisition-relocation.md#material-profile-format).
+The lifecycle commands `/cabin preview`, `/cabin deploy`, and `/cabin pack` remain available only to operators for debugging and recovery. Material-pack authors can extend the Cabin Kit recipe through the [version 1 material-profile format](docs/reference/material-profiles.md).
 
 ## Development
 
@@ -42,7 +50,7 @@ Requires JDK 25 or newer.
 ./gradlew runServer
 ```
 
-The build runs server-side GameTests and headless dedicated-server startup and reload checks. Development-world operators also have these inspection and recovery commands:
+The build runs server-side GameTests and headless dedicated-server startup and reload checks. The [cabin foundation](docs/testing/cabin-foundation.md) and [acquisition and relocation](docs/testing/cabin-acquisition-relocation.md) checks state the continuing coverage. Development-world operators also have these inspection and recovery commands:
 
 ```text
 /cabin create [player]

@@ -111,10 +111,9 @@ These ideas are not committed milestones:
 - more exterior and room styles
 - cabin naming and map integration
 - cabin sleep affecting exterior night
-- shared ownership
 - inferred arbitrary modded-material support
 
-Each requires a separate scope, safety and compatibility alignment. Shared ownership must deliberately replace the one-owner model; inferred integrations remain rejected until they have a safe contract.
+Each requires a separate scope, safety and compatibility alignment. Inferred integrations remain rejected until they have a safe contract.
 
 The cabin carries the home, not the settlement. Outdoor defenses, paths, pens, mines and terrain adaptation remain local to each campsite.
 
