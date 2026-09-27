@@ -4,7 +4,7 @@
 
 **Outcome:** Cabin upgrades are discoverable, understandable and purchased through a protected interface instead of chat messages and sneak-use gestures.
 
-**Status:** Deliveries 3.1a–3.2b are implemented and pass automated acceptance; manual client acceptance remains.
+**Status:** Complete. Deliveries 3.1a–3.2b pass automated and manual acceptance.
 
 ## Scope
 

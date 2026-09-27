@@ -4,7 +4,7 @@
 
 **Outcome:** A new cabin starts as a 4×4 home and can grow through world-specific material requirements without moving player blocks or risking another cabin's space.
 
-**Status:** Implemented; retrospective acceptance audit pending.
+**Status:** Implemented; manual acceptance complete; retrospective audit pending.
 
 ## Scope
 

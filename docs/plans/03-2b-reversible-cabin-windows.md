@@ -6,7 +6,7 @@
 resulting wall safely, refund the exact applicable purchase receipts, and eject any funds invalidated
 by the resulting state. Make the complete reversal recoverable across interruption and restart.
 
-**Status:** Implemented; automated acceptance passed; manual client acceptance pending.
+**Status:** Complete; automated and manual client acceptance passed.
 
 ## Agreed behavior
 
@@ -117,7 +117,7 @@ by the resulting state. Make the complete reversal recoverable across interrupti
 The complete GameTest and dedicated-server startup/reload suites remain the automated acceptance gate.
 
 Automated acceptance passed with all 68 required GameTests. The dedicated-server startup/reload gate
-also passes as part of the complete build. Manual GUI-scale and visible-drop checks remain pending.
+also passes as part of the complete build. Manual GUI-scale and visible-drop checks passed.
 
 ## Implementation sequence
 

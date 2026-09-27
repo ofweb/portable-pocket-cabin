@@ -1,0 +1,4025 @@
+{
+  "metadata": {
+    "alex_branch": "1.20",
+    "alex_commit": "09755dade2cfbdf14839e026d3af446f9d3ff843",
+    "bop_branch": "BOP-1.20-18.x.x",
+    "bop_commit": "678c9e5239d4e56562bfd865d3120fc96fd3d02c",
+    "minecraft_version": "1.20.1",
+    "server_jar_sha256": "80db52b203ac5de6e5fc1c5082259df440fb2b5390b4c61d474e8fbc63cc41f5",
+    "source_roots": {
+      "alexsmobs": "src/main/ in AlexModGuy/AlexsMobs",
+      "biomesoplenty": "src/main/ in Glitchfiend/BiomesOPlenty",
+      "minecraft": "data/minecraft/ in the inner official server jar"
+    }
+  },
+  "wood_types": [
+    {
+      "biome_ids": [
+        "biomesoplenty:dead_forest",
+        "biomesoplenty:muskeg",
+        "biomesoplenty:old_growth_dead_forest",
+        "biomesoplenty:ominous_woods",
+        "biomesoplenty:tundra",
+        "biomesoplenty:wasteland"
+      ],
+      "display_name": "Dead",
+      "logs": [
+        "biomesoplenty:dead_log"
+      ],
+      "planks_item_id": "biomesoplenty:dead_planks",
+      "saplings": [
+        "biomesoplenty:dead_sapling"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/api/block/BOPBlocks.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_leaves.json",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_log.json"
+      ],
+      "wood_id": "biomesoplenty:dead"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:auroral_garden",
+        "biomesoplenty:coniferous_forest",
+        "biomesoplenty:fir_clearing",
+        "biomesoplenty:snowy_coniferous_forest",
+        "biomesoplenty:snowy_fir_clearing"
+      ],
+      "display_name": "Fir",
+      "logs": [
+        "biomesoplenty:fir_log"
+      ],
+      "planks_item_id": "biomesoplenty:fir_planks",
+      "saplings": [
+        "biomesoplenty:fir_sapling"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/api/block/BOPBlocks.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_leaves.json",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_log.json"
+      ],
+      "wood_id": "biomesoplenty:fir"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:lavender_field",
+        "biomesoplenty:lavender_forest",
+        "biomesoplenty:mediterranean_forest",
+        "biomesoplenty:mystic_grove",
+        "biomesoplenty:orchard",
+        "biomesoplenty:tropics"
+      ],
+      "display_name": "Flowering Oak",
+      "logs": [],
+      "planks_item_id": null,
+      "saplings": [
+        "biomesoplenty:flowering_oak_sapling"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
+      ],
+      "wood_id": "biomesoplenty:flowering_oak"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:undergrowth"
+      ],
+      "display_name": "Hellbark",
+      "logs": [
+        "biomesoplenty:hellbark_log"
+      ],
+      "planks_item_id": "biomesoplenty:hellbark_planks",
+      "saplings": [
+        "biomesoplenty:hellbark_sapling"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/api/block/BOPBlocks.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/hellbark_leaves.json",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/hellbark_log.json"
+      ],
+      "wood_id": "biomesoplenty:hellbark"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:lavender_field",
+        "biomesoplenty:lavender_forest"
+      ],
+      "display_name": "Jacaranda",
+      "logs": [
+        "biomesoplenty:jacaranda_log"
+      ],
+      "planks_item_id": "biomesoplenty:jacaranda_planks",
+      "saplings": [
+        "biomesoplenty:jacaranda_sapling"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/api/block/BOPBlocks.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/jacaranda_leaves.json",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/jacaranda_log.json"
+      ],
+      "wood_id": "biomesoplenty:jacaranda"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:mystic_grove"
+      ],
+      "display_name": "Magic",
+      "logs": [
+        "biomesoplenty:magic_log"
+      ],
+      "planks_item_id": "biomesoplenty:magic_planks",
+      "saplings": [
+        "biomesoplenty:magic_sapling"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/api/block/BOPBlocks.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/magic_leaves.json",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/magic_log.json"
+      ],
+      "wood_id": "biomesoplenty:magic"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:bog",
+        "biomesoplenty:maple_woods",
+        "biomesoplenty:seasonal_forest",
+        "biomesoplenty:snowy_maple_woods",
+        "biomesoplenty:tundra"
+      ],
+      "display_name": "Maple",
+      "logs": [],
+      "planks_item_id": null,
+      "saplings": [
+        "biomesoplenty:maple_sapling"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/maple_leaves.json"
+      ],
+      "wood_id": "biomesoplenty:maple"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:pumpkin_patch",
+        "biomesoplenty:seasonal_forest"
+      ],
+      "display_name": "Orange Autumn",
+      "logs": [],
+      "planks_item_id": null,
+      "saplings": [
+        "biomesoplenty:orange_autumn_sapling"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/orange_autumn_leaves.json"
+      ],
+      "wood_id": "biomesoplenty:orange_autumn"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:origin_valley"
+      ],
+      "display_name": "Origin",
+      "logs": [],
+      "planks_item_id": null,
+      "saplings": [
+        "biomesoplenty:origin_sapling"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/origin_leaves.json"
+      ],
+      "wood_id": "biomesoplenty:origin"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:auroral_garden"
+      ],
+      "display_name": "Rainbow Birch",
+      "logs": [],
+      "planks_item_id": null,
+      "saplings": [
+        "biomesoplenty:rainbow_birch_sapling"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/rainbow_birch_leaves.json"
+      ],
+      "wood_id": "biomesoplenty:rainbow_birch"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:redwood_forest"
+      ],
+      "display_name": "Redwood",
+      "logs": [
+        "biomesoplenty:redwood_log",
+        "biomesoplenty:redwood_wood"
+      ],
+      "planks_item_id": "biomesoplenty:redwood_planks",
+      "saplings": [],
+      "source_files": [
+        "src/main/java/biomesoplenty/api/block/BOPBlocks.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/redwood_log.json",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/redwood_wood.json"
+      ],
+      "wood_id": "biomesoplenty:redwood"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:ominous_woods"
+      ],
+      "display_name": "Umbran",
+      "logs": [
+        "biomesoplenty:umbran_log"
+      ],
+      "planks_item_id": "biomesoplenty:umbran_planks",
+      "saplings": [
+        "biomesoplenty:umbran_sapling"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/api/block/BOPBlocks.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/umbran_leaves.json",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/umbran_log.json"
+      ],
+      "wood_id": "biomesoplenty:umbran"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:wetland"
+      ],
+      "display_name": "Willow",
+      "logs": [
+        "biomesoplenty:willow_log"
+      ],
+      "planks_item_id": "biomesoplenty:willow_planks",
+      "saplings": [
+        "biomesoplenty:willow_sapling"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/api/block/BOPBlocks.java",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/willow_leaves.json",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/willow_log.json"
+      ],
+      "wood_id": "biomesoplenty:willow"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:seasonal_forest",
+        "biomesoplenty:seasonal_orchard"
+      ],
+      "display_name": "Yellow Autumn",
+      "logs": [],
+      "planks_item_id": null,
+      "saplings": [
+        "biomesoplenty:yellow_autumn_sapling"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/yellow_autumn_leaves.json"
+      ],
+      "wood_id": "biomesoplenty:yellow_autumn"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:dryland",
+        "biomesoplenty:lush_desert",
+        "biomesoplenty:scrubland"
+      ],
+      "display_name": "Acacia",
+      "logs": [
+        "minecraft:acacia_log"
+      ],
+      "planks_item_id": "minecraft:acacia_planks",
+      "saplings": [],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "wood_id": "minecraft:acacia"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:auroral_garden",
+        "biomesoplenty:seasonal_forest",
+        "biomesoplenty:seasonal_orchard",
+        "minecraft:birch_forest",
+        "minecraft:flower_forest",
+        "minecraft:forest",
+        "minecraft:meadow",
+        "minecraft:old_growth_birch_forest"
+      ],
+      "display_name": "Birch",
+      "logs": [
+        "minecraft:birch_log"
+      ],
+      "planks_item_id": "minecraft:birch_planks",
+      "saplings": [
+        "minecraft:birch_sapling"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/birch_leaves.json",
+        "data/minecraft/loot_tables/blocks/birch_log.json",
+        "data/minecraft/worldgen/biome/birch_forest.json",
+        "data/minecraft/worldgen/biome/flower_forest.json",
+        "data/minecraft/worldgen/biome/forest.json",
+        "data/minecraft/worldgen/biome/meadow.json",
+        "data/minecraft/worldgen/biome/old_growth_birch_forest.json",
+        "data/minecraft/worldgen/configured_feature/birch_bees_0002.json",
+        "data/minecraft/worldgen/configured_feature/birch_bees_002.json",
+        "data/minecraft/worldgen/configured_feature/super_birch_bees.json",
+        "data/minecraft/worldgen/configured_feature/super_birch_bees_0002.json",
+        "data/minecraft/worldgen/placed_feature/birch_tall.json",
+        "data/minecraft/worldgen/placed_feature/trees_birch.json",
+        "data/minecraft/worldgen/placed_feature/trees_birch_and_oak.json",
+        "data/minecraft/worldgen/placed_feature/trees_flower_forest.json",
+        "data/minecraft/worldgen/placed_feature/trees_meadow.json",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "wood_id": "minecraft:birch"
+    },
+    {
+      "biome_ids": [
+        "minecraft:cherry_grove"
+      ],
+      "display_name": "Cherry",
+      "logs": [
+        "minecraft:cherry_log"
+      ],
+      "planks_item_id": "minecraft:cherry_planks",
+      "saplings": [
+        "minecraft:cherry_sapling"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/cherry_leaves.json",
+        "data/minecraft/loot_tables/blocks/cherry_log.json",
+        "data/minecraft/worldgen/biome/cherry_grove.json",
+        "data/minecraft/worldgen/configured_feature/cherry_bees_005.json",
+        "data/minecraft/worldgen/placed_feature/trees_cherry.json"
+      ],
+      "wood_id": "minecraft:cherry"
+    },
+    {
+      "biome_ids": [
+        "minecraft:crimson_forest"
+      ],
+      "display_name": "Crimson",
+      "logs": [
+        "minecraft:crimson_stem"
+      ],
+      "planks_item_id": "minecraft:crimson_planks",
+      "saplings": [],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/crimson_stem.json",
+        "data/minecraft/worldgen/biome/crimson_forest.json",
+        "data/minecraft/worldgen/configured_feature/crimson_fungus.json",
+        "data/minecraft/worldgen/placed_feature/crimson_fungi.json"
+      ],
+      "wood_id": "minecraft:crimson"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:mediterranean_forest",
+        "biomesoplenty:mystic_grove",
+        "biomesoplenty:pumpkin_patch",
+        "biomesoplenty:seasonal_forest",
+        "biomesoplenty:volcanic_plains"
+      ],
+      "display_name": "Dark Oak",
+      "logs": [
+        "minecraft:dark_oak_log"
+      ],
+      "planks_item_id": "minecraft:dark_oak_planks",
+      "saplings": [],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "wood_id": "minecraft:dark_oak"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:fungal_jungle",
+        "biomesoplenty:rocky_rainforest",
+        "biomesoplenty:tropics",
+        "minecraft:bamboo_jungle",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle"
+      ],
+      "display_name": "Jungle",
+      "logs": [
+        "minecraft:jungle_log"
+      ],
+      "planks_item_id": "minecraft:jungle_planks",
+      "saplings": [
+        "minecraft:jungle_sapling"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/jungle_leaves.json",
+        "data/minecraft/loot_tables/blocks/jungle_log.json",
+        "data/minecraft/worldgen/biome/bamboo_jungle.json",
+        "data/minecraft/worldgen/biome/jungle.json",
+        "data/minecraft/worldgen/biome/sparse_jungle.json",
+        "data/minecraft/worldgen/configured_feature/jungle_bush.json",
+        "data/minecraft/worldgen/configured_feature/jungle_tree.json",
+        "data/minecraft/worldgen/placed_feature/bamboo_vegetation.json",
+        "data/minecraft/worldgen/placed_feature/trees_jungle.json",
+        "data/minecraft/worldgen/placed_feature/trees_sparse_jungle.json",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "wood_id": "minecraft:jungle"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:bog"
+      ],
+      "display_name": "Mangrove",
+      "logs": [
+        "minecraft:mangrove_log"
+      ],
+      "planks_item_id": "minecraft:mangrove_planks",
+      "saplings": [],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "wood_id": "minecraft:mangrove"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:auroral_garden",
+        "biomesoplenty:dryland",
+        "biomesoplenty:field",
+        "biomesoplenty:floodplain",
+        "biomesoplenty:forested_field",
+        "biomesoplenty:fungal_jungle",
+        "biomesoplenty:lavender_field",
+        "biomesoplenty:lavender_forest",
+        "biomesoplenty:mediterranean_forest",
+        "biomesoplenty:mystic_grove",
+        "biomesoplenty:old_growth_woodland",
+        "biomesoplenty:orchard",
+        "biomesoplenty:origin_valley",
+        "biomesoplenty:prairie",
+        "biomesoplenty:pumpkin_patch",
+        "biomesoplenty:rocky_rainforest",
+        "biomesoplenty:rocky_shrubland",
+        "biomesoplenty:shrubland",
+        "biomesoplenty:tropics",
+        "biomesoplenty:woodland",
+        "minecraft:bamboo_jungle",
+        "minecraft:deep_dark",
+        "minecraft:dripstone_caves",
+        "minecraft:flower_forest",
+        "minecraft:forest",
+        "minecraft:jungle",
+        "minecraft:lush_caves",
+        "minecraft:meadow",
+        "minecraft:plains",
+        "minecraft:sparse_jungle",
+        "minecraft:sunflower_plains",
+        "minecraft:swamp",
+        "minecraft:wooded_badlands"
+      ],
+      "display_name": "Oak",
+      "logs": [
+        "minecraft:oak_log"
+      ],
+      "planks_item_id": "minecraft:oak_planks",
+      "saplings": [
+        "minecraft:oak_sapling"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/oak_leaves.json",
+        "data/minecraft/loot_tables/blocks/oak_log.json",
+        "data/minecraft/worldgen/biome/bamboo_jungle.json",
+        "data/minecraft/worldgen/biome/deep_dark.json",
+        "data/minecraft/worldgen/biome/dripstone_caves.json",
+        "data/minecraft/worldgen/biome/flower_forest.json",
+        "data/minecraft/worldgen/biome/forest.json",
+        "data/minecraft/worldgen/biome/jungle.json",
+        "data/minecraft/worldgen/biome/lush_caves.json",
+        "data/minecraft/worldgen/biome/meadow.json",
+        "data/minecraft/worldgen/biome/plains.json",
+        "data/minecraft/worldgen/biome/sparse_jungle.json",
+        "data/minecraft/worldgen/biome/sunflower_plains.json",
+        "data/minecraft/worldgen/biome/swamp.json",
+        "data/minecraft/worldgen/biome/wooded_badlands.json",
+        "data/minecraft/worldgen/configured_feature/azalea_tree.json",
+        "data/minecraft/worldgen/configured_feature/fancy_oak_bees.json",
+        "data/minecraft/worldgen/configured_feature/fancy_oak_bees_0002.json",
+        "data/minecraft/worldgen/configured_feature/fancy_oak_bees_002.json",
+        "data/minecraft/worldgen/configured_feature/fancy_oak_bees_005.json",
+        "data/minecraft/worldgen/configured_feature/jungle_bush.json",
+        "data/minecraft/worldgen/configured_feature/oak.json",
+        "data/minecraft/worldgen/configured_feature/oak_bees_0002.json",
+        "data/minecraft/worldgen/configured_feature/oak_bees_002.json",
+        "data/minecraft/worldgen/configured_feature/oak_bees_005.json",
+        "data/minecraft/worldgen/configured_feature/swamp_oak.json",
+        "data/minecraft/worldgen/placed_feature/bamboo_vegetation.json",
+        "data/minecraft/worldgen/placed_feature/rooted_azalea_tree.json",
+        "data/minecraft/worldgen/placed_feature/trees_badlands.json",
+        "data/minecraft/worldgen/placed_feature/trees_birch_and_oak.json",
+        "data/minecraft/worldgen/placed_feature/trees_flower_forest.json",
+        "data/minecraft/worldgen/placed_feature/trees_jungle.json",
+        "data/minecraft/worldgen/placed_feature/trees_meadow.json",
+        "data/minecraft/worldgen/placed_feature/trees_plains.json",
+        "data/minecraft/worldgen/placed_feature/trees_sparse_jungle.json",
+        "data/minecraft/worldgen/placed_feature/trees_swamp.json",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "wood_id": "minecraft:oak"
+    },
+    {
+      "biome_ids": [
+        "biomesoplenty:bog",
+        "biomesoplenty:dead_forest",
+        "biomesoplenty:field",
+        "biomesoplenty:forested_field",
+        "biomesoplenty:jade_cliffs",
+        "biomesoplenty:maple_woods",
+        "biomesoplenty:mediterranean_forest",
+        "biomesoplenty:old_growth_dead_forest",
+        "biomesoplenty:scrubland",
+        "biomesoplenty:snowy_maple_woods",
+        "biomesoplenty:wetland",
+        "minecraft:ice_spikes",
+        "minecraft:snowy_plains"
+      ],
+      "display_name": "Spruce",
+      "logs": [
+        "minecraft:spruce_log"
+      ],
+      "planks_item_id": "minecraft:spruce_planks",
+      "saplings": [
+        "minecraft:spruce_sapling"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/spruce_leaves.json",
+        "data/minecraft/loot_tables/blocks/spruce_log.json",
+        "data/minecraft/worldgen/biome/ice_spikes.json",
+        "data/minecraft/worldgen/biome/snowy_plains.json",
+        "data/minecraft/worldgen/configured_feature/spruce.json",
+        "data/minecraft/worldgen/placed_feature/trees_snowy.json",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "wood_id": "minecraft:spruce"
+    },
+    {
+      "biome_ids": [
+        "minecraft:warped_forest"
+      ],
+      "display_name": "Warped",
+      "logs": [
+        "minecraft:warped_stem"
+      ],
+      "planks_item_id": "minecraft:warped_planks",
+      "saplings": [],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/warped_stem.json",
+        "data/minecraft/worldgen/biome/warped_forest.json",
+        "data/minecraft/worldgen/configured_feature/warped_fungus.json",
+        "data/minecraft/worldgen/placed_feature/warped_fungi.json"
+      ],
+      "wood_id": "minecraft:warped"
+    }
+  ],
+  "woods": [
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "biomesoplenty:dead_forest",
+        "biomesoplenty:muskeg",
+        "biomesoplenty:old_growth_dead_forest",
+        "biomesoplenty:ominous_woods",
+        "biomesoplenty:tundra",
+        "biomesoplenty:wasteland"
+      ],
+      "display_name": "Dead Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 6,
+      "item_id": "biomesoplenty:dead_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:dead_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:dead_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_log.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:muskeg",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:dead_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_log.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:old_growth_dead_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:dead_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_log.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:ominous_woods",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:dead_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_log.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:tundra",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:dead_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_log.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:wasteland",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:dead_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_log.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "uncommon",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "biomesoplenty:dead_log"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_log.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "biomesoplenty:dead_forest",
+        "biomesoplenty:muskeg",
+        "biomesoplenty:old_growth_dead_forest",
+        "biomesoplenty:ominous_woods",
+        "biomesoplenty:tundra",
+        "biomesoplenty:wasteland"
+      ],
+      "display_name": "Dead Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 6,
+      "item_id": "biomesoplenty:dead_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:dead_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:dead_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:muskeg",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:dead_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:old_growth_dead_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:dead_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:ominous_woods",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:dead_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:tundra",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:dead_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:wasteland",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:dead_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_leaves.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "uncommon",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "biomesoplenty:dead_leaves"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/dead_leaves.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "biomesoplenty:auroral_garden",
+        "biomesoplenty:coniferous_forest",
+        "biomesoplenty:fir_clearing",
+        "biomesoplenty:snowy_coniferous_forest",
+        "biomesoplenty:snowy_fir_clearing"
+      ],
+      "display_name": "Fir Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 5,
+      "item_id": "biomesoplenty:fir_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:auroral_garden",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:fir_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_log.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:coniferous_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:fir_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_log.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:fir_clearing",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:fir_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_log.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:snowy_coniferous_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:fir_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_log.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:snowy_fir_clearing",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:fir_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_log.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "uncommon",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "biomesoplenty:fir_log"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_log.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "biomesoplenty:auroral_garden",
+        "biomesoplenty:coniferous_forest",
+        "biomesoplenty:fir_clearing",
+        "biomesoplenty:snowy_coniferous_forest",
+        "biomesoplenty:snowy_fir_clearing"
+      ],
+      "display_name": "Fir Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 5,
+      "item_id": "biomesoplenty:fir_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:auroral_garden",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:fir_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:coniferous_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:fir_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:fir_clearing",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:fir_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:snowy_coniferous_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:fir_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:snowy_fir_clearing",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:fir_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_leaves.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "uncommon",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "biomesoplenty:fir_leaves"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/fir_leaves.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "biomesoplenty:lavender_field",
+        "biomesoplenty:lavender_forest",
+        "biomesoplenty:mediterranean_forest",
+        "biomesoplenty:mystic_grove",
+        "biomesoplenty:orchard",
+        "biomesoplenty:tropics"
+      ],
+      "display_name": "Flowering Oak Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 6,
+      "item_id": "biomesoplenty:flowering_oak_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:lavender_field",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:flowering_oak_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:lavender_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:flowering_oak_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:mediterranean_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:flowering_oak_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:mystic_grove",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:flowering_oak_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:orchard",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:flowering_oak_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:tropics",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:flowering_oak_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "uncommon",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "biomesoplenty:flowering_oak_leaves"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/flowering_oak_leaves.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "biomesoplenty:undergrowth"
+      ],
+      "display_name": "Hellbark Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "biomesoplenty:hellbark_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:undergrowth",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:hellbark_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/hellbark_log.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_dry/nether",
+        "forge:is_hot/nether"
+      ],
+      "source_blocks": [
+        "biomesoplenty:hellbark_log"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/hellbark_log.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "biomesoplenty:undergrowth"
+      ],
+      "display_name": "Hellbark Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "biomesoplenty:hellbark_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:undergrowth",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:hellbark_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/hellbark_leaves.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_dry/nether",
+        "forge:is_hot/nether"
+      ],
+      "source_blocks": [
+        "biomesoplenty:hellbark_leaves"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/hellbark_leaves.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one source-tagged family",
+      "biome_ids": [
+        "biomesoplenty:lavender_field",
+        "biomesoplenty:lavender_forest"
+      ],
+      "display_name": "Jacaranda Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 2,
+      "item_id": "biomesoplenty:jacaranda_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:lavender_field",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:jacaranda_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/jacaranda_log.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:lavender_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:jacaranda_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/jacaranda_log.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_lush"
+      ],
+      "source_blocks": [
+        "biomesoplenty:jacaranda_log"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/jacaranda_log.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one source-tagged family",
+      "biome_ids": [
+        "biomesoplenty:lavender_field",
+        "biomesoplenty:lavender_forest"
+      ],
+      "display_name": "Jacaranda Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 2,
+      "item_id": "biomesoplenty:jacaranda_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:lavender_field",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:jacaranda_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/jacaranda_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:lavender_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:jacaranda_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/jacaranda_leaves.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_lush"
+      ],
+      "source_blocks": [
+        "biomesoplenty:jacaranda_leaves"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/jacaranda_leaves.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "biomesoplenty:mystic_grove"
+      ],
+      "display_name": "Magic Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "biomesoplenty:magic_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:mystic_grove",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:magic_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/magic_log.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_lush",
+        "forge:is_magical",
+        "forge:is_rare",
+        "forge:is_wet/overworld",
+        "minecraft:is_forest"
+      ],
+      "source_blocks": [
+        "biomesoplenty:magic_log"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/magic_log.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "biomesoplenty:mystic_grove"
+      ],
+      "display_name": "Magic Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "biomesoplenty:magic_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:mystic_grove",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:magic_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/magic_leaves.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_lush",
+        "forge:is_magical",
+        "forge:is_rare",
+        "forge:is_wet/overworld",
+        "minecraft:is_forest"
+      ],
+      "source_blocks": [
+        "biomesoplenty:magic_leaves"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/magic_leaves.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "biomesoplenty:bog",
+        "biomesoplenty:maple_woods",
+        "biomesoplenty:seasonal_forest",
+        "biomesoplenty:snowy_maple_woods",
+        "biomesoplenty:tundra"
+      ],
+      "display_name": "Maple Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 5,
+      "item_id": "biomesoplenty:maple_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:bog",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:maple_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/maple_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:maple_woods",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:maple_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/maple_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:seasonal_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:maple_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/maple_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:snowy_maple_woods",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:maple_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/maple_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:tundra",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:maple_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/maple_leaves.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "uncommon",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "biomesoplenty:maple_leaves"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/maple_leaves.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one source-tagged family",
+      "biome_ids": [
+        "biomesoplenty:pumpkin_patch",
+        "biomesoplenty:seasonal_forest"
+      ],
+      "display_name": "Orange Autumn Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 2,
+      "item_id": "biomesoplenty:orange_autumn_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:pumpkin_patch",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:orange_autumn_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/orange_autumn_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:seasonal_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:orange_autumn_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/orange_autumn_leaves.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "minecraft:is_forest"
+      ],
+      "source_blocks": [
+        "biomesoplenty:orange_autumn_leaves"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/orange_autumn_leaves.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "biomesoplenty:origin_valley"
+      ],
+      "display_name": "Origin Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "biomesoplenty:origin_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:origin_valley",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:origin_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/origin_leaves.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_rare"
+      ],
+      "source_blocks": [
+        "biomesoplenty:origin_leaves"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/origin_leaves.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "biomesoplenty:auroral_garden"
+      ],
+      "display_name": "Rainbow Birch Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "biomesoplenty:rainbow_birch_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:auroral_garden",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:rainbow_birch_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/rainbow_birch_leaves.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_cold/overworld",
+        "forge:is_dense/overworld",
+        "forge:is_magical",
+        "forge:is_snowy"
+      ],
+      "source_blocks": [
+        "biomesoplenty:rainbow_birch_leaves"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/rainbow_birch_leaves.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "biomesoplenty:redwood_forest"
+      ],
+      "display_name": "Redwood Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "biomesoplenty:redwood_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:redwood_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:redwood_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/redwood_log.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_dense/overworld",
+        "minecraft:is_forest"
+      ],
+      "source_blocks": [
+        "biomesoplenty:redwood_log"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/redwood_log.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "biomesoplenty:redwood_forest"
+      ],
+      "display_name": "Redwood Wood",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "biomesoplenty:redwood_wood",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:redwood_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:redwood_wood",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/redwood_wood.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_dense/overworld",
+        "minecraft:is_forest"
+      ],
+      "source_blocks": [
+        "biomesoplenty:redwood_wood"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/redwood_wood.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "biomesoplenty:ominous_woods"
+      ],
+      "display_name": "Umbran Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "biomesoplenty:umbran_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:ominous_woods",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:umbran_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/umbran_log.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_cold/overworld",
+        "forge:is_coniferous",
+        "forge:is_rare",
+        "forge:is_spooky",
+        "forge:is_wet/overworld",
+        "minecraft:is_taiga"
+      ],
+      "source_blocks": [
+        "biomesoplenty:umbran_log"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/umbran_log.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "biomesoplenty:ominous_woods"
+      ],
+      "display_name": "Umbran Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "biomesoplenty:umbran_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:ominous_woods",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:umbran_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/umbran_leaves.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_cold/overworld",
+        "forge:is_coniferous",
+        "forge:is_rare",
+        "forge:is_spooky",
+        "forge:is_wet/overworld",
+        "minecraft:is_taiga"
+      ],
+      "source_blocks": [
+        "biomesoplenty:umbran_leaves"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/umbran_leaves.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "biomesoplenty:wetland"
+      ],
+      "display_name": "Willow Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "biomesoplenty:willow_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:wetland",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:willow_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/willow_log.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_swamp",
+        "forge:is_wet/overworld"
+      ],
+      "source_blocks": [
+        "biomesoplenty:willow_log"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/willow_log.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "biomesoplenty:wetland"
+      ],
+      "display_name": "Willow Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "biomesoplenty:willow_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:wetland",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:willow_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/willow_leaves.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_swamp",
+        "forge:is_wet/overworld"
+      ],
+      "source_blocks": [
+        "biomesoplenty:willow_leaves"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/willow_leaves.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one source-tagged family",
+      "biome_ids": [
+        "biomesoplenty:seasonal_forest",
+        "biomesoplenty:seasonal_orchard"
+      ],
+      "display_name": "Yellow Autumn Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 2,
+      "item_id": "biomesoplenty:yellow_autumn_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:seasonal_forest",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:yellow_autumn_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/yellow_autumn_leaves.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "biomesoplenty:seasonal_orchard",
+          "note": "BOP configured feature",
+          "source_block": "biomesoplenty:yellow_autumn_leaves",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+            "src/main/resources/data/biomesoplenty/loot_tables/blocks/yellow_autumn_leaves.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "minecraft:is_forest"
+      ],
+      "source_blocks": [
+        "biomesoplenty:yellow_autumn_leaves"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java",
+        "src/main/resources/data/biomesoplenty/loot_tables/blocks/yellow_autumn_leaves.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "biomesoplenty"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature",
+        "Vanilla tree feature in BOP selector"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one source-tagged family",
+      "biome_ids": [
+        "biomesoplenty:dryland",
+        "biomesoplenty:lush_desert",
+        "biomesoplenty:scrubland"
+      ],
+      "display_name": "Acacia Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 3,
+      "item_id": "minecraft:acacia_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:dryland",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:acacia_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:dryland",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:acacia_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:lush_desert",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:acacia_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:lush_desert",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:acacia_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:scrubland",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:acacia_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:scrubland",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:acacia_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "uncommon",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_sparse/overworld"
+      ],
+      "source_blocks": [
+        "minecraft:acacia_log"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature",
+        "Generated block or its block-loot item",
+        "Vanilla tree feature in BOP selector"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "biomesoplenty:auroral_garden",
+        "biomesoplenty:seasonal_forest",
+        "biomesoplenty:seasonal_orchard",
+        "minecraft:birch_forest",
+        "minecraft:flower_forest",
+        "minecraft:forest",
+        "minecraft:meadow",
+        "minecraft:old_growth_birch_forest"
+      ],
+      "display_name": "Birch Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 8,
+      "item_id": "minecraft:birch_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:auroral_garden",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:birch_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:auroral_garden",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:birch_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:seasonal_forest",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:birch_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:seasonal_orchard",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:birch_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:birch_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:birch_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/birch_log.json",
+            "data/minecraft/worldgen/biome/birch_forest.json",
+            "data/minecraft/worldgen/configured_feature/birch_bees_0002.json",
+            "data/minecraft/worldgen/placed_feature/trees_birch.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:flower_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:birch_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/birch_log.json",
+            "data/minecraft/worldgen/biome/flower_forest.json",
+            "data/minecraft/worldgen/configured_feature/birch_bees_002.json",
+            "data/minecraft/worldgen/placed_feature/trees_flower_forest.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:birch_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/birch_log.json",
+            "data/minecraft/worldgen/biome/forest.json",
+            "data/minecraft/worldgen/configured_feature/birch_bees_0002.json",
+            "data/minecraft/worldgen/placed_feature/trees_birch_and_oak.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:meadow",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:birch_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/birch_log.json",
+            "data/minecraft/worldgen/biome/meadow.json",
+            "data/minecraft/worldgen/configured_feature/super_birch_bees.json",
+            "data/minecraft/worldgen/placed_feature/trees_meadow.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:old_growth_birch_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:birch_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/birch_log.json",
+            "data/minecraft/worldgen/biome/old_growth_birch_forest.json",
+            "data/minecraft/worldgen/configured_feature/birch_bees_0002.json",
+            "data/minecraft/worldgen/placed_feature/birch_tall.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:old_growth_birch_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:birch_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/birch_log.json",
+            "data/minecraft/worldgen/biome/old_growth_birch_forest.json",
+            "data/minecraft/worldgen/configured_feature/super_birch_bees_0002.json",
+            "data/minecraft/worldgen/placed_feature/birch_tall.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "uncommon",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "minecraft:birch_log"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/birch_log.json",
+        "data/minecraft/worldgen/biome/birch_forest.json",
+        "data/minecraft/worldgen/biome/flower_forest.json",
+        "data/minecraft/worldgen/biome/forest.json",
+        "data/minecraft/worldgen/biome/meadow.json",
+        "data/minecraft/worldgen/biome/old_growth_birch_forest.json",
+        "data/minecraft/worldgen/configured_feature/birch_bees_0002.json",
+        "data/minecraft/worldgen/configured_feature/birch_bees_002.json",
+        "data/minecraft/worldgen/configured_feature/super_birch_bees.json",
+        "data/minecraft/worldgen/configured_feature/super_birch_bees_0002.json",
+        "data/minecraft/worldgen/placed_feature/birch_tall.json",
+        "data/minecraft/worldgen/placed_feature/trees_birch.json",
+        "data/minecraft/worldgen/placed_feature/trees_birch_and_oak.json",
+        "data/minecraft/worldgen/placed_feature/trees_flower_forest.json",
+        "data/minecraft/worldgen/placed_feature/trees_meadow.json",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "Generated block or its block-loot item"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "minecraft:birch_forest",
+        "minecraft:flower_forest",
+        "minecraft:forest",
+        "minecraft:meadow",
+        "minecraft:old_growth_birch_forest"
+      ],
+      "display_name": "Birch Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 5,
+      "item_id": "minecraft:birch_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:birch_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:birch_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/birch_leaves.json",
+            "data/minecraft/worldgen/biome/birch_forest.json",
+            "data/minecraft/worldgen/configured_feature/birch_bees_0002.json",
+            "data/minecraft/worldgen/placed_feature/trees_birch.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:flower_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:birch_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/birch_leaves.json",
+            "data/minecraft/worldgen/biome/flower_forest.json",
+            "data/minecraft/worldgen/configured_feature/birch_bees_002.json",
+            "data/minecraft/worldgen/placed_feature/trees_flower_forest.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:birch_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/birch_leaves.json",
+            "data/minecraft/worldgen/biome/forest.json",
+            "data/minecraft/worldgen/configured_feature/birch_bees_0002.json",
+            "data/minecraft/worldgen/placed_feature/trees_birch_and_oak.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:meadow",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:birch_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/birch_leaves.json",
+            "data/minecraft/worldgen/biome/meadow.json",
+            "data/minecraft/worldgen/configured_feature/super_birch_bees.json",
+            "data/minecraft/worldgen/placed_feature/trees_meadow.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:old_growth_birch_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:birch_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/birch_leaves.json",
+            "data/minecraft/worldgen/biome/old_growth_birch_forest.json",
+            "data/minecraft/worldgen/configured_feature/birch_bees_0002.json",
+            "data/minecraft/worldgen/placed_feature/birch_tall.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:old_growth_birch_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:birch_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/birch_leaves.json",
+            "data/minecraft/worldgen/biome/old_growth_birch_forest.json",
+            "data/minecraft/worldgen/configured_feature/super_birch_bees_0002.json",
+            "data/minecraft/worldgen/placed_feature/birch_tall.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "uncommon",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "minecraft:birch_leaves"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/birch_leaves.json",
+        "data/minecraft/worldgen/biome/birch_forest.json",
+        "data/minecraft/worldgen/biome/flower_forest.json",
+        "data/minecraft/worldgen/biome/forest.json",
+        "data/minecraft/worldgen/biome/meadow.json",
+        "data/minecraft/worldgen/biome/old_growth_birch_forest.json",
+        "data/minecraft/worldgen/configured_feature/birch_bees_0002.json",
+        "data/minecraft/worldgen/configured_feature/birch_bees_002.json",
+        "data/minecraft/worldgen/configured_feature/super_birch_bees.json",
+        "data/minecraft/worldgen/configured_feature/super_birch_bees_0002.json",
+        "data/minecraft/worldgen/placed_feature/birch_tall.json",
+        "data/minecraft/worldgen/placed_feature/trees_birch.json",
+        "data/minecraft/worldgen/placed_feature/trees_birch_and_oak.json",
+        "data/minecraft/worldgen/placed_feature/trees_flower_forest.json",
+        "data/minecraft/worldgen/placed_feature/trees_meadow.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "Generated block or its block-loot item"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "minecraft:cherry_grove"
+      ],
+      "display_name": "Cherry Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "minecraft:cherry_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:cherry_grove",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:cherry_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/cherry_log.json",
+            "data/minecraft/worldgen/biome/cherry_grove.json",
+            "data/minecraft/worldgen/configured_feature/cherry_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_cherry.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "minecraft:is_mountain"
+      ],
+      "source_blocks": [
+        "minecraft:cherry_log"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/cherry_log.json",
+        "data/minecraft/worldgen/biome/cherry_grove.json",
+        "data/minecraft/worldgen/configured_feature/cherry_bees_005.json",
+        "data/minecraft/worldgen/placed_feature/trees_cherry.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "Generated block or its block-loot item"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "minecraft:cherry_grove"
+      ],
+      "display_name": "Cherry Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "minecraft:cherry_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:cherry_grove",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:cherry_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/cherry_leaves.json",
+            "data/minecraft/worldgen/biome/cherry_grove.json",
+            "data/minecraft/worldgen/configured_feature/cherry_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_cherry.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "minecraft:is_mountain"
+      ],
+      "source_blocks": [
+        "minecraft:cherry_leaves"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/cherry_leaves.json",
+        "data/minecraft/worldgen/biome/cherry_grove.json",
+        "data/minecraft/worldgen/configured_feature/cherry_bees_005.json",
+        "data/minecraft/worldgen/placed_feature/trees_cherry.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "Generated block or its block-loot item"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "minecraft:crimson_forest"
+      ],
+      "display_name": "Crimson Stem",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "minecraft:crimson_stem",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:crimson_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:crimson_stem",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/crimson_stem.json",
+            "data/minecraft/worldgen/biome/crimson_forest.json",
+            "data/minecraft/worldgen/configured_feature/crimson_fungus.json",
+            "data/minecraft/worldgen/placed_feature/crimson_fungi.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "minecraft:crimson_stem"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/crimson_stem.json",
+        "data/minecraft/worldgen/biome/crimson_forest.json",
+        "data/minecraft/worldgen/configured_feature/crimson_fungus.json",
+        "data/minecraft/worldgen/placed_feature/crimson_fungi.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "biomesoplenty:mediterranean_forest",
+        "biomesoplenty:mystic_grove",
+        "biomesoplenty:pumpkin_patch",
+        "biomesoplenty:seasonal_forest",
+        "biomesoplenty:volcanic_plains"
+      ],
+      "display_name": "Dark Oak Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 5,
+      "item_id": "minecraft:dark_oak_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:mediterranean_forest",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:dark_oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:mystic_grove",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:dark_oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:pumpkin_patch",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:dark_oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:seasonal_forest",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:dark_oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:volcanic_plains",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:dark_oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "uncommon",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "minecraft:dark_oak_log"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature",
+        "Generated block or its block-loot item",
+        "Vanilla tree feature in BOP selector"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "biomesoplenty:fungal_jungle",
+        "biomesoplenty:rocky_rainforest",
+        "biomesoplenty:tropics",
+        "minecraft:bamboo_jungle",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle"
+      ],
+      "display_name": "Jungle Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 6,
+      "item_id": "minecraft:jungle_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:fungal_jungle",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:jungle_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:fungal_jungle",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:jungle_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:rocky_rainforest",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:jungle_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:rocky_rainforest",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:jungle_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:tropics",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:jungle_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:tropics",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:jungle_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:bamboo_jungle",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:jungle_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/jungle_log.json",
+            "data/minecraft/worldgen/biome/bamboo_jungle.json",
+            "data/minecraft/worldgen/configured_feature/jungle_bush.json",
+            "data/minecraft/worldgen/placed_feature/bamboo_vegetation.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:jungle",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:jungle_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/jungle_log.json",
+            "data/minecraft/worldgen/biome/jungle.json",
+            "data/minecraft/worldgen/configured_feature/jungle_bush.json",
+            "data/minecraft/worldgen/placed_feature/trees_jungle.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:jungle",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:jungle_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/jungle_log.json",
+            "data/minecraft/worldgen/biome/jungle.json",
+            "data/minecraft/worldgen/configured_feature/jungle_tree.json",
+            "data/minecraft/worldgen/placed_feature/trees_jungle.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:sparse_jungle",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:jungle_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/jungle_log.json",
+            "data/minecraft/worldgen/biome/sparse_jungle.json",
+            "data/minecraft/worldgen/configured_feature/jungle_bush.json",
+            "data/minecraft/worldgen/placed_feature/trees_sparse_jungle.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:sparse_jungle",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:jungle_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/jungle_log.json",
+            "data/minecraft/worldgen/biome/sparse_jungle.json",
+            "data/minecraft/worldgen/configured_feature/jungle_tree.json",
+            "data/minecraft/worldgen/placed_feature/trees_sparse_jungle.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "uncommon",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "minecraft:jungle_log"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/jungle_log.json",
+        "data/minecraft/worldgen/biome/bamboo_jungle.json",
+        "data/minecraft/worldgen/biome/jungle.json",
+        "data/minecraft/worldgen/biome/sparse_jungle.json",
+        "data/minecraft/worldgen/configured_feature/jungle_bush.json",
+        "data/minecraft/worldgen/configured_feature/jungle_tree.json",
+        "data/minecraft/worldgen/placed_feature/bamboo_vegetation.json",
+        "data/minecraft/worldgen/placed_feature/trees_jungle.json",
+        "data/minecraft/worldgen/placed_feature/trees_sparse_jungle.json",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "Generated block or its block-loot item"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one source-tagged family",
+      "biome_ids": [
+        "minecraft:jungle",
+        "minecraft:sparse_jungle"
+      ],
+      "display_name": "Jungle Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 2,
+      "item_id": "minecraft:jungle_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:jungle",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:jungle_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/jungle_leaves.json",
+            "data/minecraft/worldgen/biome/jungle.json",
+            "data/minecraft/worldgen/configured_feature/jungle_tree.json",
+            "data/minecraft/worldgen/placed_feature/trees_jungle.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:sparse_jungle",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:jungle_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/jungle_leaves.json",
+            "data/minecraft/worldgen/biome/sparse_jungle.json",
+            "data/minecraft/worldgen/configured_feature/jungle_tree.json",
+            "data/minecraft/worldgen/placed_feature/trees_sparse_jungle.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "minecraft:is_jungle"
+      ],
+      "source_blocks": [
+        "minecraft:jungle_leaves"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/jungle_leaves.json",
+        "data/minecraft/worldgen/biome/jungle.json",
+        "data/minecraft/worldgen/biome/sparse_jungle.json",
+        "data/minecraft/worldgen/configured_feature/jungle_tree.json",
+        "data/minecraft/worldgen/placed_feature/trees_jungle.json",
+        "data/minecraft/worldgen/placed_feature/trees_sparse_jungle.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature",
+        "Vanilla tree feature in BOP selector"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "biomesoplenty:bog"
+      ],
+      "display_name": "Mangrove Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "minecraft:mangrove_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:bog",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:mangrove_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:bog",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:mangrove_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [
+        "forge:is_cold/overworld",
+        "forge:is_sparse/overworld",
+        "forge:is_swamp",
+        "forge:is_wet/overworld",
+        "minecraft:is_taiga"
+      ],
+      "source_blocks": [
+        "minecraft:mangrove_log"
+      ],
+      "source_files": [
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature",
+        "Generated block or its block-loot item",
+        "Vanilla tree feature in BOP selector"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "biomesoplenty:auroral_garden",
+        "biomesoplenty:dryland",
+        "biomesoplenty:field",
+        "biomesoplenty:floodplain",
+        "biomesoplenty:forested_field",
+        "biomesoplenty:fungal_jungle",
+        "biomesoplenty:lavender_field",
+        "biomesoplenty:lavender_forest",
+        "biomesoplenty:mediterranean_forest",
+        "biomesoplenty:mystic_grove",
+        "biomesoplenty:old_growth_woodland",
+        "biomesoplenty:orchard",
+        "biomesoplenty:origin_valley",
+        "biomesoplenty:prairie",
+        "biomesoplenty:pumpkin_patch",
+        "biomesoplenty:rocky_rainforest",
+        "biomesoplenty:rocky_shrubland",
+        "biomesoplenty:shrubland",
+        "biomesoplenty:tropics",
+        "biomesoplenty:woodland",
+        "minecraft:deep_dark",
+        "minecraft:dripstone_caves",
+        "minecraft:flower_forest",
+        "minecraft:forest",
+        "minecraft:lush_caves",
+        "minecraft:meadow",
+        "minecraft:plains",
+        "minecraft:sunflower_plains",
+        "minecraft:swamp",
+        "minecraft:wooded_badlands"
+      ],
+      "display_name": "Oak Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 30,
+      "item_id": "minecraft:oak_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:auroral_garden",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:auroral_garden",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:dryland",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:field",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:field",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:floodplain",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:floodplain",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:forested_field",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:forested_field",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:fungal_jungle",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:lavender_field",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:lavender_field",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:lavender_forest",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:lavender_forest",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:mediterranean_forest",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:mediterranean_forest",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:mystic_grove",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:mystic_grove",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:old_growth_woodland",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:orchard",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:orchard",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:origin_valley",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:prairie",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:pumpkin_patch",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:pumpkin_patch",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:rocky_rainforest",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:rocky_rainforest",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:rocky_shrubland",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:rocky_shrubland",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:shrubland",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:shrubland",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:tropics",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:tropics",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:woodland",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:deep_dark",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/deep_dark.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:deep_dark",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/deep_dark.json",
+            "data/minecraft/worldgen/configured_feature/oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:dripstone_caves",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/dripstone_caves.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:dripstone_caves",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/dripstone_caves.json",
+            "data/minecraft/worldgen/configured_feature/oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:flower_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/flower_forest.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees_002.json",
+            "data/minecraft/worldgen/placed_feature/trees_flower_forest.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:flower_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/flower_forest.json",
+            "data/minecraft/worldgen/configured_feature/oak_bees_002.json",
+            "data/minecraft/worldgen/placed_feature/trees_flower_forest.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/forest.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees_0002.json",
+            "data/minecraft/worldgen/placed_feature/trees_birch_and_oak.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/forest.json",
+            "data/minecraft/worldgen/configured_feature/oak_bees_0002.json",
+            "data/minecraft/worldgen/placed_feature/trees_birch_and_oak.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:lush_caves",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/lush_caves.json",
+            "data/minecraft/worldgen/configured_feature/azalea_tree.json",
+            "data/minecraft/worldgen/placed_feature/rooted_azalea_tree.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:meadow",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/meadow.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees.json",
+            "data/minecraft/worldgen/placed_feature/trees_meadow.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:plains",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/plains.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:plains",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/plains.json",
+            "data/minecraft/worldgen/configured_feature/oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:sunflower_plains",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/sunflower_plains.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:sunflower_plains",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/sunflower_plains.json",
+            "data/minecraft/worldgen/configured_feature/oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:swamp",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/swamp.json",
+            "data/minecraft/worldgen/configured_feature/swamp_oak.json",
+            "data/minecraft/worldgen/placed_feature/trees_swamp.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:wooded_badlands",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_log.json",
+            "data/minecraft/worldgen/biome/wooded_badlands.json",
+            "data/minecraft/worldgen/configured_feature/oak.json",
+            "data/minecraft/worldgen/placed_feature/trees_badlands.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "common",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "minecraft:oak_log"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/oak_log.json",
+        "data/minecraft/worldgen/biome/deep_dark.json",
+        "data/minecraft/worldgen/biome/dripstone_caves.json",
+        "data/minecraft/worldgen/biome/flower_forest.json",
+        "data/minecraft/worldgen/biome/forest.json",
+        "data/minecraft/worldgen/biome/lush_caves.json",
+        "data/minecraft/worldgen/biome/meadow.json",
+        "data/minecraft/worldgen/biome/plains.json",
+        "data/minecraft/worldgen/biome/sunflower_plains.json",
+        "data/minecraft/worldgen/biome/swamp.json",
+        "data/minecraft/worldgen/biome/wooded_badlands.json",
+        "data/minecraft/worldgen/configured_feature/azalea_tree.json",
+        "data/minecraft/worldgen/configured_feature/fancy_oak_bees.json",
+        "data/minecraft/worldgen/configured_feature/fancy_oak_bees_0002.json",
+        "data/minecraft/worldgen/configured_feature/fancy_oak_bees_002.json",
+        "data/minecraft/worldgen/configured_feature/fancy_oak_bees_005.json",
+        "data/minecraft/worldgen/configured_feature/oak.json",
+        "data/minecraft/worldgen/configured_feature/oak_bees_0002.json",
+        "data/minecraft/worldgen/configured_feature/oak_bees_002.json",
+        "data/minecraft/worldgen/configured_feature/oak_bees_005.json",
+        "data/minecraft/worldgen/configured_feature/swamp_oak.json",
+        "data/minecraft/worldgen/placed_feature/rooted_azalea_tree.json",
+        "data/minecraft/worldgen/placed_feature/trees_badlands.json",
+        "data/minecraft/worldgen/placed_feature/trees_birch_and_oak.json",
+        "data/minecraft/worldgen/placed_feature/trees_flower_forest.json",
+        "data/minecraft/worldgen/placed_feature/trees_meadow.json",
+        "data/minecraft/worldgen/placed_feature/trees_plains.json",
+        "data/minecraft/worldgen/placed_feature/trees_swamp.json",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "Generated block or its block-loot item"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "minecraft:bamboo_jungle",
+        "minecraft:deep_dark",
+        "minecraft:dripstone_caves",
+        "minecraft:flower_forest",
+        "minecraft:forest",
+        "minecraft:jungle",
+        "minecraft:meadow",
+        "minecraft:plains",
+        "minecraft:sparse_jungle",
+        "minecraft:sunflower_plains",
+        "minecraft:swamp",
+        "minecraft:wooded_badlands"
+      ],
+      "display_name": "Oak Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 12,
+      "item_id": "minecraft:oak_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:bamboo_jungle",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/bamboo_jungle.json",
+            "data/minecraft/worldgen/configured_feature/jungle_bush.json",
+            "data/minecraft/worldgen/placed_feature/bamboo_vegetation.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:deep_dark",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/deep_dark.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:deep_dark",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/deep_dark.json",
+            "data/minecraft/worldgen/configured_feature/oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:dripstone_caves",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/dripstone_caves.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:dripstone_caves",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/dripstone_caves.json",
+            "data/minecraft/worldgen/configured_feature/oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:flower_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/flower_forest.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees_002.json",
+            "data/minecraft/worldgen/placed_feature/trees_flower_forest.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:flower_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/flower_forest.json",
+            "data/minecraft/worldgen/configured_feature/oak_bees_002.json",
+            "data/minecraft/worldgen/placed_feature/trees_flower_forest.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/forest.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees_0002.json",
+            "data/minecraft/worldgen/placed_feature/trees_birch_and_oak.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/forest.json",
+            "data/minecraft/worldgen/configured_feature/oak_bees_0002.json",
+            "data/minecraft/worldgen/placed_feature/trees_birch_and_oak.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:jungle",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/jungle.json",
+            "data/minecraft/worldgen/configured_feature/jungle_bush.json",
+            "data/minecraft/worldgen/placed_feature/trees_jungle.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:meadow",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/meadow.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees.json",
+            "data/minecraft/worldgen/placed_feature/trees_meadow.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:plains",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/plains.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:plains",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/plains.json",
+            "data/minecraft/worldgen/configured_feature/oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:sparse_jungle",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/sparse_jungle.json",
+            "data/minecraft/worldgen/configured_feature/jungle_bush.json",
+            "data/minecraft/worldgen/placed_feature/trees_sparse_jungle.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:sunflower_plains",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/sunflower_plains.json",
+            "data/minecraft/worldgen/configured_feature/fancy_oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:sunflower_plains",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/sunflower_plains.json",
+            "data/minecraft/worldgen/configured_feature/oak_bees_005.json",
+            "data/minecraft/worldgen/placed_feature/trees_plains.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:swamp",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/swamp.json",
+            "data/minecraft/worldgen/configured_feature/swamp_oak.json",
+            "data/minecraft/worldgen/placed_feature/trees_swamp.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:wooded_badlands",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:oak_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/oak_leaves.json",
+            "data/minecraft/worldgen/biome/wooded_badlands.json",
+            "data/minecraft/worldgen/configured_feature/oak.json",
+            "data/minecraft/worldgen/placed_feature/trees_badlands.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "common",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "minecraft:oak_leaves"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/oak_leaves.json",
+        "data/minecraft/worldgen/biome/bamboo_jungle.json",
+        "data/minecraft/worldgen/biome/deep_dark.json",
+        "data/minecraft/worldgen/biome/dripstone_caves.json",
+        "data/minecraft/worldgen/biome/flower_forest.json",
+        "data/minecraft/worldgen/biome/forest.json",
+        "data/minecraft/worldgen/biome/jungle.json",
+        "data/minecraft/worldgen/biome/meadow.json",
+        "data/minecraft/worldgen/biome/plains.json",
+        "data/minecraft/worldgen/biome/sparse_jungle.json",
+        "data/minecraft/worldgen/biome/sunflower_plains.json",
+        "data/minecraft/worldgen/biome/swamp.json",
+        "data/minecraft/worldgen/biome/wooded_badlands.json",
+        "data/minecraft/worldgen/configured_feature/fancy_oak_bees.json",
+        "data/minecraft/worldgen/configured_feature/fancy_oak_bees_0002.json",
+        "data/minecraft/worldgen/configured_feature/fancy_oak_bees_002.json",
+        "data/minecraft/worldgen/configured_feature/fancy_oak_bees_005.json",
+        "data/minecraft/worldgen/configured_feature/jungle_bush.json",
+        "data/minecraft/worldgen/configured_feature/oak.json",
+        "data/minecraft/worldgen/configured_feature/oak_bees_0002.json",
+        "data/minecraft/worldgen/configured_feature/oak_bees_002.json",
+        "data/minecraft/worldgen/configured_feature/oak_bees_005.json",
+        "data/minecraft/worldgen/configured_feature/swamp_oak.json",
+        "data/minecraft/worldgen/placed_feature/bamboo_vegetation.json",
+        "data/minecraft/worldgen/placed_feature/trees_badlands.json",
+        "data/minecraft/worldgen/placed_feature/trees_birch_and_oak.json",
+        "data/minecraft/worldgen/placed_feature/trees_flower_forest.json",
+        "data/minecraft/worldgen/placed_feature/trees_jungle.json",
+        "data/minecraft/worldgen/placed_feature/trees_meadow.json",
+        "data/minecraft/worldgen/placed_feature/trees_plains.json",
+        "data/minecraft/worldgen/placed_feature/trees_sparse_jungle.json",
+        "data/minecraft/worldgen/placed_feature/trees_swamp.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "BOP configured feature",
+        "Generated block or its block-loot item",
+        "Vanilla tree feature in BOP selector"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "biomesoplenty:bog",
+        "biomesoplenty:dead_forest",
+        "biomesoplenty:field",
+        "biomesoplenty:forested_field",
+        "biomesoplenty:jade_cliffs",
+        "biomesoplenty:maple_woods",
+        "biomesoplenty:mediterranean_forest",
+        "biomesoplenty:old_growth_dead_forest",
+        "biomesoplenty:scrubland",
+        "biomesoplenty:snowy_maple_woods",
+        "biomesoplenty:wetland",
+        "minecraft:ice_spikes",
+        "minecraft:snowy_plains"
+      ],
+      "display_name": "Spruce Log",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 13,
+      "item_id": "minecraft:spruce_log",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:bog",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:bog",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:dead_forest",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:field",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:forested_field",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:jade_cliffs",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:jade_cliffs",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:maple_woods",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:mediterranean_forest",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:mediterranean_forest",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:old_growth_dead_forest",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:scrubland",
+          "note": "BOP configured feature",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:scrubland",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:snowy_maple_woods",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "biomesoplenty:wetland",
+          "note": "Vanilla tree feature in BOP selector",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:ice_spikes",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/spruce_log.json",
+            "data/minecraft/worldgen/biome/ice_spikes.json",
+            "data/minecraft/worldgen/configured_feature/spruce.json",
+            "data/minecraft/worldgen/placed_feature/trees_snowy.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:snowy_plains",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:spruce_log",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/spruce_log.json",
+            "data/minecraft/worldgen/biome/snowy_plains.json",
+            "data/minecraft/worldgen/configured_feature/spruce.json",
+            "data/minecraft/worldgen/placed_feature/trees_snowy.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "common",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "minecraft:spruce_log"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/spruce_log.json",
+        "data/minecraft/worldgen/biome/ice_spikes.json",
+        "data/minecraft/worldgen/biome/snowy_plains.json",
+        "data/minecraft/worldgen/configured_feature/spruce.json",
+        "data/minecraft/worldgen/placed_feature/trees_snowy.json",
+        "src/main/java/biomesoplenty/common/worldgen/feature/BOPTreeFeatures.java"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "Generated block or its block-loot item"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "many or unclassified families",
+      "biome_ids": [
+        "minecraft:ice_spikes",
+        "minecraft:snowy_plains"
+      ],
+      "display_name": "Spruce Sapling",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 2,
+      "item_id": "minecraft:spruce_sapling",
+      "occurrences": [
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:ice_spikes",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:spruce_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/spruce_leaves.json",
+            "data/minecraft/worldgen/biome/ice_spikes.json",
+            "data/minecraft/worldgen/configured_feature/spruce.json",
+            "data/minecraft/worldgen/placed_feature/trees_snowy.json"
+          ],
+          "source_mob": null
+        },
+        {
+          "acquisition_type": "plant",
+          "biome_id": "minecraft:snowy_plains",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:spruce_leaves",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/spruce_leaves.json",
+            "data/minecraft/worldgen/biome/snowy_plains.json",
+            "data/minecraft/worldgen/configured_feature/spruce.json",
+            "data/minecraft/worldgen/placed_feature/trees_snowy.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "minecraft:spruce_leaves"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/spruce_leaves.json",
+        "data/minecraft/worldgen/biome/ice_spikes.json",
+        "data/minecraft/worldgen/biome/snowy_plains.json",
+        "data/minecraft/worldgen/configured_feature/spruce.json",
+        "data/minecraft/worldgen/placed_feature/trees_snowy.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    },
+    {
+      "acquisition_notes": [
+        "Generated block or its block-loot item"
+      ],
+      "acquisition_type": "tree",
+      "biome_family_scope": "one biome",
+      "biome_ids": [
+        "minecraft:warped_forest"
+      ],
+      "display_name": "Warped Stem",
+      "easy_outside_biomes": true,
+      "eligible_biome_count": 1,
+      "item_id": "minecraft:warped_stem",
+      "occurrences": [
+        {
+          "acquisition_type": "tree",
+          "biome_id": "minecraft:warped_forest",
+          "note": "Generated block or its block-loot item",
+          "source_block": "minecraft:warped_stem",
+          "source_files": [
+            "data/minecraft/loot_tables/blocks/warped_stem.json",
+            "data/minecraft/worldgen/biome/warped_forest.json",
+            "data/minecraft/worldgen/configured_feature/warped_fungus.json",
+            "data/minecraft/worldgen/placed_feature/warped_fungi.json"
+          ],
+          "source_mob": null
+        }
+      ],
+      "rarity": "rare",
+      "renewable_after_discovery": true,
+      "shared_family_tags": [],
+      "source_blocks": [
+        "minecraft:warped_stem"
+      ],
+      "source_files": [
+        "data/minecraft/loot_tables/blocks/warped_stem.json",
+        "data/minecraft/worldgen/biome/warped_forest.json",
+        "data/minecraft/worldgen/configured_feature/warped_fungus.json",
+        "data/minecraft/worldgen/placed_feature/warped_fungi.json"
+      ],
+      "source_mobs": [],
+      "source_mod": "vanilla"
+    }
+  ]
+}

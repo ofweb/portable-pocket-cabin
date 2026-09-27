@@ -4,14 +4,13 @@
 
 **Outcome:** Each cabin has clear household roles, a safe public receiving mailbox and one authoritative cabin-owned inventory.
 
-**Status:** Draft. Alignment is required before implementation.
+**Status:** Delivery 4.1 is aligned; implementation is pending. Later deliveries remain draft.
 
 ## Scope
 
 This milestone adds:
 
 - cabin-local owner, resident and guest roles with fixed capabilities
-- migration from trusted players to residents without changing entry policy
 - a bounded public mailbox with owner-only collection
 - slot-based central storage through protected interfaces
 - storage capacity upgrades and atomic mutations
@@ -21,26 +20,17 @@ Ordinary inventories, including chests and Tom's Simple Storage, remain independ
 
 ## Household roles
 
-Roles belong to one cabin. A role in one cabin grants nothing in another, and every action rechecks the destination cabin's current role and entry policy.
+Roles belong to one cabin. A role in one cabin grants nothing in another, and every action rechecks the destination cabin's current role. Role capabilities are fixed; Milestone 4 adds no entry policy or customizable permission matrix.
 
-Each cabin has exactly one owner. The owner assigns or removes resident and guest roles. Role capabilities are fixed; Milestone 4 does not add per-player or customizable permission matrices.
+Each cabin has exactly one fixed owner. Explicit assignments make other players residents; every other player is a guest. Removing a resident returns that player to the default guest role. Ownership transfer is out of scope.
 
-### Entry-policy migration
-
-The existing trusted-player list migrates to the resident list. Entry policy remains independent:
-
-- `OWNER_ONLY` remains owner-only
-- `TRUSTED_PLAYERS` becomes resident access
-- residence does not override a closed entry policy
-- guest access must be explicitly permitted
-
-Role capabilities apply only after entry is permitted. Migration must not grant a previously disabled player access.
+The owner manages residents through `/cabin resident add <player>` and `/cabin resident remove <player>`. `/cabin household list` shows the owner and explicit residents. Commands work while the cabin is deployed or packed, resolve online or previously known players and make no change for an unknown player or an already-satisfied request. The earlier `trust` and `access` commands are removed without aliases.
 
 ### Owner
 
 The owner may:
 
-- assign household roles and configure entry policy
+- assign resident roles
 - install cabin, room and storage upgrades
 - deposit into, browse and withdraw from central storage
 - inspect and collect mailbox contents
@@ -51,7 +41,7 @@ Later milestones add network, automation, sharing and loadout controls without c
 
 ### Resident
 
-A resident may, subject to entry policy:
+A resident may:
 
 - enter the cabin
 - deposit into, browse and withdraw from central storage
@@ -61,7 +51,7 @@ A resident may, subject to entry policy:
 
 A resident may not:
 
-- change roles, entry policy or cabin-wide configuration
+- change roles or cabin-wide configuration
 - install upgrades
 - configure storage capacity, sharing, automation or owner loadouts
 - pack or deploy the cabin
@@ -69,10 +59,10 @@ A resident may not:
 
 ### Guest
 
-A guest may, subject to entry policy:
+A guest may:
 
 - enter and inspect the physical cabin
-- use ordinary facilities that consume no cabin resources
+- inspect the cabin upgrade interface
 - see plain-language operational warnings and shortages
 - deposit items into the public mailbox
 
@@ -80,11 +70,12 @@ A guest may not:
 
 - browse, deposit into or withdraw from central storage
 - consume cabin resources through crafting or automation
+- place or break blocks, open inventories, interact with entities or otherwise mutate the cabin interior
 - harvest managed rooms or remove animals
 - inspect exact storage quantities, private owner configuration or mailbox contents
 - change cabin configuration
 
-Public mailbox delivery does not require a household role, cabin entry or central-storage permission.
+Public mailbox delivery does not require cabin entry or central-storage permission.
 
 ## Receiving mailbox
 
@@ -128,11 +119,13 @@ Later greenhouses, kitchens, crafting systems, brewing, enchanting and room auto
 - Residents see exact shared-storage state and actionable failures for facilities they may use.
 - Guests see plain-language warnings without exact quantities or private configuration.
 
-Losing permission invalidates an open interaction. Every mutation rechecks cabin identity, lifecycle, role, entry policy, capacity and offered stacks immediately before commit. Failure leaves every involved inventory unchanged and returns an actionable reason.
+Losing permission invalidates or refreshes an open interaction before another mutation. Every mutation rechecks cabin identity, lifecycle, role, capacity and offered stacks immediately before commit. Failure leaves every involved inventory unchanged and returns an actionable reason.
 
 ## Technical approach
 
-The cabin registry persists role assignments, the independent entry policy, mailbox contents, central-storage contents and capacity. New schema migrations transform trusted players into residents while preserving `OWNER_ONLY` and trusted-player access behavior.
+Delivery 4.1 advances the registry to schema 8 and persists resident assignments. The owner remains part of the cabin identity, and the guest role is derived rather than stored. Because the mod is unreleased, schemas 3–7 are rejected with backup and fresh-world guidance instead of migrating trusted players or entry policies. Later deliveries will add mailbox contents, central-storage contents and capacity to the current schema at their implementation boundaries.
+
+One server-authoritative permission policy resolves owner, resident and guest capabilities. Delivery 4.1 applies it to entry, upgrade funding, role commands, menu presentation and direct player mutation of the cabin interior. Role changes persist immediately; open upgrade interfaces refresh before accepting another action.
 
 Mailbox and central storage are cabin-owned virtual inventories, not exposed block entities. Protected menus synchronize their state, but the server owns permission and mutation decisions. Each transfer validates its complete source and destination result before one atomic commit; multi-step or recoverable operations persist enough intent to complete without duplication or loss after interruption.
 
@@ -140,14 +133,14 @@ Mailbox and central storage are cabin-owned virtual inventories, not exposed blo
 
 Milestone 4 remains accepted only while automated tests and targeted manual checks establish that:
 
-1. Migration converts trusted players to residents without opening an `OWNER_ONLY` cabin.
-2. Owner, resident and guest actions follow the fixed role matrix and independent entry policy.
+1. Schemas earlier than 8 fail closed with backup and fresh-world guidance.
+2. Every player resolves to exactly one owner, resident or guest role with the fixed capability matrix.
 3. Permission loss closes or invalidates open mailbox and storage interactions before another mutation.
 4. Public mailbox insertion reveals no contents, permits no withdrawal and rejects full deliveries without item loss.
 5. Only the owner can inspect or collect mailbox contents.
 6. Central storage enforces slot capacity, normal stack limits and unique-stack occupancy.
 7. Concurrent, stale and interrupted transfers commit completely once or leave source and destination unchanged.
-8. Roles, policies, capacity and exact mailbox and storage stacks survive restart, packing and redeployment.
+8. Roles, capacity and exact mailbox and storage stacks survive restart, packing and redeployment.
 9. Owner-authorized upgrade funding consumes existing fund contents first and never installs automatically.
 10. Ordinary inventories remain independent, and no role exposes private quantities or configuration beyond its status rules.
 
@@ -156,6 +149,7 @@ Codec, service, menu-integration and dedicated-server restart tests are the auto
 ## Out of scope
 
 - customizable capability matrices or per-player overrides
+- configurable entry policies or ownership transfer
 - connection hallways, packed-cabin access and network-aware packing
 - storage sharing and inter-cabin resource transfer
 - hard reserves, learned templates and production automation

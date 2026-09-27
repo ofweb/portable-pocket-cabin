@@ -6,7 +6,7 @@
 Production 3.1b still offers only the next general-space expansion. Cabin-window offers, window
 state, receipts, refunds, placement and schema 6 remain Delivery 3.2.
 
-**Status:** Implemented; automated acceptance complete and manual client acceptance pending.
+**Status:** Complete; automated and manual client acceptance passed.
 
 ## Agreed behavior
 

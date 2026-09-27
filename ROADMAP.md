@@ -19,9 +19,9 @@ The project has not been publicly released. The [README](README.md) defines curr
 | ---------------------------------------------- | ----------------------------------------------------- | ------------------------------------- |
 | [0](docs/roadmap/00-safe-mvp.md)               | Safe portable-cabin MVP                               | Complete                              |
 | [1](docs/roadmap/01-acquisition-relocation.md) | Survival crafting and command-free relocation         | Complete                              |
-| [2](docs/roadmap/02-progression-space.md)      | World-attuned expansion                               | Implemented; retrospective acceptance audit pending |
-| [3](docs/roadmap/03-upgrade-interface.md)      | Discoverable cabin upgrade interface                  | 3.1a–3.2b implemented; manual client acceptance pending |
-| [4](docs/roadmap/04-household-storage.md)      | Household roles, mailbox and central storage          | Draft                                 |
+| [2](docs/roadmap/02-progression-space.md)      | World-attuned expansion                               | Implemented; manual acceptance complete; retrospective audit pending |
+| [3](docs/roadmap/03-upgrade-interface.md)      | Discoverable cabin upgrade interface                  | Complete                              |
+| [4](docs/roadmap/04-household-storage.md)      | Household roles, mailbox and central storage          | 4.1 aligned; implementation pending   |
 | [5](docs/roadmap/05-functional-rooms.md)       | Functional rooms                                      | Draft                                 |
 | [6](docs/roadmap/06-cabin-companions.md)       | Cabin companions                                      | Draft                                 |
 | [7](docs/roadmap/07-production-automation.md)  | Targeted production and room automation               | Draft                                 |

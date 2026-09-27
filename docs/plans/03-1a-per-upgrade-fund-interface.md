@@ -6,7 +6,7 @@
 upgrade. Configurable windows, window state and refunds remain Delivery 3.2. Existing automatic
 windows and installed general-space progression remain unchanged.
 
-**Status:** Implemented; automated acceptance complete and manual client acceptance pending.
+**Status:** Complete; automated and manual client acceptance passed.
 
 ## Design mapping
 

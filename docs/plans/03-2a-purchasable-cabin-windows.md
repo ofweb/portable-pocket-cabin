@@ -7,7 +7,7 @@ left, rear and right walls. Implement schema-6 state, schema-5 grandfathering, b
 upward tier, placement validation, exterior-condition panes, interface panels and recoverable
 installation. Downgrade, removal, refunds and funded-target invalidation remain Delivery 3.2b.
 
-**Status:** Implemented; automated acceptance passed; manual client acceptance pending.
+**Status:** Complete; automated and manual client acceptance passed.
 
 ## Agreed behavior
 
