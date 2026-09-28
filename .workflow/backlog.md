@@ -38,15 +38,16 @@
 ## B-0007: Product knowledge and automation books
 
 - Maturity: Framed
-- Possible value: Let a cabin learn safe product templates and install narrow automation capabilities through discovered books.
+- Possible value: Let a cabin learn safe product templates and buy narrow automation capabilities after their books reveal the upgrades.
 - Feature Brief: [Product knowledge brief](features/B-0007/brief.md).
-- Relationships: Uses B-0004; supports B-0024 through B-0027 and B-0036 through B-0037.
+- Relationships: Uses B-0004 and B-0038; supports B-0024 through B-0027 and B-0036 through B-0037.
 
 ## B-0008: Enchantment library
 
 - Maturity: Framed
-- Possible value: Let a cabin learn enchantments deliberately, select active knowledge, and apply it with materials instead of player experience.
-- Relationships: Uses B-0024; supports B-0028 and B-0010.
+- Possible value: Let an owner install and improve an enchanting room where players learn enchantments and apply known levels manually.
+- Feature Brief: [Enchantment library brief](features/B-0008/brief.md).
+- Relationships: Uses B-0005 and B-0038; supports B-0028 and B-0010.
 - Source: [Enchanting milestone](../docs/roadmap/08-enchanting-loadouts.md).
 
 ## B-0009: Connected cabin hallways
@@ -172,14 +173,16 @@
 ## B-0028: Equipment requisitions
 
 - Maturity: Framed
-- Possible value: Let an owner request valid equipment with selected active enchantments through a visible material and work plan.
-- Relationships: Uses B-0008 and B-0024; supports B-0029.
+- Possible value: Let an owner select enchantments for automation and request valid equipment through a visible material and work plan.
+- Feature Brief: [Equipment requisitions brief](features/B-0028/brief.md).
+- Relationships: Uses B-0008, B-0024, and B-0038; supports B-0029.
 - Source: [Enchanting milestone](../docs/roadmap/08-enchanting-loadouts.md).
 
 ## B-0029: Owner loadouts
 
 - Maturity: Framed
 - Possible value: Let a cabin maintain explicit equipment rules for its owner when that owner enters.
+- Feature Brief: [Owner loadouts brief](features/B-0029/brief.md).
 - Relationships: Uses B-0028.
 - Source: [Enchanting milestone](../docs/roadmap/08-enchanting-loadouts.md).
 
@@ -238,3 +241,11 @@
 - Possible value: Let an owner approve a production plan for one upgrade's missing materials without installing the upgrade automatically.
 - Feature Brief: [Upgrade funding plan brief](features/B-0037/brief.md).
 - Relationships: Uses B-0024 and the existing upgrade funds.
+
+## B-0038: Cabin book discovery and installation
+
+- Status: Ready for Shape
+- Value: Let players find book vendors in villages or create one through a bookstall job site, then install cabin books to reveal upgrades.
+- Direction: [Portable household goal](direction.md).
+- Feature Brief: [Cabin books brief](features/B-0038/brief.md).
+- Relationships: Supplies book unlocks to B-0007, B-0008, and B-0028.

@@ -84,7 +84,7 @@
 
 ## Cabin palette
 
-- Meaning: A Cabin palette is the authoritative floor, wall, roof or ceiling, and door selection captured when a Cabin Kit is crafted. The exterior and interior retain it through packing, restart, and redeployment.
+- Meaning: A Cabin palette is the authoritative floor, wall, roof or ceiling, and door selection set when a Cabin Kit is crafted. Exterior and interior keep it through packing, restart, and redeployment.
 - STE class: Technical name
 - Avoid: Cosmetic variant, exterior skin.
 
@@ -102,7 +102,7 @@
 
 ## House cat
 
-- Meaning: A house cat is a tamed cat given one cabin as its home. It lives as a companion, distinct from a stable resident or livestock population.
+- Meaning: A house cat is a tamed cat that has one cabin as its home, distinct from a stable resident or livestock population.
 - STE class: Technical name
 - Avoid: Cat storage, cat production.
 
@@ -113,25 +113,48 @@
 
 ## Product template
 
-- Meaning: A product template is cabin knowledge of a safe item identity and its allowed variant data. It persists after the source item leaves storage and does not grant production ability.
+- Meaning: A product template is cabin knowledge of a safe item identity and allowed variant data. It persists after the source leaves storage and grants no production ability.
 - STE class: Technical name
 - Forms: product templates
 
+## Cabin book
+
+- Meaning: A cabin book is a physical item that reveals one or more cabin upgrades when installed. Blank and enchanted books are separate.
+- STE class: Technical name
+- Forms: cabin books
+
 ## Automation book
 
-- Meaning: An automation book is a discovered physical item that carries one named automation capability. A successful installation consumes the book.
+- Meaning: An automation book is a cabin book that reveals one or more automation upgrades. It does not grant an automation capability.
 - STE class: Technical name
 - Forms: automation books
 
+## Book vendor
+
+- Meaning: A book vendor is a villager profession that sells cabin books and uses a bookstall job site.
+- STE class: Technical name
+- Forms: book vendors
+
+## Bookstall
+
+- Meaning: A bookstall is the job site block for the book vendor profession.
+- STE class: Technical name
+
 ## Automation capability
 
-- Meaning: An automation capability is persistent cabin knowledge installed from an automation book. An installed capability can be enabled or disabled.
+- Meaning: An automation capability is a persistent cabin ability from a purchased automation upgrade. The owner can enable or disable it.
 - STE class: Technical name
 - Forms: automation capabilities
 
+## Known enchantment
+
+- Meaning: A known enchantment is a cabin's permanent record of one enchantment type and its highest learned level.
+- STE class: Technical name
+- Forms: known enchantments
+
 ## Hard reserve
 
-- Meaning: A hard reserve is an owner-defined quantity floor for one item in central storage. Cabin automation cannot consume below it, but manual withdrawals remain possible.
+- Meaning: A hard reserve is an owner-set minimum for one item in central storage. Automation cannot consume below it, but players can withdraw manually.
 - STE class: Technical name
 - Forms: hard reserves
 - Distinguish from: A hard reserve holds no specific stacks. A job reservation commits specific resources to one job.
@@ -157,7 +180,7 @@
 
 ## Production plan
 
-- Meaning: A production plan is a resolved, inspectable way to satisfy one production request. It names chosen recipes or processes, quantities, intermediates, outputs, total work, and required capacity before resource commitment.
+- Meaning: A production plan resolves one request before resources commit. It lists chosen recipes or processes, quantities, intermediates, outputs, total work, and required capacity.
 - STE class: Technical name
 - Forms: production plans
 
@@ -169,7 +192,7 @@
 
 ## Upgrade fund
 
-- Meaning: An upgrade fund contains cabin-owned materials committed to one stable upgrade target and capped by its exact requirements. A cabin can have several funds but no unassigned material wallet.
+- Meaning: An upgrade fund holds cabin-owned materials for one stable upgrade target, capped by exact requirements. A cabin can hold several funds but no unassigned material wallet.
 - STE class: Technical name
 - Forms: upgrade funds, fund, funds
 - Avoid: Tracked upgrade, general storage, upgrade chest.
@@ -192,6 +215,12 @@
 - STE class: Technical name
 - Avoid: Funded upgrade.
 
+## Revealed upgrade
+
+- Meaning: A revealed upgrade is a target made available when the owner installs a cabin book. It still needs funding and installation.
+- STE class: Technical name
+- Forms: revealed upgrades
+
 ## Upgrade refund receipt
 
 - Meaning: An upgrade refund receipt records the exact materials paid for one reversible upgrade step. The cabin retains it for a later owner-authorized refund.
@@ -206,6 +235,6 @@
 
 ## Window tier
 
-- Meaning: A window tier is the purchased size stage of one cabin window. Each window has its own tier.
+- Meaning: A window tier is the purchased size stage of a single cabin window.
 - STE class: Technical name
 - Avoid: Cabin window level, wall tier.

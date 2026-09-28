@@ -22,7 +22,7 @@ Separate funds let players support several improvements without moving materials
 
 ## Scope
 
-This decision covers the cabin upgrade interface, contribution permissions, and installation controls. [PDR-0006](0006-expand-general-space-with-world-materials.md) owns general-space growth. [PDR-0008](0008-purchase-and-reverse-cabin-windows.md) owns window behavior. Central storage and automatic crafting are separate work.
+This decision covers the cabin upgrade interface, contribution permissions, and installation controls. [PDR-0006](0006-expand-general-space-with-world-materials.md) owns general-space growth. [PDR-0008](0008-purchase-and-reverse-cabin-windows.md) owns window behavior. [PDR-0012](0012-books-reveal-upgrades-before-purchase.md) owns book gates for revealed upgrades. Central storage and automatic crafting are separate work.
 
 ## Related records
 

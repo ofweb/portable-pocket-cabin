@@ -5,7 +5,7 @@ Feature ID: B-0007
 
 ## Goal
 
-A cabin gets safe product templates from items in central storage. An owner can install automation books to give the cabin automation capabilities.
+A cabin gets safe product templates from items in central storage. An owner can buy automation upgrades revealed by cabin books.
 
 ## Stories and acceptance
 
@@ -25,19 +25,19 @@ Acceptance:
 - A product template cannot make an item or give the cabin a production capability.
 - A product template stays with one cabin. Other cabins do not get that product template automatically.
 
-### S2: Install an automation book
+### S2: Buy an automation upgrade
 
-Story: A cabin owner finds an automation book and uses a cabin control to install its automation capability.
+Story: After a cabin book reveals an automation upgrade, the owner funds and buys it to give the cabin an automation capability.
 
 Acceptance:
 
-- An automation book in storage does not install. Only the owner can use the control to install the automation capability.
-- After installation is complete, the cabin gets one automation capability and removes one automation book.
-- If the cabin cannot use the automation book or has its capability, installation stops and gives a reason. The book does not move.
-- The cabin gets no new effect if it has that automation capability.
+- A book reveals an automation upgrade under B-0038. The book alone grants no capability.
+- Only the owner can buy the revealed upgrade under the cabin upgrade rules.
+- After the upgrade purchase, the cabin gets its automation capability.
+- If the cabin already has the capability, it gets no new effect.
 - Installed automation capabilities stay with the cabin through packing, restart, and redeployment.
 - The owner can select each installed automation capability to operate or stop.
-- A different automation book is necessary for each action: feed, collect, harvest, replant, fell trees, prepare meals, or brew.
+- A different automation book reveals the upgrade for each action: feed, collect, harvest, replant, fell trees, prepare meals, brew, or automate enchanting.
 
 ## Feature-wide constraints and acceptance
 
@@ -47,25 +47,28 @@ Acceptance:
 
 ## Scope
 
-This feature includes product templates, automation books, installation, and an owner control for automation capabilities.
+This feature includes product templates, purchased automation capabilities, and an owner control for those capabilities.
 
 ## Non-goals
 
 - Jobs that make known items or do room actions.
 - Product templates for item data that a profile does not list, or product templates for more than one cabin.
-- Book locations, the number of books in loot, and the color and shape of the installation control.
+- Book acquisition and installation.
 
 ## Related records
 
 - [Product template](../../context.md#product-template).
 - [Automation book](../../context.md#automation-book).
 - [Automation capability](../../context.md#automation-capability).
+- [Cabin books brief](../B-0038/brief.md).
+- [Book and upgrade decision](../../decisions/pdr/0012-books-reveal-upgrades-before-purchase.md).
 - [Central storage brief](../B-0004/brief.md).
 - [Household role decision](../../decisions/pdr/0009-use-fixed-household-roles.md).
 - [Crafting jobs brief](../B-0024/brief.md).
 - [Production profiles](../B-0027/brief.md).
+- [Equipment requisitions brief](../B-0028/brief.md).
 
 ## Open questions and assumptions
 
 - The item types and parts that each product profile accepts are open.
-- The book list, sources for books, and installation control are open.
+- The final book and automation upgrade catalogue remains open.

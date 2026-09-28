@@ -16,7 +16,14 @@
     {"word": "progress"},
     {"word": "load", "inflections": ["loaded"]},
     {"word": "net"},
-    {"word": "gain"}
+    {"word": "gain"},
+    {"word": "villager", "inflections": ["villagers"]},
+    {"word": "village", "inflections": ["villages"]},
+    {"word": "biome", "inflections": ["biomes"]},
+    {"word": "desert"},
+    {"word": "lapis"},
+    {"word": "trade", "inflections": ["trades"]},
+    {"word": "restock", "inflections": ["restocking"]}
   ],
   "technical_nouns": [
     "Minecraft",
