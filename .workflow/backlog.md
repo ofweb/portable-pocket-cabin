@@ -32,15 +32,15 @@
 
 - Maturity: Framed
 - Possible value: Let a previously tamed cat live safely in its owner's general cabin interior.
+- Feature Brief: [House cat brief](features/B-0006/brief.md).
 - Relationships: Uses household roles in B-0002.
-- Source: [Companions milestone](../docs/roadmap/06-cabin-companions.md).
 
 ## B-0007: Product knowledge and automation books
 
 - Maturity: Framed
 - Possible value: Let a cabin learn safe product templates and install narrow automation capabilities through discovered books.
-- Relationships: Uses B-0004; supports B-0024 through B-0027.
-- Source: [Automation milestone](../docs/roadmap/07-production-automation.md).
+- Feature Brief: [Product knowledge brief](features/B-0007/brief.md).
+- Relationships: Uses B-0004; supports B-0024 through B-0027 and B-0036 through B-0037.
 
 ## B-0008: Enchantment library
 
@@ -145,29 +145,29 @@
 
 - Maturity: Framed
 - Possible value: Plan and run local crafting jobs with explicit recipes, resource reserves, timed work, and safe output handling.
-- Relationships: Uses B-0004 and B-0007; supports B-0008, B-0025, and B-0028.
-- Source: [Automation milestone](../docs/roadmap/07-production-automation.md).
+- Feature Brief: [Crafting jobs brief](features/B-0024/brief.md).
+- Relationships: Uses B-0004 and B-0007; supports B-0008, B-0025, B-0028, B-0036, and B-0037.
 
 ## B-0025: Cooking and brewing jobs
 
 - Maturity: Framed
 - Possible value: Extend bounded local jobs to supported cooking and brewing processes.
+- Feature Brief: [Cooking and brewing brief](features/B-0025/brief.md).
 - Relationships: Uses B-0024.
-- Source: [Automation milestone](../docs/roadmap/07-production-automation.md).
 
 ## B-0026: Room automation
 
 - Maturity: Framed
 - Possible value: Add separately enabled actions for greenhouse, livestock, and forestry rooms without changing their manual use.
+- Feature Brief: [Room automation brief](features/B-0026/brief.md).
 - Relationships: Uses B-0007, B-0024, and the relevant room in B-0019, B-0022, or B-0023.
-- Source: [Automation milestone](../docs/roadmap/07-production-automation.md).
 
 ## B-0027: Optional production profiles
 
 - Maturity: Framed
 - Possible value: Support declared optional cooking and processing profiles, including kiln work and later coal synthesis.
+- Feature Brief: [Optional production brief](features/B-0027/brief.md).
 - Relationships: Uses B-0025; requires explicit integration profiles.
-- Source: [Automation milestone](../docs/roadmap/07-production-automation.md).
 
 ## B-0028: Equipment requisitions
 
@@ -229,12 +229,12 @@
 
 - Maturity: Framed
 - Possible value: Let owners set local stock targets that trigger bounded production through known recipes and installed capabilities.
+- Feature Brief: [Stock targets brief](features/B-0036/brief.md).
 - Relationships: Uses B-0024.
-- Source: [Automation milestone](../docs/roadmap/07-production-automation.md).
 
 ## B-0037: Upgrade funding plans
 
 - Maturity: Framed
 - Possible value: Let an owner approve a production plan for one upgrade's missing materials without installing the upgrade automatically.
+- Feature Brief: [Upgrade funding plan brief](features/B-0037/brief.md).
 - Relationships: Uses B-0024 and the existing upgrade funds.
-- Source: [Automation milestone](../docs/roadmap/07-production-automation.md).

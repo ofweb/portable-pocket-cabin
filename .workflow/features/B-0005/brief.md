@@ -63,7 +63,6 @@ This feature includes room installation, an empty room, safe interior travel, an
 - [Household role decision](../../decisions/pdr/0009-use-fixed-household-roles.md).
 - [Upgrade funding decision](../../decisions/pdr/0007-fund-and-install-cabin-upgrades.md).
 - [Cabin identity decision](../../decisions/adr/0005-authoritative-cabin-registry.md).
-- [Room source](../../../docs/roadmap/05-functional-rooms.md).
 - [Related room items](../../backlog.md#b-0019-greenhouse).
 
 ## Open questions and assumptions

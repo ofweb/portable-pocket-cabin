@@ -1,6 +1,6 @@
 # Milestone 8: Enchanting, equipment requisitions and owner loadouts
 
-**Depends on:** [Milestone 7](07-production-automation.md) knowledge, timed jobs and storage transactions.
+**Depends on:** [product knowledge](../../.workflow/features/B-0007/brief.md), [crafting jobs](../../.workflow/features/B-0024/brief.md), and central storage transactions.
 
 **Outcome:** Cabins learn enchantments destructively, reproduce valid equipment with materials instead of experience and maintain explicit owner loadouts.
 

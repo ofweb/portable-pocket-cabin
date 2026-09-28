@@ -62,6 +62,7 @@ The feature includes manual storage, capacity upgrades, storage status, and owne
 
 ## Related records
 
+- [Central storage](../../context.md#central-storage).
 - [Household role decision](../../decisions/pdr/0009-use-fixed-household-roles.md).
 - [Upgrade funding decision](../../decisions/pdr/0007-fund-and-install-cabin-upgrades.md).
 - [Household role brief](../B-0002/brief.md).

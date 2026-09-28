@@ -1,6 +1,6 @@
 # Milestone 10: Cooperative knowledge, mail and resource logistics
 
-**Depends on:** [Milestone 7](07-production-automation.md) jobs and reserves, [Milestone 8](08-enchanting-loadouts.md) knowledge and loadouts, and [Milestone 9](09-connected-cabins.md) hallway networks.
+**Depends on:** [crafting jobs and reserves](../../.workflow/features/B-0024/brief.md), [Milestone 8](08-enchanting-loadouts.md) knowledge and loadouts, and [Milestone 9](09-connected-cabins.md) hallway networks.
 
 **Outcome:** Connected cabins cooperate without becoming one inventory or exposing private household configuration.
 
@@ -27,7 +27,7 @@ An owner may publish an exact request or expose surplus through rules such as:
 - retain enough inputs for a configured number of complete owner-loadout restocks
 - transfer a configured amount after an explicit request
 
-Donor evaluation includes [Milestone 7](07-production-automation.md) hard reserves, committed jobs and [Milestone 8](08-enchanting-loadouts.md) loadout commitments. Manual player withdrawals remain outside automatic sharing rules.
+Donor evaluation includes hard reserves and committed jobs from [crafting automation](../../.workflow/features/B-0024/brief.md), and [Milestone 8](08-enchanting-loadouts.md) loadout commitments. Manual player withdrawals remain outside automatic sharing rules.
 
 Remote automation never reads or consumes donor storage directly. One transfer performs:
 

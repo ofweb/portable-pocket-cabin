@@ -106,6 +106,67 @@
 - STE class: Technical name
 - Avoid: Cat storage, cat production.
 
+## Central storage
+
+- Meaning: Central storage is one cabin-owned inventory for household items. It is separate from placed inventories and upgrade funds.
+- STE class: Technical name
+
+## Product template
+
+- Meaning: A product template is cabin knowledge of a safe item identity and its allowed variant data. It persists after the source item leaves storage and does not grant production ability.
+- STE class: Technical name
+- Forms: product templates
+
+## Automation book
+
+- Meaning: An automation book is a discovered physical item that carries one named automation capability. A successful installation consumes the book.
+- STE class: Technical name
+- Forms: automation books
+
+## Automation capability
+
+- Meaning: An automation capability is persistent cabin knowledge installed from an automation book. An installed capability can be enabled or disabled.
+- STE class: Technical name
+- Forms: automation capabilities
+
+## Hard reserve
+
+- Meaning: A hard reserve is an owner-defined quantity floor for one item in central storage. Cabin automation cannot consume below it, but manual withdrawals remain possible.
+- STE class: Technical name
+- Forms: hard reserves
+- Distinguish from: A hard reserve holds no specific stacks. A job reservation commits specific resources to one job.
+
+## Job reservation
+
+- Meaning: A job reservation is the specific input quantity and output capacity committed to one production job. Committed inputs are unavailable to other jobs and players.
+- STE class: Technical name
+- Forms: job reservations
+
+## Stock target
+
+- Meaning: A stock target is an owner-set desired quantity of one product in central storage. It can trigger production but does not protect items from consumption.
+- STE class: Technical name
+- Forms: stock targets
+
+## Process profile
+
+- Meaning: A process profile is a declared production path with inputs, outputs, returns, by-products, and work duration.
+- STE class: Technical name
+- Forms: process profiles
+- Distinguish from: A recipe identifies an item transformation. An integration profile declares support for optional content.
+
+## Production plan
+
+- Meaning: A production plan is a resolved, inspectable way to satisfy one production request. It names chosen recipes or processes, quantities, intermediates, outputs, total work, and required capacity before resource commitment.
+- STE class: Technical name
+- Forms: production plans
+
+## Production job
+
+- Meaning: A production job is committed, persisted execution of one production plan. It owns reservations, work progress, and blocking state through restart and packing.
+- STE class: Technical name
+- Forms: production jobs
+
 ## Upgrade fund
 
 - Meaning: An upgrade fund contains cabin-owned materials committed to one stable upgrade target and capped by its exact requirements. A cabin can have several funds but no unassigned material wallet.
