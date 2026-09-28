@@ -1,11 +1,11 @@
-# Receiving mailbox
+# The cabin mailbox receives items
 
 Status: Draft
 Feature ID: B-0003
 
 ## Goal
 
-Let players send items to a cabin without access to its private storage or earlier mail.
+Let players send items to a cabin without access to its storage or earlier mail.
 
 ## Stories and acceptance
 
@@ -16,9 +16,9 @@ Story: A player uses a deployed cabin mailbox to send items without entering the
 Acceptance:
 
 - Each cabin has one mailbox. Players can use the mailbox through the deployed exterior.
-- All players can send mail, including guests.
-- A sender cannot see earlier mail or take back items after a successful transfer.
-- If the mailbox cannot hold the offered items, the mailbox rejects the transfer. The player keeps all offered items.
+- Owners, residents, and guests can send mail.
+- The delivery interface does not show earlier mail or let players withdraw items.
+- If the mailbox cannot hold the selected items, the mailbox rejects the transfer. The player keeps all selected items.
 
 ### S2: Collect a delivery
 
@@ -28,28 +28,28 @@ Acceptance:
 
 - Only the cabin owner can see or collect mailbox contents.
 - Mail stays in the mailbox until the owner collects it. Mail does not enter central storage automatically.
-- A change in permission stops an open interface from authorizing a later transfer.
-- A successful transfer moves the full selected amount once. A failed transfer leaves both inventories unchanged.
+- A transfer moves the selected number of items one time. A rejected transfer moves no items.
 
-### S3: Retain deliveries during travel
+### S3: Keep deliveries during travel
 
-Story: A cabin owner moves or recovers the cabin and finds the same mail afterward.
+Story: A cabin owner moves the cabin or finds its exterior missing and can collect the same mail.
 
 Acceptance:
 
-- Mailbox items and their data survive restart, packing, redeployment, and exterior loss.
+- Mailbox items and their data stay in the cabin through restart, packing, and redeployment.
+- A missing exterior does not remove mailbox items or their data.
 - Packing removes the exterior access point. The cabin keeps its mailbox and mail.
 - Players cannot use a packed cabin mailbox through its exterior until redeployment.
 
 ## Feature-wide constraints and acceptance
 
-- The mailbox has a fixed capacity. A rejected transfer does not delete or displace items.
-- Each transfer checks cabin identity, current role, and capacity when the player confirms it.
-- Guest status does not show mailbox contents or private owner settings.
+- The mailbox has a capacity limit. A rejected transfer does not move mailbox items or player items.
+- Each transfer checks cabin identity, role, and capacity before items move.
+- Guest status does not show mailbox contents or owner settings.
 
 ## Scope
 
-This feature covers manual mail delivery and owner collection for one cabin mailbox.
+The feature has one cabin mailbox for manual delivery and owner access.
 
 ## Non-goals
 
@@ -66,7 +66,7 @@ This feature covers manual mail delivery and owner collection for one cabin mail
 
 ## Open questions and assumptions
 
-- Assumption: Each cabin gets its mailbox without a purchase.
-- Open: What is the mailbox capacity, and how does the interface select an amount?
-- Open: Where do collected items go if the owner's inventory has insufficient space?
-- Open: Does the owner need a separate action to move mail into central storage?
+- Assumption: Each cabin starts with a mailbox.
+- The mailbox capacity and the number of items in one transfer are open.
+- The method to collect items when the owner's inventory is full is open.
+- The scope of manual transfer into central storage is open.
