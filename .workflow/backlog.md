@@ -1,30 +1,24 @@
 # Backlog
 
-## B-0001: Audit expansion acceptance
-
-- Maturity: Understood
-- Possible value: Complete the pending retrospective audit of world-attuned expansion and record any remaining corrections.
-- Source: [Expansion milestone](../docs/roadmap/02-progression-space.md).
-
 ## B-0002: Household roles
 
 - Maturity: Understood
-- Possible value: Give each cabin clear owner, resident, and guest capabilities. Delivery 4.1 has an agreed plan but no implementation.
-- Source: [Household milestone](../docs/roadmap/04-household-storage.md).
+- Possible value: Give each cabin clear owner, resident, and guest capabilities.
+- Source: [Household role brief](features/B-0002/brief.md).
 
 ## B-0003: Receiving mailbox
 
 - Maturity: Framed
 - Possible value: Let other players deliver items to a cabin through one safe, cabin-owned receiving mailbox.
 - Relationships: Uses the household roles in B-0002.
-- Source: [Household milestone](../docs/roadmap/04-household-storage.md).
+- Source: [Receiving mailbox brief](features/B-0003/brief.md).
 
 ## B-0004: Central storage
 
 - Maturity: Framed
 - Possible value: Give each cabin one authoritative inventory for household use while ordinary chests remain independent.
 - Relationships: Uses the household roles in B-0002; supports B-0007 and B-0010.
-- Source: [Household milestone](../docs/roadmap/04-household-storage.md).
+- Source: [Central storage brief](features/B-0004/brief.md).
 
 ## B-0005: Room purchase and traversal
 

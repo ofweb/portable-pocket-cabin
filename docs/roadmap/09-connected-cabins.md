@@ -1,6 +1,6 @@
 # Milestone 9: Connected cabins and safe packed-cabin access
 
-**Depends on:** [PDR-0002](../../.workflow/decisions/pdr/0002-safe-cabin-travel.md) lifecycle safety and [Milestone 4](04-household-storage.md) household permissions.
+**Depends on:** [PDR-0002](../../.workflow/decisions/pdr/0002-safe-cabin-travel.md) lifecycle safety and [PDR-0009](../../.workflow/decisions/pdr/0009-use-fixed-household-roles.md) household roles.
 
 **Outcome:** Mutually consenting owners connect cabins through a persistent shared hallway, and packed cabins remain reachable while each player retains a permitted route to a deployed exterior.
 
@@ -31,7 +31,7 @@ Physical proximity never creates a connection. Owners mutually approve creation 
 
 The first accepted connection creates one permanent hallway cell and network UUID. Its persisted record contains membership, cell identity, doorway allocations, graph generation and recovery state.
 
-Each member has one protected, labelled doorway. Traversal rechecks the destination cabin's role and entry policy before loading and entering its general interior.
+Each member has one protected, labelled doorway. Traversal rechecks the destination cabin's role and lifecycle before loading and entering its general interior.
 
 The shell and cabin doorways resist ordinary breaking, explosions and pistons. All other hallway space accepts ordinary Minecraft blocks:
 
@@ -48,9 +48,9 @@ Packing removes a cabin's exterior anchor but retains its interior and hallway d
 
 Entry loads only the required cabin or room cell, applies its bounded managed catch-up and rechecks destination permissions. Empty packed cabins receive no permanent chunk ticket, and ordinary blocks remain paused while inactive.
 
-A packed cabin has no exterior exit. Its occupants leave through the hallway and another cabin whose entry policy permits them to reach a valid deployed exterior.
+A packed cabin has no exterior exit. Its occupants leave through the hallway and another cabin with a valid deployed exterior.
 
-Hallway entry uses the same destination-local behavior as exterior entry. It projects [Milestone 4's](04-household-storage.md) single logical mailbox beside the cabin door and triggers [Milestone 8](08-enchanting-loadouts.md) owner-loadout reconciliation without copying either state.
+Hallway entry uses the same destination-local behavior as exterior entry. It projects the [receiving mailbox](../../.workflow/features/B-0003/brief.md) beside the cabin door and triggers [Milestone 8](08-enchanting-loadouts.md) owner-loadout reconciliation without copying either state.
 
 ## Packing from inside
 
@@ -87,7 +87,7 @@ Membership removal and network dismantling use the same graph lock and per-playe
 
 One server-authoritative graph service owns network UUIDs, generations, membership and doorway allocations. Traversal, packing, login recovery and membership changes share its route resolver and lock order. Persisted transitions make doorway projection and graph mutation idempotent after interruption.
 
-Status remains cabin-specific and follows [Milestone 4's](04-household-storage.md) visibility rules. Inspecting a connected cabin never grants more information than inspecting it locally.
+Status remains cabin-specific and follows the [household role](../../.workflow/decisions/pdr/0009-use-fixed-household-roles.md) visibility rules. Inspecting a connected cabin never grants more information than inspecting it locally.
 
 ## Evergreen acceptance contract
 
@@ -95,7 +95,7 @@ Milestone 9 remains accepted only while automated tests and targeted manual chec
 
 1. Only upgraded cabins join through mutual owner consent, and each cabin belongs to at most one network.
 2. Hallway allocation, membership and protected doorway identity survive restart without exposing another cell.
-3. Destination roles and entry policy are rechecked on every traversal and permission change.
+3. Destination roles and lifecycle are rechecked on every traversal and permission change.
 4. Packed access loads only required cells and never grants ordinary inactive blocks background simulation.
 5. Mailbox and loadout projections use existing cabin state without copying it.
 6. Concurrent packing preserves at least one permitted exit per occupant or evacuates that occupant safely.

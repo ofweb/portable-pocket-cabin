@@ -1,6 +1,6 @@
 # Milestone 6: Cabin companions
 
-**Depends on:** [Milestone 2](02-progression-space.md) general-space geometry and [Milestone 4](04-household-storage.md) household permissions.
+**Depends on:** [ADR-0008](../../.workflow/decisions/adr/0008-derive-expansion-geometry-from-saved-size.md) general-space geometry and [PDR-0009](../../.workflow/decisions/pdr/0009-use-fixed-household-roles.md) household roles.
 
 **Outcome:** One previously tamed house cat can live safely in its owner's general cabin interior without becoming stored inventory, a production unit or an invulnerable outdoor combat pet.
 

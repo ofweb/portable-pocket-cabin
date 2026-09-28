@@ -1,6 +1,6 @@
 # Delivery 3.1b implementation plan: Multi-panel upgrade interface
 
-**Intent:** [Milestone 3: Upgrade interface](../roadmap/03-upgrade-interface.md)
+**Intent:** [PDR-0007: Fund and install cabin upgrades](../../.workflow/decisions/pdr/0007-fund-and-install-cabin-upgrades.md)
 
 **Scope:** Finish the bounded category, panel and requirement presentation needed by Delivery 3.2.
 Production 3.1b still offers only the next general-space expansion. Cabin-window offers, window
@@ -58,7 +58,7 @@ state, receipts, refunds, placement and schema 6 remain Delivery 3.2.
 
 ## Documentation
 
-- Update the Milestone 3 roadmap language from stacked panels to side category tabs with one active
+- Update the earlier interface contract from stacked panels to side category tabs with one active
   panel and record Delivery 3.1b separately from windows.
 - Mark this plan and the roadmap implemented only after automated acceptance passes. The README's
   gameplay instructions need no behavioral rewrite because production still has one general-space

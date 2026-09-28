@@ -8,7 +8,7 @@ A player can sleep in a cabin and later die after that cabin moves, packs, or lo
 
 ## Decision
 
-Successful cabin sleep binds the owner to that cabin and bed. The most recently used cabin bed replaces the earlier cabin-home binding. A trusted visitor can sleep without changing the visitor's existing home.
+Successful cabin sleep binds the owner to that cabin and bed. The most recently used cabin bed replaces the earlier cabin-home binding. A resident visitor can sleep without changing the visitor's existing home.
 
 Respawning first tries a safe position beside the bound bed in a deployed cabin. If the bed is missing or blocked, it tries the current exterior doorway. For an inactive cabin, it searches near the death position in the death dimension. If that bounded search fails, it tries the last valid campsite and then Overworld world spawn. It never selects the pocket dimension as an emergency spawn.
 

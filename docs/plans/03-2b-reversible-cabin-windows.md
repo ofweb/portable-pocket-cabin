@@ -1,6 +1,6 @@
 # Delivery 3.2b implementation plan: Reversible cabin windows
 
-**Intent:** [Milestone 3: Upgrade interface](../roadmap/03-upgrade-interface.md)
+**Intent:** [PDR-0008: Purchase and reverse cabin windows](../../.workflow/decisions/pdr/0008-purchase-and-reverse-cabin-windows.md)
 
 **Scope:** Let the cabin owner downgrade or remove an installed window, restore and recenter the
 resulting wall safely, refund the exact applicable purchase receipts, and eject any funds invalidated
@@ -83,7 +83,7 @@ by the resulting state. Make the complete reversal recoverable across interrupti
   next-tier installation does not block a valid reversal. Bind arming to action, stable target and
   fund revision; include invalidated target titles in the first-click warning.
 - This recovery boundary is recorded by
-  [ADR-0004](../adr/0004-persist-window-reversals-through-refund-ejection.md).
+  [ADR-0004](../../.workflow/decisions/adr/0004-persist-window-reversals-through-refund-ejection.md).
 
 ## Documentation
 

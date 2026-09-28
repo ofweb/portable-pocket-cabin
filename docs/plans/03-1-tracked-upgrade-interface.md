@@ -1,6 +1,6 @@
 # Delivery 3.1 implementation plan: Tracked upgrade interface and fund
 
-**Intent:** [Milestone 3: Upgrade interface](../roadmap/03-upgrade-interface.md)
+**Intent:** [PDR-0007: Fund and install cabin upgrades](../../.workflow/decisions/pdr/0007-fund-and-install-cabin-upgrades.md)
 
 **Scope:** Delivery 3.1 only. Configurable window purchasing, tiers, refunds and schema 5 state remain in Delivery 3.2. Existing automatic windows must remain unchanged.
 

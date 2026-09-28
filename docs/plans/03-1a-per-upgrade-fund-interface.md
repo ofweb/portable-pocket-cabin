@@ -1,6 +1,6 @@
 # Delivery 3.1a implementation plan: Per-upgrade fund interface
 
-**Intent:** [Milestone 3: Upgrade interface](../roadmap/03-upgrade-interface.md)
+**Intent:** [PDR-0007: Fund and install cabin upgrades](../../.workflow/decisions/pdr/0007-fund-and-install-cabin-upgrades.md)
 
 **Scope:** Correct the Delivery 3.1 interface and fund model for the existing next general-space
 upgrade. Configurable windows, window state and refunds remain Delivery 3.2. Existing automatic

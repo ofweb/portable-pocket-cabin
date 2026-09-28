@@ -1,6 +1,6 @@
 # Milestone 5: Functional rooms
 
-**Depends on:** [Milestone 3](03-upgrade-interface.md) installation and [Milestone 4](04-household-storage.md) roles and storage.
+**Depends on:** [PDR-0007](../../.workflow/decisions/pdr/0007-fund-and-install-cabin-upgrades.md) installation, [PDR-0009](../../.workflow/decisions/pdr/0009-use-fixed-household-roles.md) roles, and [central storage](../../.workflow/features/B-0004/brief.md).
 
 **Outcome:** Players purchase, enter and manually operate useful specialised rooms that remain bounded, persistent and isolated from every other pocket space.
 
@@ -61,7 +61,7 @@ The controller, not a displayed crop block or entity, decides whether an output 
 
 Catch-up never ticks arbitrary player blocks, furnaces or modded machines. It may advance declared passive growth, maturation, breeding or production, but it cannot plant, harvest, feed, slaughter, fell, replant or process without the automation delivered by Milestone 7.
 
-[Milestone 4](04-household-storage.md) permissions apply:
+[PDR-0009](../../.workflow/decisions/pdr/0009-use-fixed-household-roles.md) roles apply:
 
 - owners and residents may operate shared room facilities
 - guests may inspect but cannot mutate managed fixtures, harvest products or remove animals

@@ -1,6 +1,6 @@
 # Portable Pocket Cabin
 
-A Fabric 26.2 mod for a travelling play style. Players can craft, deploy, expand, customize, pack, and relocate a persistent pocket cabin. [Direction](.workflow/direction.md) describes the intended end state. The [Backlog](.workflow/backlog.md) records possible work. [Earlier milestone documents](docs/roadmap/README.md) retain detailed specifications and acceptance history.
+A Fabric 26.2 mod for a travelling play style. Players can craft, deploy, expand, customize, pack, and relocate a persistent pocket cabin. [Direction](.workflow/direction.md) describes the intended end state. The [Backlog](.workflow/backlog.md) records possible work. [Earlier milestone documents](docs/roadmap/README.md) retain specifications for work not yet moved into the workflow documents.
 
 ## Playing
 
@@ -50,7 +50,7 @@ Requires JDK 25 or newer.
 ./gradlew runServer
 ```
 
-The build runs server-side GameTests and headless dedicated-server startup and reload checks. The [cabin foundation](docs/testing/cabin-foundation.md) and [acquisition and relocation](docs/testing/cabin-acquisition-relocation.md) checks state the continuing coverage. Development-world operators also have these inspection and recovery commands:
+The build runs server-side GameTests and headless dedicated-server startup and reload checks. The [foundation](docs/testing/cabin-foundation.md), [acquisition](docs/testing/cabin-acquisition-relocation.md), [expansion](docs/testing/cabin-expansion.md), and [upgrade](docs/testing/cabin-upgrades.md) checks state the continuing coverage. Development-world operators also have these inspection and recovery commands:
 
 ```text
 /cabin create [player]

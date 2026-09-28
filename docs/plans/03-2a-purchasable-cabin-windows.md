@@ -1,6 +1,6 @@
 # Delivery 3.2a implementation plan: Purchasable cabin windows
 
-**Intent:** [Milestone 3: Upgrade interface](../roadmap/03-upgrade-interface.md)
+**Intent:** [PDR-0008: Purchase and reverse cabin windows](../../.workflow/decisions/pdr/0008-purchase-and-reverse-cabin-windows.md)
 
 **Scope:** Replace automatic side-window projections with independently purchased windows on the
 left, rear and right walls. Implement schema-6 state, schema-5 grandfathering, base purchases, every
@@ -76,12 +76,12 @@ installation. Downgrade, removal, refunds and funded-target invalidation remain 
 - Reconcile migrated projections and interrupted typed installations after the pocket dimension is
   available. Follow the existing explicit flush boundary before world mutation and after completion.
 - This design is recorded by
-  [ADR-0003](../adr/0003-persist-window-identity-and-derive-geometry.md).
+  [ADR-0003](../../.workflow/decisions/adr/0003-persist-window-identity-and-derive-geometry.md).
 
 ## Documentation
 
 - Update the README with new-cabin window purchasing, tiering, permissions and lifecycle behavior.
-- Split Delivery 3.2 into 3.2a and 3.2b in the Milestone 3 roadmap and mark only verified work as
+- Split Delivery 3.2 into 3.2a and 3.2b in the earlier roadmap and mark only verified work as
   implemented.
 - Keep downgrade, removal and refund instructions future-tense until Delivery 3.2b is accepted.
 

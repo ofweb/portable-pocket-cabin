@@ -1,6 +1,6 @@
 # Milestone 7: Targeted production and room automation
 
-**Depends on:** [Milestone 4](04-household-storage.md) storage and permissions; [Milestone 5](05-functional-rooms.md) managed rooms.
+**Depends on:** [central storage](../../.workflow/features/B-0004/brief.md), [PDR-0009](../../.workflow/decisions/pdr/0009-use-fixed-household-roles.md) roles, and [Milestone 5](05-functional-rooms.md) managed rooms.
 
 **Outcome:** Exploration-discovered books unlock small, individually controlled automations that fulfil concrete jobs without turning the cabin into an unbounded factory.
 
@@ -141,7 +141,7 @@ Owners may define hard item reserves. Cabin-controlled jobs cannot commit resour
 
 Crafting produces locally known safe templates from central-storage materials. It cannot reproduce custom names, arbitrary data, durability or enchantments. Returned containers and by-products must have reserved destinations before the job starts.
 
-For a cabin upgrade, only the owner may approve the displayed plan for missing ingredients. Existing target-fund materials count first, and completed outputs enter only that capped fund. Funding never installs the upgrade; [Milestone 3](03-upgrade-interface.md) remains authoritative for installation.
+For a cabin upgrade, only the owner may approve the displayed plan for missing ingredients. Existing target-fund materials count first, and completed outputs enter only that capped fund. Funding never installs the upgrade; [PDR-0007](../../.workflow/decisions/pdr/0007-fund-and-install-cabin-upgrades.md) remains authoritative for installation.
 
 ## Cooking and brewing
 

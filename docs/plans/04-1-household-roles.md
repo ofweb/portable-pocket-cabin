@@ -1,6 +1,6 @@
 # Delivery 4.1 implementation plan: Household roles
 
-**Intent:** [Milestone 4: Household roles, mailbox and central storage](../roadmap/04-household-storage.md)
+**Intent:** [Household role brief](../../.workflow/features/B-0002/brief.md)
 
 **Status:** Aligned; implementation has not started.
 
@@ -41,12 +41,12 @@ Every player has one cabin-local role with fixed permissions. Owners can promote
 - Refresh synchronized upgrade permissions after a role revision. Fund services remain the final authorization boundary.
 - Remove obsolete entry-policy and trust code rather than retaining compatibility aliases or hidden settings.
 
-No ADR is required: this delivery changes the agreed product permission model without introducing a reusable architectural boundary beyond the existing cabin registry and server-authoritative services.
+No ADR is required: this delivery applies [PDR-0009](../../.workflow/decisions/pdr/0009-use-fixed-household-roles.md) without a new architectural boundary beyond the registry and server services.
 
 ## Documentation
 
 - Update the README command list, public-entry behavior, role capabilities and schema-8 fresh-world requirement during implementation.
-- Update Milestone 4 and this plan if implementation exposes a new externally observable decision.
+- Update the household role brief, PDR-0009, and this plan if implementation exposes a new externally observable decision.
 - Mark Delivery 4.1 complete only after automated and manual acceptance pass.
 
 ## Testing scope
