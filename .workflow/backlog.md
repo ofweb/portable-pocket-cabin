@@ -24,6 +24,7 @@
 
 - Maturity: Framed
 - Possible value: Let a cabin purchase a bounded room, keep its own space, and reach it through a safe interior door.
+- Feature Brief: [Room brief](features/B-0005/brief.md).
 - Relationships: Uses B-0002; supports B-0019 through B-0023.
 - Source: [Functional rooms milestone](../docs/roadmap/05-functional-rooms.md).
 
