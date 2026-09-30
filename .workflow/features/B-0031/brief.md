@@ -5,70 +5,70 @@ Feature ID: B-0031
 
 ## Goal
 
-Connected cabins exchange owner-approved resources while each cabin keeps its own storage and resource ownership.
+Connected cabins transfer resources after owner confirmation. Each cabin keeps its storage and resource ownership.
 
 ## Stories and acceptance
 
-The stories below are proposals for Shape.
+Shape must confirm these stories.
 
-### S1: Publish a request or surplus rule
+### S1: Create a request or surplus rule
 
-Story: An owner publishes an exact resource request or offers a limited surplus to connected cabins.
-
-Acceptance:
-
-- Only the owner controls sharing rules and requests.
-- A rule can retain a fixed item quantity, retain inputs for owner restocks, or offer a specified amount for a request.
-- The donor checks hard reserves, committed jobs, loadout commitments, owner rules, and destination permissions.
-- Player withdrawals do not follow automatic sharing rules.
-- No interface or production job sees a combined network inventory.
-
-### S2: Complete an attributed transfer
-
-Story: A donor approves eligible resources and the recipient receives them with information about its source.
+Story: An owner creates a resource request for specified items or offers surplus up to a quantity limit to connected cabins.
 
 Acceptance:
 
-- Before items move, the donor commits items and the destination commits capacity.
-- A transfer moves the same items and item data at both cabins or changes neither inventory.
-- The recipient owns the items only after completion. Its jobs cannot use items in transit.
-- Changed membership, permissions, owner rules, or capacity stop a transfer safely before completion.
-- Full storage or mailbox capacity cannot delete or duplicate items.
-- Recovery completes a transfer one time or releases both reservations without item loss.
-- Each success records source cabin, destination cabin, rule, item, quantity, and request.
+- Only the owner controls surplus rules and requests.
+- A rule can keep a specified item quantity, keep inputs for owner restocks, or offer a specified quantity for a request.
+- The source cabin checks hard reserves, committed jobs, committed loadout resources, owner rules, and permissions at the target cabin.
+- When players withdraw items, automatic surplus rules do not apply.
+- No interface or production job sees one inventory for the complete network.
+
+### S2: Complete a transfer with source information
+
+Story: The source cabin confirms resources that follow its rules. The target cabin receives them with source information.
+
+Acceptance:
+
+- Before items move, the source cabin commits items and the target cabin commits capacity.
+- A transfer removes items from the source cabin and puts the same items and item data into the target cabin.
+- If the transfer cannot complete, no items move. The target cabin gets ownership only when the transfer completes. Its jobs cannot use items before that time.
+- Changed membership, permissions, owner rules, or capacity stop a transfer safely before it completes.
+- Full storage or mailbox capacity cannot delete items or transfer the same items more than one time.
+- Recovery completes a transfer one time or releases the source and target reservations. Recovery keeps all items.
+- Each completed transfer records the source cabin, target cabin, rule, item, quantity, and request.
 
 ### S3: Inspect a request
 
-Story: A player sees transfer status allowed by that player's destination role.
+Story: A player sees transfer status that follows their role at the target cabin.
 
 Acceptance:
 
-- Owners see complete sharing, reserve, storage, mailbox, and transfer status for their cabin.
-- Residents see actionable facility status without owner sharing or loadout settings.
-- Guests see warnings without exact quantities, product lists, or private settings.
-- Remote inspection gives no more information than local inspection permits.
-- A failure identifies the cabin, request, or job and a blocking reason. Status does not merge every cabin's shortages.
+- Owners see complete surplus rule, hard reserve, storage, mailbox, and transfer status for their cabin.
+- Residents see status for systems they can use, without owner surplus or loadout settings.
+- Guests see failure information without item quantities, product lists, or owner settings.
+- Inspection through the network gives no more information than local inspection for the same player.
+- A failure identifies the cabin, request, or job and a blocking reason. Status shows requests for each cabin independently.
 
 ## Scope
 
-This feature includes requests, surplus rules, protected reserves, attributed transfers, recovery, and role-based status.
+This feature includes requests, surplus rules, hard reserves, transfer source information, recovery, and status that follows household roles.
 
 ## Non-goals
 
-Combined storage, remote inventory browsing, direct consumption from donor storage, and anonymous transfers are not part of this feature.
+A cabin cannot inspect the inventory of a different cabin or use items in that inventory for jobs. Transfers always include source information.
 
 ## Related records
 
 - [Direction](../../direction.md).
 - [Hallways](../B-0009/brief.md).
 - [Central storage](../B-0004/brief.md).
-- [Crafting jobs and reserves](../B-0024/brief.md).
+- [Crafting jobs and hard reserves](../B-0024/brief.md).
 - [Owner loadouts](../B-0029/brief.md).
 - [Mailbox automation](../B-0032/brief.md).
 - [Household roles](../../decisions/pdr/0009-use-fixed-household-roles.md).
 
 ## Open questions and assumptions
 
-- Request lifetime, donor selection, transfer rates, sharing limits, and controls are open.
-- The earlier proposal to retain inputs for several complete loadout restocks needs alignment with the one-restock group reserve in B-0029.
-- Trip exceptions do not add future sharing reserves in the earlier proposal. Shape must confirm this boundary.
+- The time to keep a request, source cabin selection, transfer rates, surplus limits, and controls are open.
+- The plan to keep inputs for more than one complete loadout restock is open. Shape must compare it with the group hard reserve for one restock in B-0029.
+- The plan does not include item exceptions in inputs for the next loadout restocks. Shape must confirm this constraint.

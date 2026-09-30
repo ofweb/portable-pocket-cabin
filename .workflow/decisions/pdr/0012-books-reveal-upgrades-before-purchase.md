@@ -8,7 +8,7 @@ Several cabin features use books for discovery. Different book installation rule
 
 ## Decision
 
-The owner installs [cabin books](../../context.md#cabin-book) through one cabin control. A successful installation consumes one book and permanently reveals its declared upgrade targets. One book can reveal more than one upgrade. Installing a book does not fund, purchase, enable, or apply an upgrade. The owner uses the normal upgrade process for each [revealed upgrade](../../context.md#revealed-upgrade). An invalid or already installed book changes nothing and is not consumed.
+The owner installs [cabin books](../../context.md#cabin-book) through one cabin control. A successful installation consumes one book and permanently reveals its declared upgrade targets. One book can reveal more than one upgrade. Installing a book does not fund, purchase, enable, or apply an upgrade. The owner uses the normal upgrade process for each [revealed upgrade](../../context.md#revealed-upgrade). An invalid or already installed book changes nothing and is not consumed. Each cabin must get and install its own books. Network membership does not reveal upgrades or give automation capabilities.
 
 ## Rationale
 

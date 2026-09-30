@@ -1,58 +1,58 @@
-# Optional content has explicit compatibility limits
+# Optional mod features have compatibility limits
 
 Status: Draft
 Feature ID: B-0011
 
 ## Goal
 
-Players can use declared optional content without making the base cabin depend on missing mods.
+Players can use optional mod features that have profiles. The cabin operates without those mods.
 
 ## Stories and acceptance
 
-The stories below are proposals for Shape.
+Shape must confirm these stories.
 
-### S1: Use a declared mod profile
+### S1: Use a mod profile
 
-Story: A player starts a world with a declared mod combination and uses its supported cabin content.
-
-Acceptance:
-
-- Compatibility claims name exact tested versions and combinations. A profile alone is not evidence of compatibility.
-- Vanilla coverage includes every completed cabin feature.
-- `Biomes O' Plenty` coverage includes declared palette, door, and World attunement profiles.
-- Farmer's Delight Refabricated coverage includes crops, rich soil, kitchen and storage blocks, and declared cooking profiles.
-- `Tom's Simple Storage` networks inside cabins stay independent of central storage.
-- `Alex's Mobs Continued` coverage manages only profiled catalysts, stable residents, and livestock species.
-- Alex's Mobs Continued Delight coverage includes only declared ingredients, meals, and processes.
-- Placed blocks and block entities use Minecraft persistence. Managed entities, item data, and production need explicit profiles.
-
-### S2: Missing optional content
-
-Story: A player starts or reloads a copy of a world without an optional mod under its documented removal policy.
+Story: A player opens a world with mods that have profiles and uses the cabin features for those mods.
 
 Acceptance:
 
-- Missing mods or profiles stop only affected content. The base cabin starts and stays usable.
-- Missing content does not reroll World attunement, replace saved materials silently, or corrupt saved state.
-- Compatibility checks cover mods individually, together, and removed under each documented policy.
-- Failure messages identify affected content and the reason it cannot operate.
+- Compatibility information identifies versions and groups of mods that completed checks. A profile without test results does not confirm compatibility.
+- Checks without optional mods include all completed cabin features.
+- Checks for `Biomes O' Plenty` include Cabin palette, door, and World attunement profiles.
+- Checks for Farmer's Delight Refabricated include crops, `Rich Soil`, cooking and storage blocks, and cooking profiles.
+- `Tom's Simple Storage` networks in cabins do not connect to central storage.
+- Checks for `Alex's Mobs Continued` include stable residents and livestock types. Only types with profiles can use cabin actions.
+- Checks for Alex's Mobs Continued Delight include only ingredients, meals, and process profiles that the cabin can use.
+- Placed blocks and block entities use Minecraft persistence. Cabin actions for entities, item data, and production must have profiles.
+
+### S2: Missing optional mods
+
+Story: A player opens or loads a copy of a world without an optional mod, as stated in its removal policy.
+
+Acceptance:
+
+- Missing mods or profiles stop only their features. The cabin operates, and features without those mods can operate.
+- Missing mods or profiles keep World attunement and saved state. They do not replace saved materials without player information.
+- Compatibility checks include one mod at a time, groups of mods, and mod removal that follows each documented policy.
+- Failure information identifies the feature and the reason it cannot operate.
 
 ## Scope
 
-This feature includes the declared mod matrix, profile limits, absence behavior, and tested compatibility claims.
+This feature includes mod lists, profile limits, behavior without optional mods, and compatibility information from completed checks.
 
 ## Non-goals
 
-Undocumented support for arbitrary internal mod behavior and inferred production or entity rules are not part of this feature.
+The cabin does not create production or entity rules from internal mod behavior without profiles. Only documented mod features are in scope.
 
 ## Related records
 
 - [Direction](../../direction.md).
 - [World attunement](../../context.md#world-attunement).
 - [Optional production profiles](../B-0027/brief.md).
-- [Release verification](../B-0035/brief.md).
+- [Version checks](../B-0035/brief.md).
 
 ## Open questions and assumptions
 
-- Listed mods are compatibility candidates. Available versions, exact profiles, combinations, and removal policies need verification.
-- The matrix does not claim that these mods currently operate with the project's release version.
+- Mods in this brief are targets for compatibility checks. Available versions, profiles, groups of mods, and removal policies are open.
+- This brief does not confirm that these mods operate with the project version.

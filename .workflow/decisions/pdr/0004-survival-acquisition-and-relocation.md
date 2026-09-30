@@ -18,7 +18,7 @@ The staged recipes make the cabin attainable through normal exploration and craf
 
 ## Scope
 
-This decision covers survival acquisition and player controls for deployment and packing. [PDR-0002](0002-safe-cabin-travel.md) owns destination safety and evacuation. The [player guide](../../../docs/guides/crafting-and-moving.md) gives current recipes and controls.
+This decision covers survival acquisition and player controls for deployment and packing. [PDR-0002](0002-safe-cabin-travel.md) owns destination safety and evacuation. The [README](../../../README.md#playing) gives player controls. The [Cabin Kit recipe](../../../src/main/resources/data/portable_pocket_cabin/recipe/cabin_kit.json) gives crafting ingredients.
 
 ## Consequences
 

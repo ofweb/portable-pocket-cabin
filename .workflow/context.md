@@ -5,14 +5,12 @@
 - Meaning: A cabin is a lasting pocket home with one owner, one interior, and one active exterior at most.
 - STE class: Technical name
 - Forms: cabins
-- Distinguish from: The exterior is a replaceable entrance to the cabin.
 
 ## Cabin owner
 
 - Meaning: One player owns a given cabin for its lifetime.
 - STE class: Technical name
 - Forms: cabin owners, owner, owners
-- Distinguish from: A resident can use shared facilities but cannot change cabin-wide settings.
 
 ## Household role
 
@@ -26,7 +24,6 @@
 - Meaning: A resident is a player whom the cabin owner explicitly assigns to one cabin for shared household use.
 - STE class: Technical name
 - Forms: residents
-- Distinguish from: A stable resident is an animal checked into a cabin stable.
 
 ## Guest
 
@@ -102,7 +99,7 @@
 
 ## House cat
 
-- Meaning: A house cat is a tamed cat that has one cabin as its home, distinct from a stable resident or livestock population.
+- Meaning: A house cat is a tamed cat that has one cabin as its home.
 - STE class: Technical name
 - Avoid: Cat storage, cat production.
 
@@ -244,3 +241,10 @@
 - Meaning: A window tier is the purchased size stage of a single cabin window.
 - STE class: Technical name
 - Avoid: Cabin window level, wall tier.
+
+## Generated cabin structure
+
+- Meaning: A generated cabin structure is a set of world blocks created from saved cabin data.
+- STE class: Technical name
+- Forms: generated cabin structures
+- Distinguish from: Packing removes the exterior entrance and keeps the interior and its contents.

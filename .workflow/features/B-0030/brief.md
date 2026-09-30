@@ -3,65 +3,67 @@
 Status: Draft
 Feature ID: B-0030
 
+When players enter a connected packed cabin, its blocks operate again. The cabin calculates progress for the time it was empty. Only time while the server operates counts. Progress for that time includes rooms, jobs, and placed blocks such as furnaces and crops. Shape must confirm the draft against the [home decision](../../decisions/pdr/0001-preserve-the-portable-home.md). Direction must confirm the progress limits.
+
 ## Goal
 
-Players can reach connected packed cabins while players have a permitted route to a safe exterior.
+Players can enter connected packed cabins while they have a permitted path to a safe exterior.
 
 ## Stories and acceptance
 
-The stories below are proposals for Shape.
+Shape must confirm these stories.
 
-### S1: Visit a packed cabin
+### S1: Enter a packed cabin
 
-Story: A player enters a packed member cabin through its hallway door and leaves through another deployed cabin.
+Story: A player enters a packed cabin in the network through its hallway door and exits through a different deployed cabin.
 
 Acceptance:
 
 - Packing keeps the interior and hallway door. The packed cabin has no exterior exit.
-- Entry checks destination roles, membership, cabin state, and a permitted exit route.
-- A usable exit reaches a deployed member cabin and a safe loaded exterior position.
-- Entry loads only necessary cabin or room space and applies managed progress within catch-up limits.
-- Empty packed cabins do not stay loaded. Inactive placed blocks stay paused.
-- A hallway mailbox uses the destination cabin's existing mailbox and owner access rules.
-- Owner hallway entry uses that cabin's loadout rules. Loadout state stays in the destination cabin.
+- Entry checks roles for the target cabin, membership, cabin state, and a permitted exit path.
+- An exit path must lead to a deployed cabin in the network and a safe loaded exterior position.
+- Entry loads only necessary cabin or room space.
+- Empty packed cabins do not stay loaded.
+- A hallway mailbox uses the target cabin mailbox and its owner access rules.
+- Owner hallway entry uses the loadout rules and state for the target cabin.
 
-### S2: Pack from inside
+### S2: Interior packing
 
-Story: A connected cabin owner packs from inside while occupants keep a safe exit or evacuate safely.
+Story: A connected cabin owner starts packing from the interior while players keep a safe exit or move to safe positions.
 
 Acceptance:
 
-- Only the owner can initiate interior packing through a protected control.
-- Packing checks cabin state, exterior state, and guaranteed delivery of the bound packed item.
-- Each online occupant keeps a permitted exit or receives a safe evacuation destination before exterior removal.
-- The owner can stay inside when another permitted exit remains available.
+- Only the owner can start interior packing through a control that other players cannot use.
+- Packing checks cabin state and exterior state. Delivery of the bound packed item must be possible.
+- Before exterior removal, each online player keeps a permitted exit or moves to a safe position.
+- The owner can stay in the interior when a different permitted exit is available.
 - The exterior does not accept new entry during packing.
-- Concurrent packing cannot let two cabins rely on each other's disappearing exterior.
-- If evacuation or item delivery cannot complete safely, packing leaves the exterior and cabin state as before.
+- When two cabins enter packing at the same time, each cannot use the exterior that the other removes as its only exit.
+- If player movement or item delivery cannot complete safely, the exterior and cabin state stay as before.
 
-### S3: Recover after a route disappears
+### S3: Recover after path removal
 
-Story: A player returns after a membership or permission change and receives a safe destination.
+Story: A player enters after a membership or permission change and receives a safe position.
 
 Acceptance:
 
-- Membership removal and dismantling check each affected online occupant's permitted exit before they complete.
-- A failed change leaves membership, exteriors, and furnishings as before.
-- Offline players do not block packing. Login checks cabin occupancy and available permitted exits again.
-- A player without an exit receives a destination through the safe-travel emergency chain.
-- Recovery after interruption keeps cabin identity and does not strand an occupant.
+- Cabin and network removal check permitted exits for online players before they complete.
+- If a change cannot complete, membership, exteriors, and player blocks stay as before.
+- Players who are not online do not block packing. When a player connects, the cabin checks their position and permitted exits again.
+- For a player without an exit, recovery follows the emergency travel sequence in the safe-travel decision.
+- Recovery after interruption keeps cabin identity and gives players a safe exit.
 
 ## Scope
 
-This feature includes packed access, interior packing, hallway mailbox access, loadout entry, safe departure, and login recovery.
+This feature includes packed access, interior packing, hallway mailbox access, loadout entry, safe network removal, and recovery when players connect.
 
 ## Non-goals
 
-Background simulation of inactive placed blocks and an exterior exit from a packed cabin are not part of this feature.
+Keeping empty packed cabins loaded and an exterior exit from a packed cabin are not part of this feature.
 
 ## Related records
 
-- [Direction](../../direction.md).
+- [Direction](../../direction.md#progress-after-an-empty-cabin-becomes-occupied).
 - [Hallways](../B-0009/brief.md).
 - [Safe travel](../../decisions/pdr/0002-safe-cabin-travel.md).
 - [Household roles](../../decisions/pdr/0009-use-fixed-household-roles.md).
@@ -70,5 +72,5 @@ Background simulation of inactive placed blocks and an exterior exit from a pack
 
 ## Open questions and assumptions
 
-- Interior packing controls, hallway mailbox controls, and route failure messages are open.
-- The entry response when no permitted exit exists needs confirmation in Shape.
+- Interior packing controls, hallway mailbox controls, and information about exit path failures are open.
+- Shape must confirm the result of an entry request without a permitted exit.

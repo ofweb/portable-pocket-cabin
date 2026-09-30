@@ -37,7 +37,22 @@
     {"word": "offer", "inflections": ["offers", "offered"]},
     {"word": "chance"},
     {"word": "confirmation"},
-    {"word": "cost", "inflections": ["costs"]}
+    {"word": "cost", "inflections": ["costs"]},
+    {"word": "network", "inflections": ["networks"]},
+    {"word": "membership"},
+    {"word": "path"},
+    {"word": "operator"},
+    {"word": "obsidian"},
+    {"word": "crop", "inflections": ["crops"]},
+    {"word": "growth"},
+    {"word": "button", "inflections": ["buttons"]},
+    {"word": "model", "inflections": ["models"]},
+    {"word": "texture", "inflections": ["textures"]},
+    {"word": "tooltip", "inflections": ["tooltips"]},
+    {"word": "animation"},
+    {"word": "terrain"},
+    {"word": "multiplayer"},
+    {"word": "datapack"}
   ],
   "technical_nouns": [
     "Minecraft",

@@ -8,7 +8,7 @@ The cabin moves between campsites, but players build and store valuable things i
 
 ## Decision
 
-Each cabin keeps one lasting interior and can have at most one active exterior. Packing moves access to the home, not the interior itself. The surrounding campsite stays where it is. Ordinary interior blocks behave normally while the cabin is deployed and pause while it is packed. A future managed room can define bounded inactive progress for its own fixtures.
+Each cabin keeps one lasting interior and can have at most one active exterior. Packing moves access to the home, not the interior itself. The surrounding campsite stays where it is. Ordinary interior blocks behave normally while the cabin is deployed or a connected packed cabin is occupied. They pause when the packed cabin is empty. On return, the cabin calculates progress for the time it was empty. Only time while the server operates counts. Progress for that time includes rooms, jobs, and placed blocks such as furnaces and crops. [Direction](../../direction.md#progress-after-an-empty-cabin-becomes-occupied) must confirm the progress limits. A managed room can define bounded inactive progress for its own fixtures.
 
 The protected interior keeps players within their cabin. Its exterior protects only cabin-owned blocks and does not remove nearby player construction when packed.
 
@@ -24,4 +24,4 @@ This decision applies to every cabin lifecycle and to later rooms, connections, 
 
 ## Consequences
 
-New features must preserve cabin identity and interior contents through packing, restart, and recovery. They cannot give ordinary interior blocks unbounded work while packed.
+New features must preserve cabin identity and interior contents through packing, restart, and recovery. Ordinary interior blocks do not simulate while a packed cabin is empty.

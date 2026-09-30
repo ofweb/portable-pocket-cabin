@@ -18,7 +18,7 @@ Exact declarations make recipe selection and structure projection predictable. V
 
 ## Scope
 
-This decision covers material discovery for Cabin Kit crafting and palette projection. The [version 1 format](../../../docs/reference/material-profiles.md) is the extension contract. [PDR-0005](../pdr/0005-keep-the-chosen-cabin-palette.md) owns the visible palette behavior.
+This decision covers material discovery for Cabin Kit crafting and palette projection. The [material profile code](../../../src/main/java/dev/portablepocketcabin/CabinMaterialProfiles.java) validates version 1 extension data. [PDR-0005](../pdr/0005-keep-the-chosen-cabin-palette.md) owns the visible palette behavior.
 
 ## Consequences
 

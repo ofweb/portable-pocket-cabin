@@ -20,7 +20,7 @@
 - Status: Ready for Shape
 - Value: Give each cabin one authoritative inventory for household use while ordinary chests remain independent.
 - Direction: [Direction](direction.md).
-- Relationships: Uses the household roles in B-0002; supports B-0007 and B-0010.
+- Relationships: Uses the household roles in B-0002; supports B-0007.
 - Feature Brief: [Central storage brief](features/B-0004/brief.md).
 
 ## B-0005: Room purchase and traversal
@@ -53,7 +53,7 @@
 - Value: Let an owner install and improve an enchanting room where players learn enchantments and apply known levels manually.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Enchantment library brief](features/B-0008/brief.md).
-- Relationships: Uses B-0005 and B-0038; supports B-0028 and B-0010.
+- Relationships: Uses B-0005 and B-0038; supports B-0028.
 
 ## B-0009: Connected cabin hallways
 
@@ -61,15 +61,7 @@
 - Value: Let consenting owners connect separate cabins through a persistent shared hallway with protected doors.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Feature brief](features/B-0009/brief.md).
-- Relationships: Uses B-0002; supports B-0030 and B-0010.
-
-## B-0010: Shared discoveries
-
-- Status: Ready for Shape
-- Value: Let connected cabins share installed capabilities and learned enchantments without sharing inventories or private configuration.
-- Direction: [Direction](direction.md).
-- Feature Brief: [Feature brief](features/B-0010/brief.md).
-- Relationships: Uses B-0007, B-0008, and B-0009.
+- Relationships: Uses B-0002; supports B-0030.
 
 ## B-0011: Optional mod compatibility
 
@@ -200,9 +192,9 @@
 
 ## B-0030: Safe packed cabin access
 
-- Status: Ready for Shape
-- Value: Let permitted players reach a packed cabin through a connected hallway while a safe exit route remains available.
-- Direction: [Direction](direction.md).
+- Status: Needs Direction
+- Value: Let players use an occupied packed cabin through a connected hallway while they keep a safe exit.
+- Direction: [Progress after vacancy](direction.md#progress-after-an-empty-cabin-becomes-occupied).
 - Feature Brief: [Feature brief](features/B-0030/brief.md).
 - Relationships: Uses B-0009 and the [portable-home decision](decisions/pdr/0001-preserve-the-portable-home.md).
 

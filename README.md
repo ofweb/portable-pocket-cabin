@@ -4,7 +4,7 @@ A Fabric 26.2 mod for a travelling play style. Players can craft, deploy, expand
 
 ## Playing
 
-Obtain a Block of Amethyst to reveal the three dimensional-core recipes. Combine all three cores into a Dimensional Foundation, then craft a palette-aware `Cabin Kit` with your chosen roof planks, wall wood, floor planks, and door. The [crafting and moving guide](docs/guides/crafting-and-moving.md) shows the recipes and controls.
+Obtain a Block of Amethyst to reveal the three dimensional-core recipes. Combine all three cores into a Dimensional Foundation, then craft a palette-aware `Cabin Kit` with your chosen roof planks, wall wood, floor planks, and door. The [recipe data](src/main/resources/data/portable_pocket_cabin/recipe) gives the crafting ingredients.
 
 Use the Kit on top of a solid terrain block. The first use previews the 5×5 footprint; use the same surface again within 30 seconds to deploy. The front stair appears above the selected block, and the door faces you. The first successful deployment permanently binds the cabin and creates its pocket interior.
 
@@ -39,7 +39,7 @@ Normal player commands are:
 /cabin access private|trusted
 ```
 
-The lifecycle commands `/cabin preview`, `/cabin deploy`, and `/cabin pack` remain available only to operators for debugging and recovery. Material-pack authors can extend the Cabin Kit recipe through the [version 1 material-profile format](docs/reference/material-profiles.md).
+The lifecycle commands `/cabin preview`, `/cabin deploy`, and `/cabin pack` remain available only to operators for debugging and recovery. The [material profile code](src/main/java/dev/portablepocketcabin/CabinMaterialProfiles.java) validates version 1 profiles. [Profiles](src/main/resources/data/portable_pocket_cabin/portable_pocket_cabin/material_profiles) give datapack examples.
 
 ## Development
 
@@ -50,7 +50,7 @@ Requires JDK 25 or newer.
 ./gradlew runServer
 ```
 
-The build runs server-side GameTests and headless dedicated-server startup and reload checks. The [foundation](docs/testing/cabin-foundation.md), [acquisition](docs/testing/cabin-acquisition-relocation.md), [expansion](docs/testing/cabin-expansion.md), and [upgrade](docs/testing/cabin-upgrades.md) checks state the continuing coverage. Development-world operators also have these inspection and recovery commands:
+The build runs server-side GameTests and headless dedicated-server startup and reload checks. The [GameTests](src/gametest/java/dev/portablepocketcabin/PortablePocketCabinGameTest.java) validate cabins, crafting, expansion, and upgrades. Development-world operators also have these inspection and recovery commands:
 
 ```text
 /cabin create [player]

@@ -18,7 +18,7 @@ The registry gives one stable answer across players and restarts. Version and pr
 
 ## Scope
 
-This decision covers world attunement and general-space cost definitions. [ADR-0007](0007-use-exact-material-profiles.md) owns profile validity. [PDR-0006](../pdr/0006-expand-general-space-with-world-materials.md) owns the visible material rule. The [progression format](../../../docs/reference/progression-definitions.md) states the current data contract.
+This decision covers world attunement and general-space cost definitions. [ADR-0007](0007-use-exact-material-profiles.md) owns profile validity. [PDR-0006](../pdr/0006-expand-general-space-with-world-materials.md) owns the visible material rule. The [definition code](../../../src/main/java/dev/portablepocketcabin/CabinUpgradeDefinitions.java) validates extension data. The [definition](../../../src/main/resources/data/portable_pocket_cabin/portable_pocket_cabin/progression/default.json) gives the costs.
 
 ## Consequences
 

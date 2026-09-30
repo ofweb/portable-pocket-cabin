@@ -1,52 +1,52 @@
-# Cabin controls and appearance communicate their purpose
+# Players can identify cabin actions and status
 
 Status: Draft
 Feature ID: B-0034
 
 ## Goal
 
-Players can identify cabin systems and understand available actions, costs, status, and failures.
+Players can identify cabin systems and the available actions, costs, status, and failures.
 
 ## Stories and acceptance
 
-The stories below are proposals for Shape.
+Shape must confirm these stories.
 
-### S1: Understand a cabin action
+### S1: Identify a cabin action
 
-Story: A player inspects a cabin control and understands its action and any reason it cannot complete.
-
-Acceptance:
-
-- Protected interfaces use consistent controls and actionable failure messages.
-- Status shows only information allowed by the player's role.
-- Models, textures, sounds, and tooltips distinguish interactive systems from decoration without hiding Minecraft behavior.
-- Presentation does not weaken server checks or conceal important state.
-
-### S2: Read exterior conditions through a window
-
-Story: A player sees window cues for the deployed cabin's exterior conditions or inactive state.
+Story: A player inspects a cabin interface and identifies its action and the reason it cannot complete.
 
 Acceptance:
 
-- Windows keep the existing exterior-condition display and saved window behavior.
-- Proposed improvements include textures, transitions, biome cues, and weather animation.
-- Windows do not render terrain views or cross-dimensional portals.
+- Cabin interfaces use the same buttons for the same actions. Failure information identifies the problem and the actions necessary to complete the request.
+- Status shows only information that follows the player role rules.
+- Models, textures, sounds, and tooltips identify systems that players can use and other blocks. Players can see the Minecraft behavior of each block.
+- Changes to displays, sounds, and interfaces do not bypass server checks or prevent players from inspecting important state.
+
+### S2: Read exterior conditions through a Cabin window
+
+Story: A player sees exterior conditions or state without an active exterior through a Cabin window.
+
+Acceptance:
+
+- Each Cabin window keeps its exterior-condition display and saved behavior.
+- Possible changes include textures, display changes with time, biome information, and weather animation.
+- A Cabin window does not show a view of exterior terrain or into a different dimension.
 
 ## Scope
 
-This feature includes controls, status, failure messages, window presentation, models, textures, sounds, and tooltips.
+This feature includes controls, status, failure information, Cabin window displays, models, textures, sounds, and tooltips.
 
 ## Non-goals
 
-Rendered portals, terrain views, and changes to permissions or cabin behavior are not part of this feature.
+Views of exterior terrain or into different dimensions, and changes to permissions or cabin behavior, are not part of this feature.
 
 ## Related records
 
 - [Direction](../../direction.md).
-- [Window behavior](../../decisions/pdr/0008-purchase-and-reverse-cabin-windows.md).
+- [Cabin window behavior](../../decisions/pdr/0008-purchase-and-reverse-cabin-windows.md).
 - [Household roles](../../decisions/pdr/0009-use-fixed-household-roles.md).
-- [Release verification](../B-0035/brief.md).
+- [Version checks](../B-0035/brief.md).
 
 ## Open questions and assumptions
 
-- Visual and audio designs, interface dimensions, and the acceptance method for clarity are open.
+- Displays, sounds, interface dimensions, and the acceptance method for clear player information are open.

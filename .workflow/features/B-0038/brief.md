@@ -71,4 +71,3 @@ Upgrade effects, costs, and steps are not part of this feature. Empty books and 
 - The book list and installation control are open questions.
 - Selection rates and villager biomes for other book types are open.
 - A player can trade with many vendors without seeing one book type.
-- The effect of B-0010 enchantments from other cabins on book-revealed upgrades is open.

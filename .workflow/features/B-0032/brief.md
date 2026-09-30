@@ -1,38 +1,38 @@
-# A cabin delivers mail automatically
+# A cabin sends mail automatically
 
 Status: Draft
 Feature ID: B-0032
 
 ## Goal
 
-An owner can enable limited mailbox delivery for declared requests and eligible surplus.
+An owner can select mailbox delivery to operate for requests and surplus that follow the cabin rules, up to a delivery limit.
 
 ## Stories and acceptance
 
-The stories below are proposals for Shape.
+Shape must confirm these stories.
 
-### S1: Enable a delivery rule
+### S1: Select a delivery rule
 
-Story: An owner enables mailbox automation and sets an item, quantity, destination, and delivery limit.
+Story: An owner selects mailbox automation to operate and sets an item, quantity, target cabin, and delivery limit.
 
 Acceptance:
 
-- Only the owner enables the capability and controls its rules.
-- Each rule specifies its item, quantity, destination, and limit.
-- A rule grants no general access to remote storage.
+- Only the owner selects the capability to operate and controls its rules.
+- Each rule has an item, quantity, target cabin, and limit.
+- A rule gives no general access to storage in other cabins.
 - Automatic delivery follows resource request and surplus rules in B-0031.
 
-### S2: Deliver or stop safely
+### S2: Complete or stop a delivery safely
 
-Story: A delivery completes when the donor has eligible items and the destination has permission and capacity.
+Story: A delivery completes when the source cabin has items that follow its rules. The target cabin must have permission and capacity.
 
 Acceptance:
 
-- Missing capability, permission, surplus, reserves, storage capacity, or mailbox capacity stops delivery and gives a reason.
-- A full destination rejects the transfer without item loss or partial ownership.
+- Missing capability, permission, surplus, hard reserves, storage capacity, or mailbox capacity stops delivery and gives a reason.
+- A full target inventory rejects the transfer. Item ownership stays with the source cabin, and all items stay in place.
 - A transfer keeps item data and completes one time after interruption or restart.
-- Mailbox contents and collection follow B-0003's owner-only rules.
-- Status follows B-0031's local and remote role limits.
+- Mailbox contents and actions to withdraw items follow the owner-only rules in B-0003.
+- Status follows the role limits for inspection in B-0031.
 
 ## Scope
 
@@ -40,7 +40,7 @@ This feature includes owner-controlled mailbox automation for requests and surpl
 
 ## Non-goals
 
-General remote storage access and automatic movement from mail into central storage are not part of this feature.
+General access to storage in other cabins and automatic movement from mail into central storage are not part of this feature.
 
 ## Related records
 
@@ -51,5 +51,5 @@ General remote storage access and automatic movement from mail into central stor
 
 ## Open questions and assumptions
 
-- Capability discovery, upgrade costs, rule limits, delivery timing, and destination controls are open.
+- Capability installation, upgrade costs, rule limits, delivery times, and target cabin controls are open.
 - Which requests use mailbox capacity or central storage capacity is open.

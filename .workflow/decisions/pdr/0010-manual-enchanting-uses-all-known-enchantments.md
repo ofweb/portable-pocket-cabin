@@ -22,4 +22,4 @@ This decision governs the difference between manual and automated enchanting. [B
 
 ## Consequences
 
-Removing an enchantment from an automation slot can pause a dependent job. The same change does not prevent manual use. Shared knowledge can become available for manual use without an automatic slot selection.
+Removing an enchantment from an automation slot can pause a dependent job. The same change does not prevent manual use.
