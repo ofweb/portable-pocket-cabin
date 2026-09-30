@@ -58,9 +58,11 @@ Residents and guests cannot use equipment groups. Each group has one restock har
 - [Equipment requisitions brief](../B-0028/brief.md).
 - [Central storage brief](../B-0004/brief.md).
 - [Household roles](../../decisions/pdr/0009-use-fixed-household-roles.md).
-- [Earlier milestone source](../../../docs/roadmap/08-enchanting-loadouts.md).
 
 ## Open questions and assumptions
 
-- The rule for an item exception when the owner keeps an item out of storage is open.
 - The item templates, slot selection rules, and restock output location are open questions.
+- Earlier proposals protect equipped items and protected slots and keep automatic storage off by default. Shape must confirm these boundaries.
+- Earlier proposals let the owner request an item once and create an exception after a reversed transfer. These actions need Shape review.
+- Persistence of groups, owner settings, and item exceptions is open. Entry reports and restock state already have persistence coverage.
+- The storage controls for group selection, rule previews, and item exceptions are open.

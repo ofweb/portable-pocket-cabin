@@ -74,7 +74,6 @@ General equipment stock targets, resident requisitions, and production in a diff
 - [Household roles](../../decisions/pdr/0009-use-fixed-household-roles.md).
 - [PDR-0010](../../decisions/pdr/0010-manual-enchanting-uses-all-known-enchantments.md).
 - [PDR-0011](../../decisions/pdr/0011-separate-learning-from-application-limits.md).
-- [Earlier milestone source](../../../docs/roadmap/08-enchanting-loadouts.md).
 
 ## Open questions and assumptions
 

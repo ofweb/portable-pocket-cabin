@@ -17,3 +17,29 @@ The complete experience works in survival without operator commands. Cabin inter
 The cabin carries the home. Paths, farms, mines, docks, and terrain remain at each campsite. Ordinary interior blocks keep normal Minecraft behavior while the cabin is deployed. Packing pauses their normal simulation. Managed rooms may make bounded progress while the cabin is inactive.
 
 The home must remain recoverable after a failed move or lost exterior. A cabin has at most one active exterior and one owner. The current model lets each player own at most one cabin. Cooperation must preserve each cabin's resources, access rules, and identity. Automation remains bounded and does not turn ordinary interior blocks into machinery that works while packed. Optional integrations require declared support; arbitrary mod behavior is outside the compatibility promise.
+
+## Open questions
+
+### Cabin palette changes
+
+Can an owner select a different Cabin palette for the same home? The cabin must keep its identity and purchased upgrades.
+
+### Automatic packing during a fire
+
+Can a fire near the cabin trigger automatic packing? A decision is necessary about the effect on cabin occupants.
+
+### More cabin styles
+
+Can the cabin offer different exterior and room designs? A decision is necessary about their effect on cabin identity.
+
+### Cabin names and maps
+
+Can players give cabins names and show their sites on maps? A decision is necessary about who can see these sites.
+
+### Cabin sleep and exterior night
+
+Can sleep in a cabin set the time at its deployed exterior? A decision is necessary about the effect on other players.
+
+### More modded materials
+
+Can the cabin use more modded materials with explicit profiles? The compatibility limits must stay in place.

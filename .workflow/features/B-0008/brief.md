@@ -100,7 +100,6 @@ The cabin does not learn from items in storage or use enchantments known by othe
 - [Cabin books brief](../B-0038/brief.md).
 - [Book and upgrade decision](../../decisions/pdr/0012-books-reveal-upgrades-before-purchase.md).
 - [Equipment requisitions brief](../B-0028/brief.md).
-- [Earlier milestone source](../../../docs/roadmap/08-enchanting-loadouts.md).
 
 ## Open questions and assumptions
 
