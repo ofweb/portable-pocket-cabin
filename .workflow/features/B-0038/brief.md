@@ -1,47 +1,47 @@
-# Players obtain and install cabin books
+# Players get and install cabin books
 
 Status: Draft
 Feature ID: B-0038
 
 ## Goal
 
-Players can obtain cabin books in survival. A cabin owner installs each book through one control to reveal upgrades for later purchase.
+Players can get cabin books in Survival mode. A cabin owner installs each book through one control to reveal upgrades before purchase.
 
 ## Stories and acceptance
 
-### S1: Buy a cabin book
+### S1: Purchase a cabin book
 
-Story: A player visits a villager with the book vendor profession and buys one offered cabin book.
+Story: A player goes to a book vendor and purchases one offered cabin book.
 
 Acceptance:
 
-- Any generated village can select a rare bookstall building. No village-size threshold applies.
-- The building contains a bookstall job site. An unemployed villager can claim any available bookstall, including one placed by a player, under normal villager job rules.
-- A book vendor offers one cabin book. The game chooses it at random when a player first opens that vendor's trade screen, then saves the offer.
-- The vendor shows the same book offer to every player. A buyer's cabin does not change the offered book.
-- The vendor keeps its book offer. Restocking adds more copies of that book but does not select a different book.
-- A new vendor can offer a book that another vendor already offers. Finding a new vendor does not guarantee a new book type.
-- Each book type has preferred villager biome types that raise its chance. The villager's type, shown by its clothing, sets the odds when its offer is chosen. Moving the villager or bookstall does not change those odds.
-- Desert villagers favor the enchanting room book and the enchanting automation book.
-- Every book can still appear from every villager biome type.
-- The selection does not depend on other vendors' offers or any buyer's cabin.
-- A purchase gives the player a physical book. It does not change any cabin state.
-- Players can give or trade a purchased book to another player.
+- The game can randomly place a bookstall structure in small or large villages.
+- Each bookstall is a villager job block. A villager without a job can use an open bookstall by the job rules. A player can place a bookstall.
+- A book vendor offers one cabin book. The game selects the book at random when a player first opens the trade screen, then saves the offer.
+- Each player sees the same book. Players in all cabins see the same offer.
+- The book vendor keeps its offer. Restocking adds copies of that book but does not select a different book.
+- More than one book vendor can select the same book type. A new vendor does not always have a new type.
+- Each book type has a higher selection rate in some villager biomes. The villager's biome sets that rate when the game selects a trade. The rate stays the same when the player moves the villager or bookstall.
+- Desert villagers have a higher selection rate for the enchanting room book and the enchanting automation book.
+- The game can select all book types for all villager biomes.
+- Other book vendors and the player's cabin have no effect on book selection.
+- A purchase gives the player a book. Cabin state stays the same after purchase.
+- Players can give the book to other players or trade the book with other players.
 
 ### S2: Install a cabin book
 
-Story: A cabin owner selects a cabin book and installs it to reveal one or more upgrades.
+Story: A cabin owner installs a selected cabin book to reveal one or more upgrades.
 
 Acceptance:
 
-- The same protected cabin control installs each cabin book.
+- The same cabin control is used to install each cabin book.
 - The owner sees which upgrades the book will reveal before confirmation.
-- Only the owner can install a book. A book in storage or inventory does not install by itself.
-- A successful installation consumes one book and reveals all its declared upgrades for that cabin.
+- Only the owner can install a book. A book in storage or inventory does not install until the owner selects it.
+- When the owner installs a book, the cabin uses one book and reveals all listed upgrades for that cabin.
 - Installation reveals upgrades only in the cabin where the owner installed the book.
-- The book does not purchase or enable an upgrade. Each target follows the normal upgrade fund and installation rules.
-- Invalid, unavailable, or already installed books stay in their source inventory and give a reason.
-- Installed book state and revealed upgrades survive packing, restart, and redeployment.
+- The book does not purchase an upgrade or give the cabin that upgrade. Each upgrade follows the usual fund and installation rules.
+- If the cabin cannot install a book, the book stays in its source inventory and the cabin gives the reason.
+- The cabin keeps installed book state and revealed upgrades through packing, restart, and redeployment.
 
 ## Scope
 
@@ -49,7 +49,7 @@ This feature includes the book vendor and one installation action for cabin book
 
 ## Non-goals
 
-This feature does not define the effect, price, or upgrade path of a revealed target. Blank books and ordinary enchanted books are outside this feature.
+Upgrade effects, costs, and steps are not part of this feature. Empty books and enchanted books are not part of this feature.
 
 ## Related records
 
@@ -67,8 +67,8 @@ This feature does not define the effect, price, or upgrade path of a revealed ta
 
 ## Open questions and assumptions
 
-- The chance for a generated village to select a bookstall building, the vendor's appearance, and trade price remain open.
-- The book catalogue and installation control need agreement.
-- The exact selection weights and the preferred villager biomes for other book types remain open.
-- Random offers cannot guarantee a missing book within a fixed number of vendors.
-- The effect of B-0010 shared discoveries on book-revealed upgrades needs review.
+- The rate of bookstalls in villages, how the book vendor looks, and the trade cost are open.
+- The book list and installation control are open questions.
+- Selection rates and villager biomes for other book types are open.
+- A player can trade with many vendors without seeing one book type.
+- The effect of B-0010 enchantments from other cabins on book-revealed upgrades is open.

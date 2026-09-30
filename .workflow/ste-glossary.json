@@ -23,7 +23,21 @@
     {"word": "desert"},
     {"word": "lapis"},
     {"word": "trade", "inflections": ["trades"]},
-    {"word": "restock", "inflections": ["restocking"]}
+    {"word": "restock", "inflections": ["restocking"]},
+    {"word": "purchase", "inflections": ["purchases", "purchased", "purchasing"]},
+    {"word": "reveal", "inflections": ["reveals", "revealed", "revealing"], "part_of_speech": "verb"},
+    {"word": "requisition", "inflections": ["requisitions"]},
+    {"word": "table", "inflections": ["tables"]},
+    {"word": "anvil", "inflections": ["anvils"]},
+    {"word": "experience"},
+    {"word": "curse", "inflections": ["curses"]},
+    {"word": "template", "inflections": ["templates"]},
+    {"word": "loadout", "inflections": ["loadouts"]},
+    {"word": "rarity"},
+    {"word": "offer", "inflections": ["offers", "offered"]},
+    {"word": "chance"},
+    {"word": "confirmation"},
+    {"word": "cost", "inflections": ["costs"]}
   ],
   "technical_nouns": [
     "Minecraft",
@@ -123,6 +137,7 @@
     {"word": "format", "inflections": ["formats"]}
   ],
   "exact_names": [
+    "Survival mode",
     "Farmer's Delight",
     "Farmer's Delight Refabricated",
     "Alex's Mobs Continued Delight"
@@ -144,6 +159,8 @@
     "sit",
     {"word": "stand", "inflections": ["stands"]},
     "sleep",
-    {"word": "tame", "inflections": ["tamed"]}
+    {"word": "tame", "inflections": ["tamed"]},
+    {"word": "enchant", "inflections": ["enchants", "enchanted"], "part_of_speech": "verb"},
+    {"word": "learn", "inflections": ["learns", "learned", "learning"], "part_of_speech": "verb"}
   ]
 }

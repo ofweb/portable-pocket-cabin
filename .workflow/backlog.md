@@ -26,7 +26,6 @@
 - Possible value: Let a cabin purchase a bounded room, keep its own space, and reach it through a safe interior door.
 - Feature Brief: [Room brief](features/B-0005/brief.md).
 - Relationships: Uses B-0002; supports B-0019 through B-0023.
-- Source: [Functional rooms milestone](../docs/roadmap/05-functional-rooms.md).
 
 ## B-0006: House cat
 
@@ -112,35 +111,30 @@
 - Maturity: Framed
 - Possible value: Let residents plant and harvest supported crops in a managed room with bounded passive growth.
 - Relationships: Uses B-0005; automatic actions belong to B-0026.
-- Source: [Functional rooms milestone](../docs/roadmap/05-functional-rooms.md).
 
 ## B-0020: Stable
 
 - Maturity: Framed
 - Possible value: Let residents house and release eligible tamed mounts while each animal keeps its identity.
 - Relationships: Uses B-0005.
-- Source: [Functional rooms milestone](../docs/roadmap/05-functional-rooms.md).
 
 ## B-0021: Aquatic berth
 
 - Maturity: Framed
 - Possible value: Add a flooded stable berth for an eligible tamed aquatic resident such as a nautilus.
 - Relationships: Extends the stable in B-0020.
-- Source: [Functional rooms milestone](../docs/roadmap/05-functional-rooms.md).
 
 ## B-0022: Livestock room
 
 - Maturity: Framed
 - Possible value: Let residents tend a bounded population of supported livestock and collect products through manual actions.
 - Relationships: Uses B-0005; automatic actions belong to B-0026.
-- Source: [Functional rooms milestone](../docs/roadmap/05-functional-rooms.md).
 
 ## B-0023: Forestry room
 
 - Maturity: Framed
 - Possible value: Let residents grow, fell, and replant supported trees in a managed room.
 - Relationships: Uses B-0005; automatic actions belong to B-0026.
-- Source: [Functional rooms milestone](../docs/roadmap/05-functional-rooms.md).
 
 ## B-0024: Bounded crafting jobs
 

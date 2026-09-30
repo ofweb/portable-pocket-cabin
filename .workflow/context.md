@@ -2,21 +2,21 @@
 
 ## Cabin
 
-- Meaning: A cabin is one lasting pocket home with one owner, one interior, and at most one active exterior.
+- Meaning: A cabin is a lasting pocket home with one owner, one interior, and one active exterior at most.
 - STE class: Technical name
 - Forms: cabins
 - Distinguish from: The exterior is a replaceable entrance to the cabin.
 
 ## Cabin owner
 
-- Meaning: The cabin owner is the one player who owns a cabin for its lifetime.
+- Meaning: One player owns a given cabin for its lifetime.
 - STE class: Technical name
 - Forms: cabin owners, owner, owners
 - Distinguish from: A resident can use shared facilities but cannot change cabin-wide settings.
 
 ## Household role
 
-- Meaning: A household role is a player's cabin-local permission category. Each player is the owner, a resident, or a guest in one cabin.
+- Meaning: A household role is a player's permission category in one cabin. Each player is its owner, resident, or guest.
 - STE class: Technical name
 - Forms: household roles, role, roles
 - Distinguish from: A role in one cabin gives no authority in another cabin.
@@ -72,7 +72,7 @@
 
 ## Dimensional Foundation
 
-- Meaning: A Dimensional Foundation combines a Dimensional Logic Core, Dimensional Anchor, and Dimensional Folding Core into assembled cabin machinery.
+- Meaning: A Dimensional Foundation assembles a Dimensional Logic Core, Dimensional Anchor, and Dimensional Folding Core into cabin machinery.
 - STE class: Technical name
 - Avoid: Machine block.
 
@@ -133,7 +133,7 @@
 
 - Meaning: A book vendor is a villager profession that sells cabin books and uses a bookstall job site.
 - STE class: Technical name
-- Forms: book vendors
+- Forms: book vendors, vendor, vendors
 
 ## Bookstall
 
@@ -151,6 +151,12 @@
 - Meaning: A known enchantment is a cabin's permanent record of one enchantment type and its highest learned level.
 - STE class: Technical name
 - Forms: known enchantments
+
+## Application limit
+
+- Meaning: An application limit is the highest enchantment level a room can apply. A cabin can know higher levels.
+- STE class: Technical name
+- Forms: application limits
 
 ## Hard reserve
 

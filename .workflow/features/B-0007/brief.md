@@ -5,7 +5,7 @@ Feature ID: B-0007
 
 ## Goal
 
-A cabin gets safe product templates from items in central storage. An owner can buy automation upgrades revealed by cabin books.
+A cabin gets safe product templates from items in central storage. An owner can purchase automation upgrades that cabin books reveal.
 
 ## Stories and acceptance
 
@@ -25,19 +25,19 @@ Acceptance:
 - A product template cannot make an item or give the cabin a production capability.
 - A product template stays with one cabin. Other cabins do not get that product template automatically.
 
-### S2: Buy an automation upgrade
+### S2: Purchase an automation upgrade
 
-Story: After a cabin book reveals an automation upgrade, the owner funds and buys it to give the cabin an automation capability.
+Story: After a cabin book reveals an automation upgrade, the owner funds and purchases it to give the cabin an automation capability.
 
 Acceptance:
 
-- A book reveals an automation upgrade under B-0038. The book alone grants no capability.
-- Only the owner can buy the revealed upgrade under the cabin upgrade rules.
+- A book reveals an automation upgrade in B-0038. The book gives no capability.
+- Only the owner can purchase the revealed upgrade as stated in the cabin upgrade rules.
 - After the upgrade purchase, the cabin gets its automation capability.
-- If the cabin already has the capability, it gets no new effect.
+- If the cabin has the capability, it gets no new effect.
 - Installed automation capabilities stay with the cabin through packing, restart, and redeployment.
 - The owner can select each installed automation capability to operate or stop.
-- A different automation book reveals the upgrade for each action: feed, collect, harvest, replant, fell trees, prepare meals, brew, or automate enchanting.
+- A different automation book reveals the upgrade for each action: feed, collect, harvest, replant, fell trees, prepare meals, brew, or enchant automatically.
 
 ## Feature-wide constraints and acceptance
 
@@ -53,7 +53,7 @@ This feature includes product templates, purchased automation capabilities, and 
 
 - Jobs that make known items or do room actions.
 - Product templates for item data that a profile does not list, or product templates for more than one cabin.
-- Book acquisition and installation.
+- Book trades and installation.
 
 ## Related records
 
@@ -71,4 +71,4 @@ This feature includes product templates, purchased automation capabilities, and 
 ## Open questions and assumptions
 
 - The item types and parts that each product profile accepts are open.
-- The final book and automation upgrade catalogue remains open.
+- The full list of books and automation upgrades is open.
