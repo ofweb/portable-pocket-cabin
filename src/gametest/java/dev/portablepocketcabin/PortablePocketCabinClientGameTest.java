@@ -18,33 +18,12 @@ import java.util.UUID;
 public final class PortablePocketCabinClientGameTest implements FabricClientGameTest {
 	@Override
 	public void runTest(ClientGameTestContext context) {
-		context.getInput().resizeWindow(960, 720);
+		context.getInput().resizeWindow(1280, 800);
 		context.runOnClient(client -> client.options.guiScale().set(3));
 		context.getInput().setCursorPos(0, 0);
 
 		try (TestSingleplayerContext world = context.worldBuilder().create()) {
-			UUID cabinId = world.getServer().computeOnServer(server -> {
-				var player = world.getConnection().getServerPlayer();
-				var registry = CabinRegistry.get(server);
-				registry.resolveWorldAttunement(CabinUpgradeDefinitions.current().resolve(0L));
-				var cabin = registry.create(player.getUUID());
-				registry.beginDeployment(cabin.uuid(), player.getUUID(), new CabinExterior(
-					Level.OVERWORLD, new BlockPos(0, 100, 0), Direction.NORTH
-				));
-				var pocket = server.getLevel(PocketDimension.LEVEL_KEY);
-				if (pocket == null) {
-					throw new AssertionError("Pocket dimension did not load");
-				}
-				PocketDimension.ensureCabinInterior(pocket, cabin.cellIndex());
-				registry.markInteriorGenerated(cabin.uuid());
-				registry.finishDeployment(cabin.uuid());
-				BlockPos entrance = PocketDimension.interiorEntrance(cabin.cellIndex());
-				if (!player.teleportTo(pocket, entrance.getX() + 0.5, entrance.getY(),
-					entrance.getZ() + 0.5, Set.of(), 180, 0, false)) {
-					throw new AssertionError("Could not enter the test cabin");
-				}
-				return cabin.uuid();
-			});
+			UUID cabinId = createCabin(world, false);
 			world.getConnection().waitForClientboundPackets();
 			context.waitFor(client -> client.player != null && client.level != null
 				&& client.level.dimension().equals(PocketDimension.LEVEL_KEY));
@@ -86,7 +65,100 @@ public final class PortablePocketCabinClientGameTest implements FabricClientGame
 			world.getConnection().waitForClientboundPackets();
 			context.waitFor(client -> client.player.containerMenu instanceof CabinUpgradeMenu menu && menu.isArmed());
 			capture(context, "cabin-upgrades-confirmation");
+
+			selectNext(context, world);
+			context.runOnClient(client -> {
+				var menu = (CabinUpgradeMenu) client.player.containerMenu;
+				if (menu.requirementCount() != 13) {
+					throw new AssertionError("Expected thirteen window materials");
+				}
+			});
+			capture(context, "cabin-upgrades-window-materials");
+			selectNext(context, world);
+			context.runOnClient(client -> {
+				if (!((CabinUpgradeMenu) client.player.containerMenu).isBlocked()) {
+					throw new AssertionError("Expected a prerequisite-blocked second window");
+				}
+			});
+			capture(context, "cabin-upgrades-blocked");
+			context.getInput().setCursorPos(340, 380);
+			context.waitTick();
+			capture(context, "cabin-upgrades-blocked-tooltip");
+			context.getInput().setCursorPos(0, 0);
+
+			world.getServer().runOnServer(server -> {
+				var registry = CabinRegistry.get(server);
+				var cabin = registry.find(cabinId).orElseThrow();
+				var identity = new CabinWindowState.Identity(CabinWindowState.Wall.LEFT, 0);
+				var windows = cabin.upgrades().windows();
+				for (int tier = 0; tier < CabinWindowState.MAX_TIER; tier++) {
+					windows = windows.install(identity, tier, List.of());
+				}
+				registry.updateUpgradeState(cabinId, cabin.upgrades().withWindows(windows));
+			});
+			open(context, world, cabinId);
+			selectNext(context, world);
+			context.runOnClient(client -> {
+				if (!((CabinUpgradeMenu) client.player.containerMenu).isAtMaximum()) {
+					throw new AssertionError("Expected an installed window at maximum tier");
+				}
+			});
+			capture(context, "cabin-upgrades-installed");
+
+			UUID residentCabinId = createCabin(world, true);
+			world.getConnection().waitForClientboundPackets();
+			world.getConnection().waitForChunksRender();
+			fund(world, residentCabinId, true);
+			open(context, world, residentCabinId);
+			context.runOnClient(client -> {
+				var menu = (CabinUpgradeMenu) client.player.containerMenu;
+				if (menu.isOwner() || !menu.canUseFund() || !menu.isComplete()) {
+					throw new AssertionError("Expected a resident with a complete fund");
+				}
+			});
+			capture(context, "cabin-upgrades-resident");
 		}
+	}
+
+	private static UUID createCabin(TestSingleplayerContext world, boolean resident) {
+		return world.getServer().computeOnServer(server -> {
+			var player = world.getConnection().getServerPlayer();
+			var registry = CabinRegistry.get(server);
+			registry.resolveWorldAttunement(CabinUpgradeDefinitions.current().resolve(0L));
+			UUID owner = resident ? UUID.fromString("00000000-0000-0000-0000-000000000001") : player.getUUID();
+			var cabin = registry.create(owner);
+			if (resident) {
+				registry.trust(cabin.uuid(), owner, player.getUUID());
+				registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS);
+			}
+			registry.beginDeployment(cabin.uuid(), owner, new CabinExterior(
+				Level.OVERWORLD, new BlockPos(0, 100, 0), Direction.NORTH
+			));
+			var pocket = server.getLevel(PocketDimension.LEVEL_KEY);
+			if (pocket == null) {
+				throw new AssertionError("Pocket dimension did not load");
+			}
+			PocketDimension.ensureCabinInterior(pocket, cabin.cellIndex());
+			registry.markInteriorGenerated(cabin.uuid());
+			registry.finishDeployment(cabin.uuid());
+			BlockPos entrance = PocketDimension.interiorEntrance(cabin.cellIndex());
+			if (!player.teleportTo(pocket, entrance.getX() + 0.5, entrance.getY(),
+				entrance.getZ() + 0.5, Set.of(), 180, 0, false)) {
+				throw new AssertionError("Could not enter the test cabin");
+			}
+			return cabin.uuid();
+		});
+	}
+
+	private static void selectNext(ClientGameTestContext context, TestSingleplayerContext world) {
+		int previous = context.computeOnClient(client ->
+			((CabinUpgradeMenu) client.player.containerMenu).selectedPanelIndex());
+		context.runOnClient(client -> client.gameMode.handleInventoryButtonClick(
+			client.player.containerMenu.containerId, CabinUpgradeMenu.BUTTON_NEXT_PANEL));
+		world.getConnection().waitForServerboundPackets();
+		context.waitFor(client -> ((CabinUpgradeMenu) client.player.containerMenu).selectedPanelIndex() != previous);
+		world.getConnection().waitForClientboundPackets();
+		context.waitTick();
 	}
 
 	private static void open(ClientGameTestContext context, TestSingleplayerContext world, UUID cabinId) {
@@ -119,6 +191,11 @@ public final class PortablePocketCabinClientGameTest implements FabricClientGame
 	}
 
 	private static void capture(ClientGameTestContext context, String name) {
+		if (!name.endsWith("-tooltip")) {
+			context.getInput().setCursorPos(0, 0);
+		}
+		context.waitTick();
+		context.waitTick();
 		context.takeScreenshot(TestScreenshotOptions.of(name).disableCounterPrefix());
 	}
 }

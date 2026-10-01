@@ -709,25 +709,20 @@ public final class PortablePocketCabinGameTest {
 				&& slot.y == CabinUpgradeLayout.requirementY(index),
 				"Requirement slots must occupy two deterministic rows of eight");
 		}
-		helper.assertTrue(CabinUpgradeLayout.SCREEN_WIDTH == 248
-			&& CabinUpgradeLayout.SCREEN_HEIGHT == 220
-			&& CabinUpgradeLayout.PANEL_X == 4
-			&& CabinUpgradeLayout.PANEL_WIDTH == 240
-			&& CabinUpgradeLayout.PANEL_HEIGHT == 100
-			&& CabinUpgradeLayout.REQUIREMENT_X == 12
-			&& CabinUpgradeLayout.REQUIREMENT_Y == 56
-			&& CabinUpgradeLayout.REQUIREMENT_X_STEP == 28
-			&& CabinUpgradeLayout.REQUIREMENT_Y_STEP == 30
-			&& CabinUpgradeLayout.requirementX(7) + 18
-				<= CabinUpgradeLayout.PANEL_X + CabinUpgradeLayout.PANEL_WIDTH
-			&& CabinUpgradeLayout.TAB_X < 0
-			&& CabinUpgradeLayout.TAB_X + CabinUpgradeLayout.TAB_SIZE > 0
+		helper.assertTrue(CabinUpgradeLayout.requirementX(7) + 17 < CabinUpgradeLayout.SCREEN_WIDTH
+			&& CabinUpgradeLayout.requirementY(15) + 26 <= CabinUpgradeLayout.STATUS_Y
+			&& CabinUpgradeLayout.ACTION_Y + CabinUpgradeLayout.ACTION_HEIGHT
+				< CabinUpgradeLayout.INVENTORY_LABEL_Y
 			&& CabinUpgradeLayout.tabY(CabinUpgradeMenu.MAX_GROUPS - 1)
-				+ CabinUpgradeLayout.TAB_SIZE <= CabinUpgradeLayout.SCREEN_HEIGHT
-			&& CabinUpgradeLayout.PANEL_NAV_X < CabinUpgradeLayout.SCREEN_WIDTH
-			&& CabinUpgradeLayout.PANEL_NAV_X + CabinUpgradeLayout.TAB_SIZE
-				> CabinUpgradeLayout.SCREEN_WIDTH,
-			"Category and panel controls must attach to the fixed screen without exceeding its height");
+				+ CabinUpgradeLayout.TAB_SIZE <= CabinUpgradeLayout.SCREEN_HEIGHT,
+			"Requirements, actions, and category controls must fit without overlapping the inventory");
+		var firstInventorySlot = menu.getSlot(CabinUpgradeMenu.FIRST_PLAYER_SLOT);
+		var firstHotbarSlot = menu.getSlot(CabinUpgradeMenu.FIRST_PLAYER_SLOT + 27);
+		helper.assertTrue(firstInventorySlot.x == CabinUpgradeLayout.INVENTORY_X
+			&& firstInventorySlot.y == CabinUpgradeLayout.INVENTORY_Y
+			&& firstHotbarSlot.x == firstInventorySlot.x
+			&& firstHotbarSlot.y == firstInventorySlot.y + 58,
+			"Player slots must preserve vanilla inventory and hotbar spacing");
 		helper.succeed();
 	}
 

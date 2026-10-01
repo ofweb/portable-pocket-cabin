@@ -117,7 +117,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		for (int index = 0; index < MAX_GROUPS; index++) {
 			addSlot(new DisplaySlot(display, FIRST_GROUP_SLOT + index, -1000, -1000));
 		}
-		addStandardInventorySlots(inventory, 44, 136);
+		addStandardInventorySlots(inventory, CabinUpgradeLayout.INVENTORY_X, CabinUpgradeLayout.INVENTORY_Y);
 		addDataSlots(data);
 		if (serverPlayer != null) {
 			refreshFromServer();

@@ -20,5 +20,12 @@
   "item.portable_pocket_cabin.dimensional_folding_core": "Dimensional Folding Core",
   "item.portable_pocket_cabin.dimensional_foundation": "Dimensional Foundation",
   "gamerule.portable_pocket_cabin.respawn_min_distance": "Cabin respawn minimum near-death distance",
-  "gamerule.portable_pocket_cabin.respawn_max_distance": "Cabin respawn maximum near-death distance"
+  "gamerule.portable_pocket_cabin.respawn_max_distance": "Cabin respawn maximum near-death distance",
+  "screen.portable_pocket_cabin.install": "Install",
+  "screen.portable_pocket_cabin.confirm": "Confirm",
+  "screen.portable_pocket_cabin.downgrade": "Downgrade",
+  "screen.portable_pocket_cabin.remove": "Remove",
+  "screen.portable_pocket_cabin.confirm_action": "Click again to confirm",
+  "screen.portable_pocket_cabin.blocked": "Upgrade unavailable",
+  "screen.portable_pocket_cabin.ready_owner": "Ready: owner can install"
 }
