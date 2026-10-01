@@ -63,6 +63,17 @@ The build runs server-side GameTests and headless dedicated-server startup and r
 /cabin leave-test
 ```
 
+Run the Fabric client GameTests separately with a working graphical display:
+
+```sh
+just test-client
+# Or: ./gradlew runClientGameTest
+```
+
+The [client test](src/gametest/java/dev/portablepocketcabin/PortablePocketCabinClientGameTest.java) creates a fresh world and cabin. It opens the server-synchronized upgrade screen and checks missing materials, partial funding, readiness, and installation confirmation. Screenshots use a 960×720 window, GUI scale 3, fixed material attunement, and a fixed cursor position. They are saved under `build/run/clientGameTest/screenshots/`. The test leaves development saves untouched.
+
+On Linux without a display, install Xvfb and run `xvfb-run -a ./gradlew runClientGameTest`. Client tests are separate from `build`, so the existing server checks can still run without graphics. Screenshots are captures for visual review; no regression baselines have been accepted yet. Fabric supports fuzzy comparisons through `ClientGameTestContext.assertScreenshotEquals` when an inspected baseline is ready.
+
 `visit-test` creates a 7×7 smooth-stone safety platform in the otherwise empty pocket dimension. `leave-test` returns to the Overworld spawn.
 
 For a headless dedicated-server smoke check:

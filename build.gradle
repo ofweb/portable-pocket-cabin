@@ -41,7 +41,7 @@ fabricApi {
 		createSourceSet = true
 		modId = "portable-pocket-cabin-gametest"
 		enableGameTests = true
-		enableClientGameTests = false
+		enableClientGameTests = true
 		eula = true
 	}
 }

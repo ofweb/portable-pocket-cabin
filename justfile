@@ -14,6 +14,10 @@ build:
 test:
     ./gradlew build
 
+# Run client GameTests and capture upgrade UI screenshots.
+test-client:
+    ./gradlew runClientGameTest
+
 # Verify that the local development server cannot naturally spawn mobs.
 test-dev-config:
     #!/usr/bin/env bash
