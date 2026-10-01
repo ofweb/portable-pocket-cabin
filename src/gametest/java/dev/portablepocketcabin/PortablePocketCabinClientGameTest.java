@@ -32,7 +32,7 @@ public final class PortablePocketCabinClientGameTest implements FabricClientGame
 			open(context, world, cabinId);
 			context.runOnClient(client -> {
 				var menu = (CabinUpgradeMenu) client.player.containerMenu;
-				if (menu.requirementCount() == 0 || menu.isComplete() || !menu.isAvailable()) {
+				if (menu.requirementCount() != 5 || menu.isComplete() || !menu.isAvailable()) {
 					throw new AssertionError("Expected an available, unfunded expansion");
 				}
 			});
@@ -124,9 +124,16 @@ public final class PortablePocketCabinClientGameTest implements FabricClientGame
 		return world.getServer().computeOnServer(server -> {
 			var player = world.getConnection().getServerPlayer();
 			var registry = CabinRegistry.get(server);
-			registry.resolveWorldAttunement(CabinUpgradeDefinitions.current().resolve(0L));
+			registry.resolveWorldAttunement(new WorldAttunement(99, PortablePocketCabin.id("missing/wood")));
 			UUID owner = resident ? UUID.fromString("00000000-0000-0000-0000-000000000001") : player.getUUID();
-			var cabin = registry.create(owner);
+			var palette = resident ? CabinPalette.DEFAULT : new CabinPalette(
+				CabinMaterialProfiles.woodProfile(PortablePocketCabin.id("vanilla/wood/spruce"))
+					.orElseThrow().selection(),
+				CabinMaterialProfiles.woodProfile(PortablePocketCabin.id("vanilla/wood/birch"))
+					.orElseThrow().selection(),
+				CabinPalette.DEFAULT.roof(), CabinPalette.DEFAULT.door()
+			);
+			var cabin = registry.create(owner, palette);
 			if (resident) {
 				registry.trust(cabin.uuid(), owner, player.getUUID());
 				registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS);
@@ -138,7 +145,7 @@ public final class PortablePocketCabinClientGameTest implements FabricClientGame
 			if (pocket == null) {
 				throw new AssertionError("Pocket dimension did not load");
 			}
-			PocketDimension.ensureCabinInterior(pocket, cabin.cellIndex());
+			PocketDimension.ensureCabinInterior(pocket, cabin.cellIndex(), palette, cabin.progression().generalSize());
 			registry.markInteriorGenerated(cabin.uuid());
 			registry.finishDeployment(cabin.uuid());
 			BlockPos entrance = PocketDimension.interiorEntrance(cabin.cellIndex());

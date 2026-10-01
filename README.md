@@ -14,6 +14,10 @@ New cabins have a 4×4 usable interior. Use the protected interior lodestone bes
 
 Only the owner may install a fully funded upgrade, using the check-mark button twice to confirm the unchanged target and fund. A failed installation leaves its materials available for withdrawal. Expansion keeps the entrance wall fixed, grows one block per step up to the configured limit, and refuses obstructed space.
 
+Each expansion has fixed material quantities. Its plank total splits evenly across the cabin's saved floor, wall, and roof woods, combining matching types. Extra planks go to the floor, then the walls. World seed, travel, and inventory do not change costs. If an existing fund requires different wood, withdraw its materials before funding the new cost.
+
+Datapack progression ingredients use `"palette_slot": "planks"` for this split. The old `"attuned_slot": "planks"` spelling remains accepted with palette-based behavior. `wood_pool` is optional and no longer selects upgrade materials.
+
 The Cabin category provides two independent windows for each side and rear wall. Windows grow through `1×2`, `2×2`, `3×3`, `5×4`, `7×6`, and `9×8` tiers, refuse obstructed footprints, and recenter after expansion. A wall's second window becomes available after its first is installed and both footprints fit.
 
 Only the owner can downgrade or remove a window, with two-click confirmation. The change returns exact paid materials beside the interior controller and restores the wall. Grandfathered tier-one windows return no materials. Any newly invalid fund is named during confirmation and returned separately. Dropped items then follow ordinary Minecraft behavior.
@@ -70,7 +74,7 @@ just test-client
 # Or: ./gradlew runClientGameTest
 ```
 
-The [client test](src/gametest/java/dev/portablepocketcabin/PortablePocketCabinClientGameTest.java) creates a fresh world and cabin. It opens the server-synchronized upgrade screen and checks missing materials, partial funding, readiness, and installation confirmation. Screenshots use a 960×720 window, GUI scale 3, fixed material attunement, and a fixed cursor position. They are saved under `build/run/clientGameTest/screenshots/`. The test leaves development saves untouched.
+The [client test](src/gametest/java/dev/portablepocketcabin/PortablePocketCabinClientGameTest.java) creates a fresh world and cabin. It opens the server-synchronized upgrade screen and checks missing materials, partial funding, readiness, and installation confirmation. Screenshots use a 1280×800 window, GUI scale 3, a fixed cabin palette, and a fixed cursor position. They are saved under `build/run/clientGameTest/screenshots/`. The test leaves development saves untouched.
 
 On Linux without a display, install Xvfb and run `xvfb-run -a ./gradlew runClientGameTest`. Client tests are separate from `build`, so the existing server checks can still run without graphics. Screenshots are captures for visual review; no regression baselines have been accepted yet. Fabric supports fuzzy comparisons through `ClientGameTestContext.assertScreenshotEquals` when an inspected baseline is ready.
 

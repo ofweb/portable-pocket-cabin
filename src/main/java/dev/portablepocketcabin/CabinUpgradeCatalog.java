@@ -82,24 +82,15 @@ final class CabinUpgradeCatalog {
 	private CabinUpgradeCatalog() {
 	}
 
+	/** Reads legacy context without selecting or validating upgrade ingredients. */
 	static WorldAttunement resolveAttunement(
 		CabinRegistry registry,
 		ServerLevel pocket,
 		CabinUpgradeDefinitions.Definitions definitions
 	) {
-		WorldAttunement current = registry.worldAttunement().orElse(null);
-		if (current != null) {
-			if (!definitions.isValid(current)) {
-				throw new IllegalStateException("The saved world attunement is invalid under the loaded definitions; "
-					+ "an operator must validate the datapacks before upgrades can continue.");
-			}
-			return current;
-		}
-		WorldAttunement resolved = registry.resolveWorldAttunement(
-			definitions.resolve(pocket.getServer().overworld().getSeed())
-		);
-		CabinRegistry.flush(pocket.getServer());
-		return resolved;
+		return registry.worldAttunement().orElseGet(() -> new WorldAttunement(
+			definitions.definitionVersion(), CabinPalette.DEFAULT.walls().profileId()
+		));
 	}
 
 	static Optional<Offer> next(
@@ -121,7 +112,7 @@ final class CabinUpgradeCatalog {
 			GENERAL_SPACE_ICON,
 			currentSize,
 			targetSize,
-			resolve(expansion, attunement)
+			resolve(expansion.ingredients(), cabin.palette())
 			, false, ""
 		));
 	}
@@ -187,7 +178,7 @@ final class CabinUpgradeCatalog {
 		return new Offer(
 			CabinUpgradeState.Target.window(identity), title, effect, WINDOW_ICON,
 			currentTier, targetTier,
-			complete ? List.of() : resolve(definitions.windowIngredients(targetTier), attunement),
+			complete ? List.of() : resolve(definitions.windowIngredients(targetTier), cabin.palette()),
 			complete, prerequisite
 		);
 	}
@@ -198,19 +189,27 @@ final class CabinUpgradeCatalog {
 	}
 
 	static List<CabinUpgradeState.Requirement> resolve(
-		CabinUpgradeDefinitions.Expansion expansion, WorldAttunement attunement
-	) {
-		return resolve(expansion.ingredients(), attunement);
-	}
-
-	static List<CabinUpgradeState.Requirement> resolve(
-		List<CabinUpgradeDefinitions.Ingredient> ingredients, WorldAttunement attunement
+		List<CabinUpgradeDefinitions.Ingredient> ingredients, CabinPalette palette
 	) {
 		Map<net.minecraft.resources.Identifier, Integer> consolidated = new LinkedHashMap<>();
 		for (CabinUpgradeDefinitions.Ingredient ingredient : ingredients) {
-			var item = ingredient.resolve(attunement);
-			var itemId = BuiltInRegistries.ITEM.getKey(item);
-			consolidated.merge(itemId, ingredient.count(), Math::addExact);
+			if (ingredient.palettePlanks()) {
+				List<CabinPalette.WoodSelection> woods = List.of(palette.floor(), palette.walls(), palette.roof());
+				for (int index = 0; index < woods.size(); index++) {
+					int count = ingredient.count() / woods.size()
+						+ (index < ingredient.count() % woods.size() ? 1 : 0);
+					if (count > 0) {
+						var item = woods.get(index).planksBlock().asItem();
+						if (item == net.minecraft.world.item.Items.AIR) {
+							throw new IllegalStateException("Cabin palette planks have no item: " + woods.get(index).planks());
+						}
+						consolidated.merge(BuiltInRegistries.ITEM.getKey(item), count, Math::addExact);
+					}
+				}
+			} else {
+				var itemId = BuiltInRegistries.ITEM.getKey(ingredient.resolveItem());
+				consolidated.merge(itemId, ingredient.count(), Math::addExact);
+			}
 		}
 		List<CabinUpgradeState.Requirement> result = new ArrayList<>(consolidated.size());
 		consolidated.forEach((item, count) -> result.add(new CabinUpgradeState.Requirement(item, count)));

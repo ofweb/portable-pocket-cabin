@@ -591,6 +591,121 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void expansionCostsFollowSavedPaletteAcrossWorldsAndReload(GameTestHelper helper) {
+		var definitions = CabinUpgradeDefinitions.current();
+		var spruce = CabinMaterialProfiles.woodProfile(PortablePocketCabin.id("vanilla/wood/spruce"))
+			.orElseThrow().selection();
+		var birch = CabinMaterialProfiles.woodProfile(PortablePocketCabin.id("vanilla/wood/birch"))
+			.orElseThrow().selection();
+		var palette = new CabinPalette(spruce, birch, spruce, CabinPalette.DEFAULT.door());
+		var registry = new CabinRegistry();
+		var cabin = registry.create(UUID.randomUUID(), palette);
+		var firstWorld = new WorldAttunement(1, PortablePocketCabin.id("vanilla/wood/oak"));
+		var unavailableWorld = new WorldAttunement(99, PortablePocketCabin.id("missing/wood"));
+		var requirements = CabinUpgradeCatalog.next(cabin, firstWorld, definitions).orElseThrow().requirements();
+		helper.assertTrue(requirements.contains(new CabinUpgradeState.Requirement(spruce.planks(), 8))
+			&& requirements.contains(new CabinUpgradeState.Requirement(birch.planks(), 4))
+			&& requirements.size() == 4,
+			"A twelve-plank expansion must combine eight spruce floor/roof planks and four birch wall planks");
+		helper.assertTrue(requirements.equals(CabinUpgradeCatalog.next(cabin, unavailableWorld, definitions)
+			.orElseThrow().requirements()), "World materials and definition version must not change expansion costs");
+		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
+		var restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
+		helper.assertTrue(requirements.equals(CabinUpgradeCatalog.next(restored.find(cabin.uuid()).orElseThrow(),
+			unavailableWorld, definitions).orElseThrow().requirements()), "Reload must preserve palette-based costs");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void palettePlankCostsKeepTheirTotalAndConsolidateMatchingItems(GameTestHelper helper) {
+		var spruce = CabinMaterialProfiles.woodProfile(PortablePocketCabin.id("vanilla/wood/spruce"))
+			.orElseThrow().selection();
+		var birch = CabinMaterialProfiles.woodProfile(PortablePocketCabin.id("vanilla/wood/birch"))
+			.orElseThrow().selection();
+		var palette = new CabinPalette(spruce, birch, CabinPalette.DEFAULT.roof(), CabinPalette.DEFAULT.door());
+		var definitions = CabinUpgradeDefinitions.current();
+		for (int size = 5; size <= 21; size++) {
+			int expected = 8 + (size - 4) * 4;
+			var requirements = CabinUpgradeCatalog.resolve(definitions.expansion(size).ingredients(), palette);
+			int total = requirements.stream().filter(value -> List.of(spruce.planks(), birch.planks(),
+				CabinPalette.DEFAULT.roof().planks()).contains(value.itemId())).mapToInt(
+				CabinUpgradeState.Requirement::count).sum();
+			helper.assertTrue(total == expected, "Splitting must preserve each level's fixed plank total");
+		}
+		var ingredients = List.of(new CabinUpgradeDefinitions.Ingredient(null, true, 16));
+		var split = CabinUpgradeCatalog.resolve(ingredients, palette);
+		helper.assertTrue(split.contains(new CabinUpgradeState.Requirement(spruce.planks(), 6))
+			&& split.contains(new CabinUpgradeState.Requirement(birch.planks(), 5))
+			&& split.contains(new CabinUpgradeState.Requirement(CabinPalette.DEFAULT.roof().planks(), 5)),
+			"Remainders must go to floor, then walls, then roof");
+		helper.assertTrue(CabinUpgradeCatalog.resolve(ingredients, CabinPalette.DEFAULT).equals(List.of(
+			new CabinUpgradeState.Requirement(CabinPalette.DEFAULT.floor().planks(), 16))),
+			"Matching floor, wall, and roof woods must remain one requirement");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void obsoleteWorldMaterialsDoNotBlockMenuOrConsumeOldFunds(GameTestHelper helper) {
+		var player = helper.makeMockServerPlayerInLevel();
+		var registry = CabinRegistry.get(helper.getLevel().getServer());
+		var owner = player.getUUID();
+		var cabin = deployRegistryCabin(registry, owner, 94);
+		var target = CabinUpgradeState.Target.generalSpace(5);
+		var obsolete = new WorldAttunement(99, PortablePocketCabin.id("missing/wood"));
+		var legacyRegistry = new CabinRegistry();
+		legacyRegistry.resolveWorldAttunement(obsolete);
+		helper.assertTrue(CabinUpgradeCatalog.resolveAttunement(legacyRegistry, helper.getLevel(),
+			CabinUpgradeDefinitions.current()).equals(obsolete),
+			"Unavailable legacy world materials must not block upgrade access");
+		var legacyFund = new CabinUpgradeState.Fund(target, List.of(
+			new CabinUpgradeState.Requirement(Items.SPRUCE_PLANKS.builtInRegistryHolder().key().identifier(), 12)
+		), List.of(new ItemStack(Items.SPRUCE_PLANKS, 3)));
+		registry.updateUpgradeState(cabin.uuid(), cabin.upgrades().withFund(legacyFund));
+		cabin = registry.find(cabin.uuid()).orElseThrow();
+		var definitions = CabinUpgradeDefinitions.current();
+		helper.assertTrue(CabinUpgradeCatalog.isStale(legacyFund, cabin, obsolete, definitions),
+			"A world-selected fund must be stale when it differs from the saved palette");
+		var offered = new ItemStack(Items.OAK_PLANKS, 12);
+		helper.assertTrue(!CabinUpgradeService.deposit(registry, cabin.uuid(), owner, target, offered,
+			obsolete, definitions, new TestExpansionEffect(true, false)).success() && offered.getCount() == 12,
+			"Stale funds must reject new contributions without consuming them");
+		helper.assertTrue(!CabinUpgradeService.install(registry, cabin.uuid(), owner, target,
+			cabin.upgrades().fundRevision(), obsolete, definitions, new TestExpansionEffect(true, false),
+			() -> { }).success(), "Stale funds must not install using old material requirements");
+		var withdrawn = CabinUpgradeService.withdraw(registry, cabin.uuid(), owner, target,
+			Items.SPRUCE_PLANKS.builtInRegistryHolder().key().identifier(), 3);
+		helper.assertTrue(withdrawn.success() && withdrawn.stack().is(Items.SPRUCE_PLANKS)
+			&& withdrawn.stack().getCount() == 3, "Old world-selected materials must remain withdrawable");
+		var menu = new CabinUpgradeMenu(95, player.getInventory(), cabin.uuid());
+		helper.assertTrue(menu.attunedStack().isEmpty() && menu.requirementCount() == 3,
+			"The menu must show palette costs without advertising world-selected wood");
+		helper.assertTrue(java.util.stream.IntStream.range(0, menu.requirementCount()).anyMatch(index ->
+			menu.requirementStack(index).is(Items.OAK_PLANKS) && menu.requiredCount(index) == 12),
+			"After withdrawal the menu must show the cabin's twelve oak planks");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void paletteCostsLoadWithoutWoodPoolAndAcceptLegacyPlankSlots(GameTestHelper helper) throws Exception {
+		try (var stream = PortablePocketCabinGameTest.class.getResourceAsStream(
+			"/data/portable_pocket_cabin/portable_pocket_cabin/progression/default.json")) {
+			var json = net.minecraft.util.GsonHelper.parse(new java.io.InputStreamReader(stream,
+				java.nio.charset.StandardCharsets.UTF_8));
+			json.remove("wood_pool");
+			var definitions = CabinUpgradeDefinitions.parse(json);
+			var legacy = CabinUpgradeDefinitions.parse(net.minecraft.util.GsonHelper.parse(
+				json.toString().replace("palette_slot", "attuned_slot")));
+			helper.assertTrue(definitions.expansions().equals(legacy.expansions()),
+				"Legacy plank slots must load as palette slots without requiring a world wood pool");
+			var requirements = CabinUpgradeCatalog.resolve(definitions.expansion(5).ingredients(),
+				CabinPalette.DEFAULT);
+			helper.assertTrue(requirements.contains(new CabinUpgradeState.Requirement(
+				CabinPalette.DEFAULT.floor().planks(), 12)), "Loaded palette slots must resolve to saved wood");
+		}
+		helper.succeed();
+	}
+
+	@GameTest
 	public void generalSpaceUpgradeLadderReachesTwentyOneByTwentyOne(GameTestHelper helper) {
 		CabinUpgradeDefinitions.Definitions definitions = CabinUpgradeDefinitions.current();
 		helper.assertTrue(definitions.maximumGeneralSize() == 21,

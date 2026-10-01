@@ -686,9 +686,6 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			WorldAttunement attunement = CabinUpgradeCatalog.resolveAttunement(
 				registry, serverPlayer.level(), definitions
 			);
-			CabinMaterialProfiles.woodProfile(attunement.woodProfile()).ifPresent(profile ->
-				display.setItem(ATTUNED_SLOT, new ItemStack(profile.planksIngredient()))
-			);
 			List<CabinUpgradeCatalog.Group> groups = CabinUpgradeCatalog.groups(cabin, attunement, definitions);
 			if (groups.size() > MAX_GROUPS) {
 				target = null;

@@ -17,13 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/** Reloadable balancing definitions; resolved world choices are persisted in {@link CabinRegistry}. */
+/** Reloadable quantities and palette-based upgrade ingredients. */
 final class CabinUpgradeDefinitions {
 	private static final int DEFAULT_MAX_GENERAL_SIZE = 21;
 
-	record Ingredient(Identifier itemId, boolean attunedPlanks, int count) {
+	record Ingredient(Identifier itemId, boolean palettePlanks, int count) {
 		Ingredient {
-			if ((itemId == null) != attunedPlanks) {
+			if ((itemId == null) != palettePlanks) {
 				throw new IllegalArgumentException("An upgrade ingredient must select exactly one source");
 			}
 			if (count <= 0) {
@@ -31,14 +31,7 @@ final class CabinUpgradeDefinitions {
 			}
 		}
 
-		Item resolve(WorldAttunement attunement) {
-			if (attunedPlanks) {
-				return CabinMaterialProfiles.woodProfile(attunement.woodProfile())
-					.orElseThrow(() -> new IllegalStateException(
-						"World attunement references unavailable wood profile " + attunement.woodProfile()
-					))
-					.planksIngredient();
-			}
+		Item resolveItem() {
 			return BuiltInRegistries.ITEM.getOptional(itemId)
 				.filter(item -> item != Items.AIR)
 				.orElseThrow(() -> new IllegalStateException("Upgrade definition references missing item " + itemId));
@@ -82,9 +75,6 @@ final class CabinUpgradeDefinitions {
 			if (maximumGeneralSize <= CabinProgression.INITIAL_GENERAL_SIZE
 				|| maximumGeneralSize > CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE) {
 				throw new IllegalArgumentException("maximum_general_size is outside the supported range");
-			}
-			if (woodPool.isEmpty()) {
-				throw new IllegalArgumentException("wood_pool must include a vanilla fallback");
 			}
 			for (int size = CabinProgression.INITIAL_GENERAL_SIZE + 1; size <= maximumGeneralSize; size++) {
 				int targetSize = size;
@@ -197,8 +187,10 @@ final class CabinUpgradeDefinitions {
 		int definitionVersion = GsonHelper.getAsInt(json, "definition_version");
 		int maximum = GsonHelper.getAsInt(json, "maximum_general_size");
 		List<Identifier> woodPool = new ArrayList<>();
-		for (var element : GsonHelper.getAsJsonArray(json, "wood_pool")) {
-			woodPool.add(Identifier.parse(element.getAsString()));
+		if (json.has("wood_pool")) {
+			for (var element : GsonHelper.getAsJsonArray(json, "wood_pool")) {
+				woodPool.add(Identifier.parse(element.getAsString()));
+			}
 		}
 		List<Expansion> expansions = new ArrayList<>();
 		for (var expansionElement : GsonHelper.getAsJsonArray(json, "general_expansions")) {
@@ -224,11 +216,15 @@ final class CabinUpgradeDefinitions {
 		List<Ingredient> ingredients = new ArrayList<>();
 		for (var ingredientElement : ingredientArray) {
 			JsonObject ingredient = ingredientElement.getAsJsonObject();
-			String slot = GsonHelper.getAsString(ingredient, "attuned_slot", "");
+			if (ingredient.has("palette_slot") && ingredient.has("attuned_slot")) {
+				throw new IllegalArgumentException("An ingredient cannot specify both palette_slot and attuned_slot");
+			}
+			String slot = GsonHelper.getAsString(ingredient, "palette_slot",
+				GsonHelper.getAsString(ingredient, "attuned_slot", ""));
 			Identifier itemId = ingredient.has("item")
 				? Identifier.parse(GsonHelper.getAsString(ingredient, "item")) : null;
 			if (!slot.isEmpty() && !"planks".equals(slot)) {
-				throw new IllegalArgumentException("Unsupported attuned_slot " + slot);
+				throw new IllegalArgumentException("Unsupported palette plank slot " + slot);
 			}
 			ingredients.add(new Ingredient(
 				itemId, "planks".equals(slot), GsonHelper.getAsInt(ingredient, "count")
