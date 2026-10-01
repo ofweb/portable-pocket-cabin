@@ -24,7 +24,8 @@ public final class CabinProtection {
 				&& (cabin.lifecycle() == CabinLifecycle.DEPLOYING
 					|| cabin.lifecycle() == CabinLifecycle.DEPLOYED
 					|| cabin.lifecycle() == CabinLifecycle.PACKING)
-				&& ExteriorCabin.owns(cabin.exterior().get(), pos)) {
+				&& (ExteriorCabin.owns(cabin.exterior().get(), pos)
+					|| ExteriorCabin.ownsLegacyRoof(level, cabin.exterior().get(), cabin.palette(), pos))) {
 				return true;
 			}
 		}

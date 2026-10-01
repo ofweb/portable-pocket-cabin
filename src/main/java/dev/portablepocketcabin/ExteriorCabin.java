@@ -10,6 +10,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
@@ -23,6 +25,7 @@ final class ExteriorCabin {
 	static final int CORE_RADIUS = 2;
 	static final int CORE_DEPTH = 4;
 	static final int ROOF_Y = 5;
+	static final int RIDGE_Y = 7;
 	private static final int LEGACY_CORNER_FRAME_DEPTH = 1;
 	private static final int CORNER_FRAME_DEPTH = 2;
 
@@ -59,14 +62,63 @@ final class ExteriorCabin {
 	}
 
 	static Map<BlockPos, BlockState> blocks(CabinExterior exterior, CabinPalette palette) {
-		return blocks(exterior, palette, CORNER_FRAME_DEPTH);
+		Map<BlockPos, BlockState> blocks = new LinkedHashMap<>();
+		BlockState floor = palette.floor().planksBlock().defaultBlockState();
+		BlockState post = orientLog(palette, Direction.Axis.Y);
+		Direction.Axis endAxis = exterior.facing().getClockWise().getAxis();
+		Direction.Axis sideAxis = exterior.facing().getAxis();
+		for (int lateral = -CORE_RADIUS; lateral <= CORE_RADIUS; lateral++) {
+			for (int depth = 0; depth <= CORE_DEPTH; depth++) {
+				boolean side = Math.abs(lateral) == CORE_RADIUS;
+				boolean end = depth == 0 || depth == CORE_DEPTH;
+				boolean corner = side && end;
+				BlockState timber = corner ? post : orientLog(palette, end ? endAxis : sideAxis);
+				blocks.put(local(exterior, lateral, depth, 0), side || end ? timber : floor);
+				if (side || end) {
+					for (int y = 1; y < ROOF_Y; y++) {
+						blocks.put(local(exterior, lateral, depth, y), timber);
+					}
+				}
+				int distance = Math.abs(lateral);
+				int roofY = RIDGE_Y - distance;
+				BlockState roof = distance == 0 ? palette.roof().slabBlock().defaultBlockState()
+					: palette.roof().stairsBlock().defaultBlockState().setValue(StairBlock.FACING,
+						lateral < 0 ? exterior.facing().getClockWise() : exterior.facing().getCounterClockWise());
+				blocks.put(local(exterior, lateral, depth, roofY), roof);
+				if (end) {
+					for (int y = ROOF_Y; y < roofY; y++) {
+						blocks.put(local(exterior, lateral, depth, y), orientLog(palette, endAxis));
+					}
+				}
+			}
+		}
+		blocks.put(exterior.anchor(), floor);
+		addOpenings(blocks, exterior, palette);
+		for (int lateral : new int[] {-1, 1}) {
+			for (int y = 1; y <= 2; y++) {
+				if (!local(exterior, lateral, 0, y).equals(controller(exterior))) {
+					blocks.put(local(exterior, lateral, 0, y), post);
+				}
+			}
+		}
+		blocks.put(local(exterior, 0, 0, 3), palette.walls().stairsBlock().defaultBlockState()
+			.setValue(StairBlock.FACING, exterior.facing().getOpposite()).setValue(StairBlock.HALF, Half.TOP));
+		for (Direction outward : new Direction[] {exterior.facing().getClockWise(),
+			exterior.facing().getCounterClockWise(), exterior.facing().getOpposite()}) {
+			BlockPos sill = outward == exterior.facing().getOpposite()
+				? local(exterior, 0, CORE_DEPTH, 1)
+				: local(exterior, outward == exterior.facing().getClockWise() ? CORE_RADIUS : -CORE_RADIUS, 2, 1);
+			blocks.put(sill, palette.walls().stairsBlock().defaultBlockState().setValue(StairBlock.FACING,
+				outward.getOpposite()));
+		}
+		return Collections.unmodifiableMap(blocks);
 	}
 
 	static Map<BlockPos, BlockState> legacyBlocks(CabinExterior exterior, CabinPalette palette) {
-		return blocks(exterior, palette, LEGACY_CORNER_FRAME_DEPTH);
+		return boxBlocks(exterior, palette, LEGACY_CORNER_FRAME_DEPTH);
 	}
 
-	private static Map<BlockPos, BlockState> blocks(
+	private static Map<BlockPos, BlockState> boxBlocks(
 		CabinExterior exterior, CabinPalette palette, int cornerFrameDepth
 	) {
 		Map<BlockPos, BlockState> blocks = new LinkedHashMap<>();
@@ -89,6 +141,16 @@ final class ExteriorCabin {
 			}
 		}
 
+		addOpenings(blocks, exterior, palette);
+		return Collections.unmodifiableMap(blocks);
+	}
+
+	private static BlockState orientLog(CabinPalette palette, Direction.Axis axis) {
+		BlockState state = palette.walls().structuralWoodBlock().defaultBlockState();
+		return state.hasProperty(BlockStateProperties.AXIS) ? state.setValue(BlockStateProperties.AXIS, axis) : state;
+	}
+
+	private static void addOpenings(Map<BlockPos, BlockState> blocks, CabinExterior exterior, CabinPalette palette) {
 		BlockState lowerDoor = palette.door().doorBlock().defaultBlockState()
 			.setValue(DoorBlock.FACING, exterior.facing())
 			.setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
@@ -104,7 +166,6 @@ final class ExteriorCabin {
 		BlockState step = palette.floor().stairsBlock().defaultBlockState()
 			.setValue(StairBlock.FACING, exterior.facing().getOpposite());
 		blocks.put(frontStep(exterior), step);
-		return Collections.unmodifiableMap(new LinkedHashMap<>(blocks));
 	}
 
 	static PlacementCheck validate(ServerLevel level, CabinExterior exterior) {
@@ -171,44 +232,68 @@ final class ExteriorCabin {
 	}
 
 	static boolean projectionValid(ServerLevel level, CabinExterior exterior, CabinPalette palette) {
-		return matchesCurrentOrLegacyProjection(level, exterior, palette);
+		return matchesProjection(level, blocks(exterior, palette)) || matchesOldBox(level, exterior, palette);
 	}
 
-	static boolean upgradeLegacyCornerFrames(
-		ServerLevel level, CabinExterior exterior, CabinPalette palette
-	) {
-		Map<BlockPos, BlockState> legacy = legacyBlocks(exterior, palette);
+	static boolean upgradeLegacyExterior(ServerLevel level, CabinExterior exterior, CabinPalette palette) {
 		Map<BlockPos, BlockState> current = blocks(exterior, palette);
-		if (!matchesCurrentOrLegacyProjection(level, legacy, current)) {
+		Map<BlockPos, BlockState> old = boxBlocks(exterior, palette, CORNER_FRAME_DEPTH);
+		boolean alreadyCurrent = matchesProjection(level, current);
+		if (!alreadyCurrent && !matchesOldBox(level, exterior, palette)) {
 			return false;
 		}
+		for (var entry : current.entrySet()) {
+			if (!old.containsKey(entry.getKey()) && !level.getBlockState(entry.getKey()).is(entry.getValue().getBlock())
+				&& !level.getBlockState(entry.getKey()).canBeReplaced()) {
+				return false;
+			}
+			if (level.isOutsideBuildHeight(entry.getKey()) || !level.getWorldBorder().isWithinBounds(entry.getKey())) {
+				return false;
+			}
+		}
 		boolean changed = false;
-		for (Map.Entry<BlockPos, BlockState> entry : current.entrySet()) {
-			BlockState previous = legacy.get(entry.getKey());
-			if (!previous.is(entry.getValue().getBlock())
-				&& level.getBlockState(entry.getKey()).is(previous.getBlock())) {
+		for (var entry : current.entrySet()) {
+			if (!isEntrance(exterior, entry.getKey()) && !level.getBlockState(entry.getKey()).equals(entry.getValue())) {
 				level.setBlockAndUpdate(entry.getKey(), entry.getValue());
+				changed = true;
+			}
+		}
+		for (var entry : old.entrySet()) {
+			if (!current.containsKey(entry.getKey()) && level.getBlockState(entry.getKey()).is(entry.getValue().getBlock())) {
+				level.setBlockAndUpdate(entry.getKey(), Blocks.AIR.defaultBlockState());
 				changed = true;
 			}
 		}
 		return changed;
 	}
 
-	private static boolean matchesCurrentOrLegacyProjection(
-		ServerLevel level, CabinExterior exterior, CabinPalette palette
-	) {
-		return matchesCurrentOrLegacyProjection(
-			level, legacyBlocks(exterior, palette), blocks(exterior, palette)
-		);
+	private static boolean matchesProjection(ServerLevel level, Map<BlockPos, BlockState> blocks) {
+		for (var entry : blocks.entrySet()) {
+			BlockState actual = level.getBlockState(entry.getKey());
+			BlockState expected = entry.getValue();
+			if (!actual.is(expected.getBlock())) {
+				return false;
+			}
+			for (var property : new net.minecraft.world.level.block.state.properties.Property<?>[] {
+				BlockStateProperties.AXIS, StairBlock.FACING, StairBlock.HALF, BlockStateProperties.SLAB_TYPE
+			}) {
+				if (expected.hasProperty(property) && !actual.getValue(property).equals(expected.getValue(property))) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
-	private static boolean matchesCurrentOrLegacyProjection(
-		ServerLevel level, Map<BlockPos, BlockState> legacy, Map<BlockPos, BlockState> current
-	) {
-		for (Map.Entry<BlockPos, BlockState> entry : current.entrySet()) {
-			BlockState actual = level.getBlockState(entry.getKey());
-			BlockState previous = legacy.get(entry.getKey());
-			if (!actual.is(entry.getValue().getBlock()) && !actual.is(previous.getBlock())) {
+	private static boolean matchesOldBox(ServerLevel level, CabinExterior exterior, CabinPalette palette) {
+		var original = legacyBlocks(exterior, palette);
+		var previous = boxBlocks(exterior, palette, CORNER_FRAME_DEPTH);
+		var current = blocks(exterior, palette);
+		for (var entry : previous.entrySet()) {
+			var actual = level.getBlockState(entry.getKey());
+			var replacement = current.get(entry.getKey());
+			if (!actual.is(entry.getValue().getBlock()) && !actual.is(original.get(entry.getKey()).getBlock())
+				&& (replacement == null || !actual.is(replacement.getBlock()))) {
 				return false;
 			}
 		}
@@ -240,8 +325,13 @@ final class ExteriorCabin {
 	}
 
 	static void removeProjection(ServerLevel level, CabinExterior exterior, CabinPalette palette) {
-		for (Map.Entry<BlockPos, BlockState> entry : blocks(exterior, palette).entrySet()) {
-			if (level.getBlockState(entry.getKey()).is(entry.getValue().getBlock())) {
+		Map<BlockPos, java.util.List<BlockState>> candidates = new LinkedHashMap<>();
+		for (var projection : java.util.List.of(blocks(exterior, palette), legacyBlocks(exterior, palette),
+			boxBlocks(exterior, palette, CORNER_FRAME_DEPTH))) {
+			projection.forEach((pos, state) -> candidates.computeIfAbsent(pos, ignored -> new java.util.ArrayList<>()).add(state));
+		}
+		for (var entry : candidates.entrySet()) {
+			if (entry.getValue().stream().anyMatch(state -> level.getBlockState(entry.getKey()).is(state.getBlock()))) {
 				level.setBlockAndUpdate(entry.getKey(), Blocks.AIR.defaultBlockState());
 			}
 		}
@@ -272,11 +362,21 @@ final class ExteriorCabin {
 		if (Math.abs(lateral) > CORE_RADIUS || depth < 0 || depth > CORE_DEPTH) {
 			return false;
 		}
-		if (y == 0 || y == ROOF_Y) {
+		if (y == 0) {
 			return true;
 		}
-		return y > 0 && y < ROOF_Y
-			&& (Math.abs(lateral) == CORE_RADIUS || depth == 0 || depth == CORE_DEPTH);
+		if (y > 0 && y < ROOF_Y) {
+			return Math.abs(lateral) == CORE_RADIUS || depth == 0 || depth == CORE_DEPTH;
+		}
+		return y >= ROOF_Y && y <= RIDGE_Y
+			&& (y == RIDGE_Y - Math.abs(lateral)
+				|| (depth == 0 || depth == CORE_DEPTH) && y < RIDGE_Y - Math.abs(lateral));
+	}
+
+	static boolean ownsLegacyRoof(ServerLevel level, CabinExterior exterior, CabinPalette palette, BlockPos pos) {
+		return pos.getY() == exterior.anchor().getY() + ROOF_Y
+			&& boxBlocks(exterior, palette, CORNER_FRAME_DEPTH).containsKey(pos)
+			&& level.getBlockState(pos).is(palette.roof().planksBlock());
 	}
 
 	static boolean isEntrance(CabinExterior exterior, BlockPos pos) {
@@ -319,7 +419,7 @@ final class ExteriorCabin {
 		Set<BlockPos> positions = new LinkedHashSet<>();
 		for (int lateral = -CORE_RADIUS; lateral <= CORE_RADIUS; lateral++) {
 			for (int depth = 0; depth <= CORE_DEPTH; depth++) {
-				for (int y = 0; y <= ROOF_Y; y++) {
+				for (int y = 0; y <= RIDGE_Y; y++) {
 					positions.add(local(exterior, lateral, depth, y));
 				}
 			}

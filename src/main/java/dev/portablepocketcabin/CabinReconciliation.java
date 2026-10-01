@@ -220,7 +220,7 @@ final class CabinReconciliation {
 		cabin.exterior().ifPresent(exterior -> {
 			ServerLevel exteriorLevel = server.getLevel(exterior.dimension());
 			if (exteriorLevel != null) {
-				ExteriorCabin.upgradeLegacyCornerFrames(exteriorLevel, exterior, cabin.palette());
+				ExteriorCabin.upgradeLegacyExterior(exteriorLevel, exterior, cabin.palette());
 			}
 		});
 	}

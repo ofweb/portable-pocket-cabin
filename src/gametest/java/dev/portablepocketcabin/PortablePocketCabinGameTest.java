@@ -1195,8 +1195,9 @@ public final class PortablePocketCabinGameTest {
 		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, new BlockPos(4, 80, 9), Direction.NORTH);
 		var blocks = ExteriorCabin.blocks(exterior);
 
-		helper.assertTrue(blocks.size() == 115,
-			"The fixed cabin must own exactly its 5x5 shell plus one front step");
+		helper.assertTrue(blocks.keySet().stream().map(pos -> new BlockPos(pos.getX(), 0, pos.getZ()))
+			.collect(java.util.stream.Collectors.toSet()).size() == 26,
+			"The cabin must keep its original 5x5 footprint plus one entrance step");
 		helper.assertTrue(blocks.get(ExteriorCabin.controller(exterior)).is(Blocks.LODESTONE),
 			"The fixed exterior must have a distinct lodestone controller");
 		helper.assertTrue(blocks.get(ExteriorCabin.doorLower(exterior)).is(Blocks.IRON_DOOR)
@@ -1206,7 +1207,7 @@ public final class PortablePocketCabinGameTest {
 			"The protected structure mask must not claim nearby player space");
 		for (int lateral = -3; lateral <= 3; lateral++) {
 			for (int depth = -2; depth <= 6; depth++) {
-				for (int y = -1; y <= 6; y++) {
+				for (int y = -1; y <= ExteriorCabin.RIDGE_Y + 1; y++) {
 					BlockPos pos = ExteriorCabin.local(exterior, lateral, depth, y);
 					helper.assertTrue(ExteriorCabin.owns(exterior, pos) == blocks.containsKey(pos),
 						"Protection lookup must exactly match the placed block mask at " + pos);
@@ -1544,6 +1545,89 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void logCabinRotatesCoursesAndKeepsFloorSpace(GameTestHelper helper) {
+		for (Direction facing : Direction.Plane.HORIZONTAL) {
+			var exterior = new CabinExterior(Level.OVERWORLD, BlockPos.ZERO, facing);
+			var blocks = ExteriorCabin.blocks(exterior);
+			for (int lateral : new int[] {-2, 2}) {
+				for (int depth : new int[] {0, 4}) {
+					helper.assertTrue(blocks.get(ExteriorCabin.local(exterior, lateral, depth, 4))
+						.getValue(BlockStateProperties.AXIS) == Direction.Axis.Y,
+						"Each corner must keep one vertical post");
+				}
+				helper.assertTrue(blocks.get(ExteriorCabin.local(exterior, lateral, 1, 3))
+					.getValue(BlockStateProperties.AXIS) == facing.getAxis(),
+					"Side wall logs must run front-to-back");
+			}
+			helper.assertTrue(blocks.get(ExteriorCabin.local(exterior, 1, 4, 3))
+				.getValue(BlockStateProperties.AXIS) == facing.getClockWise().getAxis(),
+				"Front and rear logs must run across the wall");
+			for (int x = -1; x <= 1; x++) {
+				for (int z = 1; z <= 3; z++) {
+					for (int y = 1; y <= 4; y++) {
+						helper.assertTrue(!blocks.containsKey(ExteriorCabin.local(exterior, x, z, y)),
+							"The existing exterior room must keep its full clear height and floor area");
+					}
+				}
+			}
+			for (int depth = 0; depth <= 4; depth++) {
+				helper.assertTrue(blocks.get(ExteriorCabin.local(exterior, -2, depth, 5))
+					.getValue(net.minecraft.world.level.block.StairBlock.FACING) == facing.getClockWise(),
+					"Left roof stairs must rise toward the ridge");
+				helper.assertTrue(blocks.get(ExteriorCabin.local(exterior, 2, depth, 5))
+					.getValue(net.minecraft.world.level.block.StairBlock.FACING) == facing.getCounterClockWise(),
+					"Right roof stairs must rise toward the ridge");
+				helper.assertTrue(blocks.get(ExteriorCabin.local(exterior, 0, depth, 7)).is(Blocks.OAK_SLAB),
+					"A slab ridge must run front-to-back");
+			}
+		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void obstructedLegacyRoofStaysValidAndPacksWithoutRemovingObstruction(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var exterior = new CabinExterior(level.dimension(), helper.absolutePos(new BlockPos(5, 12, 5)), Direction.NORTH);
+		var palette = CabinPalette.DEFAULT;
+		ExteriorCabin.legacyBlocks(exterior, palette).forEach(level::setBlockAndUpdate);
+		var obstruction = ExteriorCabin.local(exterior, 0, 2, ExteriorCabin.RIDGE_Y);
+		level.setBlockAndUpdate(obstruction, Blocks.DIAMOND_BLOCK.defaultBlockState());
+		helper.assertTrue(!ExteriorCabin.upgradeLegacyExterior(level, exterior, palette)
+			&& ExteriorCabin.projectionValid(level, exterior, palette),
+			"A blocked taller roof must retain a valid legacy cabin without altering its walls");
+		ExteriorCabin.removeProjection(level, exterior, palette);
+		helper.assertTrue(level.getBlockState(obstruction).is(Blocks.DIAMOND_BLOCK),
+			"Packing must preserve unrelated blocks above a legacy cabin");
+		helper.assertTrue(ExteriorCabin.legacyBlocks(exterior, palette).keySet().stream().allMatch(level::isEmptyBlock),
+			"Packing must remove all of the old shell, including its flat roof");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void newRoofNeedsClearanceAndPacksCompletely(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var exterior = new CabinExterior(level.dimension(), helper.absolutePos(new BlockPos(5, 12, 5)), Direction.NORTH);
+		for (int x = -2; x <= 2; x++) {
+			for (int z = 0; z <= 4; z++) {
+				level.setBlockAndUpdate(ExteriorCabin.local(exterior, x, z, -1), Blocks.STONE.defaultBlockState());
+			}
+		}
+		level.setBlockAndUpdate(ExteriorCabin.frontStep(exterior).below(), Blocks.STONE.defaultBlockState());
+		level.setBlockAndUpdate(ExteriorCabin.outsideDestination(exterior).below(), Blocks.STONE.defaultBlockState());
+		helper.assertTrue(ExteriorCabin.validate(level, exterior).valid(), "The unchanged footprint must accept clear ground");
+		var ridge = ExteriorCabin.local(exterior, 0, 2, ExteriorCabin.RIDGE_Y);
+		level.setBlockAndUpdate(ridge, Blocks.STONE.defaultBlockState());
+		helper.assertTrue(!ExteriorCabin.validate(level, exterior).valid(), "The taller ridge must reject overhead obstruction");
+		level.setBlockAndUpdate(ridge, Blocks.AIR.defaultBlockState());
+		ExteriorCabin.place(level, exterior);
+		helper.assertTrue(ExteriorCabin.projectionValid(level, exterior), "The placed gable roof must be a valid projection");
+		ExteriorCabin.removeProjection(level, exterior);
+		helper.assertTrue(ExteriorCabin.blocks(exterior).keySet().stream().allMatch(level::isEmptyBlock),
+			"Packing must remove the complete stair and slab roof");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void paletteDrivesExteriorBlocks(GameTestHelper helper) {
 		CabinPalette palette = new CabinPalette(
 			CabinMaterialProfiles.matchPlanks(new ItemStack(Items.CHERRY_PLANKS)).orElseThrow(),
@@ -1557,8 +1641,8 @@ public final class PortablePocketCabinGameTest {
 			"Exterior walking surfaces must use the selected floor planks");
 		helper.assertTrue(blocks.get(ExteriorCabin.local(exterior, -2, 0, 1)).is(Blocks.SPRUCE_LOG),
 			"Exterior framing must use the selected structural wood");
-		helper.assertTrue(blocks.get(ExteriorCabin.local(exterior, 0, 2, ExteriorCabin.ROOF_Y))
-			.is(Blocks.BAMBOO_PLANKS), "Exterior roof must use the selected roof family");
+		helper.assertTrue(blocks.get(ExteriorCabin.local(exterior, 0, 2, ExteriorCabin.RIDGE_Y))
+			.is(Blocks.BAMBOO_SLAB), "Exterior roof must use the selected roof family");
 		helper.assertTrue(blocks.get(ExteriorCabin.doorLower(exterior)).is(Blocks.OAK_DOOR),
 			"Exterior door must use the exact selected door variant");
 		helper.succeed();
@@ -1582,7 +1666,7 @@ public final class PortablePocketCabinGameTest {
 					)) {
 						if (!position.equals(ExteriorCabin.controller(exterior))) {
 							helper.assertTrue(exteriorBlocks.get(position).is(frame),
-								"Each exterior corner must wrap one Structural Wood column onto both walls");
+								"Exterior corners and adjacent wall courses must use structural wood");
 						}
 					}
 				}
@@ -1629,7 +1713,7 @@ public final class PortablePocketCabinGameTest {
 		ServerLevel level = helper.getLevel();
 		CabinPalette palette = CabinPalette.DEFAULT;
 		CabinExterior exterior = new CabinExterior(
-			level.dimension(), helper.absolutePos(new BlockPos(5, 2, 5)), Direction.EAST
+			level.dimension(), helper.absolutePos(new BlockPos(5, 12, 5)), Direction.EAST
 		);
 		for (var entry : ExteriorCabin.legacyBlocks(exterior, palette).entrySet()) {
 			level.setBlockAndUpdate(entry.getKey(), entry.getValue());
@@ -1637,14 +1721,14 @@ public final class PortablePocketCabinGameTest {
 		BlockPos exteriorNewFrame = ExteriorCabin.local(exterior, -1, 0, 1);
 		helper.assertTrue(ExteriorCabin.projectionValid(level, exterior, palette),
 			"A complete legacy exterior must remain valid during migration");
-		helper.assertTrue(ExteriorCabin.upgradeLegacyCornerFrames(level, exterior, palette)
+		helper.assertTrue(ExteriorCabin.upgradeLegacyExterior(level, exterior, palette)
 			&& level.getBlockState(exteriorNewFrame).is(palette.walls().structuralWoodBlock()),
 			"Recognizable exterior wall planks must be upgraded to the new frame");
-		helper.assertTrue(!ExteriorCabin.upgradeLegacyCornerFrames(level, exterior, palette),
+		helper.assertTrue(!ExteriorCabin.upgradeLegacyExterior(level, exterior, palette),
 			"Repeating an exterior frame migration must not change an already-current structure");
 
 		CabinExterior partiallyMigrated = new CabinExterior(
-			level.dimension(), helper.absolutePos(new BlockPos(20, 2, 5)), Direction.SOUTH
+			level.dimension(), helper.absolutePos(new BlockPos(20, 12, 5)), Direction.SOUTH
 		);
 		for (var entry : ExteriorCabin.legacyBlocks(partiallyMigrated, palette).entrySet()) {
 			level.setBlockAndUpdate(entry.getKey(), entry.getValue());
@@ -1656,7 +1740,7 @@ public final class PortablePocketCabinGameTest {
 		level.setBlockAndUpdate(alreadyMigrated,
 			ExteriorCabin.blocks(partiallyMigrated, palette).get(alreadyMigrated));
 		helper.assertTrue(ExteriorCabin.projectionValid(level, partiallyMigrated, palette)
-			&& ExteriorCabin.upgradeLegacyCornerFrames(level, partiallyMigrated, palette)
+			&& ExteriorCabin.upgradeLegacyExterior(level, partiallyMigrated, palette)
 			&& level.getBlockState(remainingLegacyFrame).is(palette.walls().structuralWoodBlock()),
 			"A partially migrated exterior must remain valid and finish migrating");
 

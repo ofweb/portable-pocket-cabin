@@ -21,6 +21,7 @@ public final class PortablePocketCabinClientGameTest implements FabricClientGame
 		context.getInput().resizeWindow(1280, 800);
 		context.runOnClient(client -> client.options.guiScale().set(3));
 		context.getInput().setCursorPos(0, 0);
+		captureExterior(context);
 
 		try (TestSingleplayerContext world = context.worldBuilder().create()) {
 			UUID cabinId = createCabin(world, false);
@@ -118,6 +119,63 @@ public final class PortablePocketCabinClientGameTest implements FabricClientGame
 			});
 			capture(context, "cabin-upgrades-resident");
 		}
+	}
+
+	private static void captureExterior(ClientGameTestContext context) {
+		try (TestSingleplayerContext world = context.worldBuilder().create()) {
+			BlockPos anchor = world.getServer().computeOnServer(server -> {
+				var level = server.overworld();
+				var ground = new BlockPos(0, level.getHeight(
+					net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, 0, 0
+				), 0);
+				var exterior = new CabinExterior(Level.OVERWORLD, ground, Direction.NORTH);
+				if (!ExteriorCabin.validate(level, exterior).valid()) {
+					throw new AssertionError("The exterior capture fixture needs clear, level ground");
+				}
+				var palette = new CabinPalette(CabinPalette.DEFAULT.floor(), CabinPalette.DEFAULT.walls(),
+					CabinMaterialProfiles.matchPlanks(new ItemStack(net.minecraft.world.item.Items.SPRUCE_PLANKS))
+						.orElseThrow(), CabinPalette.DEFAULT.door());
+				ExteriorCabin.place(level, exterior, palette);
+				server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "time set noon");
+				server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "weather clear");
+				world.getConnection().getServerPlayer().setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
+				return ground;
+			});
+			context.runOnClient(client -> {
+				client.options.fov().set(70);
+				client.options.bobView().set(false);
+				if (!client.gui.hud.isHidden()) {
+					client.gui.hud.toggle();
+				}
+			});
+			captureExteriorSide(context, world, anchor, "front", 0.5, -6.5, 0);
+			captureExteriorSide(context, world, anchor, "rear", 0.5, 11.5, 180);
+			captureExteriorSide(context, world, anchor, "left", -8.5, 2.5, -90);
+			captureExteriorSide(context, world, anchor, "right", 9.5, 2.5, 90);
+			captureExteriorSide(context, world, anchor, "front-left", -6.5, -4.5, -45);
+		} finally {
+			context.runOnClient(client -> {
+				if (client.gui.hud.isHidden()) {
+					client.gui.hud.toggle();
+				}
+			});
+		}
+	}
+
+	private static void captureExteriorSide(
+		ClientGameTestContext context, TestSingleplayerContext world, BlockPos anchor,
+		String side, double x, double z, float yaw
+	) {
+		world.getServer().runOnServer(server -> {
+			var player = world.getConnection().getServerPlayer();
+			if (!player.teleportTo(server.overworld(), anchor.getX() + x, anchor.getY() + 4,
+				anchor.getZ() + z, Set.of(), yaw, 15, false)) {
+				throw new AssertionError("Could not position the exterior " + side + " camera");
+			}
+		});
+		world.getConnection().waitForClientboundPackets();
+		world.getConnection().waitForChunksRender();
+		capture(context, "cabin-exterior-" + side);
 	}
 
 	private static UUID createCabin(TestSingleplayerContext world, boolean resident) {
