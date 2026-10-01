@@ -20,7 +20,7 @@
 - Status: Ready for Shape
 - Value: Give each cabin one inventory for household use that stays independent of placed chests.
 - Direction: [Direction](direction.md).
-- Relationships: Uses the household roles in B-0002. Used by B-0007.
+- Relationships: Uses B-0002 and B-0038. Used by B-0007.
 - Feature Brief: [Central storage brief](features/B-0004/brief.md).
 
 ## B-0005: Room purchase and traversal
@@ -260,4 +260,4 @@
 - Value: Let players find book vendors in villages or create one through a bookstall. Players install cabin books to reveal upgrades.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Cabin books brief](features/B-0038/brief.md).
-- Relationships: Gives book sources for B-0007, B-0008, and B-0028.
+- Relationships: Gives book sources for B-0004, B-0007, B-0008, and B-0028.
