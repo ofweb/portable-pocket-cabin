@@ -1604,6 +1604,40 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void packingExteriorDoesNotDropItems(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var bounds = new ArrayList<net.minecraft.world.phys.AABB>();
+		int index = 0;
+		for (Direction facing : Direction.Plane.HORIZONTAL) {
+			for (boolean legacy : new boolean[] {false, true}) {
+				var exterior = new CabinExterior(level.dimension(),
+					helper.absolutePos(new BlockPos(5 + index++ * 16, 30, 5)), facing);
+				var projection = legacy ? ExteriorCabin.legacyBlocks(exterior, CabinPalette.DEFAULT)
+					: ExteriorCabin.blocks(exterior);
+				var area = new net.minecraft.world.phys.AABB(exterior.anchor()).inflate(10.0);
+				bounds.add(area);
+				helper.assertTrue(level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, area).isEmpty(),
+					"The packing test area must start without dropped items");
+				projection.forEach(level::setBlockAndUpdate);
+				helper.assertTrue(ExteriorCabin.projectionValid(level, exterior),
+					"The cabin must have a complete exterior before packing");
+				ExteriorCabin.removeProjection(level, exterior);
+				helper.assertTrue(projection.keySet().stream().allMatch(level::isEmptyBlock),
+					"Packing must remove the complete exterior");
+				helper.assertTrue(level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, area).isEmpty(),
+					"Packing must not drop exterior items for " + facing + " (legacy=" + legacy + ")");
+			}
+		}
+		helper.runAfterDelay(5, () -> {
+			for (var area : bounds) {
+				helper.assertTrue(level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, area).isEmpty(),
+					"Packing must not leave delayed item drops on the ground");
+			}
+			helper.succeed();
+		});
+	}
+
+	@GameTest
 	public void newRoofNeedsClearanceAndPacksCompletely(GameTestHelper helper) {
 		var level = helper.getLevel();
 		var exterior = new CabinExterior(level.dimension(), helper.absolutePos(new BlockPos(5, 12, 5)), Direction.NORTH);

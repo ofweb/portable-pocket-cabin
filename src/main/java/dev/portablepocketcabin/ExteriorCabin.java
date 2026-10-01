@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -330,10 +331,15 @@ final class ExteriorCabin {
 			boxBlocks(exterior, palette, CORNER_FRAME_DEPTH))) {
 			projection.forEach((pos, state) -> candidates.computeIfAbsent(pos, ignored -> new java.util.ArrayList<>()).add(state));
 		}
+		Set<BlockPos> removed = new LinkedHashSet<>();
 		for (var entry : candidates.entrySet()) {
 			if (entry.getValue().stream().anyMatch(state -> level.getBlockState(entry.getKey()).is(state.getBlock()))) {
-				level.setBlockAndUpdate(entry.getKey(), Blocks.AIR.defaultBlockState());
+				level.setBlock(entry.getKey(), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
+				removed.add(entry.getKey());
 			}
+		}
+		for (BlockPos pos : removed) {
+			Blocks.AIR.defaultBlockState().updateNeighbourShapes(level, pos, Block.UPDATE_ALL);
 		}
 	}
 
