@@ -1,25 +1,23 @@
-# ADR-0006: Bind Cabin Kits through a recoverable item obligation
+# ADR-0006: Bind Cabin Kits with saved item delivery
 
 Status: Accepted
 
 ## Context
 
-An unbound Cabin Kit has no cabin UUID. First deployment creates permanent cabin state while replacing an inventory item and projecting an exterior. Inventory and world saves cannot commit as one atomic store. An interruption can otherwise consume a Kit without a cabin or leave two usable items.
+An unbound Cabin Kit has no cabin UUID. First deployment creates saved cabin state, replaces an inventory item, and creates an exterior. Inventory and world saves cannot commit together. An interruption must not remove a Cabin Kit without a cabin or create two usable items.
 
 ## Decision
 
-Each crafted Kit has an immutable identity for preview and recovery. First deployment validates that identity, the selected palette, and the player's ownership limit. It creates the cabin UUID and cell only when deployment begins.
+Each crafted Cabin Kit has a fixed identity for preview and recovery. First deployment validates that identity, its palette, and the player's ownership limit. It creates a cabin UUID and cell only when deployment begins.
 
-The registry persists `DEPLOYING` and an unresolved item-delivery obligation before replacing the held Kit with a non-usable pending item. Reconciliation commits a valid deployed cabin or rolls back to `PACKED` with one current bound item active or owed. It invalidates matching duplicates and retries owed delivery on owner login when inventory capacity permits. Redeployment uses the same obligation model and packed-item generation checks.
+The registry saves `DEPLOYING` and pending item delivery before replacing the held Cabin Kit with a pending item that players cannot use. Reconciliation commits a valid deployed cabin or restores `PACKED` with one active bound item or pending delivery. It invalidates matching copies and attempts pending delivery again when the owner reconnects with enough inventory capacity. Redeployment uses the same item delivery model and generation checks.
 
 ## Rationale
 
-The immutable Kit identity connects a physical crafting result to its preview without making the item the cabin's authority. A persisted obligation keeps the cabin recoverable when item delivery and world changes save at different times. Generation checks stop old copies from becoming another entrance.
+A fixed Cabin Kit identity connects its crafting result to its preview without making the item authoritative. Saved pending delivery keeps the cabin through inventory and world saves at different times. Generation checks prevent earlier copies from creating a different entrance.
 
 ## Scope
 
-This decision extends [ADR-0005](0005-authoritative-cabin-registry.md) for first binding and item delivery. [PDR-0004](../pdr/0004-survival-acquisition-and-relocation.md) owns the player interaction.
+This decision extends [ADR-0005](0005-authoritative-cabin-registry.md) for first binding and item delivery. [PDR-0004](../pdr/0004-survival-acquisition-and-relocation.md) states player interactions.
 
-## Consequences
-
-Failed validation creates no cabin and consumes no item. Recovery may owe an item until the owner has capacity, but it cannot create a second valid exterior.
+Failed validation creates no cabin and uses no item. Pending delivery can stay until the owner has capacity. It cannot create two valid exteriors.

@@ -4,22 +4,27 @@ Status: Accepted
 
 ## Context
 
-Players can enter, leave, pack, and recover a cabin across dimensions. A failed move or blocked destination can strand a player or remove the only usable entrance.
+Players can enter, exit, pack, and recover a cabin across dimensions. A failed move must not leave players without safe access.
 
 ## Decision
 
-Cabin travel uses a safe, loaded destination with solid ground, clear player space, no dangerous fluid or fire, and a position inside the world border. Destination checks have bounded work and release temporary chunk tickets.
+Cabin travel requires a safe, loaded destination with solid ground, clear player space, and no dangerous fluid or fire. The position must be inside the world border. Destination checks have work limits and release temporary chunk tickets.
 
-Emergency travel tries the current exterior doorway, a nearby position in that dimension, the last valid campsite, and then Overworld world spawn. Voluntary packing aborts before removing the exterior when any current occupant cannot evacuate safely or delivery of the packed item is uncertain. Entry stays disabled during packing. A player who logged out inside an inactive cabin receives a safe destination on login.
+Emergency travel tries these destinations in order:
+
+- The active exterior doorway.
+- A safe position near that doorway in the same dimension.
+- The last safe site.
+- Overworld world spawn.
+
+Packing stops before exterior removal if a player in the cabin cannot exit safely or packed item delivery cannot be confirmed. Entry stays disabled during packing. Players who disconnect inside a cabin without an active exterior receive a safe destination when they reconnect.
 
 ## Rationale
 
-The owner should be able to move the cabin without leaving occupants behind. A failed operation should keep the last usable cabin state. The fallback chain gives players a predictable route home when the exterior disappears.
+A failed move keeps the last usable cabin state and gives players a safe route home.
 
 ## Scope
 
-This decision applies to entry, exit, packing, offline recovery, and emergency travel. [PDR-0003](0003-cabin-home-respawning.md) defines the distinct respawn order. Future connected-cabin routes must preserve a safe exit or evacuate affected occupants.
+This decision applies to entry, exit, packing, recovery after a disconnect, and emergency travel. [PDR-0003](0003-cabin-home-respawning.md) states the different respawn order. Connections between cabins must keep a safe exit or move affected players to safe positions.
 
-## Consequences
-
-Permissions and cabin state must be checked again before travel completes. Concurrent packing and connection changes cannot strand a player or expose two active entrances.
+Travel checks permissions and cabin state again before completion. Packing and connection changes at the same time cannot leave a player without an exit or create two active entrances.

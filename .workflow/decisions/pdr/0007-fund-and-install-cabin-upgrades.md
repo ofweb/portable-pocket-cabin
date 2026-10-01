@@ -4,28 +4,28 @@ Status: Accepted
 
 ## Context
 
-Players need to understand upgrade effects, costs, access, and failures before a material contribution. Several upgrades may need contributions at the same time. Material contributions must stay separate from general cabin storage.
+Players must see upgrade effects, costs, access, and failures before a contribution. Multiple upgrades can accept contributions at the same time. Upgrade materials cannot become general cabin storage.
 
 ## Decision
 
-Using the protected interior Lodestone opens **Cabin Upgrades**. Authorized visitors may inspect the available categories and panels. The menu rechecks access while open. It shows one upgrade panel at a time, with its effect, exact requirements, progress, status, and blocking reason. Empty or unimplemented categories stay hidden. A category can contain several stable upgrade targets and up to sixteen material requirements per panel.
+The protected interior Lodestone opens **Cabin Upgrades**. Players with cabin access can inspect available categories and panels. The menu checks access again while open. It shows one panel with the effect, specified requirements, progress, status, and blocking reason. Empty categories and categories without implemented actions stay hidden. Each category can contain multiple stable targets with up to sixteen material requirements per panel.
 
-Each target has its own requirement-capped [upgrade fund](../../context.md#upgrade-fund). Owners and residents may contribute exact required items or withdraw preserved stacks. Locked or obstructed targets reject new contributions. Existing funds remain withdrawable. A wrong item or excess quantity stays with the player. Deliberate deposits preserve stack components. Automatic funding from the inventory selects only ordinary matching stacks. A player-inventory shift-click does not choose a fund. Creative mode grants no exception.
+Each target has an [upgrade fund](../../context.md#upgrade-fund) with capacity up to its requirements. Owners and residents can contribute specified items or withdraw saved stacks. Locked or blocked targets reject new contributions. Players can withdraw from their funds. Incorrect items and excess quantities stay with the player. Deliberate deposits keep stack components. Automatic funding from inventory selects only matching stacks without custom data. A player-inventory shift-click does not select a fund. Creative mode follows the same rules.
 
-Only the owner may [install an upgrade](../../context.md#upgrade-installation). A complete fund never installs itself. Installation needs two clicks on the same target and unchanged fund. A panel change, fund change, loss of access, or timeout cancels confirmation. The server checks permission, requirements, prerequisites, and physical space again before installation commits. A failed check leaves the fund available for withdrawal.
+Only the owner can [install an upgrade](../../context.md#upgrade-installation). A complete fund does not install automatically. Installation requires two clicks on the same target with an unchanged fund. A panel change, fund change, access removal, or timeout cancels confirmation. Before committing, the server validates permissions, requirements, prerequisites, and physical space again. Failed validation leaves the fund available for withdrawal.
 
-Funds survive packing, relocation, and restart. They remain bound to their targets and unavailable to ordinary storage or automation. Live cost changes for a non-empty fund are unsupported.
+Funds stay with their targets through packing, travel, and restart. Storage and automation cannot use them. Cost changes during operation cannot apply to non-empty funds.
 
 ## Rationale
 
-Separate funds let players support several improvements without moving materials between targets. Restricted slots make contributions deliberate and correctable. Two-click confirmation protects a fully funded purchase from accidental installation.
+Funds for each target let players contribute to multiple upgrades without transferring materials between funds. Restricted slots permit deliberate contributions and corrections. Two clicks confirm installation before using a full fund.
 
 ## Scope
 
-This decision covers the cabin upgrade interface, contribution permissions, and installation controls. [PDR-0006](0006-expand-general-space-with-world-materials.md) owns general-space growth. [PDR-0008](0008-purchase-and-reverse-cabin-windows.md) owns window behavior. [PDR-0012](0012-books-reveal-upgrades-before-purchase.md) owns book gates for revealed upgrades. Central storage and automatic crafting are separate work.
+This decision applies to the upgrade interface, contribution permissions, and installation controls. [PDR-0006](0006-expand-general-space-with-world-materials.md) states general-space growth. [PDR-0008](0008-purchase-and-reverse-cabin-windows.md) states Cabin window behavior. [PDR-0012](0012-books-reveal-upgrades-before-purchase.md) states book requirements for revealed upgrades. Central storage and automatic crafting are independent features.
 
 ## Related records
 
-- [ADR-0002](../adr/0002-use-target-keyed-upgrade-funds.md) owns fund persistence and transactions.
-- [ADR-0003](../adr/0003-persist-window-identity-and-derive-geometry.md) owns recoverable upgrade installation.
-- [PDR-0009](0009-use-fixed-household-roles.md) owns household permission after the role change.
+- [ADR-0002](../adr/0002-use-target-keyed-upgrade-funds.md) states fund persistence and transaction rules.
+- [ADR-0003](../adr/0003-persist-window-identity-and-derive-geometry.md) states installation recovery rules.
+- [PDR-0009](0009-use-fixed-household-roles.md) states household permissions after the role change.

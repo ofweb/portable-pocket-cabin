@@ -4,25 +4,25 @@ Status: Accepted
 
 ## Context
 
-A travelling home needs room to grow as players explore. Expansion must retain the blocks and appearance that make each cabin feel permanent. Material requirements should connect growth to the world without assigning each player a different recipe.
+Expansion must keep player construction and cabin appearance. Fixed upgrade costs must use the wood types chosen for the cabin at first construction.
 
 ## Decision
 
-Each new cabin has a protected, palette-aware interior with 4×4 blocks of usable [general space](../../context.md#general-space). Each purchased expansion increases both usable dimensions by one block. The entrance remains in place, and existing player blocks stay in their positions. Clear height grows with general size and stops at ten blocks from size 20. General space retains ordinary Minecraft behavior while the cabin is deployed.
+Each new cabin has a protected interior with 4×4 blocks of usable [general space](../../context.md#general-space) and its saved palette. Each purchased expansion increases both dimensions by one block. The entrance and player blocks stay in place. Clear height increases with general size and stops at ten blocks from size 20. General space follows Minecraft behavior while the cabin is deployed.
 
-One [World attunement](../../context.md#world-attunement) sets the variable plank requirement for every cabin in a save. Each expansion can require exact items and planks from the attuned wood profile. Amethyst expresses [Resonance](../../context.md#resonance), while obsidian anchors dimensional work. An individual upgrade can require either material or both.
+Expansion wood requirements follow the saved [Cabin palette](../../context.md#cabin-palette), using the wood types selected at first construction. World attunement no longer selects expansion wood. Amethyst represents [Resonance](../../context.md#resonance), and obsidian anchors work between dimensions. An upgrade can require one or both materials. Other ingredients follow the [preferred-material and fallback rules](0014-use-preferred-upgrade-materials-with-shared-fallbacks.md). Ingredient fallbacks do not replace the saved palette.
 
-The installed definition sets the costs and maximum general size. The bundled maximum is 21. A cabin at its configured maximum has no further general-space offer. An obstruction prevents expansion before the cabin changes or committed materials are consumed.
+The installed definition controls costs and maximum general size. The included maximum is 21. At that maximum, the cabin has no general-space expansion offer. A blocked space prevents expansion before cabin changes or material consumption.
 
 ## Rationale
 
-Small steps let players grow one home without moving their construction. A shared attunement gives the world a consistent material identity. Exact costs let packs set progression without changing the cabin's geometry.
+Small steps let players grow the home without moving their construction. Using the original wood types connects expansion materials to the home's appearance. Specified costs let datapacks control progression independently of cabin geometry.
 
 ## Scope
 
-This decision covers general-space growth and its material language. [PDR-0005](0005-keep-the-chosen-cabin-palette.md) owns the saved palette. [PDR-0007](0007-fund-and-install-cabin-upgrades.md) owns funding and installation controls. Storage, rooms, and packed-time automation remain separate work.
+This decision applies to general-space growth and upgrade materials. [PDR-0005](0005-keep-the-chosen-cabin-palette.md) states palette rules. [PDR-0007](0007-fund-and-install-cabin-upgrades.md) states funding and installation controls. Storage, rooms, and automation while packed are independent features.
 
 ## Related records
 
-- [ADR-0008](../adr/0008-derive-expansion-geometry-from-saved-size.md) owns the geometry and safe expansion method.
-- [ADR-0009](../adr/0009-persist-versioned-world-attunement.md) owns attunement persistence and definitions.
+- [ADR-0008](../adr/0008-derive-expansion-geometry-from-saved-size.md) states geometry and safe expansion rules.
+- [ADR-0009](../adr/0009-persist-versioned-world-attunement.md) records the existing attunement implementation. Design must revise it to follow the palette-based material decision.

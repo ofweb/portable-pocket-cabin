@@ -1,27 +1,27 @@
-# PDR-0001: Preserve the portable home
+# PDR-0001: Keep the portable home
 
 Status: Accepted
 
 ## Context
 
-The cabin moves between campsites, but players build and store valuable things inside it. Moving or losing an exterior must not erase the home or copy its contents.
+Players build and store valuable things in the cabin. Moving or losing an exterior must not delete or copy the home.
 
 ## Decision
 
-Each cabin keeps one lasting interior and can have at most one active exterior. Packing moves access to the home, not the interior itself. The surrounding campsite stays where it is. Ordinary interior blocks behave normally while the cabin is deployed or a connected packed cabin is occupied. They pause when the packed cabin is empty. On return, the cabin calculates progress for the time it was empty. Only time while the server operates counts. Progress for that time includes rooms, jobs, and placed blocks such as furnaces and crops. [Direction](../../direction.md#progress-after-an-empty-cabin-becomes-occupied) must confirm the progress limits. A managed room can define bounded inactive progress for its own fixtures.
+Each cabin keeps one lasting interior and one active exterior at most. Packing moves access to the home. It does not move the interior or construction outside the cabin.
 
-The protected interior keeps players within their cabin. Its exterior protects only cabin-owned blocks and does not remove nearby player construction when packed.
+Interior blocks follow Minecraft behavior while the cabin is deployed or players are in a connected packed cabin. They pause when the packed cabin is empty. On return, the cabin calculates progress for the time it was empty. Only time while the server operates counts. Progress for that time includes rooms, jobs, and placed blocks such as furnaces and crops. [Direction](../../direction.md#progress-after-an-empty-cabin-becomes-occupied) must confirm the progress limits. Rooms can define progress limits for their fixtures while the cabin has no active exterior.
 
-The cabin remains recoverable after exterior loss, item loss, or an interrupted move. A stale or duplicated packed item cannot create another entrance or alter cabin-owned data.
+The interior boundary keeps players in their cabin. The exterior protects only blocks that belong to the cabin. Packing does not remove player construction near it.
+
+Recovery keeps the cabin after exterior loss, item loss, or a move that stops before completion. A copied or incorrect packed item cannot create a different entrance or modify cabin data.
 
 ## Rationale
 
-Players need to trust the cabin with their home. A permanent interior preserves ordinary Minecraft construction and storage. One active exterior prevents the same home from appearing at two sites. Keeping outdoor construction local preserves the value of each campsite.
+A lasting interior keeps Minecraft construction and storage through travel. One active exterior prevents the same home from appearing at two sites. Construction outside the cabin stays at its site.
 
 ## Scope
 
-This decision applies to every cabin lifecycle and to later rooms, connections, and storage features. The [Direction](../../direction.md) owns the long-term travelling-home goal. [ADR-0005](../adr/0005-authoritative-cabin-registry.md) owns the persistent technical model.
+This decision applies to the cabin lifecycle, rooms, connections, and storage. [Direction](../../direction.md) states the travelling-home goal. [ADR-0005](../adr/0005-authoritative-cabin-registry.md) states the saved data model.
 
-## Consequences
-
-New features must preserve cabin identity and interior contents through packing, restart, and recovery. Ordinary interior blocks do not simulate while a packed cabin is empty.
+All features must keep cabin identity and interior contents through packing, restart, and recovery. Interior blocks do not simulate while a packed cabin is empty.

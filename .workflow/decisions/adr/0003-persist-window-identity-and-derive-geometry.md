@@ -1,27 +1,25 @@
-# ADR-0003: Persist window identity and derive geometry
+# ADR-0003: Save window identity and derive geometry
 
 Status: Accepted
 
 ## Context
 
-Cabin expansion can move window blocks while purchased windows retain their tiers and paid materials. World blocks cannot safely own that state. An interrupted installation must not consume a fund twice.
+Expansion can move Cabin window blocks while their tiers and purchased materials stay unchanged. World blocks cannot hold the authoritative state. An installation that stops before completion must not use a fund again on recovery.
 
 ## Decision
 
-The cabin upgrade state stores each window by eligible wall and bounded slot, installed tier, and exact paid-step receipts. Window block coordinates derive from saved general size, structural corner frames, and installed window state. The registry does not save window coordinates. General-space expansion can recenter windows without changing their identities or receipts.
+The upgrade state records each Cabin window by permitted wall and slot, installed tier, and specified paid-step receipts. Slot counts have limits. Block coordinates derive from saved general size, structural corner frames, and installed window state. The registry does not save window coordinates. Expansion can recenter Cabin windows without changing their identities or receipts.
 
-A typed installation journal covers both general-space and window upgrades. The service records intent before the deterministic world effect, then commits progression and fund consumption. Reconciliation can replay an interrupted effect. The journal prevents a second installation while one remains active.
+An installation journal has types for general-space and window upgrades. The service saves intent before applying the deterministic world effect. It then commits progression and fund consumption. Reconciliation can repeat an effect that stopped before completion. Only one installation journal can be active.
 
-Schema-5 cabins receive grandfathered tier-one windows on the left and right walls. Those windows have empty base receipts. New schema-6 cabins begin with solid walls. Grandfathering applies during migration, not as a default for absent window state.
+Schema 5 migration gives cabins tier-one Cabin windows on the left and right walls with empty base receipts. New schema 6 cabins have solid walls. Missing window state outside migration does not give free windows.
 
 ## Rationale
 
-Saved identities prevent block damage or profile changes from redefining a purchase. Derived geometry avoids a second source of truth when the cabin grows. One typed installation journal keeps upward upgrades within one recovery boundary.
+Saved identities keep purchase records independent of block damage or profile changes. Derived geometry uses saved cabin state as its only source. One installation journal gives upgrades one recovery boundary.
 
 ## Scope
 
-This decision covers purchased-window state, placement derivation, and installation recovery. [ADR-0008](0008-derive-expansion-geometry-from-saved-size.md) owns general-space geometry. [PDR-0008](../pdr/0008-purchase-and-reverse-cabin-windows.md) owns visible window behavior. [ADR-0004](0004-persist-window-reversals-through-refund-ejection.md) owns downward transitions.
+This decision applies to purchased window state, derived positions, and installation recovery. [ADR-0008](0008-derive-expansion-geometry-from-saved-size.md) states general-space geometry. [PDR-0008](../pdr/0008-purchase-and-reverse-cabin-windows.md) states window behavior. [ADR-0004](0004-persist-window-reversals-through-refund-ejection.md) states downgrade and removal recovery.
 
-## Consequences
-
-Every wall mutation must validate old and resulting layouts. Migration must distinguish established cabins from new cabins so it does not grant new windows by default.
+Wall changes must validate earlier and resulting layouts. Migration must distinguish earlier cabins from new cabins before giving free Cabin windows.

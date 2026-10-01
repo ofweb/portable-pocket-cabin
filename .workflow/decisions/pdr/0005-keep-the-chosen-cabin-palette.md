@@ -1,25 +1,23 @@
-# PDR-0005: Keep the chosen cabin palette
+# PDR-0005: Keep the cabin palette
 
 Status: Accepted
 
 ## Context
 
-Players choose materials when they craft a Cabin Kit. A moving home needs a stable appearance that survives packing, expansion, restart, and item recovery.
+Players select materials when they craft a Cabin Kit. The home must keep its appearance through packing, expansion, restart, and item recovery.
 
 ## Decision
 
-Crafting selects independent floor, wall or frame, roof or ceiling, and door materials. The cabin keeps those four selections after its first deployment. The same [Cabin palette](../../context.md#cabin-palette) controls the exterior and general interior. A packed item may show the palette but cannot change the cabin's saved selection.
+Crafting selects independent materials for the floor, wall or frame, roof or ceiling, and door. The cabin keeps these four selections after first deployment. The same [Cabin palette](../../context.md#cabin-palette) controls the exterior and general interior. A packed item can show the palette but cannot modify its saved selection.
 
-Cabin-owned shell blocks retain their protection. Wooden shell blocks resist fire, while nearby player wood follows normal fire rules. Portal doors remain closed and resist redstone, oxidation, and ordinary open-state changes. Doors, controllers, and windows occupy declared openings without replacing structural corner frames.
+Blocks that belong to the cabin keep their protection. Wood blocks in the cabin structure resist fire. Player wood near the cabin follows Minecraft fire rules. Portal doors stay closed and resist redstone, oxidation, and other open-state changes. Doors, controllers, and Cabin windows use defined openings without replacing structural corner frames.
 
 ## Rationale
 
-The chosen materials make the cabin feel like one persistent home. A saved palette prevents a lost or copied item from changing that home. The protected shell separates cabin-owned structure from surrounding player construction.
+Saved materials keep the home's appearance through travel. A lost or copied item cannot modify those selections. Cabin protection applies to its structure independently of player construction near it.
 
 ## Scope
 
-This decision covers the saved material selection and its protected projections. It does not authorize palette renovation. [B-0012](../../backlog.md#b-0012-palette-renovation) remains a separate possible feature.
+This decision applies to saved materials and their [generated cabin structures](../../context.md#generated-cabin-structure). It does not permit palette changes. [B-0012](../../backlog.md#b-0012-palette-renovation) holds that possible feature.
 
-## Consequences
-
-Removing a mod that supplies saved palette blocks is unsupported. The cabin must not silently substitute another material. Expansion and repair must preserve the chosen palette and protected frame.
+Removing a mod that supplies saved palette blocks is outside the compatibility policy. The cabin cannot replace a saved material without informing the player. Expansion and repair must keep the saved palette and protected frame.
