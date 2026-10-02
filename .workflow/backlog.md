@@ -26,7 +26,7 @@
 ## B-0005: Room purchase and traversal
 
 - Status: Ready for Shape
-- Value: Let a cabin purchase purpose-specific rooms with size limits and continuous access through three interior corridors.
+- Value: Connect installed rooms through complete interior corridors while preserving access and contents through cabin growth and travel.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Room brief](features/B-0005/brief.md).
 - Relationships: Uses B-0002. Shared room behavior for B-0008, B-0019 through B-0023, B-0039 through B-0041, and B-0043.
