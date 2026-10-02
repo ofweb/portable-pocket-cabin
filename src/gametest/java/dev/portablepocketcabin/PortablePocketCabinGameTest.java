@@ -76,27 +76,22 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
-	public void schemaThreeMigratesToSchemaSevenWithGrandfatheredWindows(GameTestHelper helper) {
-		CabinRegistry original = new CabinRegistry();
-		CabinRecord cabin = original.create(UUID.randomUUID());
-		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, original).getOrThrow();
-		encoded.asCompound().orElseThrow().putInt("schema_version", 3);
-
-		CabinRegistry restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
-		CabinRecord restoredCabin = restored.find(cabin.uuid()).orElseThrow();
-		var rewritten = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, restored).getOrThrow();
-
-		helper.assertTrue(restoredCabin.upgrades().funds().isEmpty(),
-			"Schema 3 cabins must migrate with no upgrade fund");
-		helper.assertTrue(restoredCabin.upgrades().windows().equals(CabinWindowState.grandfathered()),
-			"Every pre-schema-6 cabin must receive its two grandfathered side windows");
-		helper.assertTrue(rewritten.asCompound().orElseThrow().getIntOr("schema_version", 0) == 7,
-			"Migrated registries must rewrite as schema 7");
+	public void anchoredRegistrySchemasAreRejectedWithoutMutation(GameTestHelper helper) {
+		for (int version = 0; version <= 7; version++) {
+			CabinRegistry registry = new CabinRegistry();
+			registry.create(UUID.randomUUID());
+			var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
+			encoded.asCompound().orElseThrow().putInt("schema_version", version);
+			var unchanged = encoded.copy();
+			helper.assertTrue(CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).error().isPresent(),
+				"Anchored geometry must not be interpreted as centered geometry");
+			helper.assertTrue(encoded.equals(unchanged), "Schema rejection must not alter saved data");
+		}
 		helper.succeed();
 	}
 
 	@GameTest
-	public void schemaSixPreservesWindowsFundsAndActiveInstallation(GameTestHelper helper) {
+	public void currentSchemaPreservesWindowsFundsAndActiveInstallation(GameTestHelper helper) {
 		CabinRegistry registry = new CabinRegistry();
 		CabinRecord cabin = registry.create(UUID.randomUUID());
 		CabinWindowState.Identity identity = new CabinWindowState.Identity(CabinWindowState.Wall.RIGHT, 1);
@@ -118,13 +113,12 @@ public final class PortablePocketCabinGameTest {
 		);
 		registry.updateUpgradeState(cabin.uuid(), expected);
 		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
-		encoded.asCompound().orElseThrow().putInt("schema_version", 6);
 
 		CabinRegistry restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
 		CabinUpgradeState actual = restored.find(cabin.uuid()).orElseThrow().upgrades();
 		assertUpgradeState(helper, expected, actual);
 		helper.assertTrue(actual.reversal().isEmpty(),
-			"Schema 6 must migrate with no invented window reversal journal");
+			"Reload must not invent a window reversal journal");
 		helper.succeed();
 	}
 
@@ -145,7 +139,7 @@ public final class PortablePocketCabinGameTest {
 				),
 				List.of(namedGlass)
 			), new CabinUpgradeState.Fund(
-				CabinUpgradeState.Target.generalSpace(6),
+				CabinUpgradeState.Target.generalSpace(7),
 				List.of(new CabinUpgradeState.Requirement(
 					Items.AMETHYST_SHARD.builtInRegistryHolder().key().identifier(), 4
 				)),
@@ -177,7 +171,7 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
-	public void schemaFourTrackedFundMigratesLosslesslyToTargetFund(GameTestHelper helper) {
+	public void legacyTrackedFundCodecPreservesExactStacks(GameTestHelper helper) {
 		CabinRegistry registry = new CabinRegistry();
 		CabinRecord cabin = registry.create(UUID.randomUUID());
 		ItemStack named = new ItemStack(Items.GLASS_PANE, 7);
@@ -200,7 +194,6 @@ public final class PortablePocketCabinGameTest {
 			.encodeStart(NbtOps.INSTANCE, fund.requirements()).getOrThrow());
 		tracked.put("fund", ItemStack.CODEC.listOf().encodeStart(NbtOps.INSTANCE, fund.stacks()).getOrThrow());
 		cabinTag.put("tracked", tracked);
-		encoded.asCompound().orElseThrow().putInt("schema_version", 4);
 
 		CabinRegistry restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
 		CabinUpgradeState.Fund migrated = restored.find(cabin.uuid()).orElseThrow().upgrades()
@@ -209,7 +202,7 @@ public final class PortablePocketCabinGameTest {
 			&& migrated.stacks().getFirst().getCount() == 7
 			&& Component.literal("Legacy panes").equals(
 				migrated.stacks().getFirst().get(DataComponents.CUSTOM_NAME)),
-			"Schema 4 tracked stacks and components must migrate losslessly to the matching target fund");
+			"Legacy fund codec stacks and components must survive in the matching target fund");
 		helper.succeed();
 	}
 
@@ -267,56 +260,51 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
-	public void windowGeometryCentersEveryWallAndPreservesDividerAndFrames(GameTestHelper helper) {
+	public void windowGeometryReservesWallCentersThroughEveryExpansion(GameTestHelper helper) {
 		long cell = 12;
-		CabinWindowState.Identity leftFirst = new CabinWindowState.Identity(CabinWindowState.Wall.LEFT, 0);
-		CabinWindowState one = stateWithWindows(windowAtTier(leftFirst, 1));
-		CabinWindowLayout.Result centered = CabinWindowLayout.current(cell, 4, one);
 		BlockPos center = PocketDimension.cellCenter(cell);
-		PocketDimension.InteriorBounds bounds = PocketDimension.bounds(4);
-
-		helper.assertTrue(centered.valid() && centered.positions().equals(Set.of(
-			center.offset(bounds.shellMinimumX(), 1, 0),
-			center.offset(bounds.shellMinimumX(), 2, 0)
-		)), "A lone even-span window must use deterministic lower-coordinate centering");
-
-		CabinWindowLayout.Result pair = CabinWindowLayout.installing(
-			cell, 4, one, new CabinWindowState.Identity(CabinWindowState.Wall.LEFT, 1), 1
-		);
-		helper.assertTrue(!pair.valid() && pair.message().contains("size 5"),
-			"Two tier-one windows must wait until they fit between the structural corner frames");
-		CabinWindowLayout.Result sizeFivePair = CabinWindowLayout.installing(
-			cell, 5, one, new CabinWindowState.Identity(CabinWindowState.Wall.LEFT, 1), 1
-		);
-		helper.assertTrue(sizeFivePair.valid() && sizeFivePair.windows().size() == 2,
-			"A size-five wall must fit two tier-one windows with one divider block");
-		helper.assertTrue(!sizeFivePair.positions().contains(
-			center.offset(PocketDimension.bounds(5).shellMinimumX(), 1, 0)
-		),
-			"The centered pair must retain its solid one-block divider");
-
-		List<CabinWindowState.Window> maximum = new ArrayList<>();
-		for (CabinWindowState.Wall wall : CabinWindowState.Wall.values()) {
-			maximum.add(windowAtTier(new CabinWindowState.Identity(wall, 0), 6));
-			maximum.add(windowAtTier(new CabinWindowState.Identity(wall, 1), 6));
+		var first = new CabinWindowState.Identity(CabinWindowState.Wall.LEFT, 0);
+		var second = new CabinWindowState.Identity(CabinWindowState.Wall.LEFT, 1);
+		var one = stateWithWindows(windowAtTier(first, 1));
+		var pair = stateWithWindows(windowAtTier(first, 1), windowAtTier(second, 1));
+		helper.assertTrue(!CabinWindowLayout.current(cell, 3, one).valid(),
+			"A 3x3 room cannot fit a window beside its reserved passage and corner frame");
+		var minimum = CabinWindowLayout.current(cell, 5, pair);
+		helper.assertTrue(minimum.valid() && minimum.positions().size() == 4
+			&& !minimum.positions().contains(center.offset(-3, 1, 0)),
+			"Two base windows must fit at 5x5 while leaving the wall center solid");
+		for (int size = 5; size <= 21; size += 2) {
+			var bounds = PocketDimension.bounds(size);
+			for (CabinWindowState.Wall wall : CabinWindowState.Wall.values()) {
+				for (int tier = 1; tier <= 6; tier++) {
+					var left = new CabinWindowState.Identity(wall, 0);
+					var right = new CabinWindowState.Identity(wall, 1);
+					var state = stateWithWindows(windowAtTier(left, tier), windowAtTier(right, tier));
+					var layout = CabinWindowLayout.current(cell, size, state);
+					if (!layout.valid()) {
+						continue;
+					}
+					for (BlockPos pos : layout.positions()) {
+						int horizontal = wall == CabinWindowState.Wall.REAR
+							? pos.getX() - center.getX() : pos.getZ() - center.getZ();
+						helper.assertTrue(horizontal != 0 && PocketDimension.isInteriorShell(cell, size, pos),
+							"Every fitting pane must stay in the shell and away from the reserved center");
+					}
+					var remaining = CabinWindowLayout.current(cell, size, state.remove(left, tier).state());
+					helper.assertTrue(remaining.positions().equals(layout.windows().get(1).positions()),
+						"Removing one window must keep the other identity on its own side");
+					var structural = PocketDimension.shellBlocks(cell, size, CabinPalette.DEFAULT).entrySet()
+						.stream().filter(entry -> entry.getValue().is(CabinPalette.DEFAULT.walls().structuralWoodBlock()))
+						.map(java.util.Map.Entry::getKey).collect(java.util.stream.Collectors.toSet());
+					helper.assertTrue(java.util.Collections.disjoint(structural, layout.positions()),
+						"Windows must preserve the corner frames");
+				}
+			}
 		}
-		CabinWindowLayout.Result sizeTwentyOne = CabinWindowLayout.current(cell, 21, stateWithWindows(maximum));
-		helper.assertTrue(sizeTwentyOne.valid() && sizeTwentyOne.windows().size() == 6
-			&& sizeTwentyOne.windows().stream().allMatch(window -> window.positions().size() == 72),
-			"Two tier-six windows must fit on every eligible wall from general size 21");
-		Set<BlockPos> structuralFrame = PocketDimension.shellBlocks(cell, 21, CabinPalette.DEFAULT)
-			.entrySet().stream()
-			.filter(entry -> entry.getValue().is(CabinPalette.DEFAULT.walls().structuralWoodBlock()))
-			.map(java.util.Map.Entry::getKey)
-			.collect(java.util.stream.Collectors.toSet());
-		for (BlockPos position : sizeTwentyOne.positions()) {
-			helper.assertTrue(PocketDimension.isInteriorShell(cell, 21, position),
-				"Derived windows must stay inside the protected shell");
-		}
-		helper.assertTrue(java.util.Collections.disjoint(structuralFrame, sizeTwentyOne.positions()),
-			"Derived windows must preserve every structural corner-frame block");
-		helper.assertTrue(!CabinWindowLayout.current(cell, 20, stateWithWindows(maximum)).valid(),
-			"A pair of tier-six windows must not fit below general size 21");
+		var maximum = stateWithWindows(windowAtTier(first, 6), windowAtTier(second, 6));
+		helper.assertTrue(CabinWindowLayout.current(cell, 21, maximum).positions().size() == 144
+			&& !CabinWindowLayout.current(cell, 19, maximum).valid(),
+			"Two maximum windows fit at 21x21, but not at 19x19");
 		helper.succeed();
 	}
 
@@ -327,6 +315,7 @@ public final class PortablePocketCabinGameTest {
 		CabinRegistry registry = new CabinRegistry();
 		UUID owner = UUID.randomUUID();
 		CabinRecord cabin = deployRegistryCabin(registry, owner, 45);
+		cabin = registry.expandGeneralSpace(cabin.uuid(), owner, 3, 5, 5);
 		CabinWindowState.Identity identity = new CabinWindowState.Identity(CabinWindowState.Wall.REAR, 0);
 		CabinUpgradeState.Target target = CabinUpgradeState.Target.window(identity);
 		CabinUpgradeCatalog.Offer offer = CabinUpgradeCatalog.offer(cabin, target, attunement, definitions)
@@ -371,11 +360,11 @@ public final class PortablePocketCabinGameTest {
 	public void windowWorldEffectRejectsObstructionsAndMigratesLegacyPanels(GameTestHelper helper) {
 		ServerLevel level = helper.getLevel();
 		long cell = 90;
-		PocketDimension.ensureCabinInterior(level, cell, CabinPalette.DEFAULT, 4);
-		CabinRecord empty = cabinWithWindows(cell, CabinWindowState.EMPTY);
+		PocketDimension.ensureCabinInterior(level, cell, CabinPalette.DEFAULT, 5);
+		CabinRecord empty = cabinWithWindows(cell, 5, CabinWindowState.EMPTY);
 		CabinWindowState.Identity rear = new CabinWindowState.Identity(CabinWindowState.Wall.REAR, 0);
 		CabinWindowWorld world = new CabinWindowWorld(level.getServer(), level);
-		CabinWindowLayout.Result target = CabinWindowLayout.installing(cell, 4, CabinWindowState.EMPTY, rear, 1);
+		CabinWindowLayout.Result target = CabinWindowLayout.installing(cell, 5, CabinWindowState.EMPTY, rear, 1);
 		BlockPos pane = target.positions().iterator().next();
 
 		helper.assertTrue(world.validateInstall(empty, rear, 1).success(),
@@ -395,10 +384,10 @@ public final class PortablePocketCabinGameTest {
 		), "A validated base installation must project functional panes across its full footprint");
 
 		long legacyCell = 91;
-		PocketDimension.ensureCabinInterior(level, legacyCell, CabinPalette.DEFAULT, 4);
-		PocketDimension.InteriorBounds bounds = PocketDimension.bounds(4);
+		PocketDimension.ensureCabinInterior(level, legacyCell, CabinPalette.DEFAULT, 5);
+		PocketDimension.InteriorBounds bounds = PocketDimension.bounds(5);
 		BlockPos legacyCenter = PocketDimension.cellCenter(legacyCell);
-		int legacyZ = Math.max(bounds.minimumZ(), bounds.maximumZ() - 1);
+		int legacyZ = 1;
 		for (int x : new int[] {bounds.shellMinimumX(), bounds.shellMaximumX()}) {
 			for (int y = 1; y <= 2; y++) {
 				level.setBlockAndUpdate(
@@ -406,11 +395,11 @@ public final class PortablePocketCabinGameTest {
 				);
 			}
 		}
-		CabinRecord grandfathered = cabinWithWindows(legacyCell, CabinWindowState.grandfathered());
+		CabinRecord grandfathered = cabinWithWindows(legacyCell, 5, CabinWindowState.grandfathered());
 		helper.assertTrue(new CabinWindowWorld(level.getServer(), level).reconcileProjection(grandfathered),
 			"Legacy automatic panels must reconcile into centered state-derived panes");
 		CabinWindowLayout.Result migrated = CabinWindowLayout.current(
-			legacyCell, 4, CabinWindowState.grandfathered()
+			legacyCell, 5, CabinWindowState.grandfathered()
 		);
 		helper.assertTrue(migrated.positions().stream().allMatch(position ->
 			CabinWindows.isManagedWindowBlock(level.getBlockState(position).getBlock())
@@ -423,7 +412,7 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
-	public void windowRemovalRecentersTheRemainingSecondIdentityWithoutPartialMutation(GameTestHelper helper) {
+	public void windowRemovalKeepsTheRemainingIdentityBesideItsPassage(GameTestHelper helper) {
 		ServerLevel level = helper.getLevel();
 		long cell = 92;
 		int size = 5;
@@ -440,11 +429,11 @@ public final class PortablePocketCabinGameTest {
 		CabinWindowLayout.Result newLayout = CabinWindowLayout.current(cell, size, resulting);
 
 		helper.assertTrue(world.validateChange(cabin, resulting).success(),
-			"Removing slot one must allow slot two to remain and recenter");
+			"Removing slot one must leave slot two in place");
 		world.applyChange(cabin, resulting);
 		helper.assertTrue(newLayout.positions().stream().allMatch(position ->
 			CabinWindows.isManagedWindowBlock(level.getBlockState(position).getBlock())),
-			"The lone slot-two identity must occupy the newly centered pane footprint");
+			"The remaining slot-two identity must keep its own pane footprint");
 		helper.assertTrue(oldLayout.positions().stream()
 			.filter(position -> !newLayout.positions().contains(position))
 			.allMatch(position -> level.getBlockState(position).is(CabinPalette.DEFAULT.walls().planksBlock())),
@@ -478,24 +467,24 @@ public final class PortablePocketCabinGameTest {
 		}
 		var migratableRoot = new net.minecraft.nbt.CompoundTag();
 		var migratableData = new net.minecraft.nbt.CompoundTag();
-		migratableData.putInt("schema_version", 3);
+		migratableData.putInt("schema_version", 8);
 		migratableRoot.put("data", migratableData);
 		CabinRegistry.requireSupportedSchema(migratableRoot, java.nio.file.Path.of("schema-three-cabins.dat"));
 		var futureRoot = new net.minecraft.nbt.CompoundTag();
 		var futureData = new net.minecraft.nbt.CompoundTag();
-		futureData.putInt("schema_version", 8);
+		futureData.putInt("schema_version", 9);
 		futureRoot.put("data", futureData);
 		try {
 			CabinRegistry.requireSupportedSchema(futureRoot, java.nio.file.Path.of("future-cabins.dat"));
 			helper.fail("A future registry schema must be rejected instead of guessed");
 		} catch (IllegalStateException expected) {
-			helper.assertTrue(expected.getMessage().contains("Unsupported cabin registry schema version 8"),
+			helper.assertTrue(expected.getMessage().contains("Unsupported cabin registry schema version 9"),
 				"Future-schema rejection must identify the unsupported version");
 		}
 
 		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, new CabinRegistry()).getOrThrow();
-		helper.assertTrue(encoded.asCompound().orElseThrow().getIntOr("schema_version", 0) == 7,
-			"Reversible-window registries must publish explicit schema version 7");
+		helper.assertTrue(encoded.asCompound().orElseThrow().getIntOr("schema_version", 0) == 8,
+			"Centered-geometry registries must publish explicit schema version 8");
 		helper.succeed();
 	}
 
@@ -624,8 +613,8 @@ public final class PortablePocketCabinGameTest {
 			.orElseThrow().selection();
 		var palette = new CabinPalette(spruce, birch, CabinPalette.DEFAULT.roof(), CabinPalette.DEFAULT.door());
 		var definitions = CabinUpgradeDefinitions.current();
-		for (int size = 5; size <= 21; size++) {
-			int expected = 8 + (size - 4) * 4;
+		for (int size = 5; size <= 21; size += 2) {
+			int expected = 8 + ((size - 3) / 2) * 4;
 			var requirements = CabinUpgradeCatalog.resolve(definitions.expansion(size).ingredients(), palette);
 			int total = requirements.stream().filter(value -> List.of(spruce.planks(), birch.planks(),
 				CabinPalette.DEFAULT.roof().planks()).contains(value.itemId())).mapToInt(
@@ -710,9 +699,9 @@ public final class PortablePocketCabinGameTest {
 		CabinUpgradeDefinitions.Definitions definitions = CabinUpgradeDefinitions.current();
 		helper.assertTrue(definitions.maximumGeneralSize() == 21,
 			"General-space progression must end at 21x21");
-		for (int size = 5; size <= 21; size++) {
+		for (int size = 5; size <= 21; size += 2) {
 			helper.assertTrue(definitions.expansion(size) != null,
-				"Every one-block expansion through 21x21 must have an upgrade definition");
+				"Each of the nine odd-size expansions must have an upgrade definition");
 		}
 		helper.succeed();
 	}
@@ -766,16 +755,16 @@ public final class PortablePocketCabinGameTest {
 	public void upgradePanelSelectionRetainsStableTargetsAndFallsBackDeterministically(GameTestHelper helper) {
 		CabinUpgradeCatalog.Group cabin = syntheticGroup(
 			"cabin", "Cabin", Items.OAK_DOOR,
-			syntheticOffer(5, 2), syntheticOffer(6, 13)
+			syntheticOffer(5, 2), syntheticOffer(7, 13)
 		);
 		CabinUpgradeCatalog.Group room = syntheticGroup(
 			"stable", "Stable", Items.HAY_BLOCK,
-			syntheticOffer(7, 2)
+			syntheticOffer(9, 2)
 		);
 		List<CabinUpgradeCatalog.Group> groups = List.of(cabin, room);
 
 		CabinUpgradeSelection.Selected initial = CabinUpgradeSelection.resolve(
-			groups, null, CabinUpgradeState.Target.generalSpace(6)
+			groups, null, CabinUpgradeState.Target.generalSpace(7)
 		).orElseThrow();
 		helper.assertTrue(initial.groupIndex() == 0 && initial.panelIndex() == 1,
 			"A refresh must retain the selected stable target while it remains visible");
@@ -809,8 +798,8 @@ public final class PortablePocketCabinGameTest {
 		ServerPlayer player = helper.makeMockServerPlayerInLevel();
 		CabinUpgradeMenu menu = new CabinUpgradeMenu(43, player.getInventory(), UUID.randomUUID());
 		CabinUpgradeCatalog.Offer thirteen = syntheticOffer(5, 13);
-		CabinUpgradeCatalog.Offer sixteen = syntheticOffer(6, 16);
-		CabinUpgradeCatalog.Offer seventeen = syntheticOffer(7, 17);
+		CabinUpgradeCatalog.Offer sixteen = syntheticOffer(7, 16);
+		CabinUpgradeCatalog.Offer seventeen = syntheticOffer(9, 17);
 
 		helper.assertTrue(CabinUpgradeMenu.MAX_REQUIREMENTS == 16,
 			"A window base purchase must fit thirteen exact requirements without paging");
@@ -935,7 +924,7 @@ public final class PortablePocketCabinGameTest {
 			new TestExpansionEffect(true, false), () -> { }
 		);
 		helper.assertTrue(!result.success()
-			&& registry.find(cabin.uuid()).orElseThrow().progression().generalSize() == 4,
+			&& registry.find(cabin.uuid()).orElseThrow().progression().generalSize() == 3,
 			"A confirmation captured before a fund mutation must never install the upgrade");
 		helper.succeed();
 	}
@@ -1027,6 +1016,8 @@ public final class PortablePocketCabinGameTest {
 		UUID owner = UUID.randomUUID();
 		UUID trusted = UUID.randomUUID();
 		CabinRecord cabin = deployRegistryCabin(registry, owner, 46);
+		registry.expandGeneralSpace(cabin.uuid(), owner, 3, 5, 21);
+		cabin = registry.expandGeneralSpace(cabin.uuid(), owner, 5, 7, 21);
 		registry.trust(cabin.uuid(), owner, trusted);
 		registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS);
 		CabinWindowState.Identity identity = new CabinWindowState.Identity(CabinWindowState.Wall.REAR, 0);
@@ -1043,7 +1034,7 @@ public final class PortablePocketCabinGameTest {
 		CabinUpgradeCatalog.Offer nextWindow = CabinUpgradeCatalog.offer(
 			cabin, target, attunement, definitions
 		).orElseThrow();
-		CabinUpgradeState.Target generalTarget = CabinUpgradeState.Target.generalSpace(5);
+		CabinUpgradeState.Target generalTarget = CabinUpgradeState.Target.generalSpace(9);
 		CabinUpgradeCatalog.Offer general = CabinUpgradeCatalog.offer(
 			cabin, generalTarget, attunement, definitions
 		).orElseThrow();
@@ -1224,68 +1215,61 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
-	public void progressionInteriorStartsFourByFourWithAnchoredEntrance(GameTestHelper helper) {
+	public void progressionInteriorStartsThreeByThreeAroundItsCenter(GameTestHelper helper) {
 		long cell = 7;
 		BlockPos center = PocketDimension.cellCenter(cell);
-		var bounds = PocketDimension.bounds(CabinProgression.INITIAL_GENERAL_SIZE);
-		BlockPos innerCorner = center.offset(bounds.maximumX(), 1, bounds.maximumZ());
-		BlockPos wall = center.offset(bounds.shellMaximumX(), 1, 0);
-
-		helper.assertTrue(bounds.maximumX() - bounds.minimumX() + 1 == 4
-			&& bounds.maximumZ() - bounds.minimumZ() + 1 == 4,
-			"A new progression cabin must expose exactly a 4x4 usable footprint");
-		helper.assertTrue(!PocketDimension.isInteriorShell(cell, innerCorner),
-			"The 4x4 inner footprint must remain usable");
-		helper.assertTrue(PocketDimension.isInteriorShell(cell, wall)
-			&& PocketDimension.isInteriorShell(cell, center),
-			"The room wall and floor must belong to the protected shell");
-		helper.assertTrue(PocketDimension.isInteriorExit(cell, PocketDimension.interiorExitDoorLower(cell)),
-			"Every interior must have a stable exit-door coordinate");
-		helper.assertTrue(PocketDimension.interiorExitDoorLower(cell).getZ()
-			== PocketDimension.cellCenter(cell).getZ() + PocketDimension.INTERIOR_FRONT_WALL_Z,
-			"The entrance wall must remain anchored while the rear and sides expand");
+		var bounds = PocketDimension.bounds(3);
+		helper.assertTrue(bounds.minimumX() == -1 && bounds.maximumX() == 1
+			&& bounds.minimumZ() == -1 && bounds.maximumZ() == 1,
+			"A new cabin must have a centered 3x3 usable floor");
+		helper.assertTrue(PocketDimension.isWithinUsable(cell, 3, center.offset(1, 2, 1))
+			&& !PocketDimension.isWithinUsable(cell, 3, center.offset(1, 3, 1)),
+			"A new cabin must have exactly two clear blocks of height");
+		helper.assertTrue(PocketDimension.isInteriorShell(cell, center)
+			&& PocketDimension.isInteriorShell(cell, center.offset(2, 1, 0)),
+			"The floor and walls must be protected");
+		helper.assertTrue(PocketDimension.interiorEntrance(cell, 3).equals(center.offset(0, 1, 1))
+			&& PocketDimension.isInteriorExit(cell, 3, center.offset(0, 1, 2)),
+			"The entrance must be centered on the south wall");
 		helper.succeed();
 	}
 
 	@GameTest
-	public void ceilingHeightGrowsEverySecondSizeStepAndCapsAtTen(GameTestHelper helper) {
+	public void ceilingHeightGrowsWithEachExpansionAndCapsAtTen(GameTestHelper helper) {
 		long cell = 8;
 		BlockPos center = PocketDimension.cellCenter(cell);
-		var sizeFour = PocketDimension.shellBlocks(cell, 4, CabinPalette.DEFAULT);
-		var sizeFive = PocketDimension.shellBlocks(cell, 5, CabinPalette.DEFAULT);
-		var sizeSix = PocketDimension.shellBlocks(cell, 6, CabinPalette.DEFAULT);
-		var sizeTwenty = PocketDimension.shellBlocks(cell, 20, CabinPalette.DEFAULT);
-		var maximum = PocketDimension.shellBlocks(
-			cell, CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE, CabinPalette.DEFAULT
-		);
-
-		helper.assertTrue(sizeFour.containsKey(center.offset(0, 3, 0))
-			&& sizeFive.containsKey(center.offset(0, 3, 0)),
-			"Sizes four and five must have two clear blocks below the ceiling");
-		helper.assertTrue(sizeSix.containsKey(center.offset(0, 4, 0)),
-			"Size six must gain its first block of clear height");
-		helper.assertTrue(sizeTwenty.containsKey(center.offset(0, 11, 0))
-			&& maximum.containsKey(center.offset(0, 11, 0)),
-			"Clear interior height must cap at ten blocks from size twenty onward");
-		helper.assertTrue(!sizeFour.containsKey(center.offset(0, 4, 0))
-			&& !maximum.containsKey(center.offset(0, 12, 0)),
-			"Cabin shells must not retain a ceiling above their size-derived height");
+		for (int size = 3; size <= 21; size += 2) {
+			int height = Math.min(10, 2 + (size - 3) / 2);
+			var shell = PocketDimension.shellBlocks(cell, size, CabinPalette.DEFAULT);
+			helper.assertTrue(PocketDimension.clearInteriorHeight(size) == height
+				&& shell.containsKey(center.offset(0, height + 1, 0))
+				&& !shell.containsKey(center.offset(0, height + 2, 0)),
+				"Each size must derive one ceiling, with ten clear blocks from 19x19 onward");
+		}
 		helper.succeed();
 	}
 
 	@GameTest
-	public void expansionPatternGrowsOneBlockWithoutMovingTheEntrance(GameTestHelper helper) {
-		var four = PocketDimension.bounds(4);
-		var five = PocketDimension.bounds(5);
-		var six = PocketDimension.bounds(6);
-		helper.assertTrue(four.maximumZ() == five.maximumZ() && five.maximumZ() == six.maximumZ(),
-			"Every expansion must keep the entrance side anchored");
-		helper.assertTrue(five.minimumZ() == four.minimumZ() - 1 && six.minimumZ() == five.minimumZ() - 1,
-			"Every expansion must add exactly one row at the rear");
-		helper.assertTrue(five.minimumX() == four.minimumX() - 1 && five.maximumX() == four.maximumX(),
-			"The first lateral expansion must grow left deterministically");
-		helper.assertTrue(six.minimumX() == five.minimumX() && six.maximumX() == five.maximumX() + 1,
-			"The next lateral expansion must grow right deterministically");
+	public void expansionGrowsEverySideAndMovesTheSouthEntrance(GameTestHelper helper) {
+		long cell = 9;
+		for (int size = 3; size < 21; size += 2) {
+			var oldBounds = PocketDimension.bounds(size);
+			var next = PocketDimension.bounds(size + 2);
+			helper.assertTrue(next.minimumX() == oldBounds.minimumX() - 1
+				&& next.maximumX() == oldBounds.maximumX() + 1
+				&& next.minimumZ() == oldBounds.minimumZ() - 1
+				&& next.maximumZ() == oldBounds.maximumZ() + 1,
+				"Each expansion must add one block on all four sides");
+			BlockPos oldDoor = PocketDimension.interiorExitDoorLower(cell, size);
+			BlockPos newDoor = PocketDimension.interiorExitDoorLower(cell, size + 2);
+			helper.assertTrue(newDoor.equals(oldDoor.south())
+				&& PocketDimension.isInteriorExit(cell, size + 2, newDoor)
+				&& !PocketDimension.isInteriorExit(cell, size + 2, oldDoor),
+				"Exit detection must follow the south wall and stop recognizing the old door");
+			helper.assertTrue(PocketDimension.interiorController(cell, size + 2)
+				.equals(PocketDimension.interiorController(cell, size).south()),
+				"The upgrade controller must follow the exit wall");
+		}
 		helper.succeed();
 	}
 
@@ -1294,29 +1278,93 @@ public final class PortablePocketCabinGameTest {
 		long cell = 50;
 		BlockPos center = PocketDimension.cellCenter(cell);
 		BlockPos playerBlock = center.above();
-		BlockPos obstruction = center.offset(0, 1, PocketDimension.bounds(5).shellMinimumZ());
-		BlockPos raisedCeilingObstruction = center.offset(
-			0, PocketDimension.clearInteriorHeight(6) + 1, 0
-		);
+		for (Direction direction : Direction.Plane.HORIZONTAL) {
+			BlockPos obstruction = center.above().relative(direction, 3);
+			helper.assertTrue(!PocketDimension.validateExpansion(cell, 3, 5, obstruction::equals).valid(),
+				"An obstruction on any new wall must reject expansion");
+		}
+		BlockPos ceilingObstruction = center.offset(0, 4, 0);
+		helper.assertTrue(!PocketDimension.validateExpansion(cell, 3, 5, ceilingObstruction::equals).valid(),
+			"An obstruction above the old ceiling must reject expansion");
+		helper.assertTrue(PocketDimension.validateExpansion(cell, 3, 5, playerBlock::equals).valid(),
+			"Player blocks already inside the main room must not obstruct expansion");
+		helper.assertTrue(PocketDimension.isWithinUsable(cell, 3, playerBlock)
+			&& PocketDimension.isWithinUsable(cell, 5, playerBlock)
+			&& PocketDimension.isWithinUsable(cell, 5, center.offset(-2, 3, -2)),
+			"Player coordinates stay usable while new rows and the old ceiling become usable");
+		helper.assertTrue(!PocketDimension.validateExpansion(cell, 3, 7, pos -> false).valid()
+			&& !PocketDimension.validateExpansion(cell, 21, 23, pos -> false).valid()
+			&& !PocketDimension.validateExpansion(cell, 4, 6, pos -> false).valid(),
+			"Expansion must reject skipped steps, even sizes, and sizes above the cap");
+		helper.succeed();
+	}
 
-		PocketDimension.ExpansionCheck blocked = PocketDimension.validateExpansion(
-			cell, 4, 5, obstruction::equals
-		);
-		helper.assertTrue(!blocked.valid(),
-			"An obstruction in the target shell must reject expansion before mutation");
-		PocketDimension.ExpansionCheck verticallyBlocked = PocketDimension.validateExpansion(
-			cell, 5, 6, raisedCeilingObstruction::equals
-		);
-		helper.assertTrue(!verticallyBlocked.valid(),
-			"An obstruction above the old ceiling must reject a height-growing expansion");
-		helper.assertTrue(PocketDimension.isWithinUsable(cell, 4, playerBlock)
-			&& PocketDimension.isWithinUsable(cell, 5, playerBlock),
-			"Existing player blocks must remain in the unchanged usable-volume intersection");
-		helper.assertTrue(!PocketDimension.isWithinUsable(cell, 5, center.offset(0, 3, 0))
-			&& PocketDimension.isWithinUsable(cell, 6, center.offset(0, 3, 0)),
-			"A height-growing expansion must expose the old ceiling layer as usable space");
-		helper.assertTrue(PocketDimension.isWithinUsable(cell, 5, center.offset(-2, 1, -2)),
-			"A successful 4x4 to 5x5 expansion must expose the deterministic new row and column");
+	@GameTest
+	public void allNineExpansionsPreserveContentsAndMoveManagedFixtures(GameTestHelper helper) {
+		ServerLevel level = helper.getLevel();
+		long cell = 99;
+		BlockPos center = PocketDimension.cellCenter(cell);
+		// The headless test server omits custom dimensions; reproduce the pocket's empty volume here.
+		for (int x = -11; x <= 11; x++) {
+			for (int z = -11; z <= 11; z++) {
+				for (int y = 0; y <= 11; y++) {
+					level.setBlock(center.offset(x, y, z), Blocks.AIR.defaultBlockState(),
+						net.minecraft.world.level.block.Block.UPDATE_SKIP_ALL_SIDEEFFECTS
+							| net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
+				}
+			}
+		}
+		BlockPos chestPos = center.above();
+		BlockPos decoration = center.offset(-1, 1, -1);
+		PocketDimension.ensureCabinInterior(level, cell);
+		CabinRecord cabin = cabinWithWindows(cell, CabinWindowState.EMPTY);
+		level.setBlockAndUpdate(chestPos, Blocks.CHEST.defaultBlockState());
+		level.setBlockAndUpdate(decoration, Blocks.DIAMOND_BLOCK.defaultBlockState());
+		var chest = (net.minecraft.world.level.block.entity.ChestBlockEntity) level.getBlockEntity(chestPos);
+		ItemStack named = new ItemStack(Items.EMERALD, 19);
+		named.set(DataComponents.CUSTOM_NAME, Component.literal("Stay at the center"));
+		chest.setItem(0, named);
+		CabinWindowWorld windows = new CabinWindowWorld(level.getServer(), level);
+		for (int size = 3; size < 21; size += 2) {
+			int next = size + 2;
+			BlockPos oldDoor = PocketDimension.interiorExitDoorLower(cell, size);
+			BlockPos oldController = PocketDimension.interiorController(cell, size);
+			var geometry = PocketDimension.validateExpansion(level, cell, size, next);
+			var relayout = windows.validateRelayout(cabin, next);
+			helper.assertTrue(geometry.valid() && relayout.success(),
+				"Expansion to " + next + " must accept clear space: " + geometry.message() + "; " + relayout.message());
+			PocketDimension.applyGeneralSpaceExpansion(level, cabin, next);
+			windows.applyRelayout(cabin, next);
+			// Replaying an interrupted world effect before its registry commit must preserve contents.
+			PocketDimension.applyGeneralSpaceExpansion(level, cabin, next);
+			windows.applyRelayout(cabin, next);
+			helper.assertTrue(level.getBlockEntity(chestPos) == chest && ItemStack.matches(chest.getItem(0), named)
+				&& level.getBlockState(decoration).is(Blocks.DIAMOND_BLOCK),
+				"Expansion and recovery must keep placed blocks and exact chest contents at their coordinates");
+			helper.assertTrue(level.getBlockState(oldDoor).isAir() && level.getBlockState(oldDoor.above()).isAir()
+				&& level.getBlockState(oldController).isAir(),
+				"Moved doors and controllers must leave no fixtures inside the expanded main room");
+			for (BlockPos door : List.of(PocketDimension.interiorExitDoorLower(cell, next),
+				PocketDimension.interiorExitDoorUpper(cell, next))) {
+				helper.assertTrue(level.getBlockState(door).is(cabin.palette().door().doorBlock()),
+					"Both door halves must remain on the new south wall");
+			}
+			helper.assertTrue(level.getBlockState(PocketDimension.interiorController(cell, next)).is(Blocks.LODESTONE),
+				"The upgrade controller must remain beside the moved door");
+			var state = cabin.upgrades().windows();
+			if (size == 3) {
+				state = state.install(new CabinWindowState.Identity(CabinWindowState.Wall.LEFT, 0), 0, List.of());
+			}
+			cabin = cabinWithWindows(cell, next, state);
+			windows.reconcileProjection(cabin);
+			for (BlockPos pane : CabinWindowLayout.current(cell, next, state).positions()) {
+				helper.assertTrue(CabinWindows.isManagedWindowBlock(level.getBlockState(pane).getBlock()),
+					"Purchased windows must move with the wall through every expansion");
+			}
+		}
+		helper.assertTrue(level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
+			new net.minecraft.world.phys.AABB(center).inflate(15)).isEmpty(),
+			"Moving generated doors must not create free door-item drops");
 		helper.succeed();
 	}
 
@@ -1325,14 +1373,14 @@ public final class PortablePocketCabinGameTest {
 		long cell = 61;
 		ServerLevel level = helper.getLevel();
 		PocketDimension.ensureDebugMarker(level, cell);
-		PocketDimension.ensureCabinInterior(level, cell, CabinPalette.DEFAULT, 4);
+		PocketDimension.ensureCabinInterior(level, cell, CabinPalette.DEFAULT, 3);
 
-		PocketDimension.ExpansionCheck check = PocketDimension.validateExpansion(level, cell, 4, 5);
+		PocketDimension.ExpansionCheck check = PocketDimension.validateExpansion(level, cell, 3, 5);
 		helper.assertTrue(check.valid(),
 			"The old command-created debug platform must not leave a rim in the first expansion footprint");
 		BlockPos isolatedSmoothStone = PocketDimension.cellCenter(cell).offset(-3, 0, 0);
 		level.setBlockAndUpdate(isolatedSmoothStone, Blocks.SMOOTH_STONE.defaultBlockState());
-		helper.assertTrue(PocketDimension.removeLegacyDebugPlatformResidue(level, cell, 4) == 0
+		helper.assertTrue(PocketDimension.removeLegacyDebugPlatformResidue(level, cell, 3) == 0
 			&& level.getBlockState(isolatedSmoothStone).is(Blocks.SMOOTH_STONE),
 			"Cleanup must preserve smooth stone that does not form the complete legacy debug rim");
 		helper.succeed();
@@ -1356,7 +1404,7 @@ public final class PortablePocketCabinGameTest {
 	public void markedRefundEjectionFillsOnlyMissingIndexesAndRejectsMismatches(GameTestHelper helper) {
 		ServerLevel level = helper.getLevel();
 		long cell = 63;
-		PocketDimension.ensureCabinInterior(level, cell, CabinPalette.DEFAULT, 4);
+		PocketDimension.ensureCabinInterior(level, cell, CabinPalette.DEFAULT, 3);
 		CabinRecord cabin = cabinWithWindows(cell, CabinWindowState.EMPTY);
 		BlockPos drop = CabinFundEjection.dropPosition(cabin);
 		level.setBlockAndUpdate(drop, Blocks.CHEST.defaultBlockState());
@@ -1729,8 +1777,8 @@ public final class PortablePocketCabinGameTest {
 		}
 
 		long expandedCell = 64;
-		var expandedBounds = PocketDimension.bounds(6);
-		var expanded = PocketDimension.shellBlocks(expandedCell, 6, palette);
+		var expandedBounds = PocketDimension.bounds(7);
+		var expanded = PocketDimension.shellBlocks(expandedCell, 7, palette);
 		BlockPos expandedCenter = PocketDimension.cellCenter(expandedCell);
 		for (int x = expandedBounds.shellMinimumX(); x <= expandedBounds.shellMaximumX(); x++) {
 			boolean shouldFrame = x - expandedBounds.shellMinimumX() < 2
@@ -1784,10 +1832,10 @@ public final class PortablePocketCabinGameTest {
 			UUID.randomUUID(), UUID.randomUUID(), interiorCell, CabinLifecycle.DEPLOYED,
 			Optional.of(recordExterior), true
 		);
-		for (var entry : PocketDimension.legacyShellBlocks(interiorCell, 4, palette).entrySet()) {
+		for (var entry : PocketDimension.legacyShellBlocks(interiorCell, 3, palette).entrySet()) {
 			level.setBlockAndUpdate(entry.getKey(), entry.getValue());
 		}
-		var bounds = PocketDimension.bounds(4);
+		var bounds = PocketDimension.bounds(3);
 		BlockPos center = PocketDimension.cellCenter(interiorCell);
 		BlockPos interiorNewFrame = center.offset(
 			bounds.shellMinimumX() + 1, 1, bounds.shellMinimumZ()
@@ -1803,7 +1851,7 @@ public final class PortablePocketCabinGameTest {
 			UUID.randomUUID(), UUID.randomUUID(), damagedCell, CabinLifecycle.DEPLOYED,
 			Optional.of(recordExterior), true
 		);
-		for (var entry : PocketDimension.legacyShellBlocks(damagedCell, 4, palette).entrySet()) {
+		for (var entry : PocketDimension.legacyShellBlocks(damagedCell, 3, palette).entrySet()) {
 			level.setBlockAndUpdate(entry.getKey(), entry.getValue());
 		}
 		BlockPos damagedCenter = PocketDimension.cellCenter(damagedCell);
@@ -1880,20 +1928,20 @@ public final class PortablePocketCabinGameTest {
 		helper.assertTrue(CabinWindows.profile(Level.OVERWORLD, 6_000, false, false, CabinLifecycle.PACKED)
 			== CabinWindows.Profile.INACTIVE, "Packed cabins must close their fake windows");
 
-		var blocks = CabinWindows.blocks(7, CabinWindows.Profile.DAY);
+		var blocks = CabinWindows.blocks(7, 5, CabinWindows.Profile.DAY);
 		BlockPos cabinCenter = PocketDimension.cellCenter(7);
 		helper.assertTrue(blocks.size() == 4,
-			"The compact interior must retain two visible fake-window panels");
+			"Purchased tier-one side windows must project four panes");
 		for (BlockPos position : blocks.keySet()) {
-			helper.assertTrue(PocketDimension.isInteriorShell(7, position),
+			helper.assertTrue(PocketDimension.isInteriorShell(7, 5, position),
 				"Every fake-window block must remain part of the protected interior shell");
 			helper.assertTrue(position.getY() - cabinCenter.getY() >= 1
 				&& position.getY() - cabinCenter.getY()
-					<= PocketDimension.clearInteriorHeight(CabinProgression.INITIAL_GENERAL_SIZE),
+					<= PocketDimension.clearInteriorHeight(5),
 				"Starting-cabin windows must stay below the lowered ceiling");
 		}
 		for (int size = CabinProgression.INITIAL_GENERAL_SIZE;
-			 size <= CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE; size++) {
+			 size <= CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE; size += 2) {
 			int checkedSize = size;
 			var structuralFrame = PocketDimension.shellBlocks(7, checkedSize, CabinPalette.DEFAULT)
 				.entrySet().stream()
@@ -2409,7 +2457,7 @@ public final class PortablePocketCabinGameTest {
 			"Synthetic " + targetSize,
 			"Synthetic effect " + targetSize,
 			Items.AMETHYST_BLOCK.builtInRegistryHolder().key().identifier(),
-			targetSize - 1, targetSize, requirements
+			targetSize - CabinProgression.GENERAL_SIZE_STEP, targetSize, requirements
 		);
 	}
 

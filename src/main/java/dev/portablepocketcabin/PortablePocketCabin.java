@@ -25,6 +25,7 @@ public final class PortablePocketCabin implements ModInitializer {
 		CabinSimulation.register();
 		CabinWindows.register();
 		CabinRespawning.register();
+		ServerLifecycleEvents.SERVER_STARTING.register(CabinRegistry::validateWorldSchema);
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			CabinRegistry registry = CabinRegistry.get(server);
 			CabinReconciliation.reconcileAll(server);

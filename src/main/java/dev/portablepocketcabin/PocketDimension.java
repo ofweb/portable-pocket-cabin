@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,8 +27,6 @@ public final class PocketDimension {
 	private static final int INITIAL_INTERIOR_CLEAR_HEIGHT = 2;
 	private static final int MAXIMUM_INTERIOR_CLEAR_HEIGHT = 10;
 	static final int STRUCTURAL_CORNER_FRAME_DEPTH = 2;
-	public static final int INTERIOR_FRONT_USABLE_Z = 2;
-	public static final int INTERIOR_FRONT_WALL_Z = INTERIOR_FRONT_USABLE_Z + 1;
 	public static final ResourceKey<Level> LEVEL_KEY = ResourceKey.create(
 		Registries.DIMENSION,
 		PortablePocketCabin.id("pocket_home")
@@ -158,8 +157,10 @@ public final class PocketDimension {
 	static ExpansionCheck validateExpansion(
 		long cellIndex, int currentSize, int targetSize, java.util.function.Predicate<BlockPos> occupied
 	) {
-		if (targetSize != currentSize + 1) {
-			return new ExpansionCheck(false, "General space expands exactly one block at a time");
+		if (!CabinProgression.isSupportedGeneralSize(currentSize)
+			|| !CabinProgression.isSupportedGeneralSize(targetSize)
+			|| targetSize != currentSize + CabinProgression.GENERAL_SIZE_STEP) {
+			return new ExpansionCheck(false, "General space expands by two blocks per dimension, up to 21x21");
 		}
 		Map<BlockPos, BlockState> currentShell = shellBlocks(cellIndex, currentSize, CabinPalette.DEFAULT);
 		Map<BlockPos, BlockState> targetShell = shellBlocks(cellIndex, targetSize, CabinPalette.DEFAULT);
@@ -206,18 +207,18 @@ public final class PocketDimension {
 		net.minecraft.server.level.ServerLevel level, CabinRecord cabin, int targetSize
 	) {
 		int currentSize = cabin.progression().generalSize();
-		if (targetSize != currentSize + 1) {
-			throw new IllegalStateException("General space expands exactly one block at a time");
+		if (targetSize != currentSize + CabinProgression.GENERAL_SIZE_STEP) {
+			throw new IllegalStateException("General space expands by two blocks per dimension");
 		}
 		Map<BlockPos, BlockState> current = shellBlocks(cabin.cellIndex(), currentSize, cabin.palette());
 		Map<BlockPos, BlockState> target = shellBlocks(cabin.cellIndex(), targetSize, cabin.palette());
 		for (BlockPos position : current.keySet()) {
 			if (!target.containsKey(position)) {
-				level.setBlockAndUpdate(position, Blocks.AIR.defaultBlockState());
+				level.setBlock(position, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
 			}
 		}
 		for (Map.Entry<BlockPos, BlockState> entry : target.entrySet()) {
-			level.setBlockAndUpdate(entry.getKey(), entry.getValue());
+			level.setBlock(entry.getKey(), entry.getValue(), Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
 		}
 
 		InteriorBounds targetBounds = bounds(targetSize);
@@ -232,6 +233,9 @@ public final class PocketDimension {
 					}
 				}
 			}
+		}
+		for (BlockPos position : current.keySet()) {
+			level.getBlockState(position).updateNeighbourShapes(level, position, Block.UPDATE_ALL);
 		}
 	}
 
@@ -287,9 +291,9 @@ public final class PocketDimension {
 			.setValue(DoorBlock.FACING, net.minecraft.core.Direction.SOUTH)
 			.setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
 			.setValue(DoorBlock.HINGE, DoorHingeSide.LEFT);
-		result.put(interiorExitDoorLower(cellIndex), lowerDoor);
-		result.put(interiorExitDoorUpper(cellIndex), lowerDoor.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
-		result.put(interiorController(cellIndex), Blocks.LODESTONE.defaultBlockState());
+		result.put(interiorExitDoorLower(cellIndex, generalSize), lowerDoor);
+		result.put(interiorExitDoorUpper(cellIndex, generalSize), lowerDoor.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
+		result.put(interiorController(cellIndex, generalSize), Blocks.LODESTONE.defaultBlockState());
 		result.put(center.offset(bounds.minimumX(), ceilingOffset, bounds.minimumZ()),
 			Blocks.SEA_LANTERN.defaultBlockState());
 		result.put(center.offset(bounds.maximumX(), ceilingOffset, bounds.minimumZ()),
@@ -354,27 +358,52 @@ public final class PocketDimension {
 	}
 
 	public static BlockPos interiorEntrance(long cellIndex) {
-		return cellCenter(cellIndex).offset(0, 1, INTERIOR_FRONT_USABLE_Z);
+		return interiorEntrance(cellIndex, CabinProgression.INITIAL_GENERAL_SIZE);
+	}
+
+	public static BlockPos interiorEntrance(long cellIndex, int generalSize) {
+		return cellCenter(cellIndex).offset(0, 1, bounds(generalSize).maximumZ());
 	}
 
 	public static BlockPos interiorExitDoorLower(long cellIndex) {
-		return cellCenter(cellIndex).offset(0, 1, INTERIOR_FRONT_WALL_Z);
+		return interiorExitDoorLower(cellIndex, CabinProgression.INITIAL_GENERAL_SIZE);
+	}
+
+	public static BlockPos interiorExitDoorLower(long cellIndex, int generalSize) {
+		return cellCenter(cellIndex).offset(0, 1, bounds(generalSize).shellMaximumZ());
 	}
 
 	public static BlockPos interiorExitDoorUpper(long cellIndex) {
-		return interiorExitDoorLower(cellIndex).above();
+		return interiorExitDoorUpper(cellIndex, CabinProgression.INITIAL_GENERAL_SIZE);
+	}
+
+	public static BlockPos interiorExitDoorUpper(long cellIndex, int generalSize) {
+		return interiorExitDoorLower(cellIndex, generalSize).above();
 	}
 
 	public static boolean isInteriorExit(long cellIndex, BlockPos pos) {
-		return pos.equals(interiorExitDoorLower(cellIndex)) || pos.equals(interiorExitDoorUpper(cellIndex));
+		return isInteriorExit(cellIndex, CabinProgression.INITIAL_GENERAL_SIZE, pos);
+	}
+
+	public static boolean isInteriorExit(long cellIndex, int generalSize, BlockPos pos) {
+		return pos.equals(interiorExitDoorLower(cellIndex, generalSize))
+			|| pos.equals(interiorExitDoorUpper(cellIndex, generalSize));
 	}
 
 	public static BlockPos interiorController(long cellIndex) {
-		return cellCenter(cellIndex).offset(-1, 1, INTERIOR_FRONT_WALL_Z);
+		return interiorController(cellIndex, CabinProgression.INITIAL_GENERAL_SIZE);
+	}
+
+	public static BlockPos interiorController(long cellIndex, int generalSize) {
+		return cellCenter(cellIndex).offset(-1, 1, bounds(generalSize).shellMaximumZ());
 	}
 
 	public static boolean isInteriorController(long cellIndex, BlockPos pos) {
-		return pos.equals(interiorController(cellIndex));
+		return isInteriorController(cellIndex, CabinProgression.INITIAL_GENERAL_SIZE, pos);
+	}
+
+	public static boolean isInteriorController(long cellIndex, int generalSize, BlockPos pos) {
+		return pos.equals(interiorController(cellIndex, generalSize));
 	}
 
 	public static boolean isInteriorShell(long cellIndex, BlockPos pos) {
@@ -415,7 +444,7 @@ public final class PocketDimension {
 		return Math.min(
 			MAXIMUM_INTERIOR_CLEAR_HEIGHT,
 			INITIAL_INTERIOR_CLEAR_HEIGHT
-				+ (generalSize - CabinProgression.INITIAL_GENERAL_SIZE) / 2
+				+ (generalSize - CabinProgression.INITIAL_GENERAL_SIZE) / CabinProgression.GENERAL_SIZE_STEP
 		);
 	}
 
@@ -429,15 +458,12 @@ public final class PocketDimension {
 
 	static InteriorBounds bounds(int generalSize) {
 		requireSupportedGeneralSize(generalSize);
-		int minimumX = -((generalSize - 1) / 2);
-		int maximumX = generalSize / 2;
-		int minimumZ = INTERIOR_FRONT_USABLE_Z - generalSize + 1;
-		return new InteriorBounds(minimumX, maximumX, minimumZ, INTERIOR_FRONT_USABLE_Z);
+		int radius = generalSize / 2;
+		return new InteriorBounds(-radius, radius, -radius, radius);
 	}
 
 	private static void requireSupportedGeneralSize(int generalSize) {
-		if (generalSize < CabinProgression.INITIAL_GENERAL_SIZE
-			|| generalSize > CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE) {
+		if (!CabinProgression.isSupportedGeneralSize(generalSize)) {
 			throw new IllegalArgumentException("Unsupported general cabin size " + generalSize);
 		}
 	}

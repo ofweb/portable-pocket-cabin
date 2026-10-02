@@ -41,7 +41,8 @@ final class CabinUpgradeDefinitions {
 	record Expansion(int targetSize, List<Ingredient> ingredients) {
 		Expansion {
 			ingredients = List.copyOf(ingredients);
-			if (targetSize <= CabinProgression.INITIAL_GENERAL_SIZE || ingredients.isEmpty()) {
+			if (targetSize <= CabinProgression.INITIAL_GENERAL_SIZE
+				|| !CabinProgression.isSupportedGeneralSize(targetSize) || ingredients.isEmpty()) {
 				throw new IllegalArgumentException("Each expansion must target a larger size and have ingredients");
 			}
 		}
@@ -73,10 +74,11 @@ final class CabinUpgradeDefinitions {
 				throw new IllegalArgumentException("definition_version must be positive");
 			}
 			if (maximumGeneralSize <= CabinProgression.INITIAL_GENERAL_SIZE
-				|| maximumGeneralSize > CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE) {
+				|| !CabinProgression.isSupportedGeneralSize(maximumGeneralSize)) {
 				throw new IllegalArgumentException("maximum_general_size is outside the supported range");
 			}
-			for (int size = CabinProgression.INITIAL_GENERAL_SIZE + 1; size <= maximumGeneralSize; size++) {
+			for (int size = CabinProgression.INITIAL_GENERAL_SIZE + CabinProgression.GENERAL_SIZE_STEP;
+				 size <= maximumGeneralSize; size += CabinProgression.GENERAL_SIZE_STEP) {
 				int targetSize = size;
 				if (expansions.stream().noneMatch(value -> value.targetSize() == targetSize)) {
 					throw new IllegalArgumentException("Missing general expansion definition for size " + size);
@@ -239,8 +241,9 @@ final class CabinUpgradeDefinitions {
 			wood("dark_oak"), wood("mangrove"), wood("cherry"), wood("pale_oak"), wood("bamboo")
 		);
 		List<Expansion> expansions = new ArrayList<>();
-		for (int size = 5; size <= DEFAULT_MAX_GENERAL_SIZE; size++) {
-			int step = size - CabinProgression.INITIAL_GENERAL_SIZE;
+		for (int size = CabinProgression.INITIAL_GENERAL_SIZE + CabinProgression.GENERAL_SIZE_STEP;
+			 size <= DEFAULT_MAX_GENERAL_SIZE; size += CabinProgression.GENERAL_SIZE_STEP) {
+			int step = (size - CabinProgression.INITIAL_GENERAL_SIZE) / CabinProgression.GENERAL_SIZE_STEP;
 			expansions.add(new Expansion(size, List.of(
 				new Ingredient(null, true, 8 + step * 4),
 				new Ingredient(Identifier.parse("minecraft:amethyst_block"), false, step),
@@ -248,7 +251,7 @@ final class CabinUpgradeDefinitions {
 			)));
 		}
 		return new Definitions(
-			1, DEFAULT_MAX_GENERAL_SIZE, woods, expansions, builtInWindowBase(), builtInWindowTiers()
+			2, DEFAULT_MAX_GENERAL_SIZE, woods, expansions, builtInWindowBase(), builtInWindowTiers()
 		);
 	}
 

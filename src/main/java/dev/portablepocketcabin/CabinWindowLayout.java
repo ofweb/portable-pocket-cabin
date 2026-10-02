@@ -109,16 +109,13 @@ final class CabinWindowLayout {
 			if (wallWindows.isEmpty()) {
 				continue;
 			}
-			int totalWidth = wallWindows.stream()
-				.mapToInt(entry -> dimensions(entry.getValue()).width())
-				.sum() + wallWindows.size() - 1;
 			int frameInset = PocketDimension.STRUCTURAL_CORNER_FRAME_DEPTH - 1;
-			int availableWidth = generalSize - frameInset * 2;
-			if (totalWidth > availableWidth) {
-				return invalidSize(generalSize, wall, totalWidth);
-			}
+			int availableWidth = generalSize / 2 - frameInset;
 			for (var entry : wallWindows) {
 				Dimensions dimensions = dimensions(entry.getValue());
+				if (dimensions.width() > availableWidth) {
+					return invalidSize(generalSize, wall, dimensions.width());
+				}
 				if (dimensions.height() > PocketDimension.clearInteriorHeight(generalSize)) {
 					return new Result(false, title(wall) + " window tier " + entry.getValue()
 						+ " needs a clear interior height of " + dimensions.height(), List.of());
@@ -126,11 +123,11 @@ final class CabinWindowLayout {
 			}
 
 			PocketDimension.InteriorBounds bounds = PocketDimension.bounds(generalSize);
-			int minimum = (wall == CabinWindowState.Wall.REAR ? bounds.minimumX() : bounds.minimumZ())
-				+ frameInset;
-			int cursor = minimum + Math.floorDiv(availableWidth - totalWidth, 2);
 			for (var entry : wallWindows) {
 				Dimensions dimensions = dimensions(entry.getValue());
+				// Each identity stays on its side of the reserved wall-center passage.
+				int minimum = entry.getKey().slot() == 0 ? -availableWidth : 1;
+				int cursor = minimum + Math.floorDiv(availableWidth - dimensions.width(), 2);
 				Set<BlockPos> positions = new LinkedHashSet<>();
 				for (int horizontal = cursor; horizontal < cursor + dimensions.width(); horizontal++) {
 					for (int y = 1; y <= dimensions.height(); y++) {
@@ -138,14 +135,13 @@ final class CabinWindowLayout {
 					}
 				}
 				result.add(new Footprint(entry.getKey(), entry.getValue(), positions));
-				cursor += dimensions.width() + 1;
 			}
 		}
 		return new Result(true, "Window layout fits", result);
 	}
 
 	private static Result invalidSize(int generalSize, CabinWindowState.Wall wall, int required) {
-		int minimumSize = required + (PocketDimension.STRUCTURAL_CORNER_FRAME_DEPTH - 1) * 2;
+		int minimumSize = (required + PocketDimension.STRUCTURAL_CORNER_FRAME_DEPTH - 1) * 2 + 1;
 		return new Result(false, title(wall) + " windows need general-space size " + minimumSize
 			+ " (current size " + generalSize + ")", List.of());
 	}

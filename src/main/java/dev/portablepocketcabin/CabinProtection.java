@@ -45,7 +45,7 @@ public final class CabinProtection {
 			return Optional.empty();
 		}
 		return CabinRegistry.get(level.getServer()).cabins().stream()
-			.filter(cabin -> PocketDimension.isInteriorExit(cabin.cellIndex(), pos))
+			.filter(cabin -> PocketDimension.isInteriorExit(cabin.cellIndex(), cabin.progression().generalSize(), pos))
 			.findFirst();
 	}
 
@@ -54,7 +54,7 @@ public final class CabinProtection {
 			return Optional.empty();
 		}
 		return CabinRegistry.get(level.getServer()).cabins().stream()
-			.filter(cabin -> PocketDimension.isInteriorController(cabin.cellIndex(), pos))
+			.filter(cabin -> PocketDimension.isInteriorController(cabin.cellIndex(), cabin.progression().generalSize(), pos))
 			.findFirst();
 	}
 }

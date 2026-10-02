@@ -101,12 +101,13 @@ final class CabinWindows {
 
 	static Map<BlockPos, Block> blocks(long cellIndex, Profile profile) {
 		return blocks(
-			cellIndex, CabinProgression.INITIAL_GENERAL_SIZE, CabinWindowState.grandfathered(), profile
+			cellIndex, CabinProgression.INITIAL_GENERAL_SIZE, CabinWindowState.EMPTY, profile
 		);
 	}
 
 	static Map<BlockPos, Block> blocks(long cellIndex, int generalSize, Profile profile) {
-		return blocks(cellIndex, generalSize, CabinWindowState.grandfathered(), profile);
+		return blocks(cellIndex, generalSize,
+			generalSize >= 5 ? CabinWindowState.grandfathered() : CabinWindowState.EMPTY, profile);
 	}
 
 	static Map<BlockPos, Block> blocks(

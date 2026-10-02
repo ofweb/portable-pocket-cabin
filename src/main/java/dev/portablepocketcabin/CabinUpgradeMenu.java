@@ -528,7 +528,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			|| !cabin.canEnter(player.getUUID())) {
 			return false;
 		}
-		var controller = PocketDimension.interiorController(cabin.cellIndex());
+		var controller = PocketDimension.interiorController(cabin.cellIndex(), cabin.progression().generalSize());
 		return player.distanceToSqr(
 			controller.getX() + 0.5, controller.getY() + 0.5, controller.getZ() + 0.5
 		) <= 64.0 && serverPlayer.level().getBlockState(controller).is(Blocks.LODESTONE);

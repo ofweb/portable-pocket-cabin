@@ -8,9 +8,9 @@ Cabin windows show exterior conditions. Reversal must keep window identities and
 
 ## Decision
 
-Left, rear, and right walls each permit two [Cabin windows](../../context.md#cabin-window) at most. The entrance wall stays unchanged. A wall's second Cabin window becomes available after the first is installed and their footprints fit. Each has an identity and six [window tiers](../../context.md#window-tier): 1×2, 2×2, 3×3, 5×4, 7×6, and 9×8.
+Left, rear, and right walls each permit two [Cabin windows](../../context.md#cabin-window) at most. The south entrance wall has no Cabin windows. A wall's second Cabin window becomes available after the first is installed and their footprints fit. Each has an identity and six [window tiers](../../context.md#window-tier): 1×2, 2×2, 3×3, 5×4, 7×6, and 9×8.
 
-The north, west, and east wall centers are reserved for passages. Windows cannot occupy those reserved centers, even before a corridor is installed. Windows sit beside the reserved openings and keep structural corner frames. Exact footprints and minimum sizes remain open; they must fit beside the passages defined by the [room brief](../../features/B-0005/brief.md). Purchase requires enough wall width and height without replacing player blocks or attached decoration. The interface shows the minimum main-room size or the blocking obstruction. Expansion can reposition Cabin windows without changing identities or purchased steps.
+The north, west, and east wall centers are reserved for passages. Windows cannot occupy those reserved centers, even before a corridor is installed. Each window stays on its side of the reserved opening and keeps structural corner frames. Base windows first fit at 5×5. Larger tiers require enough width beside the passages defined by the [room brief](../../features/B-0005/brief.md) and enough clear height. Purchase cannot replace player blocks or attached decoration. The interface shows the minimum main-room size or the blocking obstruction. Expansion can reposition Cabin windows without changing identities or purchased steps.
 
 The base purchase includes the exterior-condition color palette. Panes show dawn, day, sunset, night, rain, thunder, Nether, End, or a cabin without an active exterior. Packing and exterior loss show inactive shutters. Dye deposits do not select pane color. New cabins have solid walls.
 

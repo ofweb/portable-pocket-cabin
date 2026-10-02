@@ -28,8 +28,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 public final class CabinRegistry extends SavedData {
-	private static final int SCHEMA_VERSION = 7;
-	private static final int OLDEST_MIGRATABLE_SCHEMA_VERSION = 3;
+	private static final int SCHEMA_VERSION = 8;
 
 	private record RegistryData(
 		int schemaVersion, long nextCellIndex, List<CabinRecord> cabins,
@@ -88,7 +87,7 @@ public final class CabinRegistry extends SavedData {
 		return server.overworld().getDataStorage().computeIfAbsent(TYPE);
 	}
 
-	private static synchronized void validateWorldSchema(MinecraftServer server) {
+	static synchronized void validateWorldSchema(MinecraftServer server) {
 		if (VALIDATED_SERVERS.contains(server)) {
 			return;
 		}
@@ -426,7 +425,8 @@ public final class CabinRegistry extends SavedData {
 		UUID cabinId, UUID owner, int expectedSize, int targetSize, int configuredMaximum
 	) {
 		CabinRecord cabin = requireOwned(cabinId, owner);
-		if (cabin.progression().generalSize() != expectedSize || targetSize != expectedSize + 1) {
+		if (cabin.progression().generalSize() != expectedSize
+			|| targetSize != expectedSize + CabinProgression.GENERAL_SIZE_STEP) {
 			throw new IllegalStateException("Cabin size changed before the upgrade could commit");
 		}
 		if (targetSize > configuredMaximum) {
@@ -601,19 +601,11 @@ public final class CabinRegistry extends SavedData {
 		if (repairedNextCellIndex > PocketDimension.MAX_CELL_INDEX + 1) {
 			return DataResult.error(() -> "Cabin next cell index is outside the supported grid");
 		}
-		List<CabinRecord> cabins = data.schemaVersion() < 6
-			? data.cabins().stream()
-				.map(cabin -> copyUpgrades(cabin, cabin.upgrades().withWindows(CabinWindowState.grandfathered())))
-				.toList()
-			: data.cabins();
-		CabinRegistry registry = new CabinRegistry(repairedNextCellIndex, cabins, data.worldAttunement());
-		if (data.schemaVersion() != SCHEMA_VERSION) {
-			registry.setDirty();
-		}
+		CabinRegistry registry = new CabinRegistry(repairedNextCellIndex, data.cabins(), data.worldAttunement());
 		return DataResult.success(registry);
 	}
 
 	private static boolean isSupportedSchema(int version) {
-		return version >= OLDEST_MIGRATABLE_SCHEMA_VERSION && version <= SCHEMA_VERSION;
+		return version == SCHEMA_VERSION;
 	}
 }

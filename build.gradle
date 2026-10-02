@@ -46,6 +46,11 @@ fabricApi {
 	}
 }
 
+// Loom clears the client test directory; server GameTests also need a fresh world.
+tasks.named("deleteGameTestRunDir", Delete) {
+	delete(layout.buildDirectory.dir("run/gameTest"))
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"

@@ -145,7 +145,7 @@ final class DedicatedServerStartupCheck {
 		}
 		ServerLevel pocket = server.getLevel(PocketDimension.LEVEL_KEY);
 		if (pocket == null
-			|| !pocket.getBlockState(PocketDimension.interiorExitDoorLower(first.cellIndex())).is(Blocks.IRON_DOOR)) {
+			|| !pocket.getBlockState(PocketDimension.interiorExitDoorLower(first.cellIndex(), first.progression().generalSize())).is(Blocks.IRON_DOOR)) {
 			throw new IllegalStateException("Generated cabin interior did not persist across restart");
 		}
 		assertCornerFramesMigrated(server, pocket, first);
@@ -158,7 +158,7 @@ final class DedicatedServerStartupCheck {
 		ExteriorCabin.removeProjection(server.overworld(), exterior);
 		registry.markExteriorCleanupComplete(first.uuid());
 		if (packed.lifecycle() != CabinLifecycle.PACKED || packed.packedItemGeneration() != 1
-			|| !pocket.getBlockState(PocketDimension.interiorExitDoorLower(first.cellIndex())).is(Blocks.IRON_DOOR)) {
+			|| !pocket.getBlockState(PocketDimension.interiorExitDoorLower(first.cellIndex(), first.progression().generalSize())).is(Blocks.IRON_DOOR)) {
 			throw new IllegalStateException("Packing changed the persistent interior or item generation incorrectly");
 		}
 		assertPartialUpgradeFund(registry.find(first.uuid()).orElseThrow());
@@ -192,13 +192,13 @@ final class DedicatedServerStartupCheck {
 		BlockPos center = PocketDimension.cellCenter(cellIndex);
 		BlockPos chestPos = center.offset(-1, 1, -1);
 		BlockPos furnacePos = center.offset(0, 1, -1);
-		BlockPos waterPos = center.offset(1, 1, -1);
-		BlockPos farmlandPos = center.offset(2, 1, -1);
+		BlockPos waterPos = center.offset(1, 1, 1);
+		BlockPos farmlandPos = center.offset(1, 1, -1);
 		BlockPos cropPos = farmlandPos.above();
 		BlockPos doubleChestLeft = center.offset(-1, 1, 0);
 		BlockPos doubleChestRight = center.offset(0, 1, 0);
-		BlockPos bedFoot = center.offset(1, 1, 1);
-		BlockPos bedHead = bedFoot.relative(Direction.SOUTH);
+		BlockPos bedFoot = center.offset(-1, 1, 1);
+		BlockPos bedHead = bedFoot.relative(Direction.EAST);
 		pocket.setBlockAndUpdate(chestPos, Blocks.CHEST.defaultBlockState());
 		pocket.setBlockAndUpdate(doubleChestLeft, Blocks.CHEST.defaultBlockState()
 			.setValue(ChestBlock.FACING, Direction.NORTH)
@@ -212,10 +212,10 @@ final class DedicatedServerStartupCheck {
 			.setValue(BlockStateProperties.MOISTURE, 7));
 		pocket.setBlockAndUpdate(cropPos, Blocks.WHEAT.defaultBlockState().setValue(CropBlock.AGE, 3));
 		pocket.setBlockAndUpdate(bedFoot, Blocks.BED.red().defaultBlockState()
-			.setValue(BedBlock.FACING, Direction.SOUTH)
+			.setValue(BedBlock.FACING, Direction.EAST)
 			.setValue(BedBlock.PART, BedPart.FOOT));
 		pocket.setBlockAndUpdate(bedHead, Blocks.BED.red().defaultBlockState()
-			.setValue(BedBlock.FACING, Direction.SOUTH)
+			.setValue(BedBlock.FACING, Direction.EAST)
 			.setValue(BedBlock.PART, BedPart.HEAD));
 
 		ChestBlockEntity chest = (ChestBlockEntity) pocket.getBlockEntity(chestPos);
@@ -315,7 +315,7 @@ final class DedicatedServerStartupCheck {
 	}
 
 	private static void assertPartialUpgradeFund(CabinRecord cabin) {
-		CabinUpgradeState.Fund fund = cabin.upgrades().fund(CabinUpgradeState.Target.generalSpace(6))
+		CabinUpgradeState.Fund fund = cabin.upgrades().fund(CabinUpgradeState.Target.generalSpace(7))
 			.orElseThrow(() -> new IllegalStateException("Partially funded upgrade did not persist"));
 		if (cabin.progression().generalSize() != 5
 			|| fund.stacks().size() != 1
@@ -337,12 +337,12 @@ final class DedicatedServerStartupCheck {
 			|| doubleChest.getItem(0).getCount() != 5
 			|| furnace == null || !furnace.getItem(2).is(Items.IRON_INGOT)
 			|| furnace.getItem(2).getCount() != 2
-			|| !pocket.getBlockState(center.offset(1, 1, -1)).is(Blocks.WATER)
-			|| !pocket.getBlockState(center.offset(2, 1, -1)).is(Blocks.FARMLAND)
-			|| !pocket.getBlockState(center.offset(2, 2, -1)).is(Blocks.WHEAT)
-			|| pocket.getBlockState(center.offset(2, 2, -1)).getValue(CropBlock.AGE) != 3
-			|| !pocket.getBlockState(center.offset(1, 1, 1)).is(Blocks.BED.red())
-			|| !pocket.getBlockState(center.offset(1, 1, 2)).is(Blocks.BED.red())) {
+			|| !pocket.getBlockState(center.offset(1, 1, 1)).is(Blocks.WATER)
+			|| !pocket.getBlockState(center.offset(1, 1, -1)).is(Blocks.FARMLAND)
+			|| !pocket.getBlockState(center.offset(1, 2, -1)).is(Blocks.WHEAT)
+			|| pocket.getBlockState(center.offset(1, 2, -1)).getValue(CropBlock.AGE) != 3
+			|| !pocket.getBlockState(center.offset(-1, 1, 1)).is(Blocks.BED.red())
+			|| !pocket.getBlockState(center.offset(0, 1, 1)).is(Blocks.BED.red())) {
 			throw new IllegalStateException("Vanilla interior fixtures changed across packing or restart");
 		}
 	}

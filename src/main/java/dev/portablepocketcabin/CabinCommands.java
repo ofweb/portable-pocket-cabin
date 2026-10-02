@@ -247,7 +247,7 @@ final class CabinCommands {
 			PocketDimension.ensureDebugMarker(pocket, cabin.cellIndex());
 		}
 		var destination = cabin.interiorGenerated()
-			? PocketDimension.interiorEntrance(cabin.cellIndex())
+			? PocketDimension.interiorEntrance(cabin.cellIndex(), cabin.progression().generalSize())
 			: PocketDimension.cellCenter(cabin.cellIndex()).offset(0, 1, 2);
 		player.teleportTo(
 			pocket,

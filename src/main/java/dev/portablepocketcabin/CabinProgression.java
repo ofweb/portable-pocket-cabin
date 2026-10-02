@@ -9,8 +9,9 @@ import java.util.Objects;
 
 /** Persisted, player-owned progression state. Balancing definitions live elsewhere. */
 public record CabinProgression(int generalSize, List<CabinRoom> rooms) {
-	public static final int INITIAL_GENERAL_SIZE = 4;
-	public static final int ABSOLUTE_MAX_GENERAL_SIZE = 32;
+	public static final int INITIAL_GENERAL_SIZE = 3;
+	public static final int GENERAL_SIZE_STEP = 2;
+	public static final int ABSOLUTE_MAX_GENERAL_SIZE = 21;
 	public static final CabinProgression INITIAL = new CabinProgression(INITIAL_GENERAL_SIZE, List.of());
 	public static final Codec<CabinProgression> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 		Codec.INT.optionalFieldOf("general_size", INITIAL_GENERAL_SIZE).forGetter(CabinProgression::generalSize),
@@ -20,8 +21,8 @@ public record CabinProgression(int generalSize, List<CabinRoom> rooms) {
 	public CabinProgression {
 		Objects.requireNonNull(rooms, "rooms");
 		rooms = List.copyOf(rooms);
-		if (generalSize < INITIAL_GENERAL_SIZE || generalSize > ABSOLUTE_MAX_GENERAL_SIZE) {
-			throw new IllegalArgumentException("General cabin size must be between "
+		if (!isSupportedGeneralSize(generalSize)) {
+			throw new IllegalArgumentException("General cabin size must be odd and between "
 				+ INITIAL_GENERAL_SIZE + " and " + ABSOLUTE_MAX_GENERAL_SIZE);
 		}
 		var ids = new HashSet<>();
@@ -34,6 +35,11 @@ public record CabinProgression(int generalSize, List<CabinRoom> rooms) {
 				throw new IllegalArgumentException("Duplicate room cell in cabin progression: " + room.cellIndex());
 			}
 		}
+	}
+
+	static boolean isSupportedGeneralSize(int size) {
+		return size >= INITIAL_GENERAL_SIZE && size <= ABSOLUTE_MAX_GENERAL_SIZE
+			&& (size - INITIAL_GENERAL_SIZE) % GENERAL_SIZE_STEP == 0;
 	}
 
 	CabinProgression withGeneralSize(int size) {

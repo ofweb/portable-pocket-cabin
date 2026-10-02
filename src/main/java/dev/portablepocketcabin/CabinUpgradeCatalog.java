@@ -100,7 +100,7 @@ final class CabinUpgradeCatalog {
 		if (currentSize >= definitions.maximumGeneralSize()) {
 			return Optional.empty();
 		}
-		int targetSize = currentSize + 1;
+		int targetSize = currentSize + CabinProgression.GENERAL_SIZE_STEP;
 		CabinUpgradeDefinitions.Expansion expansion = definitions.expansion(targetSize);
 		if (expansion == null) {
 			return Optional.empty();

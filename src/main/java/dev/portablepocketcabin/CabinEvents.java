@@ -100,7 +100,7 @@ final class CabinEvents {
 			player.sendSystemMessage(Component.literal("Cabin access changed before entry completed."));
 			return InteractionResult.FAIL;
 		}
-		var destination = PocketDimension.interiorEntrance(current.cellIndex());
+		var destination = PocketDimension.interiorEntrance(current.cellIndex(), current.progression().generalSize());
 		boolean teleported = player.teleportTo(
 			pocket,
 			destination.getX() + 0.5,

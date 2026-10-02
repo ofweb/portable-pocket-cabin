@@ -23,7 +23,7 @@ final class CabinFundEjection {
 		if (!level.dimension().equals(PocketDimension.LEVEL_KEY)) {
 			return false;
 		}
-		var controller = PocketDimension.interiorController(cabin.cellIndex());
+		var controller = PocketDimension.interiorController(cabin.cellIndex(), cabin.progression().generalSize());
 		if (!level.getBlockState(controller).is(Blocks.LODESTONE)) {
 			return false;
 		}
@@ -56,7 +56,7 @@ final class CabinFundEjection {
 	static boolean ejectMarkedInCabinLevel(
 		ServerLevel level, CabinRecord cabin, UUID operationId, List<ItemStack> stacks
 	) {
-		var controller = PocketDimension.interiorController(cabin.cellIndex());
+		var controller = PocketDimension.interiorController(cabin.cellIndex(), cabin.progression().generalSize());
 		if (!level.getBlockState(controller).is(Blocks.LODESTONE)) {
 			return false;
 		}
@@ -115,6 +115,6 @@ final class CabinFundEjection {
 	}
 
 	static BlockPos dropPosition(CabinRecord cabin) {
-		return PocketDimension.interiorController(cabin.cellIndex()).relative(Direction.NORTH);
+		return PocketDimension.interiorController(cabin.cellIndex(), cabin.progression().generalSize()).relative(Direction.NORTH);
 	}
 }

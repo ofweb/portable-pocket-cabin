@@ -239,7 +239,7 @@ record CabinUpgradeState(
 				try {
 					int size = Integer.parseInt(key);
 					if (size <= CabinProgression.INITIAL_GENERAL_SIZE
-						|| size > CabinProgression.ABSOLUTE_MAX_GENERAL_SIZE) {
+						|| !CabinProgression.isSupportedGeneralSize(size)) {
 						throw new IllegalArgumentException("General-space target is outside the supported range");
 					}
 				} catch (NumberFormatException exception) {
@@ -498,8 +498,8 @@ record CabinUpgradeState(
 			Objects.requireNonNull(operationId, "operationId");
 			Objects.requireNonNull(target, "target");
 			if (target.isGeneralSpace()) {
-				if (expectedState < CabinProgression.INITIAL_GENERAL_SIZE
-					|| targetState != expectedState + 1
+				if (!CabinProgression.isSupportedGeneralSize(expectedState)
+					|| targetState != expectedState + CabinProgression.GENERAL_SIZE_STEP
 					|| target.generalSpaceSize() != targetState) {
 					throw new IllegalArgumentException("Installation must target the next general-space size");
 				}
@@ -514,7 +514,7 @@ record CabinUpgradeState(
 		}
 
 		static Installation generalSpace(UUID operationId, Target target, int expectedSize) {
-			return new Installation(operationId, target, expectedSize, expectedSize + 1);
+			return new Installation(operationId, target, expectedSize, expectedSize + CabinProgression.GENERAL_SIZE_STEP);
 		}
 
 		static Installation window(UUID operationId, Target target, int expectedTier) {
