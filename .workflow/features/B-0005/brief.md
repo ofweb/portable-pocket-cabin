@@ -20,8 +20,9 @@ Acceptance:
 - The first room purchased on a corridor creates that corridor in the same purchase. There is no separate corridor purchase.
 - Each cabin can purchase one room of each type, with livestock rooms defined per animal type. Upgrades provide more space or capacity; players cannot purchase duplicates.
 - Rooms have separate space. Adding a room does not move player blocks in existing spaces.
-- Rooms branch off corridor sides. Corridor ends remain available for extension when more rooms are purchased.
-- West and east rooms branch south, leaving space to their north for north-corridor rooms. Each room brief owns its corridor assignment.
+- Rooms branch off corridor sides. The west corridor bends north into the livestock corridor; goats occupy its north end.
+- Room positions are fixed, independent of purchase order. Corridors extend past unpurchased positions when necessary.
+- West rooms use both corridor sides. Potions branches north of the east corridor; kitchen stays south. Smelting sits farther north to keep these wings separate.
 - Each room has reserved space for the maximum growth defined by its feature. Its upgrades cannot overlap another room's space.
 - If installation does not complete, the fund, cabin, and other rooms stay the same.
 - Players cannot enter a room before installation is complete.
@@ -74,7 +75,7 @@ Acceptance:
 
 ## Scope
 
-This draft describes shared installation, safe interior travel, and persistence behavior for purpose-specific rooms. Each room's feature defines its facilities, costs, size, and upgrade path.
+Shared installation, traversal, and persistence belong here. Each room's feature owns facilities, costs, size, and upgrades.
 
 ## Non-goals
 
@@ -92,10 +93,11 @@ This draft describes shared installation, safe interior travel, and persistence 
 - [Expansion decision](../../decisions/pdr/0006-expand-general-space-with-world-materials.md).
 - [Main room and purpose-specific rooms](../../direction.md#main-room-and-purpose-specific-rooms).
 - [Room relocation feasibility](../../../experiments/room-relocation/README.md).
+- Floor-layout reference: [scale drawing](../../../experiments/room-layout/layout.svg) and [dimensions and fit limits](../../../experiments/room-layout/README.md).
 - [Related room items](../../backlog.md#b-0019-greenhouse).
 
 ## Open questions and assumptions
 
-- Exact room order, north-corridor sides, rectangular orientation, and entrance placement remain open. The greenhouse is closest to the main room on the west corridor.
+- The drawing records agreed room placement and the open corridor bend. Aquatic berth dimensions, room heights, and growth anchors remain open.
 - Relocation is feasible for the vanilla contents covered by the isolated experiment. Supported mod state, external links, cabin-specific records, and safe reconnect handling remain unverified.
 - Room growth limits belong to each room's feature. Its reserved space must account for those limits.

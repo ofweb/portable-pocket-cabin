@@ -16,7 +16,7 @@ Story: An owner installs the potion room book and purchases the room.
 Acceptance:
 
 - The potion room has its own book and upgrade path under B-0038.
-- It branches from the south side of the east corridor.
+- It branches from the north side of the east corridor.
 - Its usable floor stays fixed at 5×5 through upgrades.
 - The room handles brewing.
 - Installation, traversal, permissions, and persistence follow B-0005.

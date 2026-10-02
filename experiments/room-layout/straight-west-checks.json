@@ -1,0 +1,127 @@
+{
+  "status": "proposal",
+  "excluded": [
+    "aquatic berth",
+    "vertical geometry",
+    "connected cabin hallways"
+  ],
+  "checks": [
+    {
+      "main_size": 5,
+      "bounds": [
+        -70.5,
+        -32.5,
+        11.5,
+        44.5
+      ],
+      "west_corridor_length": 67.0,
+      "east_corridor_length": 8.0,
+      "known_floor_overlaps": [],
+      "within_current_512_block_cell": true
+    },
+    {
+      "main_size": 7,
+      "bounds": [
+        -71.5,
+        -32.5,
+        12.5,
+        44.5
+      ],
+      "west_corridor_length": 67.0,
+      "east_corridor_length": 8.0,
+      "known_floor_overlaps": [],
+      "within_current_512_block_cell": true
+    },
+    {
+      "main_size": 9,
+      "bounds": [
+        -72.5,
+        -32.5,
+        13.5,
+        44.5
+      ],
+      "west_corridor_length": 67.0,
+      "east_corridor_length": 8.0,
+      "known_floor_overlaps": [],
+      "within_current_512_block_cell": true
+    },
+    {
+      "main_size": 11,
+      "bounds": [
+        -73.5,
+        -32.5,
+        14.5,
+        44.5
+      ],
+      "west_corridor_length": 67.0,
+      "east_corridor_length": 8.0,
+      "known_floor_overlaps": [],
+      "within_current_512_block_cell": true
+    },
+    {
+      "main_size": 13,
+      "bounds": [
+        -74.5,
+        -32.5,
+        15.5,
+        44.5
+      ],
+      "west_corridor_length": 67.0,
+      "east_corridor_length": 8.0,
+      "known_floor_overlaps": [],
+      "within_current_512_block_cell": true
+    },
+    {
+      "main_size": 15,
+      "bounds": [
+        -75.5,
+        -32.5,
+        16.5,
+        44.5
+      ],
+      "west_corridor_length": 67.0,
+      "east_corridor_length": 8.0,
+      "known_floor_overlaps": [],
+      "within_current_512_block_cell": true
+    },
+    {
+      "main_size": 17,
+      "bounds": [
+        -76.5,
+        -32.5,
+        17.5,
+        44.5
+      ],
+      "west_corridor_length": 67.0,
+      "east_corridor_length": 8.0,
+      "known_floor_overlaps": [],
+      "within_current_512_block_cell": true
+    },
+    {
+      "main_size": 19,
+      "bounds": [
+        -77.5,
+        -32.5,
+        18.5,
+        44.5
+      ],
+      "west_corridor_length": 67.0,
+      "east_corridor_length": 8.0,
+      "known_floor_overlaps": [],
+      "within_current_512_block_cell": true
+    },
+    {
+      "main_size": 21,
+      "bounds": [
+        -78.5,
+        -32.5,
+        19.5,
+        44.5
+      ],
+      "west_corridor_length": 67.0,
+      "east_corridor_length": 8.0,
+      "known_floor_overlaps": [],
+      "within_current_512_block_cell": true
+    }
+  ]
+}

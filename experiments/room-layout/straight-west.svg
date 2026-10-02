@@ -1,0 +1,228 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1650" viewBox="0 0 1400 1650">
+<defs><pattern id="grid" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M7 0H0V7" fill="none" stroke="#d8dee8" stroke-width=".4"/></pattern></defs>
+<rect width="1400" height="1650" fill="#fafbfd"/>
+<text x="30" y="32" font-family="sans-serif" font-size="24" fill="#26344b" text-anchor="start">B-0005 · Proposed fixed room layout</text>
+<text x="30" y="58" font-family="sans-serif" font-size="15" fill="#26344b" text-anchor="start">True scale: 7 pixels = 1 block. Minimum floors overlay maximum footprints. North is up.</text>
+<text x="30" y="81" font-family="sans-serif" font-size="14" fill="#a33c22" text-anchor="start">Room order, growth anchors, stable layout and one-block walls are proposals. Aquatic berth has no agreed dimensions.</text>
+<text x="30" y="215" font-family="sans-serif" font-size="19" fill="#26344b" text-anchor="start">Main room 5×5 · all known room reservations</text>
+<rect x="280" y="176" width="1057" height="630" fill="url(#grid)" stroke="#d8dee8" stroke-width="1" stroke-dasharray=""/>
+<rect x="556.5" y="452.5" width="483.0" height="35" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="563.5" y="459.5" width="469.0" height="21" fill="#e7edf5" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1060.5" y="452.5" width="70.0" height="35" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1067.5" y="459.5" width="56.0" height="21" fill="#e7edf5" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1032.5" y="326.5" width="35" height="133" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1039.5" y="333.5" width="21" height="119" fill="#e7edf5" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1025.5" y="445.5" width="49" height="49" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1032.5" y="452.5" width="35" height="35" fill="#ead9af" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="927.5" y="480.5" width="91" height="231" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="934.5" y="487.5" width="77" height="217" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="955.5" y="487.5" width="35" height="49" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="969.5" y="480.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="973.0" y="725.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Greenhouse</text>
+<text x="973.0" y="739.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×31</text>
+<text x="973.0" y="516.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">5×7</text>
+<rect x="759.5" y="480.5" width="161" height="301" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="766.5" y="487.5" width="147" height="287" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="815.5" y="487.5" width="49" height="49" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="836.5" y="480.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="840.0" y="795.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Arboretum</text>
+<text x="840.0" y="809.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">21×41</text>
+<text x="840.0" y="516.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">7×7</text>
+<rect x="661.5" y="480.5" width="91" height="91" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="668.5" y="487.5" width="77" height="77" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="696.5" y="487.5" width="21" height="21" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="703.5" y="480.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="707.0" y="585.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Pigs</text>
+<text x="707.0" y="599.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×11</text>
+<text x="707.0" y="502.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">3×3</text>
+<rect x="563.5" y="480.5" width="91" height="91" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="570.5" y="487.5" width="77" height="77" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="598.5" y="487.5" width="21" height="21" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="605.5" y="480.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="609.0" y="585.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Chickens</text>
+<text x="609.0" y="599.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×11</text>
+<text x="609.0" y="502.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">3×3</text>
+<rect x="892.5" y="242.5" width="91" height="217" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="899.5" y="249.5" width="77" height="203" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="899.5" y="417.5" width="77" height="35" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="962.5" y="452.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="938.0" y="228.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Stable</text>
+<text x="938.0" y="242.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×29</text>
+<text x="938.0" y="439.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">11×5</text>
+<rect x="899.5" y="417.5" width="49" height="35" fill="none" stroke="#6a8e78" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="899.5" y="375.5" width="49" height="35" fill="none" stroke="#6a8e78" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="899.5" y="333.5" width="49" height="35" fill="none" stroke="#6a8e78" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="899.5" y="291.5" width="49" height="35" fill="none" stroke="#6a8e78" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="899.5" y="249.5" width="49" height="35" fill="none" stroke="#6a8e78" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="955.5" y="249.5" width="21" height="203" fill="#e7edf5" stroke="#64758b" stroke-width="1" stroke-dasharray=""/>
+<rect x="794.5" y="368.5" width="91" height="91" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="801.5" y="375.5" width="77" height="77" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="829.5" y="431.5" width="21" height="21" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="836.5" y="452.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="840.0" y="354.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Sheep</text>
+<text x="840.0" y="368.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×11</text>
+<text x="840.0" y="446.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">3×3</text>
+<rect x="696.5" y="368.5" width="91" height="91" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="703.5" y="375.5" width="77" height="77" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="731.5" y="431.5" width="21" height="21" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="738.5" y="452.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="742.0" y="354.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Cows</text>
+<text x="742.0" y="368.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×11</text>
+<text x="742.0" y="446.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">3×3</text>
+<rect x="598.5" y="368.5" width="91" height="91" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="605.5" y="375.5" width="77" height="77" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="633.5" y="431.5" width="21" height="21" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="640.5" y="452.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="644.0" y="354.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Goats</text>
+<text x="644.0" y="368.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×11</text>
+<text x="644.0" y="446.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">3×3</text>
+<rect x="1081.5" y="480.5" width="49" height="49" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1088.5" y="487.5" width="35" height="35" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1088.5" y="487.5" width="35" height="35" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="1102.5" y="480.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="1106.0" y="543.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Kitchen</text>
+<text x="1106.0" y="557.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">5×5</text>
+<rect x="1081.5" y="410.5" width="49" height="49" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1088.5" y="417.5" width="35" height="35" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1088.5" y="417.5" width="35" height="35" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="1102.5" y="452.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="1134.0" y="435.0" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="start">Potions 5×5</text>
+<rect x="990.5" y="393.0" width="49" height="49" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="997.5" y="400.0" width="35" height="35" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="997.5" y="400.0" width="35" height="35" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="1032.5" y="414.0" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="1015.0" y="415.5" font-family="sans-serif" font-size="9" fill="#26344b" text-anchor="middle">Crafting</text>
+<text x="1015.0" y="427.5" font-family="sans-serif" font-size="9" fill="#26344b" text-anchor="middle">5×5</text>
+<rect x="1060.5" y="337.0" width="63" height="63" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1067.5" y="344.0" width="49" height="49" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1067.5" y="344.0" width="49" height="49" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="1060.5" y="365.0" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="1127.0" y="368.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="start">Smelting 7×7</text>
+<rect x="990.5" y="337.0" width="49" height="49" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="997.5" y="344.0" width="35" height="35" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="997.5" y="344.0" width="35" height="35" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="1032.5" y="358.0" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="1015.0" y="359.5" font-family="sans-serif" font-size="9" fill="#26344b" text-anchor="middle">Enchanting</text>
+<text x="1015.0" y="371.5" font-family="sans-serif" font-size="9" fill="#26344b" text-anchor="middle">5×5</text>
+<rect x="1025.5" y="466.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<rect x="1067.5" y="466.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<rect x="1046.5" y="445.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="1050" y="502.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Main</text>
+<path d="M 1250 345 v -25 m -5 7 l5 -7 5 7" fill="none" stroke="#26344b" stroke-width="2"/>
+<text x="1250" y="313" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="middle">N</text>
+<path d="M50 810h70 M50 805v10 M120 805v10" stroke="#26344b" stroke-width="2"/>
+<text x="50" y="832" font-family="sans-serif" font-size="13" fill="#26344b" text-anchor="start">10 blocks</text>
+<text x="190" y="816" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Known outer footprint: 82 × 77 blocks</text>
+<text x="30" y="915" font-family="sans-serif" font-size="19" fill="#26344b" text-anchor="start">Main room 21×21 · all known room reservations</text>
+<rect x="280" y="876" width="1057" height="630" fill="url(#grid)" stroke="#d8dee8" stroke-width="1" stroke-dasharray=""/>
+<rect x="500.5" y="1152.5" width="483.0" height="35" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="507.5" y="1159.5" width="469.0" height="21" fill="#e7edf5" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1116.5" y="1152.5" width="70.0" height="35" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1123.5" y="1159.5" width="56.0" height="21" fill="#e7edf5" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1032.5" y="970.5" width="35" height="133" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1039.5" y="977.5" width="21" height="119" fill="#e7edf5" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="969.5" y="1089.5" width="161" height="161" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="976.5" y="1096.5" width="147" height="147" fill="#ead9af" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="871.5" y="1180.5" width="91" height="231" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="878.5" y="1187.5" width="77" height="217" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="899.5" y="1187.5" width="35" height="49" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="913.5" y="1180.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="917.0" y="1425.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Greenhouse</text>
+<text x="917.0" y="1439.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×31</text>
+<text x="917.0" y="1216.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">5×7</text>
+<rect x="703.5" y="1180.5" width="161" height="301" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="710.5" y="1187.5" width="147" height="287" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="759.5" y="1187.5" width="49" height="49" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="780.5" y="1180.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="784.0" y="1495.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Arboretum</text>
+<text x="784.0" y="1509.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">21×41</text>
+<text x="784.0" y="1216.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">7×7</text>
+<rect x="605.5" y="1180.5" width="91" height="91" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="612.5" y="1187.5" width="77" height="77" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="640.5" y="1187.5" width="21" height="21" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="647.5" y="1180.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="651.0" y="1285.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Pigs</text>
+<text x="651.0" y="1299.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×11</text>
+<text x="651.0" y="1202.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">3×3</text>
+<rect x="507.5" y="1180.5" width="91" height="91" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="514.5" y="1187.5" width="77" height="77" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="542.5" y="1187.5" width="21" height="21" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="549.5" y="1180.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="553.0" y="1285.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Chickens</text>
+<text x="553.0" y="1299.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×11</text>
+<text x="553.0" y="1202.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">3×3</text>
+<rect x="836.5" y="942.5" width="91" height="217" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="843.5" y="949.5" width="77" height="203" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="843.5" y="1117.5" width="77" height="35" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="906.5" y="1152.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="882.0" y="928.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Stable</text>
+<text x="882.0" y="942.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×29</text>
+<text x="882.0" y="1139.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">11×5</text>
+<rect x="843.5" y="1117.5" width="49" height="35" fill="none" stroke="#6a8e78" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="843.5" y="1075.5" width="49" height="35" fill="none" stroke="#6a8e78" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="843.5" y="1033.5" width="49" height="35" fill="none" stroke="#6a8e78" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="843.5" y="991.5" width="49" height="35" fill="none" stroke="#6a8e78" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="843.5" y="949.5" width="49" height="35" fill="none" stroke="#6a8e78" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="899.5" y="949.5" width="21" height="203" fill="#e7edf5" stroke="#64758b" stroke-width="1" stroke-dasharray=""/>
+<rect x="738.5" y="1068.5" width="91" height="91" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="745.5" y="1075.5" width="77" height="77" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="773.5" y="1131.5" width="21" height="21" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="780.5" y="1152.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="784.0" y="1054.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Sheep</text>
+<text x="784.0" y="1068.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×11</text>
+<text x="784.0" y="1146.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">3×3</text>
+<rect x="640.5" y="1068.5" width="91" height="91" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="647.5" y="1075.5" width="77" height="77" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="675.5" y="1131.5" width="21" height="21" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="682.5" y="1152.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="686.0" y="1054.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Cows</text>
+<text x="686.0" y="1068.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×11</text>
+<text x="686.0" y="1146.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">3×3</text>
+<rect x="542.5" y="1068.5" width="91" height="91" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="549.5" y="1075.5" width="77" height="77" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="577.5" y="1131.5" width="21" height="21" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="584.5" y="1152.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="588.0" y="1054.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Goats</text>
+<text x="588.0" y="1068.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×11</text>
+<text x="588.0" y="1146.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">3×3</text>
+<rect x="1137.5" y="1180.5" width="49" height="49" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1144.5" y="1187.5" width="35" height="35" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1144.5" y="1187.5" width="35" height="35" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="1158.5" y="1180.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="1162.0" y="1243.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Kitchen</text>
+<text x="1162.0" y="1257.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">5×5</text>
+<rect x="1137.5" y="1110.5" width="49" height="49" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1144.5" y="1117.5" width="35" height="35" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1144.5" y="1117.5" width="35" height="35" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="1158.5" y="1152.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="1190.0" y="1135.0" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="start">Potions 5×5</text>
+<rect x="990.5" y="1037.0" width="49" height="49" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="997.5" y="1044.0" width="35" height="35" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="997.5" y="1044.0" width="35" height="35" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="1032.5" y="1058.0" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="1015.0" y="1059.5" font-family="sans-serif" font-size="9" fill="#26344b" text-anchor="middle">Crafting</text>
+<text x="1015.0" y="1071.5" font-family="sans-serif" font-size="9" fill="#26344b" text-anchor="middle">5×5</text>
+<rect x="1060.5" y="981.0" width="63" height="63" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1067.5" y="988.0" width="49" height="49" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="1067.5" y="988.0" width="49" height="49" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="1060.5" y="1009.0" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="1127.0" y="1012.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="start">Smelting 7×7</text>
+<rect x="990.5" y="981.0" width="49" height="49" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="997.5" y="988.0" width="35" height="35" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="997.5" y="988.0" width="35" height="35" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="1032.5" y="1002.0" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="1015.0" y="1003.5" font-family="sans-serif" font-size="9" fill="#26344b" text-anchor="middle">Enchanting</text>
+<text x="1015.0" y="1015.5" font-family="sans-serif" font-size="9" fill="#26344b" text-anchor="middle">5×5</text>
+<rect x="969.5" y="1166.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<rect x="1123.5" y="1166.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<rect x="1046.5" y="1089.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<text x="1050" y="1258.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Main</text>
+<path d="M 1250 1045 v -25 m -5 7 l5 -7 5 7" fill="none" stroke="#26344b" stroke-width="2"/>
+<text x="1250" y="1013" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="middle">N</text>
+<path d="M50 1510h70 M50 1505v10 M120 1505v10" stroke="#26344b" stroke-width="2"/>
+<text x="50" y="1532" font-family="sans-serif" font-size="13" fill="#26344b" text-anchor="start">10 blocks</text>
+<text x="190" y="1516" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Known outer footprint: 98 × 77 blocks</text>
+<text x="30" y="1560" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Dark: one-block shell · light green: maximum usable floor · green dashed: minimum usable floor · pale gray: corridor</text>
+<text x="30" y="1585" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">All nine main-room sizes (5–21) checked: known floors and room shells do not overlap; footprint stays within a 512-block cell.</text>
+<text x="30" y="1610" font-family="sans-serif" font-size="14" fill="#a33c22" text-anchor="start">Not a final fit proof: aquatic berth, room heights, connected-cabin hallway allowance and growth behaviour remain unresolved.</text>
+</svg>

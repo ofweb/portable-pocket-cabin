@@ -17,7 +17,7 @@ Acceptance:
 
 - Supported types are pigs, chickens, sheep, cows, and goats.
 - Each type has its own room. A cabin can have one room for each of these five types.
-- Livestock rooms occupy the south side of the west wing.
+- A northward branch of the west corridor has livestock rooms on both sides, using fixed positions. Goats occupy the north end, facing down the branch.
 - Each room starts with a 3×3 usable floor.
 - Installation, traversal, permissions, and persistence follow B-0005.
 
@@ -48,6 +48,6 @@ This draft records supported animal types, separate rooms, placement, and floor 
 
 ## Open questions and assumptions
 
-- Room order, height, entrances, and whether livestock rooms connect directly to the west corridor or a branch remain open.
+- Room heights, growth anchors, and exact entrances remain open.
 - Costs, population limits, animal variants, manual housing, feeding, breeding, and product collection remain open.
 - Expansion behavior for existing animals and player contents remains open.
