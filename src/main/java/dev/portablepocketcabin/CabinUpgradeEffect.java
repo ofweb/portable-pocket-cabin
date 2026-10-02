@@ -17,6 +17,7 @@ final class CabinUpgradeEffect implements CabinUpgradeService.UpgradeEffect {
 
 	@Override
 	public CabinUpgradeService.Outcome validate(CabinRecord cabin, CabinUpgradeCatalog.Offer offer) {
+		if (offer.target().isStorage()) return CabinUpgradeService.Outcome.success("");
 		if (offer.target().isGeneralSpace()) {
 			PocketDimension.ExpansionCheck expansion = PocketDimension.validateExpansion(
 				pocket, cabin.cellIndex(), cabin.progression().generalSize(), offer.targetSize()
@@ -31,9 +32,14 @@ final class CabinUpgradeEffect implements CabinUpgradeService.UpgradeEffect {
 
 	@Override
 	public void apply(CabinRecord cabin, CabinUpgradeState.Installation installation) {
+		if (installation.target().isStorage()) {
+			CabinStorage.placeControl(pocket, cabin, cabin.progression().generalSize());
+			return;
+		}
 		if (installation.target().isGeneralSpace()) {
 			PocketDimension.applyGeneralSpaceExpansion(pocket, cabin, installation.targetState());
 			windows.applyRelayout(cabin, installation.targetState());
+			if (cabin.upgrades().storage().level() > 0) CabinStorage.placeControl(pocket, cabin, installation.targetState());
 			return;
 		}
 		windows.applyInstall(cabin, installation.target().windowIdentity(), installation.targetState());

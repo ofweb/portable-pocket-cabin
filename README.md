@@ -45,6 +45,10 @@ Normal player commands are:
 
 The lifecycle commands `/cabin preview`, `/cabin deploy`, and `/cabin pack` remain available only to operators for debugging and recovery. The [material profile code](src/main/java/dev/portablepocketcabin/CabinMaterialProfiles.java) validates version 1 profiles. [Profiles](src/main/resources/data/portable_pocket_cabin/portable_pocket_cabin/material_profiles) give datapack examples.
 
+Central storage requires a Storage Cabin Book. The owner opens the interior Lodestone and clicks Book twice to reveal all six capacity levels. Fund and install the first level in the Storage tab. The protected bookshelf on the opposite wall opens storage for owners and residents. The browser provides Search, Creative categories, Miscellaneous, and Inventory tabs. Fill moves eligible missing materials from storage into the selected upgrade fund.
+
+Book vendors belong to B-0038. Until that feature is available, operators can give the storage book with `/give @s portable_pocket_cabin:storage_book`.
+
 ## Development
 
 Requires JDK 25 or newer.

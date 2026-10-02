@@ -128,7 +128,19 @@ final class CabinUpgradeCatalog {
 				panels.add(window(cabin, attunement, definitions, new CabinWindowState.Identity(wall, slot)));
 			}
 		}
-		return List.of(new Group(CABIN_GROUP, "Cabin", CABIN_ICON, panels));
+		List<Group> groups = new ArrayList<>();
+		groups.add(new Group(CABIN_GROUP, "Cabin", CABIN_ICON, panels));
+		if (cabin.upgrades().storage().revealed()) {
+			int current = cabin.upgrades().storage().level();
+			int next = Math.min(6, current + 1);
+			groups.add(new Group(PortablePocketCabin.id("storage"), "Storage",
+				net.minecraft.resources.Identifier.parse("minecraft:chest"), List.of(new Offer(
+					CabinUpgradeState.Target.storage(next), "Central Storage",
+					current == 6 ? "Fully upgraded" : "Store " + CabinStorageState.CAPACITIES[next] + " stacks",
+					net.minecraft.resources.Identifier.parse("minecraft:chest"), current, next,
+					current == 6 ? List.of() : storageRequirements(next), current == 6, ""))));
+		}
+		return List.copyOf(groups);
 	}
 
 	static Optional<Offer> offer(
@@ -181,6 +193,23 @@ final class CabinUpgradeCatalog {
 			complete ? List.of() : resolve(definitions.windowIngredients(targetTier), cabin.palette()),
 			complete, prerequisite
 		);
+	}
+
+	static List<CabinUpgradeState.Requirement> storageRequirements(int level) {
+		String[][] names = {
+			{"chest", "iron_ingot", "amethyst_block"},
+			{"copper_ingot", "amethyst_block"},
+			{"copper_ingot", "amethyst_block", "redstone"},
+			{"copper_ingot", "amethyst_block", "redstone", "ender_pearl"},
+			{"copper_ingot", "amethyst_block", "redstone", "crying_obsidian", "quartz"},
+			{"copper_ingot", "amethyst_block", "redstone", "shulker_shell"}
+		};
+		int[][] counts = {{2,4,4}, {8,4}, {16,4,4}, {24,4,8,1}, {32,4,12,1,1}, {48,4,16,2}};
+		List<CabinUpgradeState.Requirement> result = new ArrayList<>();
+		for (int i = 0; i < names[level - 1].length; i++)
+			result.add(new CabinUpgradeState.Requirement(net.minecraft.resources.Identifier.parse(
+				"minecraft:" + names[level - 1][i]), counts[level - 1][i]));
+		return List.copyOf(result);
 	}
 
 	private static String dimensions(int tier) {

@@ -54,12 +54,19 @@ final class CabinEvents {
 				return CabinUpgrades.useController(serverPlayer, controlledCabin);
 			}
 
+			if (serverLevel.dimension().equals(PocketDimension.LEVEL_KEY)) {
+				for (CabinRecord cabin : CabinRegistry.get(serverLevel.getServer()).cabins()) {
+					if (cabin.upgrades().storage().level() > 0 && hit.getBlockPos().equals(CabinStorage.control(cabin)))
+						return CabinStorage.open(serverPlayer, cabin);
+				}
+			}
 			return InteractionResult.PASS;
 		});
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			ServerPlayer player = handler.player;
 			server.execute(() -> {
+				CabinStorage.recover(player);
 				CabinReconciliation.reconcileOwnerInventory(player);
 				recoverOfflineOccupant(player);
 			});

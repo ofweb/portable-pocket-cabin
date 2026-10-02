@@ -463,6 +463,9 @@ public final class CabinRegistry extends SavedData {
 			if (currentSize != installation.targetState()) {
 				progression = progression.withGeneralSize(installation.targetState());
 			}
+		} else if (installation.target().isStorage()) {
+			int current = cabin.upgrades().storage().level();
+			if (current != installation.expectedState()) throw new IllegalStateException("Storage level changed");
 		} else {
 			CabinWindowState.Identity identity = installation.target().windowIdentity();
 			int currentTier = windows.tier(identity);
@@ -476,6 +479,8 @@ public final class CabinRegistry extends SavedData {
 		CabinUpgradeState completed = cabin.upgrades()
 			.completeInstallation(installation.target())
 			.withWindows(windows);
+		if (installation.target().isStorage())
+			completed = completed.withStorage(cabin.upgrades().storage().upgrade(installation.targetState()));
 		CabinRecord updated = copyProgressionAndUpgrades(
 			cabin, progression, completed
 		);

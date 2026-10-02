@@ -96,7 +96,15 @@ final class DedicatedServerStartupCheck {
 		}
 		placeInteriorFixtures(pocket, first.cellIndex());
 		seedPartialUpgradeFund(server, registry, deployed);
+		var storage = CabinStorageState.EMPTY.reveal().upgrade(1);
+		for (int count : new int[]{64, 64, 2}) storage = storage.deposit(new ItemStack(Items.DIAMOND, count), count).state();
+		var keepsake = new ItemStack(Items.DIAMOND, 3);
+		keepsake.set(DataComponents.CUSTOM_NAME, Component.literal("Family gems"));
+		storage = storage.deposit(keepsake, 3).state().deposit(new ItemStack(Items.IRON_SWORD), 1).state();
+		var current = registry.find(deployed.uuid()).orElseThrow();
+		registry.updateUpgradeState(deployed.uuid(), current.upgrades().withStorage(storage));
 		seedLegacyCornerFrames(server, registry.find(first.uuid()).orElseThrow());
+		CabinStorage.placeControl(pocket, current, current.progression().generalSize());
 		CabinSimulation.sync(server);
 	}
 
@@ -130,6 +138,7 @@ final class DedicatedServerStartupCheck {
 			throw new IllegalStateException("Reloaded registry does not match its persisted state");
 		}
 		assertPartialUpgradeFund(first);
+		assertCentralStorage(server, first);
 		if (!CabinSimulation.isTicketed(server, first.cellIndex())
 			|| !simulationIsActive(server.getLevel(PocketDimension.LEVEL_KEY), first.cellIndex())) {
 			throw new IllegalStateException("Reconciled deployed cabin did not restore simulation tickets");
@@ -162,6 +171,7 @@ final class DedicatedServerStartupCheck {
 			throw new IllegalStateException("Packing changed the persistent interior or item generation incorrectly");
 		}
 		assertPartialUpgradeFund(registry.find(first.uuid()).orElseThrow());
+		assertCentralStorage(server, registry.find(first.uuid()).orElseThrow());
 		if (CabinSimulation.isTicketed(server, first.cellIndex())) {
 			throw new IllegalStateException("Packed cabin retained interior simulation tickets");
 		}
@@ -180,12 +190,22 @@ final class DedicatedServerStartupCheck {
 			throw new IllegalStateException("Packed cabin could not be redeployed");
 		}
 		assertPartialUpgradeFund(redeployed);
+		assertCentralStorage(server, redeployed);
 		assertInteriorFixtures(pocket, first.cellIndex());
 
 		CabinRecord third = registry.create(UUID.fromString("00000000-0000-0000-0000-000000000003"));
 		if (third.cellIndex() != 2 || first.uuid().equals(third.uuid()) || registry.size() != 3) {
 			throw new IllegalStateException("Post-restart allocation collided with the persisted cabin");
 		}
+	}
+
+	private static void assertCentralStorage(MinecraftServer server, CabinRecord cabin) {
+		var storage = cabin.upgrades().storage();
+		if (!storage.revealed() || storage.capacity() != 54 || storage.used() != 5 || storage.entries().size() != 3
+			|| storage.entries().stream().noneMatch(stack -> stack.is(Items.DIAMOND) && stack.getCount() == 130)
+			|| storage.entries().stream().noneMatch(stack -> stack.getHoverName().getString().equals("Family gems") && stack.getCount() == 3)
+			|| !server.getLevel(PocketDimension.LEVEL_KEY).getBlockState(CabinStorage.control(cabin)).is(Blocks.CHISELED_BOOKSHELF))
+			throw new IllegalStateException("Central storage did not persist through restart and packing");
 	}
 
 	private static void placeInteriorFixtures(ServerLevel pocket, long cellIndex) {

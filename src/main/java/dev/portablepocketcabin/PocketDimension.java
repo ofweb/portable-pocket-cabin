@@ -317,7 +317,8 @@ public final class PocketDimension {
 			cabin.cellIndex(), cabin.progression().generalSize(), CabinWindows.Profile.INACTIVE
 		).keySet();
 		for (Map.Entry<BlockPos, BlockState> entry : current.entrySet()) {
-			if (windowPositions.contains(entry.getKey())) {
+			if (windowPositions.contains(entry.getKey())
+				|| cabin.upgrades().storage().level() > 0 && entry.getKey().equals(CabinStorage.control(cabin))) {
 				continue;
 			}
 			BlockState actual = level.getBlockState(entry.getKey());

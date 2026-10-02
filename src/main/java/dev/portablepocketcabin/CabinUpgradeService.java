@@ -214,6 +214,8 @@ final class CabinUpgradeService {
 				? CabinUpgradeState.Installation.generalSpace(
 					UUID.randomUUID(), target, cabin.progression().generalSize()
 				)
+				: target.isStorage() ? new CabinUpgradeState.Installation(
+					UUID.randomUUID(), target, cabin.upgrades().storage().level(), offer.targetSize())
 				: CabinUpgradeState.Installation.window(
 					UUID.randomUUID(), target, cabin.upgrades().windows().tier(target.windowIdentity())
 				);
@@ -231,6 +233,7 @@ final class CabinUpgradeService {
 			return target.isGeneralSpace()
 				? Outcome.success("Cabin general space expanded to " + installation.targetState()
 					+ "x" + installation.targetState() + ".")
+				: target.isStorage() ? Outcome.success("Central storage capacity increased.")
 				: Outcome.success("Cabin window installed at tier " + installation.targetState() + ".");
 		}
 	}

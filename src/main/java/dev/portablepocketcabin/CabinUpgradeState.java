@@ -23,7 +23,8 @@ record CabinUpgradeState(
 	Optional<CabinUpgradeState.Installation> installation,
 	long fundRevision,
 	CabinWindowState windows,
-	Optional<CabinUpgradeState.WindowReversal> reversal
+	Optional<CabinUpgradeState.WindowReversal> reversal,
+	CabinStorageState storage
 ) {
 	static final CabinUpgradeState EMPTY = new CabinUpgradeState(
 		List.of(), Optional.empty(), 0L, CabinWindowState.EMPTY, Optional.empty()
@@ -35,7 +36,8 @@ record CabinUpgradeState(
 		Codec.LONG.optionalFieldOf("fund_revision", 0L).forGetter(CabinUpgradeState::fundRevision),
 		CabinWindowState.CODEC.optionalFieldOf("windows", CabinWindowState.EMPTY)
 			.forGetter(CabinUpgradeState::windows),
-		WindowReversal.CODEC.optionalFieldOf("window_reversal").forGetter(CabinUpgradeState::reversal)
+		WindowReversal.CODEC.optionalFieldOf("window_reversal").forGetter(CabinUpgradeState::reversal),
+		CabinStorageState.CODEC.optionalFieldOf("storage", CabinStorageState.EMPTY).forGetter(CabinUpgradeState::storage)
 	).apply(instance, CabinUpgradeState::new));
 
 	private static final Codec<CabinUpgradeState> LEGACY_CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -53,6 +55,7 @@ record CabinUpgradeState(
 		Objects.requireNonNull(installation, "installation");
 		Objects.requireNonNull(windows, "windows");
 		Objects.requireNonNull(reversal, "reversal");
+		Objects.requireNonNull(storage, "storage");
 		funds = List.copyOf(funds);
 		if (fundRevision < 0) {
 			throw new IllegalArgumentException("Upgrade fund revision must not be negative");
@@ -135,7 +138,7 @@ record CabinUpgradeState(
 		if (!replaced) {
 			updated.add(value);
 		}
-		return new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows, reversal);
+		return new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows, reversal, storage);
 	}
 
 	CabinUpgradeState withoutFund(Target target) {
@@ -145,25 +148,25 @@ record CabinUpgradeState(
 		List<Fund> updated = funds.stream().filter(value -> !value.target().equals(target)).toList();
 		return updated.size() == funds.size()
 			? this
-			: new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows, reversal);
+			: new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows, reversal, storage);
 	}
 
 	CabinUpgradeState withInstallation(Installation value) {
 		if (operationInProgress()) {
 			throw new IllegalStateException("A cabin upgrade operation is already in progress");
 		}
-		return new CabinUpgradeState(funds, Optional.of(value), fundRevision, windows, reversal);
+		return new CabinUpgradeState(funds, Optional.of(value), fundRevision, windows, reversal, storage);
 	}
 
 	CabinUpgradeState completeInstallation(Target target) {
 		List<Fund> remaining = funds.stream().filter(value -> !value.target().equals(target)).toList();
 		return new CabinUpgradeState(
-			remaining, Optional.empty(), Math.addExact(fundRevision, 1L), windows, reversal
+			remaining, Optional.empty(), Math.addExact(fundRevision, 1L), windows, reversal, storage
 		);
 	}
 
 	CabinUpgradeState withWindows(CabinWindowState value) {
-		return new CabinUpgradeState(funds, installation, fundRevision, value, reversal);
+		return new CabinUpgradeState(funds, installation, fundRevision, value, reversal, storage);
 	}
 
 	boolean operationInProgress() {
@@ -174,7 +177,7 @@ record CabinUpgradeState(
 		if (operationInProgress()) {
 			throw new IllegalStateException("A cabin upgrade operation is already in progress");
 		}
-		return new CabinUpgradeState(funds, installation, fundRevision, windows, Optional.of(value));
+		return new CabinUpgradeState(funds, installation, fundRevision, windows, Optional.of(value), storage);
 	}
 
 	CabinUpgradeState commitReversal(CabinWindowState resultingWindows) {
@@ -187,7 +190,7 @@ record CabinUpgradeState(
 		List<Fund> remaining = funds.stream().filter(fund -> !invalidated.contains(fund.target())).toList();
 		return new CabinUpgradeState(
 			remaining, installation, Math.addExact(fundRevision, 1L), resultingWindows,
-			Optional.of(value.withPhase(ReversalPhase.EJECTION_PENDING))
+			Optional.of(value.withPhase(ReversalPhase.EJECTION_PENDING)), storage
 		);
 	}
 
@@ -196,7 +199,16 @@ record CabinUpgradeState(
 		if (value.phase() != ReversalPhase.EJECTION_PENDING) {
 			throw new IllegalStateException("Window reversal has not reached refund ejection");
 		}
-		return new CabinUpgradeState(funds, installation, fundRevision, windows, Optional.empty());
+		return new CabinUpgradeState(funds, installation, fundRevision, windows, Optional.empty(), storage);
+	}
+
+	CabinUpgradeState(List<Fund> funds, Optional<Installation> installation, long fundRevision,
+		CabinWindowState windows, Optional<WindowReversal> reversal) {
+		this(funds, installation, fundRevision, windows, reversal, CabinStorageState.EMPTY);
+	}
+
+	CabinUpgradeState withStorage(CabinStorageState value) {
+		return new CabinUpgradeState(funds, installation, fundRevision, windows, reversal, value);
 	}
 
 	CabinUpgradeState(List<Fund> funds, Optional<Installation> installation, long fundRevision) {
@@ -206,7 +218,7 @@ record CabinUpgradeState(
 	CabinUpgradeState(
 		List<Fund> funds, Optional<Installation> installation, long fundRevision, CabinWindowState windows
 	) {
-		this(funds, installation, fundRevision, windows, Optional.empty());
+		this(funds, installation, fundRevision, windows, Optional.empty(), CabinStorageState.EMPTY);
 	}
 
 	private static CabinUpgradeState fromLegacy(
@@ -223,6 +235,7 @@ record CabinUpgradeState(
 
 	record Target(Identifier type, String key) {
 		private static final Identifier GENERAL_SPACE = PortablePocketCabin.id("general_space");
+		private static final Identifier STORAGE = PortablePocketCabin.id("storage");
 		private static final Identifier WINDOW = PortablePocketCabin.id("window");
 		static final Codec<Target> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Identifier.CODEC.fieldOf("type").forGetter(Target::type),
@@ -245,6 +258,9 @@ record CabinUpgradeState(
 				} catch (NumberFormatException exception) {
 					throw new IllegalArgumentException("General-space target key must be a size", exception);
 				}
+			} else if (type.equals(STORAGE)) {
+				int level = Integer.parseInt(key);
+				if (level < 1 || level > 6) throw new IllegalArgumentException("Invalid storage level");
 			} else if (type.equals(WINDOW)) {
 				CabinWindowState.Identity.parse(key);
 			} else {
@@ -258,6 +274,9 @@ record CabinUpgradeState(
 			}
 			return new Target(GENERAL_SPACE, Integer.toString(targetSize));
 		}
+
+		static Target storage(int level) { return new Target(STORAGE, Integer.toString(level)); }
+		boolean isStorage() { return type.equals(STORAGE); }
 
 		static Target window(CabinWindowState.Identity identity) {
 			return new Target(WINDOW, identity.key());
@@ -508,6 +527,10 @@ record CabinUpgradeState(
 					|| targetState != expectedState + 1) {
 					throw new IllegalArgumentException("Installation must target the next cabin window tier");
 				}
+			} else if (target.isStorage()) {
+				if (expectedState < 0 || expectedState >= 6 || targetState != expectedState + 1
+					|| Integer.parseInt(target.key()) != targetState)
+					throw new IllegalArgumentException("Storage must advance one level");
 			} else {
 				throw new IllegalArgumentException("Installation target type is unsupported");
 			}

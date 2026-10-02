@@ -21,6 +21,8 @@ import java.util.List;
 /** Compact, vanilla-inventory-shaped upgrade screen with icon-first controls. */
 final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu> {
 	private Button installButton;
+	private Button fillStorageButton;
+	private Button storageBookButton;
 	private Button downgradeButton;
 	private Button removeButton;
 	private Button previousPanelButton;
@@ -81,6 +83,12 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 			CabinUpgradeLayout.ACTION_WIDTH,
 			CabinUpgradeLayout.ACTION_HEIGHT
 		).build());
+		fillStorageButton = addRenderableWidget(Button.builder(Component.literal("Fill"),
+			button -> sendMenuButton(CabinUpgradeMenu.BUTTON_FILL_STORAGE)).bounds(leftPos + 124, topPos + 128, 56, 20).build());
+		fillStorageButton.setTooltip(Tooltip.create(Component.literal("Fill missing materials from central storage")));
+		storageBookButton = addRenderableWidget(Button.builder(Component.literal("Book"),
+			button -> sendMenuButton(CabinUpgradeMenu.BUTTON_STORAGE_BOOK)).bounds(leftPos + 8, topPos + 128, 54, 20).build());
+		storageBookButton.setTooltip(Tooltip.create(Component.literal("Install a storage cabin book to reveal all six capacity levels")));
 		categoryButtons.clear();
 		for (int index = 0; index < CabinUpgradeMenu.MAX_GROUPS; index++) {
 			CategoryTabButton button = addRenderableWidget(new CategoryTabButton(
@@ -232,6 +240,9 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 		removeButton.setTooltip(Tooltip.create(removeStatus.getString().isEmpty()
 			? Component.translatable("screen.portable_pocket_cabin.remove_tooltip")
 			: removeStatus));
+		fillStorageButton.visible = menu.isOwner();
+		fillStorageButton.active = fillStorageButton.visible && menu.hasStorage() && menu.isAvailable() && !menu.isStale();
+		storageBookButton.visible = menu.isOwner() && !menu.storageRevealed() && !menu.hasDowngradeAction();
 		boolean severalPanels = menu.panelCount() > 1;
 		previousPanelButton.visible = severalPanels;
 		nextPanelButton.visible = severalPanels;

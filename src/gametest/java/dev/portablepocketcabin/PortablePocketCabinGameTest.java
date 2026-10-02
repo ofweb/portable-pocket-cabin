@@ -31,6 +31,120 @@ import java.util.UUID;
 
 public final class PortablePocketCabinGameTest {
 	@GameTest
+	public void storageMergesStacksAndPreservesVariants(GameTestHelper helper) {
+		var storage = CabinStorageState.EMPTY.reveal().upgrade(1);
+		storage = storage.deposit(new ItemStack(Items.COPPER_INGOT, 40), 40).state();
+		storage = storage.deposit(new ItemStack(Items.COPPER_INGOT, 40), 40).state();
+		helper.assertTrue(storage.used() == 2 && storage.entries().size() == 1
+			&& storage.entries().getFirst().getCount() == 80, "Grouping must retain stack-slot capacity");
+		ItemStack named = new ItemStack(Items.COPPER_INGOT, 3);
+		named.set(DataComponents.CUSTOM_NAME, Component.literal("Keepsake"));
+		storage = storage.deposit(named, 3).state();
+		helper.assertTrue(storage.entries().size() == 2 && storage.used() == 3, "Named stacks must remain distinct");
+		var taken = storage.withdraw(named, 1);
+		helper.assertTrue(taken.moved().getCount() == 1 && ItemStack.isSameItemSameComponents(taken.moved(), named),
+			"Withdrawals must preserve components");
+		helper.assertTrue(taken.state().entries().stream().anyMatch(s -> s.getCount() == 80), "Other variants must stay untouched");
+		var ops = helper.getLevel().registryAccess().createSerializationContext(NbtOps.INSTANCE);
+		var restored = CabinStorageState.CODEC.parse(ops,
+			CabinStorageState.CODEC.encodeStart(ops, taken.state()).getOrThrow()).getOrThrow();
+		helper.assertTrue(restored.used() == 3 && restored.entries().size() == 2, "Storage must survive persistence");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void storageOnlyMovesItemsThatFit(GameTestHelper helper) {
+		var storage = CabinStorageState.EMPTY.reveal().upgrade(1);
+		for (int i = 0; i < 53; i++) storage = storage.deposit(new ItemStack(Items.IRON_SWORD), 1).state();
+		storage = storage.deposit(new ItemStack(Items.COPPER_INGOT, 60), 60).state();
+		var deposit = storage.deposit(new ItemStack(Items.COPPER_INGOT, 12), 12);
+		helper.assertTrue(deposit.moved().getCount() == 4 && deposit.state().used() == 54,
+			"A full inventory must accept only compatible partial-stack space");
+		helper.assertTrue(deposit.state().deposit(new ItemStack(Items.DIAMOND, 2), 2).moved().isEmpty(),
+			"A full inventory must reject a new variant");
+		var withdrawal = deposit.state().withdraw(new ItemStack(Items.COPPER_INGOT), 200);
+		helper.assertTrue(withdrawal.moved().getCount() == 64 && withdrawal.state().used() == 53,
+			"Withdrawal must stop at one normal stack");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void storageFundingIsAtomicAndOwnerInitiated(GameTestHelper helper) {
+		var registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID();
+		var cabin = deployRegistryCabin(registry, owner, 0);
+		var storage = CabinStorageState.EMPTY.reveal().upgrade(1)
+			.deposit(new ItemStack(Items.COPPER_INGOT, 4), 4).state();
+		ItemStack named = new ItemStack(Items.AMETHYST_BLOCK, 4);
+		named.set(DataComponents.CUSTOM_NAME, Component.literal("Keepsake"));
+		storage = storage.deposit(named, 4).state();
+		registry.updateUpgradeState(cabin.uuid(), cabin.upgrades().withStorage(storage));
+		var target = CabinUpgradeState.Target.storage(2);
+		var requirements = CabinUpgradeCatalog.storageRequirements(2);
+		var definitions = CabinUpgradeDefinitions.current();
+		var attunement = new WorldAttunement(1, CabinPalette.DEFAULT.walls().profileId());
+		var refused = CabinStorageFunding.fill(registry, cabin.uuid(), UUID.randomUUID(), target,
+			requirements, attunement, definitions);
+		helper.assertTrue(!refused.success() && registry.find(cabin.uuid()).orElseThrow().upgrades().storage().used() == 2,
+			"Guests must not move or inspect storage");
+		var changed = new ArrayList<>(requirements);
+		changed.set(0, new CabinUpgradeState.Requirement(requirements.getFirst().itemId(), 9));
+		helper.assertTrue(!CabinStorageFunding.fill(registry, cabin.uuid(), owner, target, changed, attunement, definitions).success(),
+			"Changed requirements must move nothing");
+		helper.assertTrue(CabinStorageFunding.fill(registry, cabin.uuid(), owner, target, requirements, attunement, definitions).success(),
+			"Partial funding must succeed");
+		var updated = registry.find(cabin.uuid()).orElseThrow();
+		helper.assertTrue(updated.upgrades().fund(target).orElseThrow().fundedCount(
+			BuiltInRegistries.ITEM.getKey(Items.COPPER_INGOT)) == 4, "The fund must receive only missing materials");
+		helper.assertTrue(updated.upgrades().storage().stacks().size() == 1
+			&& updated.upgrades().storage().stacks().getFirst().has(DataComponents.CUSTOM_NAME),
+			"Automatic funding must leave custom stacks in storage");
+		helper.assertTrue(!CabinStorageFunding.fill(registry, cabin.uuid(), owner, target, requirements, attunement, definitions).success(),
+			"Repeated funding without eligible materials must make no change");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void storageLevelsUseRecoverableUpgradeInstallation(GameTestHelper helper) {
+		var registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID();
+		var cabin = deployRegistryCabin(registry, owner, 0);
+		registry.updateUpgradeState(cabin.uuid(), cabin.upgrades().withStorage(CabinStorageState.EMPTY.reveal()));
+		var definitions = CabinUpgradeDefinitions.current();
+		var attunement = new WorldAttunement(1, CabinPalette.DEFAULT.walls().profileId());
+		var effect = new TestExpansionEffect(true, false);
+		for (int level = 1; level <= 6; level++) {
+			cabin = registry.find(cabin.uuid()).orElseThrow();
+			var target = CabinUpgradeState.Target.storage(level);
+			for (var requirement : CabinUpgradeCatalog.storageRequirements(level)) {
+				ItemStack material = new ItemStack(BuiltInRegistries.ITEM.getOptional(requirement.itemId()).orElseThrow(), requirement.count());
+				helper.assertTrue(CabinUpgradeService.deposit(registry, cabin.uuid(), owner, target, material,
+					attunement, definitions, effect).success(), "Storage level must accept its cost");
+			}
+			long revision = registry.find(cabin.uuid()).orElseThrow().upgrades().fundRevision();
+			var interrupted = new CabinUpgradeService.UpgradeEffect() {
+				public CabinUpgradeService.Outcome validate(CabinRecord c, CabinUpgradeCatalog.Offer o) {
+					return CabinUpgradeService.Outcome.success("");
+				}
+				public void apply(CabinRecord c, CabinUpgradeState.Installation i) { throw new IllegalStateException("Interrupted"); }
+				public void refresh(CabinRecord c) { }
+			};
+			helper.assertTrue(!CabinUpgradeService.install(registry, cabin.uuid(), owner, target, revision,
+				attunement, definitions, interrupted, () -> {}).success(), "Interrupted install must remain pending");
+			helper.assertTrue(registry.find(cabin.uuid()).orElseThrow().upgrades().storage().level() == level - 1,
+				"Interrupted installation must retain capacity");
+			CabinUpgradeService.reconcileInstallation(registry, cabin.uuid(), effect, () -> {});
+			CabinUpgradeService.reconcileInstallation(registry, cabin.uuid(), effect, () -> {});
+			helper.assertTrue(registry.find(cabin.uuid()).orElseThrow().upgrades().storage().capacity() == CabinStorageState.CAPACITIES[level],
+				"Recovery must install exactly one level");
+		}
+		var groups = CabinUpgradeCatalog.groups(registry.find(cabin.uuid()).orElseThrow(), attunement, definitions);
+		helper.assertTrue(groups.getLast().panels().getFirst().complete(), "Maximum storage must show fully upgraded");
+		helper.succeed();
+	}
+
+
+	@GameTest
 	public void pocketDimensionTypeIsRegistered(GameTestHelper helper) {
 		var dimensionTypes = helper.getLevel().registryAccess().lookupOrThrow(Registries.DIMENSION_TYPE);
 

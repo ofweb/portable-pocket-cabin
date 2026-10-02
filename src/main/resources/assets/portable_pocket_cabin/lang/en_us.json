@@ -27,5 +27,6 @@
   "screen.portable_pocket_cabin.remove": "Remove",
   "screen.portable_pocket_cabin.confirm_action": "Click again to confirm",
   "screen.portable_pocket_cabin.blocked": "Upgrade unavailable",
-  "screen.portable_pocket_cabin.ready_owner": "Ready: owner can install"
+  "screen.portable_pocket_cabin.ready_owner": "Ready: owner can install",
+  "item.portable_pocket_cabin.storage_book": "Storage Cabin Book"
 }

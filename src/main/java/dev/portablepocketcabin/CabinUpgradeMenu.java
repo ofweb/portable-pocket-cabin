@@ -28,6 +28,8 @@ import java.util.UUID;
 /** Synchronized menu whose requirement icons transact with durable, target-keyed funds. */
 final class CabinUpgradeMenu extends AbstractContainerMenu {
 	static final int BUTTON_INSTALL = 1;
+	static final int BUTTON_FILL_STORAGE = 6;
+	static final int BUTTON_STORAGE_BOOK = 7;
 	static final int BUTTON_PREVIOUS_PANEL = 2;
 	static final int BUTTON_NEXT_PANEL = 3;
 	static final int BUTTON_DOWNGRADE = 4;
@@ -54,7 +56,9 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	private static final int DATA_PANEL_COUNT = 4;
 	private static final int DATA_SELECTED_PANEL = 5;
 	private static final int DATA_REQUIREMENTS = 6;
-	private static final int DATA_COUNT = DATA_REQUIREMENTS + MAX_REQUIREMENTS * 2;
+	private static final int DATA_STORAGE_REVEALED = DATA_REQUIREMENTS + MAX_REQUIREMENTS * 2;
+	private static final int DATA_STORAGE_CAPACITY = DATA_STORAGE_REVEALED + 1;
+	private static final int DATA_COUNT = DATA_STORAGE_CAPACITY + 1;
 
 	private static final int FLAG_OWNER = 1;
 	private static final int FLAG_CONTRIBUTOR = 1 << 1;
@@ -94,6 +98,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	private long armedRevision = -1L;
 	private long armedUntil = -1L;
 	private String actionMessage = "";
+	private long bookConfirmationUntil = -1;
 
 	CabinUpgradeMenu(int containerId, Inventory inventory, UUID cabinId) {
 		super(TYPE, containerId);
@@ -226,6 +231,9 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		return flag(FLAG_MAXIMUM);
 	}
 
+	boolean storageRevealed() { return data.get(DATA_STORAGE_REVEALED) != 0; }
+	boolean hasStorage() { return data.get(DATA_STORAGE_CAPACITY) > 0; }
+
 	boolean installationInProgress() {
 		return flag(FLAG_INSTALLING);
 	}
@@ -266,6 +274,27 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	public boolean clickMenuButton(Player player, int button) {
 		if (!(player instanceof ServerPlayer actor) || actor != serverPlayer || !stillValid(player)) {
 			return false;
+		}
+		if (button == BUTTON_STORAGE_BOOK) return installStorageBook(actor);
+		if (button == BUTTON_FILL_STORAGE) {
+			if (!hasStorage() || target == null || selection == null) return false;
+			var registry = CabinRegistry.get(actor.level().getServer());
+			var definitions = CabinUpgradeDefinitions.current();
+			var cabin = registry.find(cabinId).orElse(null);
+			if (cabin == null || !cabin.owner().equals(actor.getUUID())) return false;
+			var validation = new CabinUpgradeEffect(actor.level().getServer(), actor.level()).validate(cabin, selection.offer());
+			if (!validation.success()) {
+				setActionMessage(validation.message());
+				broadcastChanges();
+				return false;
+			}
+			var result = CabinStorageFunding.fill(registry, cabinId, actor.getUUID(), target,
+				selection.offer().requirements(), CabinUpgradeCatalog.resolveAttunement(registry, actor.level(), definitions), definitions);
+			setActionMessage(result.message());
+			clearArming();
+			if (result.success()) CabinRegistry.flush(actor.level().getServer());
+			broadcastChanges();
+			return result.success();
 		}
 		if (button == BUTTON_DOWNGRADE || button == BUTTON_REMOVE) {
 			return reverseWindow(actor, button);
@@ -446,6 +475,44 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		} catch (IllegalStateException exception) {
 			setActionMessage(exception.getMessage());
 			return false;
+		}
+	}
+
+	private boolean installStorageBook(ServerPlayer actor) {
+		var registry = CabinRegistry.get(actor.level().getServer());
+		synchronized (registry) {
+			CabinRecord cabin = registry.find(cabinId).orElseThrow();
+			if (!cabin.owner().equals(actor.getUUID()) || cabin.upgrades().operationInProgress()) return false;
+			if (cabin.upgrades().storage().revealed()) {
+				setActionMessage("Storage upgrades are already revealed.");
+				return false;
+			}
+			ItemStack book = ItemStack.EMPTY;
+			for (int i = 0; i < 36; i++) if (playerInventory.getItem(i).is(CabinItems.STORAGE_BOOK)) {
+				book = playerInventory.getItem(i);
+				break;
+			}
+			if (book.isEmpty()) { setActionMessage("Bring a storage cabin book to reveal all six capacity levels."); return false; }
+			long now = actor.level().getGameTime();
+			if (bookConfirmationUntil < now) {
+				bookConfirmationUntil = now + CONFIRMATION_TICKS;
+				setActionMessage("Reveal storage installation and all six levels? Click Book again.");
+				return true;
+			}
+			book.shrink(1);
+			registry.updateUpgradeState(cabinId, cabin.upgrades().withStorage(cabin.upgrades().storage().reveal()
+				.withSession(CabinStorage.receipt(actor, ItemStack.EMPTY))));
+			playerInventory.setChanged();
+			bookConfirmationUntil = -1;
+			CabinRegistry.flush(actor.level().getServer());
+			actor.level().getServer().getPlayerList().saveAll();
+			var installed = registry.find(cabinId).orElseThrow();
+			registry.updateUpgradeState(cabinId, installed.upgrades().withStorage(
+				installed.upgrades().storage().withoutSession(actor.getUUID())));
+			CabinRegistry.flush(actor.level().getServer());
+			setActionMessage("Storage upgrades revealed.");
+			broadcastChanges();
+			return true;
 		}
 	}
 
@@ -670,6 +737,8 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			return;
 		}
 
+		data.set(DATA_STORAGE_REVEALED, cabin.upgrades().storage().revealed() ? 1 : 0);
+		data.set(DATA_STORAGE_CAPACITY, cabin.upgrades().storage().capacity());
 		CabinUpgradeDefinitions.Definitions definitions = CabinUpgradeDefinitions.current();
 		int flags = 0;
 		if (cabin.owner().equals(serverPlayer.getUUID())) {

@@ -19,6 +19,8 @@ public final class PortablePocketCabin implements ModInitializer {
 		CabinMaterialProfiles.register();
 		CabinUpgradeDefinitions.register();
 		CabinUpgradeMenu.register();
+		CabinStorageMenu.register();
+		CabinStorage.register();
 		CommandRegistrationCallback.EVENT.register(CabinCommands::register);
 		CabinEvents.register();
 		CabinPacking.register();
