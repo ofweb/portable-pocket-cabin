@@ -21,6 +21,15 @@ public final class PortablePocketCabinClientGameTest implements FabricClientGame
 		context.getInput().resizeWindow(1280, 800);
 		context.runOnClient(client -> client.options.guiScale().set(3));
 		context.getInput().setCursorPos(0, 0);
+		if ("1".equals(System.getenv("PPC_CAPTURE_CREATIVE"))) {
+			VanillaCreativeScreenshots.capture(context);
+			captureStorage(context);
+			return;
+		}
+		if ("1".equals(System.getenv("PPC_CAPTURE_STATIONS"))) {
+			VanillaStationScreenshots.capture(context);
+			return;
+		}
 		captureExterior(context);
 		captureStorage(context);
 
