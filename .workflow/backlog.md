@@ -12,7 +12,7 @@
 - Status: Ready for Shape
 - Value: Let other players deliver items safely through one receiving mailbox that belongs to the cabin.
 - Direction: [Direction](direction.md).
-- Relationships: Uses B-0002 and B-0004. Lounge access integrates B-0009.
+- Relationships: Uses B-0002. Requires installed storage in B-0004 and connected-lounge access in B-0009.
 - Feature Brief: [Receiving mailbox brief](features/B-0003/brief.md).
 
 ## B-0004: Central storage
@@ -20,7 +20,7 @@
 - Status: Ready for Shape
 - Value: Give each cabin one inventory for household use that stays independent of placed chests.
 - Direction: [Direction](direction.md).
-- Relationships: Uses B-0002 and B-0038. Used by B-0007.
+- Relationships: Uses B-0002 and B-0038. Used by B-0003 and B-0007. Mailbox behavior belongs to B-0003.
 - Feature Brief: [Central storage brief](features/B-0004/brief.md).
 
 ## B-0005: Room purchase and traversal

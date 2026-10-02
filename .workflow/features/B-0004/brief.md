@@ -1,6 +1,6 @@
 # The cabin has central storage
 
-Status: Draft
+Status: Ready
 Feature ID: B-0004
 
 ## Goal
@@ -16,7 +16,7 @@ Story: An owner or resident puts items into central storage and withdraws them t
 Acceptance:
 
 - A cabin has one storage inventory after storage installation.
-- Initial storage installation includes the receiving mailbox defined by B-0003.
+- Storage installation provides the household inventory. Mailbox availability belongs to B-0003 and also requires installed connected-lounge access.
 - A dedicated interior control opens storage. The Lodestone opens Cabin Upgrades.
 - The protected control appears opposite the Lodestone after installation and stays there through expansion. Design settles its appearance.
 - Owners and residents can put items in storage, see its contents, and withdraw items. Guests cannot use or inspect storage.
@@ -52,12 +52,12 @@ Acceptance:
 
 | Stack slots | Materials for that purchase |
 |---|---|
-| 54 | 2 chests, 4 iron ingots, 4 amethyst shards |
-| 108 | 8 copper ingots, 4 amethyst shards |
-| 216 | 16 copper ingots, 4 amethyst shards, 4 redstone dust |
-| 432 | 24 copper ingots, 4 amethyst shards, 8 redstone dust, 1 ender pearl |
-| 864 | 32 copper ingots, 4 amethyst shards, 12 redstone dust, 1 crying obsidian, 1 Nether quartz |
-| 1,728 | 48 copper ingots, 4 amethyst shards, 16 redstone dust, 2 shulker shells |
+| 54 | 2 chests, 4 iron ingots, 4 amethyst blocks |
+| 108 | 8 copper ingots, 4 amethyst blocks |
+| 216 | 16 copper ingots, 4 amethyst blocks, 4 redstone dust |
+| 432 | 24 copper ingots, 4 amethyst blocks, 8 redstone dust, 1 ender pearl |
+| 864 | 32 copper ingots, 4 amethyst blocks, 12 redstone dust, 1 crying obsidian, 1 Nether quartz |
+| 1,728 | 48 copper ingots, 4 amethyst blocks, 16 redstone dust, 2 shulker shells |
 
 - If a capacity change does not complete, items in storage and the number of slots stay the same.
 - Owners and residents see contents and available slots. Only owners control upgrades.
@@ -94,6 +94,7 @@ The feature includes manual storage, automatic sorting, search and category brow
 - Automatic movement of items from placed inventories or between cabins.
 - Production jobs that use storage items.
 - Automatic upgrade funding or installation.
+- Mailbox appearance, delivery, and collection, owned by B-0003.
 
 ## Related records
 

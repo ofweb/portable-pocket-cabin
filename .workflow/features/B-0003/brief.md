@@ -15,7 +15,7 @@ Story: A player uses a deployed cabin mailbox to send items without entering the
 
 Acceptance:
 
-- Initial central storage installation includes the cabin's mailbox. There is no separate mailbox purchase, and a cabin without installed storage has no mailbox.
+- The mailbox appears once both central storage and connected-lounge access are installed. Either prerequisite alone provides no mailbox. Mailbox appearance belongs to this feature, not storage installation.
 - Players can send deliveries through the deployed exterior and the cabin's mailbox access point in the shared lounge.
 - Owners, residents, and guests can send mail.
 - The delivery interface does not show earlier mail or let players withdraw items.
@@ -52,7 +52,7 @@ Acceptance:
 
 ## Scope
 
-The feature has one cabin mailbox for manual delivery and owner access.
+The feature includes mailbox appearance after both prerequisites are installed, manual delivery, and owner access.
 
 ## Non-goals
 
@@ -72,3 +72,4 @@ The feature has one cabin mailbox for manual delivery and owner access.
 - The mailbox capacity and the number of items in one transfer are open.
 - The method to collect items when the owner's inventory is full is open.
 - The scope of manual transfer into central storage is open.
+- Whether leaving a hallway network changes mailbox availability remains open. Installed connection upgrades persist under B-0009.
