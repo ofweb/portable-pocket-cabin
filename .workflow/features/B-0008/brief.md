@@ -17,9 +17,10 @@ Acceptance:
 
 - The cabin does not show Enchanting until the owner installs its book in B-0038. The room book and automation book reveal different upgrades.
 - The installed book reveals the room upgrade. It does not install the room.
-- Players with cabin access can inspect revealed upgrades, as the cabin upgrade rules state.
 - Only the owner installs the room and its upgrades. Residents can contribute to their upgrade funds.
-- Installation follows the room purchase rules and adds the room and table.
+- Installation follows B-0005 and adds the room and table on the north corridor.
+- The room has a fixed 5×5 usable floor area through all upgrades.
+- The room provides an anvil and grindstone using normal Minecraft rules, independently of learned-enchantment actions.
 - The installed room can apply known enchantments up to the first level.
 - Before installation, the cabin cannot learn or manually apply known enchantments.
 

@@ -1,6 +1,6 @@
 # The cabin has central storage
 
-Status: Ready
+Status: Draft
 Feature ID: B-0004
 
 ## Goal
@@ -16,6 +16,7 @@ Story: An owner or resident puts items into central storage and withdraws them t
 Acceptance:
 
 - A cabin has one storage inventory after storage installation.
+- Initial storage installation includes the receiving mailbox defined by B-0003.
 - A dedicated interior control opens storage. The Lodestone opens Cabin Upgrades.
 - The protected control appears opposite the Lodestone after installation and stays there through expansion. Design settles its appearance.
 - Owners and residents can put items in storage, see its contents, and withdraw items. Guests cannot use or inspect storage.

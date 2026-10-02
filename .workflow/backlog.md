@@ -12,7 +12,7 @@
 - Status: Ready for Shape
 - Value: Let other players deliver items safely through one receiving mailbox that belongs to the cabin.
 - Direction: [Direction](direction.md).
-- Relationships: Uses the household roles in B-0002.
+- Relationships: Uses B-0002 and B-0004. Lounge access integrates B-0009.
 - Feature Brief: [Receiving mailbox brief](features/B-0003/brief.md).
 
 ## B-0004: Central storage
@@ -26,10 +26,10 @@
 ## B-0005: Room purchase and traversal
 
 - Status: Ready for Shape
-- Value: Let a cabin purchase a room with size limits and give safe access through an interior door.
+- Value: Let a cabin purchase purpose-specific rooms with size limits and continuous access through three interior corridors.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Room brief](features/B-0005/brief.md).
-- Relationships: Uses B-0002. Used by B-0019 through B-0023.
+- Relationships: Uses B-0002. Shared room behavior for B-0008, B-0019 through B-0023, B-0039 through B-0041, and B-0043.
 
 ## B-0006: House cat
 
@@ -113,6 +113,7 @@
 - Value: Let residents plant and harvest crops with profiles in a room where growth progresses without manual actions and has limits.
 - Direction: [Direction](direction.md).
 - Relationships: Uses B-0005. B-0026 defines automatic actions.
+- Feature Brief: [Greenhouse brief](features/B-0019/brief.md).
 
 ## B-0020: Stable
 
@@ -120,6 +121,7 @@
 - Value: Let residents house and release tamed animals with profiles that players can ride, while each animal keeps its identity.
 - Direction: [Direction](direction.md).
 - Relationships: Uses B-0005.
+- Feature Brief: [Stable brief](features/B-0020/brief.md).
 
 ## B-0021: Aquatic berth
 
@@ -127,6 +129,7 @@
 - Value: Add a stable berth with water for a tamed aquatic stable resident, such as a nautilus.
 - Direction: [Direction](direction.md).
 - Relationships: Extends the stable in B-0020.
+- Feature Brief: [Aquatic berth brief](features/B-0021/brief.md).
 
 ## B-0022: Livestock room
 
@@ -134,13 +137,15 @@
 - Value: Let residents keep livestock with profiles and population limits, and collect products manually.
 - Direction: [Direction](direction.md).
 - Relationships: Uses B-0005. B-0026 defines automatic actions.
+- Feature Brief: [Livestock rooms brief](features/B-0022/brief.md).
 
 ## B-0023: Forestry room
 
 - Status: Ready for Shape
-- Value: Let residents grow, cut, and replant trees with profiles in a cabin room.
+- Value: Let residents grow, cut, and replant trees with profiles in the cabin's arboretum.
 - Direction: [Direction](direction.md).
 - Relationships: Uses B-0005. B-0026 defines automatic actions.
+- Feature Brief: [Arboretum brief](features/B-0023/brief.md).
 
 ## B-0024: Bounded crafting jobs
 
@@ -148,7 +153,7 @@
 - Value: Plan and operate local crafting jobs with recipes, hard reserves, work time, and safe outputs.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Crafting jobs brief](features/B-0024/brief.md).
-- Relationships: Uses B-0004 and B-0007. Used by B-0008, B-0025, B-0028, B-0036, and B-0037.
+- Relationships: Uses B-0004, B-0007, and B-0039. Used by B-0008, B-0025, B-0028, B-0036, B-0037, and B-0042.
 
 ## B-0025: Cooking and brewing jobs
 
@@ -156,7 +161,7 @@
 - Value: Add cooking and brewing processes with profiles to local jobs with limits.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Cooking and brewing brief](features/B-0025/brief.md).
-- Relationships: Uses B-0024.
+- Relationships: Uses B-0024. Cooking uses B-0041. Brewing uses B-0043.
 
 ## B-0026: Room automation
 
@@ -164,7 +169,7 @@
 - Value: Add automatic actions that owners can enable independently in greenhouse, livestock, and forestry rooms. Manual use stays the same.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Room automation brief](features/B-0026/brief.md).
-- Relationships: Uses B-0007, B-0024, and the relevant room in B-0019, B-0022, or B-0023.
+- Relationships: Uses B-0007, B-0024, and room features B-0019, B-0022, or B-0023.
 
 ## B-0027: Optional production profiles
 
@@ -180,15 +185,15 @@
 - Value: Let an owner select enchantments for automation and request equipment through a material and work plan.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Equipment requisitions brief](features/B-0028/brief.md).
-- Relationships: Uses B-0008, B-0024, and B-0038. Used by B-0029.
+- Relationships: Uses B-0008, B-0024, and B-0038.
 
 ## B-0029: Owner loadouts
 
 - Status: Ready for Shape
-- Value: Let a cabin use equipment rules for its owner when that owner enters.
-- Direction: [Direction](direction.md).
+- Value: Let an owner use loadout rules to move existing items between player inventory and central storage through separate book-unlocked upgrades.
+- Direction: [Loadouts](direction.md#loadouts).
 - Feature Brief: [Owner loadouts brief](features/B-0029/brief.md).
-- Relationships: Uses B-0028.
+- Relationships: Uses B-0004 and B-0038. Independent of B-0028 and production rooms.
 
 ## B-0030: Safe packed cabin access
 
@@ -260,4 +265,43 @@
 - Value: Let players find book vendors in villages or create one through a bookstall. Players install cabin books to reveal upgrades.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Cabin books brief](features/B-0038/brief.md).
-- Relationships: Gives book sources for B-0004, B-0007, B-0008, and B-0028.
+- Relationships: Gives book sources for B-0004, B-0007, B-0008, B-0028, B-0029, B-0039 through B-0041, and B-0043.
+
+## B-0039: Manual crafting room
+
+- Status: Ready for Shape
+- Value: Give the household a crafting room that works without storage or automation and uses installed storage automatically.
+- Direction: [Manual production rooms](direction.md#manual-production-rooms).
+- Relationships: Uses B-0005 and B-0038. Integrates B-0004. Used by B-0024.
+- Feature Brief: [Manual crafting room brief](features/B-0039/brief.md).
+
+## B-0040: Manual smelting room
+
+- Status: Ready for Shape
+- Value: Give the household a smelting room that works without storage or automation and uses installed storage automatically.
+- Direction: [Manual production rooms](direction.md#manual-production-rooms).
+- Relationships: Uses B-0005 and B-0038. Integrates B-0004. Used by B-0042.
+- Feature Brief: [Manual smelting room brief](features/B-0040/brief.md).
+
+## B-0041: Manual kitchen room
+
+- Status: Ready for Shape
+- Value: Give the household a kitchen that works without storage or automation and uses installed storage automatically.
+- Direction: [Manual production rooms](direction.md#manual-production-rooms).
+- Relationships: Uses B-0005 and B-0038. Integrates B-0004. Used by cooking in B-0025.
+- Feature Brief: [Manual kitchen brief](features/B-0041/brief.md).
+
+## B-0042: Smelting jobs
+
+- Status: Ready for Shape
+- Value: Let the household request automatic material processing through smelting capabilities unlocked separately from the manual room.
+- Direction: [Manual production rooms](direction.md#manual-production-rooms).
+- Relationships: Uses B-0004, B-0007, B-0024, and B-0040.
+
+## B-0043: Manual potion room
+
+- Status: Ready for Shape
+- Value: Give the household a brewing room that works without storage or automation and uses installed storage automatically.
+- Direction: [Manual production rooms](direction.md#manual-production-rooms).
+- Relationships: Uses B-0005 and B-0038. Integrates B-0004. Used by brewing in B-0025.
+- Feature Brief: [Manual potion room brief](features/B-0043/brief.md).

@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-02",
+  "minecraft": "26.2",
+  "fabric_loader": "0.19.5",
+  "fabric_api": "0.159.0+26.2",
+  "java_runtime": "26.0.2",
+  "commands": [
+    "python experiments/room-relocation/run.py --cache-source /tmp/ppc-room-relocation-spike/gradle-user-home --output /tmp/ppc-room-relocation-reproduction"
+  ],
+  "custom_gametests_passed": 12,
+  "total_gametests_including_fabric_reference": 13,
+  "gametest_exit_code": 0,
+  "abrupt_exit_after_saved_partial_move": true,
+  "separate_process_recovery_passed": true,
+  "restart_exit_code": 0,
+  "files_sha256": {
+    "RoomRelocationRestartSpike.java": "f6e7c793c62051c40018285394b55029acd4e2809330e5f37b9c0b011fcb7b75",
+    "RoomRelocationSpikeTest.java": "1e61f52455dd15b2beb5334433b6a190545560139131c452c3a61a6634035151",
+    "run.py": "adad49046aafc03c07e4da935ffbe6a1c28332efa64b7ab3394caab8e9e0ffe4",
+    "RoomRelocationSpike.java": "13410c6391a77e64c53add13ad6dae16f2f84a485b4b5e26c16acc010ce126bc"
+  },
+  "success_markers": [
+    "[10:26:54] [Server thread/INFO] (Minecraft) All 13 required tests passed :)",
+    "BUILD SUCCESSFUL in 22s",
+    "[10:27:15] [Server thread/INFO] (portable_pocket_cabin) RELOCATION_PARTIAL_WORLD_SAVED; ABRUPT_EXIT",
+    "[10:27:30] [Server thread/INFO] (portable_pocket_cabin) RELOCATION_ABRUPT_RESTART_RECOVERY_PASSED",
+    "BUILD SUCCESSFUL in 34s"
+  ],
+  "limitations": [
+    "Tested vanilla contents only",
+    "One persisted partial-move state tested across abrupt process exit",
+    "No production cabin upgrade, fund, or registry integration",
+    "Player positions and mod-specific external state unverified"
+  ]
+}

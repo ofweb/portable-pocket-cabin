@@ -37,6 +37,7 @@ Acceptance:
 - If the cabin has the capability, it gets no new effect.
 - Installed automation capabilities stay with the cabin through packing, restart, and redeployment.
 - The owner can select each installed automation capability to operate or stop.
+- Each room has its own automation upgrades. A room's capability does not enable automation in a different room.
 - A different automation book reveals the upgrade for each action: feed, collect, harvest, replant, fell trees, prepare meals, brew, or enchant automatically.
 
 ## Feature-wide constraints and acceptance

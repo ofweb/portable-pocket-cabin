@@ -21,6 +21,8 @@ Acceptance:
 - Owners confirm connections and membership. Exterior positions near each other do not create a connection.
 - A cabin can have membership in one hallway network at most.
 - The first connection creates a lasting hallway. Each cabin in the network has one door that players cannot break. The door identifies its cabin.
+- The shared hallway is the lounge connecting cabins. Each cabin's door opens from its east corridor into that lounge.
+- A cabin with a mailbox provides access from the shared lounge under B-0003's delivery and collection rules.
 - Exterior distance and the dimensions that the cabin can use do not prevent access after connection.
 - Each entry checks the role and state for its target cabin, as stated in the household role rules.
 - Membership, hallway identity, and door connections stay through restart.
@@ -66,6 +68,7 @@ Storage and roles stay with each cabin. Ownership and resource transfers, world 
 - [Household roles](../../decisions/pdr/0009-use-fixed-household-roles.md).
 - [Safe travel](../../decisions/pdr/0002-safe-cabin-travel.md).
 - [Packed access](../B-0030/brief.md).
+- [Receiving mailbox](../B-0003/brief.md).
 - [Resource requests](../B-0031/brief.md).
 
 ## Open questions and assumptions

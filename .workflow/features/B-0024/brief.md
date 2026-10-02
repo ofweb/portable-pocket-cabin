@@ -16,6 +16,7 @@ Story: An owner or resident requests a local product and selects one complete pr
 Acceptance:
 
 - A request must have a safe product template, recipes the cabin can use, an installed automation capability, a tier, inputs, and output space.
+- Automated crafting requires the installed crafting room in B-0039. Manual room use does not require this feature.
 - A production plan can make intermediate products. It must follow limits on recipe depth, the number of operations, and output quantity.
 - A production plan cannot have cycles or a recipe sequence that creates a net gain of resources. The check includes all containers the job gives back and by-products.
 - The cabin shows inputs, intermediate products, items the job gives back, by-products, hard reserves, total work, work time, and output space.
@@ -78,6 +79,7 @@ This feature includes local crafting plans, hard reserves, jobs with work time, 
 - [Job reservation](../../context.md#job-reservation).
 - [Known items brief](../B-0007/brief.md).
 - [Central storage brief](../B-0004/brief.md).
+- [Manual crafting room](../B-0039/brief.md).
 - [Household role decision](../../decisions/pdr/0009-use-fixed-household-roles.md).
 - [Cabin decision](../../decisions/pdr/0001-preserve-the-portable-home.md).
 

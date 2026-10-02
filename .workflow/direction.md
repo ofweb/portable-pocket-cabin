@@ -14,6 +14,24 @@ Production at higher tiers uses advanced upgrade materials to place automation a
 
 Players can use the complete cabin in Survival mode without operator commands. Cabin interfaces show available actions, costs, access, and failures. Optional mod features follow the same behavior and have stated compatibility limits.
 
+### Main room and purpose-specific rooms
+
+The cabin has one main room for general use and dedicated rooms for household activities. Continuous corridors connect its interior, and rooms retain their contents as the cabin grows or travels. The [room purchase and traversal brief](features/B-0005/brief.md) owns shared layout, access, and relocation behavior. The [expansion decision](decisions/pdr/0006-expand-general-space-with-world-materials.md) owns main-room growth.
+
+Growing and animal spaces have their own briefs: [greenhouse](features/B-0019/brief.md), [arboretum / forestry](features/B-0023/brief.md), [stable](features/B-0020/brief.md), [aquatic berth](features/B-0021/brief.md), and [livestock rooms](features/B-0022/brief.md). These briefs own room dimensions, placement, capacity, upgrades, and unresolved room behavior.
+
+### Mailbox access
+
+Players can deliver mail to a cabin, and its owner can collect it through household interfaces. The [mailbox brief](features/B-0003/brief.md) owns installation prerequisites, access points, permissions, and delivery behavior.
+
+### Manual production rooms
+
+Dedicated production rooms work manually before central storage or automation. Storage integrates with installed rooms, and automation remains a separate progression path. Each room's brief owns its facilities, book requirements, upgrades, dimensions, placement, and storage interactions: [crafting](features/B-0039/brief.md), [smelting](features/B-0040/brief.md), [kitchen](features/B-0041/brief.md), [potions](features/B-0043/brief.md), and [enchanting](features/B-0008/brief.md).
+
+### Loadouts
+
+Loadouts have their own cabin book and upgrade path, independent of production rooms and their automation. They move existing items between central storage and player inventory. Loadouts do not craft or enchant missing items. Equipment production remains a separate capability.
+
 ### Upgrade materials and exploration
 
 Upgrade costs are predefined for each upgrade type and level. Costs do not generate extra requirements from the world, deployment biome, inventory, or earlier purchases. Chosen ingredients can still encourage exploration of different biomes and dimensions and give overlooked items a use.
@@ -22,7 +40,7 @@ Exploration requirements use modest quantities. Progression encourages finding m
 
 Costs can include manufactured items. A short ingredient list can represent substantial crafting and gathering through a few complex products. Cost balance must account for their underlying ingredients and work.
 
-General-space expansion uses the wood types selected at first construction, amethyst, and obsidian. Its wood requirements follow the saved Cabin palette. The [expansion decision](decisions/pdr/0006-expand-general-space-with-world-materials.md) states this relationship. Greenhouse upgrades use glass and iron as base materials, with plants, seeds, and botanical finds as exploration requirements.
+General-space expansion uses the wood types selected at first construction, amethyst, and obsidian. Its wood requirements follow the saved Cabin palette. The [expansion decision](decisions/pdr/0006-expand-general-space-with-world-materials.md) states this relationship.
 
 Players see costs only for the next available upgrade in each upgrade type. Later costs stay hidden so progression does not become a shopping list for future tiers.
 
