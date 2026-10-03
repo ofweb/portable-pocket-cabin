@@ -69,6 +69,10 @@ final class CabinPacking {
 			owner.sendSystemMessage(Component.literal("That cabin is already being packed."));
 			return 0;
 		}
+		if (CabinCorridors.hasPending(server, cabin.uuid()) || cabin.upgrades().operationInProgress()) {
+			owner.sendSystemMessage(Component.literal("Wait for cabin upgrade recovery before packing."));
+			return 0;
+		}
 		if (!CabinReconciliation.hasValidProjection(server, cabin)) {
 			CabinReconciliation.reconcile(server, cabin.uuid());
 			owner.sendSystemMessage(Component.literal("Packing aborted: the exterior is incomplete and was marked for recovery."));

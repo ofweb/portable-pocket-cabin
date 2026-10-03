@@ -30,6 +30,7 @@ public final class PortablePocketCabin implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STARTING.register(CabinRegistry::validateWorldSchema);
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			CabinRegistry registry = CabinRegistry.get(server);
+			CabinCorridors.reconcileAll(server);
 			CabinReconciliation.reconcileAll(server);
 			CabinUpgradeService.reconcileAll(server);
 			CabinWindowReversalService.reconcileAll(server);
@@ -38,6 +39,7 @@ public final class PortablePocketCabin implements ModInitializer {
 				server.getLevel(PocketDimension.LEVEL_KEY) != null);
 			LOGGER.info("Cabin registry loaded; cabins={}, next cell={}", registry.size(), registry.nextCellIndex());
 			DedicatedServerStartupCheck.onServerStarted(server);
+			CabinCorridorStartupCheck.onServerStarted(server);
 		});
 	}
 

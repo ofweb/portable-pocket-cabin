@@ -212,6 +212,16 @@ public final class PocketDimension {
 		}
 		Map<BlockPos, BlockState> current = shellBlocks(cabin.cellIndex(), currentSize, cabin.palette());
 		Map<BlockPos, BlockState> target = shellBlocks(cabin.cellIndex(), targetSize, cabin.palette());
+		current = new LinkedHashMap<>(current);
+		target = new LinkedHashMap<>(target);
+		for (CabinCorridor corridor : cabin.progression().corridors()) {
+			BlockPos oldEntrance = CabinCorridorLayout.entrance(cabin.cellIndex(), currentSize, corridor);
+			BlockPos newEntrance = CabinCorridorLayout.entrance(cabin.cellIndex(), targetSize, corridor);
+			current.remove(oldEntrance);
+			current.remove(oldEntrance.above());
+			target.remove(newEntrance);
+			target.remove(newEntrance.above());
+		}
 		for (BlockPos position : current.keySet()) {
 			if (!target.containsKey(position)) {
 				level.setBlock(position, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
@@ -287,6 +297,14 @@ public final class PocketDimension {
 			}
 		}
 
+		if (generalSize >= 5) {
+			for (CabinCorridor corridor : CabinCorridor.values()) {
+				BlockPos passage = CabinCorridorLayout.entrance(cellIndex, generalSize, corridor);
+				result.put(passage, frameState);
+				result.put(passage.above(), frameState);
+			}
+		}
+
 		BlockState lowerDoor = palette.door().doorBlock().defaultBlockState()
 			.setValue(DoorBlock.FACING, net.minecraft.core.Direction.SOUTH)
 			.setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
@@ -317,19 +335,26 @@ public final class PocketDimension {
 			cabin.cellIndex(), cabin.progression().generalSize(), CabinWindows.Profile.INACTIVE
 		).keySet();
 		for (Map.Entry<BlockPos, BlockState> entry : current.entrySet()) {
-			if (windowPositions.contains(entry.getKey())
+			if (CabinCorridorLayout.isEntrance(cabin, entry.getKey()) || windowPositions.contains(entry.getKey())
 				|| cabin.upgrades().storage().level() > 0 && entry.getKey().equals(CabinStorage.control(cabin))) {
 				continue;
 			}
 			BlockState actual = level.getBlockState(entry.getKey());
 			BlockState previous = legacy.get(entry.getKey());
+			if (isReservedPassageMarker(cabin, entry.getKey()) && actual.is(cabin.palette().walls().planksBlock())) continue;
 			if (!actual.is(entry.getValue().getBlock()) && !actual.is(previous.getBlock())) {
 				return false;
 			}
 		}
 		boolean changed = false;
 		for (Map.Entry<BlockPos, BlockState> entry : current.entrySet()) {
+			if (CabinCorridorLayout.isEntrance(cabin, entry.getKey())) continue;
 			BlockState previous = legacy.get(entry.getKey());
+			if (isReservedPassageMarker(cabin, entry.getKey()) && level.getBlockState(entry.getKey()).is(cabin.palette().walls().planksBlock())) {
+				level.setBlockAndUpdate(entry.getKey(), entry.getValue());
+				changed = true;
+				continue;
+			}
 			if (!previous.is(entry.getValue().getBlock())
 				&& level.getBlockState(entry.getKey()).is(previous.getBlock())) {
 				level.setBlockAndUpdate(entry.getKey(), entry.getValue());
@@ -337,6 +362,15 @@ public final class PocketDimension {
 			}
 		}
 		return changed;
+	}
+
+	private static boolean isReservedPassageMarker(CabinRecord cabin, BlockPos pos) {
+		if (cabin.progression().generalSize() < 5) return false;
+		for (CabinCorridor corridor : CabinCorridor.values()) {
+			BlockPos entrance = CabinCorridorLayout.entrance(cabin.cellIndex(), cabin.progression().generalSize(), corridor);
+			if (pos.equals(entrance) || pos.equals(entrance.above())) return true;
+		}
+		return false;
 	}
 
 	private static void placeShell(

@@ -28,7 +28,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 public final class CabinRegistry extends SavedData {
-	private static final int SCHEMA_VERSION = 8;
+	private static final int SCHEMA_VERSION = 9;
 
 	private record RegistryData(
 		int schemaVersion, long nextCellIndex, List<CabinRecord> cabins,
@@ -77,7 +77,7 @@ public final class CabinRegistry extends SavedData {
 			byOwner.put(cabin.owner(), cabin.uuid());
 			byCell.put(cabin.cellIndex(), cabin.uuid());
 			for (CabinRoom room : cabin.progression().rooms()) {
-				byCell.put(room.cellIndex(), cabin.uuid());
+				if (room.space().isEmpty()) byCell.put(room.cellIndex(), cabin.uuid());
 			}
 		}
 	}
@@ -500,6 +500,39 @@ public final class CabinRegistry extends SavedData {
 		return room;
 	}
 
+	/** Called after the free corridor world effect has been durably saved. */
+	synchronized CabinRecord completeCorridor(UUID cabinId, CabinCorridor corridor) {
+		CabinRecord cabin = byId.get(cabinId);
+		if (cabin == null) throw new IllegalStateException("Unknown cabin " + cabinId);
+		CabinRecord updated = copyProgression(cabin, cabin.progression().withCorridor(corridor));
+		replace(updated);
+		return updated;
+	}
+
+	/** Room features register their installed geometry after their recoverable world effect. */
+	synchronized CabinRoom registerConnectedRoom(UUID cabinId, UUID owner, net.minecraft.resources.Identifier type, CabinRoomSpace space) {
+		CabinRecord cabin = requireOwned(cabinId, owner);
+		if (!cabin.progression().corridors().contains(space.corridor())) throw new IllegalStateException("Room corridor is not installed");
+		if (cabin.progression().rooms().stream().anyMatch(room -> room.type().equals(type))) throw new IllegalStateException("Room already installed");
+		Set<net.minecraft.core.BlockPos> volume = space.volume(cabin.cellIndex());
+		var corridorShell = CabinCorridorLayout.blocks(cabin.cellIndex(), cabin.progression().generalSize(), cabin.palette(), space.corridor());
+		var entrance = PocketDimension.cellCenter(cabin.cellIndex()).offset(space.entrance());
+		if (!corridorShell.containsKey(entrance) || corridorShell.get(entrance).isAir()) {
+			throw new IllegalStateException("Room entrance must connect to its corridor wall");
+		}
+		if (volume.stream().anyMatch(pos -> PocketDimension.isWithinUsable(cabin.cellIndex(), cabin.progression().generalSize(), pos))) {
+			throw new IllegalStateException("Room overlaps the main room");
+		}
+		for (CabinRoom room : cabin.progression().rooms()) {
+			if (room.space().isPresent() && !Collections.disjoint(volume, room.space().get().volume(cabin.cellIndex()))) {
+				throw new IllegalStateException("Room overlaps another installed room");
+			}
+		}
+		CabinRoom room = new CabinRoom(UUID.randomUUID(), type, cabin.cellIndex(), Optional.of(space));
+		replace(copyProgression(cabin, cabin.progression().withRoom(room)));
+		return room;
+	}
+
 	synchronized long revision() {
 		return revision;
 	}
@@ -595,6 +628,12 @@ public final class CabinRegistry extends SavedData {
 			}
 			repairedNextCellIndex = Math.max(repairedNextCellIndex, cabin.cellIndex() + 1);
 			for (CabinRoom room : cabin.progression().rooms()) {
+				if (room.space().isPresent()) {
+					if (room.cellIndex() != cabin.cellIndex() || !cabin.progression().corridors().contains(room.space().get().corridor())) {
+						return DataResult.error(() -> "Connected room does not belong to its cabin corridor");
+					}
+					continue;
+				}
 				if (cells.putIfAbsent(room.cellIndex(), cabin) != null) {
 					return DataResult.error(() -> "Duplicate allocated room cell in saved registry: "
 						+ room.cellIndex());
@@ -611,6 +650,6 @@ public final class CabinRegistry extends SavedData {
 	}
 
 	private static boolean isSupportedSchema(int version) {
-		return version == SCHEMA_VERSION;
+		return version == 8 || version == SCHEMA_VERSION;
 	}
 }

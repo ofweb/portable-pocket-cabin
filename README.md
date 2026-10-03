@@ -22,7 +22,7 @@ The Cabin category provides two independent windows for each side and rear wall.
 
 Only the owner can downgrade or remove a window, with two-click confirmation. The change returns exact paid materials beside the interior controller and restores the wall. Grandfathered tier-one windows return no materials. Any newly invalid fund is named during confirmation and returned separately. Dropped items then follow ordinary Minecraft behavior.
 
-The registry uses schema 8 for centered, odd-size interiors. Earlier registries cannot migrate safely because their walls, entrances, and saved contents use different geometry. They are rejected without rewriting the save. Back up an earlier world and replace the development world with `just fresh-world`. New cabins begin with solid walls.
+The registry uses schema 9 for centered interiors and connected corridors. Schema 8 saves load with their contents preserved and no installed corridors. Older geometry schemas are rejected without rewriting the save. Back up an older world and replace the development world with `just fresh-world`. New cabins begin with solid walls.
 
 Cabins deploy in the Overworld, Nether, or End, and their protected interiors run only while deployed. Installed windows reflect the cabin's dimension, time, weather, or inactive state.
 
@@ -53,12 +53,16 @@ Book vendors belong to B-0038. Until that feature is available, operators can gi
 
 Requires JDK 25 or newer.
 
+Shared corridor support is available for room features. A first room installation adds its complete north, west, or east corridor for free. The west passage includes the livestock bend. Corridors have 3×3 clear interiors and 1×2 entrances. Their protected walls stay closed at uninstalled room positions. Room features own purchases, facilities, dimensions, and room upgrades; B-0005 adds no room offers.
+
+Main-room expansion moves installed wings and their contents outward. It requires online occupants to return to the main room. Recovery snapshots preserve supported blocks, inventories, scheduled updates, animal identities, and cabin-home beds. Moving spaces stay closed and paused until recovery finishes. Ordinary containers, decorations, livestock, pets, boats, and basic minecarts are supported. Contents with unsupported external state, mod contents, leashed entities, extended pistons, split objects, and blocked destinations prevent expansion. Saved palette materials remain supported as generated structure.
+
 ```sh
 ./gradlew build
 ./gradlew runServer
 ```
 
-The build runs server-side GameTests and headless dedicated-server startup and reload checks. The [GameTests](src/gametest/java/dev/portablepocketcabin/PortablePocketCabinGameTest.java) validate cabins, crafting, expansion, and upgrades. Development-world operators also have these inspection and recovery commands:
+The build runs server-side GameTests and headless dedicated-server startup and reload checks. The [GameTests](src/gametest/java/dev/portablepocketcabin/PortablePocketCabinGameTest.java) validate cabins, crafting, expansion, and upgrades. The corridor checks save interrupted and committed expansions, then verify recovery in a separate server process. Run them separately with `./gradlew runCorridorReloadTest`. Development-world operators also have these inspection and recovery commands:
 
 ```text
 /cabin create [player]

@@ -16,11 +16,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 final class CabinOccupancyData extends SavedData {
-	record Stay(UUID playerId, UUID cabinId, long packedItemGeneration) {
+	record Stay(UUID playerId, UUID cabinId, long packedItemGeneration, int generalSize) {
+		Stay(UUID playerId, UUID cabinId, long packedItemGeneration) {
+			this(playerId, cabinId, packedItemGeneration, CabinProgression.INITIAL_GENERAL_SIZE);
+		}
 		private static final Codec<Stay> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			UUIDUtil.STRING_CODEC.fieldOf("player_id").forGetter(Stay::playerId),
 			UUIDUtil.STRING_CODEC.fieldOf("cabin_id").forGetter(Stay::cabinId),
-			Codec.LONG.fieldOf("packed_item_generation").forGetter(Stay::packedItemGeneration)
+			Codec.LONG.fieldOf("packed_item_generation").forGetter(Stay::packedItemGeneration),
+			Codec.INT.optionalFieldOf("general_size", CabinProgression.INITIAL_GENERAL_SIZE).forGetter(Stay::generalSize)
 		).apply(instance, Stay::new));
 	}
 
@@ -61,7 +65,7 @@ final class CabinOccupancyData extends SavedData {
 	}
 
 	synchronized void enter(UUID playerId, CabinRecord cabin) {
-		byPlayer.put(playerId, new Stay(playerId, cabin.uuid(), cabin.packedItemGeneration()));
+		byPlayer.put(playerId, new Stay(playerId, cabin.uuid(), cabin.packedItemGeneration(), cabin.progression().generalSize()));
 		setDirty();
 	}
 

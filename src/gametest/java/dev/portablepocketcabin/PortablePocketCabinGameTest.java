@@ -586,19 +586,19 @@ public final class PortablePocketCabinGameTest {
 		CabinRegistry.requireSupportedSchema(migratableRoot, java.nio.file.Path.of("schema-three-cabins.dat"));
 		var futureRoot = new net.minecraft.nbt.CompoundTag();
 		var futureData = new net.minecraft.nbt.CompoundTag();
-		futureData.putInt("schema_version", 9);
+		futureData.putInt("schema_version", 10);
 		futureRoot.put("data", futureData);
 		try {
 			CabinRegistry.requireSupportedSchema(futureRoot, java.nio.file.Path.of("future-cabins.dat"));
 			helper.fail("A future registry schema must be rejected instead of guessed");
 		} catch (IllegalStateException expected) {
-			helper.assertTrue(expected.getMessage().contains("Unsupported cabin registry schema version 9"),
+			helper.assertTrue(expected.getMessage().contains("Unsupported cabin registry schema version 10"),
 				"Future-schema rejection must identify the unsupported version");
 		}
 
 		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, new CabinRegistry()).getOrThrow();
-		helper.assertTrue(encoded.asCompound().orElseThrow().getIntOr("schema_version", 0) == 8,
-			"Centered-geometry registries must publish explicit schema version 8");
+		helper.assertTrue(encoded.asCompound().orElseThrow().getIntOr("schema_version", 0) == 9,
+			"Registries with corridor state must publish explicit schema version 9");
 		helper.succeed();
 	}
 
@@ -1895,7 +1895,7 @@ public final class PortablePocketCabinGameTest {
 		var expanded = PocketDimension.shellBlocks(expandedCell, 7, palette);
 		BlockPos expandedCenter = PocketDimension.cellCenter(expandedCell);
 		for (int x = expandedBounds.shellMinimumX(); x <= expandedBounds.shellMaximumX(); x++) {
-			boolean shouldFrame = x - expandedBounds.shellMinimumX() < 2
+			boolean shouldFrame = x == 0 || x - expandedBounds.shellMinimumX() < 2
 				|| expandedBounds.shellMaximumX() - x < 2;
 			helper.assertTrue(expanded.get(expandedCenter.offset(x, 1, expandedBounds.shellMinimumZ()))
 				.is(shouldFrame ? frame : palette.walls().planksBlock()),

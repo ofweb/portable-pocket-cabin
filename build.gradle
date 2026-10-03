@@ -33,6 +33,20 @@ loom {
 			vmArg "-Dportable-pocket-cabin.startup-test=verify"
 			programArg "nogui"
 		}
+		corridorTest {
+			server()
+			name "Corridor Installation and Interrupted Expansion Test"
+			runDir "build/corridor-test"
+			vmArg "-Dportable-pocket-cabin.corridor-test=seed"
+			programArg "nogui"
+		}
+		corridorReloadTest {
+			server()
+			name "Corridor Expansion Recovery Test"
+			runDir "build/corridor-test"
+			vmArg "-Dportable-pocket-cabin.corridor-test=verify"
+			programArg "nogui"
+		}
 	}
 }
 
@@ -111,6 +125,37 @@ tasks.named("runStartupReloadTest").configure {
 
 tasks.named("check").configure {
 	dependsOn tasks.named("runStartupReloadTest")
+	dependsOn tasks.named("runCorridorReloadTest")
+}
+
+tasks.named("runCorridorTest").configure {
+	doFirst {
+		def runDirectory = layout.projectDirectory.dir("build/corridor-test").asFile
+		project.delete(new File(runDirectory, "world"))
+		runDirectory.mkdirs()
+		new File(runDirectory, "logs/latest.log").delete()
+		new File(runDirectory, "eula.txt").text = "eula=true\n"
+		new File(runDirectory, "server.properties").text = "server-port=0\nonline-mode=false\n"
+	}
+	doLast {
+		def logFile = layout.projectDirectory.file("build/corridor-test/logs/latest.log").asFile
+		if (!logFile.exists() || !logFile.text.contains("CORRIDOR_INSTALLATION_TEST_PASSED")) {
+			throw new GradleException("Corridor installation and interruption checks did not finish")
+		}
+	}
+}
+
+tasks.named("runCorridorReloadTest").configure {
+	dependsOn tasks.named("runCorridorTest")
+	doFirst {
+		new File(layout.projectDirectory.dir("build/corridor-test").asFile, "logs/latest.log").delete()
+	}
+	doLast {
+		def logFile = layout.projectDirectory.file("build/corridor-test/logs/latest.log").asFile
+		if (!logFile.exists() || !logFile.text.contains("CORRIDOR_RECOVERY_TEST_PASSED")) {
+			throw new GradleException("Corridor recovery checks did not finish")
+		}
+	}
 }
 
 publishing {

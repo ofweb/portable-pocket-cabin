@@ -6,7 +6,8 @@
   "environment": "*",
   "entrypoints": {
     "fabric-gametest": [
-      "dev.portablepocketcabin.PortablePocketCabinGameTest"
+      "dev.portablepocketcabin.PortablePocketCabinGameTest",
+      "dev.portablepocketcabin.CabinCorridorGameTest"
     ],
     "fabric-client-gametest": [
       "dev.portablepocketcabin.PortablePocketCabinClientGameTest"

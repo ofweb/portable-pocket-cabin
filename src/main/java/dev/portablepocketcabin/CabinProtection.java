@@ -15,8 +15,10 @@ public final class CabinProtection {
 			if (level.dimension().equals(PocketDimension.LEVEL_KEY)
 				&& (PocketDimension.isInteriorShell(
 					cabin.cellIndex(), cabin.progression().generalSize(), pos
-				) || cabin.progression().rooms().stream()
-					.anyMatch(room -> PocketDimension.isInteriorShell(room.cellIndex(), pos)))) {
+				) && !CabinCorridorLayout.isEntrance(cabin, pos)
+					|| CabinCorridorLayout.isShell(cabin, pos) || cabin.progression().rooms().stream()
+					.anyMatch(room -> room.space().map(space -> space.shell(cabin.cellIndex(), pos))
+						.orElseGet(() -> PocketDimension.isInteriorShell(room.cellIndex(), pos))))) {
 				return true;
 			}
 			if (cabin.exterior().isPresent()

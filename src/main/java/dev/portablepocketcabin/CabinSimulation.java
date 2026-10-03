@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 final class CabinSimulation {
 	// Vanilla ticket level 31 (radius 2) is the entity-ticking level. Smaller radii
@@ -23,8 +25,9 @@ final class CabinSimulation {
 	private static final Map<MinecraftServer, State> STATES = new IdentityHashMap<>();
 
 	private static final class State {
-		private final Map<Long, Integer> activeCells = new java.util.LinkedHashMap<>();
+		private final Map<Long, Set<ChunkPos>> activeCells = new java.util.LinkedHashMap<>();
 		private long registryRevision = Long.MIN_VALUE;
+		private Set<UUID> pendingCorridors = Set.of();
 	}
 
 	private CabinSimulation() {
@@ -44,36 +47,38 @@ final class CabinSimulation {
 		CabinRegistry registry = CabinRegistry.get(server);
 		State state = STATES.computeIfAbsent(server, ignored -> new State());
 		long revision = registry.revision();
-		if (state.registryRevision == revision) {
-			return;
-		}
+		Set<UUID> pending = registry.cabins().stream().map(CabinRecord::uuid)
+			.filter(id -> CabinCorridors.hasPending(server, id)).collect(java.util.stream.Collectors.toUnmodifiableSet());
+		if (state.registryRevision == revision && state.pendingCorridors.equals(pending)) return;
 
-		Map<Long, Integer> desired = new java.util.LinkedHashMap<>();
+		Map<Long, Set<ChunkPos>> desired = new java.util.LinkedHashMap<>();
 		for (CabinRecord cabin : registry.cabins()) {
-			if (shouldSimulate(cabin)) {
-				desired.put(cabin.cellIndex(), cabin.progression().generalSize());
+			if (shouldSimulate(cabin) && !pending.contains(cabin.uuid())) {
+				desired.put(cabin.cellIndex(), CabinCorridorLayout.chunks(cabin));
 			}
 		}
 
-		Map<Long, Integer> active = state.activeCells;
-		for (Map.Entry<Long, Integer> entry : new ArrayList<>(active.entrySet())) {
-			Integer desiredSize = desired.get(entry.getKey());
+		Map<Long, Set<ChunkPos>> active = state.activeCells;
+		for (Map.Entry<Long, Set<ChunkPos>> entry : new ArrayList<>(active.entrySet())) {
+			Set<ChunkPos> desiredSize = desired.get(entry.getKey());
 			if (!entry.getValue().equals(desiredSize)) {
 				removeTickets(pocket, entry.getKey(), entry.getValue());
 				active.remove(entry.getKey());
 			}
 		}
-		for (Map.Entry<Long, Integer> entry : desired.entrySet()) {
+		for (Map.Entry<Long, Set<ChunkPos>> entry : desired.entrySet()) {
 			if (!active.containsKey(entry.getKey())) {
 				addTickets(pocket, entry.getKey(), entry.getValue());
 				active.put(entry.getKey(), entry.getValue());
 			}
 		}
 		state.registryRevision = revision;
+		state.pendingCorridors = pending;
 	}
 
 	static boolean shouldSimulate(CabinRecord cabin) {
-		return cabin.lifecycle() == CabinLifecycle.DEPLOYED && cabin.interiorGenerated();
+		return cabin.lifecycle() == CabinLifecycle.DEPLOYED && cabin.interiorGenerated()
+			&& !cabin.upgrades().operationInProgress();
 	}
 
 	static List<ChunkPos> chunksForCell(long cellIndex) {
@@ -106,8 +111,8 @@ final class CabinSimulation {
 		return state == null ? 0 : state.activeCells.size();
 	}
 
-	private static void addTickets(ServerLevel pocket, long cellIndex, int generalSize) {
-		for (ChunkPos chunk : chunksForCell(cellIndex, generalSize)) {
+	private static void addTickets(ServerLevel pocket, long cellIndex, java.util.Set<ChunkPos> chunks) {
+		for (ChunkPos chunk : chunks) {
 			pocket.getChunkSource().addTicketWithRadius(
 				CABIN_SIMULATION_TICKET, chunk, FULL_SIMULATION_RADIUS
 			);
@@ -115,8 +120,8 @@ final class CabinSimulation {
 		}
 	}
 
-	private static void removeTickets(ServerLevel pocket, long cellIndex, int generalSize) {
-		for (ChunkPos chunk : chunksForCell(cellIndex, generalSize)) {
+	private static void removeTickets(ServerLevel pocket, long cellIndex, java.util.Set<ChunkPos> chunks) {
+		for (ChunkPos chunk : chunks) {
 			pocket.getChunkSource().removeTicketWithRadius(
 				CABIN_SIMULATION_TICKET, chunk, FULL_SIMULATION_RADIUS
 			);

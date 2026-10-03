@@ -18,6 +18,7 @@ final class CabinEvents {
 
 	static void register() {
 		PlayerBlockBreakEvents.BEFORE.register((level, player, pos, state, blockEntity) -> {
+			if (level instanceof ServerLevel serverLevel && !CabinCorridors.mayChange(serverLevel, player.getUUID(), pos)) return false;
 			if (level instanceof ServerLevel serverLevel && CabinProtection.isProtected(serverLevel, pos)) {
 				if (player instanceof ServerPlayer serverPlayer) {
 					serverPlayer.sendSystemMessage(Component.literal("That block is part of a protected cabin."), true);
@@ -30,6 +31,10 @@ final class CabinEvents {
 		UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
 			if (!(level instanceof ServerLevel serverLevel) || !(player instanceof ServerPlayer serverPlayer)) {
 				return InteractionResult.PASS;
+			}
+			if (!CabinCorridors.mayChange(serverLevel, player.getUUID(), hit.getBlockPos())
+				|| !CabinCorridors.mayChange(serverLevel, player.getUUID(), hit.getBlockPos().relative(hit.getDirection()))) {
+				return InteractionResult.FAIL;
 			}
 
 			CabinRecord exteriorCabin = CabinProtection.findExteriorEntrance(serverLevel, hit.getBlockPos())
@@ -71,6 +76,21 @@ final class CabinEvents {
 				recoverOfflineOccupant(player);
 			});
 		});
+		net.fabricmc.fabric.api.event.player.UseEntityCallback.EVENT.register((player, level, hand, entity, hit) ->
+			level instanceof ServerLevel serverLevel && !CabinCorridors.mayChange(serverLevel, player.getUUID(), entity.blockPosition())
+				? InteractionResult.FAIL : InteractionResult.PASS);
+		net.fabricmc.fabric.api.event.player.AttackEntityCallback.EVENT.register((player, level, hand, entity, hit) ->
+			level instanceof ServerLevel serverLevel && !CabinCorridors.mayChange(serverLevel, player.getUUID(), entity.blockPosition())
+				? InteractionResult.FAIL : InteractionResult.PASS);
+		net.fabricmc.fabric.api.event.player.UseItemCallback.EVENT.register((player, level, hand) ->
+			level instanceof ServerLevel serverLevel && !CabinCorridors.mayChange(serverLevel, player.getUUID(), player.blockPosition())
+				? InteractionResult.FAIL : InteractionResult.PASS);
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			var player = handler.player;
+			if (!player.level().dimension().equals(PocketDimension.LEVEL_KEY)) return;
+			CabinRegistry.get(server).findByCell(PocketDimension.cellIndexAt(player.blockPosition()).orElse(-1L))
+				.ifPresent(cabin -> CabinOccupancyData.get(server).enter(player.getUUID(), cabin));
+		});
 
 		ServerChunkEvents.CHUNK_LOAD.register((level, chunk, newlyGenerated) ->
 			CabinReconciliation.onChunkLoaded(level, chunk.getPos()));
@@ -81,6 +101,7 @@ final class CabinEvents {
 		CabinRegistry registry = CabinRegistry.get(exteriorLevel.getServer());
 		CabinRecord current = registry.find(cabin.uuid()).orElse(null);
 		if (current == null || current.lifecycle() != CabinLifecycle.DEPLOYED
+			|| CabinCorridors.hasPending(exteriorLevel.getServer(), current.uuid())
 			|| current.exterior().isEmpty() || !current.exterior().equals(cabin.exterior())) {
 			player.sendSystemMessage(Component.literal("That cabin entrance is not active."));
 			return InteractionResult.FAIL;
@@ -172,6 +193,20 @@ final class CabinEvents {
 		CabinRecord cabin = registry.findByCell(cellIndex).orElse(null);
 		CabinOccupancyData occupancy = CabinOccupancyData.get(pocket.getServer());
 		CabinOccupancyData.Stay stay = occupancy.find(player.getUUID()).orElse(null);
+		if (cabin != null && requiresMainRoomReturn(player.blockPosition(), cabin, stay,
+			CabinCorridors.hasPending(pocket.getServer(), cabin.uuid()))) {
+			var safeMain = SafeDestinationResolver.search(pocket, PocketDimension.cellCenter(cabin.cellIndex()).above(), player,
+				Math.min(8, cabin.progression().generalSize() / 2))
+				.filter(destination -> PocketDimension.isWithinUsable(cabin.cellIndex(), cabin.progression().generalSize(), destination.feet()));
+			if (safeMain.isPresent() && safeMain.get().teleport(player, player.getYRot())) {
+				occupancy.enter(player.getUUID(), cabin);
+				return;
+			}
+			SafeDestinationResolver.resolveForCabin(player, cabin).ifPresent(destination -> {
+				if (destination.teleport(player, 0)) occupancy.clear(player.getUUID());
+			});
+			return;
+		}
 		if (cabin == null || !requiresLoginEvacuation(player.blockPosition(), cabin, stay)) {
 			return;
 		}
@@ -193,6 +228,13 @@ final class CabinEvents {
 				"No safe destination was available outside your inactive cabin. Ask an operator for help."
 			));
 		}
+	}
+
+	static boolean requiresMainRoomReturn(BlockPos position, CabinRecord cabin, CabinOccupancyData.Stay stay, boolean pendingMove) {
+		return cabin.lifecycle() == CabinLifecycle.DEPLOYED && stay != null
+			&& stay.cabinId().equals(cabin.uuid()) && stay.packedItemGeneration() == cabin.packedItemGeneration()
+			&& (stay.generalSize() != cabin.progression().generalSize() || pendingMove)
+			&& !PocketDimension.isWithinUsable(cabin.cellIndex(), cabin.progression().generalSize(), position);
 	}
 
 	static boolean requiresLoginEvacuation(

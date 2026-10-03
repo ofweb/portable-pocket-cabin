@@ -3,6 +3,10 @@
   "package": "dev.portablepocketcabin.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "CorridorBlockEntityMixin",
+    "CorridorLevelMixin",
+    "CorridorMovementMixin",
+    "CorridorSimulationMixin",
     "DoorBlockMixin",
     "FireBlockMixin",
     "PistonStructureResolverMixin",
