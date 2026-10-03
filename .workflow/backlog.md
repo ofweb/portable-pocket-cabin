@@ -262,10 +262,10 @@
 ## B-0038: Cabin book discovery and installation
 
 - Status: Ready for Shape
-- Value: Let players find book vendors in villages or create one through a bookstall. Players install cabin books to reveal upgrades.
+- Value: Give cabin books one installation flow to reveal upgrades. Retain village book vendors and player-created bookstalls for later Shape.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Cabin books brief](features/B-0038/brief.md).
-- Relationships: Gives book sources for B-0004, B-0007, B-0008, B-0028, B-0029, B-0039 through B-0041, and B-0043.
+- Relationships: Shared installation for B-0004, B-0007, B-0008, B-0019, B-0028, B-0029, B-0039 through B-0041, and B-0043. Acquisition remains deferred within this item.
 
 ## B-0039: Manual crafting room
 
