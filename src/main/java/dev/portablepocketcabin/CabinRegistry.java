@@ -463,6 +463,17 @@ public final class CabinRegistry extends SavedData {
 			if (currentSize != installation.targetState()) {
 				progression = progression.withGeneralSize(installation.targetState());
 			}
+		} else if (installation.target().isGreenhouse()) {
+			if (cabin.upgrades().greenhouse().level() != installation.expectedState())
+				throw new IllegalStateException("Greenhouse level changed");
+			var rooms = new java.util.ArrayList<>(progression.rooms());
+			rooms.removeIf(room -> room.type().equals(CabinGreenhouse.TYPE));
+			var id = progression.rooms().stream().filter(room -> room.type().equals(CabinGreenhouse.TYPE))
+				.map(CabinRoom::uuid).findFirst().orElse(installation.operationId());
+			rooms.add(new CabinRoom(id, CabinGreenhouse.TYPE, cabin.cellIndex(),
+				Optional.of(CabinGreenhouse.space(cabin, installation.targetState()))));
+			progression = new CabinProgression(progression.generalSize(), rooms,
+				progression.withCorridor(CabinCorridor.WEST).corridors());
 		} else if (installation.target().isCrafting()) {
 			if (cabin.upgrades().crafting().level() != installation.expectedState())
 				throw new IllegalStateException("Crafting level changed");
@@ -486,6 +497,8 @@ public final class CabinRegistry extends SavedData {
 		CabinUpgradeState completed = cabin.upgrades()
 			.completeInstallation(installation.target())
 			.withWindows(windows);
+		if (installation.target().isGreenhouse())
+			completed = completed.withGreenhouse(cabin.upgrades().greenhouse().upgrade(installation.targetState()));
 		if (installation.target().isCrafting())
 			completed = completed.withCrafting(cabin.upgrades().crafting().upgrade(installation.targetState()));
 		if (installation.target().isStorage())

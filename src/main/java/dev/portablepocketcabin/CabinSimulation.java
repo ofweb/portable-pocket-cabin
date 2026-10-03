@@ -44,6 +44,7 @@ final class CabinSimulation {
 			STATES.remove(server);
 			return;
 		}
+		CabinGreenhouseGrowth.sync(server);
 		CabinRegistry registry = CabinRegistry.get(server);
 		State state = STATES.computeIfAbsent(server, ignored -> new State());
 		long revision = registry.revision();

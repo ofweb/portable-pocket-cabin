@@ -21,7 +21,7 @@ public final class CabinCorridors {
 
 	public static boolean applyingWorldEffect() { return WORLD_EFFECT.get(); }
 
-	static boolean mayChange(ServerLevel level, UUID actor, BlockPos pos) {
+	public static boolean mayChange(ServerLevel level, UUID actor, BlockPos pos) {
 		if (!level.dimension().equals(PocketDimension.LEVEL_KEY)) return true;
 		if (isPaused(level, pos)) return false;
 		CabinRecord cabin = CabinRegistry.get(level.getServer()).findByCell(PocketDimension.cellIndexAt(pos).orElse(-1L)).orElse(null);
@@ -114,7 +114,9 @@ public final class CabinCorridors {
 		if (!level.dimension().equals(PocketDimension.LEVEL_KEY)) return false;
 		CabinRecord cabin = CabinRegistry.get(level.getServer()).findByCell(PocketDimension.cellIndexAt(pos).orElse(-1L)).orElse(null);
 		if (cabin == null) return false;
-		if (CabinCrafting.paused(cabin, pos)) return true;
+		if (cabin.upgrades().greenhouse().level() > 0 && CabinGreenhouseGrowth.hasPending(level.getServer(), cabin.uuid())
+			&& CabinGreenhouse.space(cabin, cabin.upgrades().greenhouse().level()).contains(cabin.cellIndex(), pos)) return true;
+		if (CabinGreenhouse.paused(cabin, pos) || CabinCrafting.paused(cabin, pos)) return true;
 		if (!hasPending(level.getServer(), cabin.uuid())) return false;
 		Path path = journal(level.getServer(), cabin.uuid());
 		Set<BlockPos> paused = PAUSED.computeIfAbsent(path, ignored -> {
@@ -132,6 +134,7 @@ public final class CabinCorridors {
 	}
 
 	static CabinUpgradeService.Outcome validateExpansion(ServerLevel pocket, CabinRecord cabin) {
+		if (CabinGreenhouseGrowth.hasPending(pocket.getServer(), cabin.uuid())) return CabinUpgradeService.Outcome.failure("Greenhouse catch-up is in progress.");
 		if (hasPending(pocket.getServer(), cabin.uuid())) return CabinUpgradeService.Outcome.failure("Corridor recovery is in progress.");
 		if (cabin.progression().corridors().isEmpty()) return CabinUpgradeService.Outcome.success("");
 		if (cabin.progression().rooms().stream().anyMatch(room -> room.space().isEmpty())) {

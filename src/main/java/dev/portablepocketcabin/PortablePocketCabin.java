@@ -27,6 +27,7 @@ public final class PortablePocketCabin implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register(CabinCommands::register);
 		CabinEvents.register();
 		CabinPacking.register();
+		CabinGreenhouseGrowth.register();
 		CabinSimulation.register();
 		CabinWindows.register();
 		CabinRespawning.register();
@@ -43,6 +44,7 @@ public final class PortablePocketCabin implements ModInitializer {
 			LOGGER.info("Cabin registry loaded; cabins={}, next cell={}", registry.size(), registry.nextCellIndex());
 			DedicatedServerStartupCheck.onServerStarted(server);
 			CabinCorridorStartupCheck.onServerStarted(server);
+			CabinGreenhouseStartupCheck.onServerStarted(server);
 		});
 	}
 

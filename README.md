@@ -26,6 +26,10 @@ Install a Crafting Room Book through the **Book** button in Cabin Upgrades, then
 
 Owners and residents can use these stations manually. Select a recipe or operation to fill inputs from central storage first, then player inventory. Automatic filling protects named and customised ingredients. The loom, cartography, and smithing panels let you select a specific target, including a named item. Click the result to craft one batch; shift-click crafts up to one output stack. The selected recipe refills after crafting. Closing returns unused inputs to their source. Storage becomes available as soon as it is installed.
 
+Install a Greenhouse Cabin Book through **Book**, then fund the next purchase in the Greenhouse category. The room branches south from the west corridor and requires 5×5 main space. Its four gardens provide 24, 48, 112, and 200 default planting spots. Owners and residents can replace beds and waterlogged slab paths above a protected foundation. Expansion preserves existing plants, soil, water, and fixtures. Manual gardening needs no storage or automation.
+
+For development, obtain the book with `/give @s portable_pocket_cabin:greenhouse_book`. Book vendors remain part of B-0038. [Greenhouse implementation notes](docs/greenhouse.md) describe packed growth, supported plants, optional ingredients, and verification.
+
 The registry uses schema 9 for centered interiors and connected corridors. Schema 8 saves load with their contents preserved and no installed corridors. Older geometry schemas are rejected without rewriting the save. Back up an older world and replace the development world with `just fresh-world`. New cabins begin with solid walls.
 
 Cabins deploy in the Overworld, Nether, or End, and their protected interiors run only while deployed. Installed windows reflect the cabin's dimension, time, weather, or inactive state.
@@ -66,7 +70,7 @@ Main-room expansion moves installed wings and their contents outward. It require
 ./gradlew runServer
 ```
 
-The build runs server-side GameTests and headless dedicated-server startup and reload checks. The [GameTests](src/gametest/java/dev/portablepocketcabin/PortablePocketCabinGameTest.java) validate cabins, crafting, expansion, and upgrades. The corridor checks save interrupted and committed expansions, then verify recovery in a separate server process. Run them separately with `./gradlew runCorridorReloadTest`. Development-world operators also have these inspection and recovery commands:
+The build runs server-side GameTests and headless dedicated-server startup and reload checks. The [GameTests](src/gametest/java/dev/portablepocketcabin/PortablePocketCabinGameTest.java) validate cabins, crafting, expansion, and upgrades. The corridor checks save interrupted and committed expansions, then verify recovery in a separate server process. Run them separately with `./gradlew runCorridorReloadTest`. Greenhouse checks verify interrupted room expansion and growth catch-up across separate server processes with `./gradlew runGreenhouseReloadTest`. Development-world operators also have these inspection and recovery commands:
 
 ```text
 /cabin create [player]

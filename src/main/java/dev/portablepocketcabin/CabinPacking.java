@@ -69,7 +69,7 @@ final class CabinPacking {
 			owner.sendSystemMessage(Component.literal("That cabin is already being packed."));
 			return 0;
 		}
-		if (CabinCorridors.hasPending(server, cabin.uuid()) || cabin.upgrades().operationInProgress()) {
+		if (CabinGreenhouseGrowth.hasPending(server, cabin.uuid()) || CabinCorridors.hasPending(server, cabin.uuid()) || cabin.upgrades().operationInProgress()) {
 			owner.sendSystemMessage(Component.literal("Wait for cabin upgrade recovery before packing."));
 			return 0;
 		}

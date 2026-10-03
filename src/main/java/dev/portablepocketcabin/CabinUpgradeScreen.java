@@ -88,7 +88,7 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 		fillStorageButton.setTooltip(Tooltip.create(Component.literal("Fill missing materials from central storage")));
 		storageBookButton = addRenderableWidget(Button.builder(Component.literal("Book"),
 			button -> sendMenuButton(CabinUpgradeMenu.BUTTON_STORAGE_BOOK)).bounds(leftPos + 8, topPos + 128, 54, 20).build());
-		storageBookButton.setTooltip(Tooltip.create(Component.literal("Install a storage or crafting cabin book to reveal its upgrades")));
+		storageBookButton.setTooltip(Tooltip.create(Component.literal("Install a storage, crafting or greenhouse cabin book to reveal its upgrades")));
 		categoryButtons.clear();
 		for (int index = 0; index < CabinUpgradeMenu.MAX_GROUPS; index++) {
 			CategoryTabButton button = addRenderableWidget(new CategoryTabButton(
@@ -169,7 +169,7 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 			graphics.text(font, progress, x + 8 - font.width(progress) / 2, y,
 				funded >= required ? 0xff207a20 : 0xff404040, false);
 		}
-		Component status = menu.isArmed() || menu.isDowngradeArmed() || menu.isRemoveArmed()
+		Component status = menu.bookConfirming() ? menu.statusMessage() : menu.isArmed() || menu.isDowngradeArmed() || menu.isRemoveArmed()
 			? Component.translatable("screen.portable_pocket_cabin.confirm_action") : statusDescription();
 		List<net.minecraft.util.FormattedCharSequence> statusLines = font.split(status, CabinUpgradeLayout.STATUS_WIDTH);
 		if (!statusLines.isEmpty()) {
@@ -242,7 +242,7 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 			: removeStatus));
 		fillStorageButton.visible = menu.isOwner();
 		fillStorageButton.active = fillStorageButton.visible && menu.hasStorage() && menu.isAvailable() && !menu.isStale();
-		storageBookButton.visible = menu.isOwner() && (!menu.storageRevealed() || !menu.craftingRevealed()) && !menu.hasDowngradeAction();
+		storageBookButton.visible = menu.isOwner() && (!menu.storageRevealed() || !menu.craftingRevealed() || !menu.greenhouseRevealed()) && !menu.hasDowngradeAction();
 		boolean severalPanels = menu.panelCount() > 1;
 		previousPanelButton.visible = severalPanels;
 		nextPanelButton.visible = severalPanels;

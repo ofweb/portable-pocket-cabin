@@ -214,6 +214,8 @@ final class CabinUpgradeService {
 				? CabinUpgradeState.Installation.generalSpace(
 					UUID.randomUUID(), target, cabin.progression().generalSize()
 				)
+				: target.isGreenhouse() ? new CabinUpgradeState.Installation(
+					UUID.randomUUID(), target, cabin.upgrades().greenhouse().level(), offer.targetSize())
 				: target.isCrafting() ? new CabinUpgradeState.Installation(
 					UUID.randomUUID(), target, cabin.upgrades().crafting().level(), offer.targetSize())
 				: target.isStorage() ? new CabinUpgradeState.Installation(
@@ -235,6 +237,7 @@ final class CabinUpgradeService {
 			return target.isGeneralSpace()
 				? Outcome.success("Cabin general space expanded to " + installation.targetState()
 					+ "x" + installation.targetState() + ".")
+				: target.isGreenhouse() ? Outcome.success("Greenhouse upgraded.")
 				: target.isCrafting() ? Outcome.success("Crafting room upgraded.")
 				: target.isStorage() ? Outcome.success("Central storage capacity increased.")
 				: Outcome.success("Cabin window installed at tier " + installation.targetState() + ".");

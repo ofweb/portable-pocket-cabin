@@ -1,4 +1,5 @@
 package dev.portablepocketcabin;
+import net.minecraft.resources.Identifier;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
@@ -154,6 +155,17 @@ final class CabinUpgradeCatalog {
 					current == 3 ? List.of() : craftingRequirements(cabin, next), current == 3,
 					current == 0 && cabin.progression().generalSize() < 5 ? "Expand the main room to 5x5 first" : ""))));
 		}
+		if (cabin.upgrades().greenhouse().revealed()) {
+			int current = cabin.upgrades().greenhouse().level();
+			int next = Math.min(4, current + 1);
+			groups.add(new Group(PortablePocketCabin.id("greenhouse"), "Greenhouse",
+				Identifier.withDefaultNamespace("wheat"), List.of(new Offer(
+					CabinUpgradeState.Target.greenhouse(next), "Greenhouse",
+					current == 4 ? "Fully upgraded" : "Grow a " + CabinGreenhouse.WIDTHS[next] + "x" + CabinGreenhouse.LENGTHS[next] + " garden",
+					Identifier.withDefaultNamespace("wheat"), current, next,
+					current == 4 ? List.of() : greenhouseRequirements(next), current == 4,
+					current == 0 && cabin.progression().generalSize() < 5 ? "Expand the main room to 5x5 first" : ""))));
+		}
 		return List.copyOf(groups);
 	}
 
@@ -207,6 +219,18 @@ final class CabinUpgradeCatalog {
 			complete ? List.of() : resolve(definitions.windowIngredients(targetTier), cabin.palette()),
 			complete, prerequisite
 		);
+	}
+
+	static List<CabinUpgradeState.Requirement> greenhouseRequirements(int level) {
+		String[][] plants = {{"sunflower", "biomesoplenty:lavender", "biomesoplenty:barley"},
+			{"sweet_berries", "cactus", "blue_orchid", "biomesoplenty:clover"},
+			{"cocoa_beans", "pink_petals", "biomesoplenty:marigold", "sea_pickle", "biomesoplenty:white_petals"},
+			{"spore_blossom", "kelp", "biomesoplenty:blue_hydrangea", "biomesoplenty:icy_iris", "biomesoplenty:glowflower", "biomesoplenty:toadstool"}};
+		var result = new ArrayList<CabinUpgradeState.Requirement>();
+		result.add(new CabinUpgradeState.Requirement(Identifier.withDefaultNamespace("glass"), new int[]{16,32,48,64}[level-1]));
+		result.add(new CabinUpgradeState.Requirement(Identifier.withDefaultNamespace("iron_ingot"), new int[]{8,12,16,24}[level-1]));
+		for (String plant : plants[level-1]) result.add(new CabinUpgradeState.Requirement(CabinIngredientFallbacks.resolve(Identifier.parse(plant)), 1));
+		return List.copyOf(result);
 	}
 
 	static List<CabinUpgradeState.Requirement> craftingRequirements(CabinRecord cabin, int level) {

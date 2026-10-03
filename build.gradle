@@ -33,6 +33,20 @@ loom {
 			vmArg "-Dportable-pocket-cabin.startup-test=verify"
 			programArg "nogui"
 		}
+		greenhouseTest {
+			server()
+			name "Greenhouse Installation and Catch-up Seed Test"
+			runDir "build/greenhouse-test"
+			vmArg "-Dportable-pocket-cabin.greenhouse-test=seed"
+			programArg "nogui"
+		}
+		greenhouseReloadTest {
+			server()
+			name "Greenhouse Restart Recovery Test"
+			runDir "build/greenhouse-test"
+			vmArg "-Dportable-pocket-cabin.greenhouse-test=verify"
+			programArg "nogui"
+		}
 		corridorTest {
 			server()
 			name "Corridor Installation and Interrupted Expansion Test"
@@ -126,6 +140,7 @@ tasks.named("runStartupReloadTest").configure {
 tasks.named("check").configure {
 	dependsOn tasks.named("runStartupReloadTest")
 	dependsOn tasks.named("runCorridorReloadTest")
+	dependsOn tasks.named("runGreenhouseReloadTest")
 }
 
 tasks.named("runCorridorTest").configure {
@@ -162,6 +177,24 @@ publishing {
 	publications {
 		create("mavenJava", MavenPublication) {
 			from components.java
+		}
+	}
+}
+
+["runGreenhouseTest": "GREENHOUSE_INSTALLATION_TEST_PASSED", "runGreenhouseReloadTest": "GREENHOUSE_RECOVERY_TEST_PASSED"].each { taskName, marker ->
+	tasks.named(taskName).configure {
+		if (taskName == "runGreenhouseReloadTest") dependsOn tasks.named("runGreenhouseTest")
+		doFirst {
+			def runDirectory = layout.projectDirectory.dir("build/greenhouse-test").asFile
+			if (taskName == "runGreenhouseTest") project.delete(new File(runDirectory, "world"))
+			runDirectory.mkdirs()
+			new File(runDirectory, "logs/latest.log").delete()
+			new File(runDirectory, "eula.txt").text = "eula=true\n"
+			new File(runDirectory, "server.properties").text = "server-port=0\nonline-mode=false\n"
+		}
+		doLast {
+			def logFile = layout.projectDirectory.file("build/greenhouse-test/logs/latest.log").asFile
+			if (!logFile.exists() || !logFile.text.contains(marker)) throw new GradleException("Greenhouse check did not finish: " + marker)
 		}
 	}
 }

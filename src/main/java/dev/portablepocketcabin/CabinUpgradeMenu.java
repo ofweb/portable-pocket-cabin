@@ -59,7 +59,9 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	private static final int DATA_STORAGE_REVEALED = DATA_REQUIREMENTS + MAX_REQUIREMENTS * 2;
 	private static final int DATA_STORAGE_CAPACITY = DATA_STORAGE_REVEALED + 1;
 	private static final int DATA_CRAFTING_REVEALED = DATA_STORAGE_CAPACITY + 1;
-	private static final int DATA_COUNT = DATA_CRAFTING_REVEALED + 1;
+	private static final int DATA_GREENHOUSE_REVEALED = DATA_CRAFTING_REVEALED + 1;
+	private static final int DATA_BOOK_CONFIRMING = DATA_GREENHOUSE_REVEALED + 1;
+	private static final int DATA_COUNT = DATA_BOOK_CONFIRMING + 1;
 
 	private static final int FLAG_OWNER = 1;
 	private static final int FLAG_CONTRIBUTOR = 1 << 1;
@@ -234,6 +236,9 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	}
 
 	boolean storageRevealed() { return data.get(DATA_STORAGE_REVEALED) != 0; }
+	boolean bookConfirming() { return data.get(DATA_BOOK_CONFIRMING) != 0; }
+	boolean greenhouseRevealed() { return data.get(DATA_GREENHOUSE_REVEALED) != 0; }
+
 	boolean craftingRevealed() { return data.get(DATA_CRAFTING_REVEALED) != 0; }
 	boolean hasStorage() { return data.get(DATA_STORAGE_CAPACITY) > 0; }
 
@@ -486,28 +491,32 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		synchronized (registry) {
 			CabinRecord cabin = registry.find(cabinId).orElseThrow();
 			if (!cabin.owner().equals(actor.getUUID()) || cabin.upgrades().operationInProgress()) return false;
-			if (cabin.upgrades().storage().revealed() && cabin.upgrades().crafting().revealed()) {
+			if (cabin.upgrades().storage().revealed() && cabin.upgrades().crafting().revealed() && cabin.upgrades().greenhouse().revealed()) {
 				setActionMessage("These book upgrades are already revealed.");
 				return false;
 			}
 			ItemStack book = ItemStack.EMPTY;
 			for (int i = 0; i < 36; i++) if ((playerInventory.getItem(i).is(CabinItems.STORAGE_BOOK) && !cabin.upgrades().storage().revealed()
-				|| playerInventory.getItem(i).is(CabinItems.CRAFTING_BOOK) && !cabin.upgrades().crafting().revealed())) {
+				|| playerInventory.getItem(i).is(CabinItems.CRAFTING_BOOK) && !cabin.upgrades().crafting().revealed()
+				|| playerInventory.getItem(i).is(CabinItems.GREENHOUSE_BOOK) && !cabin.upgrades().greenhouse().revealed())) {
 				book = playerInventory.getItem(i);
 				break;
 			}
-			if (book.isEmpty()) { setActionMessage("Bring a storage or crafting cabin book to reveal its upgrades."); return false; }
+			if (book.isEmpty()) { setActionMessage("Bring a storage, crafting or greenhouse cabin book to reveal its upgrades."); return false; }
 			long now = actor.level().getGameTime();
 			if (bookConfirmationUntil < now || bookConfirmationItem != book.getItem()) {
 				bookConfirmationUntil = now + CONFIRMATION_TICKS;
 				bookConfirmationItem = book.getItem();
-				setActionMessage(book.is(CabinItems.CRAFTING_BOOK) ? "Reveal all three crafting levels? Click Book again."
+				setActionMessage(book.is(CabinItems.GREENHOUSE_BOOK) ? "Reveal 4 greenhouse sizes? Book again."
+					: book.is(CabinItems.CRAFTING_BOOK) ? "Reveal all three crafting levels? Click Book again."
 					: "Reveal all six storage levels? Click Book again.");
 				return true;
 			}
+			boolean greenhouseBook = book.is(CabinItems.GREENHOUSE_BOOK);
 			boolean craftingBook = book.is(CabinItems.CRAFTING_BOOK);
 			book.shrink(1);
-			var revealed = craftingBook ? cabin.upgrades().withCrafting(cabin.upgrades().crafting().reveal()) : cabin.upgrades().withStorage(cabin.upgrades().storage().reveal());
+			var revealed = greenhouseBook ? cabin.upgrades().withGreenhouse(cabin.upgrades().greenhouse().reveal())
+				: craftingBook ? cabin.upgrades().withCrafting(cabin.upgrades().crafting().reveal()) : cabin.upgrades().withStorage(cabin.upgrades().storage().reveal());
 			registry.updateUpgradeState(cabinId, revealed.withStorage(revealed.storage()
 				.withSession(CabinStorage.receipt(actor, ItemStack.EMPTY))));
 			playerInventory.setChanged();
@@ -518,7 +527,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			registry.updateUpgradeState(cabinId, installed.upgrades().withStorage(
 				installed.upgrades().storage().withoutSession(actor.getUUID())));
 			CabinRegistry.flush(actor.level().getServer());
-			setActionMessage(craftingBook ? "Crafting upgrades revealed." : "Storage upgrades revealed.");
+			setActionMessage(greenhouseBook ? "Greenhouse upgrades revealed." : craftingBook ? "Crafting upgrades revealed." : "Storage upgrades revealed.");
 			broadcastChanges();
 			return true;
 		}
@@ -746,6 +755,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		}
 
 		data.set(DATA_STORAGE_REVEALED, cabin.upgrades().storage().revealed() ? 1 : 0);
+		data.set(DATA_GREENHOUSE_REVEALED, cabin.upgrades().greenhouse().revealed() ? 1 : 0);
 		data.set(DATA_CRAFTING_REVEALED, cabin.upgrades().crafting().revealed() ? 1 : 0);
 		data.set(DATA_STORAGE_CAPACITY, cabin.upgrades().storage().capacity());
 		CabinUpgradeDefinitions.Definitions definitions = CabinUpgradeDefinitions.current();
@@ -884,7 +894,10 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			clearArming();
 		}
 		setFlagData(flags);
-		writeStatus(contextualMessage.isEmpty() ? actionMessage : contextualMessage);
+		boolean confirmingBook = bookConfirmationItem != null && bookConfirmationUntil >= serverPlayer.level().getGameTime()
+			&& !actionMessage.isEmpty();
+		data.set(DATA_BOOK_CONFIRMING, confirmingBook ? 1 : 0);
+		writeStatus(confirmingBook ? actionMessage : contextualMessage.isEmpty() ? actionMessage : contextualMessage);
 	}
 
 	private void writeGroups(List<CabinUpgradeCatalog.Group> groups) {

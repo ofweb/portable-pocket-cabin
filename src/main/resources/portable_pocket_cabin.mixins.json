@@ -9,6 +9,7 @@
     "CorridorSimulationMixin",
     "DoorBlockMixin",
     "FireBlockMixin",
+    "FarmlandBlockMixin",
     "PistonStructureResolverMixin",
     "ServerExplosionMixin",
     "WeatheringCopperDoorBlockMixin",

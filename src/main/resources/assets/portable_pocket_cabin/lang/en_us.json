@@ -29,5 +29,6 @@
   "screen.portable_pocket_cabin.blocked": "Upgrade unavailable",
   "screen.portable_pocket_cabin.ready_owner": "Ready: owner can install",
   "item.portable_pocket_cabin.storage_book": "Storage Cabin Book",
-  "item.portable_pocket_cabin.crafting_book": "Crafting Room Book"
+  "item.portable_pocket_cabin.crafting_book": "Crafting Room Book",
+  "item.portable_pocket_cabin.greenhouse_book": "Greenhouse Cabin Book"
 }

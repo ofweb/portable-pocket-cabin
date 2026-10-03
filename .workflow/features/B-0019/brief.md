@@ -86,7 +86,7 @@ Acceptance:
 
 - The gardening surface is one editable block layer above a protected foundation.
 - Owners and residents may remove and replace beds and paths, including placing water in that layer. The default arrangement need not be retained.
-- Default paths are waterlogged bottom slabs. Their water occupies the same layer as the soil.
+- Default paths use waterlogged top slabs. Covered water in the soil layer hydrates nearby farmland.
 - Default beds start as tilled farmland, including newly added beds during expansion.
 - Planting, growth conditions, hydration, and harvesting follow normal Minecraft behavior. The greenhouse supplies no yield bonus or automatic hydration.
 - The room supplies crop lighting across default beds at every size, including at night. Player-built obstructions can shade crops normally.
