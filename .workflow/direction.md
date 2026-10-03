@@ -20,6 +20,10 @@ The cabin has one main room for general use and dedicated rooms for household ac
 
 Growing and animal spaces have their own briefs: [greenhouse](features/B-0019/brief.md), [arboretum / forestry](features/B-0023/brief.md), [stable](features/B-0020/brief.md), [aquatic berth](features/B-0021/brief.md), and [livestock rooms](features/B-0022/brief.md). These briefs own room dimensions, placement, capacity, upgrades, and unresolved room behavior.
 
+### Greenhouse catch-up
+
+When players return to an empty packed cabin, existing greenhouse plants can progress toward their normal mature state under suitable growing conditions. Only time while the server operates counts. This catch-up does not harvest or replant. Those actions require separate automation capabilities. The [greenhouse brief](features/B-0019/brief.md) owns the room behavior.
+
 ### Mailbox access
 
 Players can deliver mail to a cabin, and its owner can collect it through household interfaces. The [mailbox brief](features/B-0003/brief.md) owns installation prerequisites, access points, permissions, and delivery behavior.
@@ -88,4 +92,4 @@ What happens to a displayed or partly funded cost if a mod is later added or rem
 
 ### Progress after an empty cabin becomes occupied
 
-Progress for the time a cabin was empty includes rooms, jobs, and placed blocks such as furnaces and crops. Only time while the server operates counts. Direction must confirm the progress limits.
+Direction must confirm catch-up limits for other rooms, jobs, and placed blocks such as furnaces and crops outside the greenhouse. The [greenhouse limit](#greenhouse-catch-up) is settled. Automation catch-up limits remain open.
