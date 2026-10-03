@@ -3,13 +3,26 @@
   "package": "dev.portablepocketcabin.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "CorridorBlockEntityMixin",
+    "CorridorLevelMixin",
+    "CorridorMovementMixin",
+    "CorridorSimulationMixin",
     "DoorBlockMixin",
     "FireBlockMixin",
+    "FarmlandBlockMixin",
     "PistonStructureResolverMixin",
     "ServerExplosionMixin",
-    "WeatheringCopperDoorBlockMixin"
+    "WeatheringCopperDoorBlockMixin",
+    "CabinStationMenuMixin",
+    "CabinStationButtonMixin",
+    "CabinStationRecipeMixin",
+    "CabinStationQuickMoveMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "CabinStationScreenMixin",
+    "CabinStationBackgroundMixin"
+  ]
 }
