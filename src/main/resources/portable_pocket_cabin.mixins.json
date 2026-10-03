@@ -11,9 +11,17 @@
     "FireBlockMixin",
     "PistonStructureResolverMixin",
     "ServerExplosionMixin",
-    "WeatheringCopperDoorBlockMixin"
+    "WeatheringCopperDoorBlockMixin",
+    "CabinStationMenuMixin",
+    "CabinStationButtonMixin",
+    "CabinStationRecipeMixin",
+    "CabinStationQuickMoveMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "CabinStationScreenMixin",
+    "CabinStationBackgroundMixin"
+  ]
 }

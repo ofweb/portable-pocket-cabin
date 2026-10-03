@@ -22,6 +22,10 @@ The Cabin category provides two independent windows for each side and rear wall.
 
 Only the owner can downgrade or remove a window, with two-click confirmation. The change returns exact paid materials beside the interior controller and restores the wall. Grandfathered tier-one windows return no materials. Any newly invalid fund is named during confirmation and returned separately. Dropped items then follow ordinary Minecraft behavior.
 
+Install a Crafting Room Book through the **Book** button in Cabin Upgrades, then fund the next purchase in the Crafting category. The first purchase requires 5×5 main space and adds a fixed 5×5 room beside the north corridor. It provides a crafting table, loom, and cartography table. The next purchases add stonecutting and smithing. One book reveals all three purchases. For development, obtain the book with `/give @s portable_pocket_cabin:crafting_book`.
+
+Owners and residents can use these stations manually. Select a recipe or operation to fill inputs from central storage first, then player inventory. Automatic filling protects named and customised ingredients. The loom, cartography, and smithing panels let you select a specific target, including a named item. Click the result to craft one batch; shift-click crafts up to one output stack. The selected recipe refills after crafting. Closing returns unused inputs to their source. Storage becomes available as soon as it is installed.
+
 The registry uses schema 9 for centered interiors and connected corridors. Schema 8 saves load with their contents preserved and no installed corridors. Older geometry schemas are rejected without rewriting the save. Back up an older world and replace the development world with `just fresh-world`. New cabins begin with solid walls.
 
 Cabins deploy in the Overworld, Nether, or End, and their protected interiors run only while deployed. Installed windows reflect the cabin's dimension, time, weather, or inactive state.

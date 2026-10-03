@@ -463,6 +463,13 @@ public final class CabinRegistry extends SavedData {
 			if (currentSize != installation.targetState()) {
 				progression = progression.withGeneralSize(installation.targetState());
 			}
+		} else if (installation.target().isCrafting()) {
+			if (cabin.upgrades().crafting().level() != installation.expectedState())
+				throw new IllegalStateException("Crafting level changed");
+			if (installation.expectedState() == 0) {
+				progression = progression.withCorridor(CabinCorridor.NORTH).withRoom(new CabinRoom(
+					installation.operationId(), CabinCrafting.TYPE, cabin.cellIndex(), Optional.of(CabinCrafting.space(cabin))));
+			}
 		} else if (installation.target().isStorage()) {
 			int current = cabin.upgrades().storage().level();
 			if (current != installation.expectedState()) throw new IllegalStateException("Storage level changed");
@@ -479,6 +486,8 @@ public final class CabinRegistry extends SavedData {
 		CabinUpgradeState completed = cabin.upgrades()
 			.completeInstallation(installation.target())
 			.withWindows(windows);
+		if (installation.target().isCrafting())
+			completed = completed.withCrafting(cabin.upgrades().crafting().upgrade(installation.targetState()));
 		if (installation.target().isStorage())
 			completed = completed.withStorage(cabin.upgrades().storage().upgrade(installation.targetState()));
 		CabinRecord updated = copyProgressionAndUpgrades(

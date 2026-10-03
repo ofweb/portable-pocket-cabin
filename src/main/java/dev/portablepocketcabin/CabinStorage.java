@@ -21,7 +21,7 @@ final class CabinStorage {
 			if (!(entity instanceof net.minecraft.world.entity.item.ItemEntity item) || !item.entityTags().contains(DELIVERY_TAG)) return;
 			boolean pending = CabinRegistry.get(level.getServer()).cabins().stream()
 				.flatMap(cabin -> cabin.upgrades().storage().sessions().stream())
-				.anyMatch(session -> session.operation().equals(item.getUUID()));
+				.anyMatch(session -> ownsDelivery(session, item.getUUID()));
 			if (pending) hold(item);
 			else release(item);
 		});
@@ -75,9 +75,11 @@ final class CabinStorage {
 			new CabinStorageState.Delivery(player.level().dimension(), player.blockPosition()));
 	}
 	static void recover(ServerPlayer player) {
-		var registry = CabinRegistry.get(player.level().getServer());
+		var server = player.level().getServer();
+		var registry = CabinRegistry.get(server);
 		synchronized (registry) {
-			for (var cabin : registry.cabins()) {
+			for (var observed : registry.cabins()) {
+				var cabin = registry.find(observed.uuid()).orElseThrow();
 				var session = cabin.upgrades().storage().sessions().stream()
 					.filter(value -> value.player().equals(player.getUUID())).findFirst().orElse(null);
 				if (session == null) continue;
@@ -85,41 +87,63 @@ final class CabinStorage {
 				if (items.size() != player.getInventory().getContainerSize())
 					throw new IllegalStateException("Storage recovery inventory size changed");
 				for (int i = 0; i < items.size(); i++) player.getInventory().setItem(i, items.get(i));
-				ItemStack cursor = session.cursor();
-				if (!cursor.isEmpty()) {
-					returnToInventory(player.getInventory(), cursor);
-					if (!cursor.isEmpty()) {
-						var delivery = session.delivery();
-						var level = player.level().getServer().getLevel(delivery.dimension());
-						if (level == null) throw new IllegalStateException("Storage recovery dimension is unavailable");
-						level.getChunkAt(delivery.position());
-						var existing = level.getEntity(session.operation());
-						if (existing == null) {
-							var position = delivery.position();
-							var drop = new net.minecraft.world.entity.item.ItemEntity(level, position.getX() + .5,
-								position.getY() + .5, position.getZ() + .5, cursor.copy());
-							drop.setUUID(session.operation());
-							hold(drop);
-							if (!level.addFreshEntity(drop)) throw new IllegalStateException("Storage recovery delivery failed");
-						} else if (!(existing instanceof net.minecraft.world.entity.item.ItemEntity drop)
-							|| !ItemStack.matches(drop.getItem(), cursor)) {
-							throw new IllegalStateException("Storage recovery delivery changed");
-						}
-						var pendingDrop = (net.minecraft.world.entity.item.ItemEntity) level.getEntity(session.operation());
-						hold(pendingDrop);
-						player.level().getServer().saveAllChunks(true, true, true);
+				var storage = cabin.upgrades().storage();
+				var pending = new java.util.ArrayList<CabinStorageState.Escrow>();
+				for (var escrow : session.escrow()) {
+					ItemStack remainder = escrow.stack();
+					if (escrow.storage()) {
+						var transfer = storage.deposit(remainder, remainder.getCount());
+						storage = transfer.state(); remainder.shrink(transfer.moved().getCount());
 					}
+					returnToInventory(player.getInventory(), remainder);
+					if (!remainder.isEmpty()) pending.add(new CabinStorageState.Escrow(remainder, false));
 				}
+				ItemStack cursor = session.cursor();
+				returnToInventory(player.getInventory(), cursor);
+				var inventory = new java.util.ArrayList<ItemStack>();
+				for (int i = 0; i < player.getInventory().getContainerSize(); i++) inventory.add(player.getInventory().getItem(i).copy());
+				var planned = new CabinStorageState.Session(session.player(), inventory, cursor, session.operation(), session.delivery(), pending);
+				storage = storage.withSession(planned);
+				registry.updateUpgradeState(cabin.uuid(), cabin.upgrades().withStorage(storage));
+				CabinRegistry.flush(server);
+				var delivery = session.delivery();
+				var level = server.getLevel(delivery.dimension());
+				if (level == null) throw new IllegalStateException("Storage recovery dimension is unavailable");
+				level.getChunkAt(delivery.position());
+				level.waitForEntities(new net.minecraft.world.level.ChunkPos(delivery.position().getX() >> 4, delivery.position().getZ() >> 4), 0);
+				var drops = new java.util.ArrayList<net.minecraft.world.entity.item.ItemEntity>();
+				if (!cursor.isEmpty()) drops.add(deliver(level, delivery.position(), session.operation(), cursor));
+				for (int i = 0; i < pending.size(); i++)
+					drops.add(deliver(level, delivery.position(), escrowId(session.operation(), i), pending.get(i).stack()));
 				player.getInventory().setChanged();
-				player.level().getServer().getPlayerList().saveAll();
-				registry.updateUpgradeState(cabin.uuid(), cabin.upgrades().withStorage(
-					cabin.upgrades().storage().withoutSession(player.getUUID())));
-				CabinRegistry.flush(player.level().getServer());
-				var level = player.level().getServer().getLevel(session.delivery().dimension());
-				if (level != null && level.getEntity(session.operation()) instanceof net.minecraft.world.entity.item.ItemEntity item)
-					release(item);
+				if (!drops.isEmpty()) server.saveAllChunks(true, true, true);
+				server.getPlayerList().saveAll();
+				registry.updateUpgradeState(cabin.uuid(), cabin.upgrades().withStorage(storage.withoutSession(player.getUUID())));
+				CabinRegistry.flush(server);
+				drops.forEach(CabinStorage::release);
 			}
 		}
+	}
+	private static UUID escrowId(UUID operation, int index) {
+		return UUID.nameUUIDFromBytes((operation + ":escrow:" + index).getBytes(java.nio.charset.StandardCharsets.UTF_8));
+	}
+	private static boolean ownsDelivery(CabinStorageState.Session session, UUID entity) {
+		if (session.operation().equals(entity)) return true;
+		for (int i = 0; i < session.escrow().size(); i++) if (escrowId(session.operation(), i).equals(entity)) return true;
+		return false;
+	}
+	private static net.minecraft.world.entity.item.ItemEntity deliver(ServerLevel level, BlockPos position, UUID id, ItemStack stack) {
+		var existing = level.getEntity(id);
+		if (existing == null) {
+			var drop = new net.minecraft.world.entity.item.ItemEntity(level, position.getX() + .5, position.getY() + .5, position.getZ() + .5, stack.copy());
+			drop.setUUID(id); hold(drop);
+			if (!level.addFreshEntity(drop)) throw new IllegalStateException("Storage recovery delivery failed");
+			existing = drop;
+		}
+		if (!(existing instanceof net.minecraft.world.entity.item.ItemEntity drop) || !ItemStack.matches(drop.getItem(), stack))
+			throw new IllegalStateException("Storage recovery delivery changed");
+		hold(drop);
+		return drop;
 	}
 
 	private static void returnToInventory(Inventory inventory, ItemStack cursor) {

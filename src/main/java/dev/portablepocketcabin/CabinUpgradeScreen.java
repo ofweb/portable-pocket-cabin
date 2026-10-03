@@ -88,7 +88,7 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 		fillStorageButton.setTooltip(Tooltip.create(Component.literal("Fill missing materials from central storage")));
 		storageBookButton = addRenderableWidget(Button.builder(Component.literal("Book"),
 			button -> sendMenuButton(CabinUpgradeMenu.BUTTON_STORAGE_BOOK)).bounds(leftPos + 8, topPos + 128, 54, 20).build());
-		storageBookButton.setTooltip(Tooltip.create(Component.literal("Install a storage cabin book to reveal all six capacity levels")));
+		storageBookButton.setTooltip(Tooltip.create(Component.literal("Install a storage or crafting cabin book to reveal its upgrades")));
 		categoryButtons.clear();
 		for (int index = 0; index < CabinUpgradeMenu.MAX_GROUPS; index++) {
 			CategoryTabButton button = addRenderableWidget(new CategoryTabButton(
@@ -242,7 +242,7 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 			: removeStatus));
 		fillStorageButton.visible = menu.isOwner();
 		fillStorageButton.active = fillStorageButton.visible && menu.hasStorage() && menu.isAvailable() && !menu.isStale();
-		storageBookButton.visible = menu.isOwner() && !menu.storageRevealed() && !menu.hasDowngradeAction();
+		storageBookButton.visible = menu.isOwner() && (!menu.storageRevealed() || !menu.craftingRevealed()) && !menu.hasDowngradeAction();
 		boolean severalPanels = menu.panelCount() > 1;
 		previousPanelButton.visible = severalPanels;
 		nextPanelButton.visible = severalPanels;

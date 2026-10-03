@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 public final class PortablePocketCabinClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
+		CabinStationClient.register();
 		MenuScreens.register(CabinUpgradeMenu.TYPE, CabinUpgradeScreen::new);
 		MenuScreens.register(CabinStorageMenu.TYPE, CabinStorageScreen::new);
 	}

@@ -113,7 +113,9 @@ public final class CabinCorridors {
 	public static boolean isPaused(ServerLevel level, BlockPos pos) {
 		if (!level.dimension().equals(PocketDimension.LEVEL_KEY)) return false;
 		CabinRecord cabin = CabinRegistry.get(level.getServer()).findByCell(PocketDimension.cellIndexAt(pos).orElse(-1L)).orElse(null);
-		if (cabin == null || !hasPending(level.getServer(), cabin.uuid())) return false;
+		if (cabin == null) return false;
+		if (CabinCrafting.paused(cabin, pos)) return true;
+		if (!hasPending(level.getServer(), cabin.uuid())) return false;
 		Path path = journal(level.getServer(), cabin.uuid());
 		Set<BlockPos> paused = PAUSED.computeIfAbsent(path, ignored -> {
 			CompoundTag tag = read(level.getServer(), cabin.uuid());

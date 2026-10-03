@@ -61,6 +61,8 @@ final class CabinEvents {
 
 			if (serverLevel.dimension().equals(PocketDimension.LEVEL_KEY)) {
 				for (CabinRecord cabin : CabinRegistry.get(serverLevel.getServer()).cabins()) {
+					if (CabinCrafting.stations(cabin, cabin.upgrades().crafting().level()).containsKey(hit.getBlockPos()))
+						return CabinStation.open(serverPlayer, cabin, hit.getBlockPos());
 					if (cabin.upgrades().storage().level() > 0 && hit.getBlockPos().equals(CabinStorage.control(cabin)))
 						return CabinStorage.open(serverPlayer, cabin);
 				}

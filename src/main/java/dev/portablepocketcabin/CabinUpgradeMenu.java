@@ -58,7 +58,8 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	private static final int DATA_REQUIREMENTS = 6;
 	private static final int DATA_STORAGE_REVEALED = DATA_REQUIREMENTS + MAX_REQUIREMENTS * 2;
 	private static final int DATA_STORAGE_CAPACITY = DATA_STORAGE_REVEALED + 1;
-	private static final int DATA_COUNT = DATA_STORAGE_CAPACITY + 1;
+	private static final int DATA_CRAFTING_REVEALED = DATA_STORAGE_CAPACITY + 1;
+	private static final int DATA_COUNT = DATA_CRAFTING_REVEALED + 1;
 
 	private static final int FLAG_OWNER = 1;
 	private static final int FLAG_CONTRIBUTOR = 1 << 1;
@@ -99,6 +100,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	private long armedUntil = -1L;
 	private String actionMessage = "";
 	private long bookConfirmationUntil = -1;
+	private net.minecraft.world.item.Item bookConfirmationItem;
 
 	CabinUpgradeMenu(int containerId, Inventory inventory, UUID cabinId) {
 		super(TYPE, containerId);
@@ -232,6 +234,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	}
 
 	boolean storageRevealed() { return data.get(DATA_STORAGE_REVEALED) != 0; }
+	boolean craftingRevealed() { return data.get(DATA_CRAFTING_REVEALED) != 0; }
 	boolean hasStorage() { return data.get(DATA_STORAGE_CAPACITY) > 0; }
 
 	boolean installationInProgress() {
@@ -483,24 +486,29 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		synchronized (registry) {
 			CabinRecord cabin = registry.find(cabinId).orElseThrow();
 			if (!cabin.owner().equals(actor.getUUID()) || cabin.upgrades().operationInProgress()) return false;
-			if (cabin.upgrades().storage().revealed()) {
-				setActionMessage("Storage upgrades are already revealed.");
+			if (cabin.upgrades().storage().revealed() && cabin.upgrades().crafting().revealed()) {
+				setActionMessage("These book upgrades are already revealed.");
 				return false;
 			}
 			ItemStack book = ItemStack.EMPTY;
-			for (int i = 0; i < 36; i++) if (playerInventory.getItem(i).is(CabinItems.STORAGE_BOOK)) {
+			for (int i = 0; i < 36; i++) if ((playerInventory.getItem(i).is(CabinItems.STORAGE_BOOK) && !cabin.upgrades().storage().revealed()
+				|| playerInventory.getItem(i).is(CabinItems.CRAFTING_BOOK) && !cabin.upgrades().crafting().revealed())) {
 				book = playerInventory.getItem(i);
 				break;
 			}
-			if (book.isEmpty()) { setActionMessage("Bring a storage cabin book to reveal all six capacity levels."); return false; }
+			if (book.isEmpty()) { setActionMessage("Bring a storage or crafting cabin book to reveal its upgrades."); return false; }
 			long now = actor.level().getGameTime();
-			if (bookConfirmationUntil < now) {
+			if (bookConfirmationUntil < now || bookConfirmationItem != book.getItem()) {
 				bookConfirmationUntil = now + CONFIRMATION_TICKS;
-				setActionMessage("Reveal storage installation and all six levels? Click Book again.");
+				bookConfirmationItem = book.getItem();
+				setActionMessage(book.is(CabinItems.CRAFTING_BOOK) ? "Reveal all three crafting levels? Click Book again."
+					: "Reveal all six storage levels? Click Book again.");
 				return true;
 			}
+			boolean craftingBook = book.is(CabinItems.CRAFTING_BOOK);
 			book.shrink(1);
-			registry.updateUpgradeState(cabinId, cabin.upgrades().withStorage(cabin.upgrades().storage().reveal()
+			var revealed = craftingBook ? cabin.upgrades().withCrafting(cabin.upgrades().crafting().reveal()) : cabin.upgrades().withStorage(cabin.upgrades().storage().reveal());
+			registry.updateUpgradeState(cabinId, revealed.withStorage(revealed.storage()
 				.withSession(CabinStorage.receipt(actor, ItemStack.EMPTY))));
 			playerInventory.setChanged();
 			bookConfirmationUntil = -1;
@@ -510,7 +518,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			registry.updateUpgradeState(cabinId, installed.upgrades().withStorage(
 				installed.upgrades().storage().withoutSession(actor.getUUID())));
 			CabinRegistry.flush(actor.level().getServer());
-			setActionMessage("Storage upgrades revealed.");
+			setActionMessage(craftingBook ? "Crafting upgrades revealed." : "Storage upgrades revealed.");
 			broadcastChanges();
 			return true;
 		}
@@ -738,6 +746,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		}
 
 		data.set(DATA_STORAGE_REVEALED, cabin.upgrades().storage().revealed() ? 1 : 0);
+		data.set(DATA_CRAFTING_REVEALED, cabin.upgrades().crafting().revealed() ? 1 : 0);
 		data.set(DATA_STORAGE_CAPACITY, cabin.upgrades().storage().capacity());
 		CabinUpgradeDefinitions.Definitions definitions = CabinUpgradeDefinitions.current();
 		int flags = 0;

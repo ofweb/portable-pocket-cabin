@@ -24,6 +24,8 @@ final class CabinItems {
 	private static final String ITEM_INSTANCE_UUID = "portable_pocket_cabin_item_uuid";
 	private static final String PALETTE = "portable_pocket_cabin_palette";
 
+	static final Item CRAFTING_BOOK = registerSimple("crafting_book");
+
 	static final Item STORAGE_BOOK = registerSimple("storage_book");
 
 	static final Item DIMENSIONAL_LOGIC_CORE = registerSimple("dimensional_logic_core");

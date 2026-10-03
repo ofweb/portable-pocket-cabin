@@ -30,6 +30,8 @@ public final class PortablePocketCabinClientGameTest implements FabricClientGame
 			VanillaStationScreenshots.capture(context);
 			return;
 		}
+		captureCrafting(context);
+		if ("1".equals(System.getenv("PPC_TEST_CRAFTING"))) return;
 		captureExterior(context);
 		captureStorage(context);
 
@@ -128,6 +130,161 @@ public final class PortablePocketCabinClientGameTest implements FabricClientGame
 				}
 			});
 			capture(context, "cabin-upgrades-resident");
+		}
+	}
+
+	private static void captureCrafting(ClientGameTestContext context) {
+		try (TestSingleplayerContext world = context.worldBuilder().create()) {
+			UUID cabinId = createCabin(world, false);
+			world.getServer().runOnServer(server -> {
+				var registry = CabinRegistry.get(server);
+				var player = world.getConnection().getServerPlayer();
+				player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+				var cabin = registry.find(cabinId).orElseThrow();
+				registry.expandGeneralSpace(cabinId, cabin.owner(), 3, 5, 21);
+				cabin = registry.find(cabinId).orElseThrow();
+				PocketDimension.ensureCabinInterior(player.level(), cabin.cellIndex(), cabin.palette(), 5);
+				player.getInventory().setItem(0, new ItemStack(CabinItems.CRAFTING_BOOK, 2));
+				CabinUpgrades.useController(player, cabin);
+				var upgrades = (CabinUpgradeMenu) player.containerMenu;
+				check(upgrades.clickMenuButton(player, CabinUpgradeMenu.BUTTON_STORAGE_BOOK), "Crafting book must ask for confirmation");
+				check(!registry.find(cabinId).orElseThrow().upgrades().crafting().revealed(), "Book preview must not reveal or purchase a room");
+				check(upgrades.clickMenuButton(player, CabinUpgradeMenu.BUTTON_STORAGE_BOOK), "Crafting book confirmation must succeed");
+				cabin = registry.find(cabinId).orElseThrow();
+				check(cabin.upgrades().crafting().revealed() && cabin.upgrades().crafting().level() == 0
+					&& cabin.progression().rooms().isEmpty() && player.getInventory().getItem(0).getCount() == 1, "One book reveals the three levels without purchasing the room");
+				player.closeContainer();
+				for (int level = 1; level <= 3; level++) {
+					cabin = registry.find(cabinId).orElseThrow();
+					if (level == 2) {
+						var station = CabinCrafting.stations(cabin, 2).entrySet().stream().filter(e -> e.getValue().is(net.minecraft.world.level.block.Blocks.STONECUTTER)).findFirst().orElseThrow().getKey();
+						player.level().setBlockAndUpdate(station, net.minecraft.world.level.block.Blocks.CHEST.defaultBlockState());
+						((net.minecraft.world.level.block.entity.ChestBlockEntity)player.level().getBlockEntity(station)).setItem(0, new ItemStack(net.minecraft.world.item.Items.DIAMOND, 5));
+						player.level().setBlockAndUpdate(station.east(), net.minecraft.world.level.block.Blocks.GOLD_BLOCK.defaultBlockState());
+					}
+					var effect = new CabinUpgradeEffect(server, player.level());
+					var target = CabinUpgradeState.Target.crafting(level);
+					var requirements = CabinUpgradeCatalog.craftingRequirements(cabin, level);
+					var offer = CabinUpgradeCatalog.offer(cabin, target, new WorldAttunement(1, CabinPalette.DEFAULT.walls().profileId()), CabinUpgradeDefinitions.current()).orElseThrow();
+					check(effect.validate(cabin, offer).success(), "Room installation must validate");
+					var stacks = requirements.stream().map(r -> new ItemStack(BuiltInRegistries.ITEM.getOptional(r.itemId()).orElseThrow(), r.count())).toList();
+					var installation = new CabinUpgradeState.Installation(UUID.randomUUID(), target, level - 1, level);
+					registry.updateUpgradeState(cabinId, cabin.upgrades().withFund(new CabinUpgradeState.Fund(target, requirements, stacks)).withInstallation(installation));
+					CabinRegistry.flush(server);
+					effect.apply(cabin, installation);
+					effect.apply(cabin, installation);
+					cabin = registry.completeUpgradeInstallation(cabinId, installation.operationId());
+					CabinRegistry.flush(server); effect.refresh(cabin);
+				}
+				check(cabin.progression().rooms().size() == 1, "Replay must create only one crafting room");
+				var station = CabinCrafting.stations(cabin, 2).entrySet().stream().filter(e -> e.getValue().is(net.minecraft.world.level.block.Blocks.STONECUTTER)).findFirst().orElseThrow().getKey();
+				check(player.level().getBlockState(station.east()).is(net.minecraft.world.level.block.Blocks.GOLD_BLOCK), "Only the station footprint may be replaced");
+				var bounds = new net.minecraft.world.phys.AABB(net.minecraft.world.phys.Vec3.atLowerCornerOf(PocketDimension.cellCenter(cabin.cellIndex()).offset(CabinCrafting.space(cabin).minimum())), net.minecraft.world.phys.Vec3.atLowerCornerOf(PocketDimension.cellCenter(cabin.cellIndex()).offset(CabinCrafting.space(cabin).maximum()))).inflate(1);
+				int diamonds = player.level().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, bounds).stream().filter(e -> e.getItem().is(net.minecraft.world.item.Items.DIAMOND)).mapToInt(e -> e.getItem().getCount()).sum();
+				check(diamonds == 5, "Interrupted station installation must deliver container contents once");
+				player.getInventory().clearContent();
+				player.getInventory().setItem(0, CabinCraftingGameTest.named(net.minecraft.world.item.Items.OAK_PLANKS));
+				player.getInventory().setItem(1, new ItemStack(net.minecraft.world.item.Items.BIRCH_PLANKS, 8));
+				var entrance = PocketDimension.cellCenter(cabin.cellIndex()).offset(CabinCrafting.space(cabin).entrance()).west(2);
+				player.teleportTo(player.level(), entrance.getX()+.5, entrance.getY(), entrance.getZ()+.5, Set.of(), 0, 0, false);
+				var crafting = CabinCrafting.stations(cabin, 3).entrySet().stream().filter(e -> e.getValue().is(net.minecraft.world.level.block.Blocks.CRAFTING_TABLE)).findFirst().orElseThrow().getKey();
+				check(CabinStation.open(player, cabin, crafting) == net.minecraft.world.InteractionResult.SUCCESS_SERVER, "Manual crafting must open without storage");
+				var recipe = server.getRecipeManager().getRecipes().stream().filter(r -> r.id().identifier().equals(net.minecraft.resources.Identifier.withDefaultNamespace("stick"))).findFirst().orElseThrow();
+				var menu = (net.minecraft.world.inventory.CraftingMenu)player.containerMenu;
+				menu.handlePlacement(false, false, recipe, player.level(), player.getInventory());
+				check(menu.getInputGridSlots().stream().filter(net.minecraft.world.inventory.Slot::hasItem).allMatch(slot -> slot.getItem().is(net.minecraft.world.item.Items.BIRCH_PLANKS)), "Without storage fill uses ordinary inventory ingredients");
+				player.closeContainer();
+				check(player.getInventory().getItem(1).getCount() == 8, "Closing returns inventory ingredients");
+				cabin = registry.find(cabinId).orElseThrow();
+				registry.updateUpgradeState(cabinId, cabin.upgrades().withStorage(CabinStorageState.EMPTY.reveal().upgrade(1).deposit(new ItemStack(net.minecraft.world.item.Items.OAK_PLANKS,64),64).state()));
+				cabin = registry.find(cabinId).orElseThrow();
+				CabinStation.open(player, cabin, crafting);
+				menu = (net.minecraft.world.inventory.CraftingMenu)player.containerMenu;
+				menu.handlePlacement(false, false, recipe, player.level(), player.getInventory());
+				check(menu.getInputGridSlots().stream().filter(net.minecraft.world.inventory.Slot::hasItem).allMatch(slot -> slot.getItem().is(net.minecraft.world.item.Items.OAK_PLANKS) && !slot.getItem().has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)), "Storage ingredients take priority over inventory");
+				menu.setCarried(new ItemStack(net.minecraft.world.item.Items.STICK, 63));
+				menu.clicked(0,0,net.minecraft.world.inventory.ContainerInput.PICKUP,player);
+				check(menu.getCarried().getCount() == 63 && menu.getResultSlot().getItem().getCount() == 4, "Insufficient cursor space must craft nothing");
+				menu.setCarried(ItemStack.EMPTY);
+				menu.clicked(0,0,net.minecraft.world.inventory.ContainerInput.PICKUP,player);
+				check(menu.getCarried().is(net.minecraft.world.item.Items.STICK) && menu.getCarried().getCount()==4 && menu.getResultSlot().hasItem(), "Normal result click crafts one batch then refills");
+				var savedInventory = new java.util.ArrayList<ItemStack>();
+				for (int i = 0; i < 36; i++) {
+					savedInventory.add(player.getInventory().getItem(i).copy());
+					if (player.getInventory().getItem(i).isEmpty()) player.getInventory().setItem(i, new ItemStack(net.minecraft.world.item.Items.DIRT, 64));
+				}
+				menu.clicked(0,0,net.minecraft.world.inventory.ContainerInput.QUICK_MOVE,player);
+				check(menu.getResultSlot().hasItem() && registry.find(cabinId).orElseThrow().upgrades().storage().entries().getFirst().getCount() == 60, "Full inventory must consume no ingredients");
+				for (int i = 0; i < 36; i++) player.getInventory().setItem(i, savedInventory.get(i));
+				menu.clicked(0,0,net.minecraft.world.inventory.ContainerInput.QUICK_MOVE,player);
+				int sticks = 0;
+				for(int i=0;i<36;i++) if(player.getInventory().getItem(i).is(net.minecraft.world.item.Items.STICK)) sticks+=player.getInventory().getItem(i).getCount();
+				check(sticks==64, "Shift-click stops after one output stack");
+				check(player.getInventory().getItem(0).has(net.minecraft.core.component.DataComponents.CUSTOM_NAME), "Named ingredients stay protected");
+			});
+			world.getConnection().waitForClientboundPackets();
+			context.waitFor(client -> client.gui.screen() instanceof net.minecraft.client.gui.screens.inventory.CraftingScreen);
+			capture(context, "crafting-room-table-refilled");
+			for (var block : List.of(net.minecraft.world.level.block.Blocks.LOOM, net.minecraft.world.level.block.Blocks.CARTOGRAPHY_TABLE,
+				net.minecraft.world.level.block.Blocks.STONECUTTER, net.minecraft.world.level.block.Blocks.SMITHING_TABLE)) {
+				world.getServer().runOnServer(server -> {
+					var player = world.getConnection().getServerPlayer(); player.closeContainer();
+					var cabin = CabinRegistry.get(server).find(cabinId).orElseThrow();
+					check(cabin.upgrades().storage().sessions().isEmpty(), "Closing must settle ingredient custody");
+					player.getInventory().setItem(2,new ItemStack(BuiltInRegistries.ITEM.getOptional(net.minecraft.resources.Identifier.withDefaultNamespace("white_banner")).orElseThrow()));
+					player.getInventory().setItem(3,new ItemStack(BuiltInRegistries.ITEM.getOptional(net.minecraft.resources.Identifier.withDefaultNamespace("red_dye")).orElseThrow(),8));
+					player.getInventory().setItem(4,net.minecraft.world.item.MapItem.create(player.level(),0,0,(byte)0,true,false));
+					player.getInventory().setItem(5,new ItemStack(net.minecraft.world.item.Items.PAPER,8));
+					player.getInventory().setItem(6,CabinCraftingGameTest.named(net.minecraft.world.item.Items.DIAMOND_PICKAXE));
+					player.getInventory().setItem(7,new ItemStack(net.minecraft.world.item.Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE));
+					player.getInventory().setItem(8,new ItemStack(net.minecraft.world.item.Items.NETHERITE_INGOT));
+					player.getInventory().setItem(9,new ItemStack(net.minecraft.world.item.Items.STONE,16));
+					var position = CabinCrafting.stations(cabin,3).entrySet().stream().filter(e -> e.getValue().is(block)).findFirst().orElseThrow().getKey();
+					CabinStation.open(player,cabin,position);
+				});
+				world.getConnection().waitForClientboundPackets(); context.waitTicks(3);
+				context.runOnClient(client -> client.gui.toastManager().clear());
+				capture(context, "crafting-room-" + BuiltInRegistries.BLOCK.getKey(block).getPath());
+				context.runOnClient(client -> {
+					var entries = CabinStationClient.entries(client.player.containerMenu.containerId);
+					int index = -1;
+					for (int i = 0; i < entries.size(); i++) if (entries.get(i).available()) { index = i; break; }
+					check(index >= 0, "Station panel must offer a fillable operation");
+					client.gameMode.handleInventoryButtonClick(client.player.containerMenu.containerId, 10000 + index);
+				});
+				world.getConnection().waitForServerboundPackets(); world.getConnection().waitForClientboundPackets();
+				world.getServer().runOnServer(server -> {
+					var player = world.getConnection().getServerPlayer(); var menu = player.containerMenu;
+					int result = block == net.minecraft.world.level.block.Blocks.LOOM || block == net.minecraft.world.level.block.Blocks.SMITHING_TABLE ? 3
+						: block == net.minecraft.world.level.block.Blocks.CARTOGRAPHY_TABLE ? 2 : 1;
+					check(menu.getSlot(result).hasItem(), "Operation selection must fill inputs and expose a vanilla result");
+					if (block == net.minecraft.world.level.block.Blocks.SMITHING_TABLE) check(menu.getSlot(1).getItem().has(net.minecraft.core.component.DataComponents.CUSTOM_NAME), "Explicit selection must allow a named smithing target");
+					menu.clicked(result, 0, net.minecraft.world.inventory.ContainerInput.PICKUP, player);
+					check(!menu.getCarried().isEmpty(), "Result click must craft the selected operation");
+					if (block == net.minecraft.world.level.block.Blocks.SMITHING_TABLE) check(menu.getCarried().is(net.minecraft.world.item.Items.NETHERITE_PICKAXE)
+						&& menu.getCarried().has(net.minecraft.core.component.DataComponents.CUSTOM_NAME), "Smithing must preserve the chosen named target");
+				});
+				world.getConnection().waitForClientboundPackets();
+				context.runOnClient(client -> client.gui.toastManager().clear());
+				capture(context, "crafting-room-" + BuiltInRegistries.BLOCK.getKey(block).getPath() + "-selected");
+			}
+			context.getInput().resizeWindow(960, 720);
+			context.waitTicks(3);
+			capture(context, "crafting-room-smithing-narrow");
+			context.getInput().resizeWindow(1280, 800);
+			world.getServer().runOnServer(server -> {
+				var player = world.getConnection().getServerPlayer();
+				var registry = CabinRegistry.get(server); var cabin = registry.find(cabinId).orElseThrow();
+				registry.beginPacking(cabinId, cabin.owner());
+				check(!CabinStation.beforeClick(player.containerMenu, player), "Packing must immediately block station actions");
+				player.closeContainer(); registry.abortPacking(cabinId);
+				cabin = registry.find(cabinId).orElseThrow();
+				var crafting = CabinCrafting.stations(cabin, 3).entrySet().stream().filter(e -> e.getValue().is(net.minecraft.world.level.block.Blocks.CRAFTING_TABLE)).findFirst().orElseThrow().getKey();
+				CabinStation.open(player, cabin, crafting);
+				player.setPos(PocketDimension.cellCenter(cabin.cellIndex()).getX()+.5, PocketDimension.cellCenter(cabin.cellIndex()).getY()+1, PocketDimension.cellCenter(cabin.cellIndex()).getZ()+.5);
+				check(!CabinStation.beforeClick(player.containerMenu, player), "Leaving the room must immediately block station actions");
+				player.closeContainer();
+			});
 		}
 	}
 

@@ -140,6 +140,20 @@ final class CabinUpgradeCatalog {
 					net.minecraft.resources.Identifier.parse("minecraft:chest"), current, next,
 					current == 6 ? List.of() : storageRequirements(next), current == 6, ""))));
 		}
+		if (cabin.upgrades().crafting().revealed()) {
+			int current = cabin.upgrades().crafting().level();
+			int next = Math.min(3, current + 1);
+			String[] titles = {"Crafting room", "Stonecutting", "Smithing"};
+			String[] icons = {"crafting_table", "stonecutter", "smithing_table"};
+			String[] effects = {"Install a 5x5 room with crafting, loom and cartography", "Add a stonecutter", "Add a smithing table"};
+			groups.add(new Group(PortablePocketCabin.id("crafting"), "Crafting",
+				net.minecraft.resources.Identifier.withDefaultNamespace("crafting_table"), List.of(new Offer(
+					CabinUpgradeState.Target.crafting(next), titles[next - 1],
+					current == 3 ? "Fully upgraded" : effects[next - 1],
+					net.minecraft.resources.Identifier.withDefaultNamespace(icons[next - 1]), current, next,
+					current == 3 ? List.of() : craftingRequirements(cabin, next), current == 3,
+					current == 0 && cabin.progression().generalSize() < 5 ? "Expand the main room to 5x5 first" : ""))));
+		}
 		return List.copyOf(groups);
 	}
 
@@ -193,6 +207,20 @@ final class CabinUpgradeCatalog {
 			complete ? List.of() : resolve(definitions.windowIngredients(targetTier), cabin.palette()),
 			complete, prerequisite
 		);
+	}
+
+	static List<CabinUpgradeState.Requirement> craftingRequirements(CabinRecord cabin, int level) {
+		String[][] names = {{"crafting_table", "loom", "cartography_table", "iron_ingot", "amethyst_block"},
+			{"stonecutter", "copper_ingot", "amethyst_block"},
+			{"smithing_table", "copper_ingot", "diamond", "amethyst_block"}};
+		int[][] counts = {{1,1,1,8,4}, {1,8,4}, {1,16,1,4}};
+		List<CabinUpgradeState.Requirement> result = new ArrayList<>();
+		for (int i = 0; i < names[level - 1].length; i++)
+			result.add(new CabinUpgradeState.Requirement(net.minecraft.resources.Identifier.withDefaultNamespace(
+				names[level - 1][i]), counts[level - 1][i]));
+		if (level == 1) result.add(new CabinUpgradeState.Requirement(
+			BuiltInRegistries.ITEM.getKey(cabin.palette().walls().structuralWoodBlock().asItem()), 16));
+		return List.copyOf(result);
 	}
 
 	static List<CabinUpgradeState.Requirement> storageRequirements(int level) {

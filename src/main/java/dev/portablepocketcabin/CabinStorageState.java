@@ -44,6 +44,15 @@ record CabinStorageState(boolean revealed, int level, List<ItemStack> stacks, Li
 	CabinStorageState withoutSession(java.util.UUID player) {
 		return new CabinStorageState(revealed, level, stacks, sessions.stream().filter(s -> !s.player().equals(player)).toList());
 	}
+	record Escrow(ItemStack stack, boolean storage) {
+		static final Codec<Escrow> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			ItemStack.CODEC.fieldOf("stack").forGetter(Escrow::stack),
+			Codec.BOOL.fieldOf("storage").forGetter(Escrow::storage)
+		).apply(instance, Escrow::new));
+		Escrow { stack = stack.copy(); }
+		@Override public ItemStack stack() { return stack.copy(); }
+	}
+
 	record Delivery(net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension,
 		net.minecraft.core.BlockPos position) {
 		static final Codec<Delivery> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -52,15 +61,19 @@ record CabinStorageState(boolean revealed, int level, List<ItemStack> stacks, Li
 			net.minecraft.core.BlockPos.CODEC.fieldOf("position").forGetter(Delivery::position)
 		).apply(instance, Delivery::new));
 	}
-	record Session(java.util.UUID player, List<ItemStack> inventory, ItemStack cursor, java.util.UUID operation, Delivery delivery) {
+	record Session(java.util.UUID player, List<ItemStack> inventory, ItemStack cursor, java.util.UUID operation, Delivery delivery, List<Escrow> escrow) {
 		static final Codec<Session> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			net.minecraft.core.UUIDUtil.STRING_CODEC.fieldOf("player").forGetter(Session::player),
 			ItemStack.OPTIONAL_CODEC.listOf().fieldOf("inventory").forGetter(Session::inventory),
 			ItemStack.OPTIONAL_CODEC.fieldOf("cursor").forGetter(Session::cursor),
 			net.minecraft.core.UUIDUtil.STRING_CODEC.fieldOf("operation").forGetter(Session::operation),
-			Delivery.CODEC.fieldOf("delivery").forGetter(Session::delivery)
+			Delivery.CODEC.fieldOf("delivery").forGetter(Session::delivery),
+			Escrow.CODEC.listOf().optionalFieldOf("escrow", List.of()).forGetter(Session::escrow)
 		).apply(instance, Session::new));
-		Session { inventory = copies(inventory); cursor = cursor.copy(); }
+		Session { inventory = copies(inventory); cursor = cursor.copy(); escrow = List.copyOf(escrow); }
+		Session(java.util.UUID player, List<ItemStack> inventory, ItemStack cursor, java.util.UUID operation, Delivery delivery) {
+			this(player, inventory, cursor, operation, delivery, List.of());
+		}
 		@Override public List<ItemStack> inventory() { return copies(inventory); }
 		@Override public ItemStack cursor() { return cursor.copy(); }
 	}
