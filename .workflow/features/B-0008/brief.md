@@ -1,45 +1,49 @@
 # A cabin learns and uses enchantments
 
-Status: Draft
+Status: Ready
 Feature ID: B-0008
 
 ## Goal
 
-A cabin keeps known enchantments. Owners and residents use a dedicated table in an enchanting room to learn and apply them.
+A cabin keeps known enchantments that owners and residents learn and apply at its dedicated enchanting table.
 
 ## Stories and acceptance
 
 ### S1: Install the enchanting room
 
-Story: After the cabin installs the room book, the owner purchases the enchanting room upgrade and gains access to its table.
+Story: An owner installs the room book, then purchases the enchanting room and its table.
 
 Acceptance:
 
-- The cabin does not show Enchanting until the owner installs its book in B-0038. The room book and automation book reveal different upgrades.
-- The installed book reveals the room upgrade. It does not install the room.
-- Only the owner installs the room and its upgrades. Residents can contribute to their upgrade funds.
-- Installation follows B-0005 and adds the room and table on the north corridor.
-- The room has a fixed 5×5 usable floor area through all upgrades.
-- The room provides an anvil and grindstone using normal Minecraft rules, independently of learned-enchantment actions.
-- The installed room can apply known enchantments up to the first level.
-- Before installation, the cabin cannot learn or manually apply known enchantments.
+- The room book reveals all five Enchanting purchases through B-0038. Automation uses a separate book.
+- Only the owner purchases upgrades; residents can contribute under shared funding rules. Only the next cost appears.
+- Installation follows B-0005 and requires 5×5 main space. The room branches west from the north corridor beyond crafting.
+- Its usable floor stays 5×5 with three blocks of clear height. Upgrades preserve existing contents.
+- The supplied anvil and grindstone use normal Minecraft rules, independently of library actions.
+- Learning and application require installation.
+
+Logs match saved wall wood. Collected and traded materials count without personal visits.
+
+| Tier | Materials |
+|---|---|
+| I: install room | 1 enchanting table, 1 anvil, 1 grindstone, 16 wall logs, 4 amethyst blocks |
+| II | 4 bookshelves, 2 prismarine crystals, 4 amethyst blocks |
+| III | 4 bookshelves, 4 Nether quartz, 1 crying obsidian, 1 diamond, 4 amethyst blocks |
+| IV | 4 bookshelves, 4 End stone, 1 ender pearl, 4 amethyst blocks |
+| V | 4 bookshelves, 1 echo shard, 4 amethyst blocks |
 
 ### S2: Learn one enchantment
 
-Story: An owner or resident selects one enchantment from an item and uses the Learn action to add it to known enchantments for the cabin.
+Story: An owner or resident sacrifices an enchanted item to teach the cabin one selected enchantment.
 
 Acceptance:
 
-- An enchanted item in storage does not add a known enchantment to the cabin.
-- In Learn mode, the player selects an enchanted item and empty books from inventory or available central storage.
-- The interface shows the selected enchantment, level, and number of books. The interface tells the player that learning deletes the source item and its other enchantments.
-- The cabin uses one empty book for each new level. Level III uses three books if the cabin knows no level, or one book if the cabin knows level II.
-- Learning deletes the source item and uses the books. The cabin does not give back an enchanted book.
-- If the cabin cannot complete the action, the item and known enchantments stay as before.
-- The cabin keeps the highest learned level for each enchantment. It can use each lower level.
-- The cabin can learn a level above the enchanting room application limit.
-- The player uses no item to learn an enchantment that the cabin knows at that level or a higher level.
-- Known enchantments stay with the cabin through packing, restart, and redeployment. The owner cannot remove them.
+- The player selects enchanted equipment or an enchanted book from inventory or installed storage to sacrifice. Ordinary books fill automatically.
+- The preview identifies the enchantment, source level, book count, and destruction of the source with all its other enchantments.
+- Confirmation consumes one source item and one ordinary book per newly learned level. Learning III costs three books from no knowledge, or one from II. It returns no enchanted book.
+- The cabin keeps each enchantment's highest learned level, even above its room limit, and can use lower levels.
+- Learning an already known or lower level consumes nothing.
+- Knowledge persists through packing, restart, and redeployment and cannot be removed.
 
 ### S3: Enchant an item
 
@@ -47,53 +51,55 @@ Story: An owner or resident selects an item at the dedicated enchanting table an
 
 Acceptance:
 
-- The interface shows known enchantments that can go on the item, their levels, lapis, amethyst, and other materials before the player confirms.
-- The player can apply a level only up to the known level, the room's application limit, and the maximum level for that enchantment.
-- The table applies an enchantment when the player confirms. Confirmation completes the action.
-- The amethyst quantity is the selected level multiplied by one plus the number of enchantments on the item.
-- The lapis quantity is two times the amethyst quantity.
-- Level III on an item with one enchantment uses six amethyst and twelve lapis.
-- The player can select an item from player inventory or central storage when the cabin has central storage.
-- Player inventory is the only source when the cabin has no central storage.
-- The player selects lapis and amethyst sources independently of the item source. The interface shows each source and number of items.
-- The cabin checks the item, selected level, other enchantments, materials, and player role before it makes a change to the item.
-- The table rejects an enchantment type that the item has, when the selected level is higher too.
-- The enchanted item goes back to its selected source inventory. The action checks for result space before it uses materials.
-- If the cabin cannot do the action, the item and materials stay in their source inventory and the interface gives the reason.
-- The action applies only the selected enchantment and level. The item keeps its other profile data.
-- Owners and residents can use this action. Guests cannot use this action or its materials.
+- The player chooses a known enchantment and level; the preview shows compatibility and costs. There is no random roll.
+- Levels respect cabin knowledge, the enchantment's normal maximum, and S4's room limits.
+- Targets can be compatible equipment, ordinary books, or enchanted books. Ordinary books become enchanted books; existing books gain or improve compatible stored enchantments.
+- Confirmation immediately changes one item. Other copies in its source stack remain unchanged.
+- Amethyst shards cost the selected level multiplied by one plus the item's existing enchantment count. Lapis lazuli costs twice that amount. Stored book enchantments count too.
+- Raising an existing enchantment pays the full selected-level cost under that same formula. Equal or lower levels consume nothing.
+- The player selects the target from inventory or installed storage. Required amethyst and lapis fill automatically.
+- The result returns to its selected source after checking space. Failure leaves inputs unchanged and gives the reason.
+- Only the selected enchantment changes. Names, lore, durability, other enchantments, and unrelated vanilla item data stay intact.
+- Created books work at ordinary anvils, can be traded, and can teach another cabin through sacrifice.
 
 ### S4: Increase the application limit
 
-Story: A cabin owner installs an enchanting room upgrade and can then apply stronger known enchantments.
+Story: An owner upgrades the room to apply stronger known enchantments.
 
 Acceptance:
 
-- The enchanting room shows the application limit and the effect of the next upgrade.
-- Only the owner can install the upgrade.
-- Each level upgrade adds one to the application limit. Known enchantments and items keep the same state.
-- The limit stays with the cabin through packing, restart, and redeployment.
+- The room shows its limit and the next upgrade's effect.
+- Five tiers are purchased in order. I through IV apply up to the matching level. Final tier V removes the room cap.
+- Upgrades leave known enchantments and existing items unchanged.
+- The room tier stays with the cabin through packing, restart, and redeployment.
 
 ## Feature-wide constraints and acceptance
 
-- The dedicated enchanting room and its table are necessary for learning and enchanting by a player. Placed enchanting tables and anvils follow Minecraft behavior.
-- For enchanting by a player, amethyst replaces player experience. The action does not subtract player experience.
-- Minecraft rules show which enchantments can go on each item and which enchantments can go together. The enchantment profile lists each optional enchantment.
-- The owner selects a curse before the cabin applies it.
+- Ingredient filling matches the crafting room: installed storage first, then player inventory for any shortfall. Without storage, use inventory only; no connection upgrade is required.
+- Automatic filling skips named or custom ingredient stacks. The chosen target or sacrifice is always explicit. The preview shows ingredient sources and quantities; consumption requires confirmation.
+- Unused pulled ingredients return to their source on closure. If unavailable, they return to player inventory, then drop normally if full.
+- Owners and residents can learn, enchant, and use supplied stations. Guests cannot use household facilities, materials, or knowledge.
+- Library actions require the installed table and presence near it inside the room. Player-placed stations follow Minecraft behavior.
+- Each confirmation rechecks cabin identity, access, item state, quantities, compatibility, limits, and result space. Stale selections fail without consumption.
+- Packing, leaving the station, or losing access closes the interface. Unconfirmed selections consume nothing. Interrupted actions complete once or leave everything unchanged; recovery cannot lose or duplicate items or knowledge.
+- Amethyst replaces experience for library application; player experience stays unchanged.
+- All vanilla enchantments, including treasure enchantments, are supported on vanilla items. Minecraft item eligibility and enchantment compatibility rules apply.
+- Owners and residents may apply curses only through explicit selection. The preview clearly identifies the selected curse.
 
 ## Scope
 
-This feature includes the dedicated enchanting room and table, learning, known enchantments, and enchanting by a player.
+The room, five tiers, supplied stations, learning, book creation, manual application, and optional central storage.
 
 ## Non-goals
 
-The cabin does not learn from items in storage or use enchantments known by other cabins. Automation slot selection, equipment requisitions, and owner loadouts are not part of this feature.
+Passive learning, automatic sharing of knowledge, automation slots, equipment requisitions, owner loadouts, and modded enchantment or item profiles.
 
 ## Related records
 
 - [Direction](../../direction.md).
 - [Known enchantment](../../context.md#known-enchantment).
 - [Room purchase and access brief](../B-0005/brief.md).
+- [Central storage](../B-0004/brief.md).
 - [Household roles](../../decisions/pdr/0009-use-fixed-household-roles.md).
 - [PDR-0001](../../decisions/pdr/0001-preserve-the-portable-home.md).
 - [PDR-0010](../../decisions/pdr/0010-manual-enchanting-uses-all-known-enchantments.md).
@@ -104,5 +110,4 @@ The cabin does not learn from items in storage or use enchantments known by othe
 
 ## Open questions and assumptions
 
-- Rules for optional enchantments and unusual item data are open.
-- The highest room level and the cost and type of other room upgrades are open.
+No material questions remain. Optional mod profiles are deferred; unsupported inputs are rejected without changes and with a reason.

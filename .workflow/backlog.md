@@ -53,7 +53,7 @@
 - Value: Let an owner install and improve an enchanting room where players learn enchantments and apply them manually.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Enchantment library brief](features/B-0008/brief.md).
-- Relationships: Uses B-0005 and B-0038. Used by B-0028.
+- Relationships: Uses B-0002, B-0005, and B-0038. Integrates B-0004. Used by B-0028.
 
 ## B-0009: Connected cabin hallways
 

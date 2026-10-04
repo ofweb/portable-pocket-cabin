@@ -19,7 +19,7 @@ Acceptance:
 - The owner purchases the first slot upgrade through the enchanting room upgrades.
 - Only the owner can install slot upgrades or select automation slots. A selection does not use up known enchantments.
 - Each next slot upgrade adds slots. The cabin can keep known enchantments without a slot limit.
-- Automation slot upgrades add slots. Room upgrades add to the application limit and do not add slots.
+- Automation slot upgrades add slots. Room upgrades raise or remove the application limit under PDR-0011 and do not add slots.
 - A job cannot continue unless all enchantments for that job are in automation slots.
 - Owners and residents can apply known enchantments without automation slots.
 
@@ -31,7 +31,7 @@ Acceptance:
 
 - Only the owner can save and commit a requisition. The item must be a known safe variant.
 - The owner selects known enchantments from automation slots. The owner selects levels that the cabin knows.
-- A selected level cannot be higher than the known level, the room application limit, or the highest level for that enchantment.
+- A selected level cannot exceed the known level or the enchantment's normal maximum. Room tiers I through IV also cap it at the matching level; tier V removes the room cap.
 - Before it commits resources, the cabin checks that each enchantment can go on the item and that the enchantments can go together. The cabin also checks for all capabilities.
 - The plan shows selected recipes, the quantity of each material, hard reserve values, output capacity, and work time.
 - If a check blocks the request, the cabin gives the reason and commits no resources.
