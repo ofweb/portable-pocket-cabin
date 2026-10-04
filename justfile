@@ -18,6 +18,21 @@ test:
 test-client:
     ./gradlew runClientGameTest
 
+# Rebuild every cabin and vanilla reference screenshot in screenshots/.
+screenshots:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    runner=()
+    if [[ -z "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]]; then
+        if ! command -v xvfb-run >/dev/null; then
+            echo "Screenshot capture needs a graphical display or xvfb-run." >&2
+            exit 1
+        fi
+        runner=(xvfb-run -a)
+    fi
+    PPC_CAPTURE_ALL=1 "${runner[@]}" ./gradlew runClientGameTest
+    python3 scripts/collect-screenshots.py
+
 # Verify that the local development server cannot naturally spawn mobs.
 test-dev-config:
     #!/usr/bin/env bash

@@ -51,21 +51,24 @@ public final class PortablePocketCabinClientGameTest
         context.getInput().resizeWindow(1280, 800);
         context.runOnClient(client -> client.options.guiScale().set(3));
         context.getInput().setCursorPos(0, 0);
-        if ("1".equals(System.getenv("PPC_CAPTURE_CREATIVE"))) {
+        boolean captureAll = "1".equals(System.getenv("PPC_CAPTURE_ALL"));
+        if (captureAll || "1".equals(System.getenv("PPC_CAPTURE_CREATIVE"))) {
             VanillaCreativeScreenshots.capture(context);
-            captureStorage(context);
-            return;
+            if (!captureAll) {
+                captureStorage(context);
+                return;
+            }
         }
-        if ("1".equals(System.getenv("PPC_CAPTURE_STATIONS"))) {
+        if (captureAll || "1".equals(System.getenv("PPC_CAPTURE_STATIONS"))) {
             VanillaStationScreenshots.capture(context);
-            return;
+            if (!captureAll) return;
         }
         captureBooks(context);
-        if ("1".equals(System.getenv("PPC_TEST_BOOKS"))) return;
+        if (!captureAll && "1".equals(System.getenv("PPC_TEST_BOOKS"))) return;
         captureGreenhouse(context);
-        if ("1".equals(System.getenv("PPC_TEST_GREENHOUSE"))) return;
+        if (!captureAll && "1".equals(System.getenv("PPC_TEST_GREENHOUSE"))) return;
         captureCrafting(context);
-        if ("1".equals(System.getenv("PPC_TEST_CRAFTING"))) return;
+        if (!captureAll && "1".equals(System.getenv("PPC_TEST_CRAFTING"))) return;
         captureExterior(context);
         captureStorage(context);
 

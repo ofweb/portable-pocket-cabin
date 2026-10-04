@@ -52,7 +52,9 @@ Keep visual code separate from menu and game-state logic where practical. Preser
 
 For new screens or significant visual changes, provide reproducible fixtures for states that materially change appearance. Upgrade interfaces commonly need missing materials, partial funding, ready to install, installed, blocked by prerequisites, and the maximum normal number of categories and requirements. Include confirmation and permission states when they change visible controls. Avoid dependence on an existing player save.
 
-Run `just test-client` or `./gradlew runClientGameTest` for client tests. On Linux without a display, use `xvfb-run -a ./gradlew runClientGameTest` when Xvfb is installed. Captures are saved under `build/run/clientGameTest/screenshots/`. Client tests run separately from `build`.
+Run `just screenshots` to regenerate every cabin screen, exterior view, and vanilla reference. The command saves captures in the top-level `screenshots/` folder, grouped by subject, and generates `screenshots/README.md` as an index. Keep review screenshots there and link to them from experiment notes. Do not move them into experiments. The command uses Xvfb when no display is configured.
+
+Run `just test-client` or `./gradlew runClientGameTest` for client tests alone. Raw captures are saved under `build/run/clientGameTest/screenshots/` and can be cleared by later tests. Client tests run separately from `build`.
 
 Extend `src/gametest/java/dev/portablepocketcabin/PortablePocketCabinClientGameTest.java` for upgrade UI fixtures. It creates a fresh world and cabin, fixes material attunement, resolution, GUI scale, and cursor position, and captures missing materials, partial funding, readiness, and confirmation through the real synchronized menu. Server tests in `PortablePocketCabinGameTest.java` cover menu and gameplay behavior; they do not verify rendered appearance. Recheck `build.gradle` if the test configuration changes.
 

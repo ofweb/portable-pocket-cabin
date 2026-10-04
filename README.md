@@ -6,7 +6,7 @@ A Fabric 26.2 mod for a travelling play style. Players can craft, deploy, expand
 
 Obtain a Block of Amethyst to reveal the three dimensional-core recipes. Combine all three cores into a Dimensional Foundation, then craft a palette-aware `Cabin Kit` with your chosen roof planks, wall wood, floor planks, and door. The [recipe data](src/main/resources/data/portable_pocket_cabin/recipe) gives the crafting ingredients.
 
-Use the Kit on top of a solid terrain block. The first use previews the 5×5 footprint; use the same surface again within 30 seconds to deploy. The front stair appears above the selected block, and the door faces you. The first successful deployment permanently binds the cabin and creates its pocket interior. [Exterior screenshots](docs/cabin-exterior.md) show all four sides of the log cabin, with oak walls and a spruce roof.
+Use the Kit on top of a solid terrain block. The first use previews the 5×5 footprint; use the same surface again within 30 seconds to deploy. The front stair appears above the selected block, and the door faces you. The first successful deployment permanently binds the cabin and creates its pocket interior. [Exterior screenshots](screenshots/cabin/exterior) show all four sides of the log cabin, with oak walls and a spruce roof.
 
 Use the exterior door or lodestone to enter. To pack, sneak-use the exterior lodestone twice within 10 seconds. A five-second evacuation and packing countdown follows.
 
@@ -94,9 +94,13 @@ just test-client
 # Or: ./gradlew runClientGameTest
 # Book installation and screenshots only:
 PPC_TEST_BOOKS=1 ./gradlew runClientGameTest
+# Regenerate every screenshot, including vanilla references:
+just screenshots
 ```
 
 The [client test](src/gametest/java/dev/portablepocketcabin/PortablePocketCabinClientGameTest.java) creates a fresh world and cabin. It opens the server-synchronized upgrade screen and checks missing materials, partial funding, readiness, and installation confirmation. Screenshots use a 1280×800 window, GUI scale 3, a fixed cabin palette, and a fixed cursor position. They are saved under `build/run/clientGameTest/screenshots/`. The test leaves development saves untouched.
+
+`just screenshots` captures all cabin screens, exterior views, vanilla crafting stations, and vanilla creative inventory in one run. It overrides the individual capture filters and copies the results into the top-level [screenshots](screenshots/README.md) folder after the tests pass. Images are grouped under `screenshots/cabin/` and `screenshots/vanilla/`, with an index linking every capture. Keep screenshots there and link to them from experiment notes. Their paths stay stable across runs, and later tests can clear build output without removing them. The command requires Python 3 and automatically uses Xvfb when no display is configured.
 
 On Linux without a display, install Xvfb and run `xvfb-run -a ./gradlew runClientGameTest`. Client tests are separate from `build`, so the existing server checks can still run without graphics. Screenshots are captures for visual review; no regression baselines have been accepted yet. Fabric supports fuzzy comparisons through `ClientGameTestContext.assertScreenshotEquals` when an inspected baseline is ready.
 
