@@ -12,7 +12,7 @@ import java.util.List;
 /** A cabin book describes the upgrades it reveals through the shared installer. */
 final class CabinBookItem extends Item {
 
-	enum Type { STORAGE, CRAFTING, GREENHOUSE }
+	enum Type { STORAGE, CRAFTING, GREENHOUSE, ENCHANTING }
 
 	private final Type type;
 	CabinBookItem(Properties properties, Type type) {
@@ -32,6 +32,7 @@ final class CabinBookItem extends Item {
 
 	boolean revealed(CabinUpgradeState state) {
 		return switch (type) {
+			case ENCHANTING -> state.enchanting().revealed();
 			case STORAGE -> state.storage().revealed();
 			case CRAFTING -> state.crafting().revealed();
 			case GREENHOUSE -> state.greenhouse().revealed();
@@ -40,6 +41,7 @@ final class CabinBookItem extends Item {
 
 	CabinUpgradeState reveal(CabinUpgradeState state) {
 		return switch (type) {
+			case ENCHANTING -> state.withEnchanting(state.enchanting().reveal());
 			case STORAGE -> state.withStorage(state.storage().reveal());
 			case CRAFTING -> state.withCrafting(state.crafting().reveal());
 			case GREENHOUSE -> state.withGreenhouse(state.greenhouse().reveal());
@@ -56,6 +58,8 @@ final class CabinBookItem extends Item {
 
 	private static List<Component> upgrades(Type type) {
 		return switch (type) {
+			case ENCHANTING -> java.util.stream.IntStream.rangeClosed(1, 5)
+				.<Component>mapToObj(level -> Component.translatable("book.portable_pocket_cabin.enchanting_" + level)).toList();
 			case STORAGE -> List.of(Component.translatable("book.portable_pocket_cabin.storage"));
 			case CRAFTING -> List.of(
 				Component.translatable("book.portable_pocket_cabin.crafting"),

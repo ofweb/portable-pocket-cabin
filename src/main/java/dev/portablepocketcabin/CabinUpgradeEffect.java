@@ -18,6 +18,7 @@ final class CabinUpgradeEffect implements CabinUpgradeService.UpgradeEffect {
 	@Override
 	public CabinUpgradeService.Outcome validate(CabinRecord cabin, CabinUpgradeCatalog.Offer offer) {
 		if (offer.target().isGreenhouse()) return CabinGreenhouse.validate(pocket, cabin, offer.targetSize());
+		if (offer.target().isEnchanting()) return CabinEnchanting.validate(pocket, cabin, offer.targetSize());
 		if (offer.target().isCrafting()) return CabinCrafting.validate(pocket, cabin, offer.targetSize());
 		if (offer.target().isStorage()) return CabinUpgradeService.Outcome.success("");
 		if (offer.target().isGeneralSpace()) {
@@ -42,6 +43,10 @@ final class CabinUpgradeEffect implements CabinUpgradeService.UpgradeEffect {
 			CabinGreenhouse.install(pocket, cabin, installation);
 			return;
 		}
+		if (installation.target().isEnchanting()) {
+			CabinEnchanting.install(pocket, cabin, installation);
+			return;
+		}
 		if (installation.target().isCrafting()) {
 			CabinCrafting.install(pocket, cabin, installation);
 			return;
@@ -64,6 +69,7 @@ final class CabinUpgradeEffect implements CabinUpgradeService.UpgradeEffect {
 
 	@Override
 	public void refresh(CabinRecord cabin) {
+		CabinEnchanting.finish(server, cabin);
 		CabinCrafting.finish(server, cabin);
 		CabinCorridors.finish(server, cabin.uuid());
 		CabinWindows.refresh(server, cabin);

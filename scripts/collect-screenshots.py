@@ -7,6 +7,7 @@ import shutil
 ROOT = Path(__file__).resolve().parents[1]
 GROUPS = (
     ("cabin-books-", "cabin/books", "Book installation"),
+    ("enchanting-library-", "cabin/enchanting", "Enchantment library"),
     ("crafting-room-", "cabin/crafting", "Cabin crafting stations"),
     ("cabin-exterior-", "cabin/exterior", "Cabin exterior"),
     ("greenhouse-", "cabin/greenhouse", "Greenhouse"),

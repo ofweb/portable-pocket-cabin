@@ -216,6 +216,8 @@ final class CabinUpgradeService {
 				)
 				: target.isGreenhouse() ? new CabinUpgradeState.Installation(
 					UUID.randomUUID(), target, cabin.upgrades().greenhouse().level(), offer.targetSize())
+				: target.isEnchanting() ? new CabinUpgradeState.Installation(
+					UUID.randomUUID(), target, cabin.upgrades().enchanting().level(), offer.targetSize())
 				: target.isCrafting() ? new CabinUpgradeState.Installation(
 					UUID.randomUUID(), target, cabin.upgrades().crafting().level(), offer.targetSize())
 				: target.isStorage() ? new CabinUpgradeState.Installation(
@@ -238,6 +240,7 @@ final class CabinUpgradeService {
 				? Outcome.success("Cabin general space expanded to " + installation.targetState()
 					+ "x" + installation.targetState() + ".")
 				: target.isGreenhouse() ? Outcome.success("Greenhouse upgraded.")
+				: target.isEnchanting() ? Outcome.success("Enchanting room upgraded.")
 				: target.isCrafting() ? Outcome.success("Crafting room upgraded.")
 				: target.isStorage() ? Outcome.success("Central storage capacity increased.")
 				: Outcome.success("Cabin window installed at tier " + installation.targetState() + ".");

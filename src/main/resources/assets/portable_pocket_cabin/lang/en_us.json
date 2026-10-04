@@ -42,5 +42,11 @@
   "book.portable_pocket_cabin.stonecutting": "Stonecutting",
   "book.portable_pocket_cabin.smithing": "Smithing",
   "book.portable_pocket_cabin.greenhouse": "Greenhouse: all four garden sizes",
-  "book.portable_pocket_cabin.install_hint": "Install in Cabin Upgrades > Books"
+  "book.portable_pocket_cabin.install_hint": "Install in Cabin Upgrades > Books",
+  "item.portable_pocket_cabin.enchanting_book": "Enchanting Room Book",
+  "book.portable_pocket_cabin.enchanting_1": "Enchanting 1: room and stations",
+  "book.portable_pocket_cabin.enchanting_2": "Enchanting 2: apply up to level 2",
+  "book.portable_pocket_cabin.enchanting_3": "Enchanting 3: apply up to level 3",
+  "book.portable_pocket_cabin.enchanting_4": "Enchanting 4: apply up to level 4",
+  "book.portable_pocket_cabin.enchanting_5": "Enchanting 5: no room level cap"
 }

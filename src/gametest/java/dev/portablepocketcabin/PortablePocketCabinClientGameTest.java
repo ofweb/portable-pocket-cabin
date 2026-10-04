@@ -63,6 +63,8 @@ public final class PortablePocketCabinClientGameTest
             VanillaStationScreenshots.capture(context);
             if (!captureAll) return;
         }
+        captureEnchanting(context);
+        if (!captureAll && "1".equals(System.getenv("PPC_TEST_ENCHANTING"))) return;
         captureBooks(context);
         if (!captureAll && "1".equals(System.getenv("PPC_TEST_BOOKS"))) return;
         captureGreenhouse(context);
@@ -569,6 +571,226 @@ public final class PortablePocketCabinClientGameTest
         }
     }
 
+
+    private static void captureEnchanting(ClientGameTestContext context) {
+        try (TestSingleplayerContext world = context.worldBuilder().create()) {
+            UUID cabinId = createCabin(world, false);
+            world.getServer().runOnServer(server -> {
+                var registry = CabinRegistry.get(server);
+                var player = world.getConnection().getServerPlayer();
+                player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+                var cabin = registry.find(cabinId).orElseThrow();
+                PocketDimension.applyGeneralSpaceExpansion(player.level(), cabin, 5);
+                cabin = registry.expandGeneralSpace(cabinId, cabin.owner(), 3, 5, 21);
+                player.getInventory().setItem(0, new ItemStack(CabinItems.ENCHANTING_BOOK, 2));
+                CabinUpgrades.useController(player, cabin);
+                var menu = (CabinUpgradeMenu) player.containerMenu;
+                check(previewBook(menu, player, 0), "Enchanting book previews five purchases");
+                check(menu.clickMenuButton(player, CabinUpgradeMenu.BUTTON_INSTALL_BOOK), "Enchanting book installs");
+                check(registry.find(cabinId).orElseThrow().upgrades().enchanting().revealed(), "Book reveals enchanting");
+                player.closeContainer();
+                cabin = registry.find(cabinId).orElseThrow();
+                var requirements = CabinUpgradeCatalog.enchantingRequirements(cabin, 1);
+                var target = CabinUpgradeState.Target.enchanting(1);
+                var stacks = requirements.stream().map(r -> new ItemStack(BuiltInRegistries.ITEM.getOptional(r.itemId()).orElseThrow(), r.count())).toList();
+                registry.updateUpgradeState(cabinId, cabin.upgrades().withFund(new CabinUpgradeState.Fund(target, requirements, stacks)));
+                var result = CabinUpgradeService.install(registry, cabinId, player.getUUID(), target,
+                    registry.find(cabinId).orElseThrow().upgrades().fundRevision(), registry.worldAttunement().orElseThrow(),
+                    CabinUpgradeDefinitions.current(), new CabinUpgradeEffect(server, player.level()), () -> CabinRegistry.flush(server));
+                check(result.success(), result.message());
+                cabin = registry.find(cabinId).orElseThrow();
+                var table = CabinEnchantmentLibrary.table(cabin);
+                check(!CabinEnchanting.stations(cabin, 1).isEmpty(), "Installation supplies the three stations");
+                player.teleportTo(player.level(), table.getX() + .5, table.getY(), table.getZ() + 1.5, Set.of(), 180, 20, false);
+                var enchantments = player.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT);
+                var sword = new ItemStack(net.minecraft.world.item.Items.DIAMOND_SWORD);
+                sword.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, net.minecraft.network.chat.Component.literal("Family sword"));
+                sword.enchant(enchantments.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.SHARPNESS), 3);
+                sword.enchant(enchantments.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.UNBREAKING), 2);
+                player.getInventory().clearContent();
+                player.getInventory().setItem(0, sword);
+                player.getInventory().setItem(1, new ItemStack(net.minecraft.world.item.Items.BOOK, 4));
+                check(CabinEnchantingMenu.open(player, cabin).consumesAction(), "Installed table opens the library");
+            });
+            waitEnchanting(context, world);
+            capture(context, "enchanting-library-item-selection");
+            enchantingButton(context, world, CabinEnchantingMenu.CHOICE_BASE);
+            int sharpness = enchantmentChoice(context, "Sharpness III");
+            enchantingButton(context, world, CabinEnchantingMenu.CHOICE_BASE + sharpness);
+            capture(context, "enchanting-library-sacrifice-preview");
+            hoverEnchantingPreview(context);
+            capture(context, "enchanting-library-sacrifice-tooltip");
+            enchantingButton(context, world, CabinEnchantingMenu.CONFIRM);
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                var registry = CabinRegistry.get(server);
+                var cabin = registry.find(cabinId).orElseThrow();
+                check(cabin.upgrades().enchanting().known().get(net.minecraft.resources.Identifier.withDefaultNamespace("sharpness")) == 3,
+                    "Sacrifice learns above the room cap");
+                check(!cabin.upgrades().enchanting().known().containsKey(net.minecraft.resources.Identifier.withDefaultNamespace("unbreaking")), "Other sacrifice enchantments are not learned");
+                check(player.getInventory().getItem(0).isEmpty() && player.getInventory().getItem(1).getCount() == 1, "Sacrifice and three books consumed once");
+                check(cabin.upgrades().storage().sessions().isEmpty(), "Confirmation clears its durable inventory receipt");
+                player.getInventory().setItem(0, new ItemStack(net.minecraft.world.item.Items.DIAMOND_SWORD));
+                player.getInventory().setItem(2, new ItemStack(net.minecraft.world.item.Items.AMETHYST_SHARD, 16));
+                player.getInventory().setItem(3, new ItemStack(net.minecraft.world.item.Items.LAPIS_LAZULI, 32));
+            });
+            enchantingButton(context, world, CabinEnchantingMenu.APPLY);
+            enchantingButton(context, world, CabinEnchantingMenu.CHOICE_BASE);
+            check(context.computeOnClient(client -> CabinStationClient.entries(client.player.containerMenu.containerId).size()) == 1,
+                "Tier I lists only the applicable known level");
+            enchantingButton(context, world, CabinEnchantingMenu.CHOICE_BASE);
+            capture(context, "enchanting-library-application-preview");
+            hoverEnchantingPreview(context);
+            capture(context, "enchanting-library-application-tooltip");
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                player.getInventory().getItem(2).shrink(1);
+            });
+            enchantingButton(context, world, CabinEnchantingMenu.CONFIRM);
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                check(player.getInventory().getItem(0).getEnchantments().isEmpty() && player.getInventory().getItem(2).getCount() == 15,
+                    "Stale material previews fail without consumption");
+            });
+            capture(context, "enchanting-library-stale-selection");
+            enchantingButton(context, world, CabinEnchantingMenu.CHOICE_BASE);
+            enchantingButton(context, world, CabinEnchantingMenu.CHOICE_BASE);
+            enchantingButton(context, world, CabinEnchantingMenu.CONFIRM);
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                check(player.getInventory().getItem(0).getEnchantments().size() == 1 && player.getInventory().getItem(2).getCount() == 14
+                    && player.getInventory().getItem(3).getCount() == 30, "Confirmation applies one level for one shard and two lapis");
+                check(player.totalExperience == 0, "Library application leaves experience unchanged");
+                var remembered = CabinEnchantmentLibrary.preview(CabinRegistry.get(server).find(cabinId).orElseThrow(),
+                    CabinEnchantmentLibrary.inventory(player), new CabinEnchantmentLibrary.Source(false, 1, player.getInventory().getItem(1)),
+                    net.minecraft.resources.Identifier.withDefaultNamespace("sharpness"), 1, false, player.registryAccess());
+                check(remembered.ready(), "Book creation plans before interruption");
+                var originalReceipt = CabinStorage.receipt(player, ItemStack.EMPTY);
+                var session = new CabinStorageState.Session(player.getUUID(), remembered.afterInventory(), ItemStack.EMPTY,
+                    originalReceipt.operation(), originalReceipt.delivery());
+                var interrupted = CabinRegistry.get(server).find(cabinId).orElseThrow();
+                CabinRegistry.get(server).updateUpgradeState(cabinId, interrupted.upgrades().withStorage(remembered.afterStorage().withSession(session)));
+                CabinRegistry.flush(server);
+                CabinStorage.recover(player);
+                var recoveredInventory = CabinEnchantmentLibrary.inventory(player);
+                CabinStorage.recover(player);
+                check(ItemStack.listMatches(recoveredInventory, CabinEnchantmentLibrary.inventory(player))
+                    && player.getInventory().getItem(1).is(net.minecraft.world.item.Items.ENCHANTED_BOOK), "Interrupted confirmation recovers exactly once");
+                player.getInventory().setItem(1, new ItemStack(net.minecraft.world.item.Items.BOOK));
+                var registry = CabinRegistry.get(server);
+                var cabin = registry.find(cabinId).orElseThrow();
+                player.closeContainer();
+                for (int tier = 2; tier <= 5; tier++) {
+                    cabin = registry.find(cabinId).orElseThrow();
+                    var requirements = CabinUpgradeCatalog.enchantingRequirements(cabin, tier);
+                    var target = CabinUpgradeState.Target.enchanting(tier);
+                    var stacks = requirements.stream().map(r -> new ItemStack(BuiltInRegistries.ITEM.getOptional(r.itemId()).orElseThrow(), r.count())).toList();
+                    registry.updateUpgradeState(cabinId, cabin.upgrades().withFund(new CabinUpgradeState.Fund(target, requirements, stacks)));
+                    var result = CabinUpgradeService.install(registry, cabinId, player.getUUID(), target,
+                        registry.find(cabinId).orElseThrow().upgrades().fundRevision(), registry.worldAttunement().orElseThrow(),
+                        CabinUpgradeDefinitions.current(), new CabinUpgradeEffect(server, player.level()), () -> CabinRegistry.flush(server));
+                    check(result.success(), result.message());
+                }
+                cabin = registry.find(cabinId).orElseThrow();
+                var library = cabin.upgrades().enchanting().learn(net.minecraft.resources.Identifier.withDefaultNamespace("binding_curse"), 1);
+                registry.updateUpgradeState(cabinId, cabin.upgrades().withEnchanting(library));
+                check(player.getInventory().getItem(0).getEnchantments().size() == 1, "Upgrades leave existing enchanted items unchanged");
+                check(CabinProtection.isProtected(player.level(), CabinEnchantmentLibrary.table(cabin)), "Dedicated table remains protected");
+                check(!CabinProtection.isProtected(player.level(), CabinEnchantmentLibrary.table(cabin).north().west()), "Supplied anvil follows normal break rules");
+                var entrance = PocketDimension.cellCenter(cabin.cellIndex()).offset(CabinEnchanting.space(cabin).entrance());
+                player.teleportTo(player.level(), entrance.getX() + .5, entrance.getY(), entrance.getZ() + .5, Set.of(), 90, 0, false);
+                player.move(net.minecraft.world.entity.MoverType.SELF, new net.minecraft.world.phys.Vec3(-2, 0, 0));
+                check(player.getX() <= entrance.getX() - 1.4, "Bookshelves leave the room entrance walkable at tier V");
+                var installedTable = CabinEnchantmentLibrary.table(cabin);
+                player.teleportTo(player.level(), installedTable.getX() + .5, installedTable.getY(), installedTable.getZ() + 1.5, Set.of(), 180, 20, false);
+                CabinEnchantingMenu.open(player, registry.find(cabinId).orElseThrow());
+            });
+            waitEnchanting(context, world);
+            enchantingButton(context, world, CabinEnchantingMenu.APPLY);
+            int bookIndex = context.computeOnClient(client -> {
+                var entries = CabinStationClient.entries(client.player.containerMenu.containerId);
+                for (int i = 0; i < entries.size(); i++) if (entries.get(i).icon().is(net.minecraft.world.item.Items.BOOK)) return i;
+                throw new AssertionError("Ordinary book target missing");
+            });
+            enchantingButton(context, world, CabinEnchantingMenu.CHOICE_BASE + bookIndex);
+            enchantingButton(context, world, CabinEnchantingMenu.CHOICE_BASE + enchantmentChoice(context, "Curse of Binding"));
+            capture(context, "enchanting-library-curse-preview");
+            context.getInput().resizeWindow(960, 720);
+            capture(context, "enchanting-library-small-window");
+            context.getInput().resizeWindow(1280, 800);
+            enchantingButton(context, world, CabinEnchantingMenu.CONFIRM);
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                check(player.getInventory().getItem(1).is(net.minecraft.world.item.Items.ENCHANTED_BOOK), "A curse is applied only through explicit selection and confirmation");
+                var registry = CabinRegistry.get(server);
+                var cabin = registry.find(cabinId).orElseThrow();
+                player.teleportTo(player.level(), PocketDimension.cellCenter(cabin.cellIndex()).getX(), PocketDimension.cellCenter(cabin.cellIndex()).getY() + 1,
+                    PocketDimension.cellCenter(cabin.cellIndex()).getZ(), Set.of(), 0, 0, false);
+                check(!player.containerMenu.stillValid(player), "Leaving the station invalidates the interface");
+            });
+            context.waitFor(client -> !(client.gui.screen() instanceof CabinEnchantingScreen));
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                var registry = CabinRegistry.get(server); var cabin = registry.find(cabinId).orElseThrow();
+                var table = CabinEnchantmentLibrary.table(cabin);
+                player.teleportTo(player.level(), table.getX() + .5, table.getY(), table.getZ() + 1.5, Set.of(), 180, 20, false);
+                registry.beginPacking(cabinId, cabin.owner());
+                check(!CabinEnchantmentLibrary.valid(player, registry.find(cabinId).orElseThrow()), "Packing blocks actions immediately");
+                registry.abortPacking(cabinId);
+            });
+        }
+        try (TestSingleplayerContext world = context.worldBuilder().create()) {
+            UUID cabinId = createCabin(world, true);
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer(); var registry = CabinRegistry.get(server);
+                var cabin = registry.find(cabinId).orElseThrow();
+                PocketDimension.applyGeneralSpaceExpansion(player.level(), cabin, 5);
+                cabin = registry.expandGeneralSpace(cabinId, cabin.owner(), 3, 5, 21);
+                cabin = registry.updateUpgradeState(cabinId, cabin.upgrades().withEnchanting(CabinEnchantingState.EMPTY.reveal()));
+                var requirements = CabinUpgradeCatalog.enchantingRequirements(cabin, 1);
+                var target = CabinUpgradeState.Target.enchanting(1);
+                var stacks = requirements.stream().map(r -> new ItemStack(BuiltInRegistries.ITEM.getOptional(r.itemId()).orElseThrow(), r.count())).toList();
+                var operation = new CabinUpgradeState.Installation(UUID.randomUUID(), target, 0, 1);
+                registry.updateUpgradeState(cabinId, cabin.upgrades().withFund(new CabinUpgradeState.Fund(target, requirements, stacks)).withInstallation(operation));
+                CabinEnchanting.install(player.level(), cabin, operation); registry.completeUpgradeInstallation(cabinId, operation.operationId());
+                CabinEnchanting.finish(server, registry.find(cabinId).orElseThrow());
+                cabin = registry.find(cabinId).orElseThrow(); var table = CabinEnchantmentLibrary.table(cabin);
+                player.teleportTo(player.level(), table.getX() + .5, table.getY(), table.getZ() + 1.5, Set.of(), 0, 0, false);
+                check(CabinEnchantmentLibrary.valid(player, cabin), "Residents can use the installed library");
+                CabinEnchantingMenu.open(player, cabin);
+                registry.untrust(cabinId, cabin.owner(), player.getUUID());
+                check(!player.containerMenu.stillValid(player), "Revoking resident access invalidates the library");
+                check(!CabinEnchantingMenu.open(player, registry.find(cabinId).orElseThrow()).consumesAction(), "Guests cannot open the library");
+            });
+        }
+    }
+
+    private static void hoverEnchantingPreview(ClientGameTestContext context) {
+        double[] position = context.computeOnClient(client -> {
+            var window = client.getWindow();
+            return new double[] {
+                ((window.getGuiScaledWidth() - CabinEnchantingLayout.WIDTH) / 2 + CabinEnchantingLayout.DETAIL_X + 8) * window.getGuiScale(),
+                ((window.getGuiScaledHeight() - CabinEnchantingLayout.HEIGHT) / 2 + CabinEnchantingLayout.PREVIEW_Y + 8) * window.getGuiScale()
+            };
+        });
+        context.getInput().setCursorPos(position[0], position[1]);
+    }
+    private static void waitEnchanting(ClientGameTestContext context, TestSingleplayerContext world) {
+        world.getConnection().waitForClientboundPackets();
+        context.waitFor(client -> client.gui.screen() instanceof CabinEnchantingScreen && CabinStationClient.entries(client.player.containerMenu.containerId) != null);
+        context.waitTicks(3);
+    }
+    private static void enchantingButton(ClientGameTestContext context, TestSingleplayerContext world, int button) {
+        context.runOnClient(client -> client.gameMode.handleInventoryButtonClick(client.player.containerMenu.containerId, button));
+        world.getConnection().waitForServerboundPackets(); world.getConnection().waitForClientboundPackets(); context.waitTicks(3);
+    }
+    private static int enchantmentChoice(ClientGameTestContext context, String title) {
+        return context.computeOnClient(client -> {
+            var entries = CabinStationClient.entries(client.player.containerMenu.containerId);
+            for (int i = 0; i < entries.size(); i++) if (entries.get(i).title().contains(title)) return i;
+            throw new AssertionError("Missing enchantment choice: " + title);
+        });
+    }
     private static void captureCrafting(ClientGameTestContext context) {
         try (TestSingleplayerContext world = context.worldBuilder().create()) {
             UUID cabinId = createCabin(world, false);
@@ -2204,6 +2426,7 @@ public final class PortablePocketCabinClientGameTest
         }
         context.waitTick();
         context.waitTick();
+        context.runOnClient(client -> client.gui.toastManager().clear());
         context.takeScreenshot(
             TestScreenshotOptions.of(name).disableCounterPrefix()
         );

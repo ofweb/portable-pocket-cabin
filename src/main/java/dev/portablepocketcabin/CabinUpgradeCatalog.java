@@ -155,6 +155,19 @@ final class CabinUpgradeCatalog {
 					current == 3 ? List.of() : craftingRequirements(cabin, next), current == 3,
 					current == 0 && cabin.progression().generalSize() < 5 ? "Expand the main room to 5x5 first" : ""))));
 		}
+		if (cabin.upgrades().enchanting().revealed()) {
+			int current = cabin.upgrades().enchanting().level();
+			int next = Math.min(5, current + 1);
+			groups.add(new Group(PortablePocketCabin.id("enchanting"), "Enchanting",
+				Identifier.withDefaultNamespace("enchanting_table"), List.of(new Offer(
+					CabinUpgradeState.Target.enchanting(next), "Enchanting " + next,
+					current == 5 ? "Fully upgraded; no room level cap" : next == 1
+						? "Install a 5x5 room; apply level I" : next == 5
+						? "Remove the room level cap" : "Raise the application limit to " + next,
+					Identifier.withDefaultNamespace("enchanting_table"), current, next,
+					current == 5 ? List.of() : enchantingRequirements(cabin, next), current == 5,
+					current == 0 && cabin.progression().generalSize() < 5 ? "Expand the main room to 5x5 first" : ""))));
+		}
 		if (cabin.upgrades().greenhouse().revealed()) {
 			int current = cabin.upgrades().greenhouse().level();
 			int next = Math.min(4, current + 1);
@@ -230,6 +243,21 @@ final class CabinUpgradeCatalog {
 		result.add(new CabinUpgradeState.Requirement(Identifier.withDefaultNamespace("glass"), new int[]{16,32,48,64}[level-1]));
 		result.add(new CabinUpgradeState.Requirement(Identifier.withDefaultNamespace("iron_ingot"), new int[]{8,12,16,24}[level-1]));
 		for (String plant : plants[level-1]) result.add(new CabinUpgradeState.Requirement(CabinIngredientFallbacks.resolve(Identifier.parse(plant)), 1));
+		return List.copyOf(result);
+	}
+
+	static List<CabinUpgradeState.Requirement> enchantingRequirements(CabinRecord cabin, int level) {
+		String[][] names = {{"enchanting_table", "anvil", "grindstone", "amethyst_block"},
+			{"bookshelf", "prismarine_crystals", "amethyst_block"},
+			{"bookshelf", "quartz", "crying_obsidian", "diamond", "amethyst_block"},
+			{"bookshelf", "end_stone", "ender_pearl", "amethyst_block"},
+			{"bookshelf", "echo_shard", "amethyst_block"}};
+		int[][] counts = {{1,1,1,4}, {4,2,4}, {4,4,1,1,4}, {4,4,1,4}, {4,1,4}};
+		var result = new ArrayList<CabinUpgradeState.Requirement>();
+		for (int i = 0; i < names[level - 1].length; i++)
+			result.add(new CabinUpgradeState.Requirement(Identifier.withDefaultNamespace(names[level - 1][i]), counts[level - 1][i]));
+		if (level == 1) result.add(new CabinUpgradeState.Requirement(
+			BuiltInRegistries.ITEM.getKey(cabin.palette().walls().structuralWoodBlock().asItem()), 16));
 		return List.copyOf(result);
 	}
 

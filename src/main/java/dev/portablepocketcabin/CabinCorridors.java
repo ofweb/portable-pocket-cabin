@@ -116,7 +116,7 @@ public final class CabinCorridors {
 		if (cabin == null) return false;
 		if (cabin.upgrades().greenhouse().level() > 0 && CabinGreenhouseGrowth.hasPending(level.getServer(), cabin.uuid())
 			&& CabinGreenhouse.space(cabin, cabin.upgrades().greenhouse().level()).contains(cabin.cellIndex(), pos)) return true;
-		if (CabinGreenhouse.paused(cabin, pos) || CabinCrafting.paused(cabin, pos)) return true;
+		if (CabinGreenhouse.paused(cabin, pos) || CabinCrafting.paused(cabin, pos) || CabinEnchanting.paused(cabin, pos)) return true;
 		if (!hasPending(level.getServer(), cabin.uuid())) return false;
 		Path path = journal(level.getServer(), cabin.uuid());
 		Set<BlockPos> paused = PAUSED.computeIfAbsent(path, ignored -> {

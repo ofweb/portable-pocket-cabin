@@ -16,6 +16,8 @@ public final class CabinProtection {
 				&& (PocketDimension.isInteriorShell(
 					cabin.cellIndex(), cabin.progression().generalSize(), pos
 				) && !CabinCorridorLayout.isEntrance(cabin, pos)
+					|| CabinEnchanting.stations(cabin, cabin.upgrades().enchanting().level()).entrySet().stream()
+					.anyMatch(entry -> entry.getKey().equals(pos) && !entry.getValue().is(net.minecraft.world.level.block.Blocks.ANVIL))
 					|| CabinCrafting.stations(cabin, cabin.upgrades().crafting().level()).containsKey(pos)
 					|| CabinCorridorLayout.isShell(cabin, pos) || cabin.progression().rooms().stream()
 					.anyMatch(room -> room.space().map(space -> space.shell(cabin.cellIndex(), pos))

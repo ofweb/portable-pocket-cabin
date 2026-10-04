@@ -33,6 +33,20 @@ loom {
 			vmArg "-Dportable-pocket-cabin.startup-test=verify"
 			programArg "nogui"
 		}
+		enchantingTest {
+			server()
+			name "Enchanting Installation Seed Test"
+			runDir "build/enchanting-test"
+			vmArg "-Dportable-pocket-cabin.enchanting-test=seed"
+			programArg "nogui"
+		}
+		enchantingReloadTest {
+			server()
+			name "Enchanting Restart Recovery Test"
+			runDir "build/enchanting-test"
+			vmArg "-Dportable-pocket-cabin.enchanting-test=verify"
+			programArg "nogui"
+		}
 		greenhouseTest {
 			server()
 			name "Greenhouse Installation and Catch-up Seed Test"
@@ -141,6 +155,7 @@ tasks.named("check").configure {
 	dependsOn tasks.named("runStartupReloadTest")
 	dependsOn tasks.named("runCorridorReloadTest")
 	dependsOn tasks.named("runGreenhouseReloadTest")
+	dependsOn tasks.named("runEnchantingReloadTest")
 }
 
 tasks.named("runCorridorTest").configure {
@@ -195,6 +210,24 @@ publishing {
 		doLast {
 			def logFile = layout.projectDirectory.file("build/greenhouse-test/logs/latest.log").asFile
 			if (!logFile.exists() || !logFile.text.contains(marker)) throw new GradleException("Greenhouse check did not finish: " + marker)
+		}
+	}
+}
+
+["runEnchantingTest": "ENCHANTING_INSTALLATION_TEST_PASSED", "runEnchantingReloadTest": "ENCHANTING_RECOVERY_TEST_PASSED"].each { taskName, marker ->
+	tasks.named(taskName).configure {
+		if (taskName == "runEnchantingReloadTest") dependsOn tasks.named("runEnchantingTest")
+		doFirst {
+			def runDirectory = layout.projectDirectory.dir("build/enchanting-test").asFile
+			if (taskName == "runEnchantingTest") project.delete(new File(runDirectory, "world"))
+			runDirectory.mkdirs()
+			new File(runDirectory, "logs/latest.log").delete()
+			new File(runDirectory, "eula.txt").text = "eula=true\n"
+			new File(runDirectory, "server.properties").text = "server-port=0\nonline-mode=false\n"
+		}
+		doLast {
+			def logFile = layout.projectDirectory.file("build/enchanting-test/logs/latest.log").asFile
+			if (!logFile.exists() || !logFile.text.contains(marker)) throw new GradleException("Enchanting check did not finish: " + marker)
 		}
 	}
 }

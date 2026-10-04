@@ -474,6 +474,13 @@ public final class CabinRegistry extends SavedData {
 				Optional.of(CabinGreenhouse.space(cabin, installation.targetState()))));
 			progression = new CabinProgression(progression.generalSize(), rooms,
 				progression.withCorridor(CabinCorridor.WEST).corridors());
+		} else if (installation.target().isEnchanting()) {
+			if (cabin.upgrades().enchanting().level() != installation.expectedState())
+				throw new IllegalStateException("Enchanting tier changed");
+			if (installation.expectedState() == 0) {
+				progression = progression.withCorridor(CabinCorridor.NORTH).withRoom(new CabinRoom(
+					installation.operationId(), CabinEnchanting.TYPE, cabin.cellIndex(), Optional.of(CabinEnchanting.space(cabin))));
+			}
 		} else if (installation.target().isCrafting()) {
 			if (cabin.upgrades().crafting().level() != installation.expectedState())
 				throw new IllegalStateException("Crafting level changed");
@@ -499,6 +506,8 @@ public final class CabinRegistry extends SavedData {
 			.withWindows(windows);
 		if (installation.target().isGreenhouse())
 			completed = completed.withGreenhouse(cabin.upgrades().greenhouse().upgrade(installation.targetState()));
+		if (installation.target().isEnchanting())
+			completed = completed.withEnchanting(cabin.upgrades().enchanting().upgrade(installation.targetState()));
 		if (installation.target().isCrafting())
 			completed = completed.withCrafting(cabin.upgrades().crafting().upgrade(installation.targetState()));
 		if (installation.target().isStorage())

@@ -61,6 +61,13 @@ final class CabinEvents {
 
 			if (serverLevel.dimension().equals(PocketDimension.LEVEL_KEY)) {
 				for (CabinRecord cabin : CabinRegistry.get(serverLevel.getServer()).cabins()) {
+					if (cabin.upgrades().enchanting().level() > 0) {
+						var supplied = CabinEnchanting.stations(cabin, cabin.upgrades().enchanting().level()).get(hit.getBlockPos());
+						if (supplied != null && !supplied.is(net.minecraft.world.level.block.Blocks.BOOKSHELF)) {
+							if (!CabinStorage.mayUse(cabin, player.getUUID())) return InteractionResult.FAIL;
+							if (supplied.is(net.minecraft.world.level.block.Blocks.ENCHANTING_TABLE)) return CabinEnchantingMenu.open(serverPlayer, cabin);
+						}
+					}
 					if (CabinCrafting.stations(cabin, cabin.upgrades().crafting().level()).containsKey(hit.getBlockPos()))
 						return CabinStation.open(serverPlayer, cabin, hit.getBlockPos());
 					if (cabin.upgrades().storage().level() > 0 && hit.getBlockPos().equals(CabinStorage.control(cabin)))

@@ -13,7 +13,10 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.CraftingMenu;
+import net.minecraft.world.inventory.LoomMenu;
+import net.minecraft.world.inventory.CartographyTableMenu;
+import net.minecraft.world.inventory.SmithingMenu;
+import net.minecraft.world.inventory.StonecutterMenu;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -39,7 +42,9 @@ abstract class CabinStationScreenMixin extends Screen implements CabinStationPan
 	protected CabinStationScreenMixin() { super(Component.empty()); }
 
 	@Unique private boolean cabin$active() {
-		return !(menu instanceof CraftingMenu) && CabinStationClient.entries(menu.containerId) != null;
+		return (menu instanceof LoomMenu || menu instanceof CartographyTableMenu
+			|| menu instanceof SmithingMenu || menu instanceof StonecutterMenu)
+			&& CabinStationClient.entries(menu.containerId) != null;
 	}
 	@Unique private void cabin$update() {
 		if (!cabin$active()) return;
