@@ -60,6 +60,8 @@ public final class PortablePocketCabinClientGameTest
             VanillaStationScreenshots.capture(context);
             return;
         }
+        captureBooks(context);
+        if ("1".equals(System.getenv("PPC_TEST_BOOKS"))) return;
         captureGreenhouse(context);
         if ("1".equals(System.getenv("PPC_TEST_GREENHOUSE"))) return;
         captureCrafting(context);
@@ -212,6 +214,187 @@ public final class PortablePocketCabinClientGameTest
         }
     }
 
+    private static void captureBooks(ClientGameTestContext context) {
+        try (TestSingleplayerContext world = context.worldBuilder().create()) {
+            UUID cabinId = createCabin(world, false);
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+                player.getInventory().clearContent();
+                player.getInventory().setItem(0, new ItemStack(CabinItems.STORAGE_BOOK, 4));
+                player.getInventory().setItem(1, new ItemStack(CabinItems.CRAFTING_BOOK, 3));
+                player.getInventory().setItem(2, new ItemStack(CabinItems.GREENHOUSE_BOOK));
+            });
+            open(context, world, cabinId);
+            selectBooks(context, world);
+            capture(context, "cabin-books-empty");
+
+            // Choose crafting even though storage comes first in inventory order.
+            inputBook(context, world, 1);
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                var menu = (CabinUpgradeMenu) player.containerMenu;
+                var cabin = CabinRegistry.get(server).find(cabinId).orElseThrow();
+                check(menu.bookStack().is(CabinItems.CRAFTING_BOOK) && menu.bookStack().getCount() == 3,
+                    "Manual placement must choose the exact book stack");
+                check(!cabin.upgrades().crafting().revealed() && player.getInventory().getItem(0).getCount() == 4,
+                    "Preview must not consume or select a different book");
+            });
+            capture(context, "cabin-books-crafting-preview");
+            double[] hover = context.computeOnClient(client -> {
+                var window = client.getWindow();
+                return new double[] {
+                    ((window.getGuiScaledWidth() - CabinUpgradeLayout.SCREEN_WIDTH) / 2
+                        + CabinUpgradeLayout.BOOK_INPUT_X + 8) * window.getGuiScale(),
+                    ((window.getGuiScaledHeight() - CabinUpgradeLayout.SCREEN_HEIGHT) / 2
+                        + CabinUpgradeLayout.BOOK_INPUT_Y + 8) * window.getGuiScale()
+                };
+            });
+            context.getInput().setCursorPos(hover[0], hover[1]);
+            capture(context, "cabin-books-crafting-tooltip");
+            context.getInput().setCursorPos(0, 0);
+            installBook(context, world);
+            context.waitFor(client -> !((CabinUpgradeMenu) client.player.containerMenu).canInstallBook());
+            capture(context, "cabin-books-already-installed");
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                var menu = (CabinUpgradeMenu) player.containerMenu;
+                var cabin = CabinRegistry.get(server).find(cabinId).orElseThrow();
+                check(cabin.upgrades().crafting().revealed() && cabin.upgrades().crafting().level() == 0
+                    && cabin.progression().rooms().isEmpty() && menu.bookStack().getCount() == 2,
+                    "One confirmation must reveal only crafting without purchasing a room");
+                check(!menu.clickMenuButton(player, CabinUpgradeMenu.BUTTON_INSTALL_BOOK)
+                    && menu.bookStack().getCount() == 2, "Duplicate installation must consume nothing");
+                menu.clickMenuButton(player, CabinUpgradeMenu.BUTTON_GROUP_BASE);
+                check(!menu.slots.get(CabinUpgradeMenu.BOOK_SLOT).isActive(), "Input slot must be hidden on upgrade tabs");
+                menu.clickMenuButton(player, CabinUpgradeMenu.BUTTON_BOOKS);
+                check(menu.bookStack().getCount() == 2, "Switching tabs must retain the input stack");
+                player.closeContainer();
+                check(player.getInventory().countItem(CabinItems.CRAFTING_BOOK) == 2,
+                    "Closing must return unused copies");
+            });
+
+            for (int inventorySlot : new int[] {0, 2}) {
+                open(context, world, cabinId);
+                selectBooks(context, world);
+                inputBook(context, world, inventorySlot);
+                capture(context, inventorySlot == 0 ? "cabin-books-storage-preview" : "cabin-books-greenhouse-preview");
+                installBook(context, world);
+                world.getServer().runOnServer(server -> world.getConnection().getServerPlayer().closeContainer());
+            }
+            open(context, world, cabinId);
+            selectBooks(context, world);
+            capture(context, "cabin-books-all-installed");
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                var menu = (CabinUpgradeMenu) player.containerMenu;
+                var registry = CabinRegistry.get(server);
+                var cabin = registry.find(cabinId).orElseThrow();
+                check(menu.booksSelected() && menu.groupCount() == 5 && cabin.upgrades().storage().revealed()
+                    && cabin.upgrades().greenhouse().revealed(), "Books tab must remain after all books are installed");
+                check(player.getInventory().countItem(CabinItems.STORAGE_BOOK) == 3
+                    && player.getInventory().countItem(CabinItems.GREENHOUSE_BOOK) == 0,
+                    "Each installation must consume exactly one copy");
+                for (var invalid : List.of(net.minecraft.world.item.Items.BOOK,
+                    net.minecraft.world.item.Items.ENCHANTED_BOOK, net.minecraft.world.item.Items.DIAMOND)) {
+                    menu.setCarried(new ItemStack(invalid));
+                    menu.clicked(CabinUpgradeMenu.BOOK_SLOT, 0, net.minecraft.world.inventory.ContainerInput.PICKUP, player);
+                    check(menu.bookStack().isEmpty() && menu.getCarried().is(invalid), "Input must reject other items");
+                }
+                menu.setCarried(ItemStack.EMPTY);
+                // Recover the input after losing the menu's temporary container.
+                menu.setCarried(new ItemStack(CabinItems.GREENHOUSE_BOOK, 2));
+                menu.clicked(CabinUpgradeMenu.BOOK_SLOT, 0, net.minecraft.world.inventory.ContainerInput.PICKUP, player);
+                var session = registry.find(cabinId).orElseThrow().upgrades().storage().sessions().getFirst();
+                check(session.escrow().size() == 1 && session.escrow().getFirst().stack().getCount() == 2,
+                    "The input stack must be checkpointed for recovery");
+                menu.getSlot(CabinUpgradeMenu.BOOK_SLOT).set(ItemStack.EMPTY);
+                CabinStorage.recover(player);
+                check(player.getInventory().countItem(CabinItems.GREENHOUSE_BOOK) == 2,
+                    "Recovery must return the exact unconsumed stack after the menu is lost");
+                check(previewBook(menu, player, 2), "A recovered stack can return to the input slot");
+                registry.beginPacking(cabinId, player.getUUID());
+                check(!menu.clickMenuButton(player, CabinUpgradeMenu.BUTTON_INSTALL_BOOK)
+                    && menu.bookStack().getCount() == 2, "Lifecycle changes must block installation without consumption");
+                registry.abortPacking(cabinId);
+                for (int i = 0; i < 36; i++) player.getInventory().setItem(i, new ItemStack(net.minecraft.world.item.Items.DIRT, 64));
+                int before = player.level().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
+                    player.getBoundingBox().inflate(3), item -> item.getItem().is(CabinItems.GREENHOUSE_BOOK)).size();
+                player.closeContainer();
+                var drops = player.level().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
+                    player.getBoundingBox().inflate(3), item -> item.getItem().is(CabinItems.GREENHOUSE_BOOK));
+                check(drops.size() == before + 1 && drops.stream().anyMatch(item -> item.getItem().getCount() == 2),
+                    "Unused books must drop beside the player when inventory is full");
+                check(registry.find(cabinId).orElseThrow().upgrades().storage().sessions().isEmpty(),
+                    "Closing must clear the custody record after delivery");
+                player.getInventory().clearContent();
+                player.getInventory().setItem(0, new ItemStack(CabinItems.STORAGE_BOOK));
+                CabinUpgrades.useController(player, registry.find(cabinId).orElseThrow());
+                menu = (CabinUpgradeMenu) player.containerMenu;
+                check(previewBook(menu, player, 0), "A book can be held until the player dies");
+                player.setHealth(0);
+                player.closeContainer();
+                check(player.getInventory().countItem(CabinItems.STORAGE_BOOK) == 0
+                    && player.level().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
+                        player.getBoundingBox().inflate(3), item -> item.getItem().is(CabinItems.STORAGE_BOOK)).size() == 1,
+                    "Closing after death must drop the book instead of placing it in a dead inventory");
+                player.setHealth(20);
+            });
+        }
+        try (TestSingleplayerContext world = context.worldBuilder().create()) {
+            UUID cabinId = createCabin(world, true);
+            open(context, world, cabinId);
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                var menu = (CabinUpgradeMenu) player.containerMenu;
+                check(!menu.clickMenuButton(player, CabinUpgradeMenu.BUTTON_BOOKS), "Residents cannot install books");
+                check(!menu.clickMenuButton(player, CabinUpgradeMenu.BUTTON_INSTALL_BOOK), "Forged install requests must fail");
+                check(!menu.slots.get(CabinUpgradeMenu.BOOK_SLOT).mayPlace(new ItemStack(CabinItems.STORAGE_BOOK)),
+                    "Residents cannot deposit into the book slot");
+            });
+            capture(context, "cabin-books-resident");
+        }
+    }
+
+    private static void selectBooks(ClientGameTestContext context, TestSingleplayerContext world) {
+        context.runOnClient(client -> client.gameMode.handleInventoryButtonClick(
+            client.player.containerMenu.containerId, CabinUpgradeMenu.BUTTON_BOOKS));
+        world.getConnection().waitForServerboundPackets();
+        world.getConnection().waitForClientboundPackets();
+        context.waitFor(client -> ((CabinUpgradeMenu) client.player.containerMenu).booksSelected());
+    }
+
+    private static void inputBook(ClientGameTestContext context, TestSingleplayerContext world, int inventorySlot) {
+        context.runOnClient(client -> {
+            var menu = (CabinUpgradeMenu) client.player.containerMenu;
+            int slot = menu.slots.stream().filter(value -> value.container == client.player.getInventory()
+                && value.getContainerSlot() == inventorySlot).findFirst().orElseThrow().index;
+            client.gameMode.handleContainerInput(menu.containerId, slot, 0,
+                net.minecraft.world.inventory.ContainerInput.PICKUP, client.player);
+            client.gameMode.handleContainerInput(menu.containerId, CabinUpgradeMenu.BOOK_SLOT, 0,
+                net.minecraft.world.inventory.ContainerInput.PICKUP, client.player);
+        });
+        world.getConnection().waitForServerboundPackets();
+        world.getConnection().waitForClientboundPackets();
+        context.waitFor(client -> ((CabinUpgradeMenu) client.player.containerMenu).canInstallBook());
+    }
+
+    private static void installBook(ClientGameTestContext context, TestSingleplayerContext world) {
+        context.runOnClient(client -> client.gameMode.handleInventoryButtonClick(
+            client.player.containerMenu.containerId, CabinUpgradeMenu.BUTTON_INSTALL_BOOK));
+        world.getConnection().waitForServerboundPackets();
+        world.getConnection().waitForClientboundPackets();
+    }
+
+    private static boolean previewBook(CabinUpgradeMenu menu, net.minecraft.server.level.ServerPlayer player, int inventorySlot) {
+        if (!menu.clickMenuButton(player, CabinUpgradeMenu.BUTTON_BOOKS)) return false;
+        int slot = menu.slots.stream().filter(value -> value.container == player.getInventory()
+            && value.getContainerSlot() == inventorySlot).findFirst().orElseThrow().index;
+        menu.clicked(slot, 0, net.minecraft.world.inventory.ContainerInput.PICKUP, player);
+        menu.clicked(CabinUpgradeMenu.BOOK_SLOT, 0, net.minecraft.world.inventory.ContainerInput.PICKUP, player);
+        return !menu.bookStack().isEmpty();
+    }
+
     private static void captureGreenhouse(ClientGameTestContext context) {
         try (TestSingleplayerContext world = context.worldBuilder().create()) {
             UUID cabinId = createCabin(world, false);
@@ -233,10 +416,7 @@ public final class PortablePocketCabinClientGameTest
                 CabinUpgrades.useController(player, cabin);
                 var menu = (CabinUpgradeMenu) player.containerMenu;
                 check(
-                    menu.clickMenuButton(
-                        player,
-                        CabinUpgradeMenu.BUTTON_STORAGE_BOOK
-                    ),
+                    previewBook(menu, player, 0),
                     "Book previews all four purchases"
                 );
                 check(
@@ -251,7 +431,7 @@ public final class PortablePocketCabinClientGameTest
             });
             world.getConnection().waitForClientboundPackets();
             context.waitForScreen(CabinUpgradeScreen.class);
-            context.waitFor(client -> ((CabinUpgradeMenu) client.player.containerMenu).bookConfirming() && ((CabinUpgradeMenu) client.player.containerMenu).statusMessage().getString().contains("greenhouse sizes"));
+            context.waitFor(client -> ((CabinUpgradeMenu) client.player.containerMenu).booksSelected() && ((CabinUpgradeMenu) client.player.containerMenu).canInstallBook());
             capture(context, "greenhouse-book-confirmation");
             world.getServer().runOnServer(server -> {
                 var player = world.getConnection().getServerPlayer();
@@ -259,7 +439,7 @@ public final class PortablePocketCabinClientGameTest
                 check(
                     menu.clickMenuButton(
                         player,
-                        CabinUpgradeMenu.BUTTON_STORAGE_BOOK
+                        CabinUpgradeMenu.BUTTON_INSTALL_BOOK
                     ),
                     "Book confirms"
                 );
@@ -269,12 +449,12 @@ public final class PortablePocketCabinClientGameTest
                 check(
                     cabin.upgrades().greenhouse().revealed() &&
                         cabin.upgrades().greenhouse().level() == 0 &&
-                        player.getInventory().getItem(0).getCount() == 1,
+                        menu.bookStack().getCount() == 1,
                     "One book reveals without purchasing"
                 );
                 menu.clickMenuButton(
                     player,
-                    CabinUpgradeMenu.BUTTON_GROUP_BASE + menu.groupCount() - 1
+                    CabinUpgradeMenu.BUTTON_GROUP_BASE + menu.groupCount() - 2
                 );
             });
             world.getConnection().waitForClientboundPackets();
@@ -408,10 +588,7 @@ public final class PortablePocketCabinClientGameTest
                 CabinUpgrades.useController(player, cabin);
                 var upgrades = (CabinUpgradeMenu) player.containerMenu;
                 check(
-                    upgrades.clickMenuButton(
-                        player,
-                        CabinUpgradeMenu.BUTTON_STORAGE_BOOK
-                    ),
+                    previewBook(upgrades, player, 0),
                     "Crafting book must ask for confirmation"
                 );
                 check(
@@ -426,7 +603,7 @@ public final class PortablePocketCabinClientGameTest
                 check(
                     upgrades.clickMenuButton(
                         player,
-                        CabinUpgradeMenu.BUTTON_STORAGE_BOOK
+                        CabinUpgradeMenu.BUTTON_INSTALL_BOOK
                     ),
                     "Crafting book confirmation must succeed"
                 );
@@ -435,7 +612,7 @@ public final class PortablePocketCabinClientGameTest
                     cabin.upgrades().crafting().revealed() &&
                         cabin.upgrades().crafting().level() == 0 &&
                         cabin.progression().rooms().isEmpty() &&
-                        player.getInventory().getItem(0).getCount() == 1,
+                        upgrades.bookStack().getCount() == 1,
                     "One book reveals the three levels without purchasing the room"
                 );
                 player.closeContainer();
@@ -1084,10 +1261,7 @@ public final class PortablePocketCabinClientGameTest
                 CabinUpgrades.useController(player, cabin);
                 var upgrades = (CabinUpgradeMenu) player.containerMenu;
                 check(
-                    upgrades.clickMenuButton(
-                        player,
-                        CabinUpgradeMenu.BUTTON_STORAGE_BOOK
-                    ),
+                    previewBook(upgrades, player, 0),
                     "Book installation must show a preview"
                 );
                 check(
@@ -1097,13 +1271,13 @@ public final class PortablePocketCabinClientGameTest
                         .upgrades()
                         .storage()
                         .revealed() &&
-                        player.getInventory().getItem(0).getCount() == 2,
+                        upgrades.bookStack().getCount() == 2,
                     "Preview must not consume the book or reveal upgrades"
                 );
                 check(
                     upgrades.clickMenuButton(
                         player,
-                        CabinUpgradeMenu.BUTTON_STORAGE_BOOK
+                        CabinUpgradeMenu.BUTTON_INSTALL_BOOK
                     ),
                     "Owner confirmation must install the book"
                 );
@@ -1114,15 +1288,15 @@ public final class PortablePocketCabinClientGameTest
                         .upgrades()
                         .storage()
                         .revealed() &&
-                        player.getInventory().getItem(0).getCount() == 1,
+                        upgrades.bookStack().getCount() == 1,
                     "Installation must consume exactly one book"
                 );
                 check(
                     !upgrades.clickMenuButton(
                         player,
-                        CabinUpgradeMenu.BUTTON_STORAGE_BOOK
+                        CabinUpgradeMenu.BUTTON_INSTALL_BOOK
                     ) &&
-                        player.getInventory().getItem(0).getCount() == 1,
+                        upgrades.bookStack().getCount() == 1,
                     "Repeated book installation must make no change"
                 );
                 upgrades.clickMenuButton(

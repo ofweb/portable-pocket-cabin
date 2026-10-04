@@ -22,13 +22,17 @@ The Cabin category provides two independent windows for each side and rear wall.
 
 Only the owner can downgrade or remove a window, with two-click confirmation. The change returns exact paid materials beside the interior controller and restores the wall. Grandfathered tier-one windows return no materials. Any newly invalid fund is named during confirmation and returned separately. Dropped items then follow ordinary Minecraft behavior.
 
-Install a Crafting Room Book through the **Book** button in Cabin Upgrades, then fund the next purchase in the Crafting category. The first purchase requires 5×5 main space and adds a fixed 5×5 room beside the north corridor. It provides a crafting table, loom, and cartography table. The next purchases add stonecutting and smithing. One book reveals all three purchases. For development, obtain the book with `/give @s portable_pocket_cabin:crafting_book`.
+Cabin books share the **Books** tab in Cabin Upgrades. The owner places a book or stack in its input slot to preview the upgrades, then clicks **Install Book**. Installation consumes one copy and reveals upgrades for this cabin. Each upgrade needs its own funding and purchase.
+
+Cabin books look like enchanted books. Hover text identifies their upgrades. Copies of the same type stack up to 64; different types stay separate. Already installed books consume nothing. Unused copies return to inventory on close, or drop beside the player if inventory is full.
+
+Install a Crafting Room Book through the **Books** tab in Cabin Upgrades, then fund the next purchase in the Crafting category. The first purchase requires 5×5 main space and adds a fixed 5×5 room beside the north corridor. It provides a crafting table, loom, and cartography table. The next purchases add stonecutting and smithing. One book reveals all three purchases. For development, obtain the book with `/give @s portable_pocket_cabin:crafting_book`.
 
 Owners and residents can use these stations manually. Select a recipe or operation to fill inputs from central storage first, then player inventory. Automatic filling protects named and customised ingredients. The loom, cartography, and smithing panels let you select a specific target, including a named item. Click the result to craft one batch; shift-click crafts up to one output stack. The selected recipe refills after crafting. Closing returns unused inputs to their source. Storage becomes available as soon as it is installed.
 
-Install a Greenhouse Cabin Book through **Book**, then fund the next purchase in the Greenhouse category. The room branches south from the west corridor and requires 5×5 main space. Its four gardens provide 24, 48, 112, and 200 default planting spots. Owners and residents can replace beds and waterlogged slab paths above a protected foundation. Expansion preserves existing plants, soil, water, and fixtures. Manual gardening needs no storage or automation.
+Install a Greenhouse Cabin Book through the **Books** tab, then fund the next purchase in the Greenhouse category. The room branches south from the west corridor and requires 5×5 main space. Its four gardens provide 24, 48, 112, and 200 default planting spots. Owners and residents can replace beds and waterlogged slab paths above a protected foundation. Expansion preserves existing plants, soil, water, and fixtures. Manual gardening needs no storage or automation.
 
-For development, obtain the book with `/give @s portable_pocket_cabin:greenhouse_book`. Book vendors remain part of B-0038. [Greenhouse implementation notes](docs/greenhouse.md) describe packed growth, supported plants, optional ingredients, and verification.
+For development, obtain the book with `/give @s portable_pocket_cabin:greenhouse_book`. Book vendors and trades remain deferred. [Greenhouse implementation notes](docs/greenhouse.md) describe packed growth, supported plants, optional ingredients, and verification.
 
 The registry uses schema 9 for centered interiors and connected corridors. Schema 8 saves load with their contents preserved and no installed corridors. Older geometry schemas are rejected without rewriting the save. Back up an older world and replace the development world with `just fresh-world`. New cabins begin with solid walls.
 
@@ -53,9 +57,9 @@ Normal player commands are:
 
 The lifecycle commands `/cabin preview`, `/cabin deploy`, and `/cabin pack` remain available only to operators for debugging and recovery. The [material profile code](src/main/java/dev/portablepocketcabin/CabinMaterialProfiles.java) validates version 1 profiles. [Profiles](src/main/resources/data/portable_pocket_cabin/portable_pocket_cabin/material_profiles) give datapack examples.
 
-Central storage requires a Storage Cabin Book. The owner opens the interior Lodestone and clicks Book twice to reveal all six capacity levels. Fund and install the first level in the Storage tab. The protected bookshelf on the opposite wall opens storage for owners and residents. The browser provides Search, Creative categories, Miscellaneous, and Inventory tabs. Fill moves eligible missing materials from storage into the selected upgrade fund.
+Central storage requires a Storage Cabin Book. The owner opens the interior Lodestone, selects Books, places the book in the input slot, and clicks Install Book to reveal all six capacity levels. Fund and install the first level in the Storage tab. The protected bookshelf on the opposite wall opens storage for owners and residents. The browser provides Search, Creative categories, Miscellaneous, and Inventory tabs. Fill moves eligible missing materials from storage into the selected upgrade fund.
 
-Book vendors belong to B-0038. Until that feature is available, operators can give the storage book with `/give @s portable_pocket_cabin:storage_book`.
+Book vendors and trades remain deferred. Operators can give the storage book with `/give @s portable_pocket_cabin:storage_book`.
 
 ## Development
 
@@ -88,6 +92,8 @@ Run the Fabric client GameTests separately with a working graphical display:
 ```sh
 just test-client
 # Or: ./gradlew runClientGameTest
+# Book installation and screenshots only:
+PPC_TEST_BOOKS=1 ./gradlew runClientGameTest
 ```
 
 The [client test](src/gametest/java/dev/portablepocketcabin/PortablePocketCabinClientGameTest.java) creates a fresh world and cabin. It opens the server-synchronized upgrade screen and checks missing materials, partial funding, readiness, and installation confirmation. Screenshots use a 1280×800 window, GUI scale 3, a fixed cabin palette, and a fixed cursor position. They are saved under `build/run/clientGameTest/screenshots/`. The test leaves development saves untouched.

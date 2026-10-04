@@ -29,7 +29,8 @@ import java.util.UUID;
 final class CabinUpgradeMenu extends AbstractContainerMenu {
 	static final int BUTTON_INSTALL = 1;
 	static final int BUTTON_FILL_STORAGE = 6;
-	static final int BUTTON_STORAGE_BOOK = 7;
+	static final int BUTTON_INSTALL_BOOK = 7;
+	static final int BUTTON_BOOKS = 8;
 	static final int BUTTON_PREVIOUS_PANEL = 2;
 	static final int BUTTON_NEXT_PANEL = 3;
 	static final int BUTTON_DOWNGRADE = 4;
@@ -46,7 +47,8 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	static final int DOWNGRADE_STATUS_SLOT = EFFECT_SLOT + 1;
 	static final int REMOVE_STATUS_SLOT = DOWNGRADE_STATUS_SLOT + 1;
 	static final int FIRST_GROUP_SLOT = REMOVE_STATUS_SLOT + 1;
-	static final int FIRST_PLAYER_SLOT = FIRST_GROUP_SLOT + MAX_GROUPS;
+	static final int BOOK_SLOT = FIRST_GROUP_SLOT + MAX_GROUPS;
+	static final int FIRST_PLAYER_SLOT = BOOK_SLOT + 1;
 	static final int PLAYER_INVENTORY_SLOTS = 36;
 
 	private static final int DATA_FLAGS = 0;
@@ -60,8 +62,9 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	private static final int DATA_STORAGE_CAPACITY = DATA_STORAGE_REVEALED + 1;
 	private static final int DATA_CRAFTING_REVEALED = DATA_STORAGE_CAPACITY + 1;
 	private static final int DATA_GREENHOUSE_REVEALED = DATA_CRAFTING_REVEALED + 1;
-	private static final int DATA_BOOK_CONFIRMING = DATA_GREENHOUSE_REVEALED + 1;
-	private static final int DATA_COUNT = DATA_BOOK_CONFIRMING + 1;
+	private static final int DATA_BOOKS_SELECTED = DATA_GREENHOUSE_REVEALED + 1;
+	private static final int DATA_BOOK_AVAILABLE = DATA_BOOKS_SELECTED + 1;
+	private static final int DATA_COUNT = DATA_BOOK_AVAILABLE + 1;
 
 	private static final int FLAG_OWNER = 1;
 	private static final int FLAG_CONTRIBUTOR = 1 << 1;
@@ -88,7 +91,8 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	);
 
 	private final UUID cabinId;
-	private final SimpleContainer display = new SimpleContainer(FIRST_PLAYER_SLOT);
+	private final SimpleContainer display = new SimpleContainer(BOOK_SLOT);
+	private final SimpleContainer bookInput = new SimpleContainer(1);
 	private final SimpleContainerData data = new SimpleContainerData(DATA_COUNT);
 	private final ServerPlayer serverPlayer;
 	private final Inventory playerInventory;
@@ -101,8 +105,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	private long armedRevision = -1L;
 	private long armedUntil = -1L;
 	private String actionMessage = "";
-	private long bookConfirmationUntil = -1;
-	private net.minecraft.world.item.Item bookConfirmationItem;
+	private boolean booksSelected;
 
 	CabinUpgradeMenu(int containerId, Inventory inventory, UUID cabinId) {
 		super(TYPE, containerId);
@@ -126,6 +129,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		for (int index = 0; index < MAX_GROUPS; index++) {
 			addSlot(new DisplaySlot(display, FIRST_GROUP_SLOT + index, -1000, -1000));
 		}
+		addSlot(new BookSlot());
 		addStandardInventorySlots(inventory, CabinUpgradeLayout.INVENTORY_X, CabinUpgradeLayout.INVENTORY_Y);
 		addDataSlots(data);
 		if (serverPlayer != null) {
@@ -236,7 +240,9 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	}
 
 	boolean storageRevealed() { return data.get(DATA_STORAGE_REVEALED) != 0; }
-	boolean bookConfirming() { return data.get(DATA_BOOK_CONFIRMING) != 0; }
+	boolean booksSelected() { return data.get(DATA_BOOKS_SELECTED) != 0; }
+	boolean canInstallBook() { return data.get(DATA_BOOK_AVAILABLE) != 0; }
+	ItemStack bookStack() { return bookInput.getItem(0); }
 	boolean greenhouseRevealed() { return data.get(DATA_GREENHOUSE_REVEALED) != 0; }
 
 	boolean craftingRevealed() { return data.get(DATA_CRAFTING_REVEALED) != 0; }
@@ -283,7 +289,9 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		if (!(player instanceof ServerPlayer actor) || actor != serverPlayer || !stillValid(player)) {
 			return false;
 		}
-		if (button == BUTTON_STORAGE_BOOK) return installStorageBook(actor);
+		if (button == BUTTON_BOOKS) return selectBooks(actor);
+		if (button == BUTTON_INSTALL_BOOK) return installBook(actor);
+		if (booksSelected() && button < BUTTON_GROUP_BASE) return false;
 		if (button == BUTTON_FILL_STORAGE) {
 			if (!hasStorage() || target == null || selection == null) return false;
 			var registry = CabinRegistry.get(actor.level().getServer());
@@ -460,6 +468,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			if (groups.size() > MAX_GROUPS) {
 				return false;
 			}
+			if (button == BUTTON_GROUP_BASE + groups.size()) return selectBooks(actor);
 			CabinUpgradeSelection.Selected current = CabinUpgradeSelection.resolve(
 				groups, selectedGroupId, target
 			).orElse(null);
@@ -476,6 +485,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			if (requested == null) {
 				return false;
 			}
+			booksSelected = false;
 			applySelection(requested);
 			refreshFromServer();
 			broadcastChanges();
@@ -486,51 +496,46 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		}
 	}
 
-	private boolean installStorageBook(ServerPlayer actor) {
+	private boolean selectBooks(ServerPlayer actor) {
+		var cabin = CabinRegistry.get(actor.level().getServer()).find(cabinId).orElse(null);
+		if (cabin == null || !cabin.owner().equals(actor.getUUID())) return false;
+		booksSelected = true;
+		target = null;
+		selection = null;
+		clearArming();
+		actionMessage = "";
+		broadcastChanges();
+		return true;
+	}
+
+	private boolean installBook(ServerPlayer actor) {
 		var registry = CabinRegistry.get(actor.level().getServer());
 		synchronized (registry) {
 			CabinRecord cabin = registry.find(cabinId).orElseThrow();
-			if (!cabin.owner().equals(actor.getUUID()) || cabin.upgrades().operationInProgress()) return false;
-			if (cabin.upgrades().storage().revealed() && cabin.upgrades().crafting().revealed() && cabin.upgrades().greenhouse().revealed()) {
-				setActionMessage("These book upgrades are already revealed.");
+			String failure = bookFailure(cabin);
+			if (!booksSelected() || !failure.isEmpty()) {
+				setActionMessage(failure.isEmpty() ? "Select the Books tab to install a book." : failure);
+				broadcastChanges();
 				return false;
 			}
-			ItemStack book = ItemStack.EMPTY;
-			for (int i = 0; i < 36; i++) if ((playerInventory.getItem(i).is(CabinItems.STORAGE_BOOK) && !cabin.upgrades().storage().revealed()
-				|| playerInventory.getItem(i).is(CabinItems.CRAFTING_BOOK) && !cabin.upgrades().crafting().revealed()
-				|| playerInventory.getItem(i).is(CabinItems.GREENHOUSE_BOOK) && !cabin.upgrades().greenhouse().revealed())) {
-				book = playerInventory.getItem(i);
-				break;
-			}
-			if (book.isEmpty()) { setActionMessage("Bring a storage, crafting or greenhouse cabin book to reveal its upgrades."); return false; }
-			long now = actor.level().getGameTime();
-			if (bookConfirmationUntil < now || bookConfirmationItem != book.getItem()) {
-				bookConfirmationUntil = now + CONFIRMATION_TICKS;
-				bookConfirmationItem = book.getItem();
-				setActionMessage(book.is(CabinItems.GREENHOUSE_BOOK) ? "Reveal 4 greenhouse sizes? Book again."
-					: book.is(CabinItems.CRAFTING_BOOK) ? "Reveal all three crafting levels? Click Book again."
-					: "Reveal all six storage levels? Click Book again.");
-				return true;
-			}
-			boolean greenhouseBook = book.is(CabinItems.GREENHOUSE_BOOK);
-			boolean craftingBook = book.is(CabinItems.CRAFTING_BOOK);
-			book.shrink(1);
-			var revealed = greenhouseBook ? cabin.upgrades().withGreenhouse(cabin.upgrades().greenhouse().reveal())
-				: craftingBook ? cabin.upgrades().withCrafting(cabin.upgrades().crafting().reveal()) : cabin.upgrades().withStorage(cabin.upgrades().storage().reveal());
-			registry.updateUpgradeState(cabinId, revealed.withStorage(revealed.storage()
-				.withSession(CabinStorage.receipt(actor, ItemStack.EMPTY))));
-			playerInventory.setChanged();
-			bookConfirmationUntil = -1;
-			CabinRegistry.flush(actor.level().getServer());
-			actor.level().getServer().getPlayerList().saveAll();
-			var installed = registry.find(cabinId).orElseThrow();
-			registry.updateUpgradeState(cabinId, installed.upgrades().withStorage(
-				installed.upgrades().storage().withoutSession(actor.getUUID())));
-			CabinRegistry.flush(actor.level().getServer());
-			setActionMessage(greenhouseBook ? "Greenhouse upgrades revealed." : craftingBook ? "Crafting upgrades revealed." : "Storage upgrades revealed.");
+			CabinBookItem book = CabinBookItem.from(bookStack());
+			checkpointBookInput();
+			bookStack().shrink(1);
+			registry.updateUpgradeState(cabinId, book.reveal(registry.find(cabinId).orElseThrow().upgrades()));
+			checkpointBookInput();
+			setActionMessage("Installed. Purchase upgrades separately.");
 			broadcastChanges();
 			return true;
 		}
+	}
+
+	private String bookFailure(CabinRecord cabin) {
+		if (!cabin.owner().equals(serverPlayer.getUUID())) return "Only the cabin owner may install a book.";
+		if (cabin.upgrades().operationInProgress()) return "A cabin upgrade operation is in progress.";
+		CabinBookItem book = CabinBookItem.from(bookStack());
+		if (book == null) return "Place a cabin book in the input slot.";
+		if (book.revealed(cabin.upgrades())) return "Already installed. No book will be used.";
+		return "";
 	}
 
 	private void applySelection(CabinUpgradeSelection.Selected selected) {
@@ -545,8 +550,10 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 
 	@Override
 	public void clicked(int slotId, int button, ContainerInput input, Player player) {
+		if (serverPlayer != null && (player != serverPlayer || !stillValid(player))) return;
+		if (slotId == BOOK_SLOT && !slots.get(BOOK_SLOT).isActive()) return;
 		if (isRequirementSlot(slotId)) {
-			if (serverPlayer == null || player != serverPlayer || !stillValid(player)) {
+			if (serverPlayer == null || booksSelected()) {
 				return;
 			}
 			if (input == ContainerInput.PICKUP) {
@@ -558,15 +565,20 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			}
 			return;
 		}
-		if (input == ContainerInput.QUICK_CRAFT && serverPlayer != null && player == serverPlayer) {
+		if (input == ContainerInput.QUICK_CRAFT && serverPlayer != null && !booksSelected()) {
 			handleRequirementDrag(slotId, button);
 		}
 		super.clicked(slotId, button, input, player);
+		if (serverPlayer != null) {
+			actionMessage = "";
+			checkpointBookInput();
+			broadcastChanges();
+		}
 	}
 
 	@Override
 	public ItemStack quickMoveStack(Player player, int slotId) {
-		if (serverPlayer == null || player != serverPlayer || slotId < FIRST_PLAYER_SLOT
+		if (serverPlayer == null || player != serverPlayer || slotId < BOOK_SLOT
 			|| slotId >= FIRST_PLAYER_SLOT + PLAYER_INVENTORY_SLOTS) {
 			return ItemStack.EMPTY;
 		}
@@ -577,9 +589,17 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		ItemStack original = slot.getItem().copy();
 		int mainEnd = FIRST_PLAYER_SLOT + 27;
 		int playerEnd = FIRST_PLAYER_SLOT + PLAYER_INVENTORY_SLOTS;
-		boolean moved = slotId < mainEnd
-			? moveItemStackTo(slot.getItem(), mainEnd, playerEnd, false)
-			: moveItemStackTo(slot.getItem(), FIRST_PLAYER_SLOT, mainEnd, false);
+		boolean moved;
+		if (slotId == BOOK_SLOT) {
+			if (!stillValid(player) || !slot.mayPickup(player)) return ItemStack.EMPTY;
+			moved = moveItemStackTo(slot.getItem(), FIRST_PLAYER_SLOT, playerEnd, false);
+		} else if (stillValid(player) && booksSelected() && slots.get(BOOK_SLOT).mayPlace(slot.getItem())) {
+			moved = moveItemStackTo(slot.getItem(), BOOK_SLOT, BOOK_SLOT + 1, false);
+		} else {
+			moved = slotId < mainEnd
+				? moveItemStackTo(slot.getItem(), mainEnd, playerEnd, false)
+				: moveItemStackTo(slot.getItem(), FIRST_PLAYER_SLOT, mainEnd, false);
+		}
 		if (!moved) {
 			return ItemStack.EMPTY;
 		}
@@ -588,12 +608,14 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		} else {
 			slot.setChanged();
 		}
+		checkpointBookInput();
 		return original;
 	}
 
 	@Override
 	public void broadcastChanges() {
 		if (serverPlayer != null) {
+			checkpointBookInput();
 			refreshFromServer();
 		}
 		super.broadcastChanges();
@@ -620,8 +642,49 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean canDragTo(Slot slot) {
-		return slot instanceof DisplaySlot displaySlot && displaySlot.isRequirement()
+		if (slot instanceof BookSlot) return slot.isActive() && isOwner();
+		if (slot instanceof DisplaySlot displaySlot) return !booksSelected() && displaySlot.isRequirement()
 			&& canUseFund() && isAvailable();
+		return super.canDragTo(slot);
+	}
+
+	private void checkpointBookInput() {
+		if (serverPlayer == null) return;
+		var server = serverPlayer.level().getServer();
+		var registry = CabinRegistry.get(server);
+		synchronized (registry) {
+			var cabin = registry.find(cabinId).orElse(null);
+			if (cabin == null) return;
+			var previous = cabin.upgrades().storage().sessions().stream()
+				.filter(session -> session.player().equals(serverPlayer.getUUID())).findFirst().orElse(null);
+			if (previous == null && bookStack().isEmpty() && getCarried().isEmpty()) return;
+			var receipt = CabinStorage.receipt(serverPlayer, getCarried());
+			var escrow = bookStack().isEmpty() ? List.<CabinStorageState.Escrow>of()
+				: List.of(new CabinStorageState.Escrow(bookStack(), false));
+			if (previous != null && ItemStack.matches(previous.cursor(), receipt.cursor())
+				&& sameItems(previous.inventory(), receipt.inventory())
+				&& previous.escrow().size() == escrow.size()
+				&& (escrow.isEmpty() || ItemStack.matches(previous.escrow().getFirst().stack(), bookStack()))) return;
+			var session = new CabinStorageState.Session(receipt.player(), receipt.inventory(), receipt.cursor(),
+				receipt.operation(), receipt.delivery(), escrow);
+			registry.updateUpgradeState(cabinId, cabin.upgrades().withStorage(cabin.upgrades().storage().withSession(session)));
+			CabinRegistry.flush(server);
+		}
+	}
+
+	private static boolean sameItems(List<ItemStack> first, List<ItemStack> second) {
+		if (first.size() != second.size()) return false;
+		for (int i = 0; i < first.size(); i++) if (!ItemStack.matches(first.get(i), second.get(i))) return false;
+		return true;
+	}
+
+	@Override
+	public void removed(Player player) {
+		if (serverPlayer == null) return;
+		checkpointBookInput();
+		setCarried(ItemStack.EMPTY);
+		bookInput.clearContent();
+		CabinStorage.recover(serverPlayer, serverPlayer.isAlive());
 	}
 
 	private void handleRequirementPickup(int slotId, int button) {
@@ -759,6 +822,9 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		data.set(DATA_CRAFTING_REVEALED, cabin.upgrades().crafting().revealed() ? 1 : 0);
 		data.set(DATA_STORAGE_CAPACITY, cabin.upgrades().storage().capacity());
 		CabinUpgradeDefinitions.Definitions definitions = CabinUpgradeDefinitions.current();
+		booksSelected = booksSelected && cabin.owner().equals(serverPlayer.getUUID());
+		data.set(DATA_BOOKS_SELECTED, booksSelected ? 1 : 0);
+		data.set(DATA_BOOK_AVAILABLE, 0);
 		int flags = 0;
 		if (cabin.owner().equals(serverPlayer.getUUID())) {
 			flags |= FLAG_OWNER | FLAG_CONTRIBUTOR;
@@ -769,13 +835,14 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		if (cabin.upgrades().operationInProgress()) {
 			flags |= FLAG_INSTALLING;
 		}
+		setFlagData(flags);
 		String contextualMessage = "";
 		try {
 			WorldAttunement attunement = CabinUpgradeCatalog.resolveAttunement(
 				registry, serverPlayer.level(), definitions
 			);
 			List<CabinUpgradeCatalog.Group> groups = CabinUpgradeCatalog.groups(cabin, attunement, definitions);
-			if (groups.size() > MAX_GROUPS) {
+			if (groups.size() + (cabin.owner().equals(serverPlayer.getUUID()) ? 1 : 0) > MAX_GROUPS) {
 				target = null;
 				selection = null;
 				clearArming();
@@ -787,6 +854,17 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 				return;
 			}
 			writeGroups(groups);
+			if (booksSelected && cabin.owner().equals(serverPlayer.getUUID())) {
+				target = null;
+				selection = null;
+				data.set(DATA_SELECTED_GROUP, groups.size());
+				String failure = bookFailure(cabin);
+				data.set(DATA_BOOK_AVAILABLE, failure.isEmpty() ? 1 : 0);
+				setFlagData(flags);
+				writeStatus(bookStack().isEmpty() && !actionMessage.isEmpty() ? actionMessage
+					: failure.isEmpty() ? "Ready. Install Book uses one copy." : failure);
+				return;
+			}
 			CabinUpgradeState.Target previousTarget = target;
 			selection = CabinUpgradeSelection.resolve(groups, selectedGroupId, target).orElse(null);
 			CabinUpgradeCatalog.Offer offer = selection == null ? null : selection.offer();
@@ -894,18 +972,18 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			clearArming();
 		}
 		setFlagData(flags);
-		boolean confirmingBook = bookConfirmationItem != null && bookConfirmationUntil >= serverPlayer.level().getGameTime()
-			&& !actionMessage.isEmpty();
-		data.set(DATA_BOOK_CONFIRMING, confirmingBook ? 1 : 0);
-		writeStatus(confirmingBook ? actionMessage : contextualMessage.isEmpty() ? actionMessage : contextualMessage);
+		writeStatus(contextualMessage.isEmpty() ? actionMessage : contextualMessage);
 	}
 
 	private void writeGroups(List<CabinUpgradeCatalog.Group> groups) {
-		data.set(DATA_GROUP_COUNT, groups.size());
+		data.set(DATA_GROUP_COUNT, groups.size() + (isOwner() ? 1 : 0));
 		for (int index = 0; index < groups.size(); index++) {
 			CabinUpgradeCatalog.Group group = groups.get(index);
 			display.setItem(FIRST_GROUP_SLOT + index, namedStack(group.iconItem(), group.title()));
 		}
+		if (isOwner()) display.setItem(FIRST_GROUP_SLOT + groups.size(), namedStack(
+			BuiltInRegistries.ITEM.getKey(Items.ENCHANTED_BOOK),
+			Component.translatable("screen.portable_pocket_cabin.books").getString()));
 	}
 
 	private void writePanel(CabinUpgradeCatalog.Offer offer) {
@@ -957,7 +1035,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	}
 
 	private void clearDisplay() {
-		for (int index = 0; index < FIRST_PLAYER_SLOT; index++) {
+		for (int index = 0; index < BOOK_SLOT; index++) {
 			display.setItem(index, ItemStack.EMPTY);
 		}
 	}
@@ -1015,14 +1093,19 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		}
 
 		@Override
+		public boolean isActive() {
+			return !booksSelected() && isRequirement();
+		}
+
+		@Override
 		public boolean mayPlace(ItemStack stack) {
-			return isRequirement() && canUseFund() && isAvailable()
+			return isActive() && canUseFund() && isAvailable()
 				&& ItemStack.isSameItem(stack, display.getItem(displayIndex));
 		}
 
 		@Override
 		public boolean mayPickup(Player player) {
-			return isRequirement() && canUseFund() && fundedCount(displayIndex) > 0;
+			return isActive() && canUseFund() && fundedCount(displayIndex) > 0;
 		}
 
 		@Override
@@ -1033,5 +1116,14 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		private boolean isRequirement() {
 			return isRequirementSlot(displayIndex);
 		}
+	}
+
+	private final class BookSlot extends Slot {
+		BookSlot() { super(bookInput, 0, CabinUpgradeLayout.BOOK_INPUT_X, CabinUpgradeLayout.BOOK_INPUT_Y); }
+		@Override public boolean isActive() { return booksSelected() && isOwner(); }
+		@Override public boolean mayPlace(ItemStack stack) {
+			return isActive() && !installationInProgress() && CabinBookItem.from(stack) != null;
+		}
+		@Override public boolean mayPickup(Player player) { return isActive(); }
 	}
 }

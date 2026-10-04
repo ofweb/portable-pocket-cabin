@@ -75,6 +75,9 @@ final class CabinStorage {
 			new CabinStorageState.Delivery(player.level().dimension(), player.blockPosition()));
 	}
 	static void recover(ServerPlayer player) {
+		recover(player, true);
+	}
+	static void recover(ServerPlayer player, boolean returnItemsToInventory) {
 		var server = player.level().getServer();
 		var registry = CabinRegistry.get(server);
 		synchronized (registry) {
@@ -95,11 +98,11 @@ final class CabinStorage {
 						var transfer = storage.deposit(remainder, remainder.getCount());
 						storage = transfer.state(); remainder.shrink(transfer.moved().getCount());
 					}
-					returnToInventory(player.getInventory(), remainder);
+					if (returnItemsToInventory) returnToInventory(player.getInventory(), remainder);
 					if (!remainder.isEmpty()) pending.add(new CabinStorageState.Escrow(remainder, false));
 				}
 				ItemStack cursor = session.cursor();
-				returnToInventory(player.getInventory(), cursor);
+				if (returnItemsToInventory) returnToInventory(player.getInventory(), cursor);
 				var inventory = new java.util.ArrayList<ItemStack>();
 				for (int i = 0; i < player.getInventory().getContainerSize(); i++) inventory.add(player.getInventory().getItem(i).copy());
 				var planned = new CabinStorageState.Session(session.player(), inventory, cursor, session.operation(), session.delivery(), pending);

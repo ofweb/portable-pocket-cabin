@@ -24,10 +24,10 @@ final class CabinItems {
 	private static final String ITEM_INSTANCE_UUID = "portable_pocket_cabin_item_uuid";
 	private static final String PALETTE = "portable_pocket_cabin_palette";
 
-	static final Item GREENHOUSE_BOOK = registerSimple("greenhouse_book");
-	static final Item CRAFTING_BOOK = registerSimple("crafting_book");
+	static final Item GREENHOUSE_BOOK = registerBook("greenhouse_book", CabinBookItem.Type.GREENHOUSE);
+	static final Item CRAFTING_BOOK = registerBook("crafting_book", CabinBookItem.Type.CRAFTING);
 
-	static final Item STORAGE_BOOK = registerSimple("storage_book");
+	static final Item STORAGE_BOOK = registerBook("storage_book", CabinBookItem.Type.STORAGE);
 
 	static final Item DIMENSIONAL_LOGIC_CORE = registerSimple("dimensional_logic_core");
 	static final Item DIMENSIONAL_ANCHOR = registerSimple("dimensional_anchor");
@@ -232,5 +232,11 @@ final class CabinItems {
 	private static Item registerSimple(String name) {
 		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, PortablePocketCabin.id(name));
 		return Registry.register(BuiltInRegistries.ITEM, key, new Item(new Item.Properties().setId(key)));
+	}
+
+	private static Item registerBook(String name, CabinBookItem.Type type) {
+		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, PortablePocketCabin.id(name));
+		return Registry.register(BuiltInRegistries.ITEM, key,
+			new CabinBookItem(new Item.Properties().setId(key), type));
 	}
 }

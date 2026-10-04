@@ -18,6 +18,14 @@ final class CabinUpgradeLayout {
 	static final int EFFECT_X = 12;
 	static final int EFFECT_Y = 43;
 	static final int EFFECT_WIDTH = 224;
+	static final int BOOK_INPUT_X = 12;
+	static final int BOOK_INPUT_Y = 58;
+	static final int BOOK_PREVIEW_X = 44;
+	static final int BOOK_PREVIEW_Y = 55;
+	static final int BOOK_PREVIEW_WIDTH = 192;
+	static final int BOOK_PREVIEW_HEIGHT = 55;
+	static final int BOOK_INSTALL_X = 148;
+	static final int BOOK_INSTALL_WIDTH = 92;
 	static final int REMOVE_X = 66;
 	static final int DOWNGRADE_X = 8;
 	static final int INSTALL_X = 182;

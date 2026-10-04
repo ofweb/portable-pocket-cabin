@@ -31,6 +31,32 @@ import java.util.UUID;
 
 public final class PortablePocketCabinGameTest {
 	@GameTest
+	public void cabinBooksDescribeTheirOwnUpgradesAndStackByType(GameTestHelper helper) {
+		var types = List.of(CabinItems.STORAGE_BOOK, CabinItems.CRAFTING_BOOK, CabinItems.GREENHOUSE_BOOK);
+		for (var item : types) {
+			var book = new ItemStack(item, 64);
+			helper.assertTrue(book.getMaxStackSize() == 64 && book.hasFoil(), "Cabin books must stack and show an enchantment glint");
+			helper.assertTrue(book.get(DataComponents.LORE).lines().size() >= 3, "Hover text must describe upgrades and installation");
+			helper.assertTrue(ItemStack.isSameItemSameComponents(book, new ItemStack(item)), "Copies of the same type must merge");
+			var definition = CabinBookItem.from(book);
+			helper.assertTrue(definition != null && !definition.revealed(CabinUpgradeState.EMPTY), "Books must start uninstalled");
+			var revealed = definition.reveal(CabinUpgradeState.EMPTY);
+			helper.assertTrue(definition.revealed(revealed) && revealed.storage().level() == 0
+				&& revealed.crafting().level() == 0 && revealed.greenhouse().level() == 0, "Reveals must not purchase capabilities");
+			var ops = helper.getLevel().registryAccess().createSerializationContext(NbtOps.INSTANCE);
+			var restored = CabinUpgradeState.CODEC.parse(ops, CabinUpgradeState.CODEC.encodeStart(ops, revealed).getOrThrow()).getOrThrow();
+			helper.assertTrue(definition.revealed(restored), "Installed books must survive persistence");
+			for (var other : types) if (other != item) {
+				helper.assertTrue(!ItemStack.isSameItemSameComponents(book, new ItemStack(other)), "Different book types must not merge");
+				helper.assertTrue(!CabinBookItem.from(new ItemStack(other)).revealed(revealed), "Reveals must remain specific to each type");
+			}
+		}
+		helper.assertTrue(CabinBookItem.from(new ItemStack(Items.BOOK)) == null
+			&& CabinBookItem.from(new ItemStack(Items.ENCHANTED_BOOK)) == null, "Vanilla books are not cabin books");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void storageMergesStacksAndPreservesVariants(GameTestHelper helper) {
 		var storage = CabinStorageState.EMPTY.reveal().upgrade(1);
 		storage = storage.deposit(new ItemStack(Items.COPPER_INGOT, 40), 40).state();
@@ -608,7 +634,7 @@ public final class PortablePocketCabinGameTest {
 		CabinUpgradeMenu menu = new CabinUpgradeMenu(41, player.getInventory(), UUID.randomUUID());
 
 		for (int slot = CabinUpgradeMenu.FIRST_REQUIREMENT_SLOT;
-			 slot < CabinUpgradeMenu.FIRST_PLAYER_SLOT; slot++) {
+			 slot < CabinUpgradeMenu.BOOK_SLOT; slot++) {
 			helper.assertTrue(menu.getSlot(slot).isFake(),
 				"Upgrade material controls must be synchronized virtual slots, not block storage slots");
 		}

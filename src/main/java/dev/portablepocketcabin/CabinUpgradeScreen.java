@@ -22,7 +22,7 @@ import java.util.List;
 final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu> {
 	private Button installButton;
 	private Button fillStorageButton;
-	private Button storageBookButton;
+	private Button installBookButton;
 	private Button downgradeButton;
 	private Button removeButton;
 	private Button previousPanelButton;
@@ -86,9 +86,12 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 		fillStorageButton = addRenderableWidget(Button.builder(Component.literal("Fill"),
 			button -> sendMenuButton(CabinUpgradeMenu.BUTTON_FILL_STORAGE)).bounds(leftPos + 124, topPos + 128, 56, 20).build());
 		fillStorageButton.setTooltip(Tooltip.create(Component.literal("Fill missing materials from central storage")));
-		storageBookButton = addRenderableWidget(Button.builder(Component.literal("Book"),
-			button -> sendMenuButton(CabinUpgradeMenu.BUTTON_STORAGE_BOOK)).bounds(leftPos + 8, topPos + 128, 54, 20).build());
-		storageBookButton.setTooltip(Tooltip.create(Component.literal("Install a storage, crafting or greenhouse cabin book to reveal its upgrades")));
+		installBookButton = addRenderableWidget(Button.builder(
+			Component.translatable("screen.portable_pocket_cabin.install_book"),
+			button -> sendMenuButton(CabinUpgradeMenu.BUTTON_INSTALL_BOOK)).bounds(
+				leftPos + CabinUpgradeLayout.BOOK_INSTALL_X, topPos + CabinUpgradeLayout.ACTION_Y,
+				CabinUpgradeLayout.BOOK_INSTALL_WIDTH, CabinUpgradeLayout.ACTION_HEIGHT).build());
+		installBookButton.setTooltip(Tooltip.create(Component.translatable("screen.portable_pocket_cabin.install_book_tooltip")));
 		categoryButtons.clear();
 		for (int index = 0; index < CabinUpgradeMenu.MAX_GROUPS; index++) {
 			CategoryTabButton button = addRenderableWidget(new CategoryTabButton(
@@ -113,6 +116,12 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 			sprite("textures/gui/container/generic_54.png"),
 			leftPos + CabinUpgradeLayout.INVENTORY_X - 1,
 			topPos + CabinUpgradeLayout.INVENTORY_BACKGROUND_Y, 7, 126, 162, 90, 256, 256);
+		if (menu.booksSelected()) {
+			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite("container/slot"),
+				leftPos + CabinUpgradeLayout.BOOK_INPUT_X - 1,
+				topPos + CabinUpgradeLayout.BOOK_INPUT_Y - 1, 18, 18);
+			return;
+		}
 		for (int index = 0; index < menu.requirementCount(); index++) {
 			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite("container/slot"),
 				leftPos + CabinUpgradeLayout.requirementX(index) - 1,
@@ -130,6 +139,11 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 	@Override
 	protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
 		graphics.text(font, title, titleLabelX, titleLabelY, 0xff404040, false);
+		if (menu.booksSelected()) {
+			extractBookLabels(graphics);
+			graphics.text(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0xff404040, false);
+			return;
+		}
 		if (!menu.panelStack().isEmpty()) {
 			graphics.fakeItem(
 				menu.panelStack(), CabinUpgradeLayout.PANEL_ICON_X, CabinUpgradeLayout.PANEL_ICON_Y
@@ -169,7 +183,7 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 			graphics.text(font, progress, x + 8 - font.width(progress) / 2, y,
 				funded >= required ? 0xff207a20 : 0xff404040, false);
 		}
-		Component status = menu.bookConfirming() ? menu.statusMessage() : menu.isArmed() || menu.isDowngradeArmed() || menu.isRemoveArmed()
+		Component status = menu.isArmed() || menu.isDowngradeArmed() || menu.isRemoveArmed()
 			? Component.translatable("screen.portable_pocket_cabin.confirm_action") : statusDescription();
 		List<net.minecraft.util.FormattedCharSequence> statusLines = font.split(status, CabinUpgradeLayout.STATUS_WIDTH);
 		if (!statusLines.isEmpty()) {
@@ -177,6 +191,33 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 				CabinUpgradeLayout.STATUS_Y, 0xff404040, false);
 		}
 		graphics.text(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0xff404040, false);
+	}
+
+	private void extractBookLabels(GuiGraphicsExtractor graphics) {
+		ItemStack stack = menu.bookStack();
+		Component heading = stack.isEmpty() ? Component.translatable("screen.portable_pocket_cabin.books")
+			: stack.getHoverName();
+		List<net.minecraft.util.FormattedCharSequence> titleLines = font.split(heading, CabinUpgradeLayout.EFFECT_WIDTH);
+		if (!titleLines.isEmpty()) graphics.text(font, titleLines.getFirst(),
+			CabinUpgradeLayout.PANEL_TITLE_X, CabinUpgradeLayout.PANEL_TITLE_Y, 0xff404040, false);
+		graphics.text(font, Component.translatable("screen.portable_pocket_cabin.book_input"),
+			CabinUpgradeLayout.BOOK_INPUT_X, CabinUpgradeLayout.EFFECT_Y, 0xff606060, false);
+		CabinBookItem book = CabinBookItem.from(stack);
+		var preview = new ArrayList<Component>();
+		if (book == null) preview.add(Component.translatable("screen.portable_pocket_cabin.book_empty"));
+		else {
+			preview.add(Component.translatable("book.portable_pocket_cabin.reveals"));
+			preview.addAll(book.upgrades());
+		}
+		int y = CabinUpgradeLayout.BOOK_PREVIEW_Y;
+		for (Component line : preview) for (var wrapped : font.split(line, CabinUpgradeLayout.BOOK_PREVIEW_WIDTH)) {
+			if (y + font.lineHeight > CabinUpgradeLayout.BOOK_PREVIEW_Y + CabinUpgradeLayout.BOOK_PREVIEW_HEIGHT) break;
+			graphics.text(font, wrapped, CabinUpgradeLayout.BOOK_PREVIEW_X, y, 0xff404040, false);
+			y += font.lineHeight + 1;
+		}
+		List<net.minecraft.util.FormattedCharSequence> status = font.split(menu.statusMessage(), CabinUpgradeLayout.STATUS_WIDTH);
+		if (!status.isEmpty()) graphics.text(font, status.getFirst(), CabinUpgradeLayout.STATUS_X,
+			CabinUpgradeLayout.STATUS_Y, 0xff404040, false);
 	}
 
 	@Override
@@ -193,6 +234,7 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 			graphics.setTooltipForNextFrame(message, mouseX, mouseY);
 			return;
 		}
+		if (menu.booksSelected()) return;
 		if (relativeY >= CabinUpgradeLayout.PANEL_TITLE_Y - 2 && relativeY < 53) {
 			graphics.setComponentTooltipForNextFrame(font,
 				List.of(menu.panelTitle(), menu.panelEffect()), mouseX, mouseY);
@@ -219,12 +261,14 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 			|| previousPanelButton == null || nextPanelButton == null) {
 			return;
 		}
-		installButton.visible = menu.isOwner() && !menu.isAtMaximum();
+		installBookButton.visible = menu.isOwner() && menu.booksSelected();
+		installBookButton.active = installBookButton.visible && menu.canInstallBook();
+		installButton.visible = !menu.booksSelected() && menu.isOwner() && !menu.isAtMaximum();
 		installButton.active = installButton.visible && menu.isComplete() && menu.isAvailable()
 			&& !menu.isStale() && !menu.isBlocked() && !menu.installationInProgress();
 		installButton.setMessage(Component.translatable(menu.isArmed()
 			? "screen.portable_pocket_cabin.confirm" : "screen.portable_pocket_cabin.install"));
-		downgradeButton.visible = menu.isOwner() && menu.hasDowngradeAction();
+		downgradeButton.visible = !menu.booksSelected() && menu.isOwner() && menu.hasDowngradeAction();
 		downgradeButton.active = downgradeButton.visible && menu.canDowngrade();
 		downgradeButton.setMessage(Component.translatable(menu.isDowngradeArmed()
 			? "screen.portable_pocket_cabin.confirm" : "screen.portable_pocket_cabin.downgrade"));
@@ -232,7 +276,7 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 		downgradeButton.setTooltip(Tooltip.create(downgradeStatus.getString().isEmpty()
 			? Component.translatable("screen.portable_pocket_cabin.downgrade_tooltip")
 			: downgradeStatus));
-		removeButton.visible = menu.isOwner() && menu.hasInstalledWindow();
+		removeButton.visible = !menu.booksSelected() && menu.isOwner() && menu.hasInstalledWindow();
 		removeButton.active = removeButton.visible && menu.canRemove();
 		removeButton.setMessage(Component.translatable(menu.isRemoveArmed()
 			? "screen.portable_pocket_cabin.confirm" : "screen.portable_pocket_cabin.remove"));
@@ -240,10 +284,9 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 		removeButton.setTooltip(Tooltip.create(removeStatus.getString().isEmpty()
 			? Component.translatable("screen.portable_pocket_cabin.remove_tooltip")
 			: removeStatus));
-		fillStorageButton.visible = menu.isOwner();
+		fillStorageButton.visible = !menu.booksSelected() && menu.isOwner();
 		fillStorageButton.active = fillStorageButton.visible && menu.hasStorage() && menu.isAvailable() && !menu.isStale();
-		storageBookButton.visible = menu.isOwner() && (!menu.storageRevealed() || !menu.craftingRevealed() || !menu.greenhouseRevealed()) && !menu.hasDowngradeAction();
-		boolean severalPanels = menu.panelCount() > 1;
+		boolean severalPanels = !menu.booksSelected() && menu.panelCount() > 1;
 		previousPanelButton.visible = severalPanels;
 		nextPanelButton.visible = severalPanels;
 		for (int index = 0; index < categoryButtons.size(); index++) {

@@ -30,5 +30,17 @@
   "screen.portable_pocket_cabin.ready_owner": "Ready: owner can install",
   "item.portable_pocket_cabin.storage_book": "Storage Cabin Book",
   "item.portable_pocket_cabin.crafting_book": "Crafting Room Book",
-  "item.portable_pocket_cabin.greenhouse_book": "Greenhouse Cabin Book"
+  "item.portable_pocket_cabin.greenhouse_book": "Greenhouse Cabin Book",
+  "screen.portable_pocket_cabin.books": "Books",
+  "screen.portable_pocket_cabin.install_book": "Install Book",
+  "screen.portable_pocket_cabin.install_book_tooltip": "Consume one book to reveal the listed upgrades",
+  "screen.portable_pocket_cabin.book_input": "Book",
+  "screen.portable_pocket_cabin.book_empty": "Place a cabin book in the slot to preview its upgrades.",
+  "book.portable_pocket_cabin.reveals": "Reveals upgrades:",
+  "book.portable_pocket_cabin.storage": "Central storage: all six levels",
+  "book.portable_pocket_cabin.crafting": "Crafting room: crafting, loom, cartography",
+  "book.portable_pocket_cabin.stonecutting": "Stonecutting",
+  "book.portable_pocket_cabin.smithing": "Smithing",
+  "book.portable_pocket_cabin.greenhouse": "Greenhouse: all four garden sizes",
+  "book.portable_pocket_cabin.install_hint": "Install in Cabin Upgrades > Books"
 }
