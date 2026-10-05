@@ -242,9 +242,9 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 - Status: Ready for Design
 - Value: Give the household a kitchen that works without storage or automation and uses installed storage automatically.
 - Direction: [Manual production rooms](direction.md#manual-production-rooms).
-- Relationships: Uses B-0005 and B-0038. Integrates B-0004. Uses equipment and recipes from B-0045. Used by cooking in B-0025.
+- Relationships: Uses B-0005, B-0038, and B-0045; extends B-0004; used by B-0025.
 - Feature Brief: [Manual kitchen brief](features/B-0041/brief.md).
-- Open proposals: Later cooking features may add their stations through new kitchen purchases, which may need a larger room than 5×5. The kitchen should supply a prep counter from B-0053, with its cutting board on it.
+- Open proposals: Later stations may need purchases and a larger room. B-0053 could add a prep counter.
 
 ## B-0042: Smelting jobs
 

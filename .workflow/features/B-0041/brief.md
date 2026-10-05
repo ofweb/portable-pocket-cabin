@@ -5,7 +5,7 @@ Feature ID: B-0041
 
 ## Goal
 
-Give the household a dedicated kitchen with supplied cooking stations. It works before storage or automation, and installed storage supplies fuel and ingredients without another upgrade. Cooking itself follows [B-0045](../B-0045/brief.md).
+Give the household a furnished kitchen for [B-0045](../B-0045/brief.md) cooking. It works before storage or automation, and installed storage supplies ingredients and fuel.
 
 ## Stories and acceptance
 
@@ -15,14 +15,13 @@ Story: An owner installs the kitchen book, then purchases the kitchen through Ca
 
 Acceptance:
 
-- The kitchen has its own book and upgrade path under B-0038. One kitchen book reveals all three purchases. It reveals no automation upgrades.
-- Each purchase requires the previous one, and only the next available purchase is shown. A dedicated Kitchen category shows the next purchase, then fully upgraded after the third.
-- Only the owner purchases upgrades. Residents can contribute under shared funding rules.
+- Its B-0038 book reveals three sequential purchases, but no automation. The Kitchen category shows only the next purchase or fully upgraded.
+- Only owners purchase upgrades; residents can contribute.
 - Installation follows B-0005 and requires 5×5 main space. The kitchen branches from the south side of the east corridor.
-- Its usable floor stays 5×5 with three blocks of clear height through all purchases.
-- Installing a station removes player blocks from only the space that station needs. Displaced blocks and their inventory contents drop into the room.
-- A failed installation leaves the room and upgrade fund unchanged. Recovery cannot drop displaced items or install a station twice.
-- Free floor remains for player-placed cooking stations, which work there as anywhere else.
+- Its 5×5 floor and three-block clearance stay fixed.
+- The first purchase also supplies a food barrel, a single tool chest, counters, hanging lamps, and a hood above a stove.
+- Station installation displaces only blocks it needs, dropping them and their contents into the room. Failed installation leaves the room and fund unchanged; recovery neither drops items nor installs stations twice.
+- Free floor remains for player-placed stations.
 
 Logs match saved wall wood. Collected and traded materials count without personal visits.
 
@@ -38,42 +37,55 @@ Story: An owner or resident cooks a recipe at the kitchen's supplied stations.
 
 Acceptance:
 
-- Supplied stations behave like placed B-0045 stations, including fuel, heat levels, water, and progress.
-- Supplied stations are protected. It cannot be broken or moved, and it opens its interface directly.
-- The supplied cutting board includes a fixed knife, so players need not carry one.
-- Owners and residents can use the kitchen. Guests can enter but cannot use its stations, as B-0002 requires.
-- Cooking in the kitchen requires neither central storage nor automation.
+- Supplied stations follow B-0045 rules for fuel, heat, water, progress, and breaking. Players carry intermediate items and bring a knife for the cutting board.
+- Owners and residents can cook without storage or automation. Guests can enter but cannot use stations under B-0002.
+- Automation has its own book and upgrade.
 
 ### S3: Use installed storage
 
-Story: A household member cooks with ingredients and fuel kept in central storage.
+Story: A household member gets supplies and cooks with ingredients and fuel kept in central storage.
 
 Acceptance:
 
-- Installed central storage becomes available to the kitchen without another connection upgrade.
+- Installed central storage connects without another upgrade. Before installation, the barrel and single chest each have 27 local slots.
+- Only these supplied containers become storage access points; extra containers stay local. Once connected, their local inventories disappear.
+- The kitchen adds 54 central stack slots once, regardless of purchase order. First-level storage then has 108 slots. Capacity displays include the bonus; storage levels and costs stay unchanged.
+- Installing storage transfers both containers' contents once. Installing the kitchen after storage adds capacity before connecting its containers. Removing access containers leaves central contents intact.
+- The barrel initially filters food and cooking ingredients, including inedible ones; the chest filters tools and serving containers. Users can change filters, which each fixture remembers after moving. Filters affect browsing only; either accepts any storable item.
 - Recipe-book filling at a supplied station takes ingredients from storage first, then player inventory.
 - Selecting a recipe also fills a supplied stove or oven with fuel at that recipe's heat level when it holds none, from storage first.
 - Automatic filling skips named and customised stacks. Players can add those deliberately.
-- Players take outputs from a station as usual. Shift-clicking an output moves it to player inventory, then storage when inventory is full.
+- Shift-clicked outputs move to player inventory, then storage when full.
 - The cookbook counts storage toward recipe availability inside the cabin, as B-0045 states.
+
+### S4: Rearrange the kitchen
+
+Story: An owner or resident rearranges kitchen furnishings to suit the household.
+
+Acceptance:
+
+- Owners and residents can rearrange stations, containers, and decorations. The room shell stays protected; guests cannot rearrange furnishings.
+- Breaking a station drops its contents and restarts unfinished progress under B-0045.
+- The two supplied storage fixtures retain their central connection when broken and placed again in the kitchen. Ordinary replacements remain local.
+- Facilities work outside their original positions. B-0005 preserves furnishings and contents through restart, packing, redeployment, and relocation.
 
 ## Feature-wide constraints and acceptance
 
-- Every fill, step, and output rechecks cabin identity, player role, recipe, contents, and space.
-- An interrupted fill, step, or output completes once or changes nothing. Recovery cannot lose ingredients or duplicate food.
-- Supplied stations, their contents, water, fuel, and progress persist through packing, restart, redeployment, and main-room relocation under B-0005.
+- Every fill, step, and output rechecks cabin identity, role, recipe, contents, and space.
+- Interrupted operations complete once or change nothing. Recovery cannot lose or duplicate items, fixtures, or bonus capacity.
+- B-0005 preserves stations, contents, water, fuel, and progress through packing, restart, redeployment, and relocation.
 - Kitchen stations pause while an empty cabin is packed. Catch-up remains open under Direction.
-- Leaving, packing, or role removal closes kitchen interfaces. Station contents stay in place.
+- Leaving, packing, or role removal closes interfaces without moving contents.
+- Storage access follows B-0004 permissions and transfer rules.
 
 ## Scope
 
-This feature includes the kitchen book, its three purchases, supplied stations, protection, household access, and storage filling for fuel and ingredients.
+Includes the three kitchen purchases, furnishings, household access, storage filling, bonus capacity, conversion, and filters.
 
 ## Non-goals
 
-- Recipes, station behavior, heat levels, and prepared items belong to B-0045.
-- Stations for milling, dairy, drying, fermentation, butchery, and drinks belong to B-0046 through B-0052. Those features may add kitchen purchases.
-- Cooking automation belongs to B-0025. Material smelting belongs to B-0040.
+- B-0045 owns cooking behavior and recipes. B-0046 through B-0052 own later stations and may add purchases.
+- B-0025 owns automation; B-0040 owns smelting. A custom fridge and outside storage access are excluded.
 
 ## Related records
 
@@ -83,11 +95,11 @@ This feature includes the kitchen book, its three purchases, supplied stations, 
 - [Cabin books](../B-0038/brief.md).
 - [Central storage](../B-0004/brief.md).
 - [Household roles](../B-0002/brief.md).
-- [Manual crafting room](../B-0039/brief.md).
 - [Cooking and brewing automation](../B-0025/brief.md).
 - [Manual production rooms](../../direction.md#manual-production-rooms).
 
 ## Open questions and assumptions
 
 - B-0033 balances purchase costs.
+- Design settles furnishings within the agreed dimensions.
 - Later cooking features decide whether their stations join the kitchen through new purchases or stay player-placed only.

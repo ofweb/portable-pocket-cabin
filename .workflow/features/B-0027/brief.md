@@ -41,6 +41,7 @@ This feature includes kiln jobs, charcoal jobs that use wood that the process pr
 
 - [Process profile](../../context.md#process-profile).
 - [Cooking and brewing jobs brief](../B-0025/brief.md).
+- [Manual kitchen room](../B-0041/brief.md).
 - [Crafting jobs brief](../B-0024/brief.md).
 - [Mod compatibility](../../backlog.md#b-0011-optional-mod-compatibility).
 
