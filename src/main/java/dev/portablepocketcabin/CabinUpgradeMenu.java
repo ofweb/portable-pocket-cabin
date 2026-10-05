@@ -28,7 +28,7 @@ import java.util.UUID;
 /** Synchronized menu whose requirement icons transact with durable, target-keyed funds. */
 final class CabinUpgradeMenu extends AbstractContainerMenu {
 	static final int BUTTON_INSTALL = 1;
-	static final int BUTTON_FILL_STORAGE = 6;
+	static final int BUTTON_FILL_STORAGE = 1000;
 	static final int BUTTON_INSTALL_BOOK = 7;
 	static final int BUTTON_BOOKS = 8;
 	static final int BUTTON_PREVIOUS_PANEL = 2;
@@ -64,7 +64,8 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	private static final int DATA_GREENHOUSE_REVEALED = DATA_CRAFTING_REVEALED + 1;
 	private static final int DATA_BOOKS_SELECTED = DATA_GREENHOUSE_REVEALED + 1;
 	private static final int DATA_BOOK_AVAILABLE = DATA_BOOKS_SELECTED + 1;
-	private static final int DATA_COUNT = DATA_BOOK_AVAILABLE + 1;
+	private static final int DATA_FILL_REVISION = DATA_BOOK_AVAILABLE + 1;
+	private static final int DATA_COUNT = DATA_FILL_REVISION + 2;
 
 	private static final int FLAG_OWNER = 1;
 	private static final int FLAG_CONTRIBUTOR = 1 << 1;
@@ -106,6 +107,9 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 	private long armedUntil = -1L;
 	private String actionMessage = "";
 	private boolean booksSelected;
+	private int fillRevision;
+	private CabinUpgradeState.Target fillTarget;
+	private List<CabinUpgradeState.Requirement> fillRequirements = List.of();
 
 	CabinUpgradeMenu(int containerId, Inventory inventory, UUID cabinId) {
 		super(TYPE, containerId);
@@ -143,6 +147,11 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 
 	UUID cabinId() {
 		return cabinId;
+	}
+
+	int fillStorageButton() {
+		return BUTTON_FILL_STORAGE + (data.get(DATA_FILL_REVISION) & 0xffff)
+			+ ((data.get(DATA_FILL_REVISION + 1) & 0xffff) << 16);
 	}
 
 	int requirementCount() {
@@ -292,7 +301,13 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		if (button == BUTTON_BOOKS) return selectBooks(actor);
 		if (button == BUTTON_INSTALL_BOOK) return installBook(actor);
 		if (booksSelected() && button < BUTTON_GROUP_BASE) return false;
-		if (button == BUTTON_FILL_STORAGE) {
+		if (button >= BUTTON_FILL_STORAGE) {
+			refreshFromServer();
+			if (booksSelected() || button != fillStorageButton()) {
+				setActionMessage("The selected upgrade or requirements changed. Select Fill again.");
+				broadcastChanges();
+				return false;
+			}
 			if (!hasStorage() || target == null || selection == null) return false;
 			var registry = CabinRegistry.get(actor.level().getServer());
 			var definitions = CabinUpgradeDefinitions.current();
@@ -500,6 +515,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		var cabin = CabinRegistry.get(actor.level().getServer()).find(cabinId).orElse(null);
 		if (cabin == null || !cabin.owner().equals(actor.getUUID())) return false;
 		booksSelected = true;
+		fillTarget = null;
 		target = null;
 		selection = null;
 		clearArming();
@@ -543,6 +559,15 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			clearArming();
 			actionMessage = "";
 		}
+		if (!selected.offer().target().equals(fillTarget) || !selected.offer().requirements().equals(fillRequirements)) {
+			if (fillRevision == Integer.MAX_VALUE - BUTTON_FILL_STORAGE)
+				throw new IllegalStateException("Reopen Cabin Upgrades before filling from storage.");
+			fillRevision++;
+			fillTarget = selected.offer().target();
+			fillRequirements = List.copyOf(selected.offer().requirements());
+		}
+		data.set(DATA_FILL_REVISION, fillRevision & 0xffff);
+		data.set(DATA_FILL_REVISION + 1, fillRevision >>> 16);
 		selection = selected;
 		selectedGroupId = selected.group().id();
 		target = selected.offer().target();

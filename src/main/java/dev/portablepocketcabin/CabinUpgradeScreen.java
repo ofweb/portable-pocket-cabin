@@ -84,7 +84,7 @@ final class CabinUpgradeScreen extends AbstractContainerScreen<CabinUpgradeMenu>
 			CabinUpgradeLayout.ACTION_HEIGHT
 		).build());
 		fillStorageButton = addRenderableWidget(Button.builder(Component.literal("Fill"),
-			button -> sendMenuButton(CabinUpgradeMenu.BUTTON_FILL_STORAGE)).bounds(leftPos + 124, topPos + 128, 56, 20).build());
+			button -> sendMenuButton(menu.fillStorageButton())).bounds(leftPos + 124, topPos + 128, 56, 20).build());
 		fillStorageButton.setTooltip(Tooltip.create(Component.literal("Fill missing materials from central storage")));
 		installBookButton = addRenderableWidget(Button.builder(
 			Component.translatable("screen.portable_pocket_cabin.install_book"),

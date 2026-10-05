@@ -88,6 +88,10 @@ fabricApi {
 	}
 }
 
+loom.runs.named("clientGameTest") {
+	vmArg "-Dfabric.client.gametest.modid=portable_pocket_cabin_gametest"
+}
+
 // Loom clears the client test directory; server GameTests also need a fresh world.
 tasks.named("deleteGameTestRunDir", Delete) {
 	delete(layout.buildDirectory.dir("run/gameTest"))

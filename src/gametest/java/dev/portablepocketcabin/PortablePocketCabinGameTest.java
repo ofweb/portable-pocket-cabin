@@ -57,6 +57,107 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
+	public void storageResidentsIgnoreLegacyPrivateEntry(GameTestHelper helper) {
+		var registry = new CabinRegistry();
+		UUID owner = UUID.randomUUID(), resident = UUID.randomUUID();
+		var cabin = deployRegistryCabin(registry, owner, 0);
+		registry.trust(cabin.uuid(), owner, resident);
+		registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.OWNER_ONLY);
+		cabin = registry.find(cabin.uuid()).orElseThrow();
+		helper.assertTrue(CabinStorage.mayUse(cabin, resident), "An assigned resident must retain household storage access");
+		helper.assertTrue(!CabinStorage.mayUse(cabin, UUID.randomUUID()), "Guests must not inspect private storage");
+		registry.untrust(cabin.uuid(), owner, resident);
+		helper.assertTrue(!CabinStorage.mayUse(registry.find(cabin.uuid()).orElseThrow(), resident), "Removal must revoke storage access immediately");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void storageMaximumCapacityKeepsStableEntriesAcrossRefresh(GameTestHelper helper) {
+		var player = helper.makeMockServerPlayerInLevel();
+		var registry = CabinRegistry.get(helper.getLevel().getServer());
+		var cabin = deployRegistryCabin(registry, player.getUUID(), 11000);
+		var stacks = new ArrayList<ItemStack>();
+		for (int i = 0; i < 1728; i++) {
+			var stack = new ItemStack(Items.DIAMOND, 2);
+			stack.set(DataComponents.CUSTOM_NAME, Component.literal("Variant " + i));
+			stacks.add(stack);
+		}
+		var storage = new CabinStorageState(true, 6, stacks);
+		registry.updateUpgradeState(cabin.uuid(), cabin.upgrades().withStorage(storage));
+		var menu = new CabinStorageMenu(52, player.getInventory(), cabin.uuid());
+		ItemStack first = menu.slots.getFirst().getItem();
+		for (int i = 0; i < 20; i++) menu.broadcastChanges();
+		helper.assertTrue(menu.entryCount() == 1728 && menu.used() == 1728 && menu.quantity(1727) == 2,
+			"Maximum capacity must synchronize every variant and its quantity");
+		helper.assertTrue(menu.slots.getFirst().getItem() == first, "Unchanged broadcasts must not rebuild entry displays");
+		var updated = storage.withdraw(stacks.getFirst(), 2).state();
+		registry.updateUpgradeState(cabin.uuid(), registry.find(cabin.uuid()).orElseThrow().upgrades().withStorage(updated));
+		menu.broadcastChanges();
+		helper.assertTrue(menu.slots.getFirst().getItem().isEmpty() && menu.slots.get(1).getItem().getHoverName().getString().equals("Variant 1"),
+			"Removing an entry must not redirect its old slot to a different variant");
+		menu.removed(player);
+		helper.succeed();
+	}
+
+	@GameTest
+	public void storageRecoveryAcceptsLargePlayerData(GameTestHelper helper) {
+		var player = helper.makeMockServerPlayerInLevel();
+		var registry = CabinRegistry.get(helper.getLevel().getServer());
+		var cabin = deployRegistryCabin(registry, player.getUUID(), 15000);
+		var data = new net.minecraft.nbt.CompoundTag();
+		data.putByteArray("large_data", new byte[3 * 1024 * 1024]);
+		var item = new ItemStack(Items.DIAMOND);
+		item.set(DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(data));
+		player.getInventory().setItem(0, item);
+		var receipt = CabinStorage.receipt(player, ItemStack.EMPTY);
+		registry.updateUpgradeState(cabin.uuid(), cabin.upgrades().withStorage(cabin.upgrades().storage().withSession(receipt)));
+		player.getInventory().setItem(0, ItemStack.EMPTY);
+		CabinStorage.recover(player);
+		CabinStorage.recover(player);
+		helper.assertTrue(ItemStack.matches(player.getInventory().getItem(0), item)
+			&& registry.find(cabin.uuid()).orElseThrow().upgrades().storage().sessions().isEmpty(),
+			"Recovery must preserve large item data and retire custody after confirming the player save");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void storageRecoveryRetainsReceiptWhenPlayerFileCannotBeWritten(GameTestHelper helper) throws Exception {
+		var player = helper.makeMockServerPlayerInLevel();
+		var server = helper.getLevel().getServer();
+		var registry = CabinRegistry.get(server);
+		var cabin = deployRegistryCabin(registry, player.getUUID(), 14000);
+		player.getInventory().setItem(0, new ItemStack(Items.DIAMOND, 5));
+		var receipt = CabinStorage.receipt(player, ItemStack.EMPTY);
+		registry.updateUpgradeState(cabin.uuid(), cabin.upgrades().withStorage(cabin.upgrades().storage().withSession(receipt)));
+		var file = server.getWorldPath(net.minecraft.world.level.storage.LevelResource.PLAYER_DATA_DIR).resolve(player.getStringUUID() + ".dat");
+		var old = file.resolveSibling(player.getStringUUID() + ".dat_old");
+		java.nio.file.Files.deleteIfExists(file);
+		java.nio.file.Files.deleteIfExists(old);
+		java.nio.file.Files.createDirectories(file);
+		java.nio.file.Files.createDirectories(old);
+		java.nio.file.Files.writeString(file.resolve("blocker"), "Force a failed player save");
+		java.nio.file.Files.writeString(old.resolve("blocker"), "Force a failed player backup");
+		try {
+			CabinStorage.recover(player);
+			helper.assertTrue(!registry.find(cabin.uuid()).orElseThrow().upgrades().storage().sessions().isEmpty(),
+				"A failed player save must not discard the authoritative custody receipt");
+		} finally {
+			java.nio.file.Files.deleteIfExists(file.resolve("blocker"));
+			java.nio.file.Files.deleteIfExists(old.resolve("blocker"));
+			java.nio.file.Files.deleteIfExists(file);
+			java.nio.file.Files.deleteIfExists(old);
+		}
+		server.getPlayerList().getPlayers().add(player);
+		player.getInventory().setItem(0, ItemStack.EMPTY);
+		CabinStorage.recover(player);
+		CabinStorage.recover(player);
+		helper.assertTrue(player.getInventory().getItem(0).getCount() == 5
+			&& registry.find(cabin.uuid()).orElseThrow().upgrades().storage().sessions().isEmpty(),
+			"Retry after a failed save must restore items once and retire custody only after persistence");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void storageMergesStacksAndPreservesVariants(GameTestHelper helper) {
 		var storage = CabinStorageState.EMPTY.reveal().upgrade(1);
 		storage = storage.deposit(new ItemStack(Items.COPPER_INGOT, 40), 40).state();
@@ -141,6 +242,11 @@ public final class PortablePocketCabinGameTest {
 		var effect = new TestExpansionEffect(true, false);
 		for (int level = 1; level <= 6; level++) {
 			cabin = registry.find(cabin.uuid()).orElseThrow();
+			if (level == 2) {
+				registry.updateUpgradeState(cabin.uuid(), cabin.upgrades().withStorage(cabin.upgrades().storage()
+					.deposit(new ItemStack(Items.DIAMOND, 3), 3).state()));
+				cabin = registry.find(cabin.uuid()).orElseThrow();
+			}
 			var target = CabinUpgradeState.Target.storage(level);
 			for (var requirement : CabinUpgradeCatalog.storageRequirements(level)) {
 				ItemStack material = new ItemStack(BuiltInRegistries.ITEM.getOptional(requirement.itemId()).orElseThrow(), requirement.count());
@@ -159,6 +265,8 @@ public final class PortablePocketCabinGameTest {
 				attunement, definitions, interrupted, () -> {}).success(), "Interrupted install must remain pending");
 			helper.assertTrue(registry.find(cabin.uuid()).orElseThrow().upgrades().storage().level() == level - 1,
 				"Interrupted installation must retain capacity");
+			if (level > 1) helper.assertTrue(registry.find(cabin.uuid()).orElseThrow().upgrades().storage().entries().getFirst().getCount() == 3,
+				"An interrupted capacity upgrade must preserve stored items");
 			CabinUpgradeService.reconcileInstallation(registry, cabin.uuid(), effect, () -> {});
 			CabinUpgradeService.reconcileInstallation(registry, cabin.uuid(), effect, () -> {});
 			helper.assertTrue(registry.find(cabin.uuid()).orElseThrow().upgrades().storage().capacity() == CabinStorageState.CAPACITIES[level],

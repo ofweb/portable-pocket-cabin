@@ -1576,6 +1576,10 @@ public final class PortablePocketCabinClientGameTest
                         64
                     )
                     .state();
+                for (var item : List.of(net.minecraft.world.item.Items.HEAVY_WEIGHTED_PRESSURE_PLATE, net.minecraft.world.item.Items.REDSTONE_BLOCK))
+                    storage = storage.deposit(new ItemStack(item), 1).state();
+                for (var item : List.of(CabinItems.DIMENSIONAL_LOGIC_CORE, CabinItems.STORAGE_BOOK))
+                    storage = storage.deposit(new ItemStack(item), 1).state();
                 ItemStack named = new ItemStack(
                     net.minecraft.world.item.Items.DIAMOND,
                     3
@@ -1617,6 +1621,17 @@ public final class PortablePocketCabinClientGameTest
                     menu.capacity() == 108 &&
                     menu.entryCount() > 45
             );
+            world.getServer().runOnServer(server -> {
+                var registry = CabinRegistry.get(server);
+                var cabin = registry.find(cabinId).orElseThrow();
+                var variant = new ItemStack(CabinItems.DIMENSIONAL_LOGIC_CORE);
+                variant.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, net.minecraft.network.chat.Component.literal("Late core variant"));
+                registry.updateUpgradeState(cabinId, cabin.upgrades().withStorage(cabin.upgrades().storage().deposit(variant, 1).state()));
+                world.getConnection().getServerPlayer().containerMenu.broadcastChanges();
+            });
+            world.getConnection().waitForClientboundPackets();
+            context.waitFor(client -> ((CabinStorageScreen) client.gui.screen()).visibleEntries().stream()
+                .anyMatch(stack -> stack.getHoverName().getString().equals("Late core variant")));
             capture(context, "cabin-storage-search");
             context.runOnClient(client ->
                 ((CabinStorageScreen) client.gui.screen()).mouseScrolled(
@@ -1631,6 +1646,42 @@ public final class PortablePocketCabinClientGameTest
                 ((CabinStorageScreen) client.gui.screen()).select(1)
             );
             capture(context, "cabin-storage-category");
+            context.runOnClient(client -> {
+                var screen = (CabinStorageScreen) client.gui.screen();
+                var tabs = net.minecraft.world.item.CreativeModeTabs.tabs().stream().filter(tab -> tab.getType()
+                    == net.minecraft.world.item.CreativeModeTab.Type.CATEGORY).toList();
+                for (int category = 0; category < tabs.size(); category++) {
+                    screen.select(category + 1);
+                    var expected = tabs.get(category).getDisplayItems().stream().map(ItemStack::getItem).distinct().toList();
+                    int previous = -1;
+                    for (var stack : screen.visibleEntries()) {
+                        int position = expected.indexOf(stack.getItem());
+                        check(position >= previous && position >= 0, "Each category must follow its own Creative item order");
+                        previous = position;
+                    }
+                }
+                int used = ((CabinStorageMenu) client.player.containerMenu).used();
+                screen.select(tabs.size() + 1);
+                var seen = new java.util.HashSet<net.minecraft.world.item.Item>();
+                net.minecraft.world.item.Item previousItem = null;
+                for (var stack : screen.visibleEntries()) {
+                    if (stack.getItem() != previousItem) {
+                        check(seen.add(stack.getItem()), "Miscellaneous variants of the same item must stay together after later deposits");
+                        previousItem = stack.getItem();
+                    }
+                }
+                check(screen.visibleEntries().stream().filter(stack -> stack.is(CabinItems.DIMENSIONAL_LOGIC_CORE)).count() == 2,
+                    "Items without a Creative category must appear with their variants in Miscellaneous");
+                screen.searchFor("Family gems");
+                check(((CabinStorageMenu) client.player.containerMenu).used() == used,
+                    "Category and search filters must not change capacity usage");
+                check(screen.visibleEntries().size() == 1 && screen.visibleEntries().getFirst().getHoverName().getString().equals("Family gems"),
+                    "Search must match named variants through their tooltip");
+            });
+            context.runOnClient(client -> ((CabinStorageScreen) client.gui.screen()).select(
+                net.minecraft.world.item.CreativeModeTabs.tabs().stream().filter(tab -> tab.getType()
+                    == net.minecraft.world.item.CreativeModeTab.Type.CATEGORY).toList().size() + 1));
+            capture(context, "cabin-storage-miscellaneous");
             context.runOnClient(client ->
                 ((CabinStorageScreen) client.gui.screen()).select(
                     net.minecraft.world.item.CreativeModeTabs.tabs()

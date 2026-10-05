@@ -6,3 +6,4 @@ out/
 *.iml
 bin/
 .workflow/cooking/book.new/
+.workflow/review/

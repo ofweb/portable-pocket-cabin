@@ -64,6 +64,13 @@ final class CabinStorage {
 		pocket.setBlockAndUpdate(control(cabin.cellIndex(), size), Blocks.CHISELED_BOOKSHELF.defaultBlockState().setValue(
 			net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING, net.minecraft.core.Direction.SOUTH));
 	}
+	static void reconcileControl(net.minecraft.server.MinecraftServer server, CabinRecord cabin) {
+		if (!cabin.interiorGenerated() || cabin.upgrades().storage().level() == 0) return;
+		var pocket = server.getLevel(PocketDimension.LEVEL_KEY);
+		if (pocket == null) throw new IllegalStateException("Pocket dimension is unavailable during storage recovery");
+		if (!pocket.getBlockState(control(cabin)).is(Blocks.CHISELED_BOOKSHELF))
+			placeControl(pocket, cabin, cabin.progression().generalSize());
+	}
 	static boolean mayUse(CabinRecord cabin, UUID actor) {
 		return cabin != null && cabin.lifecycle() == CabinLifecycle.DEPLOYED && cabin.interiorGenerated()
 			&& cabin.isHousehold(actor);
@@ -120,7 +127,10 @@ final class CabinStorage {
 					drops.add(deliver(level, delivery.position(), escrowId(session.operation(), i), pending.get(i).stack()));
 				player.getInventory().setChanged();
 				if (!drops.isEmpty()) server.saveAllChunks(true, true, true);
-				server.getPlayerList().saveAll();
+				if (!CabinPlayerSave.confirm(player)) {
+					player.connection.disconnect(Component.literal("Storage recovery could not save your inventory. Reconnect after the server can save player data."));
+					return;
+				}
 				registry.updateUpgradeState(cabin.uuid(), cabin.upgrades().withStorage(storage.withoutSession(player.getUUID())));
 				CabinRegistry.flush(server);
 				drops.forEach(CabinStorage::release);
