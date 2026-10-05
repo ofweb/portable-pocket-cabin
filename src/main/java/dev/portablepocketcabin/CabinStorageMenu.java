@@ -28,7 +28,10 @@ final class CabinStorageMenu extends AbstractContainerMenu {
 	private final SimpleContainer display = new SimpleContainer(ENTRY_SLOTS);
 	private final SimpleContainerData data = new SimpleContainerData(3 + ENTRY_SLOTS * 2);
 	private final java.util.ArrayList<ItemStack> identities = new java.util.ArrayList<>();
+	private final java.util.Map<CabinStorageState.Identity, Integer> identitySlots = new java.util.HashMap<>();
 	private boolean exhausted;
+	private List<ItemStack> displayedStacks;
+	private int displayedCapacity = -1;
 	boolean inventoryTab;
 
 	CabinStorageMenu(int id, Inventory inventory, UUID cabinId) {
@@ -119,7 +122,7 @@ final class CabinStorageMenu extends AbstractContainerMenu {
 			if (!stillValid(serverPlayer)) return;
 			CabinRecord cabin = registry.find(cabinId).orElseThrow();
 			if (cabin.upgrades().operationInProgress()) return;
-			int fits = toInventory ? inventorySpace(selected) : limit;
+			int fits = toInventory ? inventorySpace(inventory, selected) : limit;
 			var transfer = cabin.upgrades().storage().withdraw(selected, Math.min(limit, fits));
 			if (transfer.moved().isEmpty()) return;
 			registry.updateUpgradeState(cabinId, cabin.upgrades().withStorage(transfer.state()));
@@ -130,13 +133,16 @@ final class CabinStorageMenu extends AbstractContainerMenu {
 		refresh();
 	}
 
-	private int inventorySpace(ItemStack selected) {
+	static int inventorySpace(Inventory inventory, ItemStack selected) {
 		int count = 0;
 		for (int i = 0; i < 36; i++) {
 			ItemStack stack = inventory.getItem(i);
 			if (stack.isEmpty()) count += selected.getMaxStackSize();
 			else if (ItemStack.isSameItemSameComponents(stack, selected)) count += stack.getMaxStackSize() - stack.getCount();
 		}
+		ItemStack offhand = inventory.getItem(Inventory.SLOT_OFFHAND);
+		if (!offhand.isEmpty() && ItemStack.isSameItemSameComponents(offhand, selected))
+			count += Math.max(0, offhand.getMaxStackSize() - offhand.getCount());
 		return count;
 	}
 	@Override public ItemStack quickMoveStack(Player player, int slot) {
@@ -182,18 +188,25 @@ final class CabinStorageMenu extends AbstractContainerMenu {
 
 	private void refresh() {
 		CabinRecord cabin = CabinRegistry.get(serverPlayer.level().getServer()).find(cabinId).orElse(null);
-		List<ItemStack> entries = CabinStorage.mayUse(cabin, serverPlayer.getUUID())
-			? cabin.upgrades().storage().entries() : List.of();
+		boolean allowed = CabinStorage.mayUse(cabin, serverPlayer.getUUID());
+		List<ItemStack> stacks = allowed ? cabin.upgrades().storage().stacks() : List.of();
+		int capacity = allowed ? cabin.upgrades().storage().capacity() : 0;
+		if (displayedStacks != null && displayedCapacity == capacity && sameItems(displayedStacks, stacks)) return;
+		displayedStacks = stacks;
+		displayedCapacity = capacity;
+		List<ItemStack> entries = allowed ? cabin.upgrades().storage().entries() : List.of();
+		var current = new java.util.HashMap<CabinStorageState.Identity, ItemStack>();
 		for (ItemStack entry : entries) {
-			if (identities.stream().noneMatch(value -> ItemStack.isSameItemSameComponents(value, entry))) {
+			var identity = new CabinStorageState.Identity(entry);
+			current.put(identity, entry);
+			if (!identitySlots.containsKey(identity)) {
 				if (identities.size() == ENTRY_SLOTS) { exhausted = true; break; }
+				identitySlots.put(identity, identities.size());
 				identities.add(entry.copyWithCount(1));
 			}
 		}
 		for (int i = 0; i < identities.size(); i++) {
-			ItemStack identity = identities.get(i);
-			ItemStack entry = entries.stream().filter(value -> ItemStack.isSameItemSameComponents(value, identity))
-				.findFirst().orElse(ItemStack.EMPTY);
+			ItemStack entry = current.getOrDefault(new CabinStorageState.Identity(identities.get(i)), ItemStack.EMPTY);
 			display.setItem(i, entry.isEmpty() ? ItemStack.EMPTY : entry.copyWithCount(1));
 			data.set(3 + i * 2, entry.getCount() & 0xffff);
 			data.set(4 + i * 2, entry.getCount() >>> 16);

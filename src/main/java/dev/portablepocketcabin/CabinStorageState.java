@@ -124,15 +124,23 @@ record CabinStorageState(boolean revealed, int level, List<ItemStack> stacks, Li
 			requested == remaining ? ItemStack.EMPTY : selected.copyWithCount(requested - remaining));
 	}
 
+	record Identity(ItemStack stack) {
+		Identity { stack = stack.copyWithCount(1); }
+		@Override public boolean equals(Object other) {
+			return other instanceof Identity identity && ItemStack.isSameItemSameComponents(stack, identity.stack);
+		}
+		@Override public int hashCode() { return ItemStack.hashItemAndComponents(stack); }
+	}
+
 	List<ItemStack> entries() {
-		List<ItemStack> result = new ArrayList<>();
+		var result = new java.util.LinkedHashMap<Identity, ItemStack>();
 		for (ItemStack stack : stacks) {
-			ItemStack entry = result.stream().filter(value -> ItemStack.isSameItemSameComponents(value, stack))
-				.findFirst().orElse(null);
-			if (entry == null) result.add(stack.copy());
+			var identity = new Identity(stack);
+			ItemStack entry = result.get(identity);
+			if (entry == null) result.put(identity, stack.copy());
 			else entry.grow(stack.getCount());
 		}
-		return result;
+		return new ArrayList<>(result.values());
 	}
 
 	private static List<ItemStack> copies(List<ItemStack> values) {

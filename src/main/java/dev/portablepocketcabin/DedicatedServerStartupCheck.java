@@ -73,7 +73,7 @@ final class DedicatedServerStartupCheck {
 		}));
 	}
 
-	private static void seedRegistry(MinecraftServer server, CabinRegistry registry) {
+	private static void seedRegistry(MinecraftServer server, CabinRegistry registry) throws Exception {
 		CabinRecord first = registry.create(FIRST_OWNER);
 		if (first.cellIndex() != 0 || registry.size() != 1 || registry.nextCellIndex() != 1) {
 			throw new IllegalStateException("Fresh registry did not allocate the first cabin at cell zero");
@@ -105,6 +105,7 @@ final class DedicatedServerStartupCheck {
 		registry.updateUpgradeState(deployed.uuid(), current.upgrades().withStorage(storage));
 		seedLegacyCornerFrames(server, registry.find(first.uuid()).orElseThrow());
 		CabinStorage.placeControl(pocket, current, current.progression().generalSize());
+		CabinStorageStartupCheck.run(server, registry.find(first.uuid()).orElseThrow());
 		CabinSimulation.sync(server);
 	}
 
@@ -125,6 +126,7 @@ final class DedicatedServerStartupCheck {
 		CabinRecord interruptedDeployment = registry.create(SECOND_OWNER);
 		CabinExterior unusedExterior = new CabinExterior(Level.OVERWORLD, new BlockPos(40, 200, 0), Direction.NORTH);
 		registry.beginDeployment(interruptedDeployment.uuid(), SECOND_OWNER, unusedExterior);
+		pocket.setBlockAndUpdate(CabinStorage.control(first), Blocks.OAK_PLANKS.defaultBlockState());
 		PortablePocketCabin.LOGGER.info("DEDICATED_SERVER_STARTUP_TEST_PASSED");
 	}
 

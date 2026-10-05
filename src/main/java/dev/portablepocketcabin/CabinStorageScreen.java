@@ -31,6 +31,7 @@ final class CabinStorageScreen extends AbstractContainerScreen<CabinStorageMenu>
 	private EditBox search;
 	private List<CreativeModeTab> categories = List.of();
 	private final Map<Item, Integer> order = new HashMap<>();
+	private final List<Map<Item, Integer>> categoryOrders = new ArrayList<>();
 	private final Set<Item> categorised = new HashSet<>();
 	private final List<Integer> filtered = new ArrayList<>();
 	private int selected;
@@ -46,9 +47,15 @@ final class CabinStorageScreen extends AbstractContainerScreen<CabinStorageMenu>
 		categories = CreativeModeTabs.tabs().stream().filter(tab -> tab.getType() == CreativeModeTab.Type.CATEGORY).toList();
 		order.clear();
 		categorised.clear();
-		for (var tab : categories) for (var stack : tab.getDisplayItems()) {
-			order.putIfAbsent(stack.getItem(), order.size());
-			categorised.add(stack.getItem());
+		categoryOrders.clear();
+		for (var tab : categories) {
+			var categoryOrder = new HashMap<Item, Integer>();
+			for (var stack : tab.getDisplayItems()) {
+				categoryOrder.putIfAbsent(stack.getItem(), categoryOrder.size());
+				order.putIfAbsent(stack.getItem(), order.size());
+				categorised.add(stack.getItem());
+			}
+			categoryOrders.add(categoryOrder);
 		}
 		search = addRenderableWidget(new EditBox(font, leftPos + 9, topPos + 5, 160, 14, Component.literal("Search")));
 		search.setMaxLength(80);
@@ -96,9 +103,12 @@ final class CabinStorageScreen extends AbstractContainerScreen<CabinStorageMenu>
 				: !categorised.contains(stack.getItem());
 			if (matches) filtered.add(i);
 		}
-		filtered.sort(Comparator.comparingInt(index -> order.getOrDefault(menu.slots.get(index).getItem().getItem(), Integer.MAX_VALUE)));
+		var selectedOrder = selected > 0 && selected <= categories.size() ? categoryOrders.get(selected - 1) : order;
+		filtered.sort(Comparator.<Integer>comparingInt(index -> selectedOrder.getOrDefault(menu.slots.get(index).getItem().getItem(), Integer.MAX_VALUE))
+			.thenComparing(index -> net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(menu.slots.get(index).getItem().getItem()).toString()));
 		row = Math.min(row, maxRow());
 	}
+	List<ItemStack> visibleEntries() { return filtered.stream().map(index -> menu.slots.get(index).getItem().copy()).toList(); }
 	private int maxRow() { return Math.max(0, (filtered.size() + 8) / 9 - 5); }
 	@Override protected void containerTick() { super.containerTick(); rebuild(); }
 	@Override public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {

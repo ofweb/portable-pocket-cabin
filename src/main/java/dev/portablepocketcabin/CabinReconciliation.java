@@ -169,6 +169,7 @@ final class CabinReconciliation {
 			.orElseThrow(() -> new IllegalStateException("No cabin record exists for " + cabinId));
 		upgradeLegacyCornerFrames(server, cabin);
 		reconcileWindows(server, cabin);
+		CabinStorage.reconcileControl(server, cabin);
 		boolean projectionValid = hasValidProjection(server, cabin);
 		Action action = plan(cabin, projectionValid);
 
