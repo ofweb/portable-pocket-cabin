@@ -1,6 +1,6 @@
 # The cabin has a greenhouse
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0019
 
 ## Goal

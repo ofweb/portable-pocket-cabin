@@ -1,6 +1,6 @@
 # A crafting room works manually before automation
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0039
 
 ## Goal

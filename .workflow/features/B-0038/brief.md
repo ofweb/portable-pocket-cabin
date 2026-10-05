@@ -1,6 +1,6 @@
 # Players install cabin books through one shared flow
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0038
 
 ## Goal

@@ -1,6 +1,6 @@
 # A cabin learns and uses enchantments
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0008
 
 ## Goal
