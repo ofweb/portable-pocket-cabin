@@ -1,6 +1,6 @@
 # Installed rooms connect through complete corridors
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0005
 
 ## Goal

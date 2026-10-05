@@ -1,6 +1,6 @@
 # The cabin has central storage
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0004
 
 ## Goal
