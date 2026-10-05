@@ -288,7 +288,7 @@
 - Status: Ready for Shape
 - Value: Give the household a kitchen that works without storage or automation and uses installed storage automatically.
 - Direction: [Manual production rooms](direction.md#manual-production-rooms).
-- Relationships: Uses B-0005 and B-0038. Integrates B-0004. Used by cooking in B-0025.
+- Relationships: Uses B-0005 and B-0038. Extends implemented B-0004; kitchen storage changes belong here. Used by cooking in B-0025.
 - Feature Brief: [Manual kitchen brief](features/B-0041/brief.md).
 
 ## B-0042: Smelting jobs

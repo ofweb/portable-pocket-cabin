@@ -18,6 +18,7 @@ Acceptance:
 - The cabin gets a safe meal product template only after that meal enters central storage. A recipe does not give the cabin a product template.
 - A job must have a process profile for cooking, its installed capability, the ingredients in that profile, output space, and work time.
 - Cooking jobs require the kitchen room in B-0041. Manual kitchen use does not require cooking automation.
+- Cooking jobs require their needed physical workstations to be present in the kitchen. Rearranged stations can satisfy this requirement without occupying their original installation positions.
 - The player sees the selected process profile, inputs, items the job gives back, other items the job makes, work time, and reason for each pause.
 - Cooking jobs do not make their ingredients. They do not place seeds, harvest, feed, or slaughter.
 
@@ -62,3 +63,4 @@ This feature includes cooking and brewing process profiles that the cabin can us
 
 - Cooking and brewing process profiles that the cabin can use without optional mods are open. Safe meal and potion parts are open.
 - Work times and other work values are open.
+- Required cooking workstations, readiness conditions, and behaviour when a station is removed during a job remain open. Visible station activity and sharing stations with manual use remain open.

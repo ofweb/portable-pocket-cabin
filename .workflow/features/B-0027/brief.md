@@ -16,6 +16,7 @@ Story: A player uses a process profile for an optional food mod to request a kno
 Acceptance:
 
 - For Farmer's Delight and Farmer's Delight Refabricated, process profiles list ingredients, meals, item parts, and cooking jobs the cabin can use.
+- Optional cooking jobs require their needed physical workstations to be present in the kitchen. Rearranged stations can satisfy this requirement.
 - A process profile for Alex's Mobs Continued Delight can add ingredients and meals through a Farmer's Delight recipe sequence the cabin can use.
 - A profile has rules only for the blocks that the profile lists. The profile keeps only the item data that the profile lists.
 - The cabin gets a meal product template only after the meal enters central storage. The job must have the correct capability, inputs, output space, and time.
@@ -52,6 +53,7 @@ This feature includes food process profiles for optional mods, kiln jobs, charco
 
 - [Process profile](../../context.md#process-profile).
 - [Cooking and brewing jobs brief](../B-0025/brief.md).
+- [Manual kitchen room](../B-0041/brief.md).
 - [Crafting jobs brief](../B-0024/brief.md).
 - [Mod compatibility](../../backlog.md#b-0011-optional-mod-compatibility).
 
@@ -60,3 +62,4 @@ This feature includes food process profiles for optional mods, kiln jobs, charco
 - The versions of each mod that the cabin can use, process profiles, the sequence of tiers, and work values are open.
 - The wood source for charcoal jobs is open.
 - The scope of coal production is open. This brief stays Draft until that scope has a decision.
+- Required food-preparation stations and readiness conditions remain open. Cooking jobs own station-removal, visible-activity, and manual-use questions under B-0025.
