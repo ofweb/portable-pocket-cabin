@@ -1,6 +1,7 @@
 {
   "status": "proposal",
   "excluded": [
+    "arboretum world allocation",
     "aquatic berth",
     "vertical geometry",
     "connected cabin hallways"
@@ -12,7 +13,7 @@
         -52.5,
         -43.5,
         11.5,
-        44.5
+        34.5
       ],
       "west_corridor_length": 37.0,
       "east_corridor_length": 8.0,
@@ -20,7 +21,13 @@
       "west_network_length": 66.0,
       "farthest_livestock_door_distance_from_main_wall": 66.5,
       "known_floor_overlaps": [],
-      "within_current_512_block_cell": true
+      "within_current_512_block_cell": true,
+      "arboretum_cabin_door": [
+        -30.5,
+        1.5,
+        1,
+        1
+      ]
     },
     {
       "main_size": 7,
@@ -28,7 +35,7 @@
         -53.5,
         -43.5,
         12.5,
-        44.5
+        34.5
       ],
       "west_corridor_length": 37.0,
       "east_corridor_length": 8.0,
@@ -36,7 +43,13 @@
       "west_network_length": 66.0,
       "farthest_livestock_door_distance_from_main_wall": 66.5,
       "known_floor_overlaps": [],
-      "within_current_512_block_cell": true
+      "within_current_512_block_cell": true,
+      "arboretum_cabin_door": [
+        -31.5,
+        1.5,
+        1,
+        1
+      ]
     },
     {
       "main_size": 9,
@@ -44,7 +57,7 @@
         -54.5,
         -43.5,
         13.5,
-        44.5
+        34.5
       ],
       "west_corridor_length": 37.0,
       "east_corridor_length": 8.0,
@@ -52,7 +65,13 @@
       "west_network_length": 66.0,
       "farthest_livestock_door_distance_from_main_wall": 66.5,
       "known_floor_overlaps": [],
-      "within_current_512_block_cell": true
+      "within_current_512_block_cell": true,
+      "arboretum_cabin_door": [
+        -32.5,
+        1.5,
+        1,
+        1
+      ]
     },
     {
       "main_size": 11,
@@ -60,7 +79,7 @@
         -55.5,
         -43.5,
         14.5,
-        44.5
+        34.5
       ],
       "west_corridor_length": 37.0,
       "east_corridor_length": 8.0,
@@ -68,7 +87,13 @@
       "west_network_length": 66.0,
       "farthest_livestock_door_distance_from_main_wall": 66.5,
       "known_floor_overlaps": [],
-      "within_current_512_block_cell": true
+      "within_current_512_block_cell": true,
+      "arboretum_cabin_door": [
+        -33.5,
+        1.5,
+        1,
+        1
+      ]
     },
     {
       "main_size": 13,
@@ -76,7 +101,7 @@
         -56.5,
         -43.5,
         15.5,
-        44.5
+        34.5
       ],
       "west_corridor_length": 37.0,
       "east_corridor_length": 8.0,
@@ -84,7 +109,13 @@
       "west_network_length": 66.0,
       "farthest_livestock_door_distance_from_main_wall": 66.5,
       "known_floor_overlaps": [],
-      "within_current_512_block_cell": true
+      "within_current_512_block_cell": true,
+      "arboretum_cabin_door": [
+        -34.5,
+        1.5,
+        1,
+        1
+      ]
     },
     {
       "main_size": 15,
@@ -92,7 +123,7 @@
         -57.5,
         -43.5,
         16.5,
-        44.5
+        34.5
       ],
       "west_corridor_length": 37.0,
       "east_corridor_length": 8.0,
@@ -100,7 +131,13 @@
       "west_network_length": 66.0,
       "farthest_livestock_door_distance_from_main_wall": 66.5,
       "known_floor_overlaps": [],
-      "within_current_512_block_cell": true
+      "within_current_512_block_cell": true,
+      "arboretum_cabin_door": [
+        -35.5,
+        1.5,
+        1,
+        1
+      ]
     },
     {
       "main_size": 17,
@@ -108,7 +145,7 @@
         -58.5,
         -43.5,
         17.5,
-        44.5
+        34.5
       ],
       "west_corridor_length": 37.0,
       "east_corridor_length": 8.0,
@@ -116,7 +153,13 @@
       "west_network_length": 66.0,
       "farthest_livestock_door_distance_from_main_wall": 66.5,
       "known_floor_overlaps": [],
-      "within_current_512_block_cell": true
+      "within_current_512_block_cell": true,
+      "arboretum_cabin_door": [
+        -36.5,
+        1.5,
+        1,
+        1
+      ]
     },
     {
       "main_size": 19,
@@ -124,7 +167,7 @@
         -59.5,
         -43.5,
         18.5,
-        44.5
+        34.5
       ],
       "west_corridor_length": 37.0,
       "east_corridor_length": 8.0,
@@ -132,7 +175,13 @@
       "west_network_length": 66.0,
       "farthest_livestock_door_distance_from_main_wall": 66.5,
       "known_floor_overlaps": [],
-      "within_current_512_block_cell": true
+      "within_current_512_block_cell": true,
+      "arboretum_cabin_door": [
+        -37.5,
+        1.5,
+        1,
+        1
+      ]
     },
     {
       "main_size": 21,
@@ -140,7 +189,7 @@
         -60.5,
         -43.5,
         19.5,
-        44.5
+        34.5
       ],
       "west_corridor_length": 37.0,
       "east_corridor_length": 8.0,
@@ -148,7 +197,71 @@
       "west_network_length": 66.0,
       "farthest_livestock_door_distance_from_main_wall": 66.5,
       "known_floor_overlaps": [],
-      "within_current_512_block_cell": true
+      "within_current_512_block_cell": true,
+      "arboretum_cabin_door": [
+        -38.5,
+        1.5,
+        1,
+        1
+      ]
     }
-  ]
+  ],
+  "arboretum": {
+    "view": "separate; no relative world position",
+    "tiers": [
+      {
+        "floor_size": 7,
+        "clear_height": 5,
+        "planting_positions": 4,
+        "floor": [
+          -3.5,
+          0,
+          7,
+          7
+        ]
+      },
+      {
+        "floor_size": 19,
+        "clear_height": 10,
+        "planting_positions": 20,
+        "floor": [
+          -9.5,
+          0,
+          19,
+          19
+        ]
+      },
+      {
+        "floor_size": 29,
+        "clear_height": 15,
+        "planting_positions": 42,
+        "floor": [
+          -14.5,
+          0,
+          29,
+          29
+        ]
+      }
+    ],
+    "core_floor": [
+      -14.5,
+      0,
+      29,
+      29
+    ],
+    "transition": [
+      -25.5,
+      -11,
+      51,
+      51
+    ],
+    "markers": [
+      39,
+      45
+    ],
+    "final_wall_width": 29,
+    "final_wall_height": 15,
+    "visible_final_ceiling": false,
+    "woodland_extent": "effectively endless; drawing cropped"
+  }
 }

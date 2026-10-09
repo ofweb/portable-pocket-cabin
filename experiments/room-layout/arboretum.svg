@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+<defs><pattern id="grid" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M7 0H0V7" fill="none" stroke="#d8dee8" stroke-width=".4"/></pattern></defs>
+<rect width="1000" height="760" fill="#fafbfd"/>
+<text x="30" y="32" font-family="sans-serif" font-size="24" fill="#26344b" text-anchor="start">B-0023 · Arboretum tiers and woodland transition</text>
+<text x="30" y="58" font-family="sans-serif" font-size="15" fill="#26344b" text-anchor="start">Separate view; no position relative to cabin. True scale: 7 pixels = 1 block. North is up.</text>
+<rect x="66.5" y="100" width="567" height="525" fill="#e1eddd" stroke="none" stroke-width="1" stroke-dasharray=""/>
+<rect x="66.5" y="100" width="567" height="525" fill="url(#grid)" stroke="none" stroke-width="1" stroke-dasharray=""/>
+<rect x="171.5" y="163" width="357" height="357" fill="#d2e5d9" stroke="#527d60" stroke-width="2" stroke-dasharray="6 4"/>
+<rect x="192.5" y="184" width="315" height="315" fill="none" stroke="#80a497" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="213.5" y="205" width="273" height="273" fill="none" stroke="#80a497" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="248.5" y="240" width="203" height="203" fill="#d9dfad" stroke="#64713d" stroke-width="2" stroke-dasharray=""/>
+<rect x="283.5" y="240" width="133" height="133" fill="none" stroke="#4774a6" stroke-width="2" stroke-dasharray="4 3"/>
+<rect x="325.5" y="240" width="49" height="49" fill="none" stroke="#a35935" stroke-width="2" stroke-dasharray="3 2"/>
+<circle cx="280" cy="250.5" r="2.5" fill="#426941"/>
+<circle cx="280" cy="278.5" r="2.5" fill="#426941"/>
+<circle cx="280" cy="306.5" r="2.5" fill="#426941"/>
+<circle cx="280" cy="334.5" r="2.5" fill="#426941"/>
+<circle cx="280" cy="362.5" r="2.5" fill="#426941"/>
+<circle cx="280" cy="390.5" r="2.5" fill="#426941"/>
+<circle cx="280" cy="418.5" r="2.5" fill="#426941"/>
+<circle cx="308" cy="250.5" r="2.5" fill="#426941"/>
+<circle cx="308" cy="278.5" r="2.5" fill="#426941"/>
+<circle cx="308" cy="306.5" r="2.5" fill="#426941"/>
+<circle cx="308" cy="334.5" r="2.5" fill="#426941"/>
+<circle cx="308" cy="362.5" r="2.5" fill="#426941"/>
+<circle cx="308" cy="390.5" r="2.5" fill="#426941"/>
+<circle cx="308" cy="418.5" r="2.5" fill="#426941"/>
+<circle cx="336" cy="250.5" r="2.5" fill="#426941"/>
+<circle cx="336" cy="278.5" r="2.5" fill="#426941"/>
+<circle cx="336" cy="306.5" r="2.5" fill="#426941"/>
+<circle cx="336" cy="334.5" r="2.5" fill="#426941"/>
+<circle cx="336" cy="362.5" r="2.5" fill="#426941"/>
+<circle cx="336" cy="390.5" r="2.5" fill="#426941"/>
+<circle cx="336" cy="418.5" r="2.5" fill="#426941"/>
+<circle cx="364" cy="250.5" r="2.5" fill="#426941"/>
+<circle cx="364" cy="278.5" r="2.5" fill="#426941"/>
+<circle cx="364" cy="306.5" r="2.5" fill="#426941"/>
+<circle cx="364" cy="334.5" r="2.5" fill="#426941"/>
+<circle cx="364" cy="362.5" r="2.5" fill="#426941"/>
+<circle cx="364" cy="390.5" r="2.5" fill="#426941"/>
+<circle cx="364" cy="418.5" r="2.5" fill="#426941"/>
+<circle cx="392" cy="250.5" r="2.5" fill="#426941"/>
+<circle cx="392" cy="278.5" r="2.5" fill="#426941"/>
+<circle cx="392" cy="306.5" r="2.5" fill="#426941"/>
+<circle cx="392" cy="334.5" r="2.5" fill="#426941"/>
+<circle cx="392" cy="362.5" r="2.5" fill="#426941"/>
+<circle cx="392" cy="390.5" r="2.5" fill="#426941"/>
+<circle cx="392" cy="418.5" r="2.5" fill="#426941"/>
+<circle cx="420" cy="250.5" r="2.5" fill="#426941"/>
+<circle cx="420" cy="278.5" r="2.5" fill="#426941"/>
+<circle cx="420" cy="306.5" r="2.5" fill="#426941"/>
+<circle cx="420" cy="334.5" r="2.5" fill="#426941"/>
+<circle cx="420" cy="362.5" r="2.5" fill="#426941"/>
+<circle cx="420" cy="390.5" r="2.5" fill="#426941"/>
+<circle cx="420" cy="418.5" r="2.5" fill="#426941"/>
+<rect x="248.5" y="233" width="203" height="7" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
+<rect x="241.5" y="240" width="7" height="203" fill="none" stroke="#495568" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="451.5" y="240" width="7" height="203" fill="none" stroke="#495568" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="241.5" y="443" width="217" height="7" fill="none" stroke="#495568" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="346.5" y="233" width="7" height="7" fill="#dd9c47" stroke="#7a491c" stroke-width="1.5" stroke-dasharray=""/>
+<text x="350" y="221" font-family="sans-serif" font-size="13" fill="#26344b" text-anchor="middle">Fixed north entrance</text>
+<text x="350" y="460.5" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="middle">29×29 cultivated core</text>
+<text x="350" y="537.5" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="middle">51×51 gradual transition</text>
+<text x="350" y="128" font-family="sans-serif" font-size="13" fill="#26344b" text-anchor="middle">Woodland continues north</text>
+<text x="350" y="590" font-family="sans-serif" font-size="13" fill="#26344b" text-anchor="middle">Woodland continues south</text>
+<text x="80" y="400" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="start">Continues west</text>
+<text x="500" y="400" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="start">Continues east</text>
+<text x="700" y="125" font-family="sans-serif" font-size="17" fill="#26344b" text-anchor="start">Usable floor / clear height</text>
+<text x="700" y="155" font-family="sans-serif" font-size="14" fill="#a35935" text-anchor="start">7×7 / 5 · 4 planting positions</text>
+<text x="700" y="181" font-family="sans-serif" font-size="14" fill="#4774a6" text-anchor="start">19×19 / 10 · 20 positions</text>
+<text x="700" y="207" font-family="sans-serif" font-size="14" fill="#64713d" text-anchor="start">29×29 / 15 · 42 positions</text>
+<text x="700" y="247" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Final wall: 29 wide, 15 tall</text>
+<text x="700" y="273" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Final tier: no visible ceiling</text>
+<text x="700" y="313" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">39×39: sparse biome clues</text>
+<text x="700" y="339" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">45×45: critters and snow cover</text>
+<text x="700" y="365" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">51×51: normal biome undergrowth</text>
+<text x="700" y="405" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Dashed lines mark dimensions.</text>
+<text x="700" y="431" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Species and spacing blend gradually.</text>
+<text x="700" y="471" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Dashed outer walls exist only</text>
+<text x="700" y="497" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">while the arboretum is enclosed.</text>
+<text x="30" y="668" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Final tier: walk around either end of the entrance wall into transition and woodland behind it.</text>
+<text x="30" y="695" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">The woodland drawing is cropped, with no reachable outer edge. Planting points show the fixed core grid.</text>
+<text x="30" y="722" font-family="sans-serif" font-size="14" fill="#a33c22" text-anchor="start">This checks floor dimensions and anchors; allocation, height and doorway behavior need Design verification.</text>
+</svg>

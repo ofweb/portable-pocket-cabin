@@ -19,7 +19,7 @@ Acceptance:
 - Each action must have a different installed automation capability.
 - Greenhouse harvesting and replanting have different automation capabilities.
 - The cabin must have different capabilities to feed livestock, collect products without slaughter, and slaughter surplus livestock.
-- The cabin must have different capabilities to fell trees and place saplings.
+- Automatic tree felling requires its own capability. Arboretum planting and replanting belong to B-0023 and are covered by installation and size-upgrade costs.
 - Players can use a room through manual actions when its automation capability is off or missing.
 
 ### S2: Stop room work at limits
@@ -29,7 +29,7 @@ Story: An owner checks an active room and sees a reason when work stops for miss
 Acceptance:
 
 - An action starts only if the room has its inputs, space for outputs, and safe conditions.
-- A replant action removes seeds or saplings from available inputs. No room action creates its inputs.
+- Greenhouse replanting consumes seeds from available inputs. Arboretum planting uses its retained saplings under B-0023, without further player-supplied saplings. Other room actions do not create their inputs.
 - Each action follows the room's population and safety limits.
 - If an action moves items between room fixtures and central storage, it counts inputs and outputs.
 - An action pauses at a missing input, full output, hard reserve, population limit, safety limit, or catch-up limit.
@@ -59,6 +59,7 @@ This feature includes greenhouse, livestock, and forestry actions and the item t
 - [Greenhouse brief](../B-0019/brief.md).
 - [Livestock room item](../../backlog.md#b-0022-livestock-room).
 - [Forestry room item](../../backlog.md#b-0023-forestry-room).
+- [Arboretum planting rules](../B-0023/brief.md).
 
 ## Open questions and assumptions
 

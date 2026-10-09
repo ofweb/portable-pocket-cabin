@@ -112,9 +112,9 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 ## B-0023: Forestry room
 
 - Status: Ready for Shape
-- Value: Let residents grow, cut, and replant trees with profiles in the cabin's arboretum.
-- Direction: [Direction](direction.md).
-- Relationships: Uses B-0005. B-0026 defines automatic actions.
+- Value: Let residents grow trees in an expanding arboretum whose final tier leads into gentle woodlands.
+- Direction: [Arboretum woodlands](direction.md#arboretum-woodlands).
+- Relationships: Uses B-0005 with an arboretum entrance-door exception and B-0011 for optional wildlife and fruit compatibility. Owns funded planting and replanting; B-0026 defines automatic felling and output collection.
 - Feature Brief: [Arboretum brief](features/B-0023/brief.md).
 
 ## B-0024: Bounded crafting jobs

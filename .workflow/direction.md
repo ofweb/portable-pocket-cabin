@@ -16,9 +16,36 @@ Players can use the complete cabin in Survival mode without operator commands. C
 
 ### Main room and purpose-specific rooms
 
-The cabin has one main room for general use and dedicated rooms for household activities. Continuous corridors connect its interior, and rooms retain their contents as the cabin grows or travels. The [room purchase and traversal brief](features/B-0005/brief.md) owns shared layout, access, and relocation behavior. The [expansion decision](decisions/pdr/0006-expand-general-space-with-world-materials.md) owns main-room growth.
+The cabin has one main room for general use and dedicated rooms for household activities. Continuous corridors connect its interior, and rooms retain their contents as the cabin grows or travels. The arboretum uses an entrance door as an exception to continuous room passages. The [room purchase and traversal brief](features/B-0005/brief.md) owns shared layout, access, and relocation behavior. The [expansion decision](decisions/pdr/0006-expand-general-space-with-world-materials.md) owns main-room growth.
 
 Growing and animal spaces have their own briefs: [greenhouse](features/B-0019/brief.md), [arboretum / forestry](features/B-0023/brief.md), [stable](features/B-0020/brief.md), [aquatic berth](features/B-0021/brief.md), and [livestock rooms](features/B-0022/brief.md). These briefs own room dimensions, placement, capacity, upgrades, and unresolved room behavior.
+
+### Arboretum woodlands
+
+The arboretum starts as a small room and grows away from its fixed entrance through purchased size upgrades. At its final tier, the cultivated grove keeps its size while a gradual transition leads into effectively endless woodlands belonging to the cabin, with no reachable outer wall or edge. No ceiling is visible. A freestanding entrance wall remains; players can walk around either end into the transition and woodland behind it. Players select planting types for the cultivated core. Transition trees blend those types into surrounding biome species. Tree spacing changes before sparse biome clues and wildlife appear. Different woodland kinds have clearings, ponds, gentle terrain, and non-dangerous wildlife. Bees may sting normally; goats and monsters are excluded. Alex's Mobs is an intended optional source of suitable woodland animals under the project's compatibility profiles. Players can wander far enough to become lost and have a reliable way home. The [arboretum brief](features/B-0023/brief.md) owns sizes and transition markers.
+
+Woodlands use a selected range of familiar forest and orchard biomes, including suitable Biomes O' Plenty biomes. Beyond the first ring, temperate forests connect with matching BOP woodlands; taiga and coniferous forests lead gradually into snowy forests. These groups can appear in any direction farther out. Nearby orchards lie in the second ring, separated from the core and one another by woodland. Other orchards appear occasionally among temperate forests. Two new orchard biomes grow apple and pear trees, or orange and peach trees. They have regularly spaced trees in rows with grassy gaps. Each orchard replants its fixed fruit pair independently of cultivated-core selections.
+
+Fruits Delight supplies orchard trees and occasional natural fruit trees and bushes among normal woodland vegetation. Woodland fruit follows this distribution:
+
+| Woodland biome | Fruit |
+|---|---|
+| Birch | Pear |
+| Oak and flower forest | Apple, orange, fig, kiwi |
+| Taiga and BOP Coniferous Forest | Hawberry, blueberry |
+| Snowy taiga and BOP Snowy Coniferous Forest | Persimmon, blueberry |
+| BOP Woodland and Maple Woods | Apple, pear |
+| BOP Seasonal Forest | Apple, orange, fig, kiwi |
+
+Edible raw fruits keep ordinary hunger and saturation without status effects. Existing fruit recipes and prepared-food effects remain part of the intended experience. Fruit features require a compatible Fruits Delight version or port before delivery. Identifying and verifying that support remains technical work. The [source references](references.md#fruits-delight) retain the evidence.
+
+Each cabin keeps the same woodland through packing, movement, and restart. Its current state is saved, but woodland trees are replanted after felling, player-built woodland structures gradually disappear after visits, and dug holes and trenches gradually return to natural terrain. Containers have a grace period, then can disappear with their contents. This gives players time to observe reclamation and retrieve stored items. Player builds in the cultivated room remain permanent. The arboretum brief owns reclamation rules.
+
+Players entering a packed cabin through a permitted cabin connection can use its arboretum normally. Trees, fruit, and animals operate while the cabin is occupied. Live simulation pauses when the packed cabin becomes empty again. Woodland reclamation still runs once whenever the arboretum becomes empty. Paused animals are saved and resume when players return, without simulated breeding, aging, deaths, or item drops during the absence.
+
+On return, catch-up includes planting, replanting, and growth toward maturity under suitable growing conditions, using elapsed server operating time. A cleared planting spot can therefore hold a grown tree when players return. Fruit also grows and ripens during catch-up, stopping at each plant's normal fully ripe state without accumulating extra fruit. Replanted trees must grow before producing fruit. Catch-up does not harvest or count elapsed time twice. Saplings contribute to installation and size-upgrade costs to encourage exploration. These costs cover future planting in the room and woodlands without further sapling payments. Arboretum trees provide no sapling drops to players: the room retains them for replanting. Automatic felling remains a separate capability.
+
+The familiar arboretum entrance door loads the space on entry and returns players to the cabin on exit. Entering the cabin stays fast and does not wait for woodland loading. Beyond the door, players discover the familiar cultivated room first, then walk continuously through the transition into woodlands without another transfer, visible loading, camera jump, or warning. Clearing trees does not break that continuity. The [arboretum brief](features/B-0023/brief.md) owns progression, discovery, return, and door behavior.
 
 ### Greenhouse catch-up
 
@@ -96,4 +123,4 @@ What happens to a displayed or partly funded cost if a mod is later added or rem
 
 ### Progress after an empty cabin becomes occupied
 
-Direction must confirm catch-up limits for other rooms, jobs, and placed blocks such as furnaces and crops outside the greenhouse. The [greenhouse limit](#greenhouse-catch-up) is settled. Automation catch-up limits remain open.
+Direction must confirm catch-up limits for other rooms, jobs, and placed blocks such as furnaces and crops outside the greenhouse and arboretum. The [greenhouse growth limit](#greenhouse-catch-up) and [arboretum planting, replanting, and growth limit](#arboretum-woodlands) are settled. Automation catch-up limits remain open.
