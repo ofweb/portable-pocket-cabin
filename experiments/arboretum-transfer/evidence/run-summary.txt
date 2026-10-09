@@ -1,0 +1,8 @@
+[11:45:55] [Render thread/INFO] (Minecraft) Using graphics backend OpenGL, using drivers: 4.6 (Core Profile) Mesa 26.2.4-arch3.1
+[11:45:55] [Render thread/INFO] (Minecraft) Using graphics device: AMD Radeon 8060S Graphics (radeonsi, strix_halo, ACO, DRM 3.64, 7.2.9-1-cachyos) (AMD)
+[11:46:01] [Server thread/INFO] (Minecraft) Player0 joined the game
+[11:46:14] [Server thread/INFO] (Minecraft) Player0 joined the game
+[11:46:27] [Server thread/INFO] (Minecraft) ArboObserver joined the game
+[11:46:27] [Render thread/INFO] (Minecraft) [System] [CHAT] ArboObserver joined the game
+[11:46:32] [Test thread/INFO] (Minecraft) [STDOUT]: ARBORETUM_TRANSFER_EXPERIMENT_COMPLETED
+BUILD SUCCESSFUL in 52s

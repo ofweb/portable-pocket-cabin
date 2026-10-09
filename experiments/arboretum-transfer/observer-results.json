@@ -1,0 +1,965 @@
+{
+  "samples": [
+    {
+      "phase": "together-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    }
+  ],
+  "observer": "ArboObserver"
+}

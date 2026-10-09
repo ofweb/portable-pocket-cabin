@@ -21,8 +21,9 @@ Acceptance:
 - Checks without optional mods include all completed cabin features.
 - Checks for `Biomes O' Plenty` include Cabin palette, door, and World attunement profiles.
 - Checks for Farmer's Delight Refabricated include crops, `Rich Soil`, cooking and storage blocks, and cooking profiles.
+- Checks for Fruits Delight include orchard and woodland fruit, growth, harvesting, catch-up, existing recipes, and prepared-food effects. Fruit features require a compatible version or port before delivery.
 - `Tom's Simple Storage` networks in cabins do not connect to central storage.
-- Checks for `Alex's Mobs Continued` include stable residents and livestock types. Only types with profiles can use cabin actions.
+- Checks for `Alex's Mobs Continued` include stable residents, livestock types, and arboretum wildlife. Woodland profiles exclude dangerous animals except bees and preserve the arboretum's sapling rules. Only types with profiles can use cabin actions or populate cabin woodlands.
 - Checks for Alex's Mobs Continued Delight include only ingredients, meals, and process profiles that the cabin can use.
 - Placed blocks and block entities use Minecraft persistence. Cabin actions for entities, item data, and production must have profiles.
 

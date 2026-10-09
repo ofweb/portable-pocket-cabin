@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1650" viewBox="0 0 1400 1650">
 <defs><pattern id="grid" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M7 0H0V7" fill="none" stroke="#d8dee8" stroke-width=".4"/></pattern></defs>
 <rect width="1400" height="1650" fill="#fafbfd"/>
-<text x="30" y="32" font-family="sans-serif" font-size="24" fill="#26344b" text-anchor="start">B-0005 · Proposed livestock branch layout</text>
+<text x="30" y="32" font-family="sans-serif" font-size="24" fill="#26344b" text-anchor="start">B-0005 · Room layout and arboretum entrance</text>
 <text x="30" y="58" font-family="sans-serif" font-size="15" fill="#26344b" text-anchor="start">True scale: 7 pixels = 1 block. Minimum floors overlay maximum footprints. North is up.</text>
 <text x="30" y="81" font-family="sans-serif" font-size="14" fill="#a33c22" text-anchor="start">Room order, growth anchors, stable layout and one-block walls are proposals. Aquatic berth has no agreed dimensions.</text>
 <text x="30" y="215" font-family="sans-serif" font-size="19" fill="#26344b" text-anchor="start">Main room 5×5 · all known room reservations</text>
@@ -23,13 +23,6 @@
 <text x="973.0" y="725.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Greenhouse</text>
 <text x="973.0" y="739.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×31</text>
 <text x="973.0" y="516.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">5×7</text>
-<rect x="759.5" y="480.5" width="161" height="301" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
-<rect x="766.5" y="487.5" width="147" height="287" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
-<rect x="815.5" y="487.5" width="49" height="49" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
-<rect x="836.5" y="480.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
-<text x="840.0" y="795.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Arboretum</text>
-<text x="840.0" y="809.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">21×41</text>
-<text x="840.0" y="516.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">7×7</text>
 <rect x="892.5" y="242.5" width="91" height="217" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
 <rect x="899.5" y="249.5" width="77" height="203" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
 <rect x="899.5" y="417.5" width="77" height="35" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
@@ -113,12 +106,15 @@
 <rect x="1025.5" y="466.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
 <rect x="1067.5" y="466.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
 <rect x="1046.5" y="445.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<rect x="836.5" y="480.5" width="7" height="7" fill="#dd9c47" stroke="#7a491c" stroke-width="1.5" stroke-dasharray=""/>
+<text x="840.0" y="508.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Arboretum door</text>
+<text x="840.0" y="526" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">Separate view: arboretum.svg</text>
 <text x="1050" y="502.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Main</text>
 <path d="M 1250 345 v -25 m -5 7 l5 -7 5 7" fill="none" stroke="#26344b" stroke-width="2"/>
 <text x="1250" y="313" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="middle">N</text>
 <path d="M50 810h70 M50 805v10 M120 805v10" stroke="#26344b" stroke-width="2"/>
 <text x="50" y="832" font-family="sans-serif" font-size="13" fill="#26344b" text-anchor="start">10 blocks</text>
-<text x="190" y="816" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Known outer footprint: 64 × 88 blocks</text>
+<text x="190" y="816" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Known outer footprint: 64 × 78 blocks</text>
 <text x="30" y="915" font-family="sans-serif" font-size="19" fill="#26344b" text-anchor="start">Main room 21×21 · all known room reservations</text>
 <rect x="280" y="820" width="1057" height="686" fill="url(#grid)" stroke="#d8dee8" stroke-width="1" stroke-dasharray=""/>
 <rect x="710.5" y="1152.5" width="273.0" height="35" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
@@ -138,13 +134,6 @@
 <text x="917.0" y="1425.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Greenhouse</text>
 <text x="917.0" y="1439.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">11×31</text>
 <text x="917.0" y="1216.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">5×7</text>
-<rect x="703.5" y="1180.5" width="161" height="301" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
-<rect x="710.5" y="1187.5" width="147" height="287" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
-<rect x="759.5" y="1187.5" width="49" height="49" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
-<rect x="780.5" y="1180.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
-<text x="784.0" y="1495.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Arboretum</text>
-<text x="784.0" y="1509.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">21×41</text>
-<text x="784.0" y="1216.0" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">7×7</text>
 <rect x="836.5" y="942.5" width="91" height="217" fill="#495568" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
 <rect x="843.5" y="949.5" width="77" height="203" fill="#d2e5d9" stroke="#34445b" stroke-width="1" stroke-dasharray=""/>
 <rect x="843.5" y="1117.5" width="77" height="35" fill="#76bda1" stroke="#175f4c" stroke-width="1.5" stroke-dasharray="3 2"/>
@@ -228,13 +217,16 @@
 <rect x="969.5" y="1166.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
 <rect x="1123.5" y="1166.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
 <rect x="1046.5" y="1089.5" width="7" height="7" fill="#fff" stroke="#fff" stroke-width="1" stroke-dasharray=""/>
+<rect x="780.5" y="1180.5" width="7" height="7" fill="#dd9c47" stroke="#7a491c" stroke-width="1.5" stroke-dasharray=""/>
+<text x="784.0" y="1208.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Arboretum door</text>
+<text x="784.0" y="1226" font-family="sans-serif" font-size="11" fill="#26344b" text-anchor="middle">Separate view: arboretum.svg</text>
 <text x="1050" y="1258.5" font-family="sans-serif" font-size="12" fill="#26344b" text-anchor="middle">Main</text>
 <path d="M 1250 1045 v -25 m -5 7 l5 -7 5 7" fill="none" stroke="#26344b" stroke-width="2"/>
 <text x="1250" y="1013" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="middle">N</text>
 <path d="M50 1510h70 M50 1505v10 M120 1505v10" stroke="#26344b" stroke-width="2"/>
 <text x="50" y="1532" font-family="sans-serif" font-size="13" fill="#26344b" text-anchor="start">10 blocks</text>
-<text x="190" y="1516" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Known outer footprint: 80 × 88 blocks</text>
-<text x="30" y="1560" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Dark: one-block shell · light green: maximum usable floor · green dashed: minimum usable floor · pale gray: corridor</text>
+<text x="190" y="1516" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Known outer footprint: 80 × 78 blocks</text>
+<text x="30" y="1560" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">Dark: one-block shell · light green: maximum usable floor · green dashed: minimum floor · amber: arboretum door</text>
 <text x="30" y="1585" font-family="sans-serif" font-size="14" fill="#26344b" text-anchor="start">All nine main-room sizes (5–21) checked: known floors and room shells do not overlap; footprint stays within a 512-block cell.</text>
-<text x="30" y="1610" font-family="sans-serif" font-size="14" fill="#a33c22" text-anchor="start">Not a final fit proof: aquatic berth, room heights, connected-cabin hallway allowance and growth behaviour remain unresolved.</text>
+<text x="30" y="1610" font-family="sans-serif" font-size="14" fill="#a33c22" text-anchor="start">Arboretum shown separately. Allocation, aquatic berth, heights, connected hallways and growth still need Design verification.</text>
 </svg>
