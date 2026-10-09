@@ -189,7 +189,7 @@
 
 ## Upgrade refund receipt
 
-- Meaning: An upgrade refund receipt records the specified materials used to purchase one upgrade step that the owner can reverse. The cabin keeps it for that refund.
+- Meaning: An upgrade refund receipt records the materials required by the purchase of one upgrade step that the owner can reverse. The cabin keeps it for that refund.
 - Avoid: `Current recipe`, `refund value`.
 
 ## Cabin window
