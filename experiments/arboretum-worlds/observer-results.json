@@ -1,0 +1,1450 @@
+{
+  "observer": "ArboObserver",
+  "samples": [
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-source",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-far",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-far",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/11111111-1111-1111-1111-111111111111",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-second-world",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        5117.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "actor-source",
+      "dimension": "portable_pocket_cabin:arboretum/22222222-2222-2222-2222-222222222222",
+      "visible": false,
+      "copies": 0,
+      "observer": [
+        5114.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    },
+    {
+      "phase": "together-returned",
+      "dimension": "portable_pocket_cabin:pocket_home",
+      "visible": true,
+      "copies": 1,
+      "observer": [
+        1018.5,
+        64.0,
+        1028.5
+      ],
+      "actor": [
+        1021.5,
+        64.0,
+        1028.5
+      ]
+    }
+  ]
+}
