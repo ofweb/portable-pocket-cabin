@@ -50,21 +50,7 @@ The same installation rules apply to future cabin books, including room, loadout
 
 ## Non-goals
 
-Book vendors, trades, village bookstalls, and new book types are deferred. Upgrade effects, costs, and purchase steps are outside this scope. Empty books and Minecraft enchanted books cannot be installed.
-
-## Deferred book acquisition
-
-This retained shaping belongs to later work within B-0038. It is outside the Ready installation contract and Design input.
-
-- Villages can randomly include bookstall structures in small or large villages. Players can also place bookstalls.
-- A bookstall is a villager job block. Villagers without jobs can claim open bookstalls under normal job rules.
-- A book vendor offers one cabin book, selected randomly when its trade screen first opens. The offer is saved and shared by all players and cabins.
-- The vendor keeps its book type. Restocking adds copies without selecting a different type. Multiple vendors can select the same type.
-- Each book type has higher selection rates in some villager biomes. The villager's biome sets the rate at selection; moving the villager or bookstall does not change it.
-- Desert villagers favor enchanting room and enchanting automation books. All villager biomes can select all book types.
-- Other vendors and the player's cabin do not affect selection.
-- Purchasing a book does not change cabin state. Players can give or trade books to other players.
-- Later Shape must settle bookstall frequency, vendor appearance, trade costs, the full book list, and remaining biome selection rates. A player may trade with many vendors without finding a particular type.
+Book vendors, trades, and village bookstalls belong to [B-0044](../B-0044/brief.md). New book types are deferred. Upgrade effects, costs, and purchase steps are outside this scope. Empty books and Minecraft enchanted books cannot be installed.
 
 ## Related records
 
@@ -75,6 +61,7 @@ This retained shaping belongs to later work within B-0038. It is outside the Rea
 - [Cabin book](../../context.md#cabin-book).
 - [Book vendor](../../context.md#book-vendor).
 - [Bookstall](../../context.md#bookstall).
+- [Book vendors and bookstalls](../B-0044/brief.md).
 - [Revealed upgrade](../../context.md#revealed-upgrade).
 - [Automation capabilities brief](../B-0007/brief.md).
 - [Enchanting room brief](../B-0008/brief.md).
@@ -82,4 +69,4 @@ This retained shaping belongs to later work within B-0038. It is outside the Rea
 
 ## Open questions and assumptions
 
-No material questions remain for the Ready installation scope. Deferred acquisition does not change the shared installation flow.
+No material questions remain for the Ready installation scope. Book acquisition in B-0044 does not change the shared installation flow.

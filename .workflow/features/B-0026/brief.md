@@ -56,7 +56,7 @@ This feature includes greenhouse, livestock, and forestry actions and the item t
 - [Room brief](../B-0005/brief.md).
 - [Known items and books brief](../B-0007/brief.md).
 - [Crafting jobs brief](../B-0024/brief.md).
-- [Greenhouse item](../../backlog.md#b-0019-greenhouse).
+- [Greenhouse brief](../B-0019/brief.md).
 - [Livestock room item](../../backlog.md#b-0022-livestock-room).
 - [Forestry room item](../../backlog.md#b-0023-forestry-room).
 

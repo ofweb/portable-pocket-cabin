@@ -97,7 +97,7 @@ This feature provides corridors, shared installation rules, traversal, and persi
 - [Main room and purpose-specific rooms](../../direction.md#main-room-and-purpose-specific-rooms).
 - [Room relocation feasibility](../../../experiments/room-relocation/README.md).
 - Floor-layout reference: [scale drawing](../../../experiments/room-layout/layout.svg) and [dimensions and fit limits](../../../experiments/room-layout/README.md).
-- [Related room items](../../backlog.md#b-0019-greenhouse).
+- [Related room items](../../backlog.md).
 
 ## Open questions and assumptions
 

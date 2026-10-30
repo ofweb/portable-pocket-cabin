@@ -2,7 +2,7 @@
 
 ## B-0002: Household roles
 
-- Status: Ready for Shape
+- Status: Ready for Design
 - Value: Give each cabin clear owner, resident, and guest capabilities.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Household role brief](features/B-0002/brief.md).
@@ -14,22 +14,6 @@
 - Direction: [Direction](direction.md).
 - Relationships: Uses B-0002. Requires installed storage in B-0004 and connected-lounge access in B-0009.
 - Feature Brief: [Receiving mailbox brief](features/B-0003/brief.md).
-
-## B-0004: Central storage
-
-- Status: Ready for Shape
-- Value: Give each cabin one inventory for household use that stays independent of placed chests.
-- Direction: [Direction](direction.md).
-- Relationships: Uses B-0002 and B-0038. Used by B-0003 and B-0007. Mailbox behavior belongs to B-0003.
-- Feature Brief: [Central storage brief](features/B-0004/brief.md).
-
-## B-0005: Room purchase and traversal
-
-- Status: Ready for Shape
-- Value: Connect installed rooms through complete interior corridors while preserving access and contents through cabin growth and travel.
-- Direction: [Direction](direction.md).
-- Feature Brief: [Room brief](features/B-0005/brief.md).
-- Relationships: Uses B-0002. Shared room behavior for B-0008, B-0019 through B-0023, B-0039 through B-0041, and B-0043.
 
 ## B-0006: House cat
 
@@ -46,14 +30,6 @@
 - Direction: [Direction](direction.md).
 - Feature Brief: [Product knowledge brief](features/B-0007/brief.md).
 - Relationships: Uses B-0004 and B-0038. Used by B-0024 through B-0027 and B-0036 through B-0037.
-
-## B-0008: Enchantment library
-
-- Status: Ready for Shape
-- Value: Let an owner install and improve an enchanting room where players learn enchantments and apply them manually.
-- Direction: [Direction](direction.md).
-- Feature Brief: [Enchantment library brief](features/B-0008/brief.md).
-- Relationships: Uses B-0002, B-0005, and B-0038. Integrates B-0004. Used by B-0028.
 
 ## B-0009: Connected cabin hallways
 
@@ -106,14 +82,6 @@
 - Status: Needs Direction
 - Value: Explore more modded materials with safe profile rules.
 - Direction: [Open question](direction.md#more-modded-materials).
-
-## B-0019: Greenhouse
-
-- Status: Ready for Shape
-- Value: Let residents plant and harvest crops with profiles in a room where growth progresses without manual actions and has limits.
-- Direction: [Direction](direction.md).
-- Relationships: Uses B-0005. B-0026 defines automatic actions.
-- Feature Brief: [Greenhouse brief](features/B-0019/brief.md).
 
 ## B-0020: Stable
 
@@ -259,22 +227,6 @@
 - Feature Brief: [Upgrade funding plan brief](features/B-0037/brief.md).
 - Relationships: Uses B-0024 and upgrade funds.
 
-## B-0038: Cabin book discovery and installation
-
-- Status: Ready for Shape
-- Value: Give cabin books one installation flow to reveal upgrades. Retain village book vendors and player-created bookstalls for later Shape.
-- Direction: [Direction](direction.md).
-- Feature Brief: [Cabin books brief](features/B-0038/brief.md).
-- Relationships: Shared installation for B-0004, B-0007, B-0008, B-0019, B-0028, B-0029, B-0039 through B-0041, and B-0043. Acquisition remains deferred within this item.
-
-## B-0039: Manual crafting room
-
-- Status: Ready for Shape
-- Value: Give the household a crafting room that works without storage or automation and uses installed storage automatically.
-- Direction: [Manual production rooms](direction.md#manual-production-rooms).
-- Relationships: Uses B-0005 and B-0038. Integrates B-0004. Used by B-0024.
-- Feature Brief: [Manual crafting room brief](features/B-0039/brief.md).
-
 ## B-0040: Manual smelting room
 
 - Status: Ready for Shape
@@ -305,3 +257,11 @@
 - Direction: [Manual production rooms](direction.md#manual-production-rooms).
 - Relationships: Uses B-0005 and B-0038. Integrates B-0004. Used by brewing in B-0025.
 - Feature Brief: [Manual potion room brief](features/B-0043/brief.md).
+
+## B-0044: Book vendors and bookstalls
+
+- Status: Ready for Shape
+- Value: Let players buy cabin books from village book vendors, including vendors who claim bookstalls that players place.
+- Direction: [Direction](direction.md).
+- Feature Brief: [Book vendors brief](features/B-0044/brief.md).
+- Relationships: Supplies books for the B-0038 installation flow.
