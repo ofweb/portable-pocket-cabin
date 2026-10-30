@@ -269,7 +269,7 @@
 ## B-0045: Guided cooking recipes
 
 - Status: Ready for Shape
-- Value: Let players activate real recipes from a cooking guide and complete them through workstation actions, temperatures, and passive steps. Wrong actions are ignored, and several recipes can run in parallel.
+- Value: Let players activate real recipes from the cookbook and complete them through workstation actions, temperatures, and passive steps. Wrong actions are ignored, and several recipes can run in parallel.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Uses B-0041. Integrates B-0004. Used by B-0025 and B-0046 through B-0052.
 
@@ -296,16 +296,16 @@
 
 ## B-0049: Butchery and carcasses
 
-- Status: Needs Direction
+- Status: Ready for Shape
 - Value: Let animals drop carcasses that players butcher into cuts, bones, fat, and trimmings, then process into mince, sausages, and cured meat. Fish are filleted.
-- Direction: [Open question](direction.md#food-changes-outside-the-cabin).
+- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Uses B-0045. Uses animals from B-0022.
 
 ## B-0050: Cooking crops and foraging
 
-- Status: Needs Direction
+- Status: Ready for Shape
 - Value: Add grains, vegetables, herbs, spices, chilies, fruit, and mushrooms with growing requirements, cultivation methods, and wild sources that reward exploration.
-- Direction: [Open question](direction.md#food-changes-outside-the-cabin).
+- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Grown in B-0019. Used by B-0045 recipes.
 
 ## B-0051: Food benefits

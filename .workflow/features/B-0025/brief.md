@@ -65,4 +65,4 @@ This feature includes cooking and brewing process profiles that the cabin can us
 - Cooking and brewing process profiles that the cabin can use without optional mods are open. Safe meal and potion parts are open.
 - Work times and other work values are open.
 - Cooking jobs should perform B-0045 cooking recipes with their manual equipment, temperatures, and durations. How recipes relate to process profiles is open.
-- The cooking concept proposes commissioning a recipe's automation by consuming some of its finished product. Whether a count of manual preparations is also required is open under PDR-0013.
+- Cooking automation requires its automation book. Commissioning a recipe consumes some of its finished product. No count of manual preparations is required.

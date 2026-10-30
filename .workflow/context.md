@@ -95,6 +95,18 @@
 - Meaning: A product template records a safe item identity and permitted variant data in a cabin. It stays after source removal and gives no production capability.
 - Forms: product templates
 
+## Cookbook
+
+- Meaning: A cookbook is the guide players use to find, activate, and follow cooking recipes. It explains techniques and links each ingredient to its own recipe.
+- Forms: cookbooks
+- Distinguish from: The recipe book is Minecraft's crafting recipe panel. A cabin book reveals cabin upgrades.
+
+## Cooking recipe
+
+- Meaning: A cooking recipe is a guided process from its direct ingredients to one product. It states ordered steps, equipment, temperatures, and durations. Wrong actions do not advance or ruin it.
+- Forms: cooking recipes
+- Distinguish from: A crafting recipe completes in one action. A process profile states a production path for jobs.
+
 ## Cabin book
 
 - Meaning: A cabin book is an item that reveals one or more cabin upgrades when installed. It differs from empty books and enchanted books.

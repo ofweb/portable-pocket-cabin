@@ -4,11 +4,11 @@ This concept describes the intended cabin cooking system. It replaces Farmer's D
 
 ## Goal
 
-Players learn how real food is made. They use actual cooking techniques and follow food from farm to table. Ordinary dishes such as a burger, pizza, or lasagne turn out to need many ingredients and steps when made from scratch. Most of that work is normally done by others. The player does it first by hand, then builds a kitchen and automation that make complex cooking convenient.
+Players learn how real food is made. Food changes apply throughout the world, not only in the cabin. They use actual cooking techniques and follow food from farm to table. Ordinary dishes such as a burger, pizza, or lasagne turn out to need many ingredients and steps when made from scratch. Most of that work is normally done by others. The player does it first by hand, then builds a kitchen and automation that make complex cooking convenient.
 
 ## Principles
 
-- **Teach real cooking.** Recipes use real techniques such as simmering, braising, proofing, fermentation, emulsification, and flavour balancing. The guide explains each technique briefly.
+- **Teach real cooking.** Recipes use real techniques such as simmering, braising, proofing, fermentation, emulsification, and flavour balancing. The cookbook explains each technique briefly.
 - **Show the whole chain.** Ingredients come from farming, animals, fishing, foraging, exploration, and trade. Processing turns them into intermediate products and dishes.
 - **Base recipes on real dishes.** Recipes follow real dishes and preparation methods where practical.
 - **Keep cooking forgiving.** Incorrect actions are ignored. Food does not burn, spoil, or lose progress. Unsuitable conditions pause progress.
@@ -31,17 +31,17 @@ Storable, reusable intermediates are items. Examples are flour, butter, stock, c
 
 Processing methods are shared across recipes. One simmering mechanic serves stock, soup, tomato sauce, and braised meat. The ingredient graph should stay smaller than the recipe graph: a few shared intermediates support many dishes.
 
-## Cooking recipes and the guide
+## Cooking recipes and the cookbook
 
-A guide book is the central interface for learning and preparing food. Its name is open; see [open questions](#open-questions).
+The [cookbook](../context.md#cookbook) is the central interface for learning and preparing food. Cooking works anywhere players have the right equipment. The cabin kitchen makes it more practical.
 
-Each recipe states its ingredients and quantities, equipment, ordered steps, techniques, temperatures, durations, output, portions, and food benefits. Ingredients that have their own recipe link to it. A cheeseburger links to its bun, and the bun links to flour.
+Each recipe states its ingredients and quantities, equipment, ordered steps, techniques, temperatures, durations, output, portions, and food benefits. In the cookbook, ingredients that have their own recipe link to it. A cheeseburger links to its bun, and the bun links to flour.
 
 ### Recipe states
 
 Each recipe is a self-contained process. It covers only the steps from its direct ingredients to its output.
 
-- **Unavailable:** Some ingredients are missing. The guide shows what is needed and links to their recipes.
+- **Unavailable:** Some ingredients are missing. The cookbook shows what is needed and links to their recipes.
 - **Ready:** All ingredients are available. The player can activate the recipe.
 - **Active:** The player follows the steps. Valid actions at the right workstation advance it.
 
@@ -51,7 +51,7 @@ A player prepares buns, minced beef, and pickles independently and in any order.
 
 Active steps need a player action: adding ingredients, chopping, kneading, shaping, grinding, seasoning, or moving food between equipment. Passive steps progress while their conditions hold: baking, simmering, proofing, drying, fermentation, and ageing.
 
-The guide shows the current step, its progress, the required action, and the temperature. The workstation reports what the active recipe expects, for example "Heating: 65°C / 85–95°C required". A wrong ingredient is not accepted and stays with the player.
+The cookbook shows the current step, its progress, the required action, and the temperature. The workstation reports what the active recipe expects, for example "Heating: 65°C / 85–95°C required". A wrong ingredient is not accepted and stays with the player.
 
 ### Temperature
 
@@ -82,13 +82,13 @@ Progress belongs to the food or workstation, not to the player's selection. A si
 
 ### Crops and cultivation
 
-Farming expands with grains, vegetables, alliums, legumes, chilies, herbs, spices, fruit trees, and berries. Crops have preferences for light, temperature, soil, moisture, and supports such as trellises. Rice needs flooded farmland. Poor conditions slow or pause growth rather than destroy the crop. Some seeds or cuttings require exploring particular biomes.
+Farming expands with grains, vegetables, alliums, legumes, chilies, herbs, spices, fruit trees, and berries. Crops everywhere have preferences for light, temperature, soil, moisture, and supports such as trellises. Rice needs flooded farmland. Poor conditions slow or pause growth rather than destroy the crop. Some seeds or cuttings require exploring particular biomes.
 
 Mushrooms have their own cultivation through compost beds, inoculated logs, and controlled environments. Some varieties stay wild and must be foraged.
 
 ### Butchery
 
-Animals drop carcasses instead of ordinary meat. A butcher's table splits a carcass into cuts, bones, fat, and trimmings. Cuts include steaks, chops, roasting joints, shoulders, ribs, and stew meat. Cuts matter: a steak suits frying, and a tough shoulder suits slow braising. Further processing includes cubing, mincing, patties, meatballs, sausages, curing, smoking, rendering fat, and stock from bones. Fish are cleaned and filleted into fillets, bones, and trimmings.
+Animals everywhere drop carcasses instead of ordinary meat. A butcher's table splits a carcass into cuts, bones, fat, and trimmings. Cuts include steaks, chops, roasting joints, shoulders, ribs, and stew meat. Cuts matter: a steak suits frying, and a tough shoulder suits slow braising. Further processing includes cubing, mincing, patties, meatballs, sausages, curing, smoking, rendering fat, and stock from bones. Fish are cleaned and filleted into fillets, bones, and trimmings.
 
 ### Milling, baking, and dairy
 
@@ -136,7 +136,7 @@ The effort of manual cooking motivates automation. Automation follows familiar p
 | Prepared ingredients | Butter, dough, tomato sauce, stocks, dried and fermented products |
 | Kitchen production | Butchery, sausages, cheese, bread, pastry |
 
-The stages are not rigid technology tiers. Commissioning automation for a recipe consumes a quantity of its finished product, alongside installed equipment and the usual book and upgrade rules. Whether commissioning also needs a count of manual preparations is open; see [open questions](#open-questions).
+The stages are not rigid technology tiers. Kitchen automation requires its automation book and upgrade purchase. Commissioning automation for a recipe also consumes a quantity of its finished product and needs installed equipment. No count of personal manual preparations is required, following [PDR-0013](../decisions/pdr/0013-gate-production-through-player-progress.md). Automating some of the work is expected: the complexity of cooking makes it a large gameplay improvement.
 
 Automation uses the same ingredients, equipment, temperatures, and durations as manual cooking. Equipment capacity and resources limit concurrent production. Stock targets keep pantry quantities, such as 32 salt, 16 flour, and 8 chicken stock. Automation expands upstream over time: once butchery is automated, stock production can draw bones from carcasses. Eventually a player making lasagne finds pasta sheets, minced beef, tomato sauce, stock, and cheese already in storage.
 
@@ -192,9 +192,6 @@ A meal that once needed substantial preparation becomes easy because the player 
 
 ## Open questions
 
-- **Guide name:** "Recipe book" already means the vanilla recipe-book panel used by the crafting room. The cooking guide needs a distinct term, such as cookbook.
-- **World scope:** Carcass drops, crop requirements, and wild ingredients change play outside the cabin. Direction must confirm that the cabin mod owns these world changes, and whether cooking works outside the kitchen.
-- **Commissioning gate:** A required count of manual preparations would be a personal achievement, which [PDR-0013](../decisions/pdr/0013-gate-production-through-player-progress.md) excludes. Consuming finished product fits that decision.
 - **Packed time:** Passive steps such as fermentation and ageing need catch-up limits while an empty cabin is packed.
 - **Farmer's Delight crops:** The greenhouse ships growth profiles for Farmer's Delight crops. They stay until cabin cooking supplies its own crops.
 - **Balance:** Benefit families, magnitudes, durations, and active-benefit limits are open.

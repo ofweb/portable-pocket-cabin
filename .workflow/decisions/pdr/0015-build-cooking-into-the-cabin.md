@@ -18,7 +18,7 @@ Guided recipes, temperature control, butchery, intermediate products, and earned
 
 ## Scope
 
-This decision selects the cooking direction and retires Farmer's Delight as a planned integration. It does not select recipes, equipment, benefits, costs, or the order of delivery. The concept's open questions remain open, including how far food changes reach outside the cabin.
+This decision selects the cooking direction and retires Farmer's Delight as a planned integration. It does not select recipes, equipment, benefits, costs, or the order of delivery. Food changes apply throughout the world, not only in the cabin. The concept's remaining open questions stay open.
 
 ## Related records
 

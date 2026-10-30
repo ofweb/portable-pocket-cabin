@@ -34,7 +34,7 @@ Dedicated production rooms work manually before central storage or automation. S
 
 ### Cooking and food production
 
-The cabin provides its own cooking system. Players learn real techniques through guided recipes, follow food from farm to table, and prepare intermediate products such as flour, stock, and cheese. Cooking is forgiving: wrong actions are ignored, and food does not burn or spoil. Complex dishes give stronger food benefits. Automation takes over familiar processes after players have learned them. The [cooking concept](cooking/concept.md) describes the system, and [PDR-0015](decisions/pdr/0015-build-cooking-into-the-cabin.md) records the choice to build it instead of integrating Farmer's Delight. Cooking features own their recipes, equipment, benefits, and costs.
+The cabin provides its own cooking system. Players learn real techniques through guided recipes, follow food from farm to table, and prepare intermediate products such as flour, stock, and cheese. Cooking is forgiving: wrong actions are ignored, and food does not burn or spoil. Complex dishes give stronger food benefits. Food changes apply throughout the world: animals drop carcasses, and crops have growing requirements everywhere. Players can cook anywhere with the right equipment, and the cabin kitchen makes cooking more practical. Kitchen automation requires its automation book, and commissioning a recipe consumes some of its finished product. The [cooking concept](cooking/concept.md) describes the system, and [PDR-0015](decisions/pdr/0015-build-cooking-into-the-cabin.md) records the choice to build it instead of integrating Farmer's Delight. Cooking features own their recipes, equipment, benefits, and costs.
 
 ### Loadouts
 
@@ -97,7 +97,3 @@ What happens to a displayed or partly funded cost if a mod is later added or rem
 ### Progress after an empty cabin becomes occupied
 
 Direction must confirm catch-up limits for other rooms, jobs, and placed blocks such as furnaces and crops outside the greenhouse. The [greenhouse limit](#greenhouse-catch-up) is settled. Automation catch-up limits remain open.
-
-### Food changes outside the cabin
-
-Cabin cooking replaces ordinary meat drops with carcasses and gives crops growing requirements. These changes reach play outside the cabin. A decision is necessary about how far they apply, and whether cooking works outside the kitchen. The [cooking concept](cooking/concept.md#open-questions) lists related questions.
