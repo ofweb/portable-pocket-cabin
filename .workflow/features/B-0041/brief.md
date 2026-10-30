@@ -46,8 +46,10 @@ Cooking automation belongs to B-0025. Material smelting belongs to B-0040.
 - [Central storage](../B-0004/brief.md).
 - [Cooking and brewing automation](../B-0025/brief.md).
 - [Manual production rooms](../../direction.md#manual-production-rooms).
+- [Cooking concept](../../cooking/concept.md).
+- [Guided cooking recipes](../../backlog.md#b-0045-guided-cooking-recipes).
 
 ## Open questions and assumptions
 
-- Room order, height, supplied stations, recipes, optional mod support, upgrade tiers, and costs remain open.
+- Room order, height, supplied stations, upgrade tiers, and costs remain open. Cabin cooking in B-0045 owns recipes and cooking equipment behavior; Farmer's Delight support is retired.
 - Ingredient, fuel and output transfers, station interfaces, role permissions, and interrupted-operation recovery remain open.

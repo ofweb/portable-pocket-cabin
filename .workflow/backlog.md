@@ -104,7 +104,7 @@
 - Status: Ready for Shape
 - Value: Let residents keep livestock with profiles and population limits, and collect products manually.
 - Direction: [Direction](direction.md).
-- Relationships: Uses B-0005. B-0026 defines automatic actions.
+- Relationships: Uses B-0005. B-0026 defines automatic actions. Supplies animals, milk, and eggs for cooking in B-0046 and B-0049.
 - Feature Brief: [Livestock rooms brief](features/B-0022/brief.md).
 
 ## B-0023: Forestry room
@@ -126,10 +126,10 @@
 ## B-0025: Cooking and brewing jobs
 
 - Status: Ready for Shape
-- Value: Add cooking and brewing processes with profiles to local jobs with limits.
-- Direction: [Direction](direction.md).
+- Value: Let local jobs perform commissioned cooking recipes and brewing processes with limits, using the same steps as manual cooking.
+- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Feature Brief: [Cooking and brewing brief](features/B-0025/brief.md).
-- Relationships: Uses B-0024. Cooking uses B-0041. Brewing uses B-0043.
+- Relationships: Uses B-0024. Cooking uses B-0041 and B-0045. Brewing uses B-0043.
 
 ## B-0026: Room automation
 
@@ -142,7 +142,7 @@
 ## B-0027: Optional production profiles
 
 - Status: Ready for Shape
-- Value: Add optional cooking and process profiles, including kiln work and later coal production.
+- Value: Add process profiles for kiln work, charcoal, and later coal production. Food profiles for optional mods are retired by PDR-0015.
 - Direction: [Direction](direction.md).
 - Feature Brief: [Optional production brief](features/B-0027/brief.md).
 - Relationships: Uses B-0025. Optional mods must have integration profiles.
@@ -240,7 +240,7 @@
 - Status: Ready for Shape
 - Value: Give the household a kitchen that works without storage or automation and uses installed storage automatically.
 - Direction: [Manual production rooms](direction.md#manual-production-rooms).
-- Relationships: Uses B-0005 and B-0038. Integrates B-0004. Used by cooking in B-0025.
+- Relationships: Uses B-0005 and B-0038. Integrates B-0004. Hosts cabin cooking from B-0045. Used by cooking in B-0025.
 - Feature Brief: [Manual kitchen brief](features/B-0041/brief.md).
 
 ## B-0042: Smelting jobs
@@ -265,3 +265,59 @@
 - Direction: [Direction](direction.md).
 - Feature Brief: [Book vendors brief](features/B-0044/brief.md).
 - Relationships: Supplies books for the B-0038 installation flow.
+
+## B-0045: Guided cooking recipes
+
+- Status: Ready for Shape
+- Value: Let players activate real recipes from a cooking guide and complete them through workstation actions, temperatures, and passive steps. Wrong actions are ignored, and several recipes can run in parallel.
+- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
+- Relationships: Uses B-0041. Integrates B-0004. Used by B-0025 and B-0046 through B-0052.
+
+## B-0046: Milling, baking, and dairy
+
+- Status: Ready for Shape
+- Value: Let players mill grain into flour, make doughs, starters, and baked goods, and turn milk into butter, cream, yogurt, and cheese.
+- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
+- Relationships: Uses B-0045. Uses milk and eggs from B-0022.
+
+## B-0047: Stocks, sauces, and flavour
+
+- Status: Ready for Shape
+- Value: Let players make stocks, dashi, and sauces, and learn the five basic tastes through seasoning and balance.
+- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
+- Relationships: Uses B-0045.
+
+## B-0048: Fermentation, drying, and preservation
+
+- Status: Ready for Shape
+- Value: Let players ferment, dry, smoke, cure, pickle, and age ingredients over time.
+- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
+- Relationships: Uses B-0045. Packed-time limits follow the open [catch-up question](direction.md#progress-after-an-empty-cabin-becomes-occupied).
+
+## B-0049: Butchery and carcasses
+
+- Status: Needs Direction
+- Value: Let animals drop carcasses that players butcher into cuts, bones, fat, and trimmings, then process into mince, sausages, and cured meat. Fish are filleted.
+- Direction: [Open question](direction.md#food-changes-outside-the-cabin).
+- Relationships: Uses B-0045. Uses animals from B-0022.
+
+## B-0050: Cooking crops and foraging
+
+- Status: Needs Direction
+- Value: Add grains, vegetables, herbs, spices, chilies, fruit, and mushrooms with growing requirements, cultivation methods, and wild sources that reward exploration.
+- Direction: [Open question](direction.md#food-changes-outside-the-cabin).
+- Relationships: Grown in B-0019. Used by B-0045 recipes.
+
+## B-0051: Food benefits
+
+- Status: Ready for Shape
+- Value: Give ingredients small benefit contributions that processing develops and complete dishes combine, within bounded limits.
+- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
+- Relationships: Uses B-0045.
+
+## B-0052: Fruit pressing and drinks
+
+- Status: Ready for Shape
+- Value: Let players press juice, infuse, and make syrups and concentrates for non-alcoholic drinks and cooking.
+- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
+- Relationships: Uses B-0045.

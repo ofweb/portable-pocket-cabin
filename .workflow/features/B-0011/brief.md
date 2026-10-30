@@ -20,10 +20,9 @@ Acceptance:
 - Compatibility information identifies versions and groups of mods that completed checks. A profile without test results does not confirm compatibility.
 - Checks without optional mods include all completed cabin features.
 - Checks for `Biomes O' Plenty` include Cabin palette, door, and World attunement profiles.
-- Checks for Farmer's Delight Refabricated include crops, `Rich Soil`, cooking and storage blocks, and cooking profiles.
+- Checks for Farmer's Delight Refabricated cover only the shipped greenhouse crop profiles. [PDR-0015](../../decisions/pdr/0015-build-cooking-into-the-cabin.md) retires its other planned support.
 - `Tom's Simple Storage` networks in cabins do not connect to central storage.
 - Checks for `Alex's Mobs Continued` include stable residents and livestock types. Only types with profiles can use cabin actions.
-- Checks for Alex's Mobs Continued Delight include only ingredients, meals, and process profiles that the cabin can use.
 - Placed blocks and block entities use Minecraft persistence. Cabin actions for entities, item data, and production must have profiles.
 
 ### S2: Missing optional mods

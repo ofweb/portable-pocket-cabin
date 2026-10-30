@@ -8,7 +8,7 @@ Portable Pocket Cabin gives players a home that travels with them in Survival mo
 
 Players can get a [Cabin Kit](context.md#cabin-kit) through Survival mode and create one lasting pocket home. Players can deploy, pack, and move it between safe sites. The interior, its contents, and purchased upgrades stay with the cabin through travel, restart, and recovery. Players choose wood types for the cabin's appearance through its [Cabin palette](context.md#cabin-palette). The palette gives the home the same materials through each move.
 
-The cabin becomes a useful household as the player explores. Its owner can give access to other players, receive deliveries, and keep resources for household use. Larger [general space](context.md#general-space) and different rooms give space for living, crops, animals, and trees. A house cat can have a home there. Players can learn from exploration to use production, enchanting, and owner loadouts. Players can connect cabins for safe visits and work together. Each cabin keeps its identity and resources. Each cabin must get and install cabin books locally to reveal upgrades. Learned enchantments stay local to each cabin. Connections do not give automation capabilities or learned enchantments.
+The cabin becomes a useful household as the player explores. Its owner can give access to other players, receive deliveries, and keep resources for household use. Larger [general space](context.md#general-space) and different rooms give space for living, crops, animals, and trees. A house cat can have a home there. Players can learn from exploration to use production, enchanting, and owner loadouts. Players learn real cooking and see how much work ordinary food takes. Players can connect cabins for safe visits and work together. Each cabin keeps its identity and resources. Each cabin must get and install cabin books locally to reveal upgrades. Learned enchantments stay local to each cabin. Connections do not give automation capabilities or learned enchantments.
 
 Production at higher tiers uses advanced upgrade materials to place automation after the stage where gathering its resource should be routine. Previously collected and traded materials satisfy the gate. The owner does not need a separate personal achievement. [The production decision](decisions/pdr/0013-gate-production-through-player-progress.md) states the rule without selecting exact costs or tiers.
 
@@ -32,6 +32,10 @@ Players can deliver mail to a cabin, and its owner can collect it through househ
 
 Dedicated production rooms work manually before central storage or automation. Storage integrates with installed rooms, and automation remains a separate progression path. Each room's brief owns its facilities, book requirements, upgrades, dimensions, placement, and storage interactions: [crafting](features/B-0039/brief.md), [smelting](features/B-0040/brief.md), [kitchen](features/B-0041/brief.md), [potions](features/B-0043/brief.md), and [enchanting](features/B-0008/brief.md).
 
+### Cooking and food production
+
+The cabin provides its own cooking system. Players learn real techniques through guided recipes, follow food from farm to table, and prepare intermediate products such as flour, stock, and cheese. Cooking is forgiving: wrong actions are ignored, and food does not burn or spoil. Complex dishes give stronger food benefits. Automation takes over familiar processes after players have learned them. The [cooking concept](cooking/concept.md) describes the system, and [PDR-0015](decisions/pdr/0015-build-cooking-into-the-cabin.md) records the choice to build it instead of integrating Farmer's Delight. Cooking features own their recipes, equipment, benefits, and costs.
+
 ### Loadouts
 
 Loadouts have their own cabin book and upgrade path, independent of production rooms and their automation. They move existing items between central storage and player inventory. Loadouts do not craft or enchant missing items. Equipment production remains a separate capability.
@@ -52,7 +56,7 @@ Travel and changes to inventory do not alter costs.
 
 Each upgrade specifies preferred materials. Each non-vanilla material has a shared fallback chain that can pass through other supported mods and ends with vanilla. The first available material in that chain supplies the requirement. Each fallback specifies a fixed replacement quantity to account for differences in material effort. The [material decision](decisions/pdr/0014-use-preferred-upgrade-materials-with-shared-fallbacks.md) states the rule. Ingredient fallbacks do not change the saved Cabin palette.
 
-Biomes O' Plenty, Alex's Mobs, and Farmer's Delight Refabricated are intended optional sources for suitable upgrade materials. Support follows the project's profile and compatibility limits. Compatible versions and the Alex's Mobs variant remain unresolved. The [mod references](references.md) retain their sources and compatibility questions.
+Biomes O' Plenty and Alex's Mobs are intended optional sources for suitable upgrade materials. Support follows the project's profile and compatibility limits. Compatible versions and the Alex's Mobs variant remain unresolved. The [mod references](references.md) retain their sources and compatibility questions.
 
 ## Boundaries and tensions
 
@@ -84,7 +88,7 @@ Can sleep in a cabin control the time at its deployed exterior? A decision is ne
 
 ### More modded materials
 
-Which additional materials should have profiles? Biomes O' Plenty, Alex's Mobs, and Farmer's Delight Refabricated are intended sources. Compatible versions must be established, including whether Alex's Mobs Continued can satisfy the Alex's Mobs goal.
+Which additional materials should have profiles? Biomes O' Plenty and Alex's Mobs are intended sources. Compatible versions must be established, including whether Alex's Mobs Continued can satisfy the Alex's Mobs goal.
 
 ### Fixed upgrade costs and optional materials
 
@@ -93,3 +97,7 @@ What happens to a displayed or partly funded cost if a mod is later added or rem
 ### Progress after an empty cabin becomes occupied
 
 Direction must confirm catch-up limits for other rooms, jobs, and placed blocks such as furnaces and crops outside the greenhouse. The [greenhouse limit](#greenhouse-catch-up) is settled. Automation catch-up limits remain open.
+
+### Food changes outside the cabin
+
+Cabin cooking replaces ordinary meat drops with carcasses and gives crops growing requirements. These changes reach play outside the cabin. A decision is necessary about how far they apply, and whether cooking works outside the kitchen. The [cooking concept](cooking/concept.md#open-questions) lists related questions.

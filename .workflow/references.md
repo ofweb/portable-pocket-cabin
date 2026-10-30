@@ -17,13 +17,13 @@
 ## Farmer's Delight Refabricated
 
 - Link: [Project repository](https://github.com/MehVahdJukaar/FarmersDelightRefabricated).
-- Relevance: Its farming and cooking content can supply crafted products for upgrade costs. Existing optional production work also targets its recipes.
-- Related: [Upgrade materials and exploration](direction.md#upgrade-materials-and-exploration).
-- Unverified: Compatible versions for this project's Minecraft version and which products fit each upgrade type.
+- Relevance: No longer an intended integration. [PDR-0015](decisions/pdr/0015-build-cooking-into-the-cabin.md) replaces it with cabin cooking. The greenhouse still ships growth profiles for its crops.
+- Related: [Cooking concept](cooking/concept.md), [greenhouse](features/B-0019/brief.md).
+- Unverified: Compatible versions for this project's Minecraft version.
 
 ## Farmer's Delight crops and soils
 
 - Link: [Upstream project](https://github.com/vectorwing/FarmersDelight), [crop registrations](https://github.com/vectorwing/FarmersDelight/blob/1.21/src/main/java/vectorwing/farmersdelight/common/registry/ModBlocks.java), [rich soil](https://github.com/vectorwing/FarmersDelight/blob/1.21/src/main/java/vectorwing/farmersdelight/common/block/RichSoilBlock.java), [rice](https://github.com/vectorwing/FarmersDelight/blob/1.21/src/main/java/vectorwing/farmersdelight/common/block/RiceBlock.java).
-- Relevance: Adds cabbage, onions, tomatoes, rice, rich soil, compost conversion, and mushroom colonies. Flooded rice and climbing tomatoes affect garden customization and preservation during reshaping.
+- Relevance: Adds cabbage, onions, tomatoes, rice, rich soil, compost conversion, and mushroom colonies. Flooded rice and climbing tomatoes affect garden customization and preservation during reshaping. Its crop behavior can inform cabin cooking crops.
 - Related: [Greenhouse](features/B-0019/brief.md).
 - Unverified: Inspected upstream targets NeoForge 1.21.1. Equivalent content and compatible Fabric 26.2 support through Refabricated remain unverified.

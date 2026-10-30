@@ -9,19 +9,7 @@ An optional mod can add a safe production method. The cabin can operate without 
 
 ## Stories and acceptance
 
-### S1: Use a food process profile
-
-Story: A player uses a process profile for an optional food mod to request a known meal.
-
-Acceptance:
-
-- For Farmer's Delight and Farmer's Delight Refabricated, process profiles list ingredients, meals, item parts, and cooking jobs the cabin can use.
-- A process profile for Alex's Mobs Continued Delight can add ingredients and meals through a Farmer's Delight recipe sequence the cabin can use.
-- A profile has rules only for the blocks that the profile lists. The profile keeps only the item data that the profile lists.
-- The cabin gets a meal product template only after the meal enters central storage. The job must have the correct capability, inputs, output space, and time.
-- If an optional mod is missing or the cabin cannot use its profile, those meals stay in storage. The cabin cannot make them, but the cabin starts.
-
-### S2: Use a kiln or wood process profile
+### S1: Use a kiln or wood process profile
 
 Story: An owner selects a kiln or wood process profile and sees local jobs make its outputs from its inputs.
 
@@ -41,12 +29,13 @@ Acceptance:
 
 ## Scope
 
-This feature includes food process profiles for optional mods, kiln jobs, charcoal jobs that use wood that the process profile lists, and coal production.
+This feature includes kiln jobs, charcoal jobs that use wood that the process profile lists, and coal production.
 
 ## Non-goals
 
 - Automatic production does not use a modded recipe, block, entity, or item component without a process profile.
 - Placed blocks from optional mods do not operate while the cabin is packed.
+- Food process profiles for Farmer's Delight and its add-ons are retired. Cabin cooking replaces them under [PDR-0015](../../decisions/pdr/0015-build-cooking-into-the-cabin.md).
 
 ## Related records
 
