@@ -40,6 +40,14 @@ final class CabinCorridorStartupCheck {
 		}));
 	}
 
+	private static int command(MinecraftServer server, net.minecraft.commands.CommandSourceStack source, String command) {
+		try {
+			return server.getCommands().getDispatcher().execute(command, source.withSuppressedOutput());
+		} catch (com.mojang.brigadier.exceptions.CommandSyntaxException exception) {
+			return 0;
+		}
+	}
+
 	private static CabinRecord deployed(MinecraftServer server, UUID owner) {
 		CabinRegistry registry = CabinRegistry.get(server);
 		CabinRecord cabin = registry.create(owner);
@@ -105,6 +113,26 @@ final class CabinCorridorStartupCheck {
 		loose.playerTouch(residentPlayer);
 		require(!loose.isAlive() && residentPlayer.getInventory().countItem(Items.EMERALD) == 2, "Residents can collect items");
 		for (var player : List.of(guestPlayer, residentPlayer)) player.getInventory().clearContent();
+		UUID known = UUID.randomUUID();
+		server.services().nameToIdCache().add(new net.minecraft.server.players.NameAndId(known, "cabin_known"));
+		try {
+			var playerData = server.getWorldPath(net.minecraft.world.level.storage.LevelResource.PLAYER_DATA_DIR);
+			java.nio.file.Files.createDirectories(playerData);
+			java.nio.file.Files.writeString(playerData.resolve(known + ".dat"), "");
+		} catch (java.io.IOException exception) {
+			throw new IllegalStateException("Could not create known-player data", exception);
+		}
+		var ownerSource = net.fabricmc.fabric.api.entity.FakePlayer.get(pocket, new com.mojang.authlib.GameProfile(OWNER, "cabin_owner")).createCommandSourceStack();
+		require(command(server, ownerSource, "cabin resident add cabin_known") == 1
+			&& registry.find(cabin.uuid()).orElseThrow().role(known) == CabinRole.RESIDENT, "Owners can add a known offline player");
+		require(command(server, ownerSource, "cabin resident add cabin_known") == 0, "Adding an existing resident is rejected");
+		require(command(server, ownerSource, "cabin resident add cabin_never_seen") == 0, "Players who never joined are rejected");
+		require(command(server, ownerSource, "cabin household list") == 1, "Owners can list the household");
+		require(command(server, guestPlayer.createCommandSourceStack(), "cabin resident remove cabin_known") == 0, "Only owners can change the household");
+		require(command(server, ownerSource, "cabin resident remove cabin_known") == 1
+			&& registry.find(cabin.uuid()).orElseThrow().role(known) == CabinRole.GUEST, "Owners can remove a resident");
+		require(command(server, ownerSource, "cabin trust add cabin_known") == 0
+			&& command(server, ownerSource, "cabin access private") == 0, "Replaced trust and access commands have no aliases");
 		registry.removeResident(cabin.uuid(), OWNER, resident);
 		require(!CabinCorridors.mayChange(pocket, resident, furniture), "Revoked roles take effect immediately");
 		cabin = registry.find(cabin.uuid()).orElseThrow();

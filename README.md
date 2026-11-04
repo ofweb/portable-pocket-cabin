@@ -63,7 +63,7 @@ Normal player commands are:
 /cabin household list
 ```
 
-The owner can change residents while the cabin is deployed or packed. A player must be online or known to the server. A removed resident becomes a guest immediately.
+The owner can change residents while the cabin is deployed or packed. A new resident must be online or have joined this server before. A removed resident becomes a guest immediately.
 
 The lifecycle commands `/cabin preview`, `/cabin deploy`, and `/cabin pack` remain available only to operators for debugging and recovery. The [material profile code](src/main/java/dev/portablepocketcabin/CabinMaterialProfiles.java) validates version 1 profiles. [Profiles](src/main/resources/data/portable_pocket_cabin/portable_pocket_cabin/material_profiles) give datapack examples.
 

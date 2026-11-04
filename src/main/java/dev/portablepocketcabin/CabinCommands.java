@@ -323,6 +323,10 @@ final class CabinCommands {
 			return 0;
 		}
 		var target = targets.iterator().next();
+		if (add && !knownToServer(source.getServer(), target.id())) {
+			source.sendFailure(Component.literal(target.name() + " has not joined this server."));
+			return 0;
+		}
 		CabinRegistry registry = CabinRegistry.get(source.getServer());
 		CabinRecord cabin = registry.findByOwner(owner.getUUID()).orElse(null);
 		if (cabin == null) {
@@ -345,6 +349,12 @@ final class CabinCommands {
 			target.name() + (add ? " is now a resident." : " is no longer a resident.")
 		), true);
 		return 1;
+	}
+
+	// Name lookup can invent offline or unjoined profiles, so require a player who is online or has saved data.
+	private static boolean knownToServer(net.minecraft.server.MinecraftServer server, UUID playerId) {
+		return server.getPlayerList().getPlayer(playerId) != null || java.nio.file.Files.exists(server.getWorldPath(
+			net.minecraft.world.level.storage.LevelResource.PLAYER_DATA_DIR).resolve(playerId + ".dat"));
 	}
 
 	private static int household(CommandSourceStack source) {
