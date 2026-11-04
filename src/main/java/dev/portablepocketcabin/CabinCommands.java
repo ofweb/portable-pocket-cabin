@@ -3,6 +3,7 @@ package dev.portablepocketcabin;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.commands.arguments.GameProfileArgument;
 import net.minecraft.commands.arguments.UuidArgument;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.CommandBuildContext;
@@ -62,22 +63,20 @@ final class CabinCommands {
 			.then(Commands.literal("pack")
 				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 				.executes(context -> pack(context.getSource())))
-			.then(Commands.literal("trust")
+			.then(Commands.literal("resident")
 				.then(Commands.literal("add")
-					.then(Commands.argument("player", EntityArgument.player())
-						.executes(context -> trust(
-							context.getSource(), EntityArgument.getPlayer(context, "player"), true
+					.then(Commands.argument("player", GameProfileArgument.gameProfile())
+						.executes(context -> resident(
+							context.getSource(), GameProfileArgument.getGameProfiles(context, "player"), true
 						))))
 				.then(Commands.literal("remove")
-					.then(Commands.argument("player", EntityArgument.player())
-						.executes(context -> trust(
-							context.getSource(), EntityArgument.getPlayer(context, "player"), false
+					.then(Commands.argument("player", GameProfileArgument.gameProfile())
+						.executes(context -> resident(
+							context.getSource(), GameProfileArgument.getGameProfiles(context, "player"), false
 						)))))
-			.then(Commands.literal("access")
-				.then(Commands.literal("private")
-					.executes(context -> access(context.getSource(), CabinEntryPermission.OWNER_ONLY)))
-				.then(Commands.literal("trusted")
-					.executes(context -> access(context.getSource(), CabinEntryPermission.TRUSTED_PLAYERS))))
+			.then(Commands.literal("household")
+				.then(Commands.literal("list")
+					.executes(context -> household(context.getSource()))))
 			.then(Commands.literal("reconcile")
 				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 				.then(Commands.argument("uuid", UuidArgument.uuid())
@@ -215,8 +214,7 @@ final class CabinCommands {
 				+ " cleanup_pending=" + cabin.exteriorCleanupPending()
 				+ " palette=" + cabin.palette()
 				+ " item_delivery_pending=" + cabin.deploymentItemDeliveryPending()
-				+ " access=" + cabin.entryPermission().serializedName()
-				+ " trusted=" + cabin.trustedPlayers()
+				+ " residents=" + cabin.residents()
 				+ " general_size=" + cabin.progression().generalSize()
 				+ " rooms=" + cabin.progression().rooms()), false);
 		return 1;
@@ -271,8 +269,7 @@ final class CabinCommands {
 			.append(copyableUuid(cabin.uuid()))
 			.append(" owner=" + cabin.owner() + " cell=" + cabin.cellIndex()
 				+ " state=" + cabin.lifecycle()
-				+ " access=" + cabin.entryPermission().serializedName()
-				+ " trusted=" + cabin.trustedPlayers().size()
+				+ " residents=" + cabin.residents().size()
 				+ cabin.exterior().map(value -> " exterior=" + value.dimension().identifier() + "@"
 					+ value.anchor().getX() + "," + value.anchor().getY() + "," + value.anchor().getZ())
 					.orElse(""));
@@ -311,7 +308,9 @@ final class CabinCommands {
 		return CabinPacking.request(player);
 	}
 
-	private static int trust(CommandSourceStack source, ServerPlayer target, boolean add) {
+	private static int resident(
+		CommandSourceStack source, java.util.Collection<net.minecraft.server.players.NameAndId> targets, boolean add
+	) {
 		ServerPlayer owner;
 		try {
 			owner = source.getPlayerOrException();
@@ -319,6 +318,11 @@ final class CabinCommands {
 			source.sendFailure(Component.literal("This command must be run by the cabin owner."));
 			return 0;
 		}
+		if (targets.size() != 1) {
+			source.sendFailure(Component.literal("Select exactly one player."));
+			return 0;
+		}
+		var target = targets.iterator().next();
 		CabinRegistry registry = CabinRegistry.get(source.getServer());
 		CabinRecord cabin = registry.findByOwner(owner.getUUID()).orElse(null);
 		if (cabin == null) {
@@ -328,22 +332,22 @@ final class CabinCommands {
 
 		try {
 			if (add) {
-				registry.trust(cabin.uuid(), owner.getUUID(), target.getUUID());
+				registry.addResident(cabin.uuid(), owner.getUUID(), target.id());
 			} else {
-				registry.untrust(cabin.uuid(), owner.getUUID(), target.getUUID());
+				registry.removeResident(cabin.uuid(), owner.getUUID(), target.id());
 			}
 			CabinRegistry.flush(source.getServer());
 		} catch (IllegalStateException exception) {
-			source.sendFailure(Component.literal(exception.getMessage()));
+			source.sendFailure(Component.literal(exception.getMessage() + "."));
 			return 0;
 		}
 		source.sendSuccess(() -> Component.literal(
-			target.getGameProfile().name() + (add ? " is now trusted." : " is no longer trusted.")
+			target.name() + (add ? " is now a resident." : " is no longer a resident.")
 		), true);
 		return 1;
 	}
 
-	private static int access(CommandSourceStack source, CabinEntryPermission permission) {
+	private static int household(CommandSourceStack source) {
 		ServerPlayer owner;
 		try {
 			owner = source.getPlayerOrException();
@@ -351,16 +355,18 @@ final class CabinCommands {
 			source.sendFailure(Component.literal("This command must be run by the cabin owner."));
 			return 0;
 		}
-		CabinRegistry registry = CabinRegistry.get(source.getServer());
-		CabinRecord cabin = registry.findByOwner(owner.getUUID()).orElse(null);
+		CabinRecord cabin = CabinRegistry.get(source.getServer()).findByOwner(owner.getUUID()).orElse(null);
 		if (cabin == null) {
 			source.sendFailure(Component.literal("You do not own a cabin."));
 			return 0;
 		}
-		registry.setEntryPermission(cabin.uuid(), owner.getUUID(), permission);
-		CabinRegistry.flush(source.getServer());
-		source.sendSuccess(() -> Component.literal("Cabin entry is now "
-			+ (permission == CabinEntryPermission.OWNER_ONLY ? "private." : "open to trusted players.")), true);
+		var names = source.getServer().services().nameToIdCache();
+		List<String> residents = cabin.residents().stream()
+			.map(id -> names.get(id).map(net.minecraft.server.players.NameAndId::name).orElse(id.toString()))
+			.toList();
+		source.sendSuccess(() -> Component.literal("Owner: " + owner.getGameProfile().name()
+			+ ". Residents: " + (residents.isEmpty() ? "none" : String.join(", ", residents))
+			+ ". All other players are guests."), false);
 		return 1;
 	}
 

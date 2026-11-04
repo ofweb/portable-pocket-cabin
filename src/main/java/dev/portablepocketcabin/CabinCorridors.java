@@ -25,11 +25,7 @@ public final class CabinCorridors {
 		if (!level.dimension().equals(PocketDimension.LEVEL_KEY)) return true;
 		if (isPaused(level, pos)) return false;
 		CabinRecord cabin = CabinRegistry.get(level.getServer()).findByCell(PocketDimension.cellIndexAt(pos).orElse(-1L)).orElse(null);
-		if (cabin == null) return true;
-		boolean wing = cabin.progression().corridors().stream().anyMatch(corridor -> CabinCorridorLayout.volume(
-			cabin.cellIndex(), cabin.progression().generalSize(), corridor).contains(pos))
-			|| cabin.progression().rooms().stream().anyMatch(room -> room.space().filter(space -> space.volume(cabin.cellIndex()).contains(pos)).isPresent());
-		return !wing || cabin.owner().equals(actor) || cabin.trustedPlayers().contains(actor) && cabin.canEnter(actor);
+		return cabin == null || cabin.isHousehold(actor);
 	}
 
 	static void applyWorldEffect(Runnable effect) {
@@ -260,7 +256,7 @@ public final class CabinCorridors {
 	private static CabinRecord withSourceSize(CabinRecord cabin, int sourceSize) {
 		return new CabinRecord(cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(), cabin.lastExterior(),
 			cabin.interiorGenerated(), cabin.packedItemGeneration(), cabin.exteriorCleanupPending(), cabin.palette(),
-			cabin.lastDeploymentItemId(), cabin.deploymentItemDeliveryPending(), cabin.entryPermission(), cabin.trustedPlayers(),
+			cabin.lastDeploymentItemId(), cabin.deploymentItemDeliveryPending(), cabin.residents(),
 			cabin.progression().withGeneralSize(sourceSize), cabin.upgrades());
 	}
 

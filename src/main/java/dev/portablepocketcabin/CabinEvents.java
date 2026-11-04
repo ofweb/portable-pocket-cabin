@@ -32,11 +32,6 @@ final class CabinEvents {
 			if (!(level instanceof ServerLevel serverLevel) || !(player instanceof ServerPlayer serverPlayer)) {
 				return InteractionResult.PASS;
 			}
-			if (!CabinCorridors.mayChange(serverLevel, player.getUUID(), hit.getBlockPos())
-				|| !CabinCorridors.mayChange(serverLevel, player.getUUID(), hit.getBlockPos().relative(hit.getDirection()))) {
-				return InteractionResult.FAIL;
-			}
-
 			CabinRecord exteriorCabin = CabinProtection.findExteriorEntrance(serverLevel, hit.getBlockPos())
 				.orElse(null);
 			if (exteriorCabin != null) {
@@ -57,6 +52,11 @@ final class CabinEvents {
 				.orElse(null);
 			if (controlledCabin != null) {
 				return CabinUpgrades.useController(serverPlayer, controlledCabin);
+			}
+			// Guests may still use the exit and inspect upgrades above.
+			if (!CabinCorridors.mayChange(serverLevel, player.getUUID(), hit.getBlockPos())
+				|| !CabinCorridors.mayChange(serverLevel, player.getUUID(), hit.getBlockPos().relative(hit.getDirection()))) {
+				return InteractionResult.FAIL;
 			}
 
 			if (serverLevel.dimension().equals(PocketDimension.LEVEL_KEY)) {
@@ -92,7 +92,9 @@ final class CabinEvents {
 			level instanceof ServerLevel serverLevel && !CabinCorridors.mayChange(serverLevel, player.getUUID(), entity.blockPosition())
 				? InteractionResult.FAIL : InteractionResult.PASS);
 		net.fabricmc.fabric.api.event.player.UseItemCallback.EVENT.register((player, level, hand) ->
-			level instanceof ServerLevel serverLevel && !CabinCorridors.mayChange(serverLevel, player.getUUID(), player.blockPosition())
+			level instanceof ServerLevel serverLevel
+				&& !player.getItemInHand(hand).has(net.minecraft.core.component.DataComponents.CONSUMABLE)
+				&& !CabinCorridors.mayChange(serverLevel, player.getUUID(), player.blockPosition())
 				? InteractionResult.FAIL : InteractionResult.PASS);
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
 			var player = handler.player;
@@ -115,10 +117,6 @@ final class CabinEvents {
 			player.sendSystemMessage(Component.literal("That cabin entrance is not active."));
 			return InteractionResult.FAIL;
 		}
-		if (!current.canEnter(player.getUUID())) {
-			player.sendSystemMessage(Component.literal("You do not have permission to enter that cabin."));
-			return InteractionResult.FAIL;
-		}
 		if (!CabinReconciliation.hasValidProjection(exteriorLevel.getServer(), current)) {
 			CabinReconciliation.reconcile(exteriorLevel.getServer(), current.uuid());
 			player.sendSystemMessage(Component.literal("That cabin entrance is incomplete and has been disabled."));
@@ -132,9 +130,8 @@ final class CabinEvents {
 		}
 
 		current = registry.find(cabin.uuid()).orElse(null);
-		if (current == null || current.lifecycle() != CabinLifecycle.DEPLOYED
-			|| !current.canEnter(player.getUUID())) {
-			player.sendSystemMessage(Component.literal("Cabin access changed before entry completed."));
+		if (current == null || current.lifecycle() != CabinLifecycle.DEPLOYED) {
+			player.sendSystemMessage(Component.literal("That cabin entrance changed before entry completed."));
 			return InteractionResult.FAIL;
 		}
 		var destination = PocketDimension.interiorEntrance(current.cellIndex(), current.progression().generalSize());

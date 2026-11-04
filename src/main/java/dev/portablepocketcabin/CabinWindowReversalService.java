@@ -228,7 +228,7 @@ final class CabinWindowReversalService {
 			cabin.uuid(), cabin.owner(), cabin.cellIndex(), cabin.lifecycle(), cabin.exterior(),
 			cabin.lastExterior(), cabin.interiorGenerated(), cabin.packedItemGeneration(),
 			cabin.exteriorCleanupPending(), cabin.palette(), cabin.lastDeploymentItemId(),
-			cabin.deploymentItemDeliveryPending(), cabin.entryPermission(), cabin.trustedPlayers(),
+			cabin.deploymentItemDeliveryPending(), cabin.residents(),
 			cabin.progression(), cabin.upgrades().withWindows(windows)
 		);
 	}

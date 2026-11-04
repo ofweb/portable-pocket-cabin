@@ -1,7 +1,6 @@
 package dev.portablepocketcabin;
 
 import dev.portablepocketcabin.CabinCrafting;
-import dev.portablepocketcabin.CabinEntryPermission;
 import dev.portablepocketcabin.CabinExterior;
 import dev.portablepocketcabin.CabinGreenhouse;
 import dev.portablepocketcabin.CabinItems;
@@ -758,7 +757,7 @@ public final class PortablePocketCabinClientGameTest
                 player.teleportTo(player.level(), table.getX() + .5, table.getY(), table.getZ() + 1.5, Set.of(), 0, 0, false);
                 check(CabinEnchantmentLibrary.valid(player, cabin), "Residents can use the installed library");
                 CabinEnchantingMenu.open(player, cabin);
-                registry.untrust(cabinId, cabin.owner(), player.getUUID());
+                registry.removeResident(cabinId, cabin.owner(), player.getUUID());
                 check(!player.containerMenu.stillValid(player), "Revoking resident access invalidates the library");
                 check(!CabinEnchantingMenu.open(player, registry.find(cabinId).orElseThrow()).consumesAction(), "Guests cannot open the library");
             });
@@ -1757,12 +1756,7 @@ public final class PortablePocketCabinClientGameTest
         var registry = CabinRegistry.get(server);
         UUID owner = UUID.randomUUID();
         var cabin = deployRegistryCabin(registry, owner, 7000);
-        registry.trust(cabin.uuid(), owner, player.getUUID());
-        registry.setEntryPermission(
-            cabin.uuid(),
-            owner,
-            CabinEntryPermission.TRUSTED_PLAYERS
-        );
+        registry.addResident(cabin.uuid(), owner, player.getUUID());
         cabin = registry.find(cabin.uuid()).orElseThrow();
         var pocket = server.getLevel(PocketDimension.LEVEL_KEY);
         PocketDimension.ensureCabinInterior(
@@ -1912,7 +1906,7 @@ public final class PortablePocketCabinClientGameTest
             upgrades.withStorage(beforeRemoteChange)
         );
         menu.broadcastChanges();
-        registry.untrust(cabin.uuid(), owner, player.getUUID());
+        registry.removeResident(cabin.uuid(), owner, player.getUUID());
         menu.clicked(
             0,
             1,
@@ -2277,12 +2271,7 @@ public final class PortablePocketCabinClientGameTest
                   );
             var cabin = registry.create(owner, palette);
             if (resident) {
-                registry.trust(cabin.uuid(), owner, player.getUUID());
-                registry.setEntryPermission(
-                    cabin.uuid(),
-                    owner,
-                    CabinEntryPermission.TRUSTED_PLAYERS
-                );
+                registry.addResident(cabin.uuid(), owner, player.getUUID());
             }
             registry.beginDeployment(
                 cabin.uuid(),

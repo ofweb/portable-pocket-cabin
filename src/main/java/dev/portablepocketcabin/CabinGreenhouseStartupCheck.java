@@ -83,10 +83,9 @@ final class CabinGreenhouseStartupCheck {
 			require(((ChestBlockEntity)pocket.getBlockEntity(chest)).getItem(0).getCount()==5,"Fixtures retain inventory");
 			require(CabinProtection.isProtected(pocket,crop.below(2)) && !CabinProtection.isProtected(pocket,crop.below()),"Foundation protected; gardening layer editable");
 			require(CabinCorridors.mayChange(pocket,OWNER,crop) && !CabinCorridors.mayChange(pocket,UUID.randomUUID(),crop),"Guests cannot garden");
-			UUID resident = UUID.randomUUID(); registry.trust(cabin.uuid(),OWNER,resident);
-			registry.setEntryPermission(cabin.uuid(),OWNER,CabinEntryPermission.TRUSTED_PLAYERS);
+			UUID resident = UUID.randomUUID(); registry.addResident(cabin.uuid(),OWNER,resident);
 			require(CabinCorridors.mayChange(pocket,resident,crop),"Residents can garden");
-			registry.untrust(cabin.uuid(),OWNER,resident);
+			registry.removeResident(cabin.uuid(),OWNER,resident);
 			require(!CabinCorridors.mayChange(pocket,resident,crop),"Revoked roles take effect");
 			var guest = new net.minecraft.server.level.ServerPlayer(server, pocket,
 				new com.mojang.authlib.GameProfile(resident, "garden_guest"), net.minecraft.server.level.ClientInformation.createDefault());
