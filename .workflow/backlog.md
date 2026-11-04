@@ -1,12 +1,5 @@
 # Backlog
 
-## B-0002: Household roles
-
-- Status: Ready for Design
-- Value: Give each cabin clear owner, resident, and guest capabilities.
-- Direction: [Direction](direction.md).
-- Feature Brief: [Household role brief](features/B-0002/brief.md).
-
 ## B-0003: Receiving mailbox
 
 - Status: Ready for Shape

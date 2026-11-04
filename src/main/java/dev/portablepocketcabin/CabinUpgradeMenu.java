@@ -630,8 +630,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 			return false;
 		}
 		CabinRecord cabin = CabinRegistry.get(serverPlayer.level().getServer()).find(cabinId).orElse(null);
-		if (cabin == null || cabin.lifecycle() != CabinLifecycle.DEPLOYED || !cabin.interiorGenerated()
-			|| !cabin.canEnter(player.getUUID())) {
+		if (cabin == null || cabin.lifecycle() != CabinLifecycle.DEPLOYED || !cabin.interiorGenerated()) {
 			return false;
 		}
 		var controller = PocketDimension.interiorController(cabin.cellIndex(), cabin.progression().generalSize());
@@ -828,8 +827,7 @@ final class CabinUpgradeMenu extends AbstractContainerMenu {
 		int flags = 0;
 		if (cabin.owner().equals(serverPlayer.getUUID())) {
 			flags |= FLAG_OWNER | FLAG_CONTRIBUTOR;
-		} else if (cabin.trustedPlayers().contains(serverPlayer.getUUID())
-			&& cabin.canEnter(serverPlayer.getUUID())) {
+		} else if (cabin.role(serverPlayer.getUUID()) == CabinRole.RESIDENT) {
 			flags |= FLAG_CONTRIBUTOR;
 		}
 		if (cabin.upgrades().operationInProgress()) {

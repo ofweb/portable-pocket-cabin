@@ -78,8 +78,7 @@ final class DedicatedServerStartupCheck {
 		if (first.cellIndex() != 0 || registry.size() != 1 || registry.nextCellIndex() != 1) {
 			throw new IllegalStateException("Fresh registry did not allocate the first cabin at cell zero");
 		}
-		registry.trust(first.uuid(), FIRST_OWNER, TRUSTED_PLAYER);
-		registry.setEntryPermission(first.uuid(), FIRST_OWNER, CabinEntryPermission.TRUSTED_PLAYERS);
+		registry.addResident(first.uuid(), FIRST_OWNER, TRUSTED_PLAYER);
 
 		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, new BlockPos(0, 200, 0), Direction.NORTH);
 		registry.beginDeployment(first.uuid(), FIRST_OWNER, exterior);
@@ -133,8 +132,7 @@ final class DedicatedServerStartupCheck {
 			.orElseThrow(() -> new IllegalStateException("Seeded cabin was not persisted across restart"));
 		if (first.cellIndex() != 0 || registry.size() != 2 || registry.nextCellIndex() != 2
 			|| first.lifecycle() != CabinLifecycle.DEPLOYED || !first.interiorGenerated()
-			|| first.exterior().isEmpty() || !first.canEnter(TRUSTED_PLAYER)
-			|| first.entryPermission() != CabinEntryPermission.TRUSTED_PLAYERS) {
+			|| first.exterior().isEmpty() || first.role(TRUSTED_PLAYER) != CabinRole.RESIDENT) {
 			throw new IllegalStateException("Reloaded registry does not match its persisted state");
 		}
 		assertPartialUpgradeFund(first);

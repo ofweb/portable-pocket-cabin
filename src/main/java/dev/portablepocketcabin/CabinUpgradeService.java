@@ -288,8 +288,7 @@ final class CabinUpgradeService {
 	}
 
 	private static boolean mayUseFund(CabinRecord cabin, UUID actor) {
-		return cabin.owner().equals(actor)
-			|| (cabin.trustedPlayers().contains(actor) && cabin.canEnter(actor));
+		return cabin.isHousehold(actor);
 	}
 
 	private static boolean active(CabinRecord cabin) {

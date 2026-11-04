@@ -27,10 +27,6 @@ final class CabinUpgrades {
 			player.sendSystemMessage(Component.literal("That cabin controller is not active."));
 			return InteractionResult.FAIL;
 		}
-		if (!cabin.canEnter(player.getUUID())) {
-			player.sendSystemMessage(Component.literal("You do not have permission to inspect this cabin."));
-			return InteractionResult.FAIL;
-		}
 		PocketDimension.removeLegacyDebugPlatformResidue(
 			player.level(), cabin.cellIndex(), cabin.progression().generalSize()
 		);

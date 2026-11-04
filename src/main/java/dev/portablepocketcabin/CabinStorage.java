@@ -66,7 +66,7 @@ final class CabinStorage {
 	}
 	static boolean mayUse(CabinRecord cabin, UUID actor) {
 		return cabin != null && cabin.lifecycle() == CabinLifecycle.DEPLOYED && cabin.interiorGenerated()
-			&& (cabin.owner().equals(actor) || cabin.trustedPlayers().contains(actor) && cabin.canEnter(actor));
+			&& cabin.isHousehold(actor);
 	}
 	static CabinStorageState.Session receipt(ServerPlayer player, ItemStack cursor) {
 		var inventory = new java.util.ArrayList<ItemStack>();

@@ -185,7 +185,7 @@ public final class CabinGreenhouseGameTest {
         helper.succeed();
     }
 
-    @GameTest(maxTicks = 80)
+    @GameTest(maxTicks = 200)
     public void catchUpRespectsMaturityShadeAndElapsedTime(
         GameTestHelper helper
     ) {
@@ -228,7 +228,17 @@ public final class CabinGreenhouseGameTest {
                 Blocks.STONE.defaultBlockState(),
                 CabinCorridorSnapshot.FLAGS
             );
-        helper.runAfterDelay(20, () -> {
+        // Light updates run asynchronously, so wait for the fixture's lighting.
+        helper.startSequence().thenIdle(20).thenWaitUntil(() -> {
+            helper.assertTrue(
+                level.getRawBrightness(lit, 0) >= 9,
+                "The open crop has crop lighting"
+            );
+            helper.assertTrue(
+                level.getRawBrightness(shaded, 0) < 9,
+                "The shade fixture blocks crop lighting"
+            );
+        }).thenExecute(() -> {
             level.setBlock(
                 lit,
                 Blocks.WHEAT.defaultBlockState(),
@@ -253,10 +263,6 @@ public final class CabinGreenhouseGameTest {
                 Blocks.WHEAT.defaultBlockState(),
                 CabinCorridorSnapshot.FLAGS
             );
-            helper.assertTrue(
-                level.getRawBrightness(shaded, 0) < 9,
-                "The shade fixture blocks crop lighting"
-            );
             CabinGreenhouseGrowth.catchUp(
                 level,
                 Set.of(shaded),
@@ -267,7 +273,6 @@ public final class CabinGreenhouseGameTest {
                 level.getBlockState(shaded).getValue(CropBlock.AGE) == 0,
                 "Shaded crops cannot catch up"
             );
-            helper.succeed();
-        });
+        }).thenSucceed();
     }
 }

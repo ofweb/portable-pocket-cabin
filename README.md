@@ -10,7 +10,7 @@ Use the Kit on top of a solid terrain block. The first use previews the 5×5 foo
 
 Use the exterior door or lodestone to enter. To pack, sneak-use the exterior lodestone twice within 10 seconds. A five-second evacuation and packing countdown follows.
 
-New cabins have a 3×3 usable interior with two blocks of clear height. Use the protected interior lodestone beside the exit to open **Cabin Upgrades**. Allowed visitors may inspect upgrades; the owner and trusted players may deposit or withdraw required materials. Left-click deposits a carried stack or withdraws one, right-click moves one item or half of the oldest stored stack, and shift-click deposits ordinary matching stacks from the inventory. Each icon accepts only its exact requirement and preserves stack data. Creative mode follows the same rules.
+New cabins have a 3×3 usable interior with two blocks of clear height. Use the protected interior lodestone beside the exit to open **Cabin Upgrades**. Guests may inspect upgrades; the owner and residents may deposit or withdraw required materials. Left-click deposits a carried stack or withdraws one, right-click moves one item or half of the oldest stored stack, and shift-click deposits ordinary matching stacks from the inventory. Each icon accepts only its exact requirement and preserves stack data. Creative mode follows the same rules.
 
 Only the owner may install a fully funded upgrade, using the check-mark button twice to confirm the unchanged target and fund. A failed installation leaves its materials available for withdrawal. Each expansion adds one block on all four sides around the fixed room center: 3×3, 5×5, 7×7, through 21×21 after nine purchases. Player blocks stay at their coordinates; the south entrance and adjacent lodestone move outward with their wall. Clear height increases with each expansion, reaching ten blocks at 19×19 and staying there at 21×21. Expansion refuses obstructed space.
 
@@ -40,7 +40,7 @@ Install a Greenhouse Cabin Book through the **Books** tab, then fund the next pu
 
 For development, obtain the book with `/give @s portable_pocket_cabin:greenhouse_book`. Book vendors and trades remain deferred. [Greenhouse implementation notes](docs/greenhouse.md) describe packed growth, supported plants, optional ingredients, and verification.
 
-The registry uses schema 9 for centered interiors and connected corridors. Schema 8 saves load with their contents preserved and no installed corridors. Older geometry schemas are rejected without rewriting the save. Back up an older world and replace the development world with `just fresh-world`. New cabins begin with solid walls.
+The registry uses schema 10 for household roles, centered interiors, and connected corridors. Earlier schemas are rejected without rewriting the save. Back up an older world and create a new one; for development, replace the world with `just fresh-world`. New cabins begin with solid walls.
 
 Cabins deploy in the Overworld, Nether, or End, and their protected interiors run only while deployed. Installed windows reflect the cabin's dimension, time, weather, or inactive state.
 
@@ -50,16 +50,20 @@ Packing moves the entrance but keeps the cabin interior and its contents in plac
 
 Packing stops if an occupant has no safe evacuation destination or the packed item cannot be delivered. A player who logged out inside an inactive cabin returns to a safe destination on login. If the exterior or packed item is lost, an operator can inspect and recover the cabin without deleting its interior.
 
-Sleeping in a cabin bed makes it the owner's cabin home. If that bed is unavailable, respawning tries the current exterior, then a safe position near the death site for an inactive cabin. The last campsite and Overworld spawn remain fallbacks. A trusted visitor can sleep without changing their own home.
+Sleeping in a cabin bed makes it the owner's cabin home. If that bed is unavailable, respawning tries the current exterior, then a safe position near the death site for an inactive cabin. The last campsite and Overworld spawn remain fallbacks. A resident can sleep without changing their own home.
+
+Each player has one household role in each cabin: its owner, a resident, or a guest. Anyone can enter a deployed cabin. Residents use household facilities, storage, rooms, and upgrade funds. Only the owner installs or reverses upgrades and changes the household. Guests can use the exit, inspect upgrades, and eat or drink. They cannot change blocks, open interior inventories, interact with entities, use other items, or drop or collect items inside the cabin. A role in one cabin gives no access to another.
 
 Normal player commands are:
 
 ```text
 /cabin status
-/cabin trust add <player>
-/cabin trust remove <player>
-/cabin access private|trusted
+/cabin resident add <player>
+/cabin resident remove <player>
+/cabin household list
 ```
+
+The owner can change residents while the cabin is deployed or packed. A new resident must be online or have joined this server before. A removed resident becomes a guest immediately.
 
 The lifecycle commands `/cabin preview`, `/cabin deploy`, and `/cabin pack` remain available only to operators for debugging and recovery. The [material profile code](src/main/java/dev/portablepocketcabin/CabinMaterialProfiles.java) validates version 1 profiles. [Profiles](src/main/resources/data/portable_pocket_cabin/portable_pocket_cabin/material_profiles) give datapack examples.
 

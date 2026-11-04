@@ -217,7 +217,7 @@ public final class PortablePocketCabinGameTest {
 
 	@GameTest
 	public void anchoredRegistrySchemasAreRejectedWithoutMutation(GameTestHelper helper) {
-		for (int version = 0; version <= 7; version++) {
+		for (int version = 0; version <= 9; version++) {
 			CabinRegistry registry = new CabinRegistry();
 			registry.create(UUID.randomUUID());
 			var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
@@ -291,9 +291,8 @@ public final class PortablePocketCabinGameTest {
 		registry.updateUpgradeState(cabin.uuid(), state);
 
 		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, new BlockPos(10, 100, 10), Direction.NORTH);
-		registry.trust(cabin.uuid(), owner, trusted);
+		registry.addResident(cabin.uuid(), owner, trusted);
 		assertUpgradeState(helper, state, registry.find(cabin.uuid()).orElseThrow().upgrades());
-		registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS);
 		assertUpgradeState(helper, state, registry.find(cabin.uuid()).orElseThrow().upgrades());
 		registry.beginDeployment(cabin.uuid(), owner, exterior);
 		registry.markInteriorGenerated(cabin.uuid());
@@ -600,31 +599,46 @@ public final class PortablePocketCabinGameTest {
 			CabinRegistry.requireSupportedSchema(root, java.nio.file.Path.of("fixed-height-cabins.dat"));
 			helper.fail("A fixed-height registry must fail before it can be loaded or replaced");
 		} catch (IllegalStateException expected) {
-			helper.assertTrue(expected.getMessage().contains("just fresh-world"),
-				"Fixed-height-world failure must explain the fresh-world recovery command");
+			helper.assertTrue(expected.getMessage().contains("Back up this world and create a new world"),
+				"Fixed-height-world failure must tell the player to back up and create a new world");
 			helper.assertTrue(root.equals(unchanged),
 				"Rejecting a fixed-height registry must not mutate its NBT data");
 		}
-		var migratableRoot = new net.minecraft.nbt.CompoundTag();
-		var migratableData = new net.minecraft.nbt.CompoundTag();
-		migratableData.putInt("schema_version", 8);
-		migratableRoot.put("data", migratableData);
-		CabinRegistry.requireSupportedSchema(migratableRoot, java.nio.file.Path.of("schema-three-cabins.dat"));
+		for (int version : new int[] {8, 9}) {
+			var earlierRoot = new net.minecraft.nbt.CompoundTag();
+			var earlierData = new net.minecraft.nbt.CompoundTag();
+			earlierData.putInt("schema_version", version);
+			earlierRoot.put("data", earlierData);
+			var earlierUnchanged = earlierRoot.copy();
+			try {
+				CabinRegistry.requireSupportedSchema(earlierRoot, java.nio.file.Path.of("trusted-cabins.dat"));
+				helper.fail("Registries from before household roles must be rejected");
+			} catch (IllegalStateException expected) {
+				helper.assertTrue(expected.getMessage().contains("create a new world")
+					&& earlierRoot.equals(earlierUnchanged),
+					"Pre-role registries must be rejected with recovery guidance and no mutation");
+			}
+		}
+		var currentRoot = new net.minecraft.nbt.CompoundTag();
+		var currentData = new net.minecraft.nbt.CompoundTag();
+		currentData.putInt("schema_version", 10);
+		currentRoot.put("data", currentData);
+		CabinRegistry.requireSupportedSchema(currentRoot, java.nio.file.Path.of("household-cabins.dat"));
 		var futureRoot = new net.minecraft.nbt.CompoundTag();
 		var futureData = new net.minecraft.nbt.CompoundTag();
-		futureData.putInt("schema_version", 10);
+		futureData.putInt("schema_version", 11);
 		futureRoot.put("data", futureData);
 		try {
 			CabinRegistry.requireSupportedSchema(futureRoot, java.nio.file.Path.of("future-cabins.dat"));
 			helper.fail("A future registry schema must be rejected instead of guessed");
 		} catch (IllegalStateException expected) {
-			helper.assertTrue(expected.getMessage().contains("Unsupported cabin registry schema version 10"),
+			helper.assertTrue(expected.getMessage().contains("Unsupported cabin registry schema version 11"),
 				"Future-schema rejection must identify the unsupported version");
 		}
 
 		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, new CabinRegistry()).getOrThrow();
-		helper.assertTrue(encoded.asCompound().orElseThrow().getIntOr("schema_version", 0) == 9,
-			"Registries with corridor state must publish explicit schema version 9");
+		helper.assertTrue(encoded.asCompound().orElseThrow().getIntOr("schema_version", 0) == 10,
+			"Registries with household roles must publish explicit schema version 10");
 		helper.succeed();
 	}
 
@@ -979,8 +993,7 @@ public final class PortablePocketCabinGameTest {
 		UUID trusted = UUID.randomUUID();
 		UUID outsider = UUID.randomUUID();
 		CabinRecord cabin = deployRegistryCabin(registry, owner, 31);
-		registry.trust(cabin.uuid(), owner, trusted);
-		registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS);
+		registry.addResident(cabin.uuid(), owner, trusted);
 		CabinUpgradeState.Target target = CabinUpgradeState.Target.generalSpace(5);
 		TestExpansionEffect clear = new TestExpansionEffect(true, false);
 
@@ -1078,8 +1091,7 @@ public final class PortablePocketCabinGameTest {
 		UUID trusted = UUID.randomUUID();
 		UUID visitor = UUID.randomUUID();
 		CabinRecord cabin = deployRegistryCabin(registry, owner, 32);
-		registry.trust(cabin.uuid(), owner, trusted);
-		registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS);
+		registry.addResident(cabin.uuid(), owner, trusted);
 		CabinUpgradeState.Target target = CabinUpgradeState.Target.generalSpace(5);
 		ItemStack named = new ItemStack(Items.GLASS_PANE, 6);
 		named.set(DataComponents.CUSTOM_NAME, Component.literal("Shared fund"));
@@ -1158,8 +1170,7 @@ public final class PortablePocketCabinGameTest {
 		CabinRecord cabin = deployRegistryCabin(registry, owner, 46);
 		registry.expandGeneralSpace(cabin.uuid(), owner, 3, 5, 21);
 		cabin = registry.expandGeneralSpace(cabin.uuid(), owner, 5, 7, 21);
-		registry.trust(cabin.uuid(), owner, trusted);
-		registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS);
+		registry.addResident(cabin.uuid(), owner, trusted);
 		CabinWindowState.Identity identity = new CabinWindowState.Identity(CabinWindowState.Wall.REAR, 0);
 		CabinUpgradeState.Target target = CabinUpgradeState.Target.window(identity);
 		ItemStack baseReceipt = new ItemStack(Items.GLASS_PANE, 3);
@@ -2185,38 +2196,50 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
-	public void trustedEntryIsPersistedAndOwnerControlled(GameTestHelper helper) {
+	public void householdRolesArePersistedAndOwnerControlled(GameTestHelper helper) {
 		CabinRegistry registry = new CabinRegistry();
 		UUID owner = UUID.randomUUID();
-		UUID trustedPlayer = UUID.randomUUID();
-		UUID stranger = UUID.randomUUID();
+		UUID resident = UUID.randomUUID();
+		UUID guest = UUID.randomUUID();
 		CabinRecord cabin = registry.create(owner);
 
-		helper.assertTrue(cabin.canEnter(owner), "A cabin owner must always retain entry permission");
-		helper.assertTrue(!cabin.canEnter(trustedPlayer),
-			"A private cabin must reject players even when they will later be trusted");
-		registry.trust(cabin.uuid(), owner, trustedPlayer);
-		CabinRecord opened = registry.setEntryPermission(
-			cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS
-		);
-		helper.assertTrue(opened.canEnter(owner) && opened.canEnter(trustedPlayer),
-			"Trusted entry mode must admit the owner and explicitly trusted players");
-		helper.assertTrue(!opened.canEnter(stranger),
-			"Trusted entry mode must continue to reject strangers");
+		helper.assertTrue(cabin.role(owner) == CabinRole.OWNER, "The creator must own the cabin");
+		helper.assertTrue(cabin.role(resident) == CabinRole.GUEST && !cabin.isHousehold(resident),
+			"Players start as guests until the owner assigns them");
+		CabinRecord assigned = registry.addResident(cabin.uuid(), owner, resident);
+		helper.assertTrue(assigned.role(resident) == CabinRole.RESIDENT && assigned.isHousehold(resident),
+			"An assigned player must become a resident");
+		helper.assertTrue(assigned.role(guest) == CabinRole.GUEST,
+			"Unassigned players must remain guests");
+		helper.assertTrue(new CabinRegistry().create(UUID.randomUUID()).role(resident) == CabinRole.GUEST,
+			"A role in one cabin must give no role in another cabin");
+
+		for (var rejected : List.<Runnable>of(
+			() -> registry.addResident(cabin.uuid(), owner, owner),
+			() -> registry.addResident(cabin.uuid(), owner, resident),
+			() -> registry.removeResident(cabin.uuid(), owner, guest),
+			() -> registry.removeResident(cabin.uuid(), owner, owner),
+			() -> registry.addResident(cabin.uuid(), guest, guest),
+			() -> registry.removeResident(cabin.uuid(), resident, resident)
+		)) {
+			try {
+				rejected.run();
+				helper.fail("Owner self-assignment, no-op changes, and non-owner changes must be rejected");
+			} catch (IllegalStateException expected) {
+				helper.assertTrue(!expected.getMessage().isBlank(), "Rejected role changes must give a reason");
+			}
+		}
+		helper.assertTrue(registry.find(cabin.uuid()).orElseThrow().residents().equals(List.of(resident)),
+			"Rejected role changes must leave saved roles unchanged");
 
 		var encoded = CabinRegistry.CODEC.encodeStart(NbtOps.INSTANCE, registry).getOrThrow();
 		CabinRegistry restored = CabinRegistry.CODEC.parse(NbtOps.INSTANCE, encoded).getOrThrow();
-		CabinRecord restoredCabin = restored.find(cabin.uuid()).orElseThrow();
-		helper.assertTrue(restoredCabin.entryPermission() == CabinEntryPermission.TRUSTED_PLAYERS
-			&& restoredCabin.trustedPlayers().equals(java.util.List.of(trustedPlayer)),
-			"Entry mode and trusted players must survive save/reload");
-
-		try {
-			restored.untrust(cabin.uuid(), stranger, trustedPlayer);
-			helper.fail("A non-owner must not be able to change trusted players");
-		} catch (IllegalStateException expected) {
-			helper.succeed();
-		}
+		helper.assertTrue(restored.find(cabin.uuid()).orElseThrow().role(resident) == CabinRole.RESIDENT,
+			"Resident assignments must survive save/reload");
+		CabinRecord removed = restored.removeResident(cabin.uuid(), owner, resident);
+		helper.assertTrue(removed.role(resident) == CabinRole.GUEST,
+			"A removed resident must become a guest immediately");
+		helper.succeed();
 	}
 
 	@GameTest
@@ -2225,8 +2248,7 @@ public final class PortablePocketCabinGameTest {
 		UUID owner = UUID.randomUUID();
 		UUID trustedPlayer = UUID.randomUUID();
 		CabinRecord cabin = registry.create(owner);
-		registry.trust(cabin.uuid(), owner, trustedPlayer);
-		registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.TRUSTED_PLAYERS);
+		registry.addResident(cabin.uuid(), owner, trustedPlayer);
 		CabinExterior exterior = new CabinExterior(Level.OVERWORLD, new BlockPos(12, 72, 12), Direction.NORTH);
 
 		registry.beginDeployment(cabin.uuid(), owner, exterior);
@@ -2238,8 +2260,8 @@ public final class PortablePocketCabinGameTest {
 		}
 		registry.markInteriorGenerated(cabin.uuid());
 		CabinRecord deployed = registry.finishDeployment(cabin.uuid());
-		helper.assertTrue(deployed.canEnter(trustedPlayer),
-			"Deployment must preserve trusted-player access");
+		helper.assertTrue(deployed.role(trustedPlayer) == CabinRole.RESIDENT,
+			"Deployment must preserve resident assignments");
 
 		registry.beginPacking(cabin.uuid(), owner);
 		try {
@@ -2249,9 +2271,8 @@ public final class PortablePocketCabinGameTest {
 			// The first transition owns the packing journal.
 		}
 		CabinRecord packed = registry.finishPacking(cabin.uuid());
-		helper.assertTrue(packed.canEnter(trustedPlayer)
-			&& packed.entryPermission() == CabinEntryPermission.TRUSTED_PLAYERS,
-			"Packing must preserve access settings without making the inactive entrance usable");
+		helper.assertTrue(packed.role(trustedPlayer) == CabinRole.RESIDENT,
+			"Packing must preserve resident assignments");
 		helper.succeed();
 	}
 
@@ -2416,7 +2437,7 @@ public final class PortablePocketCabinGameTest {
 		return new CabinRecord(
 			UUID.randomUUID(), UUID.randomUUID(), cellIndex, CabinLifecycle.PACKED,
 			Optional.empty(), Optional.empty(), true, 0L, false, CabinPalette.DEFAULT,
-			Optional.empty(), false, CabinEntryPermission.OWNER_ONLY, List.of(),
+			Optional.empty(), false, List.of(),
 			new CabinProgression(generalSize, List.of()),
 			CabinUpgradeState.EMPTY.withWindows(windows)
 		);

@@ -23,8 +23,7 @@ public record CabinRecord(
 	CabinPalette palette,
 	Optional<UUID> lastDeploymentItemId,
 	boolean deploymentItemDeliveryPending,
-	CabinEntryPermission entryPermission,
-	List<UUID> trustedPlayers,
+	List<UUID> residents,
 	CabinProgression progression,
 	CabinUpgradeState upgrades
 ) {
@@ -43,10 +42,8 @@ public record CabinRecord(
 			.forGetter(CabinRecord::lastDeploymentItemId),
 		Codec.BOOL.optionalFieldOf("deployment_item_delivery_pending", false)
 			.forGetter(CabinRecord::deploymentItemDeliveryPending),
-		CabinEntryPermission.CODEC.optionalFieldOf("entry_permission", CabinEntryPermission.OWNER_ONLY)
-			.forGetter(CabinRecord::entryPermission),
-		UUIDUtil.STRING_CODEC.listOf().optionalFieldOf("trusted_players", List.of())
-			.forGetter(CabinRecord::trustedPlayers),
+		UUIDUtil.STRING_CODEC.listOf().optionalFieldOf("residents", List.of())
+			.forGetter(CabinRecord::residents),
 		CabinProgression.CODEC.optionalFieldOf("progression", CabinProgression.INITIAL)
 			.forGetter(CabinRecord::progression),
 		CabinUpgradeState.CODEC.optionalFieldOf("upgrades", CabinUpgradeState.EMPTY)
@@ -55,7 +52,7 @@ public record CabinRecord(
 
 	public CabinRecord(UUID uuid, UUID owner, long cellIndex, CabinLifecycle lifecycle) {
 		this(uuid, owner, cellIndex, lifecycle, Optional.empty(), Optional.empty(), false, 0L, false,
-			CabinPalette.DEFAULT, Optional.empty(), false, CabinEntryPermission.OWNER_ONLY, List.of(),
+			CabinPalette.DEFAULT, Optional.empty(), false, List.of(),
 			CabinProgression.INITIAL, CabinUpgradeState.EMPTY);
 	}
 
@@ -64,7 +61,7 @@ public record CabinRecord(
 		Optional<CabinExterior> exterior, boolean interiorGenerated
 	) {
 		this(uuid, owner, cellIndex, lifecycle, exterior, Optional.empty(), interiorGenerated, 0L, false,
-			CabinPalette.DEFAULT, Optional.empty(), false, CabinEntryPermission.OWNER_ONLY, List.of(),
+			CabinPalette.DEFAULT, Optional.empty(), false, List.of(),
 			CabinProgression.INITIAL, CabinUpgradeState.EMPTY);
 	}
 
@@ -75,7 +72,7 @@ public record CabinRecord(
 	) {
 		this(uuid, owner, cellIndex, lifecycle, exterior, lastExterior,
 			interiorGenerated, packedItemGeneration, false, CabinPalette.DEFAULT, Optional.empty(), false,
-			CabinEntryPermission.OWNER_ONLY, List.of(), CabinProgression.INITIAL, CabinUpgradeState.EMPTY);
+			List.of(), CabinProgression.INITIAL, CabinUpgradeState.EMPTY);
 	}
 
 	public CabinRecord(
@@ -85,7 +82,7 @@ public record CabinRecord(
 	) {
 		this(uuid, owner, cellIndex, lifecycle, exterior, lastExterior, interiorGenerated,
 			packedItemGeneration, exteriorCleanupPending, CabinPalette.DEFAULT, Optional.empty(), false,
-			CabinEntryPermission.OWNER_ONLY, List.of(), CabinProgression.INITIAL, CabinUpgradeState.EMPTY);
+			List.of(), CabinProgression.INITIAL, CabinUpgradeState.EMPTY);
 	}
 
 	public CabinRecord {
@@ -96,11 +93,13 @@ public record CabinRecord(
 		Objects.requireNonNull(lastExterior, "lastExterior");
 		Objects.requireNonNull(palette, "palette");
 		Objects.requireNonNull(lastDeploymentItemId, "lastDeploymentItemId");
-		Objects.requireNonNull(entryPermission, "entryPermission");
-		Objects.requireNonNull(trustedPlayers, "trustedPlayers");
+		Objects.requireNonNull(residents, "residents");
 		Objects.requireNonNull(progression, "progression");
 		Objects.requireNonNull(upgrades, "upgrades");
-		trustedPlayers = List.copyOf(new LinkedHashSet<>(trustedPlayers));
+		residents = List.copyOf(new LinkedHashSet<>(residents));
+		if (residents.contains(owner)) {
+			throw new IllegalArgumentException("The cabin owner cannot also be a resident");
+		}
 		if (cellIndex < 0) {
 			throw new IllegalArgumentException("Cabin cell index must be non-negative");
 		}
@@ -117,8 +116,12 @@ public record CabinRecord(
 		}
 	}
 
-	boolean canEnter(UUID playerId) {
-		return owner.equals(playerId)
-			|| entryPermission == CabinEntryPermission.TRUSTED_PLAYERS && trustedPlayers.contains(playerId);
+	CabinRole role(UUID playerId) {
+		if (owner.equals(playerId)) return CabinRole.OWNER;
+		return residents.contains(playerId) ? CabinRole.RESIDENT : CabinRole.GUEST;
+	}
+
+	boolean isHousehold(UUID playerId) {
+		return role(playerId) != CabinRole.GUEST;
 	}
 }
