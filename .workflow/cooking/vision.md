@@ -14,7 +14,7 @@ All cooking happens at cooking stations. Furnaces, smokers, campfires, and craft
 
 | Kind | Works like | Stations |
 |---|---|---|
-| Click | Stonecutter | Cutting board, mortar and pestle, butcher block |
+| Click | Stonecutter | Cutting board, mortar and pestle, hanging hook, butcher block |
 | Surface | Campfire | Skillet, grill |
 | Container | Furnace or brewing stand | Cooking pot, oven, mill, mixing bowl, meat grinder, sausage stuffer, fruit press, butter churn, cheese press |
 | Time | Ambient, no heat | Drying rack, fermentation crock, pickling jar, proofing basket, brine barrel, ageing shelf |
@@ -52,7 +52,7 @@ The cookbook is the player's guide to all of it:
 | Milling, baking, and dairy | B-0046 | Mill wheat, rye, oats, and corn into flour. Mix and proof yeast and sourdough. Churn butter. Press and age cheese. Culture yogurt. |
 | Stocks, sauces, and flavour | B-0047 | Simmer stocks from bones and vegetables. Make dashi, roux, béchamel, tomato sauce, gravy, and emulsions. Grind spices and pastes. |
 | Fermentation, drying, and preservation | B-0048 | Ferment sauerkraut, kimchi, chili sauce, miso, soy sauce, and vinegar. Dry herbs, mushrooms, chilies, fruit, and kelp. Smoke, cure, brine, pickle, and age. |
-| Butchery | B-0049 | Butcher carcasses into steaks, chops, joints, ribs, stew meat, offal, bones, and fat, using the [whole animal](butchery.md). Mince, stuff sausages, render fat, and fillet fish. |
+| Butchery | B-0049 | Bleed, scald, skin, and pluck carcasses, then butcher them into steaks, chops, joints, ribs, stew meat, offal, bones, and fat, using the [whole animal](butchery.md). Mince, stuff sausages, render fat, and fillet fish. |
 | Crops and foraging | B-0050 | Grow grains, vegetables, alliums, legumes, chilies, herbs, spices, fruit trees, and berries with real needs. Cultivate mushrooms on logs and beds. Forage rare wild ingredients. |
 | Drinks | B-0052 | Press apple juice for æblemost. Make saftevand and other cordials and concentrates. Infuse and filter. |
 | Food benefits | B-0051 | Turn the work into rewards. |

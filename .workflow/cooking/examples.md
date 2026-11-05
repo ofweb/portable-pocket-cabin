@@ -33,7 +33,8 @@ It looks like soup with bread on top. From scratch it needs a stock, caramelised
 
 | Step | Station | Inputs | Heat and time | Output |
 |---|---|---|---|---|
-| Butcher | Butcher block (click) | Cow carcass | Cleaver use | The cow parts in [butchery](butchery.md), including 4 beef bones |
+| Skin | Hanging hook (click) | Cow carcass | Knife use | 2 hide, dressed cow |
+| Butcher | Butcher block (click) | Dressed cow | Cleaver use | The cow parts in [butchery](butchery.md), including 4 beef bones |
 | Roast bones | Oven (container) | 4 beef bones | High, 20 s | 4 roasted bones |
 | Chop | Cutting board (click) | Onion, carrot, celery | Knife use | Mirepoix |
 | Simmer stock | Cooking pot (container) | 4 roasted bones, mirepoix, water ×3 | Low, 2 min | 3 beef stock |
@@ -68,7 +69,9 @@ Two chains meet on one plate: butchery and sausage making on one side, days of f
 
 | Step | Station | Inputs | Heat and time | Output |
 |---|---|---|---|---|
-| Butcher | Butcher block (click) | Pig carcass | Cleaver use | The pig parts in [butchery](butchery.md), including pork shoulder, pork fat, and casing |
+| Scald | Cooking pot (container) | Pig carcass, water | Low, 10 s | Scalded pig |
+| Scrape | Hanging hook (click) | Scalded pig | Knife use | Pig bristles, dressed pig |
+| Butcher | Butcher block (click) | Dressed pig | Cleaver use | The pig parts in [butchery](butchery.md), including pork shoulder, pork fat, and casing |
 | Grind | Meat grinder (container) | Pork shoulder, pork fat | — 10 s | Minced pork |
 | Season | Mixing bowl (container) | Minced pork, salt, black pepper, marjoram | — 5 s | Bratwurst filling |
 | Stuff | Sausage stuffer (container) | Bratwurst filling, pork casing | — 10 s | 4 raw bratwurst |
@@ -93,7 +96,8 @@ A light soup built on two of the most complex ingredients in the game: dashi and
 | Step | Station | Inputs | Heat and time | Output |
 |---|---|---|---|---|
 | Dry kelp | Drying rack (time) | Kelp | — 5 min | Kombu |
-| Fillet | Butcher block (click) | Bonito | Knife use | 2 bonito loins, bonito head, fish bones |
+| Scale and gut | Butcher block (click) | Bonito | Knife use | Cleaned bonito, fish scales, guts |
+| Fillet | Butcher block (click) | Cleaned bonito | Knife use | 4 bonito loins, bonito head, fish bones |
 | Salt | Brine barrel (time) | Bonito loin, salt | — 1 day | Salted bonito |
 | Smoke | Smoker (container) | Salted bonito | Low, 10 min | Smoked bonito |
 | Dry | Drying rack (time) | Smoked bonito | — 1 day | Katsuobushi |

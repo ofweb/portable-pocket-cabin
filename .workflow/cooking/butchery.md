@@ -2,20 +2,37 @@
 
 This reference lists what each carcass gives when butchered, and what each part is for. It is design input for [B-0049](../backlog.md#b-0049-butchery-and-carcasses). Every part has at least one use, so players learn to use the whole animal. Quantities are illustrative, and B-0033 balances them against the effort of raising and butchering.
 
-## How butchering works
+## From animal to cuts
 
-- Animals drop a carcass instead of meat. The carcass is an item that keeps the animal's type, and its size for young and adult animals.
-- A player places the carcass on a butcher block and uses a cleaver. Each use removes the next part in a real butchery order, from hide to primal cuts to bones, so the order itself teaches how an animal is broken down. Sneak-use breaks the carcass down completely.
-- A glass bottle used on a fresh carcass collects blood before butchering starts. It is optional.
-- Parts go to the player's inventory, with overflow dropped beside the block. In the kitchen, parts go to storage when inventory is full.
+Getting meat takes three stages, as it does in real life:
 
-Proposal to confirm: non-meat vanilla drops such as leather, feathers, wool, rabbit hide, and rabbit feet come from butchering the carcass instead of dropping directly. This makes butchery part of the leather and feather supply too.
+1. **Carcass:** animals drop a carcass instead of meat or other drops. The carcass keeps the animal's type and size. A glass bottle used on a fresh carcass collects blood. That step is optional and must happen first.
+2. **Dress:** the carcass is hung on a hanging hook, a click station, and skinned or plucked. This gives the hide, fleece, or feathers and a dressed carcass. Some animals are scalded first, in a cooking pot at low heat.
+3. **Butcher:** the dressed carcass goes on the butcher block. Each cleaver use removes the next part in a real butchery order, from primal cuts to offal to bones, so the order itself teaches how an animal is broken down. Sneak-use breaks it down completely.
+
+An undressed carcass cannot be butchered. The butcher block says it must be skinned or plucked first.
+
+Parts go to the player's inventory, with overflow dropped beside the station. In the kitchen, parts go to storage when inventory is full.
+
+### Skinning and plucking
+
+| Animal | Preparation | Hanging hook action | Gives |
+|---|---|---|---|
+| Cow | None | Skin with the knife | 2 hide, dressed cow |
+| Pig | Scald in a cooking pot: carcass and water at low heat, 10 s | Scrape with the knife | Pig bristles, dressed pig with its skin on |
+| Sheep | None | Skin with the knife | 1 fleece, dressed sheep |
+| Chicken | Scald in a cooking pot: carcass and water at low heat, 5 s | Pluck by hand | 2 feathers, dressed chicken |
+| Rabbit | None | Skin with the knife | 1 rabbit hide, 1 rabbit's foot, dressed rabbit |
+
+- **Hide** becomes leather, and **fleece** becomes wool. Shearing a live sheep still gives wool as in vanilla.
+- **Pig bristles** make brushes. Pigs keep their skin, which becomes crackling and gelatin, so they are scraped, not skinned.
+- **Scalding** loosens feathers and bristles. Plucking or scraping without it is not accepted, and the hook says the carcass needs scalding first.
+- **A dressed chicken** can roast whole in the oven instead of being butchered.
 
 ## Cow
 
 | Part | Count | Uses |
 |---|---|---|
-| Hide | 2 | Leather |
 | Sirloin steak | 2 | Searing, steak dishes |
 | Rib roast | 1 | Roasting |
 | Brisket | 1 | Braising, smoking, curing into salt beef |
@@ -57,7 +74,6 @@ Proposal to confirm: non-meat vanilla drops such as leather, feathers, wool, rab
 
 | Part | Count | Uses |
 |---|---|---|
-| Fleece | 1 | Wool |
 | Lamb chops (rack) | 2 | Searing, roasting |
 | Leg of lamb | 1 | Roasting |
 | Shoulder | 1 | Slow roasting, braising |
@@ -75,7 +91,6 @@ Proposal to confirm: non-meat vanilla drops such as leather, feathers, wool, rab
 
 | Part | Count | Uses |
 |---|---|---|
-| Feathers | 2 | Feathers |
 | Breasts | 2 | Frying, poaching |
 | Thighs | 2 | Braising, curry |
 | Drumsticks | 2 | Roasting, frying |
@@ -85,14 +100,10 @@ Proposal to confirm: non-meat vanilla drops such as leather, feathers, wool, rab
 | Chicken frame (bones) | 1 | Chicken stock, bone meal |
 | Skin and fat | 1 | Rendering into schmaltz, crisp skin |
 
-Whole birds stay useful: a player can roast a plucked whole chicken instead of breaking it down. Plucking gives the feathers and a whole chicken. Butchering a whole chicken gives the remaining parts.
-
 ## Rabbit
 
 | Part | Count | Uses |
 |---|---|---|
-| Rabbit hide | 1 | Leather |
-| Rabbit's foot | 1 | Brewing |
 | Hind legs | 2 | Braising, roasting |
 | Saddle (loin) | 1 | Frying, roasting |
 | Front legs and stew meat | 1 | Stews, rabbit stew |
@@ -101,7 +112,7 @@ Whole birds stay useful: a player can roast a plucked whole chicken instead of b
 
 ## Fish
 
-Fish are filleted on the butcher block with the knife.
+Fish need no hanging hook. On the butcher block, the knife first scales and guts a fish, giving fish scales and guts, then fillets it.
 
 | Fish | Parts | Uses |
 |---|---|---|
@@ -124,17 +135,20 @@ Every by-product leads somewhere:
 | Liver | Mixing bowl, then oven | Leverpostej, pâté |
 | Trotters, feet, skin | Cooking pot at low heat | Gelatin for aspic, jelly, and desserts |
 | Casings | Sausage stuffer | Bratwurst, blood sausage, other sausages |
-| Hide | Unchanged | Leather |
+| Hide | — | Leather, used as it is |
+| Fleece | — | Wool, used as it is |
+| Pig bristles | Crafting | Brushes |
+| Fish scales and guts | Composter | Compost; guts also become fish sauce in a fermentation crock in B-0048 |
 
 ## What it teaches
 
+- Meat comes after the animal is bled, skinned or plucked, and dressed. Scalding is what makes plucking and scraping work.
 - One animal gives many different cuts, and each suits a different technique. Tender cuts sear, and tough cuts braise.
 - Bones, fat, blood, and offal are food too. Most of a carcass is not steak.
 - A single cow supplies a week of meals and the stock for many of them, so butchering one is worth planning around.
 
 ## Open questions
 
-- Whether vanilla non-meat drops move into the carcass, as proposed above.
 - Carcass sizes for baby animals, and whether young animals drop carcasses at all.
 - Goats, horses, and other animals: goats could give chevon, milk is already covered by B-0046, and horses stay unbutcherable.
 - How livestock rooms in B-0022 handle carcasses when automation in B-0026 slaughters animals.
