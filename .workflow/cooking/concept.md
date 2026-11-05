@@ -29,6 +29,8 @@ Raw ingredients become intermediate products through processing. Intermediate pr
 
 Storable, reusable intermediates are items. Examples are flour, butter, stock, cheese, dough, tomato sauce, and dried mushrooms. Short preparation such as chopping an onion or stirring a sauce can be a state within a recipe.
 
+Cabin cooking replaces vanilla food recipes as it supplies each chain. Furnaces and campfires stop cooking food once the cookbook arrives. Recipes that need flour or drying stay vanilla until milling and drying exist. Villager trades and loot keep vanilla food, because bought food represents work done by others.
+
 Processing methods are shared across recipes. One simmering mechanic serves stock, soup, tomato sauce, and braised meat. The ingredient graph should stay smaller than the recipe graph: a few shared intermediates support many dishes.
 
 ## Cooking recipes and the cookbook

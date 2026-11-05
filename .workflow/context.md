@@ -107,6 +107,12 @@
 - Forms: cooking recipes
 - Distinguish from: A crafting recipe completes in one action. A process profile states a production path for jobs.
 
+## Cooking preparation
+
+- Meaning: A cooking preparation is an item that holds food partway through one cooking recipe. It records the recipe and its completed steps so any player can continue it at suitable equipment.
+- Forms: cooking preparations, preparation, preparations
+- Distinguish from: An intermediate product such as flour or stock is a finished output that other recipes use.
+
 ## Cabin book
 
 - Meaning: A cabin book is an item that reveals one or more cabin upgrades when installed. It differs from empty books and enchanted books.
