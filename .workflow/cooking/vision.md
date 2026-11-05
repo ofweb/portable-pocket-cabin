@@ -20,7 +20,7 @@ All cooking happens at cooking stations. Furnaces, smokers, campfires, and craft
 | Time | Ambient, no heat | Drying rack, fermentation crock, pickling jar, proofing basket, brine barrel, dairy pan, ageing shelf |
 | Heat source | Fuel block | Stove, campfire |
 
-Stations can be crafted and placed anywhere. The cabin kitchen supplies protected sets of them and connects them to central storage.
+The [station list](stations.md) counts how often each station is used across every recipe. Stations can be crafted and placed anywhere. The cabin kitchen supplies protected sets of them and connects them to central storage.
 
 ### Heat
 
