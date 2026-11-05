@@ -25,7 +25,7 @@ Station kinds work like vanilla blocks:
 
 | Station | Kind | Steps | Supports | Feature |
 |---|---|---|---|---|
-| Prep counter | Work surface | 90 | Holds the cutting board, mixing bowl, strainer, and mortar and pestle. Takes shaping, rolling, filling, wrapping, skewering, layering, and assembling a dish from its components. | None yet |
+| Prep counter | Work surface | 90 | Holds the cutting board, mixing bowl, strainer, and mortar and pestle. Takes shaping, rolling, filling, wrapping, skewering, layering, and assembling a dish from its components. | B-0053 |
 
 ### Cooking with heat
 
@@ -34,20 +34,20 @@ Station kinds work like vanilla blocks:
 | Cooking pot | Container on a heat source | 190 | Low 135, medium 15, high 27, high with oil 13 | Simmer, boil, steam, braise, poach, steep, infuse, reduce, render, scald, blanch, curdle, nixtamalize, deep-fry | B-0045 |
 | Skillet | Surface on a heat source | 57 | Low 9, medium 37, high 11 | Fry, sauté, sear, toast, griddle, caramelise, char, brown | B-0045 |
 | Oven | Container with its own fuel | 52 | Low 11, medium 27, high 14 | Bake, roast, gratinate, dry, burn logs to ash, bake in moulds | B-0045 |
-| Grill | Surface with its own fuel slot | 6 | Fuel sets the heat, as in the oven | Grill, char | None yet |
+| Grill | Surface with its own fuel slot | 6 | Fuel sets the heat, as in the oven | Grill, char | B-0053 |
 | Smoker | Container with its own fuel | 6 | Low | Smoke | B-0048, as the vanilla smoker |
-| Wok | Container on a heat source | 4 | High | Stir-fry | None yet |
-| Æbleskive pan | Surface on a heat source | 3 | Medium | Cook in round wells, turning | None yet |
+| Wok | Container on a heat source | 4 | High | Stir-fry | B-0053 |
+| Æbleskive pan | Surface on a heat source | 3 | Medium | Cook in round wells, turning | B-0053 |
 
 ### Preparing without heat
 
 | Station | Kind | Steps | Techniques | Feature |
 |---|---|---|---|---|
 | Mixing bowl | Counter-top, with a spoon | 107 | Mix, knead, whisk, beat, fold, temper, marinate, season, dip, dilute, sweeten | B-0046 |
-| Strainer | Counter-top | 39 | Strain, drain, sieve, settle starch, leach lye | None yet |
+| Strainer | Counter-top | 39 | Strain, drain, sieve, settle starch, leach lye | B-0053 |
 | Cutting board | Counter-top, with a knife | 65 | Chop, slice, dice, grate, shred, bruise, quarter, peel, shave | B-0045 |
 | Mill | Container | 54 | Grind, crush, wet-grind, crack, blend, purée, crumble, stone-grind | B-0046 |
-| Fruit press | Container | 20 | Press juice and oil | B-0052 |
+| Press | Container | 20 | Press juice and oil | B-0052 |
 | Mortar and pestle | Counter-top, with a pestle | 13 | Pound pastes, mash, grind coarsely | B-0047 |
 | Butcher block | Click | 9 | Butcher, scale, gut, fillet | B-0049 |
 | Cheese press | Container | 6 | Press curds | B-0046 |
@@ -81,18 +81,18 @@ The knife, a spoon for the mixing bowl, a pestle, a cleaver, glass bottles for s
 - **The strainer sits on the counter.** It takes straining, draining, sieving, settling starch, and leaching lye from the mixing bowl and the cooking pot.
 - **Pickling happens in the fermentation crock.** The pickling jar is merged into it.
 - **The grill has its own fuel slot.** Fuel sets its heat, as in the oven.
+- **The fruit press is renamed the press,** because it presses oil as well as juice. The cheese press keeps its name.
+- **B-0053 owns the prep counter, strainer, grill, wok, and æbleskive pan,** and oil filling for deep-frying in the cooking pot.
 
 ## What the counts show
 
 - **The cooking pot does the most work,** with 190 of the 890 steps. That is realistic, since real kitchens do most cooking in a pot.
 - **The counter takes the hand work.** The prep counter, cutting board, mixing bowl, strainer, and mortar and pestle together cover about 310 steps.
 - **Small stations are agreed:** the butter churn (1 step) and dairy pan (2) teach real dairy steps.
-- **Five stations have no owning feature:** the prep counter, strainer, grill, wok, and æbleskive pan.
+- **B-0053 owns the five stations that had no feature:** the prep counter, strainer, grill, wok, and æbleskive pan.
 
 ## Proposals
 
 | Change | Why |
 |---|---|
 | Rename the ageing shelf to **cellar shelf** | Its steps are cool storage: ageing, ripening, resting, setting, and chilling. "Cellar" says why it chills. Undecided. |
-| Rename the fruit press to **press** | It presses oil from olives and seeds as well as juice from fruit. The cheese press stays separate. |
-| Add a new backlog item for the **prep counter, strainer, grill, wok, and æbleskive pan**, with oil filling for the pot | These stations serve many dishes across cuisines, and no current feature owns them. |

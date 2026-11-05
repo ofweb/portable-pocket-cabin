@@ -163,8 +163,7 @@ Automation uses the same ingredients, stations, heat levels, and times as manual
 | Proofing basket | Proofing dough |
 | Brine barrel | Salting and brining meat and fish |
 | Smoker | Smoking meat and fish |
-| Oil press | Plant oils |
-| Fruit press | Juice |
+| Press | Juice and plant oils |
 | Mortar and pestle | Spices and pastes |
 | Ageing cellar | Long fermentation and maturation |
 | Mushroom beds and logs | Mushroom cultivation |

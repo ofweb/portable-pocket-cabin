@@ -45,11 +45,11 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 
 | Dish | Ingredients | Processes |
 |---|---|---|
-| Citron pressé | lemon, sugar, water | Fruit press: juice lemons → Mixing bowl: serve with water and sugar |
+| Citron pressé | lemon, sugar, water | Press: juice lemons → Mixing bowl: serve with water and sugar |
 | Menthe à l'eau | *mint syrup*, water | Mixing bowl: dilute |
 | Chocolat chaud | *chocolate*, milk, sugar | Cooking pot (low): melt chocolate into milk |
 | Sirop de cassis à l'eau | *cassis syrup*, water | Mixing bowl: dilute |
-| Citronnade maison | lemon, sugar, water, mint | Cooking pot (low): dissolve sugar → Fruit press: juice lemons → Mixing bowl: combine, infuse mint |
+| Citronnade maison | lemon, sugar, water, mint | Cooking pot (low): dissolve sugar → Press: juice lemons → Mixing bowl: combine, infuse mint |
 
 ## German
 
@@ -159,7 +159,7 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 
 | Dish | Ingredients | Processes |
 |---|---|---|
-| Nam manao | lime, water, sugar, *salt* | Fruit press: juice limes → Mixing bowl: dissolve and chill |
+| Nam manao | lime, water, sugar, *salt* | Press: juice limes → Mixing bowl: dissolve and chill |
 | Cha yen | *Thai tea leaves*, *condensed milk*, *evaporated milk*, sugar, *crushed ice* | Cooking pot (medium): brew strong → Strainer: strain → Mixing bowl: sweeten, pour over ice with milk |
 | Cha manao | *black tea*, lime, sugar | Cooking pot (medium): brew → Mixing bowl: sweeten, add lime, chill |
 | Nam takrai | lemongrass, water, sugar | Cutting board: bruise stalks → Cooking pot (low): infuse → Strainer: strain |
@@ -273,7 +273,7 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 
 | Dish | Ingredients | Processes |
 |---|---|---|
-| Æblemost | apple, glass bottle | Cutting board: quarter → Mill: crush → Fruit press: press → Ageing shelf: settle (optional) |
+| Æblemost | apple, glass bottle | Cutting board: quarter → Mill: crush → Press: press → Ageing shelf: settle (optional) |
 | Hyldeblomstsaft | elderflower, lemon, sugar, water | Cooking pot (low): dissolve sugar → Fermentation crock: infuse elderflowers and lemon for two days → Strainer: strain and bottle |
 | Rabarbersaft | rhubarb, sugar, lemon, water | Cutting board: chop → Cooking pot (low): simmer → Strainer: strain |
 | Solbærsaft | blackcurrant, sugar, water | Cooking pot (low): cook → Strainer: strain and bottle |

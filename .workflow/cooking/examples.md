@@ -128,7 +128,7 @@ A short chain, for contrast. Pressed apple juice the way Danish farms make it.
 |---|---|---|---|---|
 | Wash and quarter | Cutting board (click) | 4 apples | Knife use | 4 apple quarters |
 | Crush | Mill (container) | 4 apple quarters | — 10 s | Apple mash |
-| Press | Fruit press (container) | Apple mash, 2 glass bottles | — 20 s | 2 æblemost, apple pomace |
+| Press | Press (container) | Apple mash, 2 glass bottles | — 20 s | 2 æblemost, apple pomace |
 | Settle | Time station: cellar shelf | Æblemost | — 5 min | Clear æblemost (optional) |
 
 - **Raw ingredients:** apples and bottles.

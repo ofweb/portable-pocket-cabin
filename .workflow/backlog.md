@@ -244,7 +244,7 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 - Direction: [Manual production rooms](direction.md#manual-production-rooms).
 - Relationships: Uses B-0005 and B-0038. Integrates B-0004. Uses equipment and recipes from B-0045. Used by cooking in B-0025.
 - Feature Brief: [Manual kitchen brief](features/B-0041/brief.md).
-- Open proposals: Later cooking features may add their stations through new kitchen purchases, which may need a larger room than 5×5. The kitchen should supply a prep counter, with its cutting board on it, once the counter has an owning feature.
+- Open proposals: Later cooking features may add their stations through new kitchen purchases, which may need a larger room than 5×5. The kitchen should supply a prep counter from B-0053, with its cutting board on it.
 
 ## B-0042: Smelting jobs
 
@@ -331,3 +331,10 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 - Value: Let players press juice, infuse, and make syrups and concentrates for non-alcoholic drinks and cooking.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Uses B-0045.
+
+## B-0053: Prep counter and specialty cooking stations
+
+- Status: Ready for Shape
+- Value: Add the prep counter as the kitchen work surface, with the strainer on it, plus the grill, wok, and æbleskive pan, and oil for deep-frying in the cooking pot.
+- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
+- Relationships: Uses B-0045. Holds counter-top stations from B-0045, B-0046, and B-0047. Used by B-0041 and by dishes across B-0046 through B-0052. The [station list](cooking/stations.md) gives each station's techniques and step counts.

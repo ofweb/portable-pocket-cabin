@@ -17,7 +17,7 @@ All cooking happens at cooking stations. Furnaces, smokers, campfires, and craft
 | Click | Stonecutter | Hanging hook, butcher block |
 | Counter-top | A pot on a stove: it sits on the prep counter, and a tool acts on what is placed in it | Cutting board with a knife, mixing bowl with a spoon, strainer, mortar and pestle |
 | Surface | Campfire | Skillet, æbleskive pan, and a grill with its own fuel |
-| Container | Furnace or brewing stand | Cooking pot, oven, mill, meat grinder, sausage stuffer, fruit press, butter churn, cheese press |
+| Container | Furnace or brewing stand | Cooking pot, oven, mill, meat grinder, sausage stuffer, press, butter churn, cheese press |
 | Time | Ambient, no heat | Drying rack, fermentation crock, proofing basket, brine barrel, dairy pan, ageing shelf |
 | Heat source | Fuel block | Stove, campfire |
 | Work surface | A crafting table | Prep counter, which holds counter-top stations and is where dishes are assembled |

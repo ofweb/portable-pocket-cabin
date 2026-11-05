@@ -26,10 +26,10 @@ Feature: proposal for B-0047, with the oil press as its station. Animal fats com
 
 | Product | Ingredients | Processes |
 |---|---|---|
-| olive oil | olive | Mill: crush to a paste → Fruit press: press → Ageing shelf: settle |
-| vegetable oil | sunflower seed or rapeseed | Mill: crush → Fruit press: press |
-| sesame oil | *toasted sesame seeds* | Mill: grind → Fruit press: press |
-| dendê oil | oil palm fruit | Cooking pot (high): boil → Mill: mash → Fruit press: press |
+| olive oil | olive | Mill: crush to a paste → Press: press → Ageing shelf: settle |
+| vegetable oil | sunflower seed or rapeseed | Mill: crush → Press: press |
+| sesame oil | *toasted sesame seeds* | Mill: grind → Press: press |
+| dendê oil | oil palm fruit | Cooking pot (high): boil → Mill: mash → Press: press |
 | achiote oil | annatto seed, *vegetable oil* | Cooking pot (low): infuse → Strainer: strain |
 | lard | *back fat* | Cooking pot (low): render → Strainer: strain |
 | tallow | *suet* | Cooking pot (low): render → Strainer: strain |
@@ -280,7 +280,7 @@ Feature: B-0050 for growing, with drying from B-0048.
 | sliced almonds | almond | Cooking pot (high): blanch → Cutting board: skin and slice |
 | toasted sesame seeds | sesame seed | Skillet (low): toast |
 | sunflower seeds | sunflower | Drying rack: dry the head → Cutting board: thresh and shell |
-| coconut milk | coconut, water | Cutting board: crack and grate the flesh → Fruit press: press with warm water |
+| coconut milk | coconut, water | Cutting board: crack and grate the flesh → Press: press with warm water |
 | coconut cream | *coconut milk* | Ageing shelf: settle → Cutting board: skim the cream |
 | desiccated coconut | coconut | Cutting board: grate → Drying rack: dry |
 | toasted coconut | *desiccated coconut* | Skillet (low): toast |
@@ -290,7 +290,7 @@ Feature: B-0050 for growing, with drying from B-0048.
 | dried chickpeas | chickpea | Drying rack: dry |
 | dried corn husks | corn | Cutting board: husk → Drying rack: dry |
 | wasabi | wasabi root | Cutting board: grate finely |
-| lime juice | lime | Fruit press: press |
+| lime juice | lime | Press: press |
 
 ## Fermented, pickled, and dried
 
@@ -306,16 +306,16 @@ Feature: B-0048.
 | koji rice | *steamed rice*, *koji spores* | Fermentation crock: culture for a day. Each batch returns *koji spores*. |
 | koji spores | *koji rice* | Returned by a koji batch. The first spores come from a villager trade or a rare find. |
 | miso | *dried soybeans*, *koji rice*, *salt* | Cooking pot (low): cook soybeans → Mortar and pestle: mash → Fermentation crock: age for five days |
-| soy sauce | *dried soybeans*, *wheat flour*, *koji spores*, *salt*, water | Cooking pot (medium): steam soybeans → Mixing bowl: mix with roasted wheat and spores → Fermentation crock: ferment in brine for weeks → Fruit press: press |
+| soy sauce | *dried soybeans*, *wheat flour*, *koji spores*, *salt*, water | Cooking pot (medium): steam soybeans → Mixing bowl: mix with roasted wheat and spores → Fermentation crock: ferment in brine for weeks → Press: press |
 | dried soybeans | soybean | Drying rack: dry |
-| fish sauce | anchovy, *salt* | Fermentation crock: ferment for weeks → Fruit press: press |
+| fish sauce | anchovy, *salt* | Fermentation crock: ferment for weeks → Press: press |
 | oyster sauce | oyster, *soy sauce*, sugar | Cooking pot (low): reduce |
 | wine vinegar | *red wine* or *white wine* | Fermentation crock: sour for weeks |
 | rice vinegar | *sake* | Fermentation crock: sour for weeks |
-| red wine | red grape | Mill: crush → Fermentation crock: ferment → Fruit press: press → Ageing shelf: age |
-| white wine | white grape | Mill: crush → Fruit press: press → Fermentation crock: ferment |
-| sake | *steamed rice*, *koji rice*, water | Fermentation crock: ferment → Fruit press: press |
-| mirin | *glutinous rice flour*, *koji rice*, *sake* | Fermentation crock: age for weeks → Fruit press: press |
+| red wine | red grape | Mill: crush → Fermentation crock: ferment → Press: press → Ageing shelf: age |
+| white wine | white grape | Mill: crush → Press: press → Fermentation crock: ferment |
+| sake | *steamed rice*, *koji rice*, water | Fermentation crock: ferment → Press: press |
+| mirin | *glutinous rice flour*, *koji rice*, *sake* | Fermentation crock: age for weeks → Press: press |
 | kirsch | cherry | Proposal: bought from villagers, because distilling is out of scope. |
 | rum | sugar cane | Proposal: bought from villagers, because distilling is out of scope. |
 | beer | *malted barley*, hops, *yeast*, water | Cooking pot (low): mash and boil with hops → Fermentation crock: ferment |
@@ -338,8 +338,8 @@ Feature: B-0052 for drinks, with B-0050 for the plants.
 | Product | Ingredients | Processes |
 |---|---|---|
 | chocolate | *roasted cocoa nibs*, sugar, *cocoa butter* | Mill: grind for a long time → Mixing bowl: temper → Ageing shelf: set |
-| cocoa powder | *roasted cocoa nibs* | Fruit press: press out *cocoa butter* → Mill: grind the cake |
-| cocoa butter | *roasted cocoa nibs* | Fruit press: press |
+| cocoa powder | *roasted cocoa nibs* | Press: press out *cocoa butter* → Mill: grind the cake |
+| cocoa butter | *roasted cocoa nibs* | Press: press |
 | roasted cocoa nibs | cocoa beans | Fermentation crock: ferment in the pod pulp → Drying rack: dry → Oven (medium): roast → Cutting board: crack and winnow |
 | Mexican chocolate | *roasted cocoa nibs*, sugar, *cinnamon* | Mortar and pestle: grind coarsely → Ageing shelf: set in discs |
 | black tea | tea leaf | Drying rack: wither → Prep counter: roll → Ageing shelf: oxidise → Oven (low): dry |
@@ -349,8 +349,8 @@ Feature: B-0052 for drinks, with B-0050 for the plants.
 | roasted coffee | coffee cherry | Fermentation crock: ferment → Drying rack: dry → Cutting board: hull → Oven (high): roast → Mill: grind |
 | yerba mate | yerba mate leaf | Skillet (high): sear → Drying rack: dry → Ageing shelf: age for months → Mill: crush |
 | tamarind pulp | tamarind pod | Cutting board: shell and seed |
-| apple juice | apple | Cutting board: quarter → Mill: crush → Fruit press: press |
-| blackcurrant juice | blackcurrant | Mill: crush → Fruit press: press |
+| apple juice | apple | Cutting board: quarter → Mill: crush → Press: press |
+| blackcurrant juice | blackcurrant | Mill: crush → Press: press |
 | cassis syrup | blackcurrant, sugar, water | Cooking pot (low): cook → Strainer: strain → Cooking pot (low): dissolve sugar |
 | mint syrup | mint, sugar, water | Cooking pot (low): dissolve sugar → Mixing bowl: steep mint → Strainer: strain |
 | crushed ice | ice | Mill: crush |
