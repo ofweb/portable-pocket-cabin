@@ -1,13 +1,15 @@
 # Recipe catalogue
 
-This catalogue defines what goes into each of the 147 [target recipes](source/recipes.md) and how each is made. It is the first pass. The next pass defines each intermediate product the same way, until every chain reaches raw ingredients. Quantities are left out until balancing in B-0033.
+This catalogue defines what goes into each of the 147 [target recipes](source/recipes.md) and how each is made. Drinks are not carbonated, so three sparkling drinks from the source list are replaced by still ones: menthe à l'eau, kalter Kakao, and Pfefferminztee. It is the first pass. The next pass defines each intermediate product the same way, until every chain reaches raw ingredients. Quantities are left out until balancing in B-0033.
 
 ## How to read it
 
 - **Ingredients** are what the dish uses. Intermediate products are in *italics*. Each one is made by its own recipe and can be stored, traded, and shared between dishes. Plain names are raw ingredients: things that are grown, gathered, caught, or already exist in Minecraft.
 - **Processes** are the dish's own steps after its intermediates exist, written as station (heat): technique. Each step at a new station produces an item. Steps used only by this dish stay here instead of becoming shared intermediates.
 - Heat follows the [heat levels](concept.md#heat-from-fuel). In a cooking pot, low heat simmers, braises, poaches, and steeps; medium heat steams; and high heat boils. A pot filled with oil at high heat deep-fries.
+- **The æbleskive pan** is a special skillet with round wells. It sits on a stove like a skillet. Takoyaki and khanom krok are made in the same kind of pan.
 - **Assemble** at the cutting board means plating, filling, rolling, or layering a finished dish. Whether serving gets its own station is still open.
+- **Butter:** savoury cooking, frying, sauces, and spreads use *salted butter*. Baking, pastry, and sweets use *raw butter*, the unsalted butter straight from the churn, so the recipe controls its salt.
 - Wine, sake, mirin, kirsch, and rum are cooking ingredients only.
 
 ## French
@@ -43,7 +45,7 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 | Dish | Ingredients | Processes |
 |---|---|---|
 | Citron pressé | lemon, sugar, water | Fruit press: juice lemons → Mixing bowl: serve with water and sugar |
-| Diabolo menthe | *mint syrup*, *sparkling lemonade* | Mixing bowl: combine |
+| Menthe à l'eau | *mint syrup*, water | Mixing bowl: dilute |
 | Chocolat chaud | *chocolate*, milk, sugar | Cooking pot (low): melt chocolate into milk |
 | Sirop de cassis à l'eau | *cassis syrup*, water | Mixing bowl: dilute |
 | Citronnade maison | lemon, sugar, water, mint | Cooking pot (low): dissolve sugar → Fruit press: juice lemons → Mixing bowl: combine, infuse mint |
@@ -56,7 +58,7 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 |---|---|---|
 | Kartoffelpuffer | potato, onion, *wheat flour*, egg, *salt*, *vegetable oil* | Cutting board: grate potato and onion → Mixing bowl: mix batter → Skillet (medium): shallow-fry in oil |
 | Spätzle | *wheat flour*, egg, water, *salt* | Mixing bowl: beat dough → Cooking pot (high): scrape into boiling water |
-| Käsespätzle | *spätzle*, *aged hard cheese*, onion, *raw butter* | Skillet (low): caramelise onions in butter → Oven (medium): layer spätzle and cheese, top with onions |
+| Käsespätzle | *spätzle*, *aged hard cheese*, onion, *salted butter* | Skillet (low): caramelise onions in butter → Oven (medium): layer spätzle and cheese, top with onions |
 | Brezeln | *wheat flour*, *yeast*, water, *salt*, *raw butter*, *lye solution*, *coarse salt* | Mixing bowl: knead → Proofing basket: proof → Cutting board: shape → Mixing bowl: dip in lye, sprinkle salt → Oven (medium): bake |
 | Bratwurst mit Sauerkraut | *raw bratwurst*, *sauerkraut*, *mustard*, *bread roll* | Skillet (medium): fry sausages → Cooking pot (low): warm sauerkraut → Assemble |
 | Rinderrouladen | *beef round*, *mustard*, *bacon*, onion, *gherkins*, *beef stock*, *red wine* | Cutting board: slice beef thin, spread, fill, roll → Skillet (high): sear → Cooking pot (low): braise |
@@ -72,7 +74,7 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 | Käsekuchen | *shortcrust pastry*, *quark*, egg, sugar, *cream*, lemon, *cornstarch* | Mixing bowl: mix filling → Oven (low): bake slowly |
 | Berliner | *sweet yeast dough*, *vegetable oil*, *jam*, sugar | Proofing basket: proof → Cooking pot (high, oil): deep-fry → Assemble: fill and dust |
 | Currywurst | *raw bratwurst*, *curry ketchup*, *curry powder*, *fried potatoes* | Skillet (medium): fry → Assemble: slice and sauce |
-| Obatzda with bread | *aged soft cheese*, *raw butter*, onion, *paprika*, *caraway*, *beer*, *pretzel* | Mixing bowl: mash together → Assemble: serve with pretzel |
+| Obatzda with bread | *aged soft cheese*, *salted butter*, onion, *paprika*, *caraway*, *beer*, *pretzel* | Mixing bowl: mash together → Assemble: serve with pretzel |
 | Flammkuchen | *flatbread dough*, *crème fraîche*, onion, *bacon* | Cutting board: roll thin and top → Oven (high): bake |
 | Fischbrötchen | *bread roll*, *pickled herring*, onion, *gherkins*, *remoulade* | Assemble |
 
@@ -80,8 +82,8 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 
 | Dish | Ingredients | Processes |
 |---|---|---|
-| Apfelschorle | *apple juice*, *sparkling water* | Mixing bowl: combine |
-| Holunderblütenschorle | *elderflower syrup*, *sparkling water* | Mixing bowl: combine |
+| Kalter Kakao | *cocoa powder*, milk, sugar | Cooking pot (low): dissolve cocoa and sugar in warm milk → Ageing shelf: chill |
+| Pfefferminztee | *dried mint*, water | Cooking pot (low): steep |
 | Kinderpunsch | *apple juice*, *blackcurrant juice*, orange, *cinnamon*, *cloves*, *star anise* | Cooking pot (low): heat gently and infuse |
 | Früchtetee | *dried berries*, *dried hibiscus*, *dried rosehip*, *dried apple* | Mixing bowl: blend → Cooking pot (low): steep |
 | Malzkaffee | *roasted malt*, water | Mill: grind → Cooking pot (low): brew |
@@ -109,7 +111,7 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 | Daifuku mochi | *glutinous rice flour*, sugar, *anko*, *potato starch*, strawberry | Cooking pot (medium): steam the dough → Mortar and pestle: pound smooth → Assemble: wrap anko and strawberry |
 | Mitarashi dango | *rice flour*, *glutinous rice flour*, *mitarashi glaze* | Mixing bowl: knead → Cooking pot (high): boil dumplings → Cutting board: skewer → Grill (high): char, glaze |
 | Taiyaki | *wheat flour*, egg, sugar, milk, *anko* | Mixing bowl: whisk batter → Skillet (medium): cook in a fish mould with anko |
-| Takoyaki | *wheat flour*, *dashi*, egg, *squid tentacles*, *pickled ginger*, *tenkasu*, *okonomi sauce*, *Japanese mayonnaise*, *bonito flakes* | Mixing bowl: mix batter → Skillet (medium): cook in a takoyaki pan, turning → Assemble: top |
+| Takoyaki | *wheat flour*, *dashi*, egg, *squid tentacles*, *pickled ginger*, *tenkasu*, *okonomi sauce*, *Japanese mayonnaise*, *bonito flakes* | Mixing bowl: mix batter → Æbleskive pan (medium): cook in the wells, turning → Assemble: top |
 | Korokke | potato, *minced beef*, onion, *panko*, egg, *wheat flour*, *vegetable oil*, *tonkatsu sauce* | Cooking pot (high): boil potatoes → Skillet (medium): fry beef and onion → Mixing bowl: mash and mix → Cutting board: shape and coat → Cooking pot (high, oil): deep-fry |
 | Karaage | *chicken thighs*, *soy sauce*, *sake*, ginger, garlic, *potato starch*, *vegetable oil* | Mixing bowl: marinate and coat → Cooking pot (high, oil): deep-fry twice |
 | Yakitori | *chicken thighs*, spring onion, *yakitori tare* | Cutting board: skewer → Grill (high): grill over charcoal, baste |
@@ -144,7 +146,7 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 | Dish | Ingredients | Processes |
 |---|---|---|
 | Bua loy | *glutinous rice flour*, pumpkin, *coconut milk*, *palm sugar*, *salt* | Mixing bowl: knead coloured doughs → Cutting board: roll balls → Cooking pot (high): boil → Cooking pot (low): serve in warm sweet coconut milk |
-| Khanom krok | *rice flour*, *coconut milk*, *coconut cream*, sugar, *salt*, spring onion | Mixing bowl: mix two batters → Skillet (medium): cook in a khanom krok mould |
+| Khanom krok | *rice flour*, *coconut milk*, *coconut cream*, sugar, *salt*, spring onion | Mixing bowl: mix two batters → Æbleskive pan (medium): cook in the wells |
 | Tub tim grob | water chestnut, *tapioca starch*, beetroot, *coconut milk*, *simple syrup*, *crushed ice* | Cutting board: dice water chestnuts → Mixing bowl: colour with beetroot, coat in starch → Cooking pot (high): boil → Assemble: serve in coconut milk syrup over ice |
 | Sangkhaya fak thong | pumpkin, egg, *coconut cream*, *palm sugar*, pandan leaf | Cutting board: hollow the pumpkin → Mixing bowl: mix custard → Cooking pot (medium): steam |
 | Miang kham | betel leaf, *toasted coconut*, *roasted peanuts*, lime, shallot, ginger, *dried shrimp*, bird's eye chili, *miang sauce* | Cutting board: dice → Assemble: wrap leaf parcels |
@@ -206,7 +208,7 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 
 | Dish | Ingredients | Processes |
 |---|---|---|
-| Arepas con queso | *masarepa*, water, *salt*, *queso blanco*, *raw butter* | Mixing bowl: knead dough → Cutting board: shape → Skillet (medium): griddle → Assemble: split and fill |
+| Arepas con queso | *masarepa*, water, *salt*, *queso blanco*, *salted butter* | Mixing bowl: knead dough → Cutting board: shape → Skillet (medium): griddle → Assemble: split and fill |
 | Pão de queijo | *sour cassava starch*, milk, *vegetable oil*, egg, *Minas cheese*, *salt* | Cooking pot (low): scald starch with hot milk and oil → Mixing bowl: mix in egg and cheese → Cutting board: roll balls → Oven (medium): bake |
 | Ceviche | *white fish fillet*, *lime juice*, red onion, ají amarillo, cilantro, *salt*, sweet potato, *toasted corn* | Cutting board: dice fish, slice onion → Mixing bowl: cure in lime juice with chili and salt → Cooking pot (high): boil sweet potato → Assemble |
 | Lomo saltado | *beef sirloin*, red onion, tomato, ají amarillo, *soy sauce*, *wine vinegar*, *fried potatoes*, *steamed rice* | Cutting board: cut beef into strips → Wok (high): stir-fry beef, onion, and tomato with soy and vinegar, toss with fries → Assemble: serve with rice |
@@ -244,13 +246,13 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 
 | Dish | Ingredients | Processes |
 |---|---|---|
-| Frikadeller | *minced pork*, onion, egg, *wheat flour*, milk, *salt*, *raw butter* | Cutting board: grate onion → Mixing bowl: mix fars and rest → Skillet (medium): fry in butter |
+| Frikadeller | *minced pork*, onion, egg, *wheat flour*, milk, *salt*, *salted butter* | Cutting board: grate onion → Mixing bowl: mix fars and rest → Skillet (medium): fry in butter |
 | Stegt flæsk med persillesovs | *pork belly*, *salt*, potato, *béchamel*, parsley | Cutting board: slice pork belly → Skillet (medium): fry until crisp → Cooking pot (high): boil potatoes → Cooking pot (low): stir parsley into the béchamel |
 | Rugbrød | *rye flour*, *cracked rye*, *sourdough starter*, water, *salt*, *sunflower seeds* | Mixing bowl: mix → Proofing basket: proof → Oven (medium): bake for a long time |
-| Boller i karry | *minced pork*, onion, egg, *wheat flour*, milk, *curry powder*, *raw butter*, *pork stock*, *steamed rice* | Mixing bowl: mix forcemeat → Cooking pot (low): poach meatballs in stock → Cooking pot (low): make a curry roux, thicken with the stock → Assemble: serve with rice |
-| Flæskesteg med rødkål | *pork loin with rind*, *coarse salt*, *bay leaf*, red cabbage, *wine vinegar*, sugar, *raw butter*, potato, *pork stock* | Cutting board: score the rind → Oven (high): roast until the rind crackles → Cooking pot (low): braise red cabbage with vinegar and sugar → Cooking pot (low): make gravy from the drippings |
+| Boller i karry | *minced pork*, onion, egg, *wheat flour*, milk, *curry powder*, *salted butter*, *pork stock*, *steamed rice* | Mixing bowl: mix forcemeat → Cooking pot (low): poach meatballs in stock → Cooking pot (low): make a curry roux, thicken with the stock → Assemble: serve with rice |
+| Flæskesteg med rødkål | *pork loin with rind*, *coarse salt*, *bay leaf*, red cabbage, *wine vinegar*, sugar, *salted butter*, potato, *pork stock* | Cutting board: score the rind → Oven (high): roast until the rind crackles → Cooking pot (low): braise red cabbage with vinegar and sugar → Cooking pot (low): make gravy from the drippings |
 | Sildemad med karrysalat | *pickled herring*, *rugbrød*, *karrysalat*, *hard-boiled egg*, onion | Cutting board: slice bread → Assemble |
-| Tarteletter med høns i asparges | *tartlet shells*, *poached chicken*, *chicken stock*, asparagus, *raw butter*, *wheat flour*, *cream* | Cooking pot (low): cook a roux, thicken the stock with cream → Cooking pot (low): add chicken and asparagus → Assemble: fill shells |
+| Tarteletter med høns i asparges | *tartlet shells*, *poached chicken*, *chicken stock*, asparagus, *salted butter*, *wheat flour*, *cream* | Cooking pot (low): cook a roux, thicken the stock with cream → Cooking pot (low): add chicken and asparagus → Assemble: fill shells |
 | Risalamande med kirsebærsauce | *rice pudding*, *whipped cream*, *chopped almonds*, *cherry sauce* | Mixing bowl: fold cream and almonds into cold rice pudding → Assemble: serve with warm cherry sauce |
 
 ### Desserts and snacks
@@ -261,10 +263,10 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 | Gammeldags æblekage | *apple compote*, *breadcrumbs*, *raw butter*, sugar, *whipped cream*, *redcurrant jelly* | Skillet (medium): toast breadcrumbs with butter and sugar → Assemble: layer in a glass |
 | Rødgrød med fløde | sweet berries, redcurrant, raspberry, sugar, *potato starch*, *cream* | Cooking pot (low): cook berries, strain, thicken with starch → Assemble: serve with cream |
 | Brunsviger | *sweet yeast dough*, *brown sugar*, *raw butter* | Proofing basket: proof → Cutting board: press dimples, add topping → Oven (medium): bake |
-| Æbleskiver | *wheat flour*, *buttermilk*, egg, *cardamom*, *raw butter*, *jam*, sugar | Mixing bowl: mix batter → Skillet (medium): cook in an æbleskive pan, turning → Assemble: serve with jam and sugar |
+| Æbleskiver | *wheat flour*, *buttermilk*, egg, *cardamom*, *raw butter*, *jam*, sugar | Mixing bowl: mix batter → Æbleskive pan (medium): cook in the wells, turning → Assemble: serve with jam and sugar |
 | Pølsehorn | *bread dough*, *cocktail sausages*, egg | Cutting board: cut triangles, roll around sausages → Proofing basket: proof → Oven (medium): bake |
 | Smørrebrød med leverpostej | *rugbrød*, *leverpostej*, *sautéed mushrooms*, *bacon*, *pickled beetroot* | Cutting board: slice bread → Assemble |
-| Fiskefrikadeller | *white fish fillet*, onion, egg, *wheat flour*, milk, dill, *salt*, *raw butter*, *remoulade* | Meat grinder: grind fish → Mixing bowl: mix fars → Skillet (medium): fry in butter → Assemble: serve with remoulade |
+| Fiskefrikadeller | *white fish fillet*, onion, egg, *wheat flour*, milk, dill, *salt*, *salted butter*, *remoulade* | Meat grinder: grind fish → Mixing bowl: mix fars → Skillet (medium): fry in butter → Assemble: serve with remoulade |
 
 ### Drinks
 
@@ -278,15 +280,16 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 
 ## Intermediate products
 
-The catalogue uses 244 intermediate products. The next pass defines each one with its own ingredients and processes, sorted here by how many dishes use it. Products used by many dishes are the hubs to define first.
+The catalogue uses 242 intermediate products. The next pass defines each one with its own ingredients and processes, sorted here by how many dishes use it. Products used by many dishes are the hubs to define first.
 
 | Intermediate | Dishes | Used in |
 |---|---|---|
 | wheat flour | 23 | Madeleines, Canelés, Kartoffelpuffer, Spätzle, Brezeln, Okonomiyaki, Tempura, Dorayaki, Taiyaki, Takoyaki, Korokke, Chiles rellenos, Churros, Conchas, Alfajores de maicena, Picarones, Coxinha, Tequeños, Frikadeller, Boller i karry, Tarteletter med høns i asparges, Æbleskiver, Fiskefrikadeller |
-| raw butter | 20 | Tarte Tatin, Madeleines, Canelés, Käsespätzle, Brezeln, Apfelstrudel, Bienenstich, Obatzda with bread, Arepas con queso, Brigadeiros, Alfajores de maicena, Tequeños, Frikadeller, Boller i karry, Flæskesteg med rødkål, Tarteletter med høns i asparges, Gammeldags æblekage, Brunsviger, Æbleskiver, Fiskefrikadeller |
 | salt | 19 | Socca, Kartoffelpuffer, Spätzle, Brezeln, Onigiri, Mango sticky rice, Bua loy, Khanom krok, Nam manao, Carnitas tacos, Churros, Arepas con queso, Pão de queijo, Ceviche, Tequeños, Frikadeller, Stegt flæsk med persillesovs, Rugbrød, Fiskefrikadeller |
 | vegetable oil | 13 | Kartoffelpuffer, Berliner, Tempura, Korokke, Karaage, Tod mun pla, Poh pia tod, Chiles rellenos, Churros, Pão de queijo, Picarones, Coxinha, Tequeños |
+| raw butter | 12 | Tarte Tatin, Madeleines, Canelés, Brezeln, Apfelstrudel, Bienenstich, Brigadeiros, Alfajores de maicena, Tequeños, Gammeldags æblekage, Brunsviger, Æbleskiver |
 | cinnamon | 10 | Apfelstrudel, Kinderpunsch, Churros, Arroz con leche, Horchata de arroz, Champurrado, Café de olla, Mazamorra morada, Chicha morada, Varm hyldebærsaft |
+| salted butter | 10 | French onion soup, Moules marinières, Käsespätzle, Obatzda with bread, Arepas con queso, Frikadeller, Boller i karry, Flæskesteg med rødkål, Tarteletter med høns i asparges, Fiskefrikadeller |
 | coconut milk | 8 | Tom kha gai, Mango sticky rice, Green curry, Massaman curry, Bua loy, Khanom krok, Tub tim grob, Moqueca baiana |
 | bacon | 6 | Quiche Lorraine, Boeuf bourguignon, Coq au vin, Rinderrouladen, Flammkuchen, Smørrebrød med leverpostej |
 | chicken stock | 6 | Coq au vin, Cassoulet, Tamales, Mole poblano, Coxinha, Tarteletter med høns i asparges |
@@ -322,6 +325,7 @@ The catalogue uses 244 intermediate products. The next pass defines each one wit
 | bread roll | 3 | Bratwurst mit Sauerkraut, Fischbrötchen, Pambazos |
 | chocolate | 3 | Chocolat chaud, Schwarzwälder Kirschtorte, Brigadeiros |
 | chorizo | 3 | Sopes, Pambazos, Llapingachos |
+| cocoa powder | 3 | Kalter Kakao, Conchas, Brigadeiros |
 | coconut cream | 3 | Khanom krok, Sangkhaya fak thong, Limonada de coco |
 | dried hibiscus | 3 | Früchtetee, Nam krajeab, Agua de jamaica |
 | glutinous rice flour | 3 | Daifuku mochi, Mitarashi dango, Bua loy |
@@ -337,7 +341,6 @@ The catalogue uses 244 intermediate products. The next pass defines each one wit
 | red chili sauce | 3 | Tamales, Pozole rojo, Pambazos |
 | salsa verde | 3 | Enchiladas verdes, Tacos al pastor, Tlacoyos |
 | wine vinegar | 3 | Sauerbraten, Lomo saltado, Flæskesteg med rødkål |
-| apple juice | 2 | Apfelschorle, Kinderpunsch |
 | bay leaf | 2 | Feijoada, Flæskesteg med rødkål |
 | beef round | 2 | Rinderrouladen, Sauerbraten |
 | bonito flakes | 2 | Okonomiyaki, Takoyaki |
@@ -349,7 +352,6 @@ The catalogue uses 244 intermediate products. The next pass defines each one wit
 | chocolate sauce | 2 | Profiteroles, Churros |
 | choux pastry | 2 | Profiteroles, Gougères |
 | coarse salt | 2 | Brezeln, Flæskesteg med rødkål |
-| cocoa powder | 2 | Conchas, Brigadeiros |
 | cornstarch | 2 | Käsekuchen, Alfajores de maicena |
 | cream cheese | 2 | Flan napolitano, Coxinha |
 | cucumber relish | 2 | Tod mun pla, Gai satay |
@@ -375,10 +377,8 @@ The catalogue uses 244 intermediate products. The next pass defines each one wit
 | sake | 2 | Teriyaki salmon, Karaage |
 | salmon fillet | 2 | Teriyaki salmon, Maki sushi |
 | salsa roja | 2 | Carnitas tacos, Sopes |
-| salted butter | 2 | French onion soup, Moules marinières |
 | sencha leaves | 2 | Sencha, Hojicha |
 | shortcrust pastry | 2 | Quiche Lorraine, Käsekuchen |
-| sparkling water | 2 | Apfelschorle, Holunderblütenschorle |
 | tamarind paste | 2 | Pad Thai, Massaman curry |
 | tofu | 2 | Miso soup, Pad Thai |
 | yeast | 2 | Brezeln, Picarones |
@@ -390,6 +390,7 @@ The catalogue uses 244 intermediate products. The next pass defines each one wit
 | anticucho marinade | 1 | Anticuchos |
 | aonori | 1 | Okonomiyaki |
 | apple compote | 1 | Gammeldags æblekage |
+| apple juice | 1 | Kinderpunsch |
 | beef heart | 1 | Anticuchos |
 | beef sirloin | 1 | Lomo saltado |
 | beer | 1 | Obatzda with bread |
@@ -425,6 +426,7 @@ The catalogue uses 244 intermediate products. The next pass defines each one wit
 | dried black beans | 1 | Feijoada |
 | dried corn husks | 1 | Tamales |
 | dried fruit | 1 | Mazamorra morada |
+| dried mint | 1 | Pfefferminztee |
 | dried oregano | 1 | Pozole rojo |
 | dried rosehip | 1 | Früchtetee |
 | dried shrimp | 1 | Miang kham |
@@ -432,7 +434,6 @@ The catalogue uses 244 intermediate products. The next pass defines each one wit
 | dried white beans | 1 | Cassoulet |
 | duck confit | 1 | Cassoulet |
 | dulce de leche | 1 | Alfajores de maicena |
-| elderflower syrup | 1 | Holunderblütenschorle |
 | empanada dough | 1 | Empanadas de carne |
 | flatbread dough | 1 | Flammkuchen |
 | fried egg | 1 | Llapingachos |
@@ -456,7 +457,7 @@ The catalogue uses 244 intermediate products. The next pass defines each one wit
 | miang sauce | 1 | Miang kham |
 | Minas cheese | 1 | Pão de queijo |
 | minced beef | 1 | Korokke |
-| mint syrup | 1 | Diabolo menthe |
+| mint syrup | 1 | Menthe à l'eau |
 | mirin | 1 | Teriyaki salmon |
 | miso | 1 | Miso soup |
 | mitarashi glaze | 1 | Mitarashi dango |
@@ -497,7 +498,6 @@ The catalogue uses 244 intermediate products. The next pass defines each one wit
 | smoked sausage | 1 | Feijoada |
 | sour cassava starch | 1 | Pão de queijo |
 | sourdough starter | 1 | Rugbrød |
-| sparkling lemonade | 1 | Diabolo menthe |
 | spring roll wrappers | 1 | Poh pia tod |
 | spätzle | 1 | Käsespätzle |
 | squid tentacles | 1 | Takoyaki |
@@ -572,7 +572,7 @@ The dishes use 72 raw ingredients directly, not counting those inside intermedia
 | long bean | 1 | New |
 | makrut lime leaf | 3 | New |
 | mango | 1 | New |
-| milk | 10 | Yes |
+| milk | 11 | Yes |
 | mint | 2 | New |
 | mussels | 1 | New |
 | onion | 25 | New |
@@ -596,14 +596,14 @@ The dishes use 72 raw ingredients directly, not counting those inside intermedia
 | shallot | 2 | New |
 | spring onion | 4 | New |
 | strawberry | 1 | New |
-| sugar | 43 | Yes |
+| sugar | 44 | Yes |
 | sweet berries | 1 | Yes |
 | sweet potato | 3 | New |
 | Thai aubergine | 1 | New |
 | Thai basil | 1 | New |
 | thyme | 1 | New |
 | tomato | 4 | New |
-| water | 30 | Yes |
+| water | 32 | Yes |
 | water chestnut | 1 | New |
 
 ## What the catalogue adds
@@ -613,10 +613,10 @@ Writing out every dish exposes stations, techniques, and sources that the end-st
 - **Wok:** stir-frying many ingredients at high heat (pad kra pao, pad Thai, lomo saltado, poh pia tod). A skillet cooks single items, so stir-frying needs its own container station.
 - **Grill:** charring and grilling skewers and corn at high heat (yakitori, gai satay, anticuchos, elote, mitarashi dango). The end-state description lists it as a surface station; it needs an owning feature.
 - **Deep-frying:** a cooking pot filled with oil at high heat (tempura, karaage, korokke, churros, Berliner, and more). The pot needs oil as a fill, like water.
-- **Moulds and special pans:** madeleine and canelé moulds, a fish mould for taiyaki, and takoyaki, æbleskive, and khanom krok pans. Proposal: moulds are items placed in the oven or skillet, which change the recipe.
+- **Æbleskive pan:** a special skillet with round wells for æbleskiver, takoyaki, and khanom krok. It needs an owning feature.
+- **Moulds:** madeleine and canelé moulds and a fish mould for taiyaki. Proposal: moulds are items placed in the oven or skillet, which change the recipe.
 - **Straining, blending, and chilling:** many drinks and sauces strain, blend, or chill. The catalogue uses the mixing bowl to strain, the mill to blend, and the ageing shelf to chill. Each choice needs confirming.
 - **Skewers and rolling mats:** small tools for yakitori, satay, dango, and maki sushi.
-- **Carbonation:** sparkling water and sparkling lemonade need a source, such as a mineral spring or a fermentation step.
 - **Lye:** Brezeln need a lye bath, which could come from wood ash and water.
 - **New animals and seafood:** duck, herring, mussels, prawns, and dried shrimp. Squid already exists and supplies tentacles.
 - **Cooking alcohol:** red wine, white wine, sake, mirin, kirsch, rum, and beer appear only as ingredients. Their making belongs to fermentation in B-0048 and stays minimal.

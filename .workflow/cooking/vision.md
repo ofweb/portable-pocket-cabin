@@ -125,6 +125,7 @@ Villagers sell some prepared ingredients and vanilla foods. Buying cheese means 
 - No burning, spoilage, failure, or timing minigames.
 - No unfamiliar controls. Every station works like a vanilla block.
 - No alcohol production as a focus.
+- No carbonated drinks. Drinks are pressed, infused, brewed, or diluted.
 - No dependency on Farmer's Delight or other food mods.
 
 ## Proposals to confirm
