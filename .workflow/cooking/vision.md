@@ -65,6 +65,8 @@ Wine, sake, mirin, and similar ingredients exist only for cooking, in braises, r
 
 The target catalogue has 147 recipes from French, German, Japanese, Thai, Mexican, South American, and Danish cooking: 56 main dishes, 56 desserts and snacks, and 35 non-alcoholic drinks. Many vanilla foods become the simplest members of these chains. The [target recipes](source/recipes.md) list them.
 
+[Five recipes, start to finish](examples.md) work through bread, French onion soup, bratwurst with sauerkraut, miso soup, and æblemost in station-by-station detail.
+
 ### Two examples from scratch
 
 **Cheeseburger**
