@@ -46,6 +46,7 @@ Parts go to the player's inventory, with overflow dropped beside the station. In
 | Heart | 1 | Grilling, mince |
 | Kidneys | 1 | Pies, braising |
 | Tripe | 1 | Soups and stews |
+| Calf stomach | 1 | Rennet for cheese making |
 | Beef bones | 4 | Beef stock, bone broth, bone meal |
 | Marrow bones | 1 | Roasting, richer stock |
 | Suet | 2 | Rendering into tallow, pastry, frying |
