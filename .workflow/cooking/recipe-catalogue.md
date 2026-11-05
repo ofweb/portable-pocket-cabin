@@ -1,6 +1,6 @@
 # Recipe catalogue
 
-This catalogue defines what goes into each of the 147 [target recipes](source/recipes.md) and how each is made. Drinks are not carbonated, so three sparkling drinks from the source list are replaced by still ones: menthe à l'eau, kalter Kakao, and Pfefferminztee. It is the first pass. The [intermediate products](intermediates.md) define each intermediate the same way, until every chain reaches raw ingredients. Quantities are left out until balancing in B-0033.
+This catalogue defines what goes into each of the 147 [target recipes](source/recipes.md) and how each is made. Drinks are not carbonated, so three sparkling drinks from the source list are replaced by still ones: menthe à l'eau, kalter Kakao, and Pfefferminztee. It is the first pass. The [intermediate products](intermediates.md) define each intermediate the same way, until every chain reaches raw ingredients. The [sources](sources.md) say where each raw ingredient comes from, and the [techniques](techniques.md) explain each technique. The [cooking book](book/README.md) links them all together. Quantities are left out until balancing in B-0033.
 
 ## How to read it
 

@@ -1,0 +1,100 @@
+# Prep counter
+
+The prep counter. Defined in the [station list](../../stations.md).
+
+- **Kind:** Work surface
+- **Supports:** Holds the cutting board, mixing bowl, strainer, and mortar and pestle. Takes shaping, rolling, filling, wrapping, skewering, layering, and assembling a dish from its components.
+- **Feature:** B-0053
+
+## Steps at this station (90)
+
+- [Alfajores de maicena](../dishes/alfajores-de-maicena.md): sandwich with dulce de leche, [roll](../techniques/rolling.md) edges in coconut
+- [Anticuchos](../dishes/anticuchos.md): [skewer](../techniques/skewering.md)
+- [Anticuchos](../dishes/anticuchos.md): [serve](../techniques/assembling.md) with potato and corn
+- [Apfelstrudel](../dishes/apfelstrudel.md): stretch dough thin, [fill](../techniques/filling.md), [roll](../techniques/rolling.md)
+- [Arepas con queso](../dishes/arepas-con-queso.md): [shape](../techniques/shaping.md)
+- [Arepas con queso](../dishes/arepas-con-queso.md): split and [fill](../techniques/filling.md)
+- [Berliner](../dishes/berliner.md): [fill](../techniques/filling.md) and dust
+- [Bienenstich](../dishes/bienenstich.md): split and [fill](../techniques/filling.md) with custard
+- [Boller i karry](../dishes/boller-i-karry.md): [serve](../techniques/assembling.md) with rice
+- [Bratwurst mit Sauerkraut](../dishes/bratwurst-mit-sauerkraut.md): [assemble](../techniques/assembling.md)
+- [Brezeln](../dishes/brezeln.md): [shape](../techniques/shaping.md)
+- [Brigadeiros](../dishes/brigadeiros.md): [roll](../techniques/rolling.md) balls, coat in grated chocolate
+- [Brunsviger](../dishes/brunsviger.md): [press](../techniques/pressing.md) dimples, add topping
+- [Bua loy](../dishes/bua-loy.md): [roll](../techniques/rolling.md) balls
+- [Carnitas tacos](../dishes/carnitas-tacos.md): [chop](../techniques/chopping.md) onion and cilantro, [fill](../techniques/filling.md) tacos
+- [Ceviche](../dishes/ceviche.md): [assemble](../techniques/assembling.md)
+- [Chiles rellenos](../dishes/chiles-rellenos.md): [peel](../techniques/peeling.md) and [stuff](../techniques/stuffing.md)
+- [Chiles rellenos](../dishes/chiles-rellenos.md): [serve](../techniques/assembling.md) in caldillo
+- [Churros](../dishes/churros.md): [roll](../techniques/rolling.md) in cinnamon sugar, [serve](../techniques/assembling.md) with sauce
+- [Conchas](../dishes/conchas.md): top and score the shell pattern
+- [Coxinha](../dishes/coxinha.md): [wrap](../techniques/wrapping.md) filling, [shape](../techniques/shaping.md) teardrops, coat
+- [Croque monsieur](../dishes/croque-monsieur.md): [layer](../techniques/layering.md)
+- [Currywurst](../dishes/currywurst.md): [slice](../techniques/slicing.md) and sauce
+- [Daifuku mochi](../dishes/daifuku-mochi.md): [wrap](../techniques/wrapping.md) anko and strawberry
+- [Dorayaki](../dishes/dorayaki.md): sandwich with anko
+- [Elote](../dishes/elote.md): coat and [season](../techniques/seasoning.md)
+- [Empanadas de carne](../dishes/empanadas-de-carne.md): [fill](../techniques/filling.md) and crimp
+- [Enchiladas verdes](../dishes/enchiladas-verdes.md): [fill](../techniques/filling.md) and [roll](../techniques/rolling.md)
+- [Feijoada](../dishes/feijoada.md): [serve](../techniques/assembling.md) with rice, farofa, greens, and orange
+- [Fischbrötchen](../dishes/fischbrotchen.md): [assemble](../techniques/assembling.md)
+- [Fiskefrikadeller](../dishes/fiskefrikadeller.md): [serve](../techniques/assembling.md) with remoulade
+- [Flammkuchen](../dishes/flammkuchen.md): [roll](../techniques/rolling.md) thin and top
+- [Gai satay](../dishes/gai-satay.md): [skewer](../techniques/skewering.md)
+- [Gammeldags æblekage](../dishes/gammeldags-aeblekage.md): [layer](../techniques/layering.md) in a glass
+- [Gyoza](../dishes/gyoza.md): [fill](../techniques/filling.md) and pleat
+- [Koldskål med kammerjunkere](../dishes/koldskal-med-kammerjunkere.md): [serve](../techniques/assembling.md) with biscuits
+- [Korokke](../dishes/korokke.md): [shape](../techniques/shaping.md) and coat
+- [Llapingachos](../dishes/llapingachos.md): [serve](../techniques/assembling.md) with sauce, egg, and chorizo
+- [Lomo saltado](../dishes/lomo-saltado.md): [serve](../techniques/assembling.md) with rice
+- [Maki sushi](../dishes/maki-sushi.md): [roll](../techniques/rolling.md) with a bamboo mat, [slice](../techniques/slicing.md)
+- [Mango sticky rice](../dishes/mango-sticky-rice.md): [slice](../techniques/slicing.md) mango, add salted coconut cream
+- [Miang kham](../dishes/miang-kham.md): [wrap](../techniques/wrapping.md) leaf parcels
+- [Mitarashi dango](../dishes/mitarashi-dango.md): [skewer](../techniques/skewering.md)
+- [Mole poblano](../dishes/mole-poblano.md): top with sesame
+- [Obatzda with bread](../dishes/obatzda-with-bread.md): [serve](../techniques/assembling.md) with pretzel
+- [Okonomiyaki](../dishes/okonomiyaki.md): top with sauce, mayonnaise, and flakes
+- [Onigiri](../dishes/onigiri.md): [fill](../techniques/filling.md) and [shape](../techniques/shaping.md), [wrap](../techniques/wrapping.md) in nori
+- [Pad kra pao](../dishes/pad-kra-pao.md): [serve](../techniques/assembling.md) over rice
+- [Pad Thai](../dishes/pad-thai.md): top with peanuts
+- [Pambazos](../dishes/pambazos.md): [fill](../techniques/filling.md)
+- [Picarones](../dishes/picarones.md): [serve](../techniques/assembling.md) with syrup
+- [Pissaladière](../dishes/pissaladiere.md): [roll](../techniques/rolling.md) dough and top
+- [Poh pia tod](../dishes/poh-pia-tod.md): [roll](../techniques/rolling.md)
+- [Pozole rojo](../dishes/pozole-rojo.md): add garnishes
+- [Profiteroles](../dishes/profiteroles.md): [fill](../techniques/filling.md) and pour sauce
+- [Pão de queijo](../dishes/pao-de-queijo.md): [roll](../techniques/rolling.md) balls
+- [Pølsehorn](../dishes/polsehorn.md): cut triangles, [roll](../techniques/rolling.md) around sausages
+- [Quesadillas](../dishes/quesadillas.md): [fill](../techniques/filling.md) and [fold](../techniques/folding.md)
+- [Risalamande med kirsebærsauce](../dishes/risalamande-med-kirsebaersauce.md): [serve](../techniques/assembling.md) with warm cherry sauce
+- [Rødgrød med fløde](../dishes/rodgrod-med-flode.md): [serve](../techniques/assembling.md) with cream
+- [Schwarzwälder Kirschtorte](../dishes/schwarzwalder-kirschtorte.md): [soak](../techniques/soaking.md) with kirsch, [layer](../techniques/layering.md) cherries and cream, [shave](../techniques/shaving.md) chocolate on top
+- [Shoyu ramen](../dishes/shoyu-ramen.md): [assemble](../techniques/assembling.md)
+- [Sildemad med karrysalat](../dishes/sildemad-med-karrysalat.md): [assemble](../techniques/assembling.md)
+- [Smørrebrød med leverpostej](../dishes/smorrebrod-med-leverpostej.md): [assemble](../techniques/assembling.md)
+- [Sopes](../dishes/sopes.md): [shape](../techniques/shaping.md) thick discs with a rim
+- [Sopes](../dishes/sopes.md): top
+- [Tacos al pastor](../dishes/tacos-al-pastor.md): [assemble](../techniques/assembling.md) with pineapple
+- [Takoyaki](../dishes/takoyaki.md): top
+- [Tamales](../dishes/tamales.md): spread on soaked husks, [fill](../techniques/filling.md), [wrap](../techniques/wrapping.md)
+- [Tarteletter med høns i asparges](../dishes/tarteletter-med-hons-i-asparges.md): [fill](../techniques/filling.md) shells
+- [Tempura](../dishes/tempura.md): [serve](../techniques/assembling.md) with dipping sauce
+- [Tequeños](../dishes/tequenos.md): [wrap](../techniques/wrapping.md) cheese sticks in strips
+- [Tlacoyos](../dishes/tlacoyos.md): [fill](../techniques/filling.md) oval cakes
+- [Tlacoyos](../dishes/tlacoyos.md): top
+- [Tod mun pla](../dishes/tod-mun-pla.md): [shape](../techniques/shaping.md)
+- [Tub tim grob](../dishes/tub-tim-grob.md): [serve](../techniques/assembling.md) in coconut milk syrup over ice
+- [Yakitori](../dishes/yakitori.md): [skewer](../techniques/skewering.md)
+- [Æbleskiver](../dishes/aebleskiver.md): [serve](../techniques/assembling.md) with jam and sugar
+- [black tea](../products/black-tea.md): [roll](../techniques/rolling.md)
+- [bouquet garni](../products/bouquet-garni.md): tie with string
+- [bread roll](../products/bread-roll.md): [shape](../techniques/shaping.md) small rolls
+- [chashu pork](../products/chashu-pork.md): [roll](../techniques/rolling.md) and tie
+- [corn tortillas](../products/corn-tortillas.md): [press](../techniques/pressing.md) flat
+- [gyoza wrappers](../products/gyoza-wrappers.md): [roll](../techniques/rolling.md) and cut rounds
+- [kammerjunkere](../products/kammerjunkere.md): [shape](../techniques/shaping.md)
+- [pretzel](../products/pretzel.md): [shape](../techniques/shaping.md)
+- [puff pastry](../products/puff-pastry.md): [fold](../techniques/folding.md) butter in, [roll](../techniques/rolling.md), and fold six times
+- [queso Oaxaca](../products/queso-oaxaca.md): wind into balls
+- [ramen noodles](../products/ramen-noodles.md): [roll](../techniques/rolling.md) and cut
+- [sencha leaves](../products/sencha-leaves.md): [roll](../techniques/rolling.md)

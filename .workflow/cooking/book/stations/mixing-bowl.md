@@ -1,0 +1,117 @@
+# Mixing bowl
+
+Preparing without heat. Defined in the [station list](../../stations.md).
+
+- **Kind:** Counter-top, with a spoon
+- **Supports:** Mix, knead, whisk, beat, fold, temper, marinate, season, dip, dilute, sweeten
+- **Feature:** B-0046
+
+## Steps at this station (107)
+
+- [Agua de tamarindo](../dishes/agua-de-tamarindo.md): sweeten
+- [Aguapanela con limón](../dishes/aguapanela-con-limon.md): add lime
+- [Alfajores de maicena](../dishes/alfajores-de-maicena.md): [mix](../techniques/mixing.md) dough
+- [Arepas con queso](../dishes/arepas-con-queso.md): [knead](../techniques/kneading.md) dough
+- [Boller i karry](../dishes/boller-i-karry.md): [mix](../techniques/mixing.md) forcemeat
+- [Brezeln](../dishes/brezeln.md): [knead](../techniques/kneading.md)
+- [Brezeln](../dishes/brezeln.md): [dip](../techniques/dipping.md) in lye, sprinkle salt
+- [Bua loy](../dishes/bua-loy.md): [knead](../techniques/kneading.md) coloured doughs
+- [Canelés](../dishes/caneles.md): [mix](../techniques/mixing.md) batter
+- [Ceviche](../dishes/ceviche.md): [cure](../techniques/curing.md) in lime juice with chili and salt
+- [Cha manao](../dishes/cha-manao.md): sweeten, add lime, [chill](../techniques/chilling.md)
+- [Cha yen](../dishes/cha-yen.md): sweeten, pour over ice with milk
+- [Chicha morada](../dishes/chicha-morada.md): sweeten, add lime, [chill](../techniques/chilling.md)
+- [Chiles rellenos](../dishes/chiles-rellenos.md): whip egg batter
+- [Citron pressé](../dishes/citron-presse.md): [serve](../techniques/assembling.md) with water and sugar
+- [Citronnade maison](../dishes/citronnade-maison.md): combine, [infuse](../techniques/infusing.md) mint
+- [Crème brûlée](../dishes/creme-brulee.md): [temper](../techniques/tempering.md) yolks
+- [Dorayaki](../dishes/dorayaki.md): [whisk](../techniques/whisking.md) batter
+- [Fiskefrikadeller](../dishes/fiskefrikadeller.md): [mix](../techniques/mixing.md) fars
+- [Flan napolitano](../dishes/flan-napolitano.md): [blend](../techniques/blending.md) custard
+- [Frikadeller](../dishes/frikadeller.md): [mix](../techniques/mixing.md) fars and [rest](../techniques/resting.md)
+- [Früchtetee](../dishes/fruchtetee.md): [blend](../techniques/blending.md)
+- [Gai satay](../dishes/gai-satay.md): [marinate](../techniques/marinating.md)
+- [Gougères](../dishes/gougeres.md): [fold](../techniques/folding.md) in cheese
+- [Gyoza](../dishes/gyoza.md): [mix](../techniques/mixing.md) filling
+- [Horchata de arroz](../dishes/horchata-de-arroz.md): sweeten
+- [Karaage](../dishes/karaage.md): [marinate](../techniques/marinating.md) and coat
+- [Kartoffelpuffer](../dishes/kartoffelpuffer.md): [mix](../techniques/mixing.md) batter
+- [Khanom krok](../dishes/khanom-krok.md): [mix](../techniques/mixing.md) two batters
+- [Koldskål med kammerjunkere](../dishes/koldskal-med-kammerjunkere.md): [whisk](../techniques/whisking.md)
+- [Korokke](../dishes/korokke.md): [mash](../techniques/mashing.md) and [mix](../techniques/mixing.md)
+- [Käsekuchen](../dishes/kasekuchen.md): [mix](../techniques/mixing.md) filling
+- [Llapingachos](../dishes/llapingachos.md): [mash](../techniques/mashing.md) with achiote oil
+- [Madeleines](../dishes/madeleines.md): [whisk](../techniques/whisking.md) batter, [rest](../techniques/resting.md)
+- [Mango sticky rice](../dishes/mango-sticky-rice.md): [soak](../techniques/soaking.md) rice in sauce
+- [Matcha](../dishes/matcha.md): [whisk](../techniques/whisking.md)
+- [Menthe à l'eau](../dishes/menthe-a-l-eau.md): [dilute](../techniques/diluting.md)
+- [Mitarashi dango](../dishes/mitarashi-dango.md): [knead](../techniques/kneading.md)
+- [Moqueca baiana](../dishes/moqueca-baiana.md): [marinate](../techniques/marinating.md) fish in lime
+- [Nam manao](../dishes/nam-manao.md): dissolve and [chill](../techniques/chilling.md)
+- [Obatzda with bread](../dishes/obatzda-with-bread.md): [mash](../techniques/mashing.md) together
+- [Okonomiyaki](../dishes/okonomiyaki.md): [mix](../techniques/mixing.md) batter
+- [Picarones](../dishes/picarones.md): [mash](../techniques/mashing.md) and [knead](../techniques/kneading.md), [rest](../techniques/resting.md)
+- [Pão de queijo](../dishes/pao-de-queijo.md): [mix](../techniques/mixing.md) in egg and cheese
+- [Quiche Lorraine](../dishes/quiche-lorraine.md): [whisk](../techniques/whisking.md) the custard
+- [Risalamande med kirsebærsauce](../dishes/risalamande-med-kirsebaersauce.md): [fold](../techniques/folding.md) cream and almonds into cold rice pudding
+- [Rugbrød](../dishes/rugbrod.md): [mix](../techniques/mixing.md)
+- [Sangkhaya fak thong](../dishes/sangkhaya-fak-thong.md): [mix](../techniques/mixing.md) custard
+- [Sirop de cassis à l'eau](../dishes/sirop-de-cassis-a-l-eau.md): [dilute](../techniques/diluting.md)
+- [Socca](../dishes/socca.md): [whisk](../techniques/whisking.md) batter, [rest](../techniques/resting.md)
+- [Spätzle](../dishes/spatzle.md): [beat](../techniques/beating.md) dough
+- [Taiyaki](../dishes/taiyaki.md): [whisk](../techniques/whisking.md) batter
+- [Takoyaki](../dishes/takoyaki.md): [mix](../techniques/mixing.md) batter
+- [Tamales](../dishes/tamales.md): [beat](../techniques/beating.md) masa with lard and stock
+- [Tempura](../dishes/tempura.md): [mix](../techniques/mixing.md) cold batter
+- [Tequeños](../dishes/tequenos.md): [mix](../techniques/mixing.md) dough
+- [Tereré](../dishes/terere.md): [infuse](../techniques/infusing.md) cold
+- [Tod mun pla](../dishes/tod-mun-pla.md): [mix](../techniques/mixing.md) in beans and leaves
+- [Tub tim grob](../dishes/tub-tim-grob.md): colour with beetroot, coat in starch
+- [Æbleskiver](../dishes/aebleskiver.md): [mix](../techniques/mixing.md) batter
+- [ajitsuke tamago](../products/ajitsuke-tamago.md): [peel](../techniques/peeling.md) and [marinate](../techniques/marinating.md) overnight
+- [bread dough](../products/bread-dough.md): [knead](../techniques/kneading.md)
+- [chocolate](../products/chocolate.md): [temper](../techniques/tempering.md)
+- [chocolate sponge](../products/chocolate-sponge.md): [whisk](../techniques/whisking.md) eggs and sugar, [fold](../techniques/folding.md) in flour and cocoa
+- [chorizo](../products/chorizo.md): [season](../techniques/seasoning.md)
+- [choux pastry](../products/choux-pastry.md): [beat](../techniques/beating.md) in eggs
+- [cream cheese](../products/cream-cheese.md): salt
+- [crema](../products/crema.md): stir in lime and salt
+- [cucumber relish](../products/cucumber-relish.md): [mix](../techniques/mixing.md)
+- [empanada dough](../products/empanada-dough.md): [knead](../techniques/kneading.md)
+- [flatbread dough](../products/flatbread-dough.md): [knead](../techniques/kneading.md)
+- [gingerbread](../products/gingerbread.md): [mix](../techniques/mixing.md)
+- [glass noodles](../products/glass-noodles.md): [mix](../techniques/mixing.md)
+- [gyoza wrappers](../products/gyoza-wrappers.md): [knead](../techniques/kneading.md)
+- [herbes de Provence](../products/herbes-de-provence.md): [blend](../techniques/blending.md)
+- [hominy](../products/hominy.md): rinse and hull
+- [Japanese mayonnaise](../products/japanese-mayonnaise.md): [whisk](../techniques/whisking.md) the oil in slowly to [emulsify](../techniques/emulsifying.md)
+- [kammerjunkere](../products/kammerjunkere.md): [mix](../techniques/mixing.md)
+- [kansui](../products/kansui.md): [dilute](../techniques/diluting.md)
+- [karrysalat](../products/karrysalat.md): [mix](../techniques/mixing.md)
+- [leverpostej](../products/leverpostej.md): [mix](../techniques/mixing.md)
+- [mayonnaise](../products/mayonnaise.md): [whisk](../techniques/whisking.md) the oil in slowly to [emulsify](../techniques/emulsifying.md)
+- [mint syrup](../products/mint-syrup.md): [steep](../techniques/steeping.md) mint
+- [mustard](../products/mustard.md): [mix](../techniques/mixing.md)
+- [pickling spice](../products/pickling-spice.md): [blend](../techniques/blending.md)
+- [pretzel](../products/pretzel.md): [dip](../techniques/dipping.md) in lye
+- [puff pastry](../products/puff-pastry.md): make dough
+- [ramen noodles](../products/ramen-noodles.md): [knead](../techniques/kneading.md)
+- [raw bratwurst](../products/raw-bratwurst.md): [season](../techniques/seasoning.md)
+- [remoulade](../products/remoulade.md): [mix](../techniques/mixing.md)
+- [rice noodles](../products/rice-noodles.md): [mix](../techniques/mixing.md)
+- [rugbrød](../products/rugbrod.md): [mix](../techniques/mixing.md)
+- [salted butter](../products/salted-butter.md): work salt in
+- [satay marinade](../products/satay-marinade.md): [mix](../techniques/mixing.md)
+- [shortcrust pastry](../products/shortcrust-pastry.md): rub butter into flour, bind
+- [soy sauce](../products/soy-sauce.md): [mix](../techniques/mixing.md) with roasted wheat and spores
+- [spring roll wrappers](../products/spring-roll-wrappers.md): [mix](../techniques/mixing.md) a wet dough
+- [spätzle](../products/spatzle.md): [beat](../techniques/beating.md)
+- [strudel dough](../products/strudel-dough.md): [knead](../techniques/kneading.md)
+- [sushi rice](../products/sushi-rice.md): [fold](../techniques/folding.md) in seasoned vinegar, fan [cool](../techniques/chilling.md)
+- [sweet yeast dough](../products/sweet-yeast-dough.md): [knead](../techniques/kneading.md)
+- [tamarind paste](../products/tamarind-paste.md): [soak](../techniques/soaking.md)
+- [tenkasu](../products/tenkasu.md): [mix](../techniques/mixing.md) thin batter
+- [Thai tea leaves](../products/thai-tea-leaves.md): [blend](../techniques/blending.md)
+- [tofu](../products/tofu.md): [curdle](../techniques/curdling.md) with nigari
+- [Toulouse sausage](../products/toulouse-sausage.md): [season](../techniques/seasoning.md)
+- [whipped cream](../products/whipped-cream.md): [whisk](../techniques/whisking.md)

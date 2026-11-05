@@ -1,0 +1,42 @@
+# Baking
+
+Cooking with dry heat in an oven. It sets doughs, batters, and custards.
+
+Heat in a pan, oven, or grill. Defined in the [techniques](../../techniques.md).
+
+## Used in (34)
+
+- [Alfajores de maicena](../dishes/alfajores-de-maicena.md) (dish)
+- [Apfelstrudel](../dishes/apfelstrudel.md) (dish)
+- [Bienenstich](../dishes/bienenstich.md) (dish)
+- [Brezeln](../dishes/brezeln.md) (dish)
+- [Brunsviger](../dishes/brunsviger.md) (dish)
+- [Canelés](../dishes/caneles.md) (dish)
+- [Cassoulet](../dishes/cassoulet.md) (dish)
+- [Conchas](../dishes/conchas.md) (dish)
+- [Crème brûlée](../dishes/creme-brulee.md) (dish)
+- [Empanadas de carne](../dishes/empanadas-de-carne.md) (dish)
+- [Flammkuchen](../dishes/flammkuchen.md) (dish)
+- [Flan napolitano](../dishes/flan-napolitano.md) (dish)
+- [Gougères](../dishes/gougeres.md) (dish)
+- [Käsekuchen](../dishes/kasekuchen.md) (dish)
+- [Madeleines](../dishes/madeleines.md) (dish)
+- [Pastel de choclo](../dishes/pastel-de-choclo.md) (dish)
+- [Pissaladière](../dishes/pissaladiere.md) (dish)
+- [Profiteroles](../dishes/profiteroles.md) (dish)
+- [Pão de queijo](../dishes/pao-de-queijo.md) (dish)
+- [Pølsehorn](../dishes/polsehorn.md) (dish)
+- [Quiche Lorraine](../dishes/quiche-lorraine.md) (dish)
+- [Rugbrød](../dishes/rugbrod.md) (dish)
+- [Socca](../dishes/socca.md) (dish)
+- [Taiyaki](../dishes/taiyaki.md) (dish)
+- [Tarte Tatin](../dishes/tarte-tatin.md) (dish)
+- [bread](../products/bread.md)
+- [bread roll](../products/bread-roll.md)
+- [chocolate sponge](../products/chocolate-sponge.md)
+- [gingerbread](../products/gingerbread.md)
+- [kammerjunkere](../products/kammerjunkere.md)
+- [leverpostej](../products/leverpostej.md)
+- [pretzel](../products/pretzel.md)
+- [rugbrød](../products/rugbrod.md)
+- [tartlet shells](../products/tartlet-shells.md)

@@ -27,7 +27,7 @@ Feature: proposal for B-0047, with the oil press as its station. Animal fats com
 | Product | Ingredients | Processes |
 |---|---|---|
 | olive oil | olive | Mill: crush to a paste → Press: press → Ageing shelf: settle |
-| vegetable oil | sunflower seed or rapeseed | Mill: crush → Press: press |
+| vegetable oil | *sunflower seeds* or rapeseed | Mill: crush → Press: press |
 | sesame oil | *toasted sesame seeds* | Mill: grind → Press: press |
 | dendê oil | oil palm fruit | Cooking pot (high): boil → Mill: mash → Press: press |
 | achiote oil | annatto seed, *vegetable oil* | Cooking pot (low): infuse → Strainer: strain |
@@ -160,6 +160,7 @@ Fish and seafood:
 | salmon fillet | salmon | Butcher block: scale, gut, and fillet |
 | white fish fillet | cod | Butcher block: scale, gut, and fillet |
 | squid tentacles | squid | Butcher block: clean and cut. Also gives ink sacs. |
+| prawn shells | prawns | Cutting board: peel. The peeled prawns go into the dish. |
 
 ## Sausages and cured meat and fish
 
@@ -193,7 +194,7 @@ Feature: B-0047.
 | chicken stock | *chicken bones*, onion, carrot, celery, water | Cooking pot (low): simmer → Strainer: strain |
 | pork stock | *pork bones*, onion, water | Cooking pot (low): simmer → Strainer: strain |
 | pork bone broth | *pork bones*, *pig trotters*, water | Cooking pot (high): boil hard for a long time until milky → Strainer: strain |
-| prawn stock | prawn shells, onion, water | Skillet (medium): toast shells → Cooking pot (low): simmer → Strainer: strain |
+| prawn stock | *prawn shells*, onion, water | Skillet (medium): toast shells → Cooking pot (low): simmer → Strainer: strain |
 | dashi | *kombu*, *bonito flakes*, water | Cooking pot (low): steep kombu, add flakes → Strainer: strain |
 | kombu | kelp | Drying rack: dry |
 
@@ -231,7 +232,7 @@ Feature: B-0047.
 | red curry paste | *dried chilies*, lemongrass, galangal, garlic, shallot, *shrimp paste* | Mortar and pestle: pound |
 | massaman curry paste | *dried chilies*, shallot, garlic, lemongrass, *cumin*, *cinnamon*, *cardamom*, *cloves* | Skillet (medium): toast spices → Mortar and pestle: pound |
 | nam prik pao | *dried chilies*, shallot, garlic, *dried shrimp*, *palm sugar*, *tamarind paste*, *vegetable oil* | Skillet (medium): fry → Mortar and pestle: pound → Skillet (low): cook into a jam |
-| al pastor adobo | *dried chilies*, achiote, pineapple, *wine vinegar*, garlic, *cumin* | Cooking pot (low): soak chilies → Mill: blend |
+| al pastor adobo | *dried chilies*, annatto seed, pineapple, *wine vinegar*, garlic, *cumin* | Cooking pot (low): soak chilies → Mill: blend |
 | anticucho marinade | *dried chilies*, *wine vinegar*, garlic, *cumin*, *dried oregano* | Mill: blend |
 | satay marinade | *coconut milk*, turmeric, coriander seed, *cumin*, sugar | Mortar and pestle: pound spices → Mixing bowl: mix |
 | tamarind paste | *tamarind pulp*, water | Mixing bowl: soak → Strainer: press through |
@@ -264,7 +265,7 @@ Feature: B-0050 for growing, with drying from B-0048.
 | caraway | caraway seed | Drying rack: dry |
 | cardamom | cardamom pod | Drying rack: dry → Mill: grind |
 | nutmeg | nutmeg seed | Drying rack: dry → Mill: grate |
-| paprika | red pepper | Drying rack: dry → Smoker: smoke (optional) → Mill: grind |
+| paprika | paprika pepper | Drying rack: dry → Smoker: smoke (optional) → Mill: grind |
 | chili powder | *dried chilies* | Mill: grind |
 | dried chilies | red chili | Drying rack: dry |
 | curry powder | turmeric, coriander seed, *cumin*, *cardamom*, *black pepper*, *dried chilies* | Skillet (medium): toast → Mill: grind |
@@ -321,7 +322,7 @@ Feature: B-0048.
 | beer | *malted barley*, hops, *yeast*, water | Cooking pot (low): mash and boil with hops → Fermentation crock: ferment |
 | tofu | *dried soybeans*, water, *nigari* | Mill: grind soaked beans → Cooking pot (low): cook → Strainer: strain into soy milk → Mixing bowl: curdle with nigari → Cheese press: press |
 | nigari | water bottle of seawater | Left over after boiling down seawater for *salt* |
-| nori | seaweed | Cutting board: chop → Drying rack: dry in thin sheets |
+| nori | laver | Cutting board: chop → Drying rack: dry in thin sheets |
 | aonori | sea lettuce | Drying rack: dry → Mill: crumble |
 | dried wakame | wakame | Drying rack: dry |
 | raisins | grape | Drying rack: dry |
@@ -367,11 +368,10 @@ Feature: B-0052 for drinks, with B-0050 for the plants.
 
 ## Raw ingredients across all chains
 
-Following every chain to its end gives 158 raw ingredients. They are what players grow, gather, catch, or raise. Items marked New need a source in B-0049 or B-0050.
+Following every chain to its end gives 154 raw ingredients. They are what players grow, gather, catch, or raise. The [sources](sources.md) say where each one comes from.
 
 | Raw ingredient | In Minecraft |
 |---|---|
-| achiote | New |
 | ají amarillo | New |
 | allspice | New |
 | almond | New |
@@ -440,6 +440,7 @@ Following every chain to its end gives 158 raw ingredients. They are what player
 | hops | New |
 | ice | Yes |
 | kelp | Yes |
+| laver | New |
 | lemon | New |
 | lemongrass | New |
 | lettuce | New |
@@ -457,13 +458,13 @@ Following every chain to its end gives 158 raw ingredients. They are what player
 | oil palm fruit | New |
 | olive | New |
 | onion | New |
-| or apple | New |
 | orange | New |
 | oregano | New |
 | oyster | New |
 | oyster mushroom | New |
 | palm sap | New |
 | pandan leaf | New |
+| paprika pepper | New |
 | parsley | New |
 | peanut | New |
 | peppercorn | New |
@@ -472,7 +473,6 @@ Following every chain to its end gives 158 raw ingredients. They are what player
 | plum | New |
 | poblano chili | New |
 | potato | Yes |
-| prawn shells | New |
 | prawns | New |
 | pumpkin | Yes |
 | purple corn | New |
@@ -483,7 +483,6 @@ Following every chain to its end gives 158 raw ingredients. They are what player
 | red chili | New |
 | red grape | New |
 | red onion | New |
-| red pepper | New |
 | redcurrant | New |
 | rhubarb | New |
 | rice | New |
@@ -495,7 +494,6 @@ Following every chain to its end gives 158 raw ingredients. They are what player
 | salmon | Yes |
 | savory | New |
 | sea lettuce | New |
-| seaweed | Vanilla seagrass |
 | sesame seed | New |
 | shaded tea leaf | New |
 | shallot | New |
@@ -506,8 +504,7 @@ Following every chain to its end gives 158 raw ingredients. They are what player
 | strawberry | New |
 | sugar | Yes |
 | sugar cane | Yes |
-| sunflower | New |
-| sunflower seed | New |
+| sunflower | Yes |
 | sweet berries | Yes |
 | sweet potato | New |
 | tamarind pod | New |
@@ -542,4 +539,4 @@ Every product in *italics* in the recipe catalogue and in this document has a de
 - **No distilling:** kirsch and rum are bought from villagers. Wine, sake, mirin, vinegar, and beer are fermented in B-0048.
 - **Cultures that carry over:** sourdough starter, yogurt, and koji each return some of themselves, so only the first batch needs a source.
 - **Duck:** cassoulet needs duck, a new animal with its own carcass and butchery.
-- **New raw ingredients:** 131 raw ingredients are new to Minecraft. Many are tropical or regional crops, so their biomes decide where players must travel.
+- **New raw ingredients:** 127 raw ingredients are new to Minecraft. Many are tropical or regional crops, so their biomes decide where players must travel.

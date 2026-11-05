@@ -1,0 +1,201 @@
+# Cooking pot
+
+Cooking with heat. Defined in the [station list](../../stations.md).
+
+- **Kind:** Container on a heat source
+- **Heat:** Low 135, medium 15, high 27, high with oil 13
+- **Supports:** Simmer, boil, steam, braise, poach, steep, infuse, reduce, render, scald, blanch, curdle, nixtamalize, deep-fry
+- **Feature:** B-0045
+
+## Steps at this station (190)
+
+- [Agua de jamaica](../dishes/agua-de-jamaica.md) (low): [steep](../techniques/steeping.md)
+- [Agua de tamarindo](../dishes/agua-de-tamarindo.md) (low): soften pulp
+- [Aguapanela con limón](../dishes/aguapanela-con-limon.md) (low): dissolve panela
+- [Arroz con leche](../dishes/arroz-con-leche.md) (low): [simmer](../techniques/simmering.md) rice with cinnamon, then milk and sugar
+- [Berliner](../dishes/berliner.md) (high, oil): [deep-fry](../techniques/deep-frying.md)
+- [Boeuf bourguignon](../dishes/boeuf-bourguignon.md) (low): [braise](../techniques/braising.md) with wine, stock, and herbs
+- [Boller i karry](../dishes/boller-i-karry.md) (low): [poach](../techniques/poaching.md) meatballs in stock
+- [Boller i karry](../dishes/boller-i-karry.md) (low): make a curry roux, thicken with the stock
+- [Bratwurst mit Sauerkraut](../dishes/bratwurst-mit-sauerkraut.md) (low): warm sauerkraut
+- [Brigadeiros](../dishes/brigadeiros.md) (low): cook until thick
+- [Bua loy](../dishes/bua-loy.md) (high): [boil](../techniques/boiling.md)
+- [Bua loy](../dishes/bua-loy.md) (low): [serve](../techniques/assembling.md) in warm sweet coconut milk
+- [Café de olla](../dishes/cafe-de-olla.md) (low): [simmer](../techniques/simmering.md)
+- [Canelés](../dishes/caneles.md) (low): [infuse](../techniques/infusing.md) milk
+- [Carnitas tacos](../dishes/carnitas-tacos.md) (low): [confit](../techniques/confit.md) pork in lard with orange
+- [Cassoulet](../dishes/cassoulet.md) (low): [soak](../techniques/soaking.md) and [simmer](../techniques/simmering.md) beans
+- [Ceviche](../dishes/ceviche.md) (high): [boil](../techniques/boiling.md) sweet potato
+- [Cha manao](../dishes/cha-manao.md) (medium): brew
+- [Cha yen](../dishes/cha-yen.md) (medium): brew strong
+- [Champurrado](../dishes/champurrado.md) (low): dissolve masa, heat, [whisk](../techniques/whisking.md) until thick
+- [Chicha morada](../dishes/chicha-morada.md) (low): [simmer](../techniques/simmering.md)
+- [Chiles rellenos](../dishes/chiles-rellenos.md) (high, oil): [fry](../techniques/frying.md)
+- [Chocolat chaud](../dishes/chocolat-chaud.md) (low): melt chocolate into milk
+- [Churros](../dishes/churros.md) (low): cook dough
+- [Churros](../dishes/churros.md) (high, oil): pipe and [deep-fry](../techniques/deep-frying.md)
+- [Citronnade maison](../dishes/citronnade-maison.md) (low): dissolve sugar
+- [Coq au vin](../dishes/coq-au-vin.md) (low): [braise](../techniques/braising.md)
+- [Coxinha](../dishes/coxinha.md) (low): cook dough in stock
+- [Coxinha](../dishes/coxinha.md) (high, oil): [deep-fry](../techniques/deep-frying.md)
+- [Crème brûlée](../dishes/creme-brulee.md) (low): [infuse](../techniques/infusing.md) cream with vanilla
+- [Daifuku mochi](../dishes/daifuku-mochi.md) (medium): [steam](../techniques/steaming.md) the dough
+- [Enchiladas verdes](../dishes/enchiladas-verdes.md) (low): warm salsa, [dip](../techniques/dipping.md) tortillas
+- [Feijoada](../dishes/feijoada.md) (low): [soak](../techniques/soaking.md) beans and desalt the beef
+- [Feijoada](../dishes/feijoada.md) (low): [simmer](../techniques/simmering.md) with all meats for a long time
+- [Flæskesteg med rødkål](../dishes/flaeskesteg-med-rodkal.md) (low): [braise](../techniques/braising.md) red cabbage with vinegar and sugar
+- [Flæskesteg med rødkål](../dishes/flaeskesteg-med-rodkal.md) (low): make gravy from the drippings
+- [French onion soup](../dishes/french-onion-soup.md) (low): [simmer](../techniques/simmering.md) with stock
+- [Früchtetee](../dishes/fruchtetee.md) (low): [steep](../techniques/steeping.md)
+- [Green curry](../dishes/green-curry.md) (medium): [fry](../techniques/frying.md) paste in coconut cream
+- [Green curry](../dishes/green-curry.md) (low): [simmer](../techniques/simmering.md) chicken and aubergine
+- [Hojicha](../dishes/hojicha.md) (low): [steep](../techniques/steeping.md)
+- [Hyldeblomstsaft](../dishes/hyldeblomstsaft.md) (low): dissolve sugar
+- [Kalter Kakao](../dishes/kalter-kakao.md) (low): dissolve cocoa and sugar in warm milk
+- [Karaage](../dishes/karaage.md) (high, oil): [deep-fry](../techniques/deep-frying.md) twice
+- [Kinderpunsch](../dishes/kinderpunsch.md) (low): heat gently and [infuse](../techniques/infusing.md)
+- [Koji amazake](../dishes/koji-amazake.md) (low): hold warm for a long time until sweet
+- [Korokke](../dishes/korokke.md) (high): [boil](../techniques/boiling.md) potatoes
+- [Korokke](../dishes/korokke.md) (high, oil): [deep-fry](../techniques/deep-frying.md)
+- [Llapingachos](../dishes/llapingachos.md) (high): [boil](../techniques/boiling.md) potatoes
+- [Malzkaffee](../dishes/malzkaffee.md) (low): brew
+- [Mango sticky rice](../dishes/mango-sticky-rice.md) (medium): [steam](../techniques/steaming.md) soaked rice
+- [Mango sticky rice](../dishes/mango-sticky-rice.md) (low): warm sweet coconut sauce
+- [Massaman curry](../dishes/massaman-curry.md) (medium): [fry](../techniques/frying.md) paste
+- [Massaman curry](../dishes/massaman-curry.md) (low): [braise](../techniques/braising.md) beef, add potatoes
+- [Matcha](../dishes/matcha.md) (low): heat water
+- [Mazamorra morada](../dishes/mazamorra-morada.md) (low): [simmer](../techniques/simmering.md) corn with fruit and spices
+- [Mazamorra morada](../dishes/mazamorra-morada.md) (low): thicken with starch, add dried fruit
+- [Miso soup](../dishes/miso-soup.md) (low): heat dashi, dissolve miso, add tofu and wakame
+- [Mitarashi dango](../dishes/mitarashi-dango.md) (high): [boil](../techniques/boiling.md) dumplings
+- [Mole poblano](../dishes/mole-poblano.md) (low): [fry](../techniques/frying.md) the paste, [simmer](../techniques/simmering.md) with stock for a long time
+- [Mole poblano](../dishes/mole-poblano.md) (low): add chicken
+- [Moqueca baiana](../dishes/moqueca-baiana.md) (low): [layer](../techniques/layering.md) and [simmer](../techniques/simmering.md)
+- [Moules marinières](../dishes/moules-marinieres.md) (medium): sweat aromatics in butter, add wine and mussels, [steam](../techniques/steaming.md)
+- [Mugicha](../dishes/mugicha.md) (medium): [steep](../techniques/steeping.md)
+- [Nam krajeab](../dishes/nam-krajeab.md) (low): [simmer](../techniques/simmering.md)
+- [Nam takrai](../dishes/nam-takrai.md) (low): [infuse](../techniques/infusing.md)
+- [Pad Thai](../dishes/pad-thai.md) (low): [soak](../techniques/soaking.md) noodles
+- [Pambazos](../dishes/pambazos.md) (low): [dip](../techniques/dipping.md) [roll](../techniques/rolling.md) in chili sauce
+- [Pastel de choclo](../dishes/pastel-de-choclo.md) (low): cook corn with basil and milk
+- [Pfefferminztee](../dishes/pfefferminztee.md) (low): [steep](../techniques/steeping.md)
+- [Picarones](../dishes/picarones.md) (high): [boil](../techniques/boiling.md) vegetables
+- [Picarones](../dishes/picarones.md) (high, oil): [shape](../techniques/shaping.md) rings and [deep-fry](../techniques/deep-frying.md)
+- [Poh pia tod](../dishes/poh-pia-tod.md) (high, oil): [deep-fry](../techniques/deep-frying.md)
+- [Pozole rojo](../dishes/pozole-rojo.md) (low): [simmer](../techniques/simmering.md) pork and hominy for a long time, stir in chili sauce
+- [Pão de queijo](../dishes/pao-de-queijo.md) (low): [scald](../techniques/scalding.md) starch with hot milk and oil
+- [Rabarbersaft](../dishes/rabarbersaft.md) (low): [simmer](../techniques/simmering.md)
+- [Ratatouille](../dishes/ratatouille.md) (low): [stew](../techniques/stewing.md) together with garlic and herbs
+- [Rinderrouladen](../dishes/rinderrouladen.md) (low): [braise](../techniques/braising.md)
+- [Rødgrød med fløde](../dishes/rodgrod-med-flode.md) (low): cook berries
+- [Rødgrød med fløde](../dishes/rodgrod-med-flode.md) (low): thicken with starch
+- [Sangkhaya fak thong](../dishes/sangkhaya-fak-thong.md) (medium): [steam](../techniques/steaming.md)
+- [Sauerbraten](../dishes/sauerbraten.md) (low): [braise](../techniques/braising.md) in the marinade, thicken with gingerbread and raisins
+- [Sencha](../dishes/sencha.md) (low): [steep](../techniques/steeping.md) gently
+- [Shoyu ramen](../dishes/shoyu-ramen.md) (high): [boil](../techniques/boiling.md) noodles
+- [Shoyu ramen](../dishes/shoyu-ramen.md) (low): combine broths with tare
+- [Solbærsaft](../dishes/solbaersaft.md) (low): cook
+- [Spätzle](../dishes/spatzle.md) (high): [scrape](../techniques/scraping.md) into boiling water
+- [Stegt flæsk med persillesovs](../dishes/stegt-flaesk-med-persillesovs.md) (high): [boil](../techniques/boiling.md) potatoes
+- [Stegt flæsk med persillesovs](../dishes/stegt-flaesk-med-persillesovs.md) (low): stir parsley into the béchamel
+- [Tamales](../dishes/tamales.md) (low): cook pork in chili sauce
+- [Tamales](../dishes/tamales.md) (medium): [steam](../techniques/steaming.md)
+- [Tarteletter med høns i asparges](../dishes/tarteletter-med-hons-i-asparges.md) (low): cook a roux, thicken the stock with cream
+- [Tarteletter med høns i asparges](../dishes/tarteletter-med-hons-i-asparges.md) (low): add chicken and asparagus
+- [Tempura](../dishes/tempura.md) (high, oil): [deep-fry](../techniques/deep-frying.md)
+- [Tequeños](../dishes/tequenos.md) (high, oil): [deep-fry](../techniques/deep-frying.md)
+- [Teriyaki salmon](../dishes/teriyaki-salmon.md) (low): [reduce](../techniques/reducing.md) the sauce
+- [Tod mun pla](../dishes/tod-mun-pla.md) (high, oil): [deep-fry](../techniques/deep-frying.md)
+- [Tom kha gai](../dishes/tom-kha-gai.md) (low): [infuse](../techniques/infusing.md) aromatics in coconut milk, [simmer](../techniques/simmering.md) chicken, balance with fish sauce and lime
+- [Tom yum goong](../dishes/tom-yum-goong.md) (high): [boil](../techniques/boiling.md) stock with aromatics
+- [Tom yum goong](../dishes/tom-yum-goong.md) (low): add prawns, [season](../techniques/seasoning.md) off the [boil](../techniques/boiling.md)
+- [Tub tim grob](../dishes/tub-tim-grob.md) (high): [boil](../techniques/boiling.md)
+- [Varm hyldebærsaft](../dishes/varm-hyldebaersaft.md) (low): cook
+- [achiote oil](../products/achiote-oil.md) (low): [infuse](../techniques/infusing.md)
+- [ajitsuke tamago](../products/ajitsuke-tamago.md) (high): [boil](../techniques/boiling.md) soft
+- [al pastor adobo](../products/al-pastor-adobo.md) (low): [soak](../techniques/soaking.md) chilies
+- [anko](../products/anko.md) (low): [simmer](../techniques/simmering.md) until soft
+- [anko](../products/anko.md) (low): cook with sugar until thick
+- [apple compote](../products/apple-compote.md) (low): [simmer](../techniques/simmering.md)
+- [beef stock](../products/beef-stock.md) (low): [simmer](../techniques/simmering.md) for a long time
+- [beer](../products/beer.md) (low): [mash](../techniques/mashing.md) and [boil](../techniques/boiling.md) with hops
+- [blue corn masa](../products/blue-corn-masa.md) (low): [nixtamalize](../techniques/nixtamalizing.md)
+- [brown sugar](../products/brown-sugar.md) (high): [boil](../techniques/boiling.md) the juice, keep the molasses
+- [béchamel](../products/bechamel.md) (low): [whisk](../techniques/whisking.md) milk into the roux until thick
+- [cassis syrup](../products/cassis-syrup.md) (low): cook
+- [cassis syrup](../products/cassis-syrup.md) (low): dissolve sugar
+- [chancaca syrup](../products/chancaca-syrup.md) (low): [simmer](../techniques/simmering.md) with spices and orange [peel](../techniques/peeling.md)
+- [chashu pork](../products/chashu-pork.md) (low): [braise](../techniques/braising.md) for a long time
+- [cherry compote](../products/cherry-compote.md) (low): [simmer](../techniques/simmering.md), thicken
+- [cherry sauce](../products/cherry-sauce.md) (low): [simmer](../techniques/simmering.md), thicken
+- [chicken stock](../products/chicken-stock.md) (low): [simmer](../techniques/simmering.md)
+- [chocolate sauce](../products/chocolate-sauce.md) (low): melt together
+- [chopped almonds](../products/chopped-almonds.md) (high): [blanch](../techniques/blanching.md)
+- [choux pastry](../products/choux-pastry.md) (low): cook flour into the butter and water
+- [cocktail sausages](../products/cocktail-sausages.md) (low): [poach](../techniques/poaching.md)
+- [condensed milk](../products/condensed-milk.md) (low): [reduce](../techniques/reducing.md) slowly
+- [curds](../products/curds.md) (low): warm milk, add rennet, cut the [set](../techniques/setting.md) curd. Also gives [whey](../products/whey.md).
+- [curry ketchup](../products/curry-ketchup.md) (low): cook down
+- [dashi](../products/dashi.md) (low): [steep](../techniques/steeping.md) kombu, add flakes
+- [dendê oil](../products/dende-oil.md) (high): [boil](../techniques/boiling.md)
+- [dressed chicken](../products/dressed-chicken.md) (low): [scald](../techniques/scalding.md)
+- [dressed duck](../products/dressed-duck.md) (low): [scald](../techniques/scalding.md)
+- [dressed pig](../products/dressed-pig.md) (low): [scald](../techniques/scalding.md)
+- [dried shrimp](../products/dried-shrimp.md) (high): [boil](../techniques/boiling.md) in salted water
+- [duck confit](../products/duck-confit.md) (low): cook slowly in its own fat
+- [dulce de leche](../products/dulce-de-leche.md) (low): cook until caramel [brown](../techniques/browning.md)
+- [evaporated milk](../products/evaporated-milk.md) (low): [reduce](../techniques/reducing.md) slowly
+- [fried potatoes](../products/fried-potatoes.md) (high, oil): [deep-fry](../techniques/deep-frying.md)
+- [glass noodles](../products/glass-noodles.md) (high): extrude into boiling water
+- [ham](../products/ham.md) (low): cook
+- [hard-boiled egg](../products/hard-boiled-egg.md) (high): [boil](../techniques/boiling.md)
+- [hominy](../products/hominy.md) (low): [nixtamalize](../techniques/nixtamalizing.md), [simmer](../techniques/simmering.md) with lye
+- [jam](../products/jam.md) (low): cook until it sets
+- [lard](../products/lard.md) (low): [render](../techniques/rendering.md)
+- [masarepa](../products/masarepa.md) (high): [boil](../techniques/boiling.md)
+- [matcha powder](../products/matcha-powder.md) (medium): [steam](../techniques/steaming.md)
+- [miang sauce](../products/miang-sauce.md) (low): cook until thick
+- [mint syrup](../products/mint-syrup.md) (low): dissolve sugar
+- [miso](../products/miso.md) (low): cook soybeans
+- [mitarashi glaze](../products/mitarashi-glaze.md) (low): thicken
+- [nopales](../products/nopales.md) (high): [boil](../techniques/boiling.md)
+- [okonomi sauce](../products/okonomi-sauce.md) (low): [simmer](../techniques/simmering.md)
+- [oyster sauce](../products/oyster-sauce.md) (low): [reduce](../techniques/reducing.md)
+- [palm sugar](../products/palm-sugar.md) (high): [boil](../techniques/boiling.md) down
+- [panela](../products/panela.md) (high): [boil](../techniques/boiling.md) the juice down
+- [peanut sauce](../products/peanut-sauce.md) (low): [simmer](../techniques/simmering.md) together
+- [pickled beetroot](../products/pickled-beetroot.md) (high): [boil](../techniques/boiling.md)
+- [poached chicken](../products/poached-chicken.md) (low): [poach](../techniques/poaching.md)
+- [pork bone broth](../products/pork-bone-broth.md) (high): [boil](../techniques/boiling.md) hard for a long time until milky
+- [pork stock](../products/pork-stock.md) (low): [simmer](../techniques/simmering.md)
+- [prawn stock](../products/prawn-stock.md) (low): [simmer](../techniques/simmering.md)
+- [queso blanco](../products/queso-blanco.md) (low): [curdle](../techniques/curdling.md) with lime
+- [queso fresco](../products/queso-fresco.md) (low): [curdle](../techniques/curdling.md)
+- [queso Oaxaca](../products/queso-oaxaca.md) (low): stretch in hot water
+- [red chili sauce](../products/red-chili-sauce.md) (low): [soak](../techniques/soaking.md) chilies
+- [red chili sauce](../products/red-chili-sauce.md) (low): [fry](../techniques/frying.md) and [simmer](../techniques/simmering.md)
+- [redcurrant jelly](../products/redcurrant-jelly.md) (low): cook
+- [refried beans](../products/refried-beans.md) (low): [simmer](../techniques/simmering.md)
+- [rice noodles](../products/rice-noodles.md) (medium): [steam](../techniques/steaming.md) thin sheets
+- [rice pudding](../products/rice-pudding.md) (low): [simmer](../techniques/simmering.md) slowly
+- [roux](../products/roux.md) (low): cook together
+- [salsa roja](../products/salsa-roja.md) (low): [fry](../techniques/frying.md) briefly
+- [salt](../products/salt.md) (high): [boil](../techniques/boiling.md) down
+- [sencha leaves](../products/sencha-leaves.md) (medium): [steam](../techniques/steaming.md)
+- [shoyu tare](../products/shoyu-tare.md) (low): [simmer](../techniques/simmering.md)
+- [simple syrup](../products/simple-syrup.md) (low): dissolve
+- [sliced almonds](../products/sliced-almonds.md) (high): [blanch](../techniques/blanching.md)
+- [soy sauce](../products/soy-sauce.md) (medium): [steam](../techniques/steaming.md) soybeans
+- [spätzle](../products/spatzle.md) (high): [scrape](../techniques/scraping.md) into boiling water
+- [steamed rice](../products/steamed-rice.md) (medium): [steam](../techniques/steaming.md)
+- [sweet chili sauce](../products/sweet-chili-sauce.md) (low): [simmer](../techniques/simmering.md)
+- [tallow](../products/tallow.md) (low): [render](../techniques/rendering.md)
+- [tenkasu](../products/tenkasu.md) (high, oil): drizzle and [deep-fry](../techniques/deep-frying.md)
+- [tentsuyu](../products/tentsuyu.md) (low): [simmer](../techniques/simmering.md)
+- [tofu](../products/tofu.md) (low): cook
+- [tomato caldillo](../products/tomato-caldillo.md) (low): [simmer](../techniques/simmering.md)
+- [tonkatsu sauce](../products/tonkatsu-sauce.md) (low): [simmer](../techniques/simmering.md), [purée](../techniques/blending.md)
+- [vanilla](../products/vanilla.md) (low): [blanch](../techniques/blanching.md)
+- [vanilla custard](../products/vanilla-custard.md) (low): [whisk](../techniques/whisking.md) until thick
+- [yakitori tare](../products/yakitori-tare.md) (low): [reduce](../techniques/reducing.md)
+- [yogurt](../products/yogurt.md) (low): warm milk

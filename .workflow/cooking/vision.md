@@ -1,6 +1,6 @@
 # Cooking when it is finished
 
-This describes the intended end state of cabin cooking, after every cooking feature from B-0041 and B-0045 through B-0052, plus cooking automation in B-0025, is done. The [cooking concept](concept.md) explains the reasoning, and each feature brief owns its details. Items marked as proposals still need a decision.
+The [cooking book](book/README.md) cross-references every dish, product, raw ingredient, station, and technique described here. This describes the intended end state of cabin cooking, after every cooking feature from B-0041 and B-0045 through B-0052, plus cooking automation in B-0025, is done. The [cooking concept](concept.md) explains the reasoning, and each feature brief owns its details. Items marked as proposals still need a decision.
 
 ## In one paragraph
 
