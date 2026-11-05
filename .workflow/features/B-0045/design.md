@@ -1,0 +1,195 @@
+# B-0045 design: cooking stations and cookbook
+
+Status: Ready
+Feature ID: B-0045
+
+This design implements the [B-0045 brief](brief.md). [ADR-0010](../../decisions/adr/0010-define-cooking-as-station-recipe-types.md) and [ADR-0011](../../decisions/adr/0011-remove-vanilla-food-recipes-with-load-conditions.md) record the decisions that later cooking features reuse.
+
+## Shape of the change
+
+This is the mod's first set of custom blocks and block entities. Everything else in B-0045 hangs off four things:
+
+1. **Cooking recipe types.** One recipe type per station kind, with one shared JSON format. Datapacks and later features add recipes as data.
+2. **Heat.** A small service that answers "what heat level does this station have right now?" from fuel tags and campfires.
+3. **Station block entities.** Each one ticks like a furnace and stores its contents, fuel, water, and progress in block entity NBT.
+4. **Client recipe sync.** The cookbook and the station recipe panels read recipes that Fabric's recipe sync sends to the client.
+
+Code stays in the flat `dev.portablepocketcabin` package, with a `Cooking` prefix for new classes, which matches the existing `Cabin` prefix convention.
+
+## Recipes
+
+### Recipe types
+
+| Type | Station | Input | Heat | Matching |
+|---|---|---|---|---|
+| `portable_pocket_cabin:cutting` | Cutting board | One item | None | Single input, knife use |
+| `portable_pocket_cabin:skillet` | Skillet | One item per slot | Required | Each slot matches on its own |
+| `portable_pocket_cabin:pot` | Cooking pot | Up to 6 items, container, water | Required | Shapeless over the ingredient slots |
+| `portable_pocket_cabin:oven` | Oven | Up to 6 items | Required | Shapeless over the ingredient slots |
+
+One `CookingRecipe` record backs all four types, and each type has its own `RecipeSerializer` built from the shared codec. Example:
+
+```json
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    { "item": "portable_pocket_cabin:chopped_carrot" },
+    { "item": "portable_pocket_cabin:diced_potato" },
+    { "item": "portable_pocket_cabin:chopped_beetroot" }
+  ],
+  "container": { "item": "minecraft:bowl", "count": 3 },
+  "water": 1,
+  "heat": "low",
+  "time": 300,
+  "result": { "id": "portable_pocket_cabin:vegetable_soup", "count": 3 }
+}
+```
+
+- `ingredients` lists one entry per required item. Repeated entries express quantities, for example six chopped beetroot.
+- `container` is optional and goes in the pot's container slot. The finished output keeps it, like soup in a bowl.
+- `water` is the pot water used per craft. It is optional and defaults to 0.
+- `remainders` is optional. It lists items returned to the byproduct slot, such as empty buckets from cake.
+- `heat` is `low`, `medium`, or `high`, and is absent for the cutting board.
+- `time` is in ticks.
+- `technique` is a key for the cookbook's explanation text in `en_us.json`, such as `cooking.technique.simmering`.
+
+`placementInfo()` returns `PlacementInfo.NOT_PLACEABLE`, so the vanilla recipe book never tries to place these recipes. `recipeBookCategory()` returns one registered `portable_pocket_cabin:cooking` category.
+
+### Client sync
+
+`RecipeSynchronization.synchronizeRecipeSerializer` registers the four cooking serializers. The client receives the recipes on join and `/reload` through `ClientRecipeSynchronizedEvent`. A small client cache groups them by station for the cookbook and the station panels.
+
+## Heat
+
+- Item tags `portable_pocket_cabin:heat/low`, `heat/medium`, and `heat/high` assign each fuel one level. Burn time stays vanilla `FuelValues`, so fuel slots accept exactly what a furnace accepts.
+- A fuel that is in no heat tag, such as a fuel from another mod, burns at medium heat.
+- `CookingHeat.at(level, pos)` returns the heat for a pot or skillet at `pos`:
+  - If the block below is a stove that is burning, it returns that stove's current fuel level.
+  - If the block below is a lit campfire or soul campfire, it returns low.
+  - Otherwise there is no heat.
+- A stove burns fuel only while the vessel above has a matching recipe it can progress, like a furnace that only burns when it has something to smelt. A new fuel item starts burning when the previous one runs out, which is when the heat level changes.
+- The oven has its own fuel slot and uses the same burning rule.
+
+| Tag | Initial members |
+|---|---|
+| `heat/low` | `#minecraft:planks`, `minecraft:stick`, `#minecraft:saplings`, `#minecraft:wooden_slabs`, `#minecraft:wooden_stairs`, `minecraft:bamboo`, `minecraft:dried_kelp_block`, `minecraft:bowl` |
+| `heat/medium` | `#minecraft:logs`, `minecraft:charcoal`, `minecraft:coal` |
+| `heat/high` | `minecraft:coal_block`, `minecraft:blaze_rod`, `minecraft:lava_bucket` |
+
+## Stations
+
+All stations are blocks with block entities that use standard ticking. That means they pause automatically in a packed, empty cabin and during room relocation, because the existing chunk-ticket and `CorridorBlockEntityMixin` pauses cover every ticking block entity.
+
+| Station | Block entity state | Interaction |
+|---|---|---|
+| Stove | Fuel slot, burn time left, burn duration, current heat level | Opens a one-slot fuel screen. Shows flames when burning. |
+| Cooking pot | 6 ingredient slots, container slot, output slot, byproduct slot, water 0–3, progress, current recipe | Use with a water bucket to fill water and get an empty bucket. Otherwise opens the pot screen. |
+| Skillet | 4 item slots, each with its own progress | Use with a cookable item to add it. Use with an empty hand to take finished items. Renders its items like a campfire. |
+| Oven | 6 ingredient slots, fuel slot, output slot, byproduct slot, burn state, progress | Opens a furnace-style screen. |
+| Cutting board | One item stack | Use with a cuttable item to place it. Use with the knife to cut one item, or sneak-use to cut the whole stack. Use with an empty hand to take it back. Renders the item lying on the board. |
+
+Shared rules:
+
+- A station looks up its current recipe from its inputs when they change, not every tick.
+- Progress advances by one per tick only while the heat equals the recipe's heat. Otherwise it holds its value, and the screen shows a status line, for example "Needs low heat".
+- When progress reaches `time` and the output and byproduct slots have room, the station consumes the inputs, the container, and the water, then adds the output and byproducts. A full output slot pauses progress.
+- A change of inputs that changes the matched recipe resets progress to 0. Breaking a station drops all its contents, and progress restarts when the items are cooked again.
+- Each completion happens in one server-tick transaction on the block entity, so it either fully happens or doesn't.
+- Cutting gives its output to the player's inventory and drops any overflow beside the board.
+
+### Permissions
+
+Inside the pocket dimension every station interaction and every screen's `stillValid` calls `CabinCorridors.mayChange(level, player, pos)`. Guests are already blocked from using blocks there, and screens close when a player's role is removed. Outside the cabin, stations follow normal Minecraft rules.
+
+### Models
+
+There are no custom textures yet. The stations use block models that reference vanilla textures:
+
+- Stove: smoker and blast furnace faces.
+- Cooking pot: a cauldron-shaped model with copper faces.
+- Skillet: a thin iron slab with a stick handle.
+- Oven: brick sides with a furnace front.
+- Cutting board: a one-pixel plank slab.
+
+Prepared items and new dishes get simple generated placeholder textures. B-0034 replaces them with final art.
+
+## Items
+
+| Item | Kind | Food |
+|---|---|---|
+| Kitchen knife | Tool, no durability | — |
+| Cookbook | Opens the cookbook screen | — |
+| Chopped carrot, diced potato, chopped beetroot, chopped apple | Prepared | Not edible |
+| Sliced brown mushrooms, sliced red mushrooms | Prepared | Not edible |
+| Sautéed mushrooms | Prepared and edible | 3 hunger, 3.6 saturation |
+| Fried egg | Dish | 3 hunger, 3.6 saturation |
+| Vegetable soup | Dish in a bowl | 7 hunger, 8.4 saturation, returns the bowl |
+| Apple compote | Dish in a bowl | 5 hunger, 6.0 saturation, returns the bowl |
+
+Vanilla outputs keep their vanilla food values. Recipe times start at 100 ticks for skillet recipes, 200 for oven recipes, and 300 for pot recipes. B-0033 tunes them.
+
+## Cookbook
+
+- The cookbook is a client screen opened by using the item. It reads the synced recipe cache. A server menu isn't needed for browsing.
+- The left side lists recipes grouped by station with a search box. The right side shows the selected recipe: station, ingredients with links, heat, time, output, and the technique explanation.
+- Ingredient links search the cache for recipes whose result is that item.
+- **Availability:**
+  - When the screen opens, the client sends a `CookbookAvailabilityRequest` payload.
+  - The server counts the player's inventory. If the player is inside a cabin, is household, and the cabin has central storage installed, it also counts that storage.
+  - The server replies with the set of recipe ids whose ingredients are all present. It never sends storage contents to guests.
+
+## Station recipe panel
+
+- The pot and oven screens have a recipe-panel button, like the vanilla recipe book. It lists that station's synced recipes and marks the ones the player can fill.
+- Selecting a recipe sends a `CookingFillRequest(pos, recipeId)`. The server first returns the current ingredient-slot contents to the player, then moves the recipe's ingredients and container from the player's inventory.
+- Filling skips named and customised stacks, using the same check as the crafting room, `CabinStation.ordinary`.
+- The server code takes an ingredient source list. B-0041 adds central storage in front of the player inventory, and adds fuel filling, without changing the payload.
+
+## Vanilla food removal
+
+[ADR-0011](../../decisions/adr/0011-remove-vanilla-food-recipes-with-load-conditions.md) removes these 35 vanilla recipes:
+
+- `smelting`, `smoking`, and `campfire_cooking` for baked potato, cooked beef, chicken, cod, mutton, porkchop, rabbit, salmon, and dried kelp: 27 recipes.
+- Crafting `bread`, `cake`, `cookie`, `pumpkin_pie`, `mushroom_stew`, `beetroot_soup`, `rabbit_stew_from_brown_mushroom`, and `rabbit_stew_from_red_mushroom`: 8 recipes.
+
+With its recipes gone, a campfire no longer accepts raw food, because vanilla only places items it can cook. Golden foods, suspicious stew, and unpacking dried kelp and honey blocks are unchanged.
+
+## Verification
+
+GameTests:
+
+- Recipe codec round trip, and each starter recipe matching at its station.
+- Heat:
+  - Each tag's fuel gives its level.
+  - An untagged fuel gives medium.
+  - A campfire gives low.
+  - No heat source gives none.
+- Progress:
+  - Progress pauses at the wrong heat and resumes without loss.
+  - A full output slot pauses.
+  - A recipe change resets.
+  - The stove burns only with work above it.
+- Persistence: a save and reload of each station keeps its contents, water, fuel, and progress.
+- Removal: the 35 vanilla recipes are absent, the replacement cooking recipes are present, and a campfire refuses raw beef.
+- Permissions: a guest cannot use or open a station in a cabin, and a resident can.
+- Filling: it skips named and customised stacks and returns displaced items.
+
+Client GameTests capture the cookbook list and detail views and the pot, oven, and stove screens for `screenshots/cooking/`.
+
+## Delivery
+
+Each step is a commit with its tests green:
+
+1. Recipe types, codec, sync, items, heat tags, and the vanilla removal data.
+2. Stove, cooking pot, skillet, and campfire heat.
+3. Oven.
+4. Cutting board and knife.
+5. Cookbook screen and availability payload.
+6. Station recipe panel and filling.
+7. Screenshots, README section, and backlog update.
+
+## Assumptions
+
+- Fabric's `fabric:load_conditions` with a false condition removes an overridden vanilla recipe. The first delivery step's GameTest confirms this. The fallback is a `RecipeManager` filter by recipe id.
+- Placeholder textures are acceptable until B-0034.
