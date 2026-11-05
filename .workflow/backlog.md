@@ -244,7 +244,7 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 - Direction: [Manual production rooms](direction.md#manual-production-rooms).
 - Relationships: Uses B-0005 and B-0038. Integrates B-0004. Uses equipment and recipes from B-0045. Used by cooking in B-0025.
 - Feature Brief: [Manual kitchen brief](features/B-0041/brief.md).
-- Open proposals: Later cooking features may add their stations through new kitchen purchases, which may need a larger room than 5×5.
+- Open proposals: Later cooking features may add their stations through new kitchen purchases, which may need a larger room than 5×5. The kitchen should supply a prep counter, with its cutting board on it, once the counter has an owning feature.
 
 ## B-0042: Smelting jobs
 

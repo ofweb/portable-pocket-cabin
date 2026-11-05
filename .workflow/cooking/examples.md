@@ -78,7 +78,7 @@ Two chains meet on one plate: butchery and sausage making on one side, days of f
 | Shred | Cutting board (click) | Cabbage | Knife use | Shredded cabbage |
 | Ferment | Fermentation crock (time) | 4 shredded cabbage, salt | — 2 days | 4 sauerkraut |
 | Fry | Skillet (surface) | Raw bratwurst | Medium, 30 s | Bratwurst |
-| Serve | Plate at the cutting board (click) | Bratwurst, sauerkraut, mustard | — | Bratwurst with sauerkraut |
+| Serve | Prep counter (work surface) | Bratwurst, sauerkraut, mustard | — | Bratwurst with sauerkraut |
 
 - **Raw ingredients:** a pig, cabbage, salt, black pepper, marjoram, and mustard seed for mustard.
 - **It teaches:**
@@ -151,5 +151,5 @@ A short chain, for contrast. Pressed apple juice the way Danish farms make it.
 - **Cultures:** sourdough starter and koji need a first source. Proposal: a starter begins from flour and water in a crock. Koji spores come from a villager trade or a rare find, and each batch returns some.
 - **New animals and fish:** bonito needs to exist as a catchable fish. Proposal: B-0049 adds it as fishing loot in warm oceans.
 - **Smoker:** this assumes the vanilla smoker becomes the smoking station, burning low-heat fuel for cured and smoked foods. Proposal: B-0048 owns this change.
-- **Serving step:** plating at the cutting board is a light assembly step. It may be better as a crafting-free "plate" station, or as the cutting board's second use.
+- **Serving step:** dishes are assembled at the prep counter, as the [station list](stations.md) records.
 - **Durations:** these are first guesses. Real proofing takes hours and miso takes months. Minecraft needs shorter times that still feel like waiting.

@@ -42,7 +42,8 @@ Cooking works like Minecraft's own stations. Players can cook anywhere with the 
 
 Each station does one kind of work and matches its inputs, like a furnace or stonecutter. There is no recipe activation or step tracking.
 
-- **Click stations** work like the stonecutter: the cutting board turns an ingredient into its prepared item when the player uses a knife on it.
+- **Counter-top stations** sit on a prep counter, the way a pot sits on a stove. The cutting board turns an ingredient into its prepared item when the player uses a knife on it. Ingredients placed in the mixing bowl are mixed with a spoon. The counter itself is where dishes are shaped, filled, and assembled.
+- **Click stations** work like the stonecutter: the hanging hook and butcher block act on a carcass when the player uses a tool on it.
 - **Surface stations** work like the campfire: the skillet holds a few items and cooks each one while heated.
 - **Container stations** work like the furnace or brewing stand: the cooking pot and oven take ingredients in slots and cook while heated.
 - **Time stations** work at ambient conditions: drying racks, fermentation crocks, and ageing cellars progress over time without heat.
@@ -141,7 +142,8 @@ Automation uses the same ingredients, stations, heat levels, and times as manual
 |---|---|
 | Stove | Heat for a pot or skillet, set by its fuel |
 | Cutting board | Preparing vegetables, herbs, and ingredients |
-| Mixing bowl | Dough, batter, seasoning, combining ingredients |
+| Prep counter | Work surface for counter-top stations, shaping, filling, and assembling dishes |
+| Mixing bowl | Dough, batter, seasoning, combining ingredients, mixed with a spoon |
 | Mill | Flour, ground grains, crushed fruit, bone meal |
 | Rolling mill | Rolled oats, pasta |
 | Skillet | Frying, sautéing, searing |
@@ -197,4 +199,3 @@ A meal that once needed substantial preparation becomes easy because the player 
 - **Balance:** Benefit families, magnitudes, durations, and active-benefit limits are open.
 - **Durations:** real proofing takes hours and miso takes months. Times must be short enough for Minecraft and still feel like waiting.
 - **Villager ingredients:** which prepared ingredients villagers sell, and from which professions, is open.
-- **Serving:** whether plating a finished dish is a cutting-board step or its own station is open.

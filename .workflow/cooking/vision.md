@@ -14,11 +14,13 @@ All cooking happens at cooking stations. Furnaces, smokers, campfires, and craft
 
 | Kind | Works like | Stations |
 |---|---|---|
-| Click | Stonecutter | Cutting board, mortar and pestle, hanging hook, butcher block |
+| Click | Stonecutter | Hanging hook, butcher block |
+| Counter-top | A pot on a stove: it sits on the prep counter, and a tool acts on what is placed in it | Cutting board with a knife, mixing bowl with a spoon, mortar and pestle |
 | Surface | Campfire | Skillet, grill |
-| Container | Furnace or brewing stand | Cooking pot, oven, mill, mixing bowl, meat grinder, sausage stuffer, fruit press, butter churn, cheese press |
+| Container | Furnace or brewing stand | Cooking pot, oven, mill, meat grinder, sausage stuffer, fruit press, butter churn, cheese press |
 | Time | Ambient, no heat | Drying rack, fermentation crock, pickling jar, proofing basket, brine barrel, dairy pan, ageing shelf |
 | Heat source | Fuel block | Stove, campfire |
+| Work surface | A crafting table | Prep counter, which holds counter-top stations and is where dishes are assembled |
 
 The [station list](stations.md) counts how often each station is used across every recipe. Stations can be crafted and placed anywhere. The cabin kitchen supplies protected sets of them and connects them to central storage.
 

@@ -75,26 +75,26 @@ Feature: B-0046.
 | sweet yeast dough | *wheat flour*, *yeast*, milk, sugar, egg, *raw butter* | Mixing bowl: knead → Proofing basket: proof |
 | flatbread dough | *wheat flour*, water, *salt*, *vegetable oil* | Mixing bowl: knead |
 | shortcrust pastry | *wheat flour*, *raw butter*, water, *salt* | Mixing bowl: rub butter into flour, bind → Ageing shelf: chill |
-| puff pastry | *wheat flour*, *raw butter*, water, *salt* | Mixing bowl: make dough → Cutting board: fold butter in, roll, and fold six times → Ageing shelf: chill |
+| puff pastry | *wheat flour*, *raw butter*, water, *salt* | Mixing bowl: make dough → Prep counter: fold butter in, roll, and fold six times → Ageing shelf: chill |
 | choux pastry | *wheat flour*, *raw butter*, water, egg | Cooking pot (low): cook flour into the butter and water → Mixing bowl: beat in eggs |
 | strudel dough | *wheat flour*, water, *vegetable oil*, *salt* | Mixing bowl: knead → Ageing shelf: rest |
 | empanada dough | *wheat flour*, *lard*, water, *salt* | Mixing bowl: knead → Ageing shelf: rest |
-| gyoza wrappers | *wheat flour*, water, *salt* | Mixing bowl: knead → Cutting board: roll and cut rounds |
+| gyoza wrappers | *wheat flour*, water, *salt* | Mixing bowl: knead → Prep counter: roll and cut rounds |
 | spring roll wrappers | *wheat flour*, water, *salt* | Mixing bowl: mix a wet dough → Skillet (low): cook thin sheets |
 | tartlet shells | *puff pastry* | Cutting board: cut and stack rings → Oven (medium): bake |
 | bread | *bread dough* | Oven (medium): bake |
-| bread roll | *bread dough* | Cutting board: shape small rolls → Oven (medium): bake |
+| bread roll | *bread dough* | Prep counter: shape small rolls → Oven (medium): bake |
 | rugbrød | *rye flour*, *cracked rye*, *sourdough starter*, water, *salt*, *sunflower seeds* | Mixing bowl: mix → Proofing basket: proof → Oven (medium): bake for a long time |
-| pretzel | *bread dough*, *lye solution*, *coarse salt* | Cutting board: shape → Mixing bowl: dip in lye → Oven (medium): bake |
+| pretzel | *bread dough*, *lye solution*, *coarse salt* | Prep counter: shape → Mixing bowl: dip in lye → Oven (medium): bake |
 | spätzle | *wheat flour*, egg, water, *salt* | Mixing bowl: beat → Cooking pot (high): scrape into boiling water |
-| ramen noodles | *wheat flour*, water, *kansui* | Mixing bowl: knead → Cutting board: roll and cut |
+| ramen noodles | *wheat flour*, water, *kansui* | Mixing bowl: knead → Prep counter: roll and cut |
 | kansui | *lye solution* | Mixing bowl: dilute |
 | rice noodles | *rice flour*, water | Mixing bowl: mix → Cooking pot (medium): steam thin sheets → Cutting board: cut → Drying rack: dry |
 | glass noodles | *sweet potato starch*, water | Mixing bowl: mix → Cooking pot (high): extrude into boiling water → Drying rack: dry |
-| corn tortillas | *masa* | Cutting board: press flat → Skillet (medium): cook on both sides |
+| corn tortillas | *masa* | Prep counter: press flat → Skillet (medium): cook on both sides |
 | chocolate sponge | egg, sugar, *wheat flour*, *cocoa powder* | Mixing bowl: whisk eggs and sugar, fold in flour and cocoa → Oven (medium): bake |
 | gingerbread | *wheat flour*, honey, *brown sugar*, *cinnamon*, *cloves*, ginger | Mixing bowl: mix → Ageing shelf: rest → Oven (medium): bake |
-| kammerjunkere | *wheat flour*, *raw butter*, sugar, egg, *cardamom*, *buttermilk* | Mixing bowl: mix → Cutting board: shape → Oven (medium): bake → Oven (low): dry a second time |
+| kammerjunkere | *wheat flour*, *raw butter*, sugar, egg, *cardamom*, *buttermilk* | Mixing bowl: mix → Prep counter: shape → Oven (medium): bake → Oven (low): dry a second time |
 | tenkasu | *wheat flour*, water, *vegetable oil* | Mixing bowl: mix thin batter → Cooking pot (high, oil): drizzle and deep-fry |
 
 ## Dairy and eggs
@@ -119,7 +119,7 @@ Feature: B-0046.
 | cream cheese | *cream*, milk, *buttermilk*, *salt* | Fermentation crock: culture → Mixing bowl: drain and salt |
 | queso fresco | milk, *rennet*, *salt* | Cooking pot (low): curdle → Cheese press: press lightly |
 | queso blanco | milk, *lime juice*, *salt* | Cooking pot (low): curdle with lime → Cheese press: press |
-| queso Oaxaca | *curds* | Cooking pot (low): stretch in hot water → Cutting board: wind into balls |
+| queso Oaxaca | *curds* | Cooking pot (low): stretch in hot water → Prep counter: wind into balls |
 | cotija cheese | *curds*, *salt* | Cheese press: press → Ageing shelf: age dry and crumbly |
 | Minas cheese | *curds*, *salt* | Cheese press: press → Ageing shelf: age for a week |
 | aged hard cheese | *curds*, *salt* | Cheese press: press hard → Brine barrel: brine → Ageing shelf: age for weeks |
@@ -150,7 +150,7 @@ Feature: B-0049. The [butchery reference](butchery.md) lists every part each car
 | minced beef | *beef chuck* | Meat grinder: grind |
 | minced pork | *pork shoulder*, *back fat* | Meat grinder: grind |
 | poached chicken | *chicken thighs*, water, onion, *bay leaf* | Cooking pot (low): poach → Cutting board: shred |
-| chashu pork | *pork belly*, *soy sauce*, *mirin*, *sake*, sugar | Cutting board: roll and tie → Cooking pot (low): braise for a long time |
+| chashu pork | *pork belly*, *soy sauce*, *mirin*, *sake*, sugar | Prep counter: roll and tie → Cooking pot (low): braise for a long time |
 | pino | *beef chuck*, onion, *cumin*, *paprika* | Cutting board: dice → Skillet (medium): cook slowly |
 
 Fish and seafood:
@@ -273,7 +273,7 @@ Feature: B-0050 for growing, with drying from B-0048.
 | dried oregano | oregano | Drying rack: dry |
 | dried mint | mint | Drying rack: dry |
 | herbes de Provence | thyme, rosemary, oregano, savory | Drying rack: dry → Mixing bowl: blend |
-| bouquet garni | thyme, *bay leaf*, parsley | Cutting board: tie with string |
+| bouquet garni | thyme, *bay leaf*, parsley | Prep counter: tie with string |
 | pickling spice | mustard seed, *black pepper*, *bay leaf*, *cloves*, allspice | Mixing bowl: blend |
 | roasted peanuts | peanut | Oven (medium): roast → Cutting board: shell |
 | chopped almonds | almond | Cooking pot (high): blanch → Cutting board: skin and chop |
@@ -342,9 +342,9 @@ Feature: B-0052 for drinks, with B-0050 for the plants.
 | cocoa butter | *roasted cocoa nibs* | Fruit press: press |
 | roasted cocoa nibs | cocoa beans | Fermentation crock: ferment in the pod pulp → Drying rack: dry → Oven (medium): roast → Cutting board: crack and winnow |
 | Mexican chocolate | *roasted cocoa nibs*, sugar, *cinnamon* | Mortar and pestle: grind coarsely → Ageing shelf: set in discs |
-| black tea | tea leaf | Drying rack: wither → Cutting board: roll → Ageing shelf: oxidise → Oven (low): dry |
+| black tea | tea leaf | Drying rack: wither → Prep counter: roll → Ageing shelf: oxidise → Oven (low): dry |
 | Thai tea leaves | *black tea*, *star anise*, *vanilla* | Mixing bowl: blend |
-| sencha leaves | tea leaf | Cooking pot (medium): steam → Cutting board: roll → Oven (low): dry |
+| sencha leaves | tea leaf | Cooking pot (medium): steam → Prep counter: roll → Oven (low): dry |
 | matcha powder | shaded tea leaf | Cooking pot (medium): steam → Drying rack: dry → Mill: stone-grind |
 | roasted coffee | coffee cherry | Fermentation crock: ferment → Drying rack: dry → Cutting board: hull → Oven (high): roast → Mill: grind |
 | yerba mate | yerba mate leaf | Skillet (high): sear → Drying rack: dry → Ageing shelf: age for months → Mill: crush |
