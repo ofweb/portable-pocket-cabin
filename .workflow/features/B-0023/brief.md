@@ -39,11 +39,11 @@ Acceptance:
 
 Purchases require one of each sapling. BOP means Biomes O' Plenty; parentheses give 1:1 vanilla fallbacks under [PDR-0014](../../decisions/pdr/0014-use-preferred-upgrade-materials-with-shared-fallbacks.md).
 
-| Purchase | Required saplings |
-|---|---|
-| Initial | Oak, birch, spruce, BOP flowering oak (cherry) |
-| 19×19 | Jungle, acacia, BOP red maple (cherry), BOP willow (mangrove propagule) |
-| 29×29 | Dark oak, cherry, BOP fir (spruce), BOP mahogany (jungle) |
+| Purchase  | Required saplings                                                           |
+| --------- | --------------------------------------------------------------------------- |
+| Initial   | Oak, birch, spruce, BOP flowering oak (cherry)                              |
+| 19×19     | Jungle, acacia, BOP red maple (cherry), BOP willow (mangrove propagule)     |
+| 29×29     | Dark oak, cherry, BOP fir (spruce), BOP mahogany (jungle)                   |
 | Woodlands | Pale oak, BOP redwood (jungle), BOP snowblossom (cherry), BOP pine (spruce) |
 
 ### S3: Explore woodlands
