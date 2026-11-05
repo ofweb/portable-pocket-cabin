@@ -17,7 +17,7 @@ All cooking happens at cooking stations. Furnaces, smokers, campfires, and craft
 | Click | Stonecutter | Cutting board, mortar and pestle, hanging hook, butcher block |
 | Surface | Campfire | Skillet, grill |
 | Container | Furnace or brewing stand | Cooking pot, oven, mill, mixing bowl, meat grinder, sausage stuffer, fruit press, butter churn, cheese press |
-| Time | Ambient, no heat | Drying rack, fermentation crock, pickling jar, proofing basket, brine barrel, ageing shelf |
+| Time | Ambient, no heat | Drying rack, fermentation crock, pickling jar, proofing basket, brine barrel, dairy pan, ageing shelf |
 | Heat source | Fuel block | Stove, campfire |
 
 Stations can be crafted and placed anywhere. The cabin kitchen supplies protected sets of them and connects them to central storage.
@@ -49,7 +49,7 @@ The cookbook is the player's guide to all of it:
 | Area | Feature | What players do |
 |---|---|---|
 | Cooking basics | B-0045 | Chop, fry, sear, simmer, bake. First stations and the cookbook. |
-| Milling, baking, and dairy | B-0046 | Mill wheat, rye, oats, and corn into flour. Mix and proof yeast and sourdough. Churn butter. Press and age cheese. Culture yogurt. |
+| Milling, baking, and dairy | B-0046 | Mill wheat, rye, oats, and corn into flour. Mix and proof yeast and sourdough. Settle milk, skim cream, churn and salt butter. Press and age cheese. Culture yogurt. |
 | Stocks, sauces, and flavour | B-0047 | Simmer stocks from bones and vegetables. Make dashi, roux, béchamel, tomato sauce, gravy, and emulsions. Grind spices and pastes. |
 | Fermentation, drying, and preservation | B-0048 | Ferment sauerkraut, kimchi, chili sauce, miso, soy sauce, and vinegar. Dry herbs, mushrooms, chilies, fruit, and kelp. Smoke, cure, brine, pickle, and age. |
 | Butchery | B-0049 | Bleed, scald, skin, and pluck carcasses, then butcher them into steaks, chops, joints, ribs, stew meat, offal, bones, and fat, using the [whole animal](butchery.md). Mince, stuff sausages, render fat, and fillet fish. |

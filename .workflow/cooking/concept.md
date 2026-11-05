@@ -77,13 +77,19 @@ Mushrooms have their own cultivation through compost beds, inoculated logs, and 
 
 ### Butchery
 
-Animals everywhere drop carcasses instead of ordinary meat. A butcher's table splits a carcass into cuts, bones, fat, and trimmings. Cuts include steaks, chops, roasting joints, shoulders, ribs, and stew meat. Cuts matter: a steak suits frying, and a tough shoulder suits slow braising. Further processing includes cubing, mincing, patties, meatballs, sausages, curing, smoking, rendering fat, and stock from bones. Fish are cleaned and filleted into fillets, bones, and trimmings.
+Animals everywhere drop a carcass instead of meat, hide, or feathers. Getting meat takes three stages:
+
+1. **Bleed:** a glass bottle collects blood from a fresh carcass. This is optional.
+2. **Dress:** the carcass is skinned or plucked at a hanging hook. Cows, sheep, and rabbits are skinned for hide, fleece, and rabbit parts. Pigs and chickens are scalded in a cooking pot first, then scraped or plucked. Pigs keep their skin.
+3. **Butcher:** the dressed carcass is broken down at a butcher block, one part per cleaver use in a real butchery order.
+
+Every part has a use, so players learn to use the whole animal. Cuts matter: a steak suits searing, and a tough shoulder suits slow braising. Bones become stock, fat becomes lard, tallow, or schmaltz, blood becomes blood sausage, and offal becomes pâté. Further processing includes mincing, sausages, curing, and smoking. Fish are scaled and gutted, then filleted. The [butchery reference](butchery.md) lists every part of each animal.
 
 ### Milling, baking, and dairy
 
 Flour is a central intermediate. Wheat, rye, oats, rice, and other grains mill into flours. Oats can also be rolled. Baking covers mixing, kneading, shaping, yeast, sourdough starters, proofing, and oven baking. Doughs support bread, buns, flutes, pizza, pasta, and pastry.
 
-Dairy covers cream separation, churning butter with buttermilk as a by-product, yogurt, cheese making, and cheese ageing. By-products such as whey and buttermilk feed other recipes.
+Dairy starts by letting milk settle in a dairy pan until the cream rises. Bottles skim off the cream, leaving skimmed milk. A churn turns cream into raw butter and buttermilk, and salt worked into raw butter makes salted butter. Dairy also covers yogurt, cheese making, and cheese ageing. By-products such as skimmed milk, buttermilk, and whey feed other recipes.
 
 ### Stocks, sauces, and flavour
 
@@ -133,22 +139,27 @@ Automation uses the same ingredients, stations, heat levels, and times as manual
 
 | Equipment | Main functions |
 |---|---|
+| Stove | Heat for a pot or skillet, set by its fuel |
 | Cutting board | Preparing vegetables, herbs, and ingredients |
-| Mixing bowl | Dough, batter, combining ingredients |
-| Grain mill | Flour and ground grains |
+| Mixing bowl | Dough, batter, seasoning, combining ingredients |
+| Mill | Flour, ground grains, crushed fruit, bone meal |
 | Rolling mill | Rolled oats, pasta |
 | Skillet | Frying, sautéing, searing |
 | Cooking pot | Boiling, simmering, stocks, soups |
 | Oven | Baking, roasting, gratinating |
 | Dutch oven | Braising, covered slow cooking |
-| Butter churn | Butter and buttermilk |
+| Dairy pan | Settling milk and skimming cream |
+| Butter churn | Raw butter and buttermilk |
 | Cheese press | Cheese |
 | Meat grinder | Mince |
-| Butcher's table | Carcasses |
+| Hanging hook | Skinning, scraping, and plucking carcasses |
+| Butcher block | Butchering dressed carcasses, scaling and filleting fish |
 | Sausage stuffer | Sausages |
 | Drying rack | Herbs, mushrooms, fruit, chilies |
-| Fermentation jars and crocks | Starters, pickles, kimchi, sauces |
-| Smoker | Meat and fish |
+| Fermentation crocks and pickling jars | Starters, pickles, sauerkraut, kimchi, miso, sauces |
+| Proofing basket | Proofing dough |
+| Brine barrel | Salting and brining meat and fish |
+| Smoker | Smoking meat and fish |
 | Oil press | Plant oils |
 | Fruit press | Juice |
 | Mortar and pestle | Spices and pastes |
@@ -184,3 +195,6 @@ A meal that once needed substantial preparation becomes easy because the player 
 - **Packed time:** Passive steps such as fermentation and ageing need catch-up limits while an empty cabin is packed.
 - **Farmer's Delight crops:** The greenhouse ships growth profiles for Farmer's Delight crops. They stay until cabin cooking supplies its own crops.
 - **Balance:** Benefit families, magnitudes, durations, and active-benefit limits are open.
+- **Durations:** real proofing takes hours and miso takes months. Times must be short enough for Minecraft and still feel like waiting.
+- **Villager ingredients:** which prepared ingredients villagers sell, and from which professions, is open.
+- **Serving:** whether plating a finished dish is a cutting-board step or its own station is open.
