@@ -230,10 +230,10 @@
 
 ## B-0041: Manual kitchen room
 
-- Status: Ready for Shape
+- Status: Ready for Design
 - Value: Give the household a kitchen that works without storage or automation and uses installed storage automatically.
 - Direction: [Manual production rooms](direction.md#manual-production-rooms).
-- Relationships: Uses B-0005 and B-0038. Integrates B-0004. Hosts cabin cooking from B-0045. Used by cooking in B-0025.
+- Relationships: Uses B-0005 and B-0038. Integrates B-0004. Uses equipment and recipes from B-0045. Used by cooking in B-0025.
 - Feature Brief: [Manual kitchen brief](features/B-0041/brief.md).
 
 ## B-0042: Smelting jobs
@@ -259,19 +259,20 @@
 - Feature Brief: [Book vendors brief](features/B-0044/brief.md).
 - Relationships: Supplies books for the B-0038 installation flow.
 
-## B-0045: Guided cooking recipes
+## B-0045: Cooking stations and cookbook
 
-- Status: Ready for Shape
-- Value: Let players activate real recipes from the cookbook and complete them through workstation actions, temperatures, and passive steps. Wrong actions are ignored, and several recipes can run in parallel.
+- Status: Ready for Design
+- Value: Let players cook real recipes at furnace-style cooking stations, through real intermediate items, with heat set by fuel. A cookbook teaches every recipe and technique.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Relationships: Uses B-0041. Integrates B-0004. Used by B-0025 and B-0046 through B-0052.
+- Feature Brief: [Cooking stations brief](features/B-0045/brief.md).
+- Relationships: Integrates B-0002 and B-0004. Used by B-0041. Used by B-0025 and B-0046 through B-0052.
 
 ## B-0046: Milling, baking, and dairy
 
 - Status: Ready for Shape
 - Value: Let players mill grain into flour, make doughs, starters, and baked goods, and turn milk into butter, cream, yogurt, and cheese.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Relationships: Uses B-0045. Uses milk and eggs from B-0022.
+- Relationships: Uses B-0045. Retires the vanilla bread, cookie, cake, and pumpkin pie recipes once flour exists. Uses milk and eggs from B-0022.
 
 ## B-0047: Stocks, sauces, and flavour
 
@@ -285,7 +286,7 @@
 - Status: Ready for Shape
 - Value: Let players ferment, dry, smoke, cure, pickle, and age ingredients over time.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Relationships: Uses B-0045. Packed-time limits follow the open [catch-up question](direction.md#progress-after-an-empty-cabin-becomes-occupied).
+- Relationships: Uses B-0045. Retires the vanilla dried kelp recipe once drying exists. Packed-time limits follow the open [catch-up question](direction.md#progress-after-an-empty-cabin-becomes-occupied).
 
 ## B-0049: Butchery and carcasses
 

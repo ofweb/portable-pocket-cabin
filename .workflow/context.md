@@ -97,15 +97,20 @@
 
 ## Cookbook
 
-- Meaning: A cookbook is the guide players use to find, activate, and follow cooking recipes. It explains techniques and links each ingredient to its own recipe.
+- Meaning: A cookbook is the guide players use to look up cooking recipes. It explains techniques, links each ingredient to its own recipe, and shows which recipes the player has ingredients for.
 - Forms: cookbooks
 - Distinguish from: The recipe book is Minecraft's crafting recipe panel. A cabin book reveals cabin upgrades.
 
 ## Cooking recipe
 
-- Meaning: A cooking recipe is a guided process from its direct ingredients to one product. It states ordered steps, equipment, temperatures, and durations. Wrong actions do not advance or ruin it.
+- Meaning: A cooking recipe turns its inputs into one product at one cooking station. It states the station, ingredients, heat level, and time. Food never burns or fails.
 - Forms: cooking recipes
-- Distinguish from: A crafting recipe completes in one action. A process profile states a production path for jobs.
+- Distinguish from: A crafting recipe completes instantly at a crafting table. A process profile states a production path for jobs.
+
+## Heat level
+
+- Meaning: A heat level is the low, medium, or high heat a cooking station gives. The burning fuel sets it, and a campfire gives low heat. Each heated cooking recipe needs one heat level.
+- Forms: heat levels
 
 ## Cabin book
 

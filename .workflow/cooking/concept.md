@@ -9,9 +9,10 @@ Players learn how real food is made. Food changes apply throughout the world, no
 ## Principles
 
 - **Teach real cooking.** Recipes use real techniques such as simmering, braising, proofing, fermentation, emulsification, and flavour balancing. The cookbook explains each technique briefly.
+- **Feel like Minecraft.** Stations work like vanilla furnaces, campfires, and stonecutters. Fuel sets the heat. Depth comes from longer chains and more stations, not from unfamiliar controls.
 - **Show the whole chain.** Ingredients come from farming, animals, fishing, foraging, exploration, and trade. Processing turns them into intermediate products and dishes.
 - **Base recipes on real dishes.** Recipes follow real dishes and preparation methods where practical.
-- **Keep cooking forgiving.** Incorrect actions are ignored. Food does not burn, spoil, or lose progress. Unsuitable conditions pause progress.
+- **Keep cooking forgiving.** Food does not burn, spoil, or lose progress. Unsuitable conditions pause progress.
 - **Reward complexity.** Ingredients carry small benefits. Processing and complete dishes make them worthwhile.
 - **Earn automation.** Players prepare food manually first. Automation takes over familiar, repetitive processes later.
 - **Reward exploration.** Crops, fruits, mushrooms, herbs, and spices grow in different environments. Rare ingredients give exploration goals. Common ingredients stay available early.
@@ -27,56 +28,44 @@ Raw ingredients become intermediate products through processing. Intermediate pr
 | Chicken stock | Chicken carcass → butchery → bones, vegetables, water → simmering → straining |
 | Cheeseburger | Bun, minced beef, cheese, vegetables, pickles → shaping and frying the patty → assembly |
 
-Storable, reusable intermediates are items. Examples are flour, butter, stock, cheese, dough, tomato sauce, and dried mushrooms. Short preparation such as chopping an onion or stirring a sauce can be a state within a recipe.
+Every stage produces a real item, like ingots from ore. Examples are chopped onions, sautéed mushrooms, flour, dough, butter, stock, cheese, tomato sauce, and dried mushrooms. Players can hold, store, trade, and reuse them, so the chain behind a dish stays visible.
+
+Food is cooked only at cooking stations. Furnaces, smokers, campfires, and crafting stop making food once cooking stations arrive. Cooking recipes make vanilla foods instead. Simple versions stand in until their full chains exist, such as bread baked from wheat until milling supplies flour. Villager trades and loot keep vanilla food, because bought food represents work done by others.
 
 Processing methods are shared across recipes. One simmering mechanic serves stock, soup, tomato sauce, and braised meat. The ingredient graph should stay smaller than the recipe graph: a few shared intermediates support many dishes.
 
-## Cooking recipes and the cookbook
+## Cooking stations and the cookbook
 
-The [cookbook](../context.md#cookbook) is the central interface for learning and preparing food. Cooking works anywhere players have the right equipment. The cabin kitchen makes it more practical.
+Cooking works like Minecraft's own stations. Players can cook anywhere with the right stations. The cabin kitchen makes it more practical.
 
-Each recipe states its ingredients and quantities, equipment, ordered steps, techniques, temperatures, durations, output, portions, and food benefits. In the cookbook, ingredients that have their own recipe link to it. A cheeseburger links to its bun, and the bun links to flour.
+### Stations
 
-### Recipe states
+Each station does one kind of work and matches its inputs, like a furnace or stonecutter. There is no recipe activation or step tracking.
 
-Each recipe is a self-contained process. It covers only the steps from its direct ingredients to its output.
+- **Click stations** work like the stonecutter: the cutting board turns an ingredient into its prepared item when the player uses a knife on it.
+- **Surface stations** work like the campfire: the skillet holds a few items and cooks each one while heated.
+- **Container stations** work like the furnace or brewing stand: the cooking pot and oven take ingredients in slots and cook while heated.
+- **Time stations** work at ambient conditions: drying racks, fermentation crocks, and ageing cellars progress over time without heat.
 
-- **Unavailable:** Some ingredients are missing. The cookbook shows what is needed and links to their recipes.
-- **Ready:** All ingredients are available. The player can activate the recipe.
-- **Active:** The player follows the steps. Valid actions at the right workstation advance it.
+Several stations cook at once, and each keeps its own progress while the player works elsewhere or leaves. Food never burns, spoils, or fails. Unsuitable conditions pause progress, and the station says what it needs.
 
-A player prepares buns, minced beef, and pickles independently and in any order. The burger recipe becomes ready when they exist. Prepared ingredients from inventory, cabin storage, villagers, or automation all count. Installed central storage counts toward availability.
+### Heat from fuel
 
-### Steps
+Fuel sets the heat. Each fuel burns at one heat level, and each heated recipe needs one level. Choosing the fuel is how players control temperature.
 
-Active steps need a player action: adding ingredients, chopping, kneading, shaping, grinding, seasoning, or moving food between equipment. Passive steps progress while their conditions hold: baking, simmering, proofing, drying, fermentation, and ageing.
-
-The cookbook shows the current step, its progress, the required action, and the temperature. The workstation reports what the active recipe expects, for example "Heating: 65°C / 85–95°C required". A wrong ingredient is not accepted and stays with the player.
-
-### Temperature
-
-Heat sources have an adjustable setting. Temperature rises and falls gradually, so preheating matters. The equipment controls heat, and the recipe checks the temperature range. Individual ingredient temperatures are not simulated.
-
-| Technique | Typical use | Approximate temperature |
+| Heat level | Example fuels | Techniques |
 |---|---|---|
-| Fermentation | Starters, vegetables, dairy | 20–30°C, by culture |
-| Simmering | Stocks, soups, sauces | 85–95°C |
-| Boiling | Pasta, potatoes, grains | About 100°C |
-| Frying and searing | Steaks, patties, eggs | 160–220°C pan surface |
-| Sautéing | Aromatics, vegetables, mushrooms | Medium pan heat |
-| Braising | Tough cuts, stews | Gentle covered simmer |
-| Roasting | Meat, vegetables | 120–160°C slow, hotter for browning |
-| Baking | Bread, pastry, casseroles | 180–250°C oven |
-| Steaming, poaching | Fish, eggs, dumplings, vegetables | Below boiling to steam |
-| Reducing, deglazing | Sauces, gravies, concentrates | Simmer to boil |
+| Low | Sticks, planks, campfires | Simmering, braising, gentle frying, slow baking |
+| Medium | Logs, charcoal, coal | Sautéing, frying, baking |
+| High | Coal blocks, blaze rods, lava | Searing, roasting |
 
-Equipment has capabilities as well as heat. A pan sears and sautés. A pot boils and simmers. A Dutch oven braises. An oven bakes and roasts. A drying rack works at ambient temperature.
+A pot or skillet cooks on a lit stove at the stove's fuel heat, or on a campfire at low heat. The station controls heat, so ingredient temperatures are not simulated.
 
-### Parallel cooking
+### The cookbook
 
-Several recipes can be active at once. Bread can proof while stock simmers and vegetables ferment. Each workstation has limited capacity, and a recipe occupies it only during the steps that use it. Two recipes cannot share a single-slot skillet. A large oven can bake several batches.
+The [cookbook](../context.md#cookbook) teaches. It lists every recipe from the start with its station, ingredients, heat level, time, and output. Each ingredient that has its own recipe links to it, so a cheeseburger links to its bun, and the bun links to flour. Each technique has a short explanation.
 
-Progress belongs to the food or workstation, not to the player's selection. A simmering pot keeps its progress while the player works elsewhere.
+The cookbook shows which recipes the player has ingredients for, counting installed cabin storage. At a container station, a recipe-book button fills the slots from a selected recipe, like the vanilla recipe book.
 
 ## Food production areas
 
@@ -138,7 +127,7 @@ The effort of manual cooking motivates automation. Automation follows familiar p
 
 The stages are not rigid technology tiers. Kitchen automation requires its automation book and upgrade purchase. Commissioning automation for a recipe also consumes a quantity of its finished product and needs installed equipment. No count of personal manual preparations is required, following [PDR-0013](../decisions/pdr/0013-gate-production-through-player-progress.md). Automating some of the work is expected: the complexity of cooking makes it a large gameplay improvement.
 
-Automation uses the same ingredients, equipment, temperatures, and durations as manual cooking. Equipment capacity and resources limit concurrent production. Stock targets keep pantry quantities, such as 32 salt, 16 flour, and 8 chicken stock. Automation expands upstream over time: once butchery is automated, stock production can draw bones from carcasses. Eventually a player making lasagne finds pasta sheets, minced beef, tomato sauce, stock, and cheese already in storage.
+Automation uses the same ingredients, stations, heat levels, and times as manual cooking. Equipment capacity and resources limit concurrent production. Stock targets keep pantry quantities, such as 32 salt, 16 flour, and 8 chicken stock. Automation expands upstream over time: once butchery is automated, stock production can draw bones from carcasses. Eventually a player making lasagne finds pasta sheets, minced beef, tomato sauce, stock, and cheese already in storage.
 
 ## Equipment and ingredients
 
