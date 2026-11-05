@@ -294,7 +294,7 @@
 - Status: Ready for Shape
 - Value: Let animals drop carcasses that players butcher into cuts, bones, fat, and trimmings, then process into mince, sausages, and cured meat. Fish are filleted.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Relationships: Uses B-0045. Uses animals from B-0022.
+- Relationships: Uses B-0045. Uses animals from B-0022. The [butchery reference](cooking/butchery.md) lists every part of each carcass.
 
 ## B-0050: Cooking crops and foraging
 

@@ -33,20 +33,33 @@ It looks like soup with bread on top. From scratch it needs a stock, caramelised
 
 | Step | Station | Inputs | Heat and time | Output |
 |---|---|---|---|---|
-| Butcher | Butcher block (click) | Cow carcass | Cleaver use | Beef cuts, 4 beef bones, beef fat |
+| Butcher | Butcher block (click) | Cow carcass | Cleaver use | The cow parts in [butchery](butchery.md), including 4 beef bones |
 | Roast bones | Oven (container) | 4 beef bones | High, 20 s | 4 roasted bones |
 | Chop | Cutting board (click) | Onion, carrot, celery | Knife use | Mirepoix |
 | Simmer stock | Cooking pot (container) | 4 roasted bones, mirepoix, water ×3 | Low, 2 min | 3 beef stock |
 | Slice | Cutting board (click) | 4 onions | Knife use | 4 sliced onions |
-| Caramelise | Skillet (surface) | Sliced onions, butter | Low, 90 s | Caramelised onions |
+| Caramelise | Skillet (surface) | Sliced onions, salted butter | Low, 90 s | Caramelised onions |
 | Simmer soup | Cooking pot (container) | Caramelised onions ×4, 2 beef stock, bowl | Low, 1 min | Onion soup base |
 | Slice | Cutting board (click) | Bread | Knife use | 4 bread slices |
 | Gratinate | Oven (container) | Onion soup base, bread slice, grated aged cheese | High, 10 s | French onion soup |
 
+The butter for the onions is its own chain:
+
+| Step | Station | Inputs | Heat and time | Output |
+|---|---|---|---|---|
+| Settle | Dairy pan (time) | Milk bucket | — 5 min | Settled milk, with the cream risen to the top |
+| Skim | Dairy pan (click) | Glass bottle ×2 on the settled milk | Bottle use | 2 cream, then skimmed milk collected with the empty bucket |
+| Churn | Butter churn (container) | 2 cream | — 20 s | Raw butter, 2 buttermilk |
+| Salt | Mixing bowl (container) | Raw butter, salt | — 5 s | Salted butter |
+
 - **Raw ingredients:** a cow, onions, carrots, celery, wheat for bread, milk for butter and cheese, and salt.
-- **It teaches:** caramelising needs low heat for a long time, and high heat would only scorch. Roasting bones first gives a darker stock. Gratinating is a short blast of high heat.
+- **It teaches:**
+  - Caramelising needs low heat for a long time, and high heat would only scorch.
+  - Roasting bones first gives a darker stock. Gratinating is a short blast of high heat.
+  - Cream rises because milk fat is lighter. Churning breaks the fat apart from the buttermilk, and salt both seasons butter and helps it keep.
+- **Nothing is wasted:** skimmed milk goes into cheese or baking, and buttermilk goes into koldskål, pancakes, and bread. Raw butter also stays useful, because pastry and baking use it unsalted.
 - **Shared intermediates:** beef stock, butter, bread, and aged cheese are each separate chains from features B-0046, B-0047, and B-0049. The soup links to all of them in the cookbook.
-- **Intermediate items:** about 12, from 7 raw ingredients.
+- **Intermediate items:** about 17, from 7 raw ingredients.
 - **First automated:** beef stock, from bones the kitchen collects once butchery is automated.
 
 ## 3. Bratwurst with sauerkraut
@@ -55,7 +68,7 @@ Two chains meet on one plate: butchery and sausage making on one side, days of f
 
 | Step | Station | Inputs | Heat and time | Output |
 |---|---|---|---|---|
-| Butcher | Butcher block (click) | Pig carcass | Cleaver use | Pork shoulder, pork belly, porkchops, pork fat, pork casing |
+| Butcher | Butcher block (click) | Pig carcass | Cleaver use | The pig parts in [butchery](butchery.md), including pork shoulder, pork fat, and casing |
 | Grind | Meat grinder (container) | Pork shoulder, pork fat | — 10 s | Minced pork |
 | Season | Mixing bowl (container) | Minced pork, salt, black pepper, marjoram | — 5 s | Bratwurst filling |
 | Stuff | Sausage stuffer (container) | Bratwurst filling, pork casing | — 10 s | 4 raw bratwurst |
@@ -80,8 +93,9 @@ A light soup built on two of the most complex ingredients in the game: dashi and
 | Step | Station | Inputs | Heat and time | Output |
 |---|---|---|---|---|
 | Dry kelp | Drying rack (time) | Kelp | — 5 min | Kombu |
-| Fillet | Butcher block (click) | Bonito | Knife use | 2 bonito fillets, fish bones |
-| Smoke | Smoker (container) | Bonito fillet | Low, 10 min | Smoked bonito |
+| Fillet | Butcher block (click) | Bonito | Knife use | 2 bonito loins, bonito head, fish bones |
+| Salt | Brine barrel (time) | Bonito loin, salt | — 1 day | Salted bonito |
+| Smoke | Smoker (container) | Salted bonito | Low, 10 min | Smoked bonito |
 | Dry | Drying rack (time) | Smoked bonito | — 1 day | Katsuobushi |
 | Shave | Cutting board (click) | Katsuobushi | Knife use | 8 bonito flakes |
 | Steam rice | Cooking pot (container) | Rice, water | Low, 30 s | Steamed rice |
@@ -93,7 +107,7 @@ A light soup built on two of the most complex ingredients in the game: dashi and
 | Make tofu | Container chain in B-0046 | Soybeans, water, nigari | Low, then press | Tofu |
 | Finish | Cooking pot (container) | Dashi, miso, tofu, spring onion, bowl | Low, 10 s | Miso soup |
 
-- **Raw ingredients:** kelp, bonito, rice, soybeans, salt, spring onion, and koji spores.
+- **Raw ingredients:** kelp, bonito, rice, soybeans, salt, spring onion, and koji spores. The bonito head and bones go into fish stock.
 - **It teaches:**
   - Umami comes from extraction and fermentation.
   - Dashi takes minutes once kombu and katsuobushi exist, but each of those takes a day.
@@ -120,7 +134,8 @@ A short chain, for contrast. Pressed apple juice the way Danish farms make it.
 
 ## What the five show together
 
-- **Shared hubs matter most:** flour, salt, stock, butter, cheese, and starter cultures appear across these dishes. Building them first unlocks the most food.
+- **Shared hubs matter most:** flour, salt, stock, butter, cheese, and starter cultures appear across these dishes. Building them first unlocks the most food. Milk alone becomes cream, skimmed milk, butter, buttermilk, and cheese.
+- **The whole animal gets used:** each carcass gives many parts, and the [butchery reference](butchery.md) shows a use for every one.
 - **Time is a resource:** fermentation and drying take Minecraft days, so players plan ahead and run several things at once. Stations keep progress while players are elsewhere.
 - **Heat is a choice:** low for caramelising, steeping, and smoking; medium for baking and frying sausages; high for roasting bones and gratinating.
 - **Complexity is hidden in "simple" food:** miso soup and French onion soup look easy and are the deepest chains here.
