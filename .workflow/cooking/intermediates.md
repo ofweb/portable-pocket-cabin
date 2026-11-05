@@ -18,7 +18,7 @@ Feature: B-0047, which owns salt as a proposal.
 | palm sugar | palm sap | Cooking pot (high): boil down → Ageing shelf: set in cakes |
 | simple syrup | sugar, water | Cooking pot (low): dissolve |
 | caramel | sugar, water | Skillet (medium): cook until amber |
-| chancaca syrup | *panela*, orange, *cinnamon*, *cloves*, water | Cooking pot (low): simmer with spices and orange peel, strain |
+| chancaca syrup | *panela*, orange, *cinnamon*, *cloves*, water | Cooking pot (low): simmer with spices and orange peel → Strainer: strain |
 
 ## Oils and fats
 
@@ -30,9 +30,9 @@ Feature: proposal for B-0047, with the oil press as its station. Animal fats com
 | vegetable oil | sunflower seed or rapeseed | Mill: crush → Fruit press: press |
 | sesame oil | *toasted sesame seeds* | Mill: grind → Fruit press: press |
 | dendê oil | oil palm fruit | Cooking pot (high): boil → Mill: mash → Fruit press: press |
-| achiote oil | annatto seed, *vegetable oil* | Cooking pot (low): infuse, strain |
-| lard | *back fat* | Cooking pot (low): render, strain |
-| tallow | *suet* | Cooking pot (low): render, strain |
+| achiote oil | annatto seed, *vegetable oil* | Cooking pot (low): infuse → Strainer: strain |
+| lard | *back fat* | Cooking pot (low): render → Strainer: strain |
+| tallow | *suet* | Cooking pot (low): render → Strainer: strain |
 
 ## Grains, flours, and starches
 
@@ -46,11 +46,11 @@ Feature: B-0046.
 | chickpea flour | *dried chickpeas* | Mill: grind |
 | rice flour | rice | Mill: grind |
 | glutinous rice flour | glutinous rice | Fermentation crock: soak → Mill: wet-grind → Drying rack: dry |
-| cornstarch | corn | Fermentation crock: soak → Mill: wet-grind → Mixing bowl: settle the starch → Drying rack: dry |
-| potato starch | potato | Cutting board: grate → Mixing bowl: wash out and settle the starch → Drying rack: dry |
-| tapioca starch | cassava | Cutting board: grate → Mixing bowl: wash out and settle the starch → Drying rack: dry |
+| cornstarch | corn | Fermentation crock: soak → Mill: wet-grind → Strainer: settle the starch → Drying rack: dry |
+| potato starch | potato | Cutting board: grate → Strainer: wash out and settle the starch → Drying rack: dry |
+| tapioca starch | cassava | Cutting board: grate → Strainer: wash out and settle the starch → Drying rack: dry |
 | sour cassava starch | *tapioca starch*, water | Fermentation crock: ferment for three days → Drying rack: sun-dry |
-| sweet potato starch | sweet potato | Cutting board: grate → Mixing bowl: wash out and settle the starch → Drying rack: dry |
+| sweet potato starch | sweet potato | Cutting board: grate → Strainer: wash out and settle the starch → Drying rack: dry |
 | hominy | *dried corn*, *lye solution* | Cooking pot (low): nixtamalize, simmer with lye → Mixing bowl: rinse and hull |
 | masa | *hominy* | Mill: wet-grind into dough |
 | blue corn masa | blue corn, *lye solution* | Cooking pot (low): nixtamalize → Mill: wet-grind |
@@ -115,8 +115,8 @@ Feature: B-0046.
 | rennet | *calf stomach* | Fermentation crock: steep in salt water |
 | curds | milk, *rennet* | Cooking pot (low): warm milk, add rennet, cut the set curd. Also gives *whey*. |
 | whey | milk | Left in the pot after setting *curds* |
-| quark | *skimmed milk*, *buttermilk* | Fermentation crock: sour for a day → Mixing bowl: drain in cloth |
-| cream cheese | *cream*, milk, *buttermilk*, *salt* | Fermentation crock: culture → Mixing bowl: drain and salt |
+| quark | *skimmed milk*, *buttermilk* | Fermentation crock: sour for a day → Strainer: drain in cloth |
+| cream cheese | *cream*, milk, *buttermilk*, *salt* | Fermentation crock: culture → Strainer: drain → Mixing bowl: salt |
 | queso fresco | milk, *rennet*, *salt* | Cooking pot (low): curdle → Cheese press: press lightly |
 | queso blanco | milk, *lime juice*, *salt* | Cooking pot (low): curdle with lime → Cheese press: press |
 | queso Oaxaca | *curds* | Cooking pot (low): stretch in hot water → Prep counter: wind into balls |
@@ -178,7 +178,7 @@ Feature: B-0048 for curing and smoking, using cuts and casings from B-0049.
 | duck confit | *duck legs*, *coarse salt*, garlic, thyme | Brine barrel: salt overnight → Cooking pot (low): cook slowly in its own fat |
 | salted anchovies | anchovy, *coarse salt* | Brine barrel: layer in salt for months |
 | salted salmon | *salmon fillet*, *salt* | Brine barrel: salt → Grill (high): grill → Cutting board: flake |
-| pickled herring | herring, *salt*, *wine vinegar*, sugar, onion, *pickling spice* | Brine barrel: salt → Pickling jar: pickle |
+| pickled herring | herring, *salt*, *wine vinegar*, sugar, onion, *pickling spice* | Brine barrel: salt → Fermentation crock: pickle |
 | dried shrimp | prawns, *salt* | Cooking pot (high): boil in salted water → Drying rack: dry |
 | bonito flakes | *katsuobushi* | Cutting board: shave |
 | katsuobushi | bonito, *salt* | Butcher block: fillet into loins → Brine barrel: salt → Smoker: smoke → Drying rack: dry for a long time |
@@ -189,12 +189,12 @@ Feature: B-0047.
 
 | Product | Ingredients | Processes |
 |---|---|---|
-| beef stock | *beef bones*, onion, carrot, celery, *bay leaf*, water | Oven (high): roast bones → Cooking pot (low): simmer for a long time, strain |
-| chicken stock | *chicken bones*, onion, carrot, celery, water | Cooking pot (low): simmer, strain |
-| pork stock | *pork bones*, onion, water | Cooking pot (low): simmer, strain |
-| pork bone broth | *pork bones*, *pig trotters*, water | Cooking pot (high): boil hard for a long time until milky, strain |
-| prawn stock | prawn shells, onion, water | Skillet (medium): toast shells → Cooking pot (low): simmer, strain |
-| dashi | *kombu*, *bonito flakes*, water | Cooking pot (low): steep kombu, add flakes, strain |
+| beef stock | *beef bones*, onion, carrot, celery, *bay leaf*, water | Oven (high): roast bones → Cooking pot (low): simmer for a long time → Strainer: strain |
+| chicken stock | *chicken bones*, onion, carrot, celery, water | Cooking pot (low): simmer → Strainer: strain |
+| pork stock | *pork bones*, onion, water | Cooking pot (low): simmer → Strainer: strain |
+| pork bone broth | *pork bones*, *pig trotters*, water | Cooking pot (high): boil hard for a long time until milky → Strainer: strain |
+| prawn stock | prawn shells, onion, water | Skillet (medium): toast shells → Cooking pot (low): simmer → Strainer: strain |
+| dashi | *kombu*, *bonito flakes*, water | Cooking pot (low): steep kombu, add flakes → Strainer: strain |
 | kombu | kelp | Drying rack: dry |
 
 ## Sauces, pastes, and condiments
@@ -211,7 +211,7 @@ Feature: B-0047.
 | mustard | mustard seed, *wine vinegar*, *salt*, water | Mill: grind seeds → Mixing bowl: mix → Ageing shelf: rest |
 | curry ketchup | tomato, *wine vinegar*, sugar, *curry powder* | Cooking pot (low): cook down → Mill: purée |
 | okonomi sauce | *Worcestershire sauce*, tomato, *soy sauce*, sugar | Cooking pot (low): simmer |
-| Worcestershire sauce | *wine vinegar*, *tamarind paste*, *salted anchovies*, onion, *cloves* | Fermentation crock: steep for weeks → Mixing bowl: strain |
+| Worcestershire sauce | *wine vinegar*, *tamarind paste*, *salted anchovies*, onion, *cloves* | Fermentation crock: steep for weeks → Strainer: strain |
 | tonkatsu sauce | *Worcestershire sauce*, tomato, apple, sugar | Cooking pot (low): simmer, purée |
 | tentsuyu | *dashi*, *soy sauce*, *mirin* | Cooking pot (low): simmer |
 | shoyu tare | *soy sauce*, *mirin*, *sake* | Cooking pot (low): simmer |
@@ -234,7 +234,7 @@ Feature: B-0047.
 | al pastor adobo | *dried chilies*, achiote, pineapple, *wine vinegar*, garlic, *cumin* | Cooking pot (low): soak chilies → Mill: blend |
 | anticucho marinade | *dried chilies*, *wine vinegar*, garlic, *cumin*, *dried oregano* | Mill: blend |
 | satay marinade | *coconut milk*, turmeric, coriander seed, *cumin*, sugar | Mortar and pestle: pound spices → Mixing bowl: mix |
-| tamarind paste | *tamarind pulp*, water | Mixing bowl: soak and press through a sieve |
+| tamarind paste | *tamarind pulp*, water | Mixing bowl: soak → Strainer: press through |
 | cucumber relish | cucumber, shallot, bird's eye chili, *rice vinegar*, sugar | Cutting board: slice → Mixing bowl: mix |
 | karrysalat | *mayonnaise*, *curry powder*, apple, onion | Cutting board: dice → Mixing bowl: mix |
 | leverpostej | *pork liver*, *back fat*, onion, *salted anchovies*, milk, *wheat flour* | Meat grinder: grind → Mixing bowl: mix → Oven (low): bake in a water bath |
@@ -244,7 +244,7 @@ Feature: B-0047.
 | nopales | cactus | Cutting board: remove spines, dice → Cooking pot (high): boil |
 | anko | *dried azuki beans*, sugar | Cooking pot (low): simmer until soft → Mortar and pestle: mash → Cooking pot (low): cook with sugar until thick |
 | jam | strawberry or raspberry, sugar | Cooking pot (low): cook until it sets |
-| redcurrant jelly | redcurrant, sugar | Cooking pot (low): cook, strain through cloth, set |
+| redcurrant jelly | redcurrant, sugar | Cooking pot (low): cook → Strainer: strain through cloth → Ageing shelf: set |
 | apple compote | apple, sugar, water | Cutting board: chop → Cooking pot (low): simmer |
 | cherry compote | cherry, sugar, *cornstarch* | Cooking pot (low): simmer, thicken |
 | shrimp paste | prawns, *salt* | Mortar and pestle: pound → Fermentation crock: ferment for weeks → Drying rack: dry |
@@ -299,9 +299,9 @@ Feature: B-0048.
 | Product | Ingredients | Processes |
 |---|---|---|
 | sauerkraut | cabbage, *salt* | Cutting board: shred → Fermentation crock: ferment for two days |
-| gherkins | cucumber, *salt*, dill, *wine vinegar* | Pickling jar: pickle |
-| pickled beetroot | beetroot, *wine vinegar*, sugar | Cooking pot (high): boil → Cutting board: slice → Pickling jar: pickle |
-| pickled ginger | ginger, *rice vinegar*, sugar, *salt* | Cutting board: slice thin → Pickling jar: pickle |
+| gherkins | cucumber, *salt*, dill, *wine vinegar* | Fermentation crock: pickle |
+| pickled beetroot | beetroot, *wine vinegar*, sugar | Cooking pot (high): boil → Cutting board: slice → Fermentation crock: pickle |
+| pickled ginger | ginger, *rice vinegar*, sugar, *salt* | Cutting board: slice thin → Fermentation crock: pickle |
 | umeboshi | ume plum, *salt* | Fermentation crock: salt-cure → Drying rack: dry in the sun |
 | koji rice | *steamed rice*, *koji spores* | Fermentation crock: culture for a day. Each batch returns *koji spores*. |
 | koji spores | *koji rice* | Returned by a koji batch. The first spores come from a villager trade or a rare find. |
@@ -319,7 +319,7 @@ Feature: B-0048.
 | kirsch | cherry | Proposal: bought from villagers, because distilling is out of scope. |
 | rum | sugar cane | Proposal: bought from villagers, because distilling is out of scope. |
 | beer | *malted barley*, hops, *yeast*, water | Cooking pot (low): mash and boil with hops → Fermentation crock: ferment |
-| tofu | *dried soybeans*, water, *nigari* | Mill: grind soaked beans → Cooking pot (low): cook and strain into soy milk → Mixing bowl: curdle with nigari → Cheese press: press |
+| tofu | *dried soybeans*, water, *nigari* | Mill: grind soaked beans → Cooking pot (low): cook → Strainer: strain into soy milk → Mixing bowl: curdle with nigari → Cheese press: press |
 | nigari | water bottle of seawater | Left over after boiling down seawater for *salt* |
 | nori | seaweed | Cutting board: chop → Drying rack: dry in thin sheets |
 | aonori | sea lettuce | Drying rack: dry → Mill: crumble |
@@ -351,15 +351,15 @@ Feature: B-0052 for drinks, with B-0050 for the plants.
 | tamarind pulp | tamarind pod | Cutting board: shell and seed |
 | apple juice | apple | Cutting board: quarter → Mill: crush → Fruit press: press |
 | blackcurrant juice | blackcurrant | Mill: crush → Fruit press: press |
-| cassis syrup | blackcurrant, sugar, water | Cooking pot (low): cook → Mixing bowl: strain → Cooking pot (low): dissolve sugar |
-| mint syrup | mint, sugar, water | Cooking pot (low): dissolve sugar → Mixing bowl: steep mint, strain |
+| cassis syrup | blackcurrant, sugar, water | Cooking pot (low): cook → Strainer: strain → Cooking pot (low): dissolve sugar |
+| mint syrup | mint, sugar, water | Cooking pot (low): dissolve sugar → Mixing bowl: steep mint → Strainer: strain |
 | crushed ice | ice | Mill: crush |
 
 ## Other
 
 | Product | Ingredients | Processes |
 |---|---|---|
-| lye solution | *wood ash*, water | Mixing bowl: pour water slowly through the ash and collect the lye that drains out |
+| lye solution | *wood ash*, water | Strainer: pour water slowly through the ash and collect the lye that drains out |
 | wood ash | logs | Oven (high): burn the logs as the ingredient, not the fuel, until only white ash is left |
 | pork liver | *dressed pig* | Butcher block: butcher. The butchery reference lists it as liver. |
 | steamed rice | rice, water | Cooking pot (medium): steam |

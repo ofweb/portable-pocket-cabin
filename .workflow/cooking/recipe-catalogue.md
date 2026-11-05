@@ -160,10 +160,10 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 | Dish | Ingredients | Processes |
 |---|---|---|
 | Nam manao | lime, water, sugar, *salt* | Fruit press: juice limes → Mixing bowl: dissolve and chill |
-| Cha yen | *Thai tea leaves*, *condensed milk*, *evaporated milk*, sugar, *crushed ice* | Cooking pot (medium): brew strong, strain → Mixing bowl: sweeten, pour over ice with milk |
+| Cha yen | *Thai tea leaves*, *condensed milk*, *evaporated milk*, sugar, *crushed ice* | Cooking pot (medium): brew strong → Strainer: strain → Mixing bowl: sweeten, pour over ice with milk |
 | Cha manao | *black tea*, lime, sugar | Cooking pot (medium): brew → Mixing bowl: sweeten, add lime, chill |
-| Nam takrai | lemongrass, water, sugar | Cutting board: bruise stalks → Cooking pot (low): infuse, strain |
-| Nam krajeab | *dried hibiscus*, water, sugar | Cooking pot (low): simmer, strain, chill |
+| Nam takrai | lemongrass, water, sugar | Cutting board: bruise stalks → Cooking pot (low): infuse → Strainer: strain |
+| Nam krajeab | *dried hibiscus*, water, sugar | Cooking pot (low): simmer → Strainer: strain → Ageing shelf: chill |
 
 ## Mexican
 
@@ -197,11 +197,11 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 
 | Dish | Ingredients | Processes |
 |---|---|---|
-| Agua de jamaica | *dried hibiscus*, water, sugar | Cooking pot (low): steep, strain → Ageing shelf: chill |
-| Agua de tamarindo | *tamarind pulp*, water, sugar | Cooking pot (low): soften pulp → Mixing bowl: strain and sweeten |
-| Horchata de arroz | rice, *cinnamon*, water, sugar | Fermentation crock: soak overnight → Mill: grind → Mixing bowl: strain and sweeten |
+| Agua de jamaica | *dried hibiscus*, water, sugar | Cooking pot (low): steep → Strainer: strain → Ageing shelf: chill |
+| Agua de tamarindo | *tamarind pulp*, water, sugar | Cooking pot (low): soften pulp → Strainer: strain → Mixing bowl: sweeten |
+| Horchata de arroz | rice, *cinnamon*, water, sugar | Fermentation crock: soak overnight → Mill: grind → Strainer: strain → Mixing bowl: sweeten |
 | Champurrado | *masa*, *Mexican chocolate*, *panela*, *cinnamon*, milk | Cooking pot (low): dissolve masa, heat, whisk until thick |
-| Café de olla | *roasted coffee*, *cinnamon*, *panela*, *cloves*, water | Cooking pot (low): simmer, strain |
+| Café de olla | *roasted coffee*, *cinnamon*, *panela*, *cloves*, water | Cooking pot (low): simmer → Strainer: strain |
 
 ## South American
 
@@ -225,7 +225,7 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 | Brigadeiros | *condensed milk*, *cocoa powder*, *raw butter*, *chocolate* | Cooking pot (low): cook until thick → Ageing shelf: cool → Prep counter: roll balls, coat in grated chocolate |
 | Alfajores de maicena | *cornstarch*, *wheat flour*, *raw butter*, sugar, egg, *dulce de leche*, *desiccated coconut* | Mixing bowl: mix dough → Cutting board: cut rounds → Oven (low): bake → Prep counter: sandwich with dulce de leche, roll edges in coconut |
 | Picarones | sweet potato, pumpkin, *wheat flour*, *yeast*, *anise*, *vegetable oil*, *chancaca syrup* | Cooking pot (high): boil vegetables → Mixing bowl: mash and knead, rest → Cooking pot (high, oil): shape rings and deep-fry → Prep counter: serve with syrup |
-| Mazamorra morada | purple corn, pineapple, apple, *cinnamon*, *cloves*, sugar, *sweet potato starch*, *dried fruit* | Cooking pot (low): simmer corn with fruit and spices, strain → Cooking pot (low): thicken with starch, add dried fruit |
+| Mazamorra morada | purple corn, pineapple, apple, *cinnamon*, *cloves*, sugar, *sweet potato starch*, *dried fruit* | Cooking pot (low): simmer corn with fruit and spices → Strainer: strain → Cooking pot (low): thicken with starch, add dried fruit |
 | Coxinha | *chicken stock*, *wheat flour*, *poached chicken*, *cream cheese*, *breadcrumbs*, egg, *vegetable oil* | Cooking pot (low): cook dough in stock → Prep counter: wrap filling, shape teardrops, coat → Cooking pot (high, oil): deep-fry |
 | Tequeños | *wheat flour*, water, *salt*, *raw butter*, *queso blanco*, *vegetable oil* | Mixing bowl: mix dough → Prep counter: wrap cheese sticks in strips → Cooking pot (high, oil): deep-fry |
 | Anticuchos | *beef heart*, *anticucho marinade*, potato, corn | Brine barrel: marinate → Prep counter: skewer → Grill (high): grill, baste → Prep counter: serve with potato and corn |
@@ -235,11 +235,11 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 
 | Dish | Ingredients | Processes |
 |---|---|---|
-| Chicha morada | purple corn, pineapple, apple, *cinnamon*, *cloves*, sugar, lime | Cooking pot (low): simmer, strain → Mixing bowl: sweeten, add lime, chill |
+| Chicha morada | purple corn, pineapple, apple, *cinnamon*, *cloves*, sugar, lime | Cooking pot (low): simmer → Strainer: strain → Mixing bowl: sweeten, add lime, chill |
 | Aguapanela con limón | *panela*, water, lime | Cooking pot (low): dissolve panela → Mixing bowl: add lime |
-| Limonada suíça | lime, *condensed milk*, sugar, water, *crushed ice* | Mill: blend briefly → Mixing bowl: strain |
+| Limonada suíça | lime, *condensed milk*, sugar, water, *crushed ice* | Mill: blend briefly → Strainer: strain |
 | Tereré | *yerba mate*, water, mint, lemongrass | Mixing bowl: infuse cold |
-| Limonada de coco | *coconut cream*, lime, sugar, *crushed ice* | Mill: blend → Mixing bowl: strain |
+| Limonada de coco | *coconut cream*, lime, sugar, *crushed ice* | Mill: blend → Strainer: strain |
 
 ## Danish
 
@@ -262,7 +262,7 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 |---|---|---|
 | Koldskål med kammerjunkere | *buttermilk*, *yogurt*, egg, sugar, *vanilla*, lemon, *kammerjunkere* | Mixing bowl: whisk → Ageing shelf: chill → Prep counter: serve with biscuits |
 | Gammeldags æblekage | *apple compote*, *breadcrumbs*, *raw butter*, sugar, *whipped cream*, *redcurrant jelly* | Skillet (medium): toast breadcrumbs with butter and sugar → Prep counter: layer in a glass |
-| Rødgrød med fløde | sweet berries, redcurrant, raspberry, sugar, *potato starch*, *cream* | Cooking pot (low): cook berries, strain, thicken with starch → Prep counter: serve with cream |
+| Rødgrød med fløde | sweet berries, redcurrant, raspberry, sugar, *potato starch*, *cream* | Cooking pot (low): cook berries → Strainer: strain → Cooking pot (low): thicken with starch → Prep counter: serve with cream |
 | Brunsviger | *sweet yeast dough*, *brown sugar*, *raw butter* | Proofing basket: proof → Prep counter: press dimples, add topping → Oven (medium): bake |
 | Æbleskiver | *wheat flour*, *buttermilk*, egg, *cardamom*, *raw butter*, *jam*, sugar | Mixing bowl: mix batter → Æbleskive pan (medium): cook in the wells, turning → Prep counter: serve with jam and sugar |
 | Pølsehorn | *bread dough*, *cocktail sausages*, egg | Prep counter: cut triangles, roll around sausages → Proofing basket: proof → Oven (medium): bake |
@@ -274,10 +274,10 @@ This catalogue defines what goes into each of the 147 [target recipes](source/re
 | Dish | Ingredients | Processes |
 |---|---|---|
 | Æblemost | apple, glass bottle | Cutting board: quarter → Mill: crush → Fruit press: press → Ageing shelf: settle (optional) |
-| Hyldeblomstsaft | elderflower, lemon, sugar, water | Cooking pot (low): dissolve sugar → Fermentation crock: infuse elderflowers and lemon for two days → Mixing bowl: strain and bottle |
-| Rabarbersaft | rhubarb, sugar, lemon, water | Cutting board: chop → Cooking pot (low): simmer → Mixing bowl: strain |
-| Solbærsaft | blackcurrant, sugar, water | Cooking pot (low): cook → Mixing bowl: strain and bottle |
-| Varm hyldebærsaft | elderberry, apple, sugar, *cinnamon*, water | Cooking pot (low): cook, strain, serve warm |
+| Hyldeblomstsaft | elderflower, lemon, sugar, water | Cooking pot (low): dissolve sugar → Fermentation crock: infuse elderflowers and lemon for two days → Strainer: strain and bottle |
+| Rabarbersaft | rhubarb, sugar, lemon, water | Cutting board: chop → Cooking pot (low): simmer → Strainer: strain |
+| Solbærsaft | blackcurrant, sugar, water | Cooking pot (low): cook → Strainer: strain and bottle |
+| Varm hyldebærsaft | elderberry, apple, sugar, *cinnamon*, water | Cooking pot (low): cook → Strainer: strain, serve warm |
 
 ## Intermediate products
 
@@ -616,7 +616,7 @@ Writing out every dish exposes stations, techniques, and sources that the end-st
 - **Deep-frying:** a cooking pot filled with oil at high heat (tempura, karaage, korokke, churros, Berliner, and more). The pot needs oil as a fill, like water.
 - **Æbleskive pan:** a special skillet with round wells for æbleskiver, takoyaki, and khanom krok. It needs an owning feature.
 - **Moulds:** madeleine, canelé, and taiyaki moulds go in the oven with the batter and decide which recipe matches.
-- **Straining, blending, and chilling:** many drinks and sauces strain, blend, or chill. The catalogue uses the mixing bowl to strain, the mill to blend, and the ageing shelf to chill. Each choice needs confirming.
+- **Straining, blending, and chilling:** the strainer on the prep counter strains, drains, and sieves. The mill blends, and the ageing shelf chills.
 - **Skewers and rolling mats:** small tools used at the prep counter for yakitori, satay, dango, and maki sushi.
 - **Lye:** Brezeln need a lye bath, which could come from wood ash and water.
 - **New animals and seafood:** duck, herring, mussels, prawns, and dried shrimp. Squid already exists and supplies tentacles.

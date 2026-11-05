@@ -144,6 +144,7 @@ Automation uses the same ingredients, stations, heat levels, and times as manual
 | Cutting board | Preparing vegetables, herbs, and ingredients |
 | Prep counter | Work surface for counter-top stations, shaping, filling, and assembling dishes |
 | Mixing bowl | Dough, batter, seasoning, combining ingredients, mixed with a spoon |
+| Strainer | Straining, draining, sieving, settling starch, leaching lye |
 | Mill | Flour, ground grains, crushed fruit, bone meal |
 | Rolling mill | Rolled oats, pasta |
 | Skillet | Frying, sautéing, searing |
@@ -158,7 +159,7 @@ Automation uses the same ingredients, stations, heat levels, and times as manual
 | Butcher block | Butchering dressed carcasses, scaling and filleting fish |
 | Sausage stuffer | Sausages |
 | Drying rack | Herbs, mushrooms, fruit, chilies |
-| Fermentation crocks and pickling jars | Starters, pickles, sauerkraut, kimchi, miso, sauces |
+| Fermentation crock | Starters, pickles, sauerkraut, kimchi, miso, sauces |
 | Proofing basket | Proofing dough |
 | Brine barrel | Salting and brining meat and fish |
 | Smoker | Smoking meat and fish |
