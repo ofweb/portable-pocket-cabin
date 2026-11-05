@@ -5,7 +5,7 @@ Feature ID: B-0041
 
 ## Goal
 
-Give the household a dedicated kitchen with supplied cooking equipment. It works before storage or automation, and installed storage supplies fuel and ingredients without another upgrade. Cooking itself follows [B-0045](../B-0045/brief.md).
+Give the household a dedicated kitchen with supplied cooking stations. It works before storage or automation, and installed storage supplies fuel and ingredients without another upgrade. Cooking itself follows [B-0045](../B-0045/brief.md).
 
 ## Stories and acceptance
 
@@ -20,13 +20,13 @@ Acceptance:
 - Only the owner purchases upgrades. Residents can contribute under shared funding rules.
 - Installation follows B-0005 and requires 5×5 main space. The kitchen branches from the south side of the east corridor.
 - Its usable floor stays 5×5 with three blocks of clear height through all purchases.
-- Installing equipment removes player blocks from only the space that equipment needs. Displaced blocks and their inventory contents drop into the room.
-- A failed installation leaves the room and upgrade fund unchanged. Recovery cannot drop displaced items or install equipment twice.
-- Free floor remains for player-placed cooking equipment, which works there as anywhere else.
+- Installing a station removes player blocks from only the space that station needs. Displaced blocks and their inventory contents drop into the room.
+- A failed installation leaves the room and upgrade fund unchanged. Recovery cannot drop displaced items or install a station twice.
+- Free floor remains for player-placed cooking stations, which work there as anywhere else.
 
 Logs match saved wall wood. Collected and traded materials count without personal visits.
 
-| Purchase | Supplied equipment | Materials |
+| Purchase | Supplied stations | Materials |
 |---|---|---|
 | I: Kitchen | Two stoves, one topped with a cooking pot and one with a skillet; a cutting board | 2 stoves, 1 cooking pot, 1 skillet, 1 cutting board, 16 wall logs, 8 copper ingots, 4 amethyst blocks |
 | II: Oven | One oven | 1 oven, 8 copper ingots, 4 amethyst blocks |
@@ -34,14 +34,14 @@ Logs match saved wall wood. Collected and traded materials count without persona
 
 ### S2: Cook in the kitchen
 
-Story: An owner or resident cooks a recipe with the kitchen's supplied equipment.
+Story: An owner or resident cooks a recipe at the kitchen's supplied stations.
 
 Acceptance:
 
-- Supplied equipment behaves like placed B-0045 equipment, including heat dials, fuel, temperature, steps, and preparation items.
-- Supplied equipment is protected. It cannot be broken or moved, and it opens its interface directly.
+- Supplied stations behave like placed B-0045 stations, including fuel, heat levels, water, and progress.
+- Supplied stations are protected. It cannot be broken or moved, and it opens its interface directly.
 - The supplied cutting board includes a fixed knife, so players need not carry one.
-- Owners and residents can use the kitchen. Guests can enter but cannot use its equipment, as B-0002 requires.
+- Owners and residents can use the kitchen. Guests can enter but cannot use its stations, as B-0002 requires.
 - Cooking in the kitchen requires neither central storage nor automation.
 
 ### S3: Use installed storage
@@ -51,32 +51,33 @@ Story: A household member cooks with ingredients and fuel kept in central storag
 Acceptance:
 
 - Installed central storage becomes available to the kitchen without another connection upgrade.
-- Supplied equipment fills fuel and ingredients for the current step from storage first, then player inventory.
+- Recipe-book filling at a supplied station takes ingredients from storage first, then player inventory.
+- Selecting a recipe also fills a supplied stove or oven with fuel at that recipe's heat level when it holds none, from storage first.
 - Automatic filling skips named and customised stacks. Players can add those deliberately.
-- Outputs and returned containers go to the player who completes the recipe. If the player's inventory is full, they go to storage, then drop beside the equipment.
+- Players take outputs from a station as usual. Shift-clicking an output moves it to player inventory, then storage when inventory is full.
 - The cookbook counts storage toward recipe availability inside the cabin, as B-0045 states.
 
 ## Feature-wide constraints and acceptance
 
 - Every fill, step, and output rechecks cabin identity, player role, recipe, contents, and space.
 - An interrupted fill, step, or output completes once or changes nothing. Recovery cannot lose ingredients or duplicate food.
-- Supplied equipment, its contents, temperatures, and preparations persist through packing, restart, redeployment, and main-room relocation under B-0005.
-- Kitchen equipment pauses while an empty cabin is packed. Catch-up remains open under Direction.
-- Leaving, packing, or role removal closes kitchen interfaces. Preparations stay in their equipment.
+- Supplied stations, their contents, water, fuel, and progress persist through packing, restart, redeployment, and main-room relocation under B-0005.
+- Kitchen stations pause while an empty cabin is packed. Catch-up remains open under Direction.
+- Leaving, packing, or role removal closes kitchen interfaces. Station contents stay in place.
 
 ## Scope
 
-This feature includes the kitchen book, its three purchases, supplied equipment, protection, household access, and storage filling for fuel and ingredients.
+This feature includes the kitchen book, its three purchases, supplied stations, protection, household access, and storage filling for fuel and ingredients.
 
 ## Non-goals
 
-- Recipes, equipment behavior, temperature, and preparation items belong to B-0045.
-- Equipment for milling, dairy, preservation, butchery, and drinks belongs to B-0046 through B-0052. Those features may add kitchen purchases.
+- Recipes, station behavior, heat levels, and prepared items belong to B-0045.
+- Stations for milling, dairy, drying, fermentation, butchery, and drinks belong to B-0046 through B-0052. Those features may add kitchen purchases.
 - Cooking automation belongs to B-0025. Material smelting belongs to B-0040.
 
 ## Related records
 
-- [Guided cooking recipes](../B-0045/brief.md).
+- [Cooking stations and cookbook](../B-0045/brief.md).
 - [Cooking concept](../../cooking/concept.md).
 - [Room purchase and traversal](../B-0005/brief.md).
 - [Cabin books](../B-0038/brief.md).
@@ -89,4 +90,4 @@ This feature includes the kitchen book, its three purchases, supplied equipment,
 ## Open questions and assumptions
 
 - B-0033 balances purchase costs.
-- Later cooking features decide whether their equipment joins the kitchen through new purchases or stays player-placed only.
+- Later cooking features decide whether their stations join the kitchen through new purchases or stay player-placed only.

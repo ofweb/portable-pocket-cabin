@@ -58,11 +58,11 @@ This feature includes cooking and brewing process profiles that the cabin can us
 - [Manual kitchen room](../../backlog.md#b-0041-manual-kitchen-room).
 - [Manual potion room](../../backlog.md#b-0043-manual-potion-room).
 - [Cooking concept](../../cooking/concept.md#kitchen-automation).
-- [Guided cooking recipes](../../backlog.md#b-0045-guided-cooking-recipes).
+- [Cooking stations and cookbook](../B-0045/brief.md).
 
 ## Open questions and assumptions
 
 - Cooking and brewing process profiles that the cabin can use without optional mods are open. Safe meal and potion parts are open.
 - Work times and other work values are open.
-- Cooking jobs should perform B-0045 cooking recipes with their manual equipment, temperatures, and durations. How recipes relate to process profiles is open.
+- Cooking jobs should perform B-0045 cooking recipes with their manual stations, heat levels, and times. How recipes relate to process profiles is open.
 - Cooking automation requires its automation book. Commissioning a recipe consumes some of its finished product. No count of manual preparations is required.

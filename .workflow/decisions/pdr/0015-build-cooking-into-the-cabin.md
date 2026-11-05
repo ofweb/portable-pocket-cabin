@@ -14,7 +14,7 @@ The greenhouse keeps its shipped Farmer's Delight growth profiles until cabin co
 
 ## Rationale
 
-Guided recipes, temperature control, butchery, intermediate products, and earned automation depend on cabin systems: the kitchen room, central storage, product templates, and production jobs. An optional mod's recipes cannot express those steps or teach the techniques behind them.
+The cabin needs much deeper food chains than Farmer's Delight offers: real recipes, many intermediate items, heat set by fuel, butchery, fermentation, drying, and earned automation. Those depend on cabin systems: the kitchen room, central storage, product templates, and production jobs. An optional mod's recipes cannot supply that depth or teach the techniques behind it.
 
 ## Scope
 
