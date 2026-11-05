@@ -24,8 +24,8 @@ Code stays in the flat `dev.portablepocketcabin` package, with a `Cooking` prefi
 |---|---|---|---|---|
 | `portable_pocket_cabin:cutting` | Cutting board | One item | None | Single input, knife use |
 | `portable_pocket_cabin:skillet` | Skillet | One item per slot | Required | Each slot matches on its own |
-| `portable_pocket_cabin:pot` | Cooking pot | Up to 6 items, container, water | Required | Shapeless over the ingredient slots |
-| `portable_pocket_cabin:oven` | Oven | Up to 6 items | Required | Shapeless over the ingredient slots |
+| `portable_pocket_cabin:pot` | Cooking pot | 6 ingredient slots, container, water | Required | Counted and shapeless over the ingredient slots |
+| `portable_pocket_cabin:oven` | Oven | 6 ingredient slots | Required | Counted and shapeless over the ingredient slots |
 
 One `CookingRecipe` record backs all four types, and each type has its own `RecipeSerializer` built from the shared codec. Example:
 
@@ -46,7 +46,31 @@ One `CookingRecipe` record backs all four types, and each type has its own `Reci
 }
 ```
 
-- `ingredients` lists one entry per required item. Repeated entries express quantities, for example six chopped beetroot.
+Cake shows counted ingredients and remainders:
+
+```json
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    { "item": "minecraft:wheat", "count": 3 },
+    { "item": "minecraft:sugar", "count": 2 },
+    { "item": "minecraft:egg" },
+    { "item": "minecraft:milk_bucket", "count": 3 }
+  ],
+  "remainders": [{ "id": "minecraft:bucket", "count": 3 }],
+  "heat": "low",
+  "time": 200,
+  "result": { "id": "minecraft:cake" }
+}
+```
+
+- `ingredients` lists each required ingredient with an optional `count`, which defaults to 1. Matching is counted and shapeless:
+  - Each filled ingredient slot is assigned to one entry, and every filled slot must be assigned.
+  - An entry matches when its assigned slots hold at least `count` matching items in total, so a stack of 3 wheat in one slot satisfies `count: 3`.
+  - Unstackable items such as milk buckets take one slot each. Cake fills all six oven slots: wheat, sugar, egg, and three milk buckets.
+  - With six slots or fewer, the station tries every assignment, so overlapping ingredients cannot block a match.
+  - Completion takes `count` items for each entry from its assigned slots. Any extra items stay in their slots.
 - `container` is optional and goes in the pot's container slot. The finished output keeps it, like soup in a bowl.
 - `water` is the pot water used per craft. It is optional and defaults to 0.
 - `remainders` is optional. It lists items returned to the byproduct slot, such as empty buckets from cake.
@@ -68,8 +92,9 @@ One `CookingRecipe` record backs all four types, and each type has its own `Reci
   - If the block below is a stove that is burning, it returns that stove's current fuel level.
   - If the block below is a lit campfire or soul campfire, it returns low.
   - Otherwise there is no heat.
-- A stove burns fuel only while the vessel above has a matching recipe it can progress, like a furnace that only burns when it has something to smelt. A new fuel item starts burning when the previous one runs out, which is when the heat level changes.
-- The oven has its own fuel slot and uses the same burning rule.
+- **Lighting and burning are separate.** A stove lights a new fuel item only when it is not burning and the vessel above has a matching recipe that needs heat, like a furnace. Once lit, the fuel burns down every tick until it runs out, even when nothing can progress. Then the next fuel item lights, which is when the heat level changes.
+- **Putting the fire out:** using a shovel on a burning stove or oven puts the fire out, as with a campfire, and the burning fuel is lost. A player can switch to a lower heat at once instead of waiting for long-burning fuel such as a lava bucket.
+- The oven has its own fuel slot and uses the same rules.
 
 | Tag | Initial members |
 |---|---|
@@ -169,7 +194,13 @@ GameTests:
   - Progress pauses at the wrong heat and resumes without loss.
   - A full output slot pauses.
   - A recipe change resets.
-  - The stove burns only with work above it.
+  - The stove lights only with work above it, and lit fuel burns down even when nothing progresses.
+  - Leftover high-heat fuel burns out after a switch to a low-heat recipe, then the next low-heat fuel lights.
+  - A shovel puts out a burning stove or oven, and the next fuel lights at its own level.
+- Counted matching:
+  - Cake completes from 3 wheat, 2 sugar, an egg, and 3 milk buckets in the six oven slots, and returns 3 empty buckets to the byproduct slot.
+  - A stack larger than an entry's count leaves its extra items in the slot.
+  - An extra unmatched item in any slot prevents a match.
 - Persistence: a save and reload of each station keeps its contents, water, fuel, and progress.
 - Removal: the 35 vanilla recipes are absent, the replacement cooking recipes are present, and a campfire refuses raw beef.
 - Permissions: a guest cannot use or open a station in a cabin, and a resident can.

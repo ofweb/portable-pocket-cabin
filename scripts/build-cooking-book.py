@@ -259,10 +259,6 @@ def used_in_section(kind, name):
 
 # Build pages.
 
-if BOOK.exists():
-    shutil.rmtree(BOOK)
-for folder in FOLDERS.values():
-    (BOOK / folder).mkdir(parents=True)
 files = {}
 
 for name, dish in dishes.items():
@@ -352,6 +348,15 @@ if errors:
     print("\n".join(sorted(set(errors))), file=sys.stderr)
     sys.exit(1)
 
+# Write a complete new book beside the old one, then swap, so a failed run keeps the last good book.
+staging = BOOK.with_name(BOOK.name + ".new")
+if staging.exists():
+    shutil.rmtree(staging)
+for folder in FOLDERS.values():
+    (staging / folder).mkdir(parents=True)
 for path, body in files.items():
-    (BOOK / path).write_text("\n".join(body).rstrip("\n") + "\n")
+    (staging / path).write_text("\n".join(body).rstrip("\n") + "\n")
+if BOOK.exists():
+    shutil.rmtree(BOOK)
+staging.rename(BOOK)
 print(f"Wrote {len(files)} pages to {BOOK.relative_to(ROOT)}")
