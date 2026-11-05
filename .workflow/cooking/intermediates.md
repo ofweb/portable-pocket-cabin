@@ -359,8 +359,8 @@ Feature: B-0052 for drinks, with B-0050 for the plants.
 
 | Product | Ingredients | Processes |
 |---|---|---|
-| lye solution | *wood ash*, water | Mixing bowl: steep and drain |
-| wood ash | logs | Campfire or stove: left in the fuel slot after burning wood. Proposal: burned wood leaves ash. |
+| lye solution | *wood ash*, water | Mixing bowl: pour water slowly through the ash and collect the lye that drains out |
+| wood ash | logs | Oven (high): burn the logs as the ingredient, not the fuel, until only white ash is left |
 | pork liver | *dressed pig* | Butcher block: butcher. The butchery reference lists it as liver. |
 | steamed rice | rice, water | Cooking pot (medium): steam |
 | sushi rice | *steamed rice*, *rice vinegar*, sugar, *salt* | Mixing bowl: fold in seasoned vinegar, fan cool |
@@ -536,7 +536,7 @@ Every product in *italics* in the recipe catalogue and in this document has a de
 
 ## Decisions this pass raises
 
-- **Wood ash:** lye for pretzels, hominy, masa, and ramen noodles comes from wood ash. Proposal: burning wood in a stove or campfire leaves ash in the fuel slot.
+- **Wood ash:** lye for pretzels, hominy, masa, and ramen noodles comes from wood ash, which players make on purpose. They burn logs in the oven at high heat until only white ash remains, then leach water through it. Burning fuel leaves no ash.
 - **Salt by-products:** boiling down seawater leaves *nigari*, which sets tofu. Making salt then feeds Japanese cooking.
 - **Rennet:** cheese needs rennet from a calf stomach, which the butchery reference now lists. Using the whole animal reaches dairy too.
 - **No distilling:** kirsch and rum are bought from villagers. Wine, sake, mirin, vinegar, and beer are fermented in B-0048.
