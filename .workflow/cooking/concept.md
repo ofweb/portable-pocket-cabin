@@ -1,6 +1,6 @@
 # Cooking and food production
 
-This concept describes the intended cabin cooking system. It replaces Farmer's Delight as the cabin's food content. [PDR-0015](../decisions/pdr/0015-build-cooking-into-the-cabin.md) records that decision. The [source material](source/) keeps the ingredient catalogue, dependency graphs, and target recipes from the design conversation.
+This concept describes the intended cabin cooking system. It replaces Farmer's Delight as the cabin's food content. [PDR-0015](../decisions/pdr/0015-build-cooking-into-the-cabin.md) records that decision. The [end-state description](vision.md) shows what finished cooking looks like to players. The [source material](source/) keeps the ingredient catalogue, dependency graphs, and target recipes from the design conversation.
 
 ## Goal
 
