@@ -112,6 +112,23 @@
 - Meaning: A heat level is the low, medium, or high heat a cooking station gives. The burning fuel sets it, and a campfire gives low heat. Each heated cooking recipe needs one heat level.
 - Forms: heat levels
 
+## Cooking station
+
+- Meaning: A cooking station is a block that does one kind of food work and behaves like a vanilla block: a click station like a stonecutter, a surface station like a campfire, a container station like a furnace, or a time station that works without heat. Food is cooked only at cooking stations.
+- Forms: cooking stations, station, stations
+- Distinguish from: A heat source, such as a stove or campfire, heats a station above it.
+
+## Carcass
+
+- Meaning: A carcass is the item an animal drops instead of meat, hide, or feathers. It keeps the animal's type and must be dressed before butchering.
+- Forms: carcasses
+- Distinguish from: A dressed carcass has been skinned or plucked. Only a dressed carcass can be butchered.
+
+## Dressed carcass
+
+- Meaning: A dressed carcass has been skinned, scraped, or plucked at a hanging hook. A butcher block breaks it into cuts, offal, fat, and bones.
+- Forms: dressed carcasses
+
 ## Cabin book
 
 - Meaning: A cabin book is an item that reveals one or more cabin upgrades when installed. It differs from empty books and enchanted books.

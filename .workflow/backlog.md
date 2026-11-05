@@ -1,5 +1,14 @@
 # Backlog
 
+Each item moves through these statuses:
+
+- **Needs Direction:** the intended outcome is not settled. [Direction](direction.md) records the open question.
+- **Ready for Shape:** direction is settled. Shape writes or completes the feature brief.
+- **Ready for Design:** the brief is Ready. Design records technical decisions, in a feature design or ADRs.
+- **Ready for Implementation:** the design is Ready. Implementation builds and tests it.
+
+Implemented items leave the backlog. Their briefs and designs stay in [features](features/) as the record.
+
 ## B-0003: Receiving mailbox
 
 - Status: Ready for Shape
@@ -235,6 +244,7 @@
 - Direction: [Manual production rooms](direction.md#manual-production-rooms).
 - Relationships: Uses B-0005 and B-0038. Integrates B-0004. Uses equipment and recipes from B-0045. Used by cooking in B-0025.
 - Feature Brief: [Manual kitchen brief](features/B-0041/brief.md).
+- Open proposals: Later cooking features may add their stations through new kitchen purchases, which may need a larger room than 5×5. The kitchen should supply a prep counter from B-0053, with its cutting board on it.
 
 ## B-0042: Smelting jobs
 
@@ -261,18 +271,20 @@
 
 ## B-0045: Cooking stations and cookbook
 
-- Status: Ready for Design
+- Status: Ready for Implementation
 - Value: Let players cook real recipes at furnace-style cooking stations, through real intermediate items, with heat set by fuel. A cookbook teaches every recipe and technique.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Feature Brief: [Cooking stations brief](features/B-0045/brief.md).
+- Design: [Cooking stations design](features/B-0045/design.md).
 - Relationships: Integrates B-0002 and B-0004. Used by B-0041. Used by B-0025 and B-0046 through B-0052.
 
 ## B-0046: Milling, baking, and dairy
 
 - Status: Ready for Shape
-- Value: Let players mill grain into flour, make doughs, starters, and baked goods, and turn milk into butter, cream, yogurt, and cheese.
+- Value: Let players mill grain into flour, make doughs, starters, and baked goods, and turn milk into butter, cream, yogurt, and cheese. Butter comes from settling milk, skimming cream, churning, and salting.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Uses B-0045. Retires the vanilla bread, cookie, cake, and pumpkin pie recipes once flour exists. Uses milk and eggs from B-0022.
+- Open proposals: A sourdough starter begins from flour and water in a fermentation crock and is reusable once fed.
 
 ## B-0047: Stocks, sauces, and flavour
 
@@ -280,6 +292,7 @@
 - Value: Let players make stocks, dashi, and sauces, and learn the five basic tastes through seasoning and balance.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Uses B-0045.
+- Open proposals: B-0047 owns salt, from seawater boiled down in a pot at high heat and rock salt in caves. Optional seasoning slots let salt, herbs, acid, or umami raise a balanced dish's quality, while the basic recipe still makes a good dish.
 
 ## B-0048: Fermentation, drying, and preservation
 
@@ -287,13 +300,15 @@
 - Value: Let players ferment, dry, smoke, cure, pickle, and age ingredients over time.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Uses B-0045. Retires the vanilla dried kelp recipe once drying exists. Packed-time limits follow the open [catch-up question](direction.md#progress-after-an-empty-cabin-becomes-occupied).
+- Open proposals: The vanilla smoker becomes the smoking station, burning low-heat fuel. Koji spores come from a villager trade or a rare find, and each batch returns some. Fish guts ferment into fish sauce.
 
 ## B-0049: Butchery and carcasses
 
 - Status: Ready for Shape
-- Value: Let animals drop carcasses that players butcher into cuts, bones, fat, and trimmings, then process into mince, sausages, and cured meat. Fish are filleted.
+- Value: Let animals drop carcasses that players bleed, skin or pluck, and butcher into cuts, offal, bones, and fat, using the whole animal. Fish are scaled, gutted, and filleted.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Relationships: Uses B-0045. Uses animals from B-0022.
+- Relationships: Uses B-0045. Uses animals from B-0022. The [butchery reference](cooking/butchery.md) lists every part of each carcass.
+- Open proposals: Bonito is added as warm-ocean fishing loot. Open: carcasses from baby animals, goats and other animals, and how B-0026 automation handles slaughter.
 
 ## B-0050: Cooking crops and foraging
 
@@ -308,6 +323,7 @@
 - Value: Give ingredients small benefit contributions that processing develops and complete dishes combine, within bounded limits.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Uses B-0045.
+- Open proposals: Seasoning quality from B-0047 raises a dish's benefits.
 
 ## B-0052: Fruit pressing and drinks
 
@@ -315,3 +331,10 @@
 - Value: Let players press juice, infuse, and make syrups and concentrates for non-alcoholic drinks and cooking.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Uses B-0045.
+
+## B-0053: Prep counter and specialty cooking stations
+
+- Status: Ready for Shape
+- Value: Add the prep counter as the kitchen work surface, with the strainer on it, plus the grill, wok, and æbleskive pan, and oil for deep-frying in the cooking pot.
+- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
+- Relationships: Uses B-0045. Holds counter-top stations from B-0045, B-0046, and B-0047. Used by B-0041 and by dishes across B-0046 through B-0052. The [station list](cooking/stations.md) gives each station's techniques and step counts.

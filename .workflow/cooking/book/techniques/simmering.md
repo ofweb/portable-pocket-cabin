@@ -1,0 +1,42 @@
+# Simmering
+
+Cooking in liquid just below the boil, with small bubbles. Gentle heat lets flavours develop without breaking food apart.
+
+Heat in a pot. Defined in the [techniques](../../techniques.md).
+
+## Used in (34)
+
+- [Arroz con leche](../dishes/arroz-con-leche.md) (dish)
+- [Café de olla](../dishes/cafe-de-olla.md) (dish)
+- [Cassoulet](../dishes/cassoulet.md) (dish)
+- [Chicha morada](../dishes/chicha-morada.md) (dish)
+- [Feijoada](../dishes/feijoada.md) (dish)
+- [French onion soup](../dishes/french-onion-soup.md) (dish)
+- [Green curry](../dishes/green-curry.md) (dish)
+- [Mazamorra morada](../dishes/mazamorra-morada.md) (dish)
+- [Mole poblano](../dishes/mole-poblano.md) (dish)
+- [Moqueca baiana](../dishes/moqueca-baiana.md) (dish)
+- [Nam krajeab](../dishes/nam-krajeab.md) (dish)
+- [Pozole rojo](../dishes/pozole-rojo.md) (dish)
+- [Rabarbersaft](../dishes/rabarbersaft.md) (dish)
+- [Tom kha gai](../dishes/tom-kha-gai.md) (dish)
+- [anko](../products/anko.md)
+- [apple compote](../products/apple-compote.md)
+- [beef stock](../products/beef-stock.md)
+- [chancaca syrup](../products/chancaca-syrup.md)
+- [cherry compote](../products/cherry-compote.md)
+- [cherry sauce](../products/cherry-sauce.md)
+- [chicken stock](../products/chicken-stock.md)
+- [hominy](../products/hominy.md)
+- [okonomi sauce](../products/okonomi-sauce.md)
+- [peanut sauce](../products/peanut-sauce.md)
+- [pork stock](../products/pork-stock.md)
+- [prawn stock](../products/prawn-stock.md)
+- [red chili sauce](../products/red-chili-sauce.md)
+- [refried beans](../products/refried-beans.md)
+- [rice pudding](../products/rice-pudding.md)
+- [shoyu tare](../products/shoyu-tare.md)
+- [sweet chili sauce](../products/sweet-chili-sauce.md)
+- [tentsuyu](../products/tentsuyu.md)
+- [tomato caldillo](../products/tomato-caldillo.md)
+- [tonkatsu sauce](../products/tonkatsu-sauce.md)

@@ -1,0 +1,76 @@
+# Cutting board
+
+Preparing without heat. Defined in the [station list](../../stations.md).
+
+- **Kind:** Counter-top, with a knife
+- **Supports:** Chop, slice, dice, grate, shred, bruise, quarter, peel, shave
+- **Feature:** B-0045
+
+## Steps at this station (66)
+
+- [Alfajores de maicena](../dishes/alfajores-de-maicena.md): cut rounds
+- [Ceviche](../dishes/ceviche.md): [dice](../techniques/dicing.md) fish, [slice](../techniques/slicing.md) onion
+- [Empanadas de carne](../dishes/empanadas-de-carne.md): [dice](../techniques/dicing.md) beef
+- [Flæskesteg med rødkål](../dishes/flaeskesteg-med-rodkal.md): score the rind
+- [French onion soup](../dishes/french-onion-soup.md): [slice](../techniques/slicing.md) onions
+- [Frikadeller](../dishes/frikadeller.md): [grate](../techniques/grating.md) onion
+- [Gyoza](../dishes/gyoza.md): [chop](../techniques/chopping.md) cabbage
+- [Kartoffelpuffer](../dishes/kartoffelpuffer.md): [grate](../techniques/grating.md) potato and onion
+- [Llapingachos](../dishes/llapingachos.md): [stuff](../techniques/stuffing.md) with cheese, [shape](../techniques/shaping.md)
+- [Lomo saltado](../dishes/lomo-saltado.md): cut beef into strips
+- [Miang kham](../dishes/miang-kham.md): [dice](../techniques/dicing.md)
+- [Miso soup](../dishes/miso-soup.md): [cube](../techniques/dicing.md) tofu, [slice](../techniques/slicing.md) spring onion
+- [Moqueca baiana](../dishes/moqueca-baiana.md): [slice](../techniques/slicing.md) vegetables
+- [Moules marinières](../dishes/moules-marinieres.md): [chop](../techniques/chopping.md) shallot and parsley
+- [Nam takrai](../dishes/nam-takrai.md): [bruise](../techniques/bruising.md) stalks
+- [Okonomiyaki](../dishes/okonomiyaki.md): [shred](../techniques/shredding.md) cabbage
+- [Rabarbersaft](../dishes/rabarbersaft.md): [chop](../techniques/chopping.md)
+- [Ratatouille](../dishes/ratatouille.md): [dice](../techniques/dicing.md) vegetables
+- [Rinderrouladen](../dishes/rinderrouladen.md): [slice](../techniques/slicing.md) beef thin, spread, [fill](../techniques/filling.md), [roll](../techniques/rolling.md)
+- [Sangkhaya fak thong](../dishes/sangkhaya-fak-thong.md): hollow the pumpkin
+- [Schwarzwälder Kirschtorte](../dishes/schwarzwalder-kirschtorte.md): split sponge
+- [Sildemad med karrysalat](../dishes/sildemad-med-karrysalat.md): [slice](../techniques/slicing.md) bread
+- [Smørrebrød med leverpostej](../dishes/smorrebrod-med-leverpostej.md): [slice](../techniques/slicing.md) bread
+- [Som tam](../dishes/som-tam.md): [shred](../techniques/shredding.md) papaya
+- [Stegt flæsk med persillesovs](../dishes/stegt-flaesk-med-persillesovs.md): [slice](../techniques/slicing.md) pork belly
+- [Tacos al pastor](../dishes/tacos-al-pastor.md): [shave](../techniques/shaving.md) the pork
+- [Tom kha gai](../dishes/tom-kha-gai.md): [bruise](../techniques/bruising.md) lemongrass, [slice](../techniques/slicing.md) galangal
+- [Tub tim grob](../dishes/tub-tim-grob.md): [dice](../techniques/dicing.md) water chestnuts
+- [Æblemost](../dishes/aeblemost.md): [quarter](../techniques/quartering.md)
+- [apple compote](../products/apple-compote.md): [chop](../techniques/chopping.md)
+- [apple juice](../products/apple-juice.md): [quarter](../techniques/quartering.md)
+- [bonito flakes](../products/bonito-flakes.md): [shave](../techniques/shaving.md)
+- [chopped almonds](../products/chopped-almonds.md): [skin](../techniques/skinning.md) and [chop](../techniques/chopping.md)
+- [coconut cream](../products/coconut-cream.md): [skim](../techniques/skimming.md) the cream
+- [coconut milk](../products/coconut-milk.md): [crack](../techniques/cracking.md) and [grate](../techniques/grating.md) the flesh
+- [cucumber relish](../products/cucumber-relish.md): [slice](../techniques/slicing.md)
+- [desiccated coconut](../products/desiccated-coconut.md): [grate](../techniques/grating.md)
+- [dried apple](../products/dried-apple.md): [slice](../techniques/slicing.md)
+- [dried corn husks](../products/dried-corn-husks.md): husk
+- [dried fruit](../products/dried-fruit.md): halve
+- [fried potatoes](../products/fried-potatoes.md): cut into sticks
+- [karrysalat](../products/karrysalat.md): [dice](../techniques/dicing.md)
+- [nopales](../products/nopales.md): remove spines, [dice](../techniques/dicing.md)
+- [nori](../products/nori.md): [chop](../techniques/chopping.md)
+- [panko](../products/panko.md): remove the crust
+- [pickled beetroot](../products/pickled-beetroot.md): [slice](../techniques/slicing.md)
+- [pickled ginger](../products/pickled-ginger.md): [slice](../techniques/slicing.md) thin
+- [pino](../products/pino.md): [dice](../techniques/dicing.md)
+- [poached chicken](../products/poached-chicken.md): [shred](../techniques/shredding.md)
+- [potato starch](../products/potato-starch.md): [grate](../techniques/grating.md)
+- [prawn shells](../products/prawn-shells.md): [peel](../techniques/peeling.md). The peeled prawns go into the dish.
+- [remoulade](../products/remoulade.md): [chop](../techniques/chopping.md)
+- [rice noodles](../products/rice-noodles.md): cut
+- [roasted cocoa nibs](../products/roasted-cocoa-nibs.md): [crack](../techniques/cracking.md) and winnow
+- [roasted coffee](../products/roasted-coffee.md): hull
+- [roasted peanuts](../products/roasted-peanuts.md): shell
+- [salted salmon](../products/salted-salmon.md): flake
+- [sauerkraut](../products/sauerkraut.md): [shred](../techniques/shredding.md)
+- [sautéed mushrooms](../products/sauteed-mushrooms.md): [slice](../techniques/slicing.md)
+- [sliced almonds](../products/sliced-almonds.md): [skin](../techniques/skinning.md) and [slice](../techniques/slicing.md)
+- [sunflower seeds](../products/sunflower-seeds.md): thresh and shell
+- [sweet potato starch](../products/sweet-potato-starch.md): [grate](../techniques/grating.md)
+- [tamarind pulp](../products/tamarind-pulp.md): shell and seed
+- [tapioca starch](../products/tapioca-starch.md): [grate](../techniques/grating.md)
+- [tartlet shells](../products/tartlet-shells.md): cut and stack rings
+- [wasabi](../products/wasabi.md): [grate](../techniques/grating.md) finely

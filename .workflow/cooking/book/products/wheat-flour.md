@@ -1,0 +1,55 @@
+# wheat flour
+
+Grains, flours, and starches. Feature: B-0046. Defined in the [intermediate products](../../intermediates.md).
+
+## How it is made
+
+Ingredients: [wheat](../ingredients/wheat.md)
+
+1. [Mill](../stations/mill.md): [grind](../techniques/grinding.md)
+
+## Used in
+
+- [Alfajores de maicena](../dishes/alfajores-de-maicena.md) (dish)
+- [Boller i karry](../dishes/boller-i-karry.md) (dish)
+- [Brezeln](../dishes/brezeln.md) (dish)
+- [Canelés](../dishes/caneles.md) (dish)
+- [Chiles rellenos](../dishes/chiles-rellenos.md) (dish)
+- [Churros](../dishes/churros.md) (dish)
+- [Conchas](../dishes/conchas.md) (dish)
+- [Coxinha](../dishes/coxinha.md) (dish)
+- [Dorayaki](../dishes/dorayaki.md) (dish)
+- [Fiskefrikadeller](../dishes/fiskefrikadeller.md) (dish)
+- [Frikadeller](../dishes/frikadeller.md) (dish)
+- [Kartoffelpuffer](../dishes/kartoffelpuffer.md) (dish)
+- [Korokke](../dishes/korokke.md) (dish)
+- [Madeleines](../dishes/madeleines.md) (dish)
+- [Okonomiyaki](../dishes/okonomiyaki.md) (dish)
+- [Picarones](../dishes/picarones.md) (dish)
+- [Spätzle](../dishes/spatzle.md) (dish)
+- [Taiyaki](../dishes/taiyaki.md) (dish)
+- [Takoyaki](../dishes/takoyaki.md) (dish)
+- [Tarteletter med høns i asparges](../dishes/tarteletter-med-hons-i-asparges.md) (dish)
+- [Tempura](../dishes/tempura.md) (dish)
+- [Tequeños](../dishes/tequenos.md) (dish)
+- [Æbleskiver](../dishes/aebleskiver.md) (dish)
+- [bread dough](../products/bread-dough.md)
+- [chocolate sponge](../products/chocolate-sponge.md)
+- [choux pastry](../products/choux-pastry.md)
+- [empanada dough](../products/empanada-dough.md)
+- [flatbread dough](../products/flatbread-dough.md)
+- [gingerbread](../products/gingerbread.md)
+- [gyoza wrappers](../products/gyoza-wrappers.md)
+- [kammerjunkere](../products/kammerjunkere.md)
+- [leverpostej](../products/leverpostej.md)
+- [puff pastry](../products/puff-pastry.md)
+- [ramen noodles](../products/ramen-noodles.md)
+- [roux](../products/roux.md)
+- [shortcrust pastry](../products/shortcrust-pastry.md)
+- [sourdough starter](../products/sourdough-starter.md)
+- [soy sauce](../products/soy-sauce.md)
+- [spring roll wrappers](../products/spring-roll-wrappers.md)
+- [spätzle](../products/spatzle.md)
+- [strudel dough](../products/strudel-dough.md)
+- [sweet yeast dough](../products/sweet-yeast-dough.md)
+- [tenkasu](../products/tenkasu.md)

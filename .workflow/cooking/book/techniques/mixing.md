@@ -1,0 +1,41 @@
+# Mixing
+
+Combining ingredients evenly, stirred with a spoon.
+
+Preparing by hand. Defined in the [techniques](../../techniques.md).
+
+## Used in (33)
+
+- [Alfajores de maicena](../dishes/alfajores-de-maicena.md) (dish)
+- [Boller i karry](../dishes/boller-i-karry.md) (dish)
+- [Canelés](../dishes/caneles.md) (dish)
+- [Fiskefrikadeller](../dishes/fiskefrikadeller.md) (dish)
+- [Frikadeller](../dishes/frikadeller.md) (dish)
+- [Gyoza](../dishes/gyoza.md) (dish)
+- [Kartoffelpuffer](../dishes/kartoffelpuffer.md) (dish)
+- [Khanom krok](../dishes/khanom-krok.md) (dish)
+- [Korokke](../dishes/korokke.md) (dish)
+- [Käsekuchen](../dishes/kasekuchen.md) (dish)
+- [Okonomiyaki](../dishes/okonomiyaki.md) (dish)
+- [Pão de queijo](../dishes/pao-de-queijo.md) (dish)
+- [Rugbrød](../dishes/rugbrod.md) (dish)
+- [Sangkhaya fak thong](../dishes/sangkhaya-fak-thong.md) (dish)
+- [Takoyaki](../dishes/takoyaki.md) (dish)
+- [Tempura](../dishes/tempura.md) (dish)
+- [Tequeños](../dishes/tequenos.md) (dish)
+- [Tod mun pla](../dishes/tod-mun-pla.md) (dish)
+- [Æbleskiver](../dishes/aebleskiver.md) (dish)
+- [cucumber relish](../products/cucumber-relish.md)
+- [gingerbread](../products/gingerbread.md)
+- [glass noodles](../products/glass-noodles.md)
+- [kammerjunkere](../products/kammerjunkere.md)
+- [karrysalat](../products/karrysalat.md)
+- [leverpostej](../products/leverpostej.md)
+- [mustard](../products/mustard.md)
+- [remoulade](../products/remoulade.md)
+- [rice noodles](../products/rice-noodles.md)
+- [rugbrød](../products/rugbrod.md)
+- [satay marinade](../products/satay-marinade.md)
+- [soy sauce](../products/soy-sauce.md)
+- [spring roll wrappers](../products/spring-roll-wrappers.md)
+- [tenkasu](../products/tenkasu.md)

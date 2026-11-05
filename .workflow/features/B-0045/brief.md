@@ -40,6 +40,8 @@ Acceptance:
 - Each fuel burns at one heat level: low, medium, or high.
 - A lit campfire or soul campfire gives low heat to a pot or skillet above it, without fuel.
 - Changing fuel changes the heat when the new fuel starts burning.
+- Fuel lights only when a recipe needs heat, but lit fuel always burns down, even while nothing cooks.
+- Using a shovel on a burning stove or oven puts the fire out, as with a campfire. The fuel that was burning is lost.
 - The cookbook and the station both show each recipe's heat level, so players learn which fuel suits simmering, frying, or searing.
 
 | Heat level | Fuels | Typical techniques |

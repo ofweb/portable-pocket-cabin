@@ -1,0 +1,71 @@
+# Drying rack
+
+Time. Defined in the [station list](../../stations.md).
+
+- **Kind:** Time
+- **Supports:** Dry, sun-dry, wither
+- **Feature:** B-0048
+
+## Steps at this station (61)
+
+- [anise](../products/anise.md): [dry](../techniques/drying.md)
+- [aonori](../products/aonori.md): [dry](../techniques/drying.md)
+- [bay leaf](../products/bay-leaf.md): [dry](../techniques/drying.md)
+- [black pepper](../products/black-pepper.md): [dry](../techniques/drying.md)
+- [black tea](../products/black-tea.md): [wither](../techniques/drying.md)
+- [breadcrumbs](../products/breadcrumbs.md): [dry](../techniques/drying.md)
+- [brown sugar](../products/brown-sugar.md): [dry](../techniques/drying.md)
+- [caraway](../products/caraway.md): [dry](../techniques/drying.md)
+- [cardamom](../products/cardamom.md): [dry](../techniques/drying.md)
+- [carne seca](../products/carne-seca.md): [dry](../techniques/drying.md) in the sun
+- [cinnamon](../products/cinnamon.md): [dry](../techniques/drying.md) into quills
+- [cloves](../products/cloves.md): [dry](../techniques/drying.md)
+- [coarse salt](../products/coarse-salt.md): [dry](../techniques/drying.md) slowly for large crystals
+- [cornstarch](../products/cornstarch.md): [dry](../techniques/drying.md)
+- [cumin](../products/cumin.md): [dry](../techniques/drying.md)
+- [desiccated coconut](../products/desiccated-coconut.md): [dry](../techniques/drying.md)
+- [dried apple](../products/dried-apple.md): [dry](../techniques/drying.md)
+- [dried azuki beans](../products/dried-azuki-beans.md): [dry](../techniques/drying.md)
+- [dried berries](../products/dried-berries.md): [dry](../techniques/drying.md)
+- [dried black beans](../products/dried-black-beans.md): [dry](../techniques/drying.md)
+- [dried chickpeas](../products/dried-chickpeas.md): [dry](../techniques/drying.md)
+- [dried chilies](../products/dried-chilies.md): [dry](../techniques/drying.md)
+- [dried corn](../products/dried-corn.md): [dry](../techniques/drying.md) the kernels
+- [dried corn husks](../products/dried-corn-husks.md): [dry](../techniques/drying.md)
+- [dried fruit](../products/dried-fruit.md): [dry](../techniques/drying.md)
+- [dried hibiscus](../products/dried-hibiscus.md): [dry](../techniques/drying.md) the calyces
+- [dried mint](../products/dried-mint.md): [dry](../techniques/drying.md)
+- [dried oregano](../products/dried-oregano.md): [dry](../techniques/drying.md)
+- [dried rosehip](../products/dried-rosehip.md): [dry](../techniques/drying.md)
+- [dried shrimp](../products/dried-shrimp.md): [dry](../techniques/drying.md)
+- [dried soybeans](../products/dried-soybeans.md): [dry](../techniques/drying.md)
+- [dried wakame](../products/dried-wakame.md): [dry](../techniques/drying.md)
+- [dried white beans](../products/dried-white-beans.md): [dry](../techniques/drying.md)
+- [glass noodles](../products/glass-noodles.md): [dry](../techniques/drying.md)
+- [glutinous rice flour](../products/glutinous-rice-flour.md): [dry](../techniques/drying.md)
+- [herbes de Provence](../products/herbes-de-provence.md): [dry](../techniques/drying.md)
+- [katsuobushi](../products/katsuobushi.md): [dry](../techniques/drying.md) for a long time
+- [kombu](../products/kombu.md): [dry](../techniques/drying.md)
+- [malted barley](../products/malted-barley.md): [dry](../techniques/drying.md)
+- [masarepa](../products/masarepa.md): [dry](../techniques/drying.md)
+- [matcha powder](../products/matcha-powder.md): [dry](../techniques/drying.md)
+- [nori](../products/nori.md): [dry](../techniques/drying.md) in thin sheets
+- [nutmeg](../products/nutmeg.md): [dry](../techniques/drying.md)
+- [panko](../products/panko.md): [dry](../techniques/drying.md)
+- [paprika](../products/paprika.md): [dry](../techniques/drying.md)
+- [potato starch](../products/potato-starch.md): [dry](../techniques/drying.md)
+- [raisins](../products/raisins.md): [dry](../techniques/drying.md)
+- [rice noodles](../products/rice-noodles.md): [dry](../techniques/drying.md)
+- [roasted cocoa nibs](../products/roasted-cocoa-nibs.md): [dry](../techniques/drying.md)
+- [roasted coffee](../products/roasted-coffee.md): [dry](../techniques/drying.md)
+- [salt](../products/salt.md): [dry](../techniques/drying.md) the crystals
+- [shrimp paste](../products/shrimp-paste.md): [dry](../techniques/drying.md)
+- [sour cassava starch](../products/sour-cassava-starch.md): sun-dry
+- [star anise](../products/star-anise.md): [dry](../techniques/drying.md)
+- [sunflower seeds](../products/sunflower-seeds.md): [dry](../techniques/drying.md) the head
+- [sweet potato starch](../products/sweet-potato-starch.md): [dry](../techniques/drying.md)
+- [tapioca starch](../products/tapioca-starch.md): [dry](../techniques/drying.md)
+- [umeboshi](../products/umeboshi.md): [dry](../techniques/drying.md) in the sun
+- [vanilla](../products/vanilla.md): [dry](../techniques/drying.md) slowly
+- [yeast](../products/yeast.md): [dry](../techniques/drying.md)
+- [yerba mate](../products/yerba-mate.md): [dry](../techniques/drying.md)

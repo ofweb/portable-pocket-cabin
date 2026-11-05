@@ -33,6 +33,10 @@ screenshots:
     PPC_CAPTURE_ALL=1 "${runner[@]}" ./gradlew runClientGameTest
     python3 scripts/collect-screenshots.py
 
+# Rebuild the cross-referenced cooking book from the cooking design documents.
+cooking-book:
+    python3 scripts/build-cooking-book.py
+
 # Verify that the local development server cannot naturally spawn mobs.
 test-dev-config:
     #!/usr/bin/env bash
