@@ -10,5 +10,6 @@ public final class PortablePocketCabinClient implements ClientModInitializer {
 		MenuScreens.register(CabinUpgradeMenu.TYPE, CabinUpgradeScreen::new);
 		MenuScreens.register(CabinEnchantingMenu.TYPE, CabinEnchantingScreen::new);
 		MenuScreens.register(CabinStorageMenu.TYPE, CabinStorageScreen::new);
+		for (CookingMenu.Kind kind : CookingMenu.Kind.values()) MenuScreens.register(CookingMenu.type(kind), CookingScreen::new);
 	}
 }

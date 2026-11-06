@@ -124,6 +124,18 @@ Shared rules:
 - A change of inputs that changes the matched recipe resets progress to 0. Breaking a station drops all its contents, and progress restarts when the items are cooked again.
 - Each completion happens in one server-tick transaction on the block entity, so it either fully happens or doesn't.
 - Cutting gives its output to the player's inventory and drops any overflow beside the board.
+- Hoppers work like a furnace. The pot takes ingredients from above, containers from the sides, and gives output and byproducts from below. The oven works the same, with fuel from the sides instead of containers. The stove takes fuel from any side. Both give back only spent fuel, such as the empty bucket from a lava bucket, through the bottom of the oven or any side of the stove. Hoppers can't use the skillet or the cutting board.
+
+### Crafting
+
+| Station or tool | Recipe |
+|---|---|
+| Stove | Shaped: `I I` / `IFI`, with I iron ingot and F furnace |
+| Cooking pot | Shaped: `C C` / `C C` / `CCC`, with C copper ingot |
+| Skillet | Shaped: `II ` / `IIS`, with I iron ingot and S stick |
+| Cookbook | Shapeless: book and bowl |
+
+The oven, cutting board, and kitchen knife recipes are added with their stations.
 
 ### Permissions
 

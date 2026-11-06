@@ -60,5 +60,20 @@
   "item.portable_pocket_cabin.sauteed_mushrooms": "Sautéed Mushrooms",
   "item.portable_pocket_cabin.fried_egg": "Fried Egg",
   "item.portable_pocket_cabin.vegetable_soup": "Vegetable Soup",
-  "item.portable_pocket_cabin.apple_compote": "Apple Compote"
+  "item.portable_pocket_cabin.apple_compote": "Apple Compote",
+  "block.portable_pocket_cabin.stove": "Stove",
+  "block.portable_pocket_cabin.cooking_pot": "Cooking Pot",
+  "block.portable_pocket_cabin.skillet": "Skillet",
+  "screen.portable_pocket_cabin.cooking.out": "Out — add fuel",
+  "screen.portable_pocket_cabin.cooking.burning": "Burning at %s heat",
+  "screen.portable_pocket_cabin.cooking.idle": "Nothing to cook",
+  "screen.portable_pocket_cabin.cooking.needs": "Needs %s heat",
+  "screen.portable_pocket_cabin.cooking.cooking": "Cooking at %s heat",
+  "screen.portable_pocket_cabin.cooking.water": "Water %s/%s",
+  "screen.portable_pocket_cabin.cooking.heat.low": "low",
+  "screen.portable_pocket_cabin.cooking.heat.medium": "medium",
+  "screen.portable_pocket_cabin.cooking.heat.high": "high",
+  "tag.item.portable_pocket_cabin.heat.low": "Low Heat Fuel",
+  "tag.item.portable_pocket_cabin.heat.medium": "Medium Heat Fuel",
+  "tag.item.portable_pocket_cabin.heat.high": "High Heat Fuel"
 }
