@@ -286,18 +286,19 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 
 ## B-0049: Butchery and carcasses
 
-- Status: Ready for Shape
+- Status: Ready for Design
 - Value: Let animals drop carcasses that players bleed, skin or pluck, and butcher into cuts, offal, bones, and fat, using the whole animal. Fish are scaled, gutted, and filleted.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Uses B-0045. Uses animals from B-0022. The [butchery reference](cooking/butchery.md) lists every part of each carcass.
-- Open proposals: Bonito is added as warm-ocean fishing loot. Open: carcasses from baby animals, goats and other animals, and how B-0026 automation handles slaughter.
+- Feature Brief: [Butchery and seafood brief](features/B-0049/brief.md).
 
 ## B-0050: Cooking crops and foraging
 
-- Status: Ready for Shape
+- Status: Ready for Design
 - Value: Add grains, vegetables, herbs, spices, chilies, fruit, and mushrooms with growing requirements, cultivation methods, and wild sources that reward exploration.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Grown in B-0019. Used by B-0045 recipes.
+- Feature Brief: [Cooking crops and foraging brief](features/B-0050/brief.md).
 
 ## B-0051: Food benefits
 

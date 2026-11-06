@@ -148,8 +148,9 @@ Every by-product leads somewhere:
 - Bones, fat, blood, and offal are food too. Most of a carcass is not steak.
 - A single cow supplies a week of meals and the stock for many of them, so butchering one is worth planning around.
 
-## Open questions
+## Decisions
 
-- Carcass sizes for baby animals, and whether young animals drop carcasses at all.
-- Goats, horses, and other animals: goats could give chevon, milk is already covered by B-0046, and horses stay unbutcherable.
-- How livestock rooms in B-0022 handle carcasses when automation in B-0026 slaughters animals.
+- **Young animals:** babies drop nothing, as in vanilla. Only adults drop carcasses.
+- **Other animals:** goats give chevon carcasses, and a new duck lives in rivers and swamps. Horses and other animals stay unbutcherable.
+- **Automation:** slaughter by livestock automation belongs to B-0026.
+- **Fire:** an animal killed by fire drops a carcass as usual.

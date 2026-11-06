@@ -49,6 +49,7 @@ How players get each item:
 | pig carcass | Pigs, in grassy biomes | Raise | B-0049 |
 | chicken carcass | Chickens, in grassy biomes | Raise | B-0049 |
 | duck carcass | Ducks, a new animal of rivers and swamps | Raise | B-0049 |
+| goat carcass | Goats, in mountains | Raise | B-0049 |
 
 ## Fish and seafood
 
@@ -228,8 +229,9 @@ How players get each item:
 - **One plant, several ingredients.** Cilantro gives coriander seed, olives are green or black by ripeness, the elder gives elderflowers in spring and elderberries in autumn, and tea becomes sencha, matcha, or black tea by how it is processed.
 - **New world content is large.** About 125 raw ingredients are new: four kinds of animal carcass, six kinds of seafood, sea plants, rock salt, and over 100 plants. B-0049 and B-0050 own them, and their shaping should start from this list.
 
-## Open questions
+## Decisions
 
-- **Seasons:** elderflower and elderberry, and rosehip, imply seasons, which Minecraft does not have. They could instead be two growth stages of the same bush.
-- **Biome fit:** Minecraft has no Mediterranean biome. Windswept savannas stand in for olives, rosemary, and oregano.
-- **Plant count:** B-0050 may group close varieties, such as the basils or the grapes, to keep the number of new plants manageable.
+- **Seasons:** elderflower and elderberry, and rosehip, come from two growth stages of the same bush, because Minecraft has no seasons.
+- **Biome fit:** windswept savannas stand in for a Mediterranean biome, for olives, rosemary, and oregano.
+- **Plant count:** all 118 plants stay distinct, each with its own seeds and art.
+- **Fruit trees:** fruit grows on fruiting leaves of new tree species and is picked without breaking the tree.
