@@ -84,7 +84,7 @@ A recipe can't use both water and oil. `CookingInput` gains an `oil` amount next
   - Those wells then cook to the end.
   - An unturned well stays at half, never burns, and can be taken out as unfinished batter.
 - **Saving:** each well's progress and turned flag are saved.
-- **Display:** the renderer shows the seven wells. A turned ball shows its browned side.
+- **Display:** the renderer shows each well's item: one in the middle and six around it. Clients get an update when a ball reaches half done.
 
 ## Skewers and phase 1 recipes
 

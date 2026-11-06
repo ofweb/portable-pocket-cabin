@@ -206,6 +206,33 @@ public final class CabinCounterStationGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void aebleskivePanWaitsToBeTurned(GameTestHelper helper) {
+		var level = helper.getLevel();
+		helper.setBlock(BASE, CookingBlocks.STOVE);
+		helper.setBlock(BASE.above(), CookingBlocks.AEBLESKIVE_PAN);
+		var stove = (StoveBlockEntity) level.getBlockEntity(helper.absolutePos(BASE));
+		var pan = (AebleskivePanBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.above()));
+		stove.setItem(0, new ItemStack(Items.COAL));
+		helper.assertTrue(pan.add(level, new ItemStack(Items.EGG)) && pan.add(level, new ItemStack(Items.EGG)), "Batter goes into the wells");
+		tickPan(helper, stove, pan, 30);
+		helper.assertTrue(pan.progress(0) == 20 && pan.needsTurning(0), "A ball stops at half done");
+		var copy = reload(helper, pan, new AebleskivePanBlockEntity(pan.getBlockPos(), pan.getBlockState()));
+		helper.assertTrue(copy.progress(0) == 20, "The pan keeps its progress when saved");
+		helper.assertTrue(pan.take(level).is(Items.EGG), "Unturned batter comes back out as it is");
+		helper.assertTrue(pan.turn() && !pan.needsTurning(0), "A skewer turns the half-done ball");
+		tickPan(helper, stove, pan, 20);
+		helper.assertTrue(pan.getItem(0).is(CookingItems.FRIED_EGG), "A turned ball cooks through");
+		helper.succeed();
+	}
+
+	private static void tickPan(GameTestHelper helper, StoveBlockEntity stove, AebleskivePanBlockEntity pan, int ticks) {
+		for (int i = 0; i < ticks; i++) {
+			StoveBlockEntity.serverTick(helper.getLevel(), stove.getBlockPos(), stove.getBlockState(), stove);
+			AebleskivePanBlockEntity.serverTick(helper.getLevel(), pan.getBlockPos(), pan.getBlockState(), pan);
+		}
+	}
+
 	private static void tickGrill(GameTestHelper helper, GrillBlockEntity grill, int ticks) {
 		for (int i = 0; i < ticks; i++) GrillBlockEntity.serverTick(helper.getLevel(), grill.getBlockPos(), grill.getBlockState(), grill);
 	}

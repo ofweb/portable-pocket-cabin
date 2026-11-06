@@ -45,6 +45,17 @@ final class CookingItemsRenderer<T extends CookingStationBlockEntity>
 			new float[][] {{0.3F, 0.3F, 0.34F}, {0.7F, 0.3F, 0.34F}, {0.3F, 0.7F, 0.34F}, {0.7F, 0.7F, 0.34F}});
 	}
 
+	/** Seven wells: one in the middle and six around it, as on a real æbleskive pan. */
+	static BlockEntityRendererProvider<AebleskivePanBlockEntity, State> aebleskivePan() {
+		float[][] wells = new float[7][];
+		wells[0] = new float[] {0.5F, 0.5F, 0.22F};
+		for (int i = 0; i < 6; i++) {
+			double angle = Math.PI / 3 * i;
+			wells[i + 1] = new float[] {0.5F + 0.3F * (float) Math.cos(angle), 0.5F + 0.3F * (float) Math.sin(angle), 0.22F};
+		}
+		return context -> new CookingItemsRenderer<>(context, 2.5F / 16, wells);
+	}
+
 	static BlockEntityRendererProvider<CuttingBoardBlockEntity, State> cuttingBoard() {
 		return context -> new CookingItemsRenderer<>(context, 1.1F / 16, new float[][] {{0.5F, 0.5F, 0.5F}});
 	}

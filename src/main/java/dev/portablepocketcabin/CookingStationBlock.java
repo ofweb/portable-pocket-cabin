@@ -525,4 +525,61 @@ abstract class CookingStationBlock extends BaseEntityBlock {
 				: null;
 		}
 	}
+
+	/** The æbleskive pan: seven wells on a stove at medium heat. A skewer turns the half-done balls. */
+	static final class AebleskivePan extends CookingStationBlock {
+		static final MapCodec<AebleskivePan> CODEC = simpleCodec(AebleskivePan::new);
+		private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 3, 15);
+
+		AebleskivePan(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		protected MapCodec<? extends BaseEntityBlock> codec() {
+			return CODEC;
+		}
+
+		@Override
+		protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+			return SHAPE;
+		}
+
+		@Override
+		protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+			InteractionHand hand, BlockHitResult hit) {
+			if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
+			if (!(level.getBlockEntity(pos) instanceof AebleskivePanBlockEntity pan) || !CookingStationBlockEntity.mayUse(pan, player)) {
+				return InteractionResult.FAIL;
+			}
+			if (stack.is(CookingItems.SKEWER)) return pan.turn() ? InteractionResult.SUCCESS_SERVER : InteractionResult.PASS;
+			ItemStack held = player.getAbilities().instabuild ? stack.copy() : stack;
+			return pan.add(serverLevel, held) ? InteractionResult.SUCCESS_SERVER : InteractionResult.TRY_WITH_EMPTY_HAND;
+		}
+
+		@Override
+		protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+			if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
+			if (!(level.getBlockEntity(pos) instanceof AebleskivePanBlockEntity pan) || !CookingStationBlockEntity.mayUse(pan, player)) {
+				return InteractionResult.FAIL;
+			}
+			ItemStack taken = pan.take(serverLevel);
+			if (taken.isEmpty()) return InteractionResult.PASS;
+			if (!player.getInventory().add(taken)) player.drop(taken, false);
+			return InteractionResult.SUCCESS_SERVER;
+		}
+
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return new AebleskivePanBlockEntity(pos, state);
+		}
+
+		@Override
+		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+			return level instanceof ServerLevel
+				? createTickerHelper(type, CookingBlocks.AEBLESKIVE_PAN_ENTITY, (world, pos, blockState, pan) ->
+					AebleskivePanBlockEntity.serverTick((ServerLevel) world, pos, blockState, pan))
+				: null;
+		}
+	}
 }
