@@ -46,6 +46,9 @@ final class CookingBlocks {
 	static final Block AEBLESKIVE_PAN = register("aebleskive_pan", CookingStationBlock.AebleskivePan::new, BlockBehaviour.Properties.of()
 		.strength(1.5F).sound(SoundType.METAL).noOcclusion());
 
+	static final Block PRESS = register("press", CookingStationBlock.Press::new, BlockBehaviour.Properties.of()
+		.strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
+
 	static final BlockEntityType<StoveBlockEntity> STOVE_ENTITY = registerEntity("stove",
 		new BlockEntityType<>(StoveBlockEntity::new, Set.of(STOVE)));
 	static final BlockEntityType<OvenBlockEntity> OVEN_ENTITY = registerEntity("oven",
@@ -64,6 +67,8 @@ final class CookingBlocks {
 		new BlockEntityType<>(ProcessStationBlockEntity::wok, Set.of(WOK)));
 	static final BlockEntityType<AebleskivePanBlockEntity> AEBLESKIVE_PAN_ENTITY = registerEntity("aebleskive_pan",
 		new BlockEntityType<>(AebleskivePanBlockEntity::new, Set.of(AEBLESKIVE_PAN)));
+	static final BlockEntityType<ProcessStationBlockEntity> PRESS_ENTITY = registerEntity("press",
+		new BlockEntityType<>(ProcessStationBlockEntity::press, Set.of(PRESS)));
 	static final BlockEntityType<CuttingBoardBlockEntity> CUTTING_BOARD_ENTITY = registerEntity("cutting_board",
 		new BlockEntityType<>(CuttingBoardBlockEntity::new, Set.of(CUTTING_BOARD)));
 
@@ -83,6 +88,7 @@ final class CookingBlocks {
 			entries.accept(GRILL);
 			entries.accept(WOK);
 			entries.accept(AEBLESKIVE_PAN);
+			entries.accept(PRESS);
 		});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
 			entries.accept(CookingItems.KITCHEN_KNIFE);

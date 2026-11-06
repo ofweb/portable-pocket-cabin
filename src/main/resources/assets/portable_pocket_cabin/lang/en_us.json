@@ -152,5 +152,9 @@
   "technique.portable_pocket_cabin.deep_frying.description": "Cook food submerged in hot oil. The surface dries and crisps at once, sealing in moisture. Oil breaks down a little with every batch.",
   "block.portable_pocket_cabin.aebleskive_pan": "Æbleskive Pan",
   "technique.portable_pocket_cabin.cooking_in_wells": "Cooking in wells",
-  "technique.portable_pocket_cabin.cooking_in_wells.description": "Pour batter into round wells over medium heat. When the bottom has set, turn each ball a quarter at a time with a skewer, so the raw batter runs down and the ball closes into a sphere."
+  "technique.portable_pocket_cabin.cooking_in_wells.description": "Pour batter into round wells over medium heat. When the bottom has set, turn each ball a quarter at a time with a skewer, so the raw batter runs down and the ball closes into a sphere.",
+  "block.portable_pocket_cabin.press": "Press",
+  "screen.portable_pocket_cabin.cookbook.station.press": "Press",
+  "technique.portable_pocket_cabin.pressing": "Pressing",
+  "technique.portable_pocket_cabin.pressing.description": "Squeeze prepared fruit or seeds under a slowly tightened screw. The liquid runs into the bottle, and the dry solids stay behind in the press."
 }

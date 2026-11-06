@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:press",
+  "technique": "pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:wheat_seeds",
+      "count": 2
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:stick"
+    }
+  ],
+  "result": {
+    "id": "minecraft:honey_bottle"
+  }
+}
