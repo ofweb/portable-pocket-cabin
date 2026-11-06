@@ -146,6 +146,77 @@ public final class CabinKitchenGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void kitchenRecoveryCompletesOrUndoesEachReceiptOnce(GameTestHelper helper) {
+		var server = helper.getLevel().getServer();
+		// Server GameTests run without the pocket dimension, so the stations stand in the test level.
+		var pocket = helper.getLevel();
+		var registry = CabinRegistry.get(server);
+		var cabin = registry.create(UUID.randomUUID());
+		BlockPos applied = helper.absolutePos(new BlockPos(1, 2, 1));
+		BlockPos undone = applied.east(2);
+		for (BlockPos pos : List.of(applied, undone)) {
+			pocket.getChunkAt(pos);
+			pocket.setBlockAndUpdate(pos, CookingBlocks.OVEN.defaultBlockState());
+		}
+		var appliedOven = (OvenBlockEntity) pocket.getBlockEntity(applied);
+		var undoneOven = (OvenBlockEntity) pocket.getBlockEntity(undone);
+		var before = appliedOven.contents();
+		var after = new java.util.ArrayList<>(before);
+		after.set(0, new ItemStack(Items.WHEAT, 3));
+		int inventorySize = FakePlayer.get(pocket).getInventory().getContainerSize();
+		var inventoryBefore = java.util.Collections.nCopies(inventorySize, ItemStack.EMPTY);
+		var inventoryAfter = new java.util.ArrayList<>(inventoryBefore);
+		inventoryAfter.set(0, new ItemStack(Items.STICK));
+		UUID firstPlayer = UUID.randomUUID();
+		var first = new CabinKitchenTransfer(UUID.randomUUID(), firstPlayer, List.of(new CabinKitchenTransfer.Change(applied, before, after)),
+			inventoryBefore, inventoryAfter, List.of(new ItemStack(Items.WHEAT, 3)), List.of());
+		var second = new CabinKitchenTransfer(UUID.randomUUID(), UUID.randomUUID(), List.of(new CabinKitchenTransfer.Change(undone, before, after)),
+			inventoryBefore, inventoryAfter, List.of(new ItemStack(Items.WHEAT, 3)), List.of(new ItemStack(Items.STICK)));
+		appliedOven.applyTransfer(first.operation(), after);
+		// Storage as both transfers left it: 8 wheat less 3 and 3, plus the deposited stick.
+		cabin = registry.updateUpgradeState(cabin.uuid(), cabin.upgrades()
+			.withStorage(new CabinStorageState(true, 1, List.of(new ItemStack(Items.WHEAT, 2), new ItemStack(Items.STICK))))
+			.withKitchen(CabinKitchenState.EMPTY.reveal().withPending(first).withPending(second)));
+
+		CabinKitchenStorage.recoverAll(pocket);
+		var recovered = registry.find(cabin.uuid()).orElseThrow();
+		var storage = recovered.upgrades().storage().stacks();
+		helper.assertTrue(count(storage, Items.WHEAT) == 5 && count(storage, Items.STICK) == 0,
+			"The undone transfer returns its wheat and takes back its deposit; the completed one keeps its withdrawal");
+		helper.assertTrue(appliedOven.getItem(0).getCount() == 3 && undoneOven.isEmpty(), "Each oven keeps the state its receipt settled on");
+		helper.assertTrue(recovered.upgrades().kitchen().pending().stream().allMatch(receipt -> receipt.applied().isPresent())
+			&& recovered.upgrades().kitchen().pendingFor(firstPlayer).orElseThrow().applied().orElseThrow()
+			&& !recovered.upgrades().kitchen().pendingFor(second.player()).orElseThrow().applied().orElseThrow(),
+			"Both receipts record their outcome and wait for their players");
+		CabinKitchenStorage.recoverAll(pocket);
+		helper.assertTrue(count(registry.find(cabin.uuid()).orElseThrow().upgrades().storage().stacks(), Items.WHEAT) == 5,
+			"Recovering again changes nothing");
+
+		var player = FakePlayer.get(pocket, new com.mojang.authlib.GameProfile(firstPlayer, "kitchen_cook"));
+		player.getInventory().clearContent();
+		CabinKitchenStorage.recover(player, pocket);
+		helper.assertTrue(player.getInventory().getItem(0).is(Items.STICK), "Join recovery gives the player the completed transfer's inventory");
+		// A fake player's save cannot be confirmed, so the receipt must stay for the next join; the client run
+		// checks that a real player's confirmed save removes it.
+		helper.assertTrue(registry.find(cabin.uuid()).orElseThrow().upgrades().kitchen().pendingFor(firstPlayer)
+			.flatMap(CabinKitchenTransfer::applied).orElse(false), "An unconfirmed save keeps the settled receipt for the next join");
+
+		var full = new java.util.ArrayList<ItemStack>();
+		for (int i = 0; i < CabinStorageState.CAPACITIES[1]; i++) full.add(new ItemStack(Items.STONE, 64));
+		var third = new CabinKitchenTransfer(UUID.randomUUID(), UUID.randomUUID(), List.of(new CabinKitchenTransfer.Change(undone, before, after)),
+			inventoryBefore, inventoryAfter, List.of(new ItemStack(Items.WHEAT, 3)), List.of());
+		var crowded = registry.create(UUID.randomUUID());
+		registry.updateUpgradeState(crowded.uuid(), crowded.upgrades().withStorage(new CabinStorageState(true, 1, full))
+			.withKitchen(CabinKitchenState.EMPTY.reveal().withPending(third)));
+		CabinKitchenStorage.resolve(pocket, crowded.uuid(), third);
+		var dropped = pocket.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(undone).inflate(2));
+		helper.assertTrue(dropped.stream().filter(item -> item.getItem().is(Items.WHEAT)).mapToInt(item -> item.getItem().getCount()).sum() == 3,
+			"Wheat that full storage cannot take back drops at the station");
+		dropped.forEach(net.minecraft.world.entity.Entity::discard);
+		helper.succeed();
+	}
+
 	private static int count(List<ItemStack> stacks, net.minecraft.world.item.Item item) {
 		return stacks.stream().filter(stack -> stack.is(item)).mapToInt(ItemStack::getCount).sum();
 	}

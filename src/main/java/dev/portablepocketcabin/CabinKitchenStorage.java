@@ -1,6 +1,8 @@
 package dev.portablepocketcabin;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -56,15 +58,105 @@ final class CabinKitchenStorage {
 		for (StationAfter after : stations) after.station().applyTransfer(operation, after.contents());
 		for (int slot = 0; slot < inventoryAfter.size(); slot++) inventory.setItem(slot, inventoryAfter.get(slot).copy());
 		inventory.setChanged();
-		return confirm(player, cabin.uuid(), operation);
+		var level = (ServerLevel) stations.getFirst().station().getLevel();
+		if (confirm(player, level, cabin.uuid(), operation)) return true;
+		// Freeze the player's inventory until join recovery settles the receipt, as storage custody does.
+		player.connection.disconnect(net.minecraft.network.chat.Component.literal(
+			"The kitchen could not save your inventory. Reconnect after the server can save player data."));
+		return false;
+	}
+
+	/** Settles every receipt's stations and storage at server start; players settle their inventories when they join. */
+	static void recoverAll(MinecraftServer server) {
+		var pocket = server.getLevel(PocketDimension.LEVEL_KEY);
+		if (pocket != null) recoverAll(pocket);
+	}
+
+	static void recoverAll(ServerLevel stations) {
+		var registry = CabinRegistry.get(stations.getServer());
+		for (var cabin : registry.cabins()) {
+			for (var receipt : cabin.upgrades().kitchen().pending()) resolve(stations, cabin.uuid(), receipt);
+		}
+	}
+
+	/** Settles and removes this player's receipt: the stations and storage first, then the inventory. */
+	static void recover(ServerPlayer player) {
+		var pocket = player.level().getServer().getLevel(PocketDimension.LEVEL_KEY);
+		if (pocket != null) recover(player, pocket);
+	}
+
+	static void recover(ServerPlayer player, ServerLevel stations) {
+		var server = player.level().getServer();
+		var registry = CabinRegistry.get(server);
+		for (var observed : registry.cabins()) {
+			var receipt = observed.upgrades().kitchen().pendingFor(player.getUUID()).orElse(null);
+			if (receipt == null) continue;
+			receipt = resolve(stations, observed.uuid(), receipt);
+			List<ItemStack> inventory = receipt.applied().orElseThrow() ? receipt.inventoryAfter() : receipt.inventoryBefore();
+			if (inventory.size() != player.getInventory().getContainerSize()) throw new IllegalStateException("Kitchen recovery inventory size changed");
+			for (int slot = 0; slot < inventory.size(); slot++) player.getInventory().setItem(slot, inventory.get(slot).copy());
+			player.getInventory().setChanged();
+			if (!confirm(player, stations, observed.uuid(), receipt.operation())) {
+				player.connection.disconnect(net.minecraft.network.chat.Component.literal(
+					"Kitchen recovery could not save your inventory. Reconnect after the server can save player data."));
+				return;
+			}
+		}
+	}
+
+	/**
+	 * Decides a receipt from its first station: if that station carries the receipt's operation id, the transfer
+	 * happened and every station is brought to its after state. Otherwise it is undone: storage gets back what it
+	 * gave and loses what it received, and anything it can no longer hold drops at the station. Returns the receipt
+	 * with its outcome recorded, so the storage side is never settled twice.
+	 */
+	static CabinKitchenTransfer resolve(ServerLevel pocket, UUID cabinId, CabinKitchenTransfer receipt) {
+		if (receipt.applied().isPresent()) return receipt;
+		var server = pocket.getServer();
+		var first = receipt.stations().getFirst();
+		pocket.getChunkAt(first.pos());
+		boolean applied = pocket.getBlockEntity(first.pos()) instanceof CookingStationBlockEntity station
+			&& station.lastTransfer().equals(Optional.of(receipt.operation()));
+		var registry = CabinRegistry.get(server);
+		synchronized (registry) {
+			var cabin = registry.find(cabinId).orElseThrow();
+			var storage = cabin.upgrades().storage();
+			List<ItemStack> spilled = new ArrayList<>();
+			if (applied) {
+				for (var change : receipt.stations()) {
+					pocket.getChunkAt(change.pos());
+					if (pocket.getBlockEntity(change.pos()) instanceof CookingStationBlockEntity station
+						&& !station.lastTransfer().equals(Optional.of(receipt.operation()))) {
+						station.applyTransfer(receipt.operation(), change.after());
+					}
+				}
+			} else {
+				for (ItemStack deposit : receipt.deposited()) storage = storage.withdraw(deposit, deposit.getCount()).state();
+				for (ItemStack withdrawal : receipt.withdrawn()) {
+					var transfer = storage.deposit(withdrawal, withdrawal.getCount());
+					storage = transfer.state();
+					if (transfer.moved().getCount() < withdrawal.getCount()) {
+						spilled.add(withdrawal.copyWithCount(withdrawal.getCount() - transfer.moved().getCount()));
+					}
+				}
+			}
+			var resolved = receipt.resolved(applied);
+			registry.updateUpgradeState(cabinId, cabin.upgrades().withStorage(storage)
+				.withKitchen(cabin.upgrades().kitchen().withReplaced(resolved)));
+			CabinRegistry.flush(server);
+			BlockPos drop = first.pos();
+			for (ItemStack stack : spilled) {
+				Block.popResource(pocket, drop.above(), stack);
+			}
+			if (applied || !spilled.isEmpty()) pocket.save(null, true, false);
+			return resolved;
+		}
 	}
 
 	/** Saves the stations' chunks and the player, then removes the receipt. */
-	static boolean confirm(ServerPlayer player, UUID cabin, UUID operation) {
+	static boolean confirm(ServerPlayer player, ServerLevel stations, UUID cabin, UUID operation) {
 		var server = player.level().getServer();
-		var pocket = server.getLevel(PocketDimension.LEVEL_KEY);
-		if (pocket == null) return false;
-		pocket.save(null, true, false);
+		stations.save(null, true, false);
 		if (!CabinPlayerSave.confirm(player)) return false;
 		var registry = CabinRegistry.get(server);
 		synchronized (registry) {

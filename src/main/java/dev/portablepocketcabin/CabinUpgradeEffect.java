@@ -61,6 +61,8 @@ final class CabinUpgradeEffect implements CabinUpgradeService.UpgradeEffect {
 			return;
 		}
 		if (installation.target().isGeneralSpace()) {
+			// Settle kitchen receipts first: their station positions are about to move.
+			for (var receipt : cabin.upgrades().kitchen().pending()) CabinKitchenStorage.resolve(pocket, cabin.uuid(), receipt);
 			CabinCorridors.moveForExpansion(pocket, cabin, installation.targetState());
 			CabinCorridors.applyWorldEffect(() -> {
 				PocketDimension.applyGeneralSpaceExpansion(pocket, cabin, installation.targetState());

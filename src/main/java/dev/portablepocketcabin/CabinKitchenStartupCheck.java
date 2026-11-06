@@ -15,6 +15,7 @@ import java.util.UUID;
 /** Installs a kitchen, stops before the commit, and checks on restart that recovery finishes it once. */
 final class CabinKitchenStartupCheck {
 	private static final UUID OWNER = UUID.fromString("00000000-0000-0000-0000-000000000b41");
+	private static final UUID COOK = UUID.fromString("00000000-0000-0000-0000-000000000b42");
 
 	private CabinKitchenStartupCheck() {
 	}
@@ -65,6 +66,22 @@ final class CabinKitchenStartupCheck {
 		CabinKitchen.install(pocket, cabin);
 		require(CabinKitchen.paused(registry.find(cabin.uuid()).orElseThrow(), center.offset(CabinKitchen.space(cabin).entrance())),
 			"The kitchen pauses while it installs");
+		// A transfer whose receipt was written but whose oven never saved it: storage already gave 3 wheat. The kitchen
+		// is paused until its installation commits, so this oven stands in the main room; recovery reads any station.
+		BlockPos oven = center.offset(1, 1, 1);
+		CabinCorridors.applyWorldEffect(() -> pocket.setBlockAndUpdate(oven, CookingBlocks.OVEN.defaultBlockState()));
+		var empty = ((CookingStationBlockEntity) pocket.getBlockEntity(oven)).contents();
+		var filled = new java.util.ArrayList<>(empty);
+		filled.set(0, new ItemStack(net.minecraft.world.item.Items.WHEAT, 3));
+		int inventory = net.fabricmc.fabric.api.entity.FakePlayer.get(pocket).getInventory().getContainerSize();
+		var none = java.util.Collections.nCopies(inventory, ItemStack.EMPTY);
+		var receipt = new CabinKitchenTransfer(UUID.randomUUID(), COOK, java.util.List.of(new CabinKitchenTransfer.Change(oven, empty, filled)),
+			none, none, java.util.List.of(new ItemStack(net.minecraft.world.item.Items.WHEAT, 3)), java.util.List.of());
+		cabin = registry.find(cabin.uuid()).orElseThrow();
+		registry.updateUpgradeState(cabin.uuid(), cabin.upgrades()
+			.withStorage(new CabinStorageState(true, 1, java.util.List.of(new ItemStack(net.minecraft.world.item.Items.WHEAT, 2))))
+			.withKitchen(cabin.upgrades().kitchen().withPending(receipt)));
+		CabinRegistry.flush(server);
 		// Stop before the commit, as a crash would.
 		server.saveEverything(false, true, false);
 		PortablePocketCabin.LOGGER.info("KITCHEN_INSTALLATION_TEST_PASSED");
@@ -78,6 +95,11 @@ final class CabinKitchenStartupCheck {
 			&& cabin.progression().rooms().stream().filter(room -> room.type().equals(CabinKitchen.TYPE)).count() == 1,
 			"The interrupted kitchen installation completes once");
 		require(cabin.progression().corridors().contains(CabinCorridor.EAST), "The east corridor is recorded");
+		var receipt = cabin.upgrades().kitchen().pendingFor(COOK).orElseThrow();
+		require(receipt.applied().equals(java.util.Optional.of(false)), "Startup recovery undoes a transfer the oven never saved");
+		require(cabin.upgrades().storage().stacks().stream().filter(stack -> stack.is(net.minecraft.world.item.Items.WHEAT))
+			.mapToInt(ItemStack::getCount).sum() == 5, "Storage gets its wheat back exactly once");
+		require(((CookingStationBlockEntity) pocket.getBlockEntity(receipt.stations().getFirst().pos())).isEmpty(), "The oven stays empty");
 		var space = CabinKitchen.space(cabin);
 		BlockPos center = PocketDimension.cellCenter(cabin.cellIndex());
 		BlockPos entrance = center.offset(space.entrance());

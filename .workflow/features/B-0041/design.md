@@ -130,6 +130,8 @@ Recovery runs at server start for each cabin, and when the receipt's player join
 
 - **The station has `last_transfer` equal to the receipt:** the station was saved after the transfer. The player gets the receipt's after inventory if online, or at join through the existing join recovery. Then the receipt is removed.
 - **The station doesn't have it, or is gone:** the transfer is undone. The withdrawals return to storage and the deposits are taken back from it. Anything that no longer fits is delivered as held items at the station, the way `CabinStorage.recover` delivers escrow. The player gets the receipt's before inventory. Then the receipt is removed.
+- **Recorded outcome:** settling the stations and storage records the outcome, applied or undone, in the receipt. A player who is offline at server start then only gets their inventory when they join, and storage is never settled twice.
+- **Failed confirmation:** if the player's save can't be confirmed after a transfer or during join recovery, the player is disconnected with a message, as storage custody does, so the receipt settles at their next join.
 - **A player with a pending receipt can't start another kitchen transfer** until it clears.
 
 Both outcomes leave each item in exactly one place. A cabin operation that moves the room, such as packing or expansion, first clears pending receipts by this recovery.

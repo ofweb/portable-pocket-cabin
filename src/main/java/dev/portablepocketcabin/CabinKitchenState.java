@@ -48,6 +48,11 @@ record CabinKitchenState(boolean revealed, int level, List<CabinKitchenTransfer>
 		return new CabinKitchenState(revealed, level, updated);
 	}
 
+	CabinKitchenState withReplaced(CabinKitchenTransfer transfer) {
+		return new CabinKitchenState(revealed, level, pending.stream()
+			.map(value -> value.operation().equals(transfer.operation()) ? transfer : value).toList());
+	}
+
 	CabinKitchenState withoutPending(UUID operation) {
 		return new CabinKitchenState(revealed, level, pending.stream().filter(transfer -> !transfer.operation().equals(operation)).toList());
 	}

@@ -7,6 +7,7 @@ import net.minecraft.core.UUIDUtil;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -15,7 +16,7 @@ import java.util.UUID;
  * the player are saved. Recovery completes it when the stations carry its operation id, and undoes it otherwise.
  */
 record CabinKitchenTransfer(UUID operation, UUID player, List<Change> stations, List<ItemStack> inventoryBefore,
-	List<ItemStack> inventoryAfter, List<ItemStack> withdrawn, List<ItemStack> deposited) {
+	List<ItemStack> inventoryAfter, List<ItemStack> withdrawn, List<ItemStack> deposited, Optional<Boolean> applied) {
 	private static final Codec<List<ItemStack>> STACKS = ItemStack.OPTIONAL_CODEC.listOf();
 
 	/** One station's full contents before and after the transfer. */
@@ -41,7 +42,8 @@ record CabinKitchenTransfer(UUID operation, UUID player, List<Change> stations, 
 		STACKS.fieldOf("inventory_before").forGetter(CabinKitchenTransfer::inventoryBefore),
 		STACKS.fieldOf("inventory_after").forGetter(CabinKitchenTransfer::inventoryAfter),
 		STACKS.fieldOf("withdrawn").forGetter(CabinKitchenTransfer::withdrawn),
-		STACKS.fieldOf("deposited").forGetter(CabinKitchenTransfer::deposited)
+		STACKS.fieldOf("deposited").forGetter(CabinKitchenTransfer::deposited),
+		Codec.BOOL.optionalFieldOf("applied").forGetter(CabinKitchenTransfer::applied)
 	).apply(instance, CabinKitchenTransfer::new));
 
 	CabinKitchenTransfer {
@@ -51,6 +53,16 @@ record CabinKitchenTransfer(UUID operation, UUID player, List<Change> stations, 
 		withdrawn = copies(withdrawn).stream().filter(stack -> !stack.isEmpty()).toList();
 		deposited = copies(deposited).stream().filter(stack -> !stack.isEmpty()).toList();
 		if (inventoryBefore.size() != inventoryAfter.size()) throw new IllegalArgumentException("A transfer must keep the inventory size");
+	}
+
+	CabinKitchenTransfer(UUID operation, UUID player, List<Change> stations, List<ItemStack> inventoryBefore,
+		List<ItemStack> inventoryAfter, List<ItemStack> withdrawn, List<ItemStack> deposited) {
+		this(operation, player, stations, inventoryBefore, inventoryAfter, withdrawn, deposited, Optional.empty());
+	}
+
+	/** The receipt once recovery has settled the stations and storage, recording which way it went. */
+	CabinKitchenTransfer resolved(boolean value) {
+		return new CabinKitchenTransfer(operation, player, stations, inventoryBefore, inventoryAfter, withdrawn, deposited, Optional.of(value));
 	}
 
 	static List<ItemStack> copies(List<ItemStack> stacks) {
