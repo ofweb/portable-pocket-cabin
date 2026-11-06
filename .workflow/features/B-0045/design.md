@@ -175,15 +175,15 @@ Vanilla outputs keep their vanilla food values. The new soups stack to 16, unlik
 - The left side lists recipes grouped by station with a search box. The right side shows the selected recipe: station, ingredients with links, heat, time, output, and the technique explanation.
 - Ingredient links search the cache for recipes whose result is that item.
 - **Availability:**
-  - When the screen opens, the client sends a `CookbookAvailabilityRequest` payload.
+  - When the screen opens, the client sends a `CookbookAvailability.Request` payload.
   - The server counts the player's inventory. If the player is inside a cabin, is household, and the cabin has central storage installed, it also counts that storage.
   - The server replies with the set of recipe ids whose ingredients are all present. It never sends storage contents to guests.
 
 ## Station recipe panel
 
-- The pot and oven screens have a recipe-panel button, like the vanilla recipe book. It lists that station's synced recipes and marks the ones the player can fill.
-- Selecting a recipe sends a `CookingFillRequest(pos, recipeId)`. The server first returns the current ingredient-slot contents to the player, then moves the recipe's ingredients and container from the player's inventory.
-- Filling skips named and customised stacks, using the same check as the crafting room, `CabinStation.ordinary`.
+- The pot and oven screens have a recipe-panel button, like the vanilla recipe book. It lists that station's synced recipes and marks the ones the player can fill. The panel asks with the same availability payload, flagged for the open station. That reply counts the player's inventory and the station's own ingredients but not central storage, because filling does not use storage until B-0041.
+- Selecting a recipe sends a `CookingFill.Request(pos, recipeId)`. The server checks that the player has that station's menu open and that the recipe belongs to the station. The server first returns the current ingredient-slot contents to the player, then moves the recipe's ingredients and container from the player's inventory.
+- Filling skips named and customised stacks, using the same check as the crafting room, `CabinStation.ordinary`. Bowls already in the pot stay when they are enough for the recipe. Nothing moves when the recipe can't be made.
 - The server code takes an ingredient source list. B-0041 adds central storage in front of the player inventory, and adds fuel filling, without changing the payload.
 
 ## Vanilla food removal

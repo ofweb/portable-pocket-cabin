@@ -269,15 +269,6 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 - Feature Brief: [Book vendors brief](features/B-0044/brief.md).
 - Relationships: Supplies books for the B-0038 installation flow.
 
-## B-0045: Cooking stations and cookbook
-
-- Status: Ready for Implementation
-- Value: Let players cook real recipes at furnace-style cooking stations, through real intermediate items, with heat set by fuel. A cookbook teaches every recipe and technique.
-- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Feature Brief: [Cooking stations brief](features/B-0045/brief.md).
-- Design: [Cooking stations design](features/B-0045/design.md).
-- Relationships: Integrates B-0002 and B-0004. Used by B-0041. Used by B-0025 and B-0046 through B-0052.
-
 ## B-0046: Milling, baking, and dairy
 
 - Status: Ready for Shape
