@@ -27,7 +27,7 @@ Feature: proposal for B-0047, with the oil press as its station. Animal fats com
 | Product | Ingredients | Processes |
 |---|---|---|
 | olive oil | olive | Mill: crush to a paste → Press: press → Ageing shelf: settle |
-| vegetable oil | *sunflower seeds* or rapeseed | Mill: crush → Press: press |
+| vegetable oil | *sunflower seeds* or rapeseed | Press: press. B-0052 presses sunflower seeds whole; rapeseed follows with B-0050. |
 | sesame oil | *toasted sesame seeds* | Mill: grind → Press: press |
 | dendê oil | oil palm fruit | Cooking pot (high): boil → Mill: mash → Press: press |
 | achiote oil | annatto seed, *vegetable oil* | Cooking pot (low): infuse → Strainer: strain |

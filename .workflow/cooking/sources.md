@@ -36,7 +36,7 @@ How players get each item:
 | squid | Oceans | Vanilla | Vanilla |
 | sugar | Crafted from sugar cane | Vanilla | Vanilla |
 | sugar cane | Beside water | Vanilla | Vanilla |
-| sunflower | Sunflower plains | Vanilla. Its seed head is new: it gives *sunflower seeds* when dried. | Vanilla, B-0050 |
+| sunflower | Sunflower plains | Vanilla. A sunflower dries on the plant like a real seed head; threshing it on the cutting board gives *sunflower seeds*. | Vanilla, B-0052 |
 | sweet berries | Taigas | Vanilla | Vanilla |
 | water | Anywhere | Vanilla | Vanilla |
 | wheat | Villages, grass | Vanilla | Vanilla |

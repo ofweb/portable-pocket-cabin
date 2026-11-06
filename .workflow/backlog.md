@@ -309,10 +309,11 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 
 ## B-0052: Fruit pressing and drinks
 
-- Status: Ready for Shape
+- Status: Ready for Design
 - Value: Let players press juice, infuse, and make syrups and concentrates for non-alcoholic drinks and cooking.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Relationships: Uses B-0045.
+- Relationships: Uses B-0045 and B-0053. Adds the first cooking oils, so B-0053 frying recipes ship with it.
+- Feature Brief: [Pressing and drinks brief](features/B-0052/brief.md).
 
 ## B-0053: Prep counter and specialty cooking stations
 
