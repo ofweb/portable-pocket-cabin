@@ -10,7 +10,9 @@
       "dev.portablepocketcabin.CabinCorridorGameTest",
       "dev.portablepocketcabin.CabinCraftingGameTest",
       "dev.portablepocketcabin.CabinEnchantingGameTest",
-      "dev.portablepocketcabin.CabinGreenhouseGameTest"
+      "dev.portablepocketcabin.CabinGreenhouseGameTest",
+      "dev.portablepocketcabin.CabinCookingGameTest",
+      "dev.portablepocketcabin.CabinCookingStationGameTest"
     ],
     "fabric-client-gametest": [
       "dev.portablepocketcabin.PortablePocketCabinClientGameTest"

@@ -78,7 +78,9 @@ Cake shows counted ingredients and remainders:
 - `time` is in ticks.
 - `technique` is a key for the cookbook's explanation text in `en_us.json`, such as `cooking.technique.simmering`.
 
-`placementInfo()` returns `PlacementInfo.NOT_PLACEABLE`, so the vanilla recipe book never tries to place these recipes. `recipeBookCategory()` returns one registered `portable_pocket_cabin:cooking` category.
+`isSpecial()` returns true and `placementInfo()` returns `PlacementInfo.NOT_PLACEABLE`, so the vanilla recipe book neither lists nor places these recipes. `recipeBookCategory()` returns one registered `portable_pocket_cabin:cooking` category.
+
+A result or remainder must fit one stack. Item stack sizes are not known while recipes load, so a GameTest checks every loaded cooking recipe instead of the recipe format.
 
 ### Client sync
 
@@ -116,12 +118,25 @@ All stations are blocks with block entities that use standard ticking. That mean
 
 Shared rules:
 
-- A station looks up its current recipe from its inputs when they change, not every tick.
+- A station looks up its current recipe from its inputs when they change, not every tick, and again after a successful datapack reload, so added, changed, and removed recipes take effect without touching the station.
 - Progress advances by one per tick only while the heat equals the recipe's heat. Otherwise it holds its value, and the screen shows a status line, for example "Needs low heat".
 - When progress reaches `time` and the output and byproduct slots have room, the station consumes the inputs, the container, and the water, then adds the output and byproducts. A full output slot pauses progress.
 - A change of inputs that changes the matched recipe resets progress to 0. Breaking a station drops all its contents, and progress restarts when the items are cooked again.
 - Each completion happens in one server-tick transaction on the block entity, so it either fully happens or doesn't.
 - Cutting gives its output to the player's inventory and drops any overflow beside the board.
+- Hoppers work like a furnace. The pot takes ingredients from above, containers from the sides, and gives output and byproducts from below. The oven works the same, with fuel from the sides instead of containers. The stove takes fuel from any side. Both give back only spent fuel, such as the empty bucket from a lava bucket, through the bottom of the oven or any side of the stove. Hoppers can't use the skillet or the cutting board.
+
+### Crafting
+
+| Station or tool | Recipe |
+|---|---|
+| Stove | Shaped: `I I` / `IFI`, with I iron ingot and F furnace |
+| Cooking pot | Shaped: `C C` / `C C` / `CCC`, with C copper ingot |
+| Skillet | Shaped: `II ` / `IIS`, with I iron ingot and S stick |
+| Oven | Shaped: `BBB` / `BFB` / `BBB`, with B brick and F furnace |
+| Cutting board | Shaped: `##`, with # any wooden slab |
+| Kitchen knife | Shaped: `I` / `S`, with I iron ingot and S stick |
+| Cookbook | Shapeless: book and bowl |
 
 ### Permissions
 
@@ -137,7 +152,7 @@ There are no custom textures yet. The stations use block models that reference v
 - Oven: brick sides with a furnace front.
 - Cutting board: a one-pixel plank slab.
 
-Prepared items and new dishes get simple generated placeholder textures. B-0034 replaces them with final art.
+Prepared items and new dishes use placeholder models that reuse vanilla textures. B-0034 replaces them with final art.
 
 ## Items
 
@@ -149,10 +164,10 @@ Prepared items and new dishes get simple generated placeholder textures. B-0034 
 | Sliced brown mushrooms, sliced red mushrooms | Prepared | Not edible |
 | Sautéed mushrooms | Prepared and edible | 3 hunger, 3.6 saturation |
 | Fried egg | Dish | 3 hunger, 3.6 saturation |
-| Vegetable soup | Dish in a bowl | 7 hunger, 8.4 saturation, returns the bowl |
-| Apple compote | Dish in a bowl | 5 hunger, 6.0 saturation, returns the bowl |
+| Vegetable soup | Dish in a bowl, stacks to 16 | 7 hunger, 8.4 saturation, returns the bowl |
+| Apple compote | Dish in a bowl, stacks to 16 | 5 hunger, 6.0 saturation, returns the bowl |
 
-Vanilla outputs keep their vanilla food values. Recipe times start at 100 ticks for skillet recipes, 200 for oven recipes, and 300 for pot recipes. B-0033 tunes them.
+Vanilla outputs keep their vanilla food values. The new soups stack to 16, unlike vanilla stews, because a pot makes several portions into one output slot. Recipe times start at 100 ticks for skillet recipes, 200 for oven recipes, and 300 for pot recipes. B-0033 tunes them.
 
 ## Cookbook
 
@@ -160,15 +175,16 @@ Vanilla outputs keep their vanilla food values. Recipe times start at 100 ticks 
 - The left side lists recipes grouped by station with a search box. The right side shows the selected recipe: station, ingredients with links, heat, time, output, and the technique explanation.
 - Ingredient links search the cache for recipes whose result is that item.
 - **Availability:**
-  - When the screen opens, the client sends a `CookbookAvailabilityRequest` payload.
+  - When the screen opens, the client sends a `CookbookAvailability.Request` payload.
   - The server counts the player's inventory. If the player is inside a cabin, is household, and the cabin has central storage installed, it also counts that storage.
   - The server replies with the set of recipe ids whose ingredients are all present. It never sends storage contents to guests.
 
 ## Station recipe panel
 
-- The pot and oven screens have a recipe-panel button, like the vanilla recipe book. It lists that station's synced recipes and marks the ones the player can fill.
-- Selecting a recipe sends a `CookingFillRequest(pos, recipeId)`. The server first returns the current ingredient-slot contents to the player, then moves the recipe's ingredients and container from the player's inventory.
-- Filling skips named and customised stacks, using the same check as the crafting room, `CabinStation.ordinary`.
+- The pot and oven screens have a recipe-panel button, like the vanilla recipe book. It lists that station's synced recipes and marks the ones the player can fill. The panel asks with the same availability payload, flagged for the open station. That reply counts the player's inventory and the station's own ingredients but not central storage, because filling does not use storage until B-0041.
+- Selecting a recipe sends a `CookingFill.Request(pos, recipeId)`. The server checks that the player has that station's menu open and that the recipe belongs to the station. The server first returns the current ingredient-slot contents to the player, then moves the recipe's ingredients and container from the player's inventory.
+- Filling skips named and customised stacks, using the same check as the crafting room, `CabinStation.ordinary`. Bowls already in the pot stay when they are enough for the recipe. The whole transfer is planned before anything moves. Nothing moves when the recipe can't be made or the displaced items don't fit in the inventory.
+- Availability and filling share one assignment of stacks to counted ingredients, so overlapping ingredients, such as a plank tag and oak planks in one recipe, work in any inventory order. Filling keeps each ingredient in its own slots, because the recipe matches every slot to exactly one ingredient, and checks the planned layout against the recipe before anything moves.
 - The server code takes an ingredient source list. B-0041 adds central storage in front of the player inventory, and adds fuel filling, without changing the payload.
 
 ## Vanilla food removal
@@ -222,5 +238,5 @@ Each step is a commit with its tests green:
 
 ## Assumptions
 
-- Fabric's `fabric:load_conditions` with a false condition removes an overridden vanilla recipe. The first delivery step's GameTest confirms this. The fallback is a `RecipeManager` filter by recipe id.
+- Fabric's `fabric:load_conditions` with the `fabric:false` condition removes an overridden vanilla recipe. A GameTest confirms all 35 are gone and that non-food recipes remain.
 - Placeholder textures are acceptable until B-0034.

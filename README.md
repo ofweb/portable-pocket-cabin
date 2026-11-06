@@ -40,6 +40,22 @@ Install a Greenhouse Cabin Book through the **Books** tab, then fund the next pu
 
 For development, obtain the book with `/give @s portable_pocket_cabin:greenhouse_book`. Book vendors and trades remain deferred. [Greenhouse implementation notes](docs/greenhouse.md) describe packed growth, supported plants, optional ingredients, and verification.
 
+### Cooking
+
+Food is cooked only at cooking stations. The vanilla furnace, smoker, campfire, and crafting table no longer cook food, and a campfire no longer accepts raw food. Each station works like a furnace or campfire. [Cooking screenshots](screenshots/cooking) show the stations, their screens, and the cookbook.
+
+- **Stove:** burns fuel to heat the cooking pot or skillet placed on it. The fuel sets the heat: planks, sticks, and other light wood give low heat; logs, coal, and charcoal give medium heat; coal blocks, blaze rods, and lava buckets give high heat. Other fuel gives medium heat. A lit campfire gives low heat to a pot or skillet on it.
+- **Cooking pot:** six ingredient slots, a bowl slot, and water. Use a water bucket on it to fill it with three uses of water. Soups and stews simmer at low heat.
+- **Skillet:** holds up to four items, like a campfire, and cooks each one on its own. Use it with food to add it and with an empty hand to take food back. Meat sears at high heat, fish fries at medium heat, and eggs fry at low heat.
+- **Oven:** has its own fuel slot and six ingredient slots. It bakes bread, cookies, pumpkin pie, baked potatoes, and cake, and dries kelp.
+- **Cutting board:** place a stack of vegetables, fruit, or mushrooms on it, then use the kitchen knife to cut one item, or sneak-use to cut the whole stack.
+
+A station lights new fuel only when it has something to cook, but lit fuel always burns down. Cooking advances only at the recipe's heat. When the wrong fuel is burning, use a shovel on the stove or oven to put it out. The next fuel then lights at its own heat. Hoppers work with the pot, stove, and oven as with a furnace.
+
+The **cookbook**, crafted from a book and a bowl, lists every recipe by station. Each page shows the ingredients, heat, time, and water, and explains the technique behind the dish. An ingredient that another recipe makes links to that recipe. Recipes you have everything for show in green. Household members in a cabin with central storage also count stored items. The pot and oven screens have a recipe button that fills the station from your inventory, skipping named and customised items. Inside a cabin, only the household can use the stations.
+
+The [cooking book](.workflow/cooking/book) describes the full cooking design, including later stations and processes.
+
 The registry uses schema 10 for household roles, centered interiors, and connected corridors. Earlier schemas are rejected without rewriting the save. Back up an older world and create a new one; for development, replace the world with `just fresh-world`. New cabins begin with solid walls.
 
 Cabins deploy in the Overworld, Nether, or End, and their protected interiors run only while deployed. Installed windows reflect the cabin's dimension, time, weather, or inactive state.

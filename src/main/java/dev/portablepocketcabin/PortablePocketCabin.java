@@ -16,6 +16,11 @@ public final class PortablePocketCabin implements ModInitializer {
 	public void onInitialize() {
 		CabinItems.register();
 		CabinRecipes.register();
+		CookingItems.register();
+		CookingStation.register();
+		CookingBlocks.register();
+		CookbookAvailability.register();
+		CookingFill.register();
 		CabinMaterialProfiles.register();
 		CabinUpgradeDefinitions.register();
 		CabinUpgradeMenu.register();

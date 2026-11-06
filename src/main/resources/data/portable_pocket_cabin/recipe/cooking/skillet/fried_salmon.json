@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "frying",
+  "ingredients": [
+    {
+      "item": "minecraft:salmon"
+    }
+  ],
+  "heat": "medium",
+  "time": 100,
+  "result": {
+    "id": "minecraft:cooked_salmon"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "minecraft:potato"
+    }
+  ],
+  "heat": "medium",
+  "time": 200,
+  "result": {
+    "id": "minecraft:baked_potato"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sauteed_mushrooms"
+    },
+    {
+      "item": "portable_pocket_cabin:sliced_red_mushrooms"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 300,
+  "result": {
+    "id": "minecraft:mushroom_stew"
+  }
+}

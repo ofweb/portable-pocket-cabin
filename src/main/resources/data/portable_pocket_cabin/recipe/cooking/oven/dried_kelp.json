@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "drying",
+  "ingredients": [
+    {
+      "item": "minecraft:kelp"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "result": {
+    "id": "minecraft:dried_kelp"
+  }
+}

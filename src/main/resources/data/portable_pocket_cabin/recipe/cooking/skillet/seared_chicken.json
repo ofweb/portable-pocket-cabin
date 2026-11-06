@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "searing",
+  "ingredients": [
+    {
+      "item": "minecraft:chicken"
+    }
+  ],
+  "heat": "high",
+  "time": 100,
+  "result": {
+    "id": "minecraft:cooked_chicken"
+  }
+}
