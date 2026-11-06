@@ -5,6 +5,8 @@
     "portable_pocket_cabin:oven",
     "portable_pocket_cabin:cooking_pot",
     "portable_pocket_cabin:skillet",
-    "portable_pocket_cabin:strainer"
+    "portable_pocket_cabin:strainer",
+    "portable_pocket_cabin:grill",
+    "portable_pocket_cabin:wok"
   ]
 }

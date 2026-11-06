@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Draws the items lying on a skillet or cutting board, each flat at its own spot, like a campfire. */
-final class CookingItemsRenderer<T extends DisplayStationBlockEntity>
+final class CookingItemsRenderer<T extends CookingStationBlockEntity>
 	implements BlockEntityRenderer<T, CookingItemsRenderer.State> {
 	static final class State extends BlockEntityRenderState {
 		final List<ItemStackRenderState> items = new ArrayList<>();
@@ -38,6 +38,11 @@ final class CookingItemsRenderer<T extends DisplayStationBlockEntity>
 	static BlockEntityRendererProvider<SkilletBlockEntity, State> skillet() {
 		return context -> new CookingItemsRenderer<>(context, 2.1F / 16,
 			new float[][] {{0.33F, 0.33F, 0.32F}, {0.67F, 0.33F, 0.32F}, {0.33F, 0.67F, 0.32F}, {0.67F, 0.67F, 0.32F}});
+	}
+
+	static BlockEntityRendererProvider<GrillBlockEntity, State> grill() {
+		return context -> new CookingItemsRenderer<>(context, 16.1F / 16,
+			new float[][] {{0.3F, 0.3F, 0.34F}, {0.7F, 0.3F, 0.34F}, {0.3F, 0.7F, 0.34F}, {0.7F, 0.7F, 0.34F}});
 	}
 
 	static BlockEntityRendererProvider<CuttingBoardBlockEntity, State> cuttingBoard() {

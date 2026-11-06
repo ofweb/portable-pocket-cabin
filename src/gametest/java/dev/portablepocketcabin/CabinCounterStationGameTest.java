@@ -135,6 +135,81 @@ public final class CabinCounterStationGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void grillLightsOnlyForFoodAndGrillsSkewers(GameTestHelper helper) {
+		var level = helper.getLevel();
+		helper.setBlock(BASE, CookingBlocks.GRILL);
+		var grill = (GrillBlockEntity) level.getBlockEntity(helper.absolutePos(BASE));
+		helper.assertTrue(grill.addFuel(new ItemStack(Items.COAL_BLOCK)), "Fuel goes into the grill's fuel slot");
+		helper.assertTrue(!grill.cooks(level, new ItemStack(Items.COAL)) && grill.cooks(level, new ItemStack(CookingItems.RAW_BEEF_SKEWER)),
+			"Raw skewers go on the grate and fuel does not");
+		tickGrill(helper, grill, 5);
+		helper.assertTrue(!grill.burner().burning(), "An empty grill does not light");
+		helper.assertTrue(grill.add(level, new ItemStack(CookingItems.RAW_BEEF_SKEWER)) && grill.add(level, new ItemStack(CookingItems.RAW_CHICKEN_SKEWER)),
+			"Skewers go on the grate");
+		tickGrill(helper, grill, 1);
+		helper.assertTrue(grill.heat().equals(java.util.Optional.of(CookingHeat.HIGH))
+			&& grill.getBlockState().getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT),
+			"A coal block lights at high heat once there is food");
+		tickGrill(helper, grill, 99);
+		helper.assertTrue(grill.getItem(0).is(CookingItems.GRILLED_BEEF_SKEWER) && grill.getItem(1).is(CookingItems.GRILLED_CHICKEN_SKEWER),
+			"Both skewers grill");
+		helper.assertTrue(grill.take(level).is(CookingItems.GRILLED_BEEF_SKEWER), "Grilled food comes off first");
+		helper.assertTrue(java.util.Arrays.equals(grill.getSlotsForFace(net.minecraft.core.Direction.UP), new int[] {GrillBlockEntity.FUEL_SLOT})
+			&& !grill.canPlaceItemThroughFace(0, new ItemStack(CookingItems.RAW_BEEF_SKEWER), net.minecraft.core.Direction.NORTH),
+			"Hoppers reach only the fuel slot");
+		var copy = reload(helper, grill, new GrillBlockEntity(grill.getBlockPos(), grill.getBlockState()));
+		helper.assertTrue(copy.getItem(1).is(CookingItems.GRILLED_CHICKEN_SKEWER) && copy.burner().burning(), "The grill keeps its food and fire");
+		helper.assertTrue(grill.extinguish() && !grill.burner().burning(), "A shovel puts the grill out");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void wokStirFriesInOilOverHighHeat(GameTestHelper helper) {
+		var level = helper.getLevel();
+		helper.setBlock(BASE, CookingBlocks.STOVE);
+		helper.setBlock(BASE.above(), CookingBlocks.WOK);
+		var stove = (StoveBlockEntity) level.getBlockEntity(helper.absolutePos(BASE));
+		var wok = (ProcessStationBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.above()));
+		wok.setItem(0, new ItemStack(Items.CARROT, 2));
+		stove.setItem(0, new ItemStack(Items.BLAZE_ROD));
+		for (int i = 0; i < 5; i++) StoveBlockEntity.serverTick(level, stove.getBlockPos(), stove.getBlockState(), stove);
+		helper.assertTrue(!stove.burner().burning(), "Without oil the wok has nothing to cook");
+		helper.assertTrue(wok.fillOil() && wok.oil() == 1, "Oil fills the wok");
+		for (int i = 0; i < 25; i++) {
+			StoveBlockEntity.serverTick(level, stove.getBlockPos(), stove.getBlockState(), stove);
+			ProcessStationBlockEntity.serverTick(level, wok.getBlockPos(), wok.getBlockState(), wok);
+		}
+		helper.assertTrue(wok.getItem(CookingMenu.Kind.WOK.outputSlot).is(Items.GOLDEN_CARROT) && wok.oil() == 0,
+			"The wok stir-fries at high heat and uses its oil");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void stationCraftingRecipesDoNotCollide(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var manager = level.getServer().getRecipeManager();
+		for (var holder : manager.getRecipes()) {
+			if (!holder.id().identifier().getNamespace().equals(PortablePocketCabin.MOD_ID)
+				|| !(holder.value() instanceof net.minecraft.world.item.crafting.ShapedRecipe shaped)) continue;
+			var items = new java.util.ArrayList<ItemStack>();
+			for (var ingredient : shaped.getIngredients()) {
+				items.add(ingredient.map(value -> new ItemStack(value.items().findFirst().orElseThrow())).orElse(ItemStack.EMPTY));
+			}
+			var input = net.minecraft.world.item.crafting.CraftingInput.of(shaped.getWidth(), shaped.getHeight(), items);
+			var matches = manager.getRecipes().stream()
+				.filter(other -> other.value() instanceof net.minecraft.world.item.crafting.CraftingRecipe crafting && crafting.matches(input, level))
+				.map(match -> match.id().identifier().toString()).toList();
+			helper.assertTrue(matches.equals(java.util.List.of(holder.id().identifier().toString())),
+				"Only " + holder.id().identifier() + " matches its pattern, found " + matches);
+		}
+		helper.succeed();
+	}
+
+	private static void tickGrill(GameTestHelper helper, GrillBlockEntity grill, int ticks) {
+		for (int i = 0; i < ticks; i++) GrillBlockEntity.serverTick(helper.getLevel(), grill.getBlockPos(), grill.getBlockState(), grill);
+	}
+
 	private static ProcessStationBlockEntity counter(GameTestHelper helper, BlockPos pos) {
 		helper.setBlock(pos, CookingBlocks.PREP_COUNTER);
 		return (ProcessStationBlockEntity) helper.getLevel().getBlockEntity(helper.absolutePos(pos));

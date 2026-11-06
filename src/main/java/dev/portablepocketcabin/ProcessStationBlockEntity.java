@@ -61,6 +61,10 @@ final class ProcessStationBlockEntity extends CookingStationBlockEntity implemen
 		return new ProcessStationBlockEntity(CookingBlocks.STRAINER_ENTITY, pos, state, CookingMenu.Kind.STRAINER);
 	}
 
+	static ProcessStationBlockEntity wok(BlockPos pos, BlockState state) {
+		return new ProcessStationBlockEntity(CookingBlocks.WOK_ENTITY, pos, state, CookingMenu.Kind.WOK);
+	}
+
 	CookingMenu.Kind kind() {
 		return kind;
 	}

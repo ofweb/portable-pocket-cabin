@@ -137,5 +137,17 @@
   "technique.portable_pocket_cabin.skewering": "Skewering",
   "technique.portable_pocket_cabin.skewering.description": "Thread meat and vegetables onto a skewer in small, even pieces, so they cook through together over the fire and are easy to turn.",
   "technique.portable_pocket_cabin.straining": "Straining",
-  "technique.portable_pocket_cabin.straining.description": "Pour a mixture through a fine mesh or cloth to separate the liquid from the solids. Stocks, juices, and cheeses are strained."
+  "technique.portable_pocket_cabin.straining.description": "Pour a mixture through a fine mesh or cloth to separate the liquid from the solids. Stocks, juices, and cheeses are strained.",
+  "item.portable_pocket_cabin.grilled_beef_skewer": "Grilled Beef and Carrot Skewer",
+  "item.portable_pocket_cabin.grilled_pork_skewer": "Grilled Pork and Potato Skewer",
+  "item.portable_pocket_cabin.grilled_chicken_skewer": "Grilled Chicken and Beetroot Skewer",
+  "item.portable_pocket_cabin.grilled_mutton_skewer": "Grilled Mutton and Mushroom Skewer",
+  "block.portable_pocket_cabin.grill": "Grill",
+  "block.portable_pocket_cabin.wok": "Wok",
+  "technique.portable_pocket_cabin.grilling": "Grilling",
+  "technique.portable_pocket_cabin.grilling.description": "Cook over open heat on a grate. Fat drips away and the surface chars, giving the smoky flavour of food cooked over a fire.",
+  "technique.portable_pocket_cabin.stir_frying": "Stir-frying",
+  "technique.portable_pocket_cabin.stir_frying.description": "Toss small pieces in a little oil in a very hot wok, keeping them moving. They cook in moments and stay crisp.",
+  "technique.portable_pocket_cabin.deep_frying": "Deep-frying",
+  "technique.portable_pocket_cabin.deep_frying.description": "Cook food submerged in hot oil. The surface dries and crisps at once, sealing in moisture. Oil breaks down a little with every batch."
 }
