@@ -14,6 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
+import java.util.List;
+
 /** A cooking station that holds items in slots. Inside a cabin, only the household may use it. */
 abstract class CookingStationBlockEntity extends BlockEntity implements Container {
 	protected final NonNullList<ItemStack> items;
@@ -30,6 +32,11 @@ abstract class CookingStationBlockEntity extends BlockEntity implements Containe
 	static boolean mayUse(BlockEntity station, Player player) {
 		return !(station.getLevel() instanceof ServerLevel level)
 			|| CabinCorridors.mayChange(level, player.getUUID(), station.getBlockPos());
+	}
+
+	/** The first {@code count} slots, for checking a station's layout against a recipe. */
+	List<ItemStack> getItems(int count) {
+		return List.copyOf(items.subList(0, count));
 	}
 
 	@Override

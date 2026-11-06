@@ -455,6 +455,16 @@ public final class CabinCookingStationGameTest {
 			"Filling uses the same assignment");
 		helper.assertTrue(oven.getItem(0).is(Items.BIRCH_PLANKS) && oven.getItem(1).is(Items.OAK_PLANKS) && inventory.isEmpty(),
 			"Birch goes in for the tag and oak for the exact ingredient");
+		helper.assertTrue(recipe.assign(CookingInput.of(oven.getItems(6))).isPresent(), "The filled oven matches the recipe");
+
+		oven.clearContent();
+		inventory.setItem(0, new ItemStack(Items.OAK_PLANKS, 2));
+		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe, inventory, List.of(CookingFill.inventory(inventory))),
+			"Two oak planks fill both ingredients");
+		helper.assertTrue(oven.getItem(0).getCount() == 1 && oven.getItem(1).getCount() == 1
+			&& recipe.assign(CookingInput.of(oven.getItems(6))).isPresent(), "Each ingredient keeps its own slot, so the oven matches");
+		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe, inventory, List.of(CookingFill.inventory(inventory)))
+			&& oven.getItem(0).getCount() == 1 && oven.getItem(1).getCount() == 1, "Filling again keeps a valid layout");
 		inventory.clearContent();
 		helper.succeed();
 	}

@@ -91,10 +91,14 @@ final class CookingFill {
 		List<ItemStack> planned = new ArrayList<>();
 		List<ItemStack> displaced = new ArrayList<>();
 		for (int demand = 0; demand < recipe.ingredients().size(); demand++) {
+			// Each ingredient gets its own slots: the recipe matches every slot to exactly one ingredient.
+			List<ItemStack> own = new ArrayList<>();
 			for (int stack = 0; stack < stacks.size(); stack++) {
-				if (amounts[demand][stack] > 0 && !merge(planned, stacks.get(stack).copyWithCount(amounts[demand][stack]), slots)) return false;
+				if (amounts[demand][stack] > 0 && !merge(own, stacks.get(stack).copyWithCount(amounts[demand][stack]), slots)) return false;
 			}
+			planned.addAll(own);
 		}
+		if (planned.size() > slots) return false;
 		for (int slot = 0; slot < slots; slot++) {
 			ItemStack current = stacks.get(slot);
 			if (current.getCount() > taken[slot]) displaced.add(current.copyWithCount(current.getCount() - taken[slot]));
@@ -119,6 +123,9 @@ final class CookingFill {
 			container = merged.isEmpty() ? ItemStack.EMPTY : merged.getFirst();
 		}
 
+		List<ItemStack> layout = new ArrayList<>(planned);
+		while (layout.size() < slots) layout.add(ItemStack.EMPTY);
+		if (recipe.assign(new CookingInput(layout, container, recipe.water())).isEmpty()) return false;
 		if (!fits(player, stacks, held, taken, displaced)) return false;
 
 		for (int stack = held; stack < stacks.size(); stack++) stacks.get(stack).shrink(taken[stack]);
