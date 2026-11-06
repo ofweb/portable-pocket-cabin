@@ -106,7 +106,7 @@ Acceptance:
 ## Feature-wide constraints and acceptance
 
 - New stations follow B-0045 rules: recipe types, counted matching, progress, saving, breaking, and household permissions inside a cabin. Inside the [B-0041](../B-0041/brief.md) kitchen they use central storage like other kitchen stations.
-- Time stations progress only while their chunk ticks, so they pause while an empty cabin is packed. Catch-up remains open under Direction.
+- Time stations follow the [cooking time stations catch-up](../../direction.md#cooking-time-stations-catch-up) direction. They count server time that passed while unloaded or packed, and finish a batch, but never collect, refill, or start one.
 - Every new item and recipe appears in the cookbook, with its technique explained.
 - Recipes are data, so datapacks can change times and add products.
 - Products that need ingredients from later features ship with those features, under the program's [rule for shared chains](../../cooking/program.md#rule-for-shared-chains).

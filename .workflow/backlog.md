@@ -270,19 +270,19 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 
 ## B-0047: Stocks, sauces, and flavour
 
-- Status: Ready for Shape
+- Status: Ready for Design
 - Value: Let players make stocks, dashi, and sauces, and learn the five basic tastes through seasoning and balance.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Relationships: Uses B-0045.
-- Open proposals: B-0047 owns salt, from seawater boiled down in a pot at high heat and rock salt in caves. Optional seasoning slots let salt, herbs, acid, or umami raise a balanced dish's quality, while the basic recipe still makes a good dish.
+- Relationships: Uses B-0045, B-0053, and B-0052, and ships together with B-0046 and B-0048 in phase 3 of the [cooking program](cooking/program.md). Seasoning quality feeds B-0051.
+- Feature Brief: [Salt, sugars, and sauces brief](features/B-0047/brief.md).
 
 ## B-0048: Fermentation, drying, and preservation
 
-- Status: Ready for Shape
+- Status: Ready for Design
 - Value: Let players ferment, dry, smoke, cure, pickle, and age ingredients over time.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Relationships: Uses B-0045. Retires the vanilla dried kelp recipe once drying exists. Packed-time limits follow the open [catch-up question](direction.md#progress-after-an-empty-cabin-becomes-occupied).
-- Open proposals: The vanilla smoker becomes the smoking station, burning low-heat fuel. Koji spores come from a villager trade or a rare find, and each batch returns some. Fish guts ferment into fish sauce.
+- Relationships: Uses B-0045 and B-0052, and ships together with B-0046 and B-0047 in phase 3 of the [cooking program](cooking/program.md). Replaces the B-0045 oven recipe for dried kelp with the drying rack. Time stations follow the [cooking time stations catch-up](direction.md#cooking-time-stations-catch-up).
+- Feature Brief: [Fermentation, drying, and preservation brief](features/B-0048/brief.md).
 
 ## B-0049: Butchery and carcasses
 
