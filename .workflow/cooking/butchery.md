@@ -23,6 +23,8 @@ Parts go to the player's inventory, with overflow dropped beside the station. In
 | Sheep | None | Skin with the knife | 1 fleece, dressed sheep |
 | Chicken | Scald in a cooking pot: carcass and water at low heat, 5 s | Pluck by hand | 2 feathers, dressed chicken |
 | Rabbit | None | Skin with the knife | 1 rabbit hide, 1 rabbit's foot, dressed rabbit |
+| Goat | None | Skin with the knife | 1 goat hide, dressed goat |
+| Duck | Scald in a cooking pot: carcass and water at low heat, 5 s | Pluck by hand | 3 feathers, dressed duck |
 
 - **Hide** becomes leather, and **fleece** becomes wool. Shearing a live sheep still gives wool as in vanilla.
 - **Pig bristles** make brushes. Pigs keep their skin, which becomes crackling and gelatin, so they are scraped, not skinned.
@@ -88,6 +90,23 @@ Parts go to the player's inventory, with overflow dropped beside the station. In
 | Fat | 1 | Rendering into tallow |
 | Blood | Optional | Blood sausage |
 
+## Goat
+
+Goat meat, chevon, is the most eaten red meat in the world. It is leaner than lamb and suits long braising and curries.
+
+| Part | Count | Uses |
+|---|---|---|
+| Chevon chops (loin) | 2 | Grilling, searing |
+| Leg | 1 | Roasting, braising |
+| Shoulder | 1 | Curries, slow braising |
+| Neck and stew meat | 2 | Stews, mince |
+| Liver | 1 | Frying |
+| Heart | 1 | Grilling, mince |
+| Casing (intestines) | 1 | Sausage casings |
+| Goat bones | 3 | Stock, bone meal |
+| Fat | 1 | Rendering into tallow |
+| Blood | Optional | Blood sausage |
+
 ## Chicken
 
 | Part | Count | Uses |
@@ -110,6 +129,21 @@ Parts go to the player's inventory, with overflow dropped beside the station. In
 | Front legs and stew meat | 1 | Stews, rabbit stew |
 | Liver and kidneys | 1 | Pâté, frying |
 | Rabbit bones | 1 | Stock, bone meal |
+
+## Duck
+
+Ducks carry more fat than chickens, and that fat is one of the best for roasting potatoes.
+
+| Part | Count | Uses |
+|---|---|---|
+| Duck breasts | 2 | Searing skin-side down, roasting |
+| Duck legs | 2 | Confit in their own fat, braising |
+| Wings | 2 | Stock, frying |
+| Liver | 1 | Pâté |
+| Heart and gizzard | 1 | Confit, stews |
+| Duck carcass bones | 1 | Stock, bone meal |
+| Duck fat | 2 | Rendering for confit and roasting |
+| Feathers | 3 | Down, arrows |
 
 ## Fish
 
