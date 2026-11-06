@@ -1,11 +1,6 @@
 package dev.portablepocketcabin;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 /** A skillet holds up to four items, like a campfire, and cooks each one on its own while heated. */
-final class SkilletBlockEntity extends CookingStationBlockEntity implements CookingVessel {
+final class SkilletBlockEntity extends DisplayStationBlockEntity implements CookingVessel {
 	static final int SLOTS = 4;
 	private final int[] progress = new int[SLOTS];
 	private final CookingRecipe[] recipes = new CookingRecipe[SLOTS];
@@ -102,11 +97,6 @@ final class SkilletBlockEntity extends CookingStationBlockEntity implements Cook
 		else if (cooking) skillet.saveChanged();
 	}
 
-	private void changedForClients() {
-		saveChanged();
-		if (level != null) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-	}
-
 	@Override
 	protected void contentsChanged() {
 		Arrays.fill(looked, false);
@@ -115,21 +105,6 @@ final class SkilletBlockEntity extends CookingStationBlockEntity implements Cook
 	@Override
 	public int getMaxStackSize() {
 		return 1;
-	}
-
-	@Override
-	public boolean canPlaceItem(int slot, ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	public Packet<ClientGamePacketListener> getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this);
-	}
-
-	@Override
-	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-		return saveCustomOnly(registries);
 	}
 
 	@Override

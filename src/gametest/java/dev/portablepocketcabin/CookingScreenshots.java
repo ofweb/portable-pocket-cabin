@@ -1,0 +1,106 @@
+package dev.portablepocketcabin;
+
+import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
+import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
+import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotOptions;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.core.Direction;
+
+import java.util.Set;
+
+/** Cooking station references for screenshots/cooking. Run with PPC_CAPTURE_COOKING=1 ./gradlew runClientGameTest. */
+final class CookingScreenshots {
+	private CookingScreenshots() {
+	}
+
+	static void capture(ClientGameTestContext context) {
+		try (TestSingleplayerContext world = context.worldBuilder().create()) {
+			BlockPos[] origin = new BlockPos[1];
+			world.getServer().runOnServer(server -> {
+				var player = world.getConnection().getServerPlayer();
+				var level = player.level();
+				player.setGameMode(GameType.SURVIVAL);
+				player.getInventory().clearContent();
+				player.getInventory().setItem(0, new ItemStack(CookingItems.KITCHEN_KNIFE));
+				player.getInventory().setItem(1, new ItemStack(Items.OAK_PLANKS, 16));
+				player.getInventory().setItem(2, new ItemStack(Items.BOWL, 6));
+				server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "time set noon");
+				server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "weather clear");
+				BlockPos base = player.blockPosition().offset(0, 40, 0);
+				origin[0] = base;
+				for (int x = -5; x <= 5; x++) for (int z = -5; z <= 2; z++) {
+					level.setBlockAndUpdate(base.offset(x, -1, z), Blocks.SMOOTH_STONE.defaultBlockState());
+					for (int y = 0; y < 4; y++) level.setBlockAndUpdate(base.offset(x, y, z), Blocks.AIR.defaultBlockState());
+				}
+				var facing = CookingBlocks.STOVE.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, Direction.SOUTH);
+				level.setBlockAndUpdate(base.offset(-4, 0, -3), facing);
+				level.setBlockAndUpdate(base.offset(-4, 1, -3), CookingBlocks.COOKING_POT.defaultBlockState());
+				level.setBlockAndUpdate(base.offset(-2, 0, -3), facing);
+				level.setBlockAndUpdate(base.offset(-2, 1, -3), CookingBlocks.SKILLET.defaultBlockState());
+				level.setBlockAndUpdate(base.offset(2, 0, -3), CookingBlocks.OVEN.defaultBlockState()
+					.setValue(HorizontalDirectionalBlock.FACING, Direction.SOUTH));
+				level.setBlockAndUpdate(base.offset(4, 0, -3), Blocks.OAK_PLANKS.defaultBlockState());
+				level.setBlockAndUpdate(base.offset(4, 1, -3), CookingBlocks.CUTTING_BOARD.defaultBlockState());
+
+				level.setBlockAndUpdate(base.offset(0, 0, -3), Blocks.CAMPFIRE.defaultBlockState());
+				level.setBlockAndUpdate(base.offset(0, 1, -3), CookingBlocks.COOKING_POT.defaultBlockState());
+				var potStove = (StoveBlockEntity) level.getBlockEntity(base.offset(-4, 0, -3));
+				potStove.setItem(0, new ItemStack(Items.OAK_PLANKS, 8));
+				var pot = (CookingPotBlockEntity) level.getBlockEntity(base.offset(-4, 1, -3));
+				pot.setItem(0, new ItemStack(CookingItems.CHOPPED_CARROT, 2));
+				pot.setItem(1, new ItemStack(CookingItems.DICED_POTATO, 2));
+				pot.setItem(2, new ItemStack(CookingItems.CHOPPED_BEETROOT, 2));
+				pot.setItem(CookingPotBlockEntity.CONTAINER_SLOT, new ItemStack(Items.BOWL, 6));
+				pot.fillWater();
+				var skilletStove = (StoveBlockEntity) level.getBlockEntity(base.offset(-2, 0, -3));
+				skilletStove.setItem(0, new ItemStack(Items.OAK_PLANKS, 8));
+				var skillet = (SkilletBlockEntity) level.getBlockEntity(base.offset(-2, 1, -3));
+				skillet.add(level, new ItemStack(Items.EGG));
+				skillet.add(level, new ItemStack(Items.EGG));
+				skillet.add(level, new ItemStack(Items.BROWN_MUSHROOM));
+				var oven = (OvenBlockEntity) level.getBlockEntity(base.offset(2, 0, -3));
+				oven.setItem(0, new ItemStack(Items.WHEAT, 3));
+				oven.setItem(1, new ItemStack(Items.SUGAR, 2));
+				oven.setItem(2, new ItemStack(Items.EGG));
+				for (int slot = 3; slot < 6; slot++) oven.setItem(slot, new ItemStack(Items.MILK_BUCKET));
+				oven.setItem(OvenBlockEntity.FUEL_SLOT, new ItemStack(Items.OAK_PLANKS, 8));
+				var board = (CuttingBoardBlockEntity) level.getBlockEntity(base.offset(4, 1, -3));
+				board.place(level, new ItemStack(Items.CARROT, 6));
+				player.teleportTo(level, base.getX() + .5, base.getY(), base.getZ() + 2.5, Set.of(), 180, 30, false);
+			});
+			world.getConnection().waitForClientboundPackets();
+			world.getConnection().waitForChunksRender();
+			context.waitTicks(60);
+			shot(context, "stations");
+			open(context, world, origin[0].offset(-4, 1, -3), CookingMenu.Kind.POT);
+			shot(context, "pot-screen");
+			open(context, world, origin[0].offset(-4, 0, -3), CookingMenu.Kind.STOVE);
+			shot(context, "stove-screen");
+			open(context, world, origin[0].offset(2, 0, -3), CookingMenu.Kind.OVEN);
+			shot(context, "oven-screen");
+		}
+	}
+
+	private static void open(ClientGameTestContext context, TestSingleplayerContext world, BlockPos pos, CookingMenu.Kind kind) {
+		world.getServer().runOnServer(server -> {
+			var player = world.getConnection().getServerPlayer();
+			player.closeContainer();
+			CookingStationBlock.openMenu(player.level(), pos, player, kind);
+		});
+		world.getConnection().waitForClientboundPackets();
+		context.waitForScreen(CookingScreen.class);
+	}
+
+	private static void shot(ClientGameTestContext context, String name) {
+		context.getInput().setCursorPos(0, 0);
+		context.waitTicks(3);
+		context.runOnClient(client -> client.gui.toastManager().clear());
+		context.waitTick();
+		context.takeScreenshot(TestScreenshotOptions.of("cooking-" + name).disableCounterPrefix());
+	}
+}

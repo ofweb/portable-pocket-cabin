@@ -134,9 +134,9 @@ Shared rules:
 | Cooking pot | Shaped: `C C` / `C C` / `CCC`, with C copper ingot |
 | Skillet | Shaped: `II ` / `IIS`, with I iron ingot and S stick |
 | Oven | Shaped: `BBB` / `BFB` / `BBB`, with B brick and F furnace |
+| Cutting board | Shaped: `##`, with # any wooden slab |
+| Kitchen knife | Shaped: `I` / `S`, with I iron ingot and S stick |
 | Cookbook | Shapeless: book and bowl |
-
-The cutting board and kitchen knife recipes are added with the cutting board.
 
 ### Permissions
 

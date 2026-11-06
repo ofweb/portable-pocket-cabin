@@ -257,4 +257,54 @@ abstract class CookingStationBlock extends BaseEntityBlock {
 				: null;
 		}
 	}
+
+	static final class CuttingBoard extends CookingStationBlock {
+		static final MapCodec<CuttingBoard> CODEC = simpleCodec(CuttingBoard::new);
+		private static final VoxelShape SHAPE = Block.box(1, 0, 2, 15, 1, 14);
+
+		CuttingBoard(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		protected MapCodec<? extends BaseEntityBlock> codec() {
+			return CODEC;
+		}
+
+		@Override
+		protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+			return SHAPE;
+		}
+
+		@Override
+		protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+			InteractionHand hand, BlockHitResult hit) {
+			if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
+			if (!(level.getBlockEntity(pos) instanceof CuttingBoardBlockEntity board) || !CookingStationBlockEntity.mayUse(board, player)) {
+				return InteractionResult.FAIL;
+			}
+			if (stack.is(CookingItems.KITCHEN_KNIFE)) {
+				return board.cut(serverLevel, player, player.isShiftKeyDown()) ? InteractionResult.SUCCESS_SERVER : InteractionResult.PASS;
+			}
+			ItemStack held = player.getAbilities().instabuild ? stack.copy() : stack;
+			return board.place(serverLevel, held) ? InteractionResult.SUCCESS_SERVER : InteractionResult.TRY_WITH_EMPTY_HAND;
+		}
+
+		@Override
+		protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+			if (!(level instanceof ServerLevel)) return InteractionResult.SUCCESS;
+			if (!(level.getBlockEntity(pos) instanceof CuttingBoardBlockEntity board) || !CookingStationBlockEntity.mayUse(board, player)) {
+				return InteractionResult.FAIL;
+			}
+			ItemStack taken = board.take();
+			if (taken.isEmpty()) return InteractionResult.PASS;
+			if (!player.getInventory().add(taken)) player.drop(taken, false);
+			return InteractionResult.SUCCESS_SERVER;
+		}
+
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return new CuttingBoardBlockEntity(pos, state);
+		}
+	}
 }

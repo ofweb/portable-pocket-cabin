@@ -3,7 +3,7 @@
   "textures": {
     "particle": "minecraft:block/copper_block",
     "side": "minecraft:block/copper_block",
-    "inside": "minecraft:block/cut_copper"
+    "inside": "minecraft:block/exposed_cut_copper"
   },
   "elements": [
     {

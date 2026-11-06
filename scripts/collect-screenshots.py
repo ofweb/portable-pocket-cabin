@@ -13,6 +13,7 @@ GROUPS = (
     ("greenhouse-", "cabin/greenhouse", "Greenhouse"),
     ("cabin-storage-", "cabin/storage", "Cabin storage"),
     ("cabin-upgrades-", "cabin/upgrades", "Cabin upgrades"),
+    ("cooking-", "cooking", "Cooking stations"),
     ("vanilla-creative-", "vanilla/creative-inventory", "Vanilla creative inventory"),
     ("vanilla-", "vanilla/crafting-stations", "Vanilla crafting stations"),
 )

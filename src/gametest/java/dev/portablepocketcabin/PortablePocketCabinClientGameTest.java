@@ -62,6 +62,8 @@ public final class PortablePocketCabinClientGameTest
             VanillaStationScreenshots.capture(context);
             if (!captureAll) return;
         }
+        CookingScreenshots.capture(context);
+        if (!captureAll && "1".equals(System.getenv("PPC_CAPTURE_COOKING"))) return;
         captureEnchanting(context);
         if (!captureAll && "1".equals(System.getenv("PPC_TEST_ENCHANTING"))) return;
         captureBooks(context);

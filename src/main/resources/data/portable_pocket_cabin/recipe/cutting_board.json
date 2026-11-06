@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "#minecraft:wooden_slabs"
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:cutting_board"
+  }
+}

@@ -7,6 +7,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
@@ -14,6 +16,7 @@ import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -293,6 +296,68 @@ public final class CabinCookingStationGameTest {
 			&& copy.heat().equals(Optional.of(CookingHeat.LOW)) && copy.getItem(3).is(Items.MILK_BUCKET),
 			"The oven keeps its progress, fire, and ingredients");
 		helper.succeed();
+	}
+
+	@GameTest
+	public void knifeCutsOneOrTheWholeStack(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var board = board(helper);
+		helper.assertTrue(!board.place(level, new ItemStack(Items.STICK)), "A stick does not go on the board");
+		var carrots = new ItemStack(Items.CARROT, 5);
+		helper.assertTrue(board.place(level, carrots) && carrots.isEmpty() && board.getItem(0).getCount() == 5,
+			"The whole carrot stack goes on the board");
+		var player = FakePlayer.get(level);
+		player.getInventory().clearContent();
+		use(helper, BASE, new ItemStack(CookingItems.KITCHEN_KNIFE));
+		helper.assertTrue(board.getItem(0).getCount() == 4 && player.getInventory().countItem(CookingItems.CHOPPED_CARROT) == 1,
+			"The knife cuts one carrot into the player's inventory");
+		player.setShiftKeyDown(true);
+		use(helper, BASE, new ItemStack(CookingItems.KITCHEN_KNIFE));
+		player.setShiftKeyDown(false);
+		helper.assertTrue(board.isEmpty() && player.getInventory().countItem(CookingItems.CHOPPED_CARROT) == 5,
+			"Sneaking with the knife cuts the whole stack");
+		board.place(level, new ItemStack(Items.POTATO, 2));
+		helper.assertTrue(board.take().getCount() == 2 && board.isEmpty(), "The stack can be taken back");
+		player.getInventory().clearContent();
+		helper.succeed();
+	}
+
+	@GameTest
+	public void cutFoodThatDoesNotFitDropsBesideTheBoard(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var board = board(helper);
+		board.place(level, new ItemStack(Items.BEETROOT, 2));
+		var player = FakePlayer.get(level);
+		for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
+			player.getInventory().setItem(slot, new ItemStack(Items.STONE, 64));
+		}
+		helper.assertTrue(board.cut(level, player, true), "The knife cuts with a full inventory");
+		var dropped = level.getEntitiesOfClass(ItemEntity.class,
+			new AABB(board.getBlockPos()).inflate(1));
+		helper.assertTrue(dropped.stream().mapToInt(item -> item.getItem().is(CookingItems.CHOPPED_BEETROOT) ? item.getItem().getCount() : 0).sum() == 2,
+			"Cut food that does not fit drops beside the board");
+		player.getInventory().clearContent();
+		helper.succeed();
+	}
+
+	@GameTest
+	public void hoppersCannotUseTheBoardOrSkillet(GameTestHelper helper) {
+		var board = board(helper);
+		board.place(helper.getLevel(), new ItemStack(Items.CARROT));
+		helper.setBlock(BASE.offset(2, 0, 0), CookingBlocks.SKILLET);
+		var skillet = (SkilletBlockEntity) helper.getLevel().getBlockEntity(helper.absolutePos(BASE.offset(2, 0, 0)));
+		skillet.add(helper.getLevel(), new ItemStack(Items.EGG));
+		var hopper = new SimpleContainer(5);
+		helper.assertTrue(!board.canTakeItem(hopper, 0, board.getItem(0)) && !board.canPlaceItem(0, new ItemStack(Items.CARROT)),
+			"Hoppers cannot move items on the cutting board");
+		helper.assertTrue(!skillet.canTakeItem(hopper, 0, skillet.getItem(0)) && !skillet.canPlaceItem(1, new ItemStack(Items.EGG)),
+			"Hoppers cannot move items on the skillet");
+		helper.succeed();
+	}
+
+	private static CuttingBoardBlockEntity board(GameTestHelper helper) {
+		helper.setBlock(BASE, CookingBlocks.CUTTING_BOARD);
+		return (CuttingBoardBlockEntity) helper.getLevel().getBlockEntity(helper.absolutePos(BASE));
 	}
 
 	private static OvenBlockEntity oven(GameTestHelper helper, ItemStack fuel) {

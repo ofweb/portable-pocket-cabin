@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Inventory;
 /** A furnace-style screen: slots, a progress arrow, a flame for the current heat, and a status line. */
 final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 	private static final Identifier PANEL = Identifier.withDefaultNamespace("textures/gui/container/inventory.png");
+	private static final Identifier FURNACE = Identifier.withDefaultNamespace("textures/gui/container/furnace.png");
 	private static final Identifier SLOT = Identifier.withDefaultNamespace("container/slot");
 	private static final Identifier FLAME = Identifier.withDefaultNamespace("container/furnace/lit_progress");
 	private static final Identifier ARROW = Identifier.withDefaultNamespace("container/furnace/burn_progress");
@@ -32,20 +33,28 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 			slot(graphics, 8 + col * 18, CookingMenu.INVENTORY_Y + row * 18);
 		for (int col = 0; col < 9; col++) slot(graphics, 8 + col * 18, CookingMenu.INVENTORY_Y + 58);
 		if (menu.kind() == CookingMenu.Kind.STOVE) {
+			emptyFlame(graphics, 81, 36);
 			flame(graphics, 81, 36);
 			return;
 		}
+		graphics.blit(RenderPipelines.GUI_TEXTURED, FURNACE, leftPos + 91, topPos + 26, 79, 34, 24, 17, 24, 17, 256, 256);
+		emptyFlame(graphics, 97, 46);
 		int time = menu.data(CookingMenu.DATA_TIME);
 		int progress = menu.data(CookingMenu.DATA_PROGRESS);
 		if (time > 0 && progress > 0) {
 			int width = Math.round(24F * progress / time);
-			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ARROW, 24, 16, 0, 0, leftPos + 92, topPos + 26, width, 16);
+			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ARROW, 24, 16, 0, 0, leftPos + 91, topPos + 26, width, 16);
 		}
 		if (menu.kind() == CookingMenu.Kind.OVEN) {
 			flame(graphics, 97, 46);
 		} else if (menu.data(CookingMenu.DATA_HEAT) > 0) {
 			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FLAME, leftPos + 97, topPos + 46, 14, 14);
 		}
+	}
+
+	/** The unlit flame outline from the furnace background. */
+	private void emptyFlame(GuiGraphicsExtractor graphics, int x, int y) {
+		graphics.blit(RenderPipelines.GUI_TEXTURED, FURNACE, leftPos + x, topPos + y, 56, 36, 14, 14, 14, 14, 256, 256);
 	}
 
 	/** A flame that shrinks as the burning fuel runs down, like a furnace's. */

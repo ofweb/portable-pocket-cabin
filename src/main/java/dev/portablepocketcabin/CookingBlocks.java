@@ -29,6 +29,9 @@ final class CookingBlocks {
 	static final Block SKILLET = register("skillet", CookingStationBlock.Skillet::new, BlockBehaviour.Properties.of()
 		.strength(1.0F).sound(SoundType.METAL).noOcclusion());
 
+	static final Block CUTTING_BOARD = register("cutting_board", CookingStationBlock.CuttingBoard::new, BlockBehaviour.Properties.of()
+		.strength(1.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava());
+
 	static final BlockEntityType<StoveBlockEntity> STOVE_ENTITY = registerEntity("stove",
 		new BlockEntityType<>(StoveBlockEntity::new, Set.of(STOVE)));
 	static final BlockEntityType<OvenBlockEntity> OVEN_ENTITY = registerEntity("oven",
@@ -37,6 +40,8 @@ final class CookingBlocks {
 		new BlockEntityType<>(CookingPotBlockEntity::new, Set.of(COOKING_POT)));
 	static final BlockEntityType<SkilletBlockEntity> SKILLET_ENTITY = registerEntity("skillet",
 		new BlockEntityType<>(SkilletBlockEntity::new, Set.of(SKILLET)));
+	static final BlockEntityType<CuttingBoardBlockEntity> CUTTING_BOARD_ENTITY = registerEntity("cutting_board",
+		new BlockEntityType<>(CuttingBoardBlockEntity::new, Set.of(CUTTING_BOARD)));
 
 	private CookingBlocks() {
 	}
@@ -48,6 +53,7 @@ final class CookingBlocks {
 			entries.accept(OVEN);
 			entries.accept(COOKING_POT);
 			entries.accept(SKILLET);
+			entries.accept(CUTTING_BOARD);
 		});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
 			entries.accept(CookingItems.KITCHEN_KNIFE);
