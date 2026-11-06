@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "deep_frying",
+  "ingredients": [
+    {
+      "item": "minecraft:potato"
+    }
+  ],
+  "oil": 1,
+  "heat": "high",
+  "time": 20,
+  "result": {
+    "id": "minecraft:baked_potato"
+  }
+}

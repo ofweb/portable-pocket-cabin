@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:grill",
+  "technique": "grilling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:raw_chicken_skewer"
+    }
+  ],
+  "heat": "high",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:grilled_chicken_skewer"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:strainer",
+  "technique": "straining",
+  "ingredients": [
+    {
+      "item": "minecraft:sweet_berries",
+      "count": 2
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:stick"
+    }
+  ],
+  "result": {
+    "id": "minecraft:honey_bottle"
+  }
+}

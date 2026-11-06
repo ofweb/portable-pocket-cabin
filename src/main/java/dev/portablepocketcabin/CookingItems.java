@@ -15,6 +15,20 @@ final class CookingItems {
 	static final Item KITCHEN_KNIFE = register("kitchen_knife", properties -> properties.stacksTo(1));
 	static final Item COOKBOOK = register("cookbook", properties -> properties.stacksTo(1), CookbookItem::new);
 
+	/** Wooden skewers, cut from a stick on the cutting board. Meat and vegetables are threaded onto them. */
+	static final Item SKEWER = register("skewer", UnaryOperator.identity());
+	static final Item RAW_BEEF_SKEWER = register("raw_beef_skewer", UnaryOperator.identity());
+	static final Item RAW_PORK_SKEWER = register("raw_pork_skewer", UnaryOperator.identity());
+	static final Item RAW_CHICKEN_SKEWER = register("raw_chicken_skewer", UnaryOperator.identity());
+	static final Item RAW_MUTTON_SKEWER = register("raw_mutton_skewer", UnaryOperator.identity());
+	static final Item GRILLED_BEEF_SKEWER = register("grilled_beef_skewer", properties -> properties.food(new FoodProperties(10, 12.0F, false)));
+	static final Item GRILLED_PORK_SKEWER = register("grilled_pork_skewer", properties -> properties.food(new FoodProperties(10, 12.0F, false)));
+	static final Item GRILLED_CHICKEN_SKEWER = register("grilled_chicken_skewer", properties -> properties.food(new FoodProperties(9, 10.8F, false)));
+	static final Item GRILLED_MUTTON_SKEWER = register("grilled_mutton_skewer", properties -> properties.food(new FoodProperties(9, 10.8F, false)));
+	/** Oils that fill the cooking pot and wok. B-0052 adds the oils themselves. */
+	static final net.minecraft.tags.TagKey<Item> COOKING_OILS = net.minecraft.tags.TagKey.create(
+		Registries.ITEM, PortablePocketCabin.id("cooking_oils"));
+
 	static final Item CHOPPED_CARROT = register("chopped_carrot", UnaryOperator.identity());
 	static final Item DICED_POTATO = register("diced_potato", UnaryOperator.identity());
 	static final Item CHOPPED_BEETROOT = register("chopped_beetroot", UnaryOperator.identity());

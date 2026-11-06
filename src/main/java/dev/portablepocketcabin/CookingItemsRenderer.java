@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Draws the items lying on a skillet or cutting board, each flat at its own spot, like a campfire. */
-final class CookingItemsRenderer<T extends DisplayStationBlockEntity>
+final class CookingItemsRenderer<T extends CookingStationBlockEntity>
 	implements BlockEntityRenderer<T, CookingItemsRenderer.State> {
 	static final class State extends BlockEntityRenderState {
 		final List<ItemStackRenderState> items = new ArrayList<>();
@@ -38,6 +38,22 @@ final class CookingItemsRenderer<T extends DisplayStationBlockEntity>
 	static BlockEntityRendererProvider<SkilletBlockEntity, State> skillet() {
 		return context -> new CookingItemsRenderer<>(context, 2.1F / 16,
 			new float[][] {{0.33F, 0.33F, 0.32F}, {0.67F, 0.33F, 0.32F}, {0.33F, 0.67F, 0.32F}, {0.67F, 0.67F, 0.32F}});
+	}
+
+	static BlockEntityRendererProvider<GrillBlockEntity, State> grill() {
+		return context -> new CookingItemsRenderer<>(context, 16.1F / 16,
+			new float[][] {{0.3F, 0.3F, 0.34F}, {0.7F, 0.3F, 0.34F}, {0.3F, 0.7F, 0.34F}, {0.7F, 0.7F, 0.34F}});
+	}
+
+	/** Seven wells: one in the middle and six around it, as on a real æbleskive pan. */
+	static BlockEntityRendererProvider<AebleskivePanBlockEntity, State> aebleskivePan() {
+		float[][] wells = new float[7][];
+		wells[0] = new float[] {0.5F, 0.5F, 0.22F};
+		for (int i = 0; i < 6; i++) {
+			double angle = Math.PI / 3 * i;
+			wells[i + 1] = new float[] {0.5F + 0.3F * (float) Math.cos(angle), 0.5F + 0.3F * (float) Math.sin(angle), 0.22F};
+		}
+		return context -> new CookingItemsRenderer<>(context, 2.5F / 16, wells);
 	}
 
 	static BlockEntityRendererProvider<CuttingBoardBlockEntity, State> cuttingBoard() {

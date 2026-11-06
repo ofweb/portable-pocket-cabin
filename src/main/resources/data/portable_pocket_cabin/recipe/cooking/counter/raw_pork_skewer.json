@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "skewering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:skewer"
+    },
+    {
+      "item": "minecraft:porkchop"
+    },
+    {
+      "item": "minecraft:potato"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:raw_pork_skewer"
+  }
+}

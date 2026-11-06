@@ -102,7 +102,63 @@ final class CookingScreenshots {
 			shot(context, "cookbook-detail");
 			context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).select(PortablePocketCabin.id("cooking/oven/cake")));
 			shot(context, "cookbook-cake");
+			context.runOnClient(client -> client.gui.setScreen(null));
+			captureCounterStations(context, world, origin[0]);
 		}
+	}
+
+	/** B-0053: the prep counter with a strainer, a counter threading a skewer, the grill, the wok, and the æbleskive pan. */
+	private static void captureCounterStations(ClientGameTestContext context, TestSingleplayerContext world, BlockPos base) {
+		world.getServer().runOnServer(server -> {
+			var player = world.getConnection().getServerPlayer();
+			var level = player.level();
+			player.closeContainer();
+			// Extend the floor so the overview can stand further back.
+			for (int x = -5; x <= 5; x++) for (int z = 3; z <= 6; z++) {
+				level.setBlockAndUpdate(base.offset(x, -1, z), Blocks.SMOOTH_STONE.defaultBlockState());
+				for (int y = 0; y < 4; y++) level.setBlockAndUpdate(base.offset(x, y, z), Blocks.AIR.defaultBlockState());
+			}
+			level.setBlockAndUpdate(base.offset(-4, 0, -1), CookingBlocks.PREP_COUNTER.defaultBlockState());
+			level.setBlockAndUpdate(base.offset(-4, 1, -1), CookingBlocks.STRAINER.defaultBlockState());
+			level.setBlockAndUpdate(base.offset(-2, 0, -1), CookingBlocks.PREP_COUNTER.defaultBlockState());
+			var counter = (ProcessStationBlockEntity) level.getBlockEntity(base.offset(-2, 0, -1));
+			counter.setItem(0, new ItemStack(CookingItems.SKEWER, 4));
+			counter.setItem(1, new ItemStack(Items.BEEF, 4));
+			counter.setItem(2, new ItemStack(Items.CARROT, 4));
+			level.setBlockAndUpdate(base.offset(0, 0, -1), CookingBlocks.GRILL.defaultBlockState()
+				.setValue(HorizontalDirectionalBlock.FACING, Direction.SOUTH));
+			var grill = (GrillBlockEntity) level.getBlockEntity(base.offset(0, 0, -1));
+			grill.addFuel(new ItemStack(Items.COAL_BLOCK));
+			grill.add(level, new ItemStack(CookingItems.RAW_BEEF_SKEWER));
+			grill.add(level, new ItemStack(CookingItems.RAW_PORK_SKEWER));
+			grill.add(level, new ItemStack(CookingItems.RAW_CHICKEN_SKEWER));
+			var facing = CookingBlocks.STOVE.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, Direction.SOUTH);
+			level.setBlockAndUpdate(base.offset(2, 0, -1), facing);
+			level.setBlockAndUpdate(base.offset(2, 1, -1), CookingBlocks.WOK.defaultBlockState());
+			level.setBlockAndUpdate(base.offset(4, 0, -1), facing);
+			level.setBlockAndUpdate(base.offset(4, 1, -1), CookingBlocks.AEBLESKIVE_PAN.defaultBlockState());
+			((ProcessStationBlockEntity) level.getBlockEntity(base.offset(2, 1, -1))).fillOil();
+		});
+		world.getServer().runOnServer(server -> {
+			var player = world.getConnection().getServerPlayer();
+			player.teleportTo(player.level(), base.getX() + .5, base.getY(), base.getZ() + 5.5, java.util.Set.of(), 180, 20, false);
+		});
+		world.getConnection().waitForClientboundPackets();
+		world.getConnection().waitForChunksRender();
+		context.waitTicks(20);
+		shot(context, "counter-stations");
+		// Back within reach: a station menu closes when the player is too far away.
+		world.getServer().runOnServer(server -> {
+			var player = world.getConnection().getServerPlayer();
+			player.teleportTo(player.level(), base.getX() + .5, base.getY(), base.getZ() + 1.5, java.util.Set.of(), 180, 35, false);
+		});
+		world.getConnection().waitForClientboundPackets();
+		open(context, world, base.offset(-2, 0, -1), CookingMenu.Kind.COUNTER);
+		shot(context, "counter-screen");
+		open(context, world, base.offset(-4, 1, -1), CookingMenu.Kind.STRAINER);
+		shot(context, "strainer-screen");
+		open(context, world, base.offset(2, 1, -1), CookingMenu.Kind.WOK);
+		shot(context, "wok-screen");
 	}
 
 	private static void open(ClientGameTestContext context, TestSingleplayerContext world, BlockPos pos, CookingMenu.Kind kind) {

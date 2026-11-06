@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:aebleskive_pan",
+  "technique": "cooking_in_wells",
+  "ingredients": [
+    {
+      "item": "minecraft:egg"
+    }
+  ],
+  "heat": "medium",
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:fried_egg"
+  }
+}

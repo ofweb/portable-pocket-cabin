@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "skewering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:skewer"
+    },
+    {
+      "item": "minecraft:mutton"
+    },
+    {
+      "item": "minecraft:brown_mushroom"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:raw_mutton_skewer"
+  }
+}

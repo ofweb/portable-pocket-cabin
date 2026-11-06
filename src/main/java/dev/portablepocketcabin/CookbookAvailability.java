@@ -64,7 +64,7 @@ final class CookbookAvailability {
 				ServerPlayNetworking.send(player, new Reply(available(player), false));
 			} else if (player.containerMenu instanceof CookingMenu menu && menu.stillValid(player)
 				&& player.level().getBlockEntity(menu.pos()) instanceof CookingStationBlockEntity station && menu.kind() != CookingMenu.Kind.STOVE) {
-				CookingStation kind = menu.kind() == CookingMenu.Kind.POT ? CookingStation.POT : CookingStation.OVEN;
+				CookingStation kind = menu.kind().station;
 				ServerPlayNetworking.send(player, new Reply(fillable(player, station, kind), true));
 			}
 		});
@@ -92,7 +92,8 @@ final class CookbookAvailability {
 		}
 		sources.addAll(player.getInventory().getNonEquipmentItems());
 		for (int slot = 0; slot < kind.ingredientSlots(); slot++) sources.add(station.getItem(slot));
-		if (kind == CookingStation.POT) sources.add(station.getItem(CookingPotBlockEntity.CONTAINER_SLOT));
+		int containerSlot = CookingMenu.Kind.of(kind).containerSlot;
+		if (containerSlot >= 0) sources.add(station.getItem(containerSlot));
 		var recipes = recipes(player.level().getServer().getRecipeManager().getRecipes()).stream()
 			.filter(holder -> holder.value().station() == kind).toList();
 		return available(recipes, sources);

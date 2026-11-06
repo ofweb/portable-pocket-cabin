@@ -53,9 +53,9 @@ final class CookingProcess {
 		return progress;
 	}
 
-	Optional<CookingRecipe> recipe(ServerLevel level, Container container, int water) {
+	Optional<CookingRecipe> recipe(ServerLevel level, Container container, CookingInput.Liquid liquid) {
 		if (dirty || generation != CookingStation.recipeGeneration()) {
-			var found = lookup.find(level, input(container, water)).orElse(null);
+			var found = lookup.find(level, input(container, liquid)).orElse(null);
 			boolean same = found != null && (loaded
 				? savedRecipeId == null || savedRecipeId.equals(found.id().identifier().toString())
 				: recipe != null && found.id().equals(recipe.id()));
@@ -70,16 +70,19 @@ final class CookingProcess {
 	}
 
 	/** Whether the station has a recipe that heat would advance. */
-	boolean wantsHeat(ServerLevel level, Container container, int water) {
-		return recipe(level, container, water).filter(r -> canOutput(container, r)).isPresent();
+	boolean wantsHeat(ServerLevel level, Container container, CookingInput.Liquid liquid) {
+		return recipe(level, container, liquid).filter(r -> canOutput(container, r)).isPresent();
 	}
 
-	/** Advances cooking for one tick. Returns the water used when a recipe completes, or zero. */
-	int tick(ServerLevel level, Container container, int water, Optional<CookingHeat> heat) {
-		CookingRecipe current = recipe(level, container, water).orElse(null);
+	/**
+	 * Advances cooking for one tick. Stations without heat pass no heat and progress on recipes that need none.
+	 * Returns the water or oil used when a recipe completes, or zero.
+	 */
+	int tick(ServerLevel level, Container container, CookingInput.Liquid liquid, Optional<CookingHeat> heat) {
+		CookingRecipe current = recipe(level, container, liquid).orElse(null);
 		if (current == null || !canOutput(container, current) || !heat.equals(current.heat())) return 0;
 		if (++progress < current.time()) return 0;
-		CookingInput input = input(container, water);
+		CookingInput input = input(container, liquid);
 		int[] assignment = current.assign(input).orElse(null);
 		progress = 0;
 		dirty = true;
@@ -90,7 +93,7 @@ final class CookingProcess {
 		insert(container, outputSlot, current.result());
 		for (ItemStackTemplate remainder : current.remainders()) insert(container, byproductSlot, remainder);
 		container.setChanged();
-		return current.water();
+		return current.water() + current.oil();
 	}
 
 	/** The recipe's heat, for the screen's status line. */
@@ -102,11 +105,11 @@ final class CookingProcess {
 		return recipe == null ? 0 : recipe.value().time();
 	}
 
-	private CookingInput input(Container container, int water) {
+	private CookingInput input(Container container, CookingInput.Liquid liquid) {
 		List<ItemStack> ingredients = new ArrayList<>(inputSlots);
 		for (int slot = 0; slot < inputSlots; slot++) ingredients.add(container.getItem(slot));
 		ItemStack held = containerSlot < 0 ? ItemStack.EMPTY : container.getItem(containerSlot);
-		return new CookingInput(ingredients, held, water);
+		return new CookingInput(ingredients, held, liquid.water(), liquid.oil());
 	}
 
 	private boolean canOutput(Container container, CookingRecipe recipe) {

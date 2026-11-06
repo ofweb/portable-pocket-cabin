@@ -18,7 +18,11 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -175,11 +179,19 @@ abstract class CookingStationBlock extends BaseEntityBlock {
 		@Override
 		protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
 			InteractionHand hand, BlockHitResult hit) {
-			if (!stack.is(Items.WATER_BUCKET)) return InteractionResult.TRY_WITH_EMPTY_HAND;
+			boolean water = stack.is(Items.WATER_BUCKET);
+			if (!water && !stack.is(CookingItems.COOKING_OILS)) return InteractionResult.TRY_WITH_EMPTY_HAND;
 			if (level instanceof ServerLevel && level.getBlockEntity(pos) instanceof CookingPotBlockEntity pot
-				&& CookingStationBlockEntity.mayUse(pot, player) && pot.fillWater()) {
-				level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
-				if (!player.getAbilities().instabuild) player.setItemInHand(hand, new ItemStack(Items.BUCKET));
+				&& CookingStationBlockEntity.mayUse(pot, player) && (water ? pot.fillWater() : pot.fillOil())) {
+				level.playSound(null, pos, water ? SoundEvents.BUCKET_EMPTY : SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+				if (!player.getAbilities().instabuild) {
+					if (water) player.setItemInHand(hand, new ItemStack(Items.BUCKET));
+					else {
+						stack.shrink(1);
+						ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE);
+						if (!player.getInventory().add(bottle)) player.drop(bottle, false);
+					}
+				}
 			}
 			return InteractionResult.SUCCESS;
 		}
@@ -305,6 +317,269 @@ abstract class CookingStationBlock extends BaseEntityBlock {
 		@Override
 		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 			return new CuttingBoardBlockEntity(pos, state);
+		}
+	}
+
+	/** The prep counter: a work surface for hand work, and the place counter-top stations stand. */
+	static final class PrepCounter extends CookingStationBlock {
+		static final MapCodec<PrepCounter> CODEC = simpleCodec(PrepCounter::new);
+
+		PrepCounter(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		protected MapCodec<? extends BaseEntityBlock> codec() {
+			return CODEC;
+		}
+
+		@Override
+		protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+			return openMenu(level, pos, player, CookingMenu.Kind.COUNTER);
+		}
+
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return ProcessStationBlockEntity.counter(pos, state);
+		}
+
+		@Override
+		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+			return level instanceof ServerLevel
+				? createTickerHelper(type, CookingBlocks.PREP_COUNTER_ENTITY, (world, pos, blockState, station) ->
+					ProcessStationBlockEntity.serverTick((ServerLevel) world, pos, blockState, station))
+				: null;
+		}
+	}
+
+	/**
+	 * A station that stands on a prep counter, such as the strainer, mixing bowl, and mortar and pestle. It can only
+	 * be placed on a counter, and comes off as an item when its counter is removed.
+	 */
+	abstract static class CounterTop extends CookingStationBlock {
+		CounterTop(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+			return level.getBlockState(pos.below()).getBlock() instanceof PrepCounter;
+		}
+
+		@Override
+		public BlockState getStateForPlacement(BlockPlaceContext context) {
+			BlockState state = defaultBlockState();
+			return state.canSurvive(context.getLevel(), context.getClickedPos()) ? state : null;
+		}
+
+		@Override
+		protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction direction,
+			BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+			return direction == Direction.DOWN && !state.canSurvive(level, pos) ? Blocks.AIR.defaultBlockState()
+				: super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
+		}
+	}
+
+	/** The strainer separates liquids from solids, standing on a prep counter. */
+	static final class Strainer extends CounterTop {
+		static final MapCodec<Strainer> CODEC = simpleCodec(Strainer::new);
+		private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 6, 13);
+
+		Strainer(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		protected MapCodec<? extends BaseEntityBlock> codec() {
+			return CODEC;
+		}
+
+		@Override
+		protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+			return SHAPE;
+		}
+
+		@Override
+		protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+			return openMenu(level, pos, player, CookingMenu.Kind.STRAINER);
+		}
+
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return ProcessStationBlockEntity.strainer(pos, state);
+		}
+
+		@Override
+		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+			return level instanceof ServerLevel
+				? createTickerHelper(type, CookingBlocks.STRAINER_ENTITY, (world, pos, blockState, station) ->
+					ProcessStationBlockEntity.serverTick((ServerLevel) world, pos, blockState, station))
+				: null;
+		}
+	}
+
+	/** The grill: a grate over its own fire. Fuel goes in its slot; food goes on the grate; a shovel puts it out. */
+	static final class Grill extends Fired {
+		static final MapCodec<Grill> CODEC = simpleCodec(Grill::new);
+
+		Grill(Properties properties) {
+			super(properties, null);
+		}
+
+		@Override
+		protected MapCodec<? extends BaseEntityBlock> codec() {
+			return CODEC;
+		}
+
+		@Override
+		protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+			InteractionHand hand, BlockHitResult hit) {
+			if (stack.is(ItemTags.SHOVELS)) return super.useItemOn(stack, state, level, pos, player, hand, hit);
+			if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
+			if (!(level.getBlockEntity(pos) instanceof GrillBlockEntity grill) || !CookingStationBlockEntity.mayUse(grill, player)) {
+				return InteractionResult.FAIL;
+			}
+			ItemStack held = player.getAbilities().instabuild ? stack.copy() : stack;
+			if (grill.cooks(serverLevel, held)) {
+				return grill.add(serverLevel, held) ? InteractionResult.SUCCESS_SERVER : InteractionResult.FAIL;
+			}
+			return grill.addFuel(held) ? InteractionResult.SUCCESS_SERVER : InteractionResult.TRY_WITH_EMPTY_HAND;
+		}
+
+		@Override
+		protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+			if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
+			if (!(level.getBlockEntity(pos) instanceof GrillBlockEntity grill) || !CookingStationBlockEntity.mayUse(grill, player)) {
+				return InteractionResult.FAIL;
+			}
+			ItemStack taken = grill.take(serverLevel);
+			if (taken.isEmpty()) return InteractionResult.PASS;
+			if (!player.getInventory().add(taken)) player.drop(taken, false);
+			return InteractionResult.SUCCESS_SERVER;
+		}
+
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return new GrillBlockEntity(pos, state);
+		}
+
+		@Override
+		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+			return level instanceof ServerLevel
+				? createTickerHelper(type, CookingBlocks.GRILL_ENTITY, (world, pos, blockState, grill) ->
+					GrillBlockEntity.serverTick((ServerLevel) world, pos, blockState, grill))
+				: null;
+		}
+	}
+
+	/** The wok: a deep pan on a stove at high heat. Oil bottles fill it for stir-frying. */
+	static final class Wok extends CookingStationBlock {
+		static final MapCodec<Wok> CODEC = simpleCodec(Wok::new);
+		private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 5, 15);
+
+		Wok(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		protected MapCodec<? extends BaseEntityBlock> codec() {
+			return CODEC;
+		}
+
+		@Override
+		protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+			return SHAPE;
+		}
+
+		@Override
+		protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+			InteractionHand hand, BlockHitResult hit) {
+			if (!stack.is(CookingItems.COOKING_OILS)) return InteractionResult.TRY_WITH_EMPTY_HAND;
+			if (level instanceof ServerLevel && level.getBlockEntity(pos) instanceof ProcessStationBlockEntity wok
+				&& CookingStationBlockEntity.mayUse(wok, player) && wok.fillOil()) {
+				level.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+				if (!player.getAbilities().instabuild) {
+					stack.shrink(1);
+					ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE);
+					if (!player.getInventory().add(bottle)) player.drop(bottle, false);
+				}
+			}
+			return InteractionResult.SUCCESS;
+		}
+
+		@Override
+		protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+			return openMenu(level, pos, player, CookingMenu.Kind.WOK);
+		}
+
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return ProcessStationBlockEntity.wok(pos, state);
+		}
+
+		@Override
+		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+			return level instanceof ServerLevel
+				? createTickerHelper(type, CookingBlocks.WOK_ENTITY, (world, pos, blockState, wok) ->
+					ProcessStationBlockEntity.serverTick((ServerLevel) world, pos, blockState, wok))
+				: null;
+		}
+	}
+
+	/** The æbleskive pan: seven wells on a stove at medium heat. A skewer turns the half-done balls. */
+	static final class AebleskivePan extends CookingStationBlock {
+		static final MapCodec<AebleskivePan> CODEC = simpleCodec(AebleskivePan::new);
+		private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 3, 15);
+
+		AebleskivePan(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		protected MapCodec<? extends BaseEntityBlock> codec() {
+			return CODEC;
+		}
+
+		@Override
+		protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+			return SHAPE;
+		}
+
+		@Override
+		protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+			InteractionHand hand, BlockHitResult hit) {
+			if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
+			if (!(level.getBlockEntity(pos) instanceof AebleskivePanBlockEntity pan) || !CookingStationBlockEntity.mayUse(pan, player)) {
+				return InteractionResult.FAIL;
+			}
+			if (stack.is(CookingItems.SKEWER)) return pan.turn() ? InteractionResult.SUCCESS_SERVER : InteractionResult.PASS;
+			ItemStack held = player.getAbilities().instabuild ? stack.copy() : stack;
+			return pan.add(serverLevel, held) ? InteractionResult.SUCCESS_SERVER : InteractionResult.TRY_WITH_EMPTY_HAND;
+		}
+
+		@Override
+		protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+			if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
+			if (!(level.getBlockEntity(pos) instanceof AebleskivePanBlockEntity pan) || !CookingStationBlockEntity.mayUse(pan, player)) {
+				return InteractionResult.FAIL;
+			}
+			ItemStack taken = pan.take(serverLevel);
+			if (taken.isEmpty()) return InteractionResult.PASS;
+			if (!player.getInventory().add(taken)) player.drop(taken, false);
+			return InteractionResult.SUCCESS_SERVER;
+		}
+
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return new AebleskivePanBlockEntity(pos, state);
+		}
+
+		@Override
+		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+			return level instanceof ServerLevel
+				? createTickerHelper(type, CookingBlocks.AEBLESKIVE_PAN_ENTITY, (world, pos, blockState, pan) ->
+					AebleskivePanBlockEntity.serverTick((ServerLevel) world, pos, blockState, pan))
+				: null;
 		}
 	}
 }

@@ -43,9 +43,9 @@ final class OvenBlockEntity extends FiredStationBlockEntity implements WorldlyCo
 	}
 
 	static void serverTick(ServerLevel level, BlockPos pos, BlockState state, OvenBlockEntity oven) {
-		oven.burn(oven.process.wantsHeat(level, oven, 0));
+		oven.burn(oven.process.wantsHeat(level, oven, CookingInput.Liquid.NONE));
 		int before = oven.process.progress();
-		oven.process.tick(level, oven, 0, oven.burner.heat());
+		oven.process.tick(level, oven, CookingInput.Liquid.NONE, oven.burner.heat());
 		if (before != oven.process.progress()) oven.saveChanged();
 	}
 
