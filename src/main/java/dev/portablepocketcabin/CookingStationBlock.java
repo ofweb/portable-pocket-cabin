@@ -18,7 +18,11 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -313,6 +317,104 @@ abstract class CookingStationBlock extends BaseEntityBlock {
 		@Override
 		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 			return new CuttingBoardBlockEntity(pos, state);
+		}
+	}
+
+	/** The prep counter: a work surface for hand work, and the place counter-top stations stand. */
+	static final class PrepCounter extends CookingStationBlock {
+		static final MapCodec<PrepCounter> CODEC = simpleCodec(PrepCounter::new);
+
+		PrepCounter(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		protected MapCodec<? extends BaseEntityBlock> codec() {
+			return CODEC;
+		}
+
+		@Override
+		protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+			return openMenu(level, pos, player, CookingMenu.Kind.COUNTER);
+		}
+
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return ProcessStationBlockEntity.counter(pos, state);
+		}
+
+		@Override
+		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+			return level instanceof ServerLevel
+				? createTickerHelper(type, CookingBlocks.PREP_COUNTER_ENTITY, (world, pos, blockState, station) ->
+					ProcessStationBlockEntity.serverTick((ServerLevel) world, pos, blockState, station))
+				: null;
+		}
+	}
+
+	/**
+	 * A station that stands on a prep counter, such as the strainer, mixing bowl, and mortar and pestle. It can only
+	 * be placed on a counter, and comes off as an item when its counter is removed.
+	 */
+	abstract static class CounterTop extends CookingStationBlock {
+		CounterTop(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+			return level.getBlockState(pos.below()).getBlock() instanceof PrepCounter;
+		}
+
+		@Override
+		public BlockState getStateForPlacement(BlockPlaceContext context) {
+			BlockState state = defaultBlockState();
+			return state.canSurvive(context.getLevel(), context.getClickedPos()) ? state : null;
+		}
+
+		@Override
+		protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction direction,
+			BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+			return direction == Direction.DOWN && !state.canSurvive(level, pos) ? Blocks.AIR.defaultBlockState()
+				: super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
+		}
+	}
+
+	/** The strainer separates liquids from solids, standing on a prep counter. */
+	static final class Strainer extends CounterTop {
+		static final MapCodec<Strainer> CODEC = simpleCodec(Strainer::new);
+		private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 6, 13);
+
+		Strainer(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		protected MapCodec<? extends BaseEntityBlock> codec() {
+			return CODEC;
+		}
+
+		@Override
+		protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+			return SHAPE;
+		}
+
+		@Override
+		protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+			return openMenu(level, pos, player, CookingMenu.Kind.STRAINER);
+		}
+
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return ProcessStationBlockEntity.strainer(pos, state);
+		}
+
+		@Override
+		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+			return level instanceof ServerLevel
+				? createTickerHelper(type, CookingBlocks.STRAINER_ENTITY, (world, pos, blockState, station) ->
+					ProcessStationBlockEntity.serverTick((ServerLevel) world, pos, blockState, station))
+				: null;
 		}
 	}
 }

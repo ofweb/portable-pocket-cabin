@@ -30,7 +30,8 @@ final class CookingMenu extends AbstractContainerMenu {
 	static final int DATA_LIT_TIME = 5;
 	static final int DATA_LIT_DURATION = 6;
 	static final int DATA_LIQUID = 7;
-	static final int DATA_COUNT = 8;
+	static final int DATA_PAUSED = 8;
+	static final int DATA_COUNT = 9;
 	static final int INVENTORY_Y = 84;
 
 	/** Read-only menu data that a station computes on demand. */
@@ -45,21 +46,42 @@ final class CookingMenu extends AbstractContainerMenu {
 		}
 	}
 
+	/**
+	 * Each station screen: the recipe type it serves, its slot positions, and which slots hold the container and
+	 * the output and byproduct. The stove has no recipes, and the oven's slot 6 is fuel.
+	 */
 	enum Kind {
-		STOVE(1, new int[][] {{80, 53}}),
-		POT(9, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}}),
-		OVEN(9, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}});
+		STOVE(null, new int[][] {{80, 53}}, -1, -1, -1),
+		POT(CookingStation.POT, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}}, 6, 7, 8),
+		OVEN(CookingStation.OVEN, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}}, -1, 7, 8),
+		COUNTER(CookingStation.COUNTER, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {124, 26}, {124, 53}}, -1, 6, 7),
+		STRAINER(CookingStation.STRAINER, new int[][] {{39, 17}, {57, 17}, {39, 35}, {57, 35}, {48, 56}, {124, 26}, {124, 53}}, 4, 5, 6),
+		WOK(CookingStation.WOK, new int[][] {{39, 17}, {57, 17}, {39, 35}, {57, 35}, {48, 56}, {124, 26}, {124, 53}}, 4, 5, 6);
 
+		final CookingStation station;
 		final int size;
 		final int[][] slots;
+		final int containerSlot;
+		final int outputSlot;
+		final int byproductSlot;
 
-		Kind(int size, int[][] slots) {
-			this.size = size;
+		Kind(CookingStation station, int[][] slots, int containerSlot, int outputSlot, int byproductSlot) {
+			this.station = station;
+			this.size = slots.length;
 			this.slots = slots;
+			this.containerSlot = containerSlot;
+			this.outputSlot = outputSlot;
+			this.byproductSlot = byproductSlot;
 		}
 
 		boolean takeOnly(int slot) {
-			return this != STOVE && (slot == CookingPotBlockEntity.OUTPUT_SLOT || slot == CookingPotBlockEntity.BYPRODUCT_SLOT);
+			return slot >= 0 && (slot == outputSlot || slot == byproductSlot);
+		}
+
+		/** The screen for a station's recipes, or null for stations without one, such as the skillet. */
+		static Kind of(CookingStation station) {
+			for (Kind kind : values()) if (kind.station == station) return kind;
+			return null;
 		}
 	}
 
@@ -105,6 +127,7 @@ final class CookingMenu extends AbstractContainerMenu {
 			case StoveBlockEntity stove -> stove.data;
 			case CookingPotBlockEntity pot -> pot.data;
 			case OvenBlockEntity oven -> oven.data;
+			case ProcessStationBlockEntity process -> process.data;
 			default -> new SimpleContainerData(DATA_COUNT);
 		};
 		return new CookingMenu(kind, containerId, inventory, station, data, pos);
@@ -151,10 +174,10 @@ final class CookingMenu extends AbstractContainerMenu {
 			boolean fuel = player.level().fuelValues().isFuel(stack);
 			if (!(fuel && moveItemStackTo(stack, OvenBlockEntity.FUEL_SLOT, OvenBlockEntity.FUEL_SLOT + 1, false))
 				&& !moveItemStackTo(stack, 0, CookingStation.OVEN.ingredientSlots(), false)) return ItemStack.EMPTY;
-		} else if (stack.is(Items.BOWL)) {
-			if (!moveItemStackTo(stack, CookingPotBlockEntity.CONTAINER_SLOT, CookingPotBlockEntity.CONTAINER_SLOT + 1, false)
-				&& !moveItemStackTo(stack, 0, CookingStation.POT.ingredientSlots(), false)) return ItemStack.EMPTY;
-		} else if (!moveItemStackTo(stack, 0, CookingStation.POT.ingredientSlots(), false)) {
+		} else if (kind.containerSlot >= 0 && (stack.is(Items.BOWL) || stack.is(Items.GLASS_BOTTLE))) {
+			if (!moveItemStackTo(stack, kind.containerSlot, kind.containerSlot + 1, false)
+				&& !moveItemStackTo(stack, 0, kind.station.ingredientSlots(), false)) return ItemStack.EMPTY;
+		} else if (!moveItemStackTo(stack, 0, kind.station.ingredientSlots(), false)) {
 			return ItemStack.EMPTY;
 		}
 		if (stack.isEmpty()) slot.setByPlayer(ItemStack.EMPTY);

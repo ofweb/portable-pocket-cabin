@@ -47,11 +47,7 @@ final class CookingFill {
 	private static void handle(ServerPlayer player, Request request) {
 		if (!(player.containerMenu instanceof CookingMenu menu) || !menu.pos().equals(request.pos()) || !menu.stillValid(player)) return;
 		if (!(player.level().getBlockEntity(request.pos()) instanceof CookingStationBlockEntity station)) return;
-		CookingStation kind = switch (menu.kind()) {
-			case POT -> CookingStation.POT;
-			case OVEN -> CookingStation.OVEN;
-			default -> null;
-		};
+		CookingStation kind = menu.kind().station;
 		if (kind == null) return;
 		var holder = player.level().getServer().getRecipeManager().byKey(ResourceKey.create(Registries.RECIPE, request.recipe())).orElse(null);
 		if (holder == null || !(holder.value() instanceof CookingRecipe recipe) || recipe.station() != kind) return;
@@ -92,7 +88,7 @@ final class CookingFill {
 		if (station instanceof OvenBlockEntity) {
 			heater = station;
 			heaterSlot = OvenBlockEntity.FUEL_SLOT;
-		} else if (player.level().getBlockEntity(station.getBlockPos().below()) instanceof StoveBlockEntity stove
+		} else if (kind.heated() && player.level().getBlockEntity(station.getBlockPos().below()) instanceof StoveBlockEntity stove
 			&& CabinKitchen.contains(cabin, stove.getBlockPos())) {
 			heater = stove;
 			heaterSlot = StoveBlockEntity.FUEL_SLOT;
@@ -120,7 +116,7 @@ final class CookingFill {
 		CabinStorageState storage, Container heater, int heaterSlot) {
 		int slots = kind.ingredientSlots();
 		boolean usesContainer = recipe.container().isPresent();
-		int containerSlot = usesContainer ? CookingPotBlockEntity.CONTAINER_SLOT : -1;
+		int containerSlot = usesContainer ? CookingMenu.Kind.of(kind).containerSlot : -1;
 		List<ItemStack> stacks = new ArrayList<>();
 		for (int slot = 0; slot < slots; slot++) stacks.add(station.getItem(slot).copy());
 		if (usesContainer) stacks.add(station.getItem(containerSlot).copy());

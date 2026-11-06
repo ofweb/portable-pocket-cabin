@@ -79,6 +79,73 @@ public final class CabinCounterStationGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void counterThreadsSkewersAndPausesUnderAStation(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var counter = counter(helper, BASE);
+		counter.setItem(0, new ItemStack(CookingItems.SKEWER));
+		counter.setItem(1, new ItemStack(Items.BEEF));
+		counter.setItem(2, new ItemStack(Items.CARROT));
+		tick(helper, counter, 20);
+		helper.assertTrue(counter.progress() == 20, "Hand work progresses without heat");
+		helper.setBlock(BASE.above(), CookingBlocks.STRAINER);
+		tick(helper, counter, 10);
+		helper.assertTrue(counter.progress() == 20 && counter.covered(), "Hand work pauses while a station stands on the counter");
+		var reloaded = reload(helper, counter, ProcessStationBlockEntity.counter(counter.getBlockPos(), counter.getBlockState()));
+		helper.assertTrue(reloaded.progress() == 20 && reloaded.getItem(1).is(Items.BEEF), "The counter keeps its work when saved");
+		helper.setBlock(BASE.above(), net.minecraft.world.level.block.Blocks.AIR);
+		tick(helper, counter, 20);
+		helper.assertTrue(counter.getItem(CookingMenu.Kind.COUNTER.outputSlot).is(CookingItems.RAW_BEEF_SKEWER) && counter.getItem(1).isEmpty(),
+			"Once clear, the counter threads a beef and carrot skewer");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void counterTopStationsNeedACounter(GameTestHelper helper) {
+		var level = helper.getLevel();
+		BlockPos dirt = helper.absolutePos(BASE.offset(2, 0, 0));
+		helper.setBlock(BASE.offset(2, -1, 0), net.minecraft.world.level.block.Blocks.DIRT);
+		helper.assertTrue(!CookingBlocks.STRAINER.defaultBlockState().canSurvive(level, dirt), "A strainer cannot stand on dirt");
+		helper.assertTrue(CookingBlocks.CUTTING_BOARD.defaultBlockState().canSurvive(level, dirt), "The cutting board still works anywhere");
+		counter(helper, BASE);
+		helper.assertTrue(CookingBlocks.STRAINER.defaultBlockState().canSurvive(level, helper.absolutePos(BASE.above())), "A strainer stands on a counter");
+		helper.setBlock(BASE.above(), CookingBlocks.STRAINER);
+		level.setBlockAndUpdate(helper.absolutePos(BASE), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
+		helper.assertTrue(level.getBlockState(helper.absolutePos(BASE.above())).isAir(), "The strainer comes off when its counter is removed");
+		var dropped = level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
+			new net.minecraft.world.phys.AABB(helper.absolutePos(BASE)).inflate(2));
+		helper.assertTrue(dropped.stream().anyMatch(item -> item.getItem().is(CookingBlocks.STRAINER.asItem())), "It drops as an item");
+		dropped.forEach(net.minecraft.world.entity.Entity::discard);
+		helper.succeed();
+	}
+
+	@GameTest
+	public void strainerSeparatesLiquidFromSolids(GameTestHelper helper) {
+		var level = helper.getLevel();
+		counter(helper, BASE);
+		helper.setBlock(BASE.above(), CookingBlocks.STRAINER);
+		var strainer = (ProcessStationBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.above()));
+		var kind = CookingMenu.Kind.STRAINER;
+		strainer.setItem(0, new ItemStack(Items.SWEET_BERRIES, 2));
+		strainer.setItem(kind.containerSlot, new ItemStack(Items.GLASS_BOTTLE, 2));
+		tick(helper, strainer, 20);
+		helper.assertTrue(strainer.getItem(kind.outputSlot).is(Items.HONEY_BOTTLE) && strainer.getItem(kind.byproductSlot).is(Items.STICK),
+			"The liquid fills its bottle and the solids go to the byproduct slot");
+		helper.assertTrue(strainer.getItem(kind.containerSlot).getCount() == 1 && strainer.getItem(0).isEmpty(), "Straining uses one bottle and the berries");
+		helper.succeed();
+	}
+
+	private static ProcessStationBlockEntity counter(GameTestHelper helper, BlockPos pos) {
+		helper.setBlock(pos, CookingBlocks.PREP_COUNTER);
+		return (ProcessStationBlockEntity) helper.getLevel().getBlockEntity(helper.absolutePos(pos));
+	}
+
+	private static void tick(GameTestHelper helper, ProcessStationBlockEntity station, int ticks) {
+		for (int i = 0; i < ticks; i++) {
+			ProcessStationBlockEntity.serverTick(helper.getLevel(), station.getBlockPos(), station.getBlockState(), station);
+		}
+	}
+
 	private static <T extends BlockEntity> T reload(GameTestHelper helper, BlockEntity saved, T fresh) {
 		var registries = helper.getLevel().registryAccess();
 		fresh.loadWithComponents(TagValueInput.create(ProblemReporter.DISCARDING, registries, saved.saveWithFullMetadata(registries)));

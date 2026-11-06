@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "N": "minecraft:iron_nugget",
+    "S": "minecraft:string"
+  },
+  "pattern": [
+    "NSN",
+    " N "
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:strainer"
+  }
+}

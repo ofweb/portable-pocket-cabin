@@ -120,5 +120,22 @@
   "screen.portable_pocket_cabin.cookbook.oil": "%s oil",
   "technique.portable_pocket_cabin.whittling": "Whittling",
   "technique.portable_pocket_cabin.whittling.description": "Carve a stick into thin, pointed skewers with a knife. Soaking wooden skewers stops them burning on the grill.",
-  "tag.item.portable_pocket_cabin.cooking_oils": "Cooking Oils"
+  "tag.item.portable_pocket_cabin.cooking_oils": "Cooking Oils",
+  "item.portable_pocket_cabin.raw_beef_skewer": "Raw Beef and Carrot Skewer",
+  "item.portable_pocket_cabin.raw_pork_skewer": "Raw Pork and Potato Skewer",
+  "item.portable_pocket_cabin.raw_chicken_skewer": "Raw Chicken and Beetroot Skewer",
+  "item.portable_pocket_cabin.raw_mutton_skewer": "Raw Mutton and Mushroom Skewer",
+  "block.portable_pocket_cabin.prep_counter": "Prep Counter",
+  "block.portable_pocket_cabin.strainer": "Strainer",
+  "screen.portable_pocket_cabin.cooking.covered": "Clear the counter top",
+  "screen.portable_pocket_cabin.cooking.working": "Working",
+  "screen.portable_pocket_cabin.cookbook.station.counter": "Prep counter",
+  "screen.portable_pocket_cabin.cookbook.station.strainer": "Strainer",
+  "screen.portable_pocket_cabin.cookbook.station.grill": "Grill",
+  "screen.portable_pocket_cabin.cookbook.station.wok": "Wok",
+  "screen.portable_pocket_cabin.cookbook.station.aebleskive_pan": "Æbleskive pan",
+  "technique.portable_pocket_cabin.skewering": "Skewering",
+  "technique.portable_pocket_cabin.skewering.description": "Thread meat and vegetables onto a skewer in small, even pieces, so they cook through together over the fire and are easy to turn.",
+  "technique.portable_pocket_cabin.straining": "Straining",
+  "technique.portable_pocket_cabin.straining.description": "Pour a mixture through a fine mesh or cloth to separate the liquid from the solids. Stocks, juices, and cheeses are strained."
 }

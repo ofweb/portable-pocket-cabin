@@ -32,6 +32,11 @@ final class CookingBlocks {
 	static final Block CUTTING_BOARD = register("cutting_board", CookingStationBlock.CuttingBoard::new, BlockBehaviour.Properties.of()
 		.strength(1.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava());
 
+	static final Block PREP_COUNTER = register("prep_counter", CookingStationBlock.PrepCounter::new, BlockBehaviour.Properties.of()
+		.strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
+	static final Block STRAINER = register("strainer", CookingStationBlock.Strainer::new, BlockBehaviour.Properties.of()
+		.strength(1.0F).sound(SoundType.METAL).noOcclusion().pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY));
+
 	static final BlockEntityType<StoveBlockEntity> STOVE_ENTITY = registerEntity("stove",
 		new BlockEntityType<>(StoveBlockEntity::new, Set.of(STOVE)));
 	static final BlockEntityType<OvenBlockEntity> OVEN_ENTITY = registerEntity("oven",
@@ -40,6 +45,10 @@ final class CookingBlocks {
 		new BlockEntityType<>(CookingPotBlockEntity::new, Set.of(COOKING_POT)));
 	static final BlockEntityType<SkilletBlockEntity> SKILLET_ENTITY = registerEntity("skillet",
 		new BlockEntityType<>(SkilletBlockEntity::new, Set.of(SKILLET)));
+	static final BlockEntityType<ProcessStationBlockEntity> PREP_COUNTER_ENTITY = registerEntity("prep_counter",
+		new BlockEntityType<>(ProcessStationBlockEntity::counter, Set.of(PREP_COUNTER)));
+	static final BlockEntityType<ProcessStationBlockEntity> STRAINER_ENTITY = registerEntity("strainer",
+		new BlockEntityType<>(ProcessStationBlockEntity::strainer, Set.of(STRAINER)));
 	static final BlockEntityType<CuttingBoardBlockEntity> CUTTING_BOARD_ENTITY = registerEntity("cutting_board",
 		new BlockEntityType<>(CuttingBoardBlockEntity::new, Set.of(CUTTING_BOARD)));
 
@@ -54,6 +63,8 @@ final class CookingBlocks {
 			entries.accept(COOKING_POT);
 			entries.accept(SKILLET);
 			entries.accept(CUTTING_BOARD);
+			entries.accept(PREP_COUNTER);
+			entries.accept(STRAINER);
 		});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
 			entries.accept(CookingItems.KITCHEN_KNIFE);

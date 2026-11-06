@@ -40,11 +40,7 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 	}
 
 	private CookingStation station() {
-		return switch (menu.kind()) {
-			case POT -> CookingStation.POT;
-			case OVEN -> CookingStation.OVEN;
-			default -> null;
-		};
+		return menu.kind().station;
 	}
 
 	@Override
@@ -190,7 +186,7 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 		graphics.text(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0xff404040, false);
 		Component status = status();
 		graphics.text(font, status, imageWidth - 8 - font.width(status), 6, 0xff404040, false);
-		if (menu.kind() == CookingMenu.Kind.POT) {
+		if (menu.kind() == CookingMenu.Kind.POT || menu.kind() == CookingMenu.Kind.WOK) {
 			graphics.text(font, Component.translatable(menu.data(CookingMenu.DATA_LIQUID) == 1
 				? "screen.portable_pocket_cabin.cooking.oil" : "screen.portable_pocket_cabin.cooking.water",
 				menu.data(CookingMenu.DATA_WATER), CookingStation.MAX_WATER), 68, 61, 0xff404040, false);
@@ -207,7 +203,12 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 			return heat == 0 ? Component.translatable("screen.portable_pocket_cabin.cooking.out")
 				: Component.translatable("screen.portable_pocket_cabin.cooking.burning", heat(heat));
 		}
+		if (menu.data(CookingMenu.DATA_PAUSED) != 0) return Component.translatable("screen.portable_pocket_cabin.cooking.covered");
 		int needed = menu.data(CookingMenu.DATA_NEEDED_HEAT);
+		if (station() != null && !station().heated()) {
+			return Component.translatable(menu.data(CookingMenu.DATA_TIME) > 0
+				? "screen.portable_pocket_cabin.cooking.working" : "screen.portable_pocket_cabin.cooking.idle");
+		}
 		if (needed == 0) return Component.translatable("screen.portable_pocket_cabin.cooking.idle");
 		if (heat != needed) return Component.translatable("screen.portable_pocket_cabin.cooking.needs", heat(needed));
 		return Component.translatable("screen.portable_pocket_cabin.cooking.cooking", heat(heat));
