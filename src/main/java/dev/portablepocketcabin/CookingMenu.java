@@ -29,7 +29,8 @@ final class CookingMenu extends AbstractContainerMenu {
 	static final int DATA_NEEDED_HEAT = 4;
 	static final int DATA_LIT_TIME = 5;
 	static final int DATA_LIT_DURATION = 6;
-	static final int DATA_COUNT = 7;
+	static final int DATA_LIQUID = 7;
+	static final int DATA_COUNT = 8;
 	static final int INVENTORY_Y = 84;
 
 	/** Read-only menu data that a station computes on demand. */

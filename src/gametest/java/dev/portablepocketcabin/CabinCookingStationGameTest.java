@@ -321,7 +321,7 @@ public final class CabinCookingStationGameTest {
 	public void knifeCutsOneOrTheWholeStack(GameTestHelper helper) {
 		var level = helper.getLevel();
 		var board = board(helper);
-		helper.assertTrue(!board.place(level, new ItemStack(Items.STICK)), "A stick does not go on the board");
+		helper.assertTrue(!board.place(level, new ItemStack(Items.COBBLESTONE)), "Cobblestone does not go on the board");
 		var carrots = new ItemStack(Items.CARROT, 5);
 		helper.assertTrue(board.place(level, carrots) && carrots.isEmpty() && board.getItem(0).getCount() == 5,
 			"The whole carrot stack goes on the board");

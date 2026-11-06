@@ -98,7 +98,8 @@ public final class CabinCookingGameTest {
 		var codec = Recipe.CODEC;
 		var recipes = helper.getLevel().getServer().getRecipeManager().getRecipes().stream()
 			.filter(holder -> holder.value() instanceof CookingRecipe).toList();
-		helper.assertTrue(recipes.size() == 26, "All 26 starter cooking recipes load, found " + recipes.size());
+		helper.assertTrue(recipes.stream().filter(holder -> holder.id().identifier().getNamespace().equals(PortablePocketCabin.MOD_ID)).count() == 27,
+			"All 27 cooking recipes load, found " + recipes.size());
 		for (var holder : recipes) {
 			var recipe = (CookingRecipe) holder.value();
 			for (var output : concat(recipe.result(), recipe.remainders())) {

@@ -175,11 +175,19 @@ abstract class CookingStationBlock extends BaseEntityBlock {
 		@Override
 		protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
 			InteractionHand hand, BlockHitResult hit) {
-			if (!stack.is(Items.WATER_BUCKET)) return InteractionResult.TRY_WITH_EMPTY_HAND;
+			boolean water = stack.is(Items.WATER_BUCKET);
+			if (!water && !stack.is(CookingItems.COOKING_OILS)) return InteractionResult.TRY_WITH_EMPTY_HAND;
 			if (level instanceof ServerLevel && level.getBlockEntity(pos) instanceof CookingPotBlockEntity pot
-				&& CookingStationBlockEntity.mayUse(pot, player) && pot.fillWater()) {
-				level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
-				if (!player.getAbilities().instabuild) player.setItemInHand(hand, new ItemStack(Items.BUCKET));
+				&& CookingStationBlockEntity.mayUse(pot, player) && (water ? pot.fillWater() : pot.fillOil())) {
+				level.playSound(null, pos, water ? SoundEvents.BUCKET_EMPTY : SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+				if (!player.getAbilities().instabuild) {
+					if (water) player.setItemInHand(hand, new ItemStack(Items.BUCKET));
+					else {
+						stack.shrink(1);
+						ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE);
+						if (!player.getInventory().add(bottle)) player.drop(bottle, false);
+					}
+				}
 			}
 			return InteractionResult.SUCCESS;
 		}

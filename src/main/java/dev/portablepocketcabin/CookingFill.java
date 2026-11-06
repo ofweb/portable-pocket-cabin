@@ -168,7 +168,7 @@ final class CookingFill {
 		}
 		List<ItemStack> layout = new ArrayList<>(planned);
 		while (layout.size() < slots) layout.add(ItemStack.EMPTY);
-		if (recipe.assign(new CookingInput(layout, container, recipe.water())).isEmpty()) return Optional.empty();
+		if (recipe.assign(new CookingInput(layout, container, recipe.water(), recipe.oil())).isEmpty()) return Optional.empty();
 
 		List<ItemStack> withdrawn = new ArrayList<>();
 		for (int stack = held; stack < stacks.size(); stack++) {

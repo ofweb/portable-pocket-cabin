@@ -185,6 +185,7 @@ final class CookbookScreen extends Screen {
 			Component.translatable("screen.portable_pocket_cabin.cooking.heat." + heat.getSerializedName()))));
 		if (recipe.station().heated()) facts.add(Component.translatable("screen.portable_pocket_cabin.cookbook.time", recipe.time() / 20));
 		if (recipe.water() > 0) facts.add(Component.translatable("screen.portable_pocket_cabin.cookbook.water", recipe.water()));
+		if (recipe.oil() > 0) facts.add(Component.translatable("screen.portable_pocket_cabin.cookbook.oil", recipe.oil()));
 		if (!facts.isEmpty()) {
 			Component line = facts.getFirst().copy();
 			for (Component fact : facts.subList(1, facts.size())) line = line.copy().append(" · ").append(fact);

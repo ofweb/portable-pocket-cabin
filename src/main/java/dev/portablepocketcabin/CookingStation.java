@@ -17,7 +17,12 @@ enum CookingStation {
 	CUTTING("cutting", 1, false),
 	SKILLET("skillet", 1, true),
 	POT("pot", 6, true),
-	OVEN("oven", 6, true);
+	OVEN("oven", 6, true),
+	COUNTER("counter", 6, false),
+	STRAINER("strainer", 4, false),
+	GRILL("grill", 1, true),
+	WOK("wok", 4, true),
+	AEBLESKIVE_PAN("aebleskive_pan", 1, true);
 
 	static final int MAX_WATER = 3;
 	static final RecipeBookCategory RECIPE_BOOK_CATEGORY = Registry.register(
@@ -86,8 +91,23 @@ enum CookingStation {
 		return this == POT;
 	}
 
+	/** Whether the station holds cooking oil: the pot for deep-frying and the wok for stir-frying. */
+	boolean holdsOil() {
+		return this == POT || this == WOK;
+	}
+
+	/** Whether recipes may name a container, such as the bowls soup is served in or the bottles a strainer fills. */
+	boolean takesContainer() {
+		return this == POT || this == WOK || this == STRAINER;
+	}
+
+	/** Whether recipes need a positive time: heated stations, and the counter and strainer, which work without heat. */
+	boolean timed() {
+		return heated || this == COUNTER || this == STRAINER;
+	}
+
 	boolean singleInput() {
-		return this == CUTTING || this == SKILLET;
+		return this == CUTTING || this == SKILLET || this == GRILL || this == AEBLESKIVE_PAN;
 	}
 
 	RecipeType<CookingRecipe> type() {

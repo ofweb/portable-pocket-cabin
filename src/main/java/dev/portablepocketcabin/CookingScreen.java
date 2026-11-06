@@ -191,7 +191,8 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 		Component status = status();
 		graphics.text(font, status, imageWidth - 8 - font.width(status), 6, 0xff404040, false);
 		if (menu.kind() == CookingMenu.Kind.POT) {
-			graphics.text(font, Component.translatable("screen.portable_pocket_cabin.cooking.water",
+			graphics.text(font, Component.translatable(menu.data(CookingMenu.DATA_LIQUID) == 1
+				? "screen.portable_pocket_cabin.cooking.oil" : "screen.portable_pocket_cabin.cooking.water",
 				menu.data(CookingMenu.DATA_WATER), CookingStation.MAX_WATER), 68, 61, 0xff404040, false);
 		}
 	}

@@ -31,6 +31,7 @@ record CookingRecipe(
 	List<Counted> ingredients,
 	Optional<Counted> container,
 	int water,
+	int oil,
 	List<ItemStackTemplate> remainders,
 	Optional<CookingHeat> heat,
 	int time,
@@ -53,18 +54,24 @@ record CookingRecipe(
 		remainders = List.copyOf(remainders);
 	}
 
+	CookingRecipe(CookingStation station, String technique, List<Counted> ingredients, Optional<Counted> container, int water,
+		List<ItemStackTemplate> remainders, Optional<CookingHeat> heat, int time, ItemStackTemplate result) {
+		this(station, technique, ingredients, container, water, 0, remainders, heat, time, result);
+	}
+
 	static MapCodec<CookingRecipe> codec(CookingStation station) {
 		MapCodec<CookingRecipe> codec = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			Codec.STRING.optionalFieldOf("technique", "").forGetter(CookingRecipe::technique),
 			Counted.CODEC.listOf(1, station.ingredientSlots()).fieldOf("ingredients").forGetter(CookingRecipe::ingredients),
 			Counted.CODEC.optionalFieldOf("container").forGetter(CookingRecipe::container),
 			Codec.intRange(0, CookingStation.MAX_WATER).optionalFieldOf("water", 0).forGetter(CookingRecipe::water),
+			Codec.intRange(0, CookingStation.MAX_WATER).optionalFieldOf("oil", 0).forGetter(CookingRecipe::oil),
 			ItemStackTemplate.CODEC.listOf().optionalFieldOf("remainders", List.of()).forGetter(CookingRecipe::remainders),
 			CookingHeat.CODEC.optionalFieldOf("heat").forGetter(CookingRecipe::heat),
 			Codec.intRange(0, 72000).optionalFieldOf("time", 0).forGetter(CookingRecipe::time),
 			ItemStackTemplate.CODEC.fieldOf("result").forGetter(CookingRecipe::result)
-		).apply(instance, (technique, ingredients, container, water, remainders, heat, time, result) ->
-			new CookingRecipe(station, technique, ingredients, container, water, remainders, heat, time, result)));
+		).apply(instance, (technique, ingredients, container, water, oil, remainders, heat, time, result) ->
+			new CookingRecipe(station, technique, ingredients, container, water, oil, remainders, heat, time, result)));
 		return codec.validate(recipe -> recipe.validate().map(error -> DataResult.<CookingRecipe>error(() -> error))
 			.orElseGet(() -> DataResult.success(recipe)));
 	}
@@ -75,12 +82,13 @@ record CookingRecipe(
 			Counted.STREAM_CODEC.apply(ByteBufCodecs.list()), CookingRecipe::ingredients,
 			ByteBufCodecs.optional(Counted.STREAM_CODEC), CookingRecipe::container,
 			ByteBufCodecs.VAR_INT, CookingRecipe::water,
+			ByteBufCodecs.VAR_INT, CookingRecipe::oil,
 			ItemStackTemplate.STREAM_CODEC.apply(ByteBufCodecs.list()), CookingRecipe::remainders,
 			ByteBufCodecs.optional(CookingHeat.STREAM_CODEC), CookingRecipe::heat,
 			ByteBufCodecs.VAR_INT, CookingRecipe::time,
 			ItemStackTemplate.STREAM_CODEC, CookingRecipe::result,
-			(technique, ingredients, container, water, remainders, heat, time, result) ->
-				new CookingRecipe(station, technique, ingredients, container, water, remainders, heat, time, result)
+			(technique, ingredients, container, water, oil, remainders, heat, time, result) ->
+				new CookingRecipe(station, technique, ingredients, container, water, oil, remainders, heat, time, result)
 		);
 	}
 
@@ -89,9 +97,12 @@ record CookingRecipe(
 			return Optional.of(station.heated() ? "A " + station.name() + " recipe needs a heat level"
 				: "A " + station.name() + " recipe has no heat level");
 		}
-		if (station.heated() && time <= 0) return Optional.of("A heated recipe needs a positive time");
-		if (!station.holdsWater() && (water > 0 || container.isPresent())) {
-			return Optional.of("Only cooking pot recipes use water or a container");
+		if (station.timed() && time <= 0) return Optional.of("A " + station.name() + " recipe needs a positive time");
+		if (water > 0 && !station.holdsWater()) return Optional.of("Only cooking pot recipes use water");
+		if (oil > 0 && !station.holdsOil()) return Optional.of("Only cooking pot and wok recipes use oil");
+		if (water > 0 && oil > 0) return Optional.of("A recipe uses water or oil, not both");
+		if (container.isPresent() && !station.takesContainer()) {
+			return Optional.of("Only cooking pot, wok, and strainer recipes use a container");
 		}
 		if (station.singleInput() && (ingredients.size() != 1 || ingredients.getFirst().count() != 1)) {
 			return Optional.of("A " + station.name() + " recipe takes exactly one item");
@@ -104,7 +115,7 @@ record CookingRecipe(
 	 * does not match. With at most six slots, every assignment is tried.
 	 */
 	Optional<int[]> assign(CookingInput input) {
-		if (input.water() < water) return Optional.empty();
+		if (input.water() < water || input.oil() < oil) return Optional.empty();
 		if (container.isPresent()) {
 			Counted needed = container.get();
 			if (!needed.ingredient().test(input.container()) || input.container().getCount() < needed.count()) {

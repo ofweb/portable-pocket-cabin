@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "whittling",
+  "ingredients": [
+    {
+      "item": "minecraft:stick"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:skewer",
+    "count": 4
+  }
+}
