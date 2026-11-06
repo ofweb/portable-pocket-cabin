@@ -20,6 +20,7 @@ final class CabinUpgradeEffect implements CabinUpgradeService.UpgradeEffect {
 		if (offer.target().isGreenhouse()) return CabinGreenhouse.validate(pocket, cabin, offer.targetSize());
 		if (offer.target().isEnchanting()) return CabinEnchanting.validate(pocket, cabin, offer.targetSize());
 		if (offer.target().isCrafting()) return CabinCrafting.validate(pocket, cabin, offer.targetSize());
+		if (offer.target().isKitchen()) return CabinKitchen.validate(pocket, cabin);
 		if (offer.target().isStorage()) return CabinUpgradeService.Outcome.success("");
 		if (offer.target().isGeneralSpace()) {
 			var corridorCheck = CabinCorridors.validateExpansion(pocket, cabin);
@@ -49,6 +50,10 @@ final class CabinUpgradeEffect implements CabinUpgradeService.UpgradeEffect {
 		}
 		if (installation.target().isCrafting()) {
 			CabinCrafting.install(pocket, cabin, installation);
+			return;
+		}
+		if (installation.target().isKitchen()) {
+			CabinKitchen.install(pocket, cabin);
 			return;
 		}
 		if (installation.target().isStorage()) {

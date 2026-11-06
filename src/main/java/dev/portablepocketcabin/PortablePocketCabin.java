@@ -53,6 +53,7 @@ public final class PortablePocketCabin implements ModInitializer {
 			CabinCorridorStartupCheck.onServerStarted(server);
 			CabinGreenhouseStartupCheck.onServerStarted(server);
 			CabinEnchantingStartupCheck.onServerStarted(server);
+			CabinKitchenStartupCheck.onServerStarted(server);
 		});
 	}
 

@@ -47,6 +47,20 @@ loom {
 			vmArg "-Dportable-pocket-cabin.enchanting-test=verify"
 			programArg "nogui"
 		}
+		kitchenTest {
+			server()
+			name "Kitchen Installation Seed Test"
+			runDir "build/kitchen-test"
+			vmArg "-Dportable-pocket-cabin.kitchen-test=seed"
+			programArg "nogui"
+		}
+		kitchenReloadTest {
+			server()
+			name "Kitchen Restart Recovery Test"
+			runDir "build/kitchen-test"
+			vmArg "-Dportable-pocket-cabin.kitchen-test=verify"
+			programArg "nogui"
+		}
 		greenhouseTest {
 			server()
 			name "Greenhouse Installation and Catch-up Seed Test"
@@ -160,6 +174,7 @@ tasks.named("check").configure {
 	dependsOn tasks.named("runCorridorReloadTest")
 	dependsOn tasks.named("runGreenhouseReloadTest")
 	dependsOn tasks.named("runEnchantingReloadTest")
+	dependsOn tasks.named("runKitchenReloadTest")
 }
 
 tasks.named("runCorridorTest").configure {
@@ -232,6 +247,24 @@ publishing {
 		doLast {
 			def logFile = layout.projectDirectory.file("build/enchanting-test/logs/latest.log").asFile
 			if (!logFile.exists() || !logFile.text.contains(marker)) throw new GradleException("Enchanting check did not finish: " + marker)
+		}
+	}
+}
+
+["runKitchenTest": "KITCHEN_INSTALLATION_TEST_PASSED", "runKitchenReloadTest": "KITCHEN_RECOVERY_TEST_PASSED"].each { taskName, marker ->
+	tasks.named(taskName).configure {
+		if (taskName == "runKitchenReloadTest") dependsOn tasks.named("runKitchenTest")
+		doFirst {
+			def runDirectory = layout.projectDirectory.dir("build/kitchen-test").asFile
+			if (taskName == "runKitchenTest") project.delete(new File(runDirectory, "world"))
+			runDirectory.mkdirs()
+			new File(runDirectory, "logs/latest.log").delete()
+			new File(runDirectory, "eula.txt").text = "eula=true\n"
+			new File(runDirectory, "server.properties").text = "server-port=0\nonline-mode=false\n"
+		}
+		doLast {
+			def logFile = layout.projectDirectory.file("build/kitchen-test/logs/latest.log").asFile
+			if (!logFile.exists() || !logFile.text.contains(marker)) throw new GradleException("Kitchen check did not finish: " + marker)
 		}
 	}
 }
