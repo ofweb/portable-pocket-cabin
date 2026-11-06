@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "threshing",
+  "ingredients": [
+    {
+      "item": "minecraft:sunflower"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:sunflower_seeds",
+    "count": 4
+  }
+}

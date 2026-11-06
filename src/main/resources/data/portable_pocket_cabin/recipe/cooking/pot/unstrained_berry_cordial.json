@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "making_cordial",
+  "ingredients": [
+    {
+      "item": "minecraft:sweet_berries",
+      "count": 6
+    },
+    {
+      "item": "minecraft:sugar",
+      "count": 2
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:unstrained_berry_cordial"
+  }
+}

@@ -22,7 +22,8 @@ enum CookingStation {
 	STRAINER("strainer", 4, false),
 	GRILL("grill", 1, true),
 	WOK("wok", 4, true),
-	AEBLESKIVE_PAN("aebleskive_pan", 1, true);
+	AEBLESKIVE_PAN("aebleskive_pan", 1, true),
+	PRESS("press", 1, false);
 
 	static final int MAX_WATER = 3;
 	static final RecipeBookCategory RECIPE_BOOK_CATEGORY = Registry.register(
@@ -96,14 +97,14 @@ enum CookingStation {
 		return this == POT || this == WOK;
 	}
 
-	/** Whether recipes may name a container, such as the bowls soup is served in or the bottles a strainer fills. */
+	/** Whether recipes may name a container, such as the bowls soup is served in or the bottles a strainer or press fills. */
 	boolean takesContainer() {
-		return this == POT || this == WOK || this == STRAINER;
+		return this == POT || this == WOK || this == STRAINER || this == PRESS;
 	}
 
-	/** Whether recipes need a positive time: heated stations, and the counter and strainer, which work without heat. */
+	/** Whether recipes need a positive time: heated stations, and the counter, strainer, and press, which work without heat. */
 	boolean timed() {
-		return heated || this == COUNTER || this == STRAINER;
+		return heated || this == COUNTER || this == STRAINER || this == PRESS;
 	}
 
 	boolean singleInput() {

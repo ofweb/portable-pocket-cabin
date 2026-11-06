@@ -104,7 +104,41 @@ final class CookingScreenshots {
 			shot(context, "cookbook-cake");
 			context.runOnClient(client -> client.gui.setScreen(null));
 			captureCounterStations(context, world, origin[0]);
+			capturePress(context, world, origin[0]);
 		}
+	}
+
+	/** B-0052: the press part-way through a batch of apple juice, and the cookbook's sunflower oil page. */
+	private static void capturePress(ClientGameTestContext context, TestSingleplayerContext world, BlockPos base) {
+		BlockPos pos = base.offset(1, 0, -1);
+		world.getServer().runOnServer(server -> {
+			var player = world.getConnection().getServerPlayer();
+			var level = player.level();
+			player.closeContainer();
+			level.setBlockAndUpdate(pos, CookingBlocks.PRESS.defaultBlockState()
+				.setValue(HorizontalDirectionalBlock.FACING, Direction.SOUTH));
+			var press = (ProcessStationBlockEntity) level.getBlockEntity(pos);
+			var kind = CookingMenu.Kind.PRESS;
+			press.setItem(0, new ItemStack(CookingItems.CHOPPED_APPLE, 8));
+			press.setItem(kind.containerSlot, new ItemStack(Items.GLASS_BOTTLE, 3));
+			press.setItem(kind.outputSlot, new ItemStack(CookingItems.APPLE_JUICE));
+			press.setItem(kind.byproductSlot, new ItemStack(CookingItems.APPLE_POMACE));
+		});
+		world.getConnection().waitForClientboundPackets();
+		open(context, world, pos, CookingMenu.Kind.PRESS);
+		context.waitTicks(20);
+		shot(context, "press-screen");
+		world.getServer().runOnServer(server -> world.getConnection().getServerPlayer().closeContainer());
+		world.getConnection().waitForClientboundPackets();
+		context.runOnClient(client -> CookbookScreen.open());
+		context.waitForScreen(CookbookScreen.class);
+		world.getConnection().waitForServerboundPackets();
+		world.getConnection().waitForClientboundPackets();
+		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).select(PortablePocketCabin.id("cooking/press/sunflower_oil")));
+		shot(context, "cookbook-sunflower-oil");
+		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).select(PortablePocketCabin.id("cooking/press/pumpkin_seed_oil")));
+		shot(context, "cookbook-pumpkin-seed-oil");
+		context.runOnClient(client -> client.gui.setScreen(null));
 	}
 
 	/** B-0053: the prep counter with a strainer, a counter threading a skewer, the grill, the wok, and the æbleskive pan. */

@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 /**
- * A container station whose slots follow its menu layout: the prep counter's hand work, the strainer, and the wok.
+ * A container station whose slots follow its menu layout: the prep counter's hand work, the strainer, the wok, and the press.
  * Stations without heat progress on recipes that need none. The wok takes heat from below and holds oil. The
  * counter's hand work pauses while another cooking station stands on top of it.
  */
@@ -63,6 +63,10 @@ final class ProcessStationBlockEntity extends CookingStationBlockEntity implemen
 
 	static ProcessStationBlockEntity wok(BlockPos pos, BlockState state) {
 		return new ProcessStationBlockEntity(CookingBlocks.WOK_ENTITY, pos, state, CookingMenu.Kind.WOK);
+	}
+
+	static ProcessStationBlockEntity press(BlockPos pos, BlockState state) {
+		return new ProcessStationBlockEntity(CookingBlocks.PRESS_ENTITY, pos, state, CookingMenu.Kind.PRESS);
 	}
 
 	CookingMenu.Kind kind() {

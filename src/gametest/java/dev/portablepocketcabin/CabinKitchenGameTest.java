@@ -120,6 +120,25 @@ public final class CabinKitchenGameTest {
 	}
 
 	@GameTest
+	public void kitchenFillsAPressFromStorage(GameTestHelper helper) {
+		var level = helper.getLevel();
+		BlockPos base = new BlockPos(1, 2, 1);
+		helper.setBlock(base, CookingBlocks.PRESS);
+		var press = (ProcessStationBlockEntity) level.getBlockEntity(helper.absolutePos(base));
+		var juice = recipe(helper, "cooking/press/apple_juice");
+		var storage = new CabinStorageState(true, 1, List.of(new ItemStack(CookingItems.CHOPPED_APPLE, 4), new ItemStack(Items.GLASS_BOTTLE, 2)));
+		var inventory = FakePlayer.get(level).getInventory();
+		inventory.clearContent();
+		var plan = CookingFill.plan(press, CookingStation.PRESS, juice, inventory, storage, null, -1).orElseThrow();
+		var kind = CookingMenu.Kind.PRESS;
+		helper.assertTrue(plan.station().get(0).is(CookingItems.CHOPPED_APPLE) && plan.station().get(0).getCount() == 4
+			&& plan.station().get(kind.containerSlot).is(Items.GLASS_BOTTLE), "The press gets the apples and a bottle from storage");
+		helper.assertTrue(count(plan.withdrawn(), CookingItems.CHOPPED_APPLE) == 4 && count(plan.withdrawn(), Items.GLASS_BOTTLE) == 1,
+			"Storage gives up what one pressing uses");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void kitchenCommitWritesAReceiptTheStationsConfirm(GameTestHelper helper) {
 		var level = helper.getLevel();
 		var server = level.getServer();

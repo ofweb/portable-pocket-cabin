@@ -102,7 +102,7 @@ record CookingRecipe(
 		if (oil > 0 && !station.holdsOil()) return Optional.of("Only cooking pot and wok recipes use oil");
 		if (water > 0 && oil > 0) return Optional.of("A recipe uses water or oil, not both");
 		if (container.isPresent() && !station.takesContainer()) {
-			return Optional.of("Only cooking pot, wok, and strainer recipes use a container");
+			return Optional.of("Only cooking pot, wok, strainer, and press recipes use a container");
 		}
 		if (station.singleInput() && (ingredients.size() != 1 || ingredients.getFirst().count() != 1)) {
 			return Optional.of("A " + station.name() + " recipe takes exactly one item");

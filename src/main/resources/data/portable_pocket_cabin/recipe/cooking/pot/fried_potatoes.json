@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "deep_frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:diced_potato",
+      "count": 4
+    }
+  ],
+  "oil": 1,
+  "heat": "high",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:fried_potatoes",
+    "count": 4
+  }
+}

@@ -46,6 +46,9 @@ final class CookingBlocks {
 	static final Block AEBLESKIVE_PAN = register("aebleskive_pan", CookingStationBlock.AebleskivePan::new, BlockBehaviour.Properties.of()
 		.strength(1.5F).sound(SoundType.METAL).noOcclusion());
 
+	static final Block PRESS = register("press", CookingStationBlock.Press::new, BlockBehaviour.Properties.of()
+		.strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
+
 	static final BlockEntityType<StoveBlockEntity> STOVE_ENTITY = registerEntity("stove",
 		new BlockEntityType<>(StoveBlockEntity::new, Set.of(STOVE)));
 	static final BlockEntityType<OvenBlockEntity> OVEN_ENTITY = registerEntity("oven",
@@ -64,6 +67,8 @@ final class CookingBlocks {
 		new BlockEntityType<>(ProcessStationBlockEntity::wok, Set.of(WOK)));
 	static final BlockEntityType<AebleskivePanBlockEntity> AEBLESKIVE_PAN_ENTITY = registerEntity("aebleskive_pan",
 		new BlockEntityType<>(AebleskivePanBlockEntity::new, Set.of(AEBLESKIVE_PAN)));
+	static final BlockEntityType<ProcessStationBlockEntity> PRESS_ENTITY = registerEntity("press",
+		new BlockEntityType<>(ProcessStationBlockEntity::press, Set.of(PRESS)));
 	static final BlockEntityType<CuttingBoardBlockEntity> CUTTING_BOARD_ENTITY = registerEntity("cutting_board",
 		new BlockEntityType<>(CuttingBoardBlockEntity::new, Set.of(CUTTING_BOARD)));
 
@@ -83,6 +88,7 @@ final class CookingBlocks {
 			entries.accept(GRILL);
 			entries.accept(WOK);
 			entries.accept(AEBLESKIVE_PAN);
+			entries.accept(PRESS);
 		});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
 			entries.accept(CookingItems.KITCHEN_KNIFE);
@@ -91,7 +97,12 @@ final class CookingBlocks {
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(entries -> {
 			for (Item item : new Item[] {CookingItems.CHOPPED_CARROT, CookingItems.DICED_POTATO, CookingItems.CHOPPED_BEETROOT,
 				CookingItems.CHOPPED_APPLE, CookingItems.SLICED_BROWN_MUSHROOMS, CookingItems.SLICED_RED_MUSHROOMS,
-				CookingItems.SAUTEED_MUSHROOMS, CookingItems.FRIED_EGG, CookingItems.VEGETABLE_SOUP, CookingItems.APPLE_COMPOTE}) {
+				CookingItems.SAUTEED_MUSHROOMS, CookingItems.FRIED_EGG, CookingItems.VEGETABLE_SOUP, CookingItems.APPLE_COMPOTE,
+				CookingItems.GRATED_CARROT, CookingItems.APPLE_JUICE, CookingItems.SWEET_BERRY_JUICE, CookingItems.MELON_JUICE,
+				CookingItems.CARROT_JUICE, CookingItems.APPLE_POMACE, CookingItems.PULP, CookingItems.PRESS_CAKE,
+				CookingItems.SUNFLOWER_SEEDS, CookingItems.TOASTED_PUMPKIN_SEEDS, CookingItems.SUNFLOWER_OIL, CookingItems.PUMPKIN_SEED_OIL,
+				CookingItems.FRIED_POTATOES, CookingItems.STIR_FRIED_VEGETABLES, CookingItems.UNSTRAINED_BERRY_CORDIAL,
+				CookingItems.SWEET_BERRY_CORDIAL, CookingItems.APPLE_SYRUP}) {
 				entries.accept(item);
 			}
 		});

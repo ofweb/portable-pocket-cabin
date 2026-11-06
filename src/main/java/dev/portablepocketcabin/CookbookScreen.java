@@ -6,6 +6,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.core.Holder;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
@@ -215,7 +216,14 @@ final class CookbookScreen extends Screen {
 		graphics.text(font, Component.translatable(canMake ? "screen.portable_pocket_cabin.cookbook.have" : "screen.portable_pocket_cabin.cookbook.missing"),
 			x, y + 2, canMake ? GOOD : MUTED, false);
 		y += 14;
-		graphics.textWithWordWrap(font, techniqueDescription(recipe.technique()), x, y, right - x, TEXT, false);
+		Component description = techniqueDescription(recipe.technique());
+		graphics.textWithWordWrap(font, description, x, y, right - x, TEXT, false);
+		// A product can add its own note, such as which oil is for frying and which is for dressing.
+		String note = result.getItem().getDescriptionId() + ".cookbook_note";
+		if (Language.getInstance().has(note)) {
+			y += font.split(description, right - x).size() * font.lineHeight + 4;
+			graphics.textWithWordWrap(font, Component.translatable(note), x, y, right - x, MUTED, false);
+		}
 	}
 
 	/** Draws one ingredient line. An ingredient that another recipe makes is a link to that recipe. */

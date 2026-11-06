@@ -1,6 +1,6 @@
 # Players press juice and oil and make drinks
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0052
 
 ## Goal
@@ -18,7 +18,7 @@ Story: A player presses prepared fruit or seeds into a liquid.
 Acceptance:
 
 - **Press:** a container station without heat. Prepared fruit or seeds go into its input. Glass bottles go into its container slot. Pressing gives bottles of juice or oil and leaves the solids behind.
-- **Solids:** apple pomace, berry pulp, and seed press cake. They compost like plant matter. Press cake also feeds farm animals the way wheat does.
+- **Solids:** apple pomace, pulp from berries, melon, and carrots, and seed press cake. They compost like plant matter. Press cake also feeds farm animals the way wheat does.
 - **Time:** short, with no heat.
 
 ### S2: Press juice

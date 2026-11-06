@@ -418,6 +418,49 @@ abstract class CookingStationBlock extends BaseEntityBlock {
 		}
 	}
 
+	/** The press squeezes juice from prepared fruit and oil from seeds into bottles, leaving the solids behind. */
+	static final class Press extends CookingStationBlock {
+		static final MapCodec<Press> CODEC = simpleCodec(Press::new);
+
+		Press(Properties properties) {
+			super(properties);
+			registerDefaultState(stateDefinition.any().setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH));
+		}
+
+		@Override
+		protected MapCodec<? extends BaseEntityBlock> codec() {
+			return CODEC;
+		}
+
+		@Override
+		protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+			builder.add(HorizontalDirectionalBlock.FACING);
+		}
+
+		@Override
+		public BlockState getStateForPlacement(BlockPlaceContext context) {
+			return defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, context.getHorizontalDirection().getOpposite());
+		}
+
+		@Override
+		protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+			return openMenu(level, pos, player, CookingMenu.Kind.PRESS);
+		}
+
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return ProcessStationBlockEntity.press(pos, state);
+		}
+
+		@Override
+		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+			return level instanceof ServerLevel
+				? createTickerHelper(type, CookingBlocks.PRESS_ENTITY, (world, pos, blockState, station) ->
+					ProcessStationBlockEntity.serverTick((ServerLevel) world, pos, blockState, station))
+				: null;
+		}
+	}
+
 	/** The grill: a grate over its own fire. Fuel goes in its slot; food goes on the grate; a shovel puts it out. */
 	static final class Grill extends Fired {
 		static final MapCodec<Grill> CODEC = simpleCodec(Grill::new);

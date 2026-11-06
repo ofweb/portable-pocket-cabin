@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "portable_pocket_cabin:block/press"
+    },
+    "facing=east": {
+      "model": "portable_pocket_cabin:block/press",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "portable_pocket_cabin:block/press",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "portable_pocket_cabin:block/press",
+      "y": 270
+    }
+  }
+}
