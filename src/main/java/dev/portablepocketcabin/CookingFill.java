@@ -15,13 +15,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 /**
- * Fills a pot or oven from the recipe panel. The station's ingredient slots go back to the player first, then the
- * recipe's ingredients and container move in from the sources. Named and customised stacks are never taken.
+ * Fills a pot or oven from the recipe panel. The whole transfer is planned first, and nothing moves unless all of it
+ * can. Inside the kitchen, central storage supplies ingredients and fuel first and takes displaced items when the
+ * inventory is full. Named and customised stacks are never taken.
  */
 final class CookingFill {
 	private CookingFill() {
@@ -37,15 +37,6 @@ final class CookingFill {
 		public Type<Request> type() {
 			return TYPE;
 		}
-	}
-
-	/** One place ingredients can come from. B-0041 adds central storage in front of the inventory. */
-	interface Source {
-		List<ItemStack> stacks();
-	}
-
-	static Source inventory(Inventory inventory) {
-		return () -> inventory.getNonEquipmentItems();
 	}
 
 	static void register() {
@@ -64,41 +55,98 @@ final class CookingFill {
 		if (kind == null) return;
 		var holder = player.level().getServer().getRecipeManager().byKey(ResourceKey.create(Registries.RECIPE, request.recipe())).orElse(null);
 		if (holder == null || !(holder.value() instanceof CookingRecipe recipe) || recipe.station() != kind) return;
-		fill(station, kind, recipe, player.getInventory(), List.of(inventory(player.getInventory())));
+		var kitchen = CabinKitchenStorage.cabinFor(player, request.pos());
+		if (kitchen.isPresent()) fillFromStorage(player, kitchen.get(), station, kind, recipe);
+		else fill(station, kind, recipe, player.getInventory());
 		menu.broadcastChanges();
 		ServerPlayNetworking.send(player, new CookbookAvailability.Reply(CookbookAvailability.fillable(player, station, kind), true));
 	}
 
 	/**
-	 * Fills the station for the recipe. The whole transfer is planned first: which stacks supply each ingredient,
-	 * preferring what the station already holds, the station's new contents, and where displaced items go. Returns
-	 * false, changing nothing, when the recipe cannot be made or the displaced items do not fit in the inventory.
+	 * A planned fill: every slot of the station afterwards, the heating station's slots when it gets fuel, the
+	 * player's inventory, and storage with what it gives and receives.
 	 */
-	static boolean fill(Container station, CookingStation kind, CookingRecipe recipe, Inventory player, List<Source> sources) {
+	record Plan(List<ItemStack> station, Optional<List<ItemStack>> heater, List<ItemStack> inventory,
+		Optional<CabinStorageState> storage, List<ItemStack> withdrawn, List<ItemStack> deposited) {
+	}
+
+	/** Fills the station from the player's inventory alone. Returns false, changing nothing, when it cannot. */
+	static boolean fill(Container station, CookingStation kind, CookingRecipe recipe, Inventory player) {
+		Plan plan = plan(station, kind, recipe, player, null, null, -1).orElse(null);
+		if (plan == null) return false;
+		for (int slot = 0; slot < plan.station().size(); slot++) station.setItem(slot, plan.station().get(slot));
+		for (int slot = 0; slot < plan.inventory().size(); slot++) player.setItem(slot, plan.inventory().get(slot));
+		station.setChanged();
+		player.setChanged();
+		return true;
+	}
+
+	/**
+	 * Fills a kitchen station from storage first, then the inventory, and tops up the fuel that heats it. The
+	 * transfer commits through a receipt (ADR-0012). Returns false, changing nothing, when it cannot be planned.
+	 */
+	static boolean fillFromStorage(ServerPlayer player, CabinRecord cabin, CookingStationBlockEntity station, CookingStation kind,
+		CookingRecipe recipe) {
+		CookingStationBlockEntity heater = null;
+		int heaterSlot = -1;
+		if (station instanceof OvenBlockEntity) {
+			heater = station;
+			heaterSlot = OvenBlockEntity.FUEL_SLOT;
+		} else if (player.level().getBlockEntity(station.getBlockPos().below()) instanceof StoveBlockEntity stove
+			&& CabinKitchen.contains(cabin, stove.getBlockPos())) {
+			heater = stove;
+			heaterSlot = StoveBlockEntity.FUEL_SLOT;
+		}
+		Plan plan = plan(station, kind, recipe, player.getInventory(), cabin.upgrades().storage(), heater, heaterSlot).orElse(null);
+		if (plan == null) return false;
+		List<CabinKitchenStorage.StationAfter> stations = new ArrayList<>();
+		List<ItemStack> contents = plan.station();
+		if (heater == station && plan.heater().isPresent()) contents = plan.heater().get();
+		stations.add(new CabinKitchenStorage.StationAfter(station, contents));
+		if (heater != null && heater != station && plan.heater().isPresent()) {
+			stations.add(new CabinKitchenStorage.StationAfter(heater, plan.heater().get()));
+		}
+		CabinKitchenStorage.commit(player, cabin, stations, plan.inventory(), plan.storage().orElseThrow(), plan.withdrawn(), plan.deposited());
+		return true;
+	}
+
+	/**
+	 * Plans a fill without changing anything. Ingredients come from what the station already holds, then storage,
+	 * then the main inventory, by the shared allocation. Each ingredient keeps its own slots and the layout must match
+	 * the recipe. Displaced items go to the inventory, then storage. With a heater whose fuel slot is empty, it also
+	 * plans enough fuel at the recipe's heat for one batch, from storage first. Named and customised stacks are never taken.
+	 */
+	static Optional<Plan> plan(Container station, CookingStation kind, CookingRecipe recipe, Inventory player,
+		CabinStorageState storage, Container heater, int heaterSlot) {
 		int slots = kind.ingredientSlots();
 		boolean usesContainer = recipe.container().isPresent();
 		int containerSlot = usesContainer ? CookingPotBlockEntity.CONTAINER_SLOT : -1;
 		List<ItemStack> stacks = new ArrayList<>();
-		for (int slot = 0; slot < slots; slot++) stacks.add(station.getItem(slot));
-		if (usesContainer) stacks.add(station.getItem(containerSlot));
+		for (int slot = 0; slot < slots; slot++) stacks.add(station.getItem(slot).copy());
+		if (usesContainer) stacks.add(station.getItem(containerSlot).copy());
 		int held = stacks.size();
-		for (Source source : sources) stacks.addAll(source.stacks());
+		List<ItemStack> stored = storage == null ? List.of() : new ArrayList<>(storage.stacks());
+		stacks.addAll(stored);
+		int inventoryStart = stacks.size();
+		List<ItemStack> main = new ArrayList<>();
+		for (ItemStack stack : player.getNonEquipmentItems()) main.add(stack.copy());
+		stacks.addAll(main);
 		List<CookingRecipe.Counted> demands = CookbookAvailability.demands(recipe);
 		int[][] amounts = CookingAllocation.allocate(demands, stacks).orElse(null);
-		if (amounts == null) return false;
+		if (amounts == null) return Optional.empty();
 		int[] taken = CookingAllocation.taken(amounts, stacks.size());
 
 		List<ItemStack> planned = new ArrayList<>();
-		List<ItemStack> displaced = new ArrayList<>();
 		for (int demand = 0; demand < recipe.ingredients().size(); demand++) {
 			// Each ingredient gets its own slots: the recipe matches every slot to exactly one ingredient.
 			List<ItemStack> own = new ArrayList<>();
 			for (int stack = 0; stack < stacks.size(); stack++) {
-				if (amounts[demand][stack] > 0 && !merge(own, stacks.get(stack).copyWithCount(amounts[demand][stack]), slots)) return false;
+				if (amounts[demand][stack] > 0 && !merge(own, stacks.get(stack).copyWithCount(amounts[demand][stack]), slots)) return Optional.empty();
 			}
 			planned.addAll(own);
 		}
-		if (planned.size() > slots) return false;
+		if (planned.size() > slots) return Optional.empty();
+		List<ItemStack> displaced = new ArrayList<>();
 		for (int slot = 0; slot < slots; slot++) {
 			ItemStack current = stacks.get(slot);
 			if (current.getCount() > taken[slot]) displaced.add(current.copyWithCount(current.getCount() - taken[slot]));
@@ -106,38 +154,78 @@ final class CookingFill {
 		ItemStack container = ItemStack.EMPTY;
 		if (usesContainer) {
 			int demand = demands.size() - 1;
-			int heldIndex = slots;
-			ItemStack current = stacks.get(heldIndex);
-			int kept = current.getCount() - taken[heldIndex];
+			ItemStack current = stacks.get(slots);
+			int kept = current.getCount() - taken[slots];
 			List<ItemStack> parts = new ArrayList<>();
-			if (amounts[demand][heldIndex] > 0) {
-				parts.add(current.copyWithCount(kept + amounts[demand][heldIndex]));
-			} else if (kept > 0) {
-				displaced.add(current.copyWithCount(kept));
-			}
+			if (amounts[demand][slots] > 0) parts.add(current.copyWithCount(kept + amounts[demand][slots]));
+			else if (kept > 0) displaced.add(current.copyWithCount(kept));
 			for (int stack = 0; stack < stacks.size(); stack++) {
-				if (stack != heldIndex && amounts[demand][stack] > 0) parts.add(stacks.get(stack).copyWithCount(amounts[demand][stack]));
+				if (stack != slots && amounts[demand][stack] > 0) parts.add(stacks.get(stack).copyWithCount(amounts[demand][stack]));
 			}
 			List<ItemStack> merged = new ArrayList<>();
-			for (ItemStack part : parts) if (!merge(merged, part, 1)) return false;
+			for (ItemStack part : parts) if (!merge(merged, part, 1)) return Optional.empty();
 			container = merged.isEmpty() ? ItemStack.EMPTY : merged.getFirst();
 		}
-
 		List<ItemStack> layout = new ArrayList<>(planned);
 		while (layout.size() < slots) layout.add(ItemStack.EMPTY);
-		if (recipe.assign(new CookingInput(layout, container, recipe.water())).isEmpty()) return false;
-		if (!fits(player, stacks, held, taken, displaced)) return false;
+		if (recipe.assign(new CookingInput(layout, container, recipe.water())).isEmpty()) return Optional.empty();
 
-		for (int stack = held; stack < stacks.size(); stack++) stacks.get(stack).shrink(taken[stack]);
-		for (int slot = 0; slot < slots; slot++) station.setItem(slot, slot < planned.size() ? planned.get(slot) : ItemStack.EMPTY);
-		if (usesContainer) station.setItem(containerSlot, container);
-		for (ItemStack stack : displaced) {
-			player.add(stack);
-			if (!stack.isEmpty()) player.placeItemBackInInventory(stack);
+		List<ItemStack> withdrawn = new ArrayList<>();
+		for (int stack = held; stack < stacks.size(); stack++) {
+			if (taken[stack] == 0) continue;
+			if (stack < inventoryStart) withdrawn.add(stacks.get(stack).copyWithCount(taken[stack]));
+			stacks.get(stack).shrink(taken[stack]);
 		}
-		station.setChanged();
-		player.setChanged();
-		return true;
+
+		Optional<List<ItemStack>> heaterAfter = Optional.empty();
+		ItemStack fuel = ItemStack.EMPTY;
+		if (heater != null && heater.getItem(heaterSlot).isEmpty() && recipe.heat().isPresent()) {
+			var fuelValues = ((net.minecraft.world.level.block.entity.BlockEntity) heater).getLevel().fuelValues();
+			for (int stack = held; stack < stacks.size() && fuel.isEmpty(); stack++) {
+				ItemStack candidate = stacks.get(stack);
+				if (!CabinStation.ordinary(candidate) || !CookingHeat.ofFuel(candidate, fuelValues).equals(recipe.heat())) continue;
+				int burn = fuelValues.burnDuration(candidate);
+				if (burn <= 0) continue;
+				int count = Math.min(candidate.getCount(), Math.min(candidate.getMaxStackSize(), Math.max(1, (recipe.time() + burn - 1) / burn)));
+				fuel = candidate.split(count);
+				if (stack < inventoryStart) withdrawn.add(fuel.copy());
+			}
+		}
+
+		// Displaced items go to the main inventory; only what does not fit is left for storage.
+		for (int index = 0; index < displaced.size(); index++) {
+			ItemStack rest = CabinKitchenStorage.insert(main, displaced.get(index));
+			if (!rest.isEmpty() && storage == null) return Optional.empty();
+			displaced.set(index, rest);
+		}
+		CabinStorageState storageAfter = null;
+		List<ItemStack> deposited = new ArrayList<>();
+		if (storage != null) {
+			storageAfter = storage.withStacks(stored.stream().filter(stack -> !stack.isEmpty()).toList());
+			for (ItemStack rest : displaced) {
+				if (rest.isEmpty()) continue;
+				var transfer = storageAfter.deposit(rest, rest.getCount());
+				if (transfer.moved().getCount() != rest.getCount()) return Optional.empty();
+				storageAfter = transfer.state();
+				deposited.add(rest.copy());
+			}
+		}
+
+		List<ItemStack> stationAfter = new ArrayList<>();
+		for (int slot = 0; slot < station.getContainerSize(); slot++) stationAfter.add(station.getItem(slot).copy());
+		for (int slot = 0; slot < slots; slot++) stationAfter.set(slot, slot < planned.size() ? planned.get(slot) : ItemStack.EMPTY);
+		if (usesContainer) stationAfter.set(containerSlot, container);
+		if (!fuel.isEmpty()) {
+			List<ItemStack> heated = heater == station ? stationAfter : new ArrayList<>();
+			if (heater != station) for (int slot = 0; slot < heater.getContainerSize(); slot++) heated.add(heater.getItem(slot).copy());
+			heated.set(heaterSlot, fuel);
+			heaterAfter = Optional.of(List.copyOf(heated));
+		}
+		List<ItemStack> inventoryAfter = new ArrayList<>();
+		for (int slot = 0; slot < player.getContainerSize(); slot++) {
+			inventoryAfter.add(slot < main.size() ? main.get(slot) : player.getItem(slot).copy());
+		}
+		return Optional.of(new Plan(List.copyOf(stationAfter), heaterAfter, inventoryAfter, Optional.ofNullable(storageAfter), withdrawn, deposited));
 	}
 
 	/** Adds the stack to the planned slots, merging with the same item first. Returns false when it needs more than {@code limit} slots. */
@@ -153,38 +241,6 @@ final class CookingFill {
 		while (!stack.isEmpty()) {
 			if (planned.size() >= limit) return false;
 			planned.add(stack.split(Math.min(stack.getCount(), stack.getMaxStackSize())));
-		}
-		return true;
-	}
-
-	/**
-	 * Whether the displaced items fit in the main inventory once the planned ingredients have left it. Only the
-	 * 36 main slots are counted, so the real insert, which can also use the offhand, never has less room.
-	 */
-	private static boolean fits(Inventory player, List<ItemStack> stacks, int held, int[] taken, List<ItemStack> displaced) {
-		List<ItemStack> main = player.getNonEquipmentItems();
-		Map<ItemStack, Integer> index = new IdentityHashMap<>();
-		for (int slot = 0; slot < main.size(); slot++) index.put(main.get(slot), slot);
-		List<ItemStack> after = new ArrayList<>();
-		for (ItemStack stack : main) after.add(stack.copy());
-		for (int stack = held; stack < stacks.size(); stack++) {
-			Integer slot = index.get(stacks.get(stack));
-			if (slot != null) after.get(slot).shrink(taken[stack]);
-		}
-		for (ItemStack item : displaced) {
-			ItemStack rest = item.copy();
-			for (ItemStack slot : after) {
-				if (rest.isEmpty()) break;
-				if (!slot.isEmpty() && ItemStack.isSameItemSameComponents(slot, rest)) {
-					int moved = Math.min(rest.getCount(), slot.getMaxStackSize() - slot.getCount());
-					slot.grow(moved);
-					rest.shrink(moved);
-				}
-			}
-			for (int slot = 0; slot < after.size() && !rest.isEmpty(); slot++) {
-				if (after.get(slot).isEmpty()) after.set(slot, rest.split(Math.min(rest.getCount(), rest.getMaxStackSize())));
-			}
-			if (!rest.isEmpty()) return false;
 		}
 		return true;
 	}
