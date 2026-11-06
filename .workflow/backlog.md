@@ -237,16 +237,6 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 - Relationships: Uses B-0005 and B-0038. Integrates B-0004. Used by B-0042.
 - Feature Brief: [Manual smelting room brief](features/B-0040/brief.md).
 
-## B-0041: Manual kitchen room
-
-- Status: Ready for Implementation
-- Value: Give the household a kitchen room where it places its own cooking stations, which draw ingredients and fuel from installed central storage.
-- Direction: [Manual production rooms](direction.md#manual-production-rooms).
-- Relationships: Uses B-0005, B-0038, and B-0045; extends B-0004; used by B-0025.
-- Feature Brief: [Manual kitchen brief](features/B-0041/brief.md).
-- Design: [Manual kitchen design](features/B-0041/design.md).
-- Open proposals: Later stations may need a larger room. Players can place B-0053 prep counters in it.
-
 ## B-0042: Smelting jobs
 
 - Status: Ready for Shape

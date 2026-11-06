@@ -64,6 +64,8 @@ public final class PortablePocketCabinClientGameTest
         }
         CookingScreenshots.capture(context);
         if (!captureAll && "1".equals(System.getenv("PPC_CAPTURE_COOKING"))) return;
+        captureKitchen(context);
+        if (!captureAll && "1".equals(System.getenv("PPC_TEST_KITCHEN"))) return;
         captureEnchanting(context);
         if (!captureAll && "1".equals(System.getenv("PPC_TEST_ENCHANTING"))) return;
         captureBooks(context);
@@ -2154,6 +2156,113 @@ public final class PortablePocketCabinClientGameTest
                 .getCount() == 3,
             "Packing and restart must preserve storage"
         );
+    }
+
+    /** Installs storage and the kitchen, furnishes it, and fills a pot from storage with a real player. */
+    private static void captureKitchen(ClientGameTestContext context) {
+        try (TestSingleplayerContext world = context.worldBuilder().create()) {
+            UUID cabinId = createCabin(world, false);
+            BlockPos[] floor = new BlockPos[1];
+            world.getServer().runOnServer(server -> {
+                var registry = CabinRegistry.get(server);
+                var player = world.getConnection().getServerPlayer();
+                player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+                var cabin = registry.find(cabinId).orElseThrow();
+                PocketDimension.applyGeneralSpaceExpansion(player.level(), cabin, 5);
+                cabin = registry.expandGeneralSpace(cabinId, cabin.owner(), 3, 5, 21);
+                registry.updateUpgradeState(cabinId, cabin.upgrades().withStorage(cabin.upgrades().storage().reveal())
+                    .withKitchen(CabinKitchenState.EMPTY.reveal()));
+                install(server, player, cabinId, CabinUpgradeState.Target.storage(1), CabinUpgradeCatalog.storageRequirements(1));
+                install(server, player, cabinId, CabinUpgradeState.Target.kitchen(),
+                    CabinUpgradeCatalog.kitchenRequirements(registry.find(cabinId).orElseThrow()));
+                cabin = registry.find(cabinId).orElseThrow();
+                check(cabin.upgrades().kitchen().level() == 1, "The kitchen installs through Cabin Upgrades");
+                var space = CabinKitchen.space(cabin);
+                floor[0] = PocketDimension.cellCenter(cabin.cellIndex()).offset(space.minimum()).offset(1, 1, 1);
+                BlockPos entrance = PocketDimension.cellCenter(cabin.cellIndex()).offset(space.entrance());
+                player.teleportTo(player.level(), entrance.getX() + .5, entrance.getY(), entrance.getZ() + 1.5, Set.of(), 0, 25, false);
+                server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "time set noon");
+            });
+            world.getConnection().waitForClientboundPackets();
+            world.getConnection().waitForChunksRender();
+            context.waitTicks(5);
+            capture(context, "cabin-kitchen-empty");
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                var level = player.level();
+                BlockPos origin = floor[0];
+                var facing = CookingBlocks.STOVE.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING, Direction.NORTH);
+                level.setBlockAndUpdate(origin.offset(1, 0, 4), facing);
+                level.setBlockAndUpdate(origin.offset(1, 1, 4), CookingBlocks.COOKING_POT.defaultBlockState());
+                level.setBlockAndUpdate(origin.offset(2, 0, 4), facing);
+                level.setBlockAndUpdate(origin.offset(2, 1, 4), CookingBlocks.SKILLET.defaultBlockState());
+                level.setBlockAndUpdate(origin.offset(3, 0, 4), CookingBlocks.OVEN.defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING, Direction.NORTH));
+                level.setBlockAndUpdate(origin.offset(0, 0, 4), net.minecraft.world.level.block.Blocks.SMOOTH_STONE.defaultBlockState());
+                level.setBlockAndUpdate(origin.offset(0, 1, 4), CookingBlocks.CUTTING_BOARD.defaultBlockState());
+                level.setBlockAndUpdate(origin.offset(4, 0, 4), net.minecraft.world.level.block.Blocks.SMOOTH_STONE.defaultBlockState());
+                ((CookingPotBlockEntity) level.getBlockEntity(origin.offset(1, 1, 4))).fillWater();
+                ((CuttingBoardBlockEntity) level.getBlockEntity(origin.offset(0, 1, 4))).place(level, new ItemStack(net.minecraft.world.item.Items.CARROT, 4));
+                var registry = CabinRegistry.get(server);
+                var cabin = registry.find(cabinId).orElseThrow();
+                registry.updateUpgradeState(cabinId, cabin.upgrades().withStorage(cabin.upgrades().storage().withStacks(List.of(
+                    new ItemStack(CookingItems.CHOPPED_CARROT, 4), new ItemStack(CookingItems.DICED_POTATO, 4),
+                    new ItemStack(CookingItems.CHOPPED_BEETROOT, 4), new ItemStack(net.minecraft.world.item.Items.BOWL, 12),
+                    new ItemStack(net.minecraft.world.item.Items.OAK_PLANKS, 16), new ItemStack(net.minecraft.world.item.Items.WHEAT, 9)))));
+                player.getInventory().clearContent();
+                player.getInventory().setItem(0, new ItemStack(CookingItems.KITCHEN_KNIFE));
+                player.getInventory().setItem(1, new ItemStack(CookingItems.COOKBOOK));
+            });
+            world.getConnection().waitForClientboundPackets();
+            context.waitTicks(5);
+            capture(context, "cabin-kitchen-furnished");
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                CookingStationBlock.openMenu(player.level(), floor[0].offset(1, 1, 4), player, CookingMenu.Kind.POT);
+            });
+            world.getConnection().waitForClientboundPackets();
+            context.waitForScreen(CookingScreen.class);
+            context.runOnClient(client -> ((CookingScreen) client.gui.screen()).togglePanel());
+            world.getConnection().waitForServerboundPackets();
+            world.getConnection().waitForClientboundPackets();
+            check(context.computeOnClient(client -> CookingScreen.fillable.contains(PortablePocketCabin.id("cooking/pot/vegetable_soup"))),
+                "The recipe panel counts the kitchen's stored ingredients");
+            capture(context, "cabin-kitchen-recipe-panel");
+            context.runOnClient(client -> ((CookingScreen) client.gui.screen()).fill(PortablePocketCabin.id("cooking/pot/vegetable_soup")));
+            world.getConnection().waitForServerboundPackets();
+            world.getConnection().waitForClientboundPackets();
+            context.waitTicks(3);
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                var level = player.level();
+                var pot = (CookingPotBlockEntity) level.getBlockEntity(floor[0].offset(1, 1, 4));
+                var stove = (StoveBlockEntity) level.getBlockEntity(floor[0].offset(1, 0, 4));
+                check(pot.getItem(0).is(CookingItems.CHOPPED_CARROT) && pot.getItem(CookingPotBlockEntity.CONTAINER_SLOT).getCount() == 3,
+                    "The pot fills from storage");
+                // The stove may already have lit the plank it was given.
+                check(stove.getItem(StoveBlockEntity.FUEL_SLOT).is(net.minecraft.world.item.Items.OAK_PLANKS)
+                    || stove.heat().equals(java.util.Optional.of(CookingHeat.LOW)), "The stove below gets low-heat fuel");
+                var cabin = CabinRegistry.get(server).find(cabinId).orElseThrow();
+                check(cabin.upgrades().kitchen().pending().isEmpty(), "A confirmed save clears the transfer receipt");
+                check(cabin.upgrades().storage().stacks().stream().filter(stack -> stack.is(net.minecraft.world.item.Items.BOWL))
+                    .mapToInt(ItemStack::getCount).sum() == 9, "Storage gives exactly three bowls");
+                check(player.getInventory().countItem(CookingItems.CHOPPED_CARROT) == 0, "The inventory supplies nothing it did not need to");
+            });
+            capture(context, "cabin-kitchen-filled");
+        }
+    }
+
+    private static void install(net.minecraft.server.MinecraftServer server, net.minecraft.server.level.ServerPlayer player, UUID cabinId,
+        CabinUpgradeState.Target target, List<CabinUpgradeState.Requirement> requirements) {
+        var registry = CabinRegistry.get(server);
+        var cabin = registry.find(cabinId).orElseThrow();
+        var stacks = requirements.stream().map(r -> new ItemStack(BuiltInRegistries.ITEM.getOptional(r.itemId()).orElseThrow(), r.count())).toList();
+        registry.updateUpgradeState(cabinId, cabin.upgrades().withFund(new CabinUpgradeState.Fund(target, requirements, stacks)));
+        var result = CabinUpgradeService.install(registry, cabinId, player.getUUID(), target,
+            registry.find(cabinId).orElseThrow().upgrades().fundRevision(), registry.worldAttunement().orElseThrow(),
+            CabinUpgradeDefinitions.current(), new CabinUpgradeEffect(server, player.level()), () -> CabinRegistry.flush(server));
+        check(result.success(), result.message());
     }
 
     private static void check(boolean value, String message) {

@@ -1,6 +1,6 @@
 # The cabin has a manual kitchen
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0041
 
 ## Goal

@@ -84,7 +84,7 @@ public final class CabinKitchenGameTest {
 		pot.fillWater();
 		var soup = recipe(helper, "cooking/pot/vegetable_soup");
 		var storage = new CabinStorageState(true, 1, List.of(new ItemStack(CookingItems.CHOPPED_CARROT, 2), new ItemStack(CookingItems.DICED_POTATO),
-			new ItemStack(CookingItems.CHOPPED_BEETROOT), new ItemStack(Items.BOWL, 3), new ItemStack(Items.OAK_PLANKS, 4)));
+			new ItemStack(CookingItems.CHOPPED_BEETROOT), new ItemStack(Items.BOWL, 3), new ItemStack(Items.STICK, 8), new ItemStack(Items.OAK_PLANKS, 4)));
 		var inventory = FakePlayer.get(level).getInventory();
 		inventory.clearContent();
 		inventory.setItem(0, new ItemStack(CookingItems.CHOPPED_CARROT));
@@ -97,7 +97,7 @@ public final class CabinKitchenGameTest {
 			"Storage supplies the ingredients before the inventory");
 		helper.assertTrue(count(plan.inventory(), Items.STICK) == 1, "The displaced stick goes to the inventory");
 		helper.assertTrue(plan.heater().orElseThrow().get(StoveBlockEntity.FUEL_SLOT).is(Items.OAK_PLANKS)
-			&& plan.heater().get().get(StoveBlockEntity.FUEL_SLOT).getCount() == 1, "One plank of low-heat fuel covers one batch");
+			&& plan.heater().get().get(StoveBlockEntity.FUEL_SLOT).getCount() == 1, "One plank, not the bowls or sticks, covers one batch");
 		var after = plan.storage().orElseThrow().stacks();
 		helper.assertTrue(count(after, CookingItems.CHOPPED_CARROT) == 1 && count(after, Items.OAK_PLANKS) == 3 && count(after, Items.BOWL) == 0,
 			"Storage gives up exactly what the fill uses");
@@ -105,7 +105,7 @@ public final class CabinKitchenGameTest {
 
 		for (int slot = 0; slot < 36; slot++) inventory.setItem(slot, new ItemStack(Items.STONE, 64));
 		plan = CookingFill.plan(pot, CookingStation.POT, soup, inventory, storage, stove, StoveBlockEntity.FUEL_SLOT).orElseThrow();
-		helper.assertTrue(count(plan.storage().orElseThrow().stacks(), Items.STICK) == 1 && count(plan.deposited(), Items.STICK) == 1,
+		helper.assertTrue(count(plan.storage().orElseThrow().stacks(), Items.STICK) == 9 && count(plan.deposited(), Items.STICK) == 1,
 			"With a full inventory, the displaced stick goes to storage");
 		helper.assertTrue(CookingFill.plan(pot, CookingStation.POT, soup, inventory, null, null, -1).isEmpty(),
 			"Outside the kitchen, a full inventory still refuses the fill");

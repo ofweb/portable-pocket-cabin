@@ -1,6 +1,6 @@
 # Players cook real recipes at cooking stations
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0045
 
 ## Goal

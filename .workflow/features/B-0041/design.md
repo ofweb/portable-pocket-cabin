@@ -90,7 +90,7 @@ When the recipe needs heat, a fill also tops up fuel for one batch:
 
 - **Which fuel slot:** the oven's own fuel slot, or the fuel slot of the stove directly below a pot or skillet. The stove must also be a kitchen station.
 - **When:** only if that slot is empty.
-- **Which fuel:** the first ordinary stack whose `CookingHeat.ofFuel` equals the recipe's heat, from storage first, then the inventory.
+- **Which fuel:** the ordinary stack at the recipe's heat, by `CookingHeat.ofFuel`, that burns longest per item. Planks are used before bowls or sticks, which are also low-heat fuel. Ties go to storage first, then the inventory.
 - **How much:** `ceil(time / burnDuration)` items, at least 1, capped at one stack, all of that one fuel item.
 - Missing fuel doesn't block the ingredient fill. The panel shows the recipe as fillable, and the station's status line asks for heat.
 

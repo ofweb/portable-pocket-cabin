@@ -181,14 +181,20 @@ final class CookingFill {
 		ItemStack fuel = ItemStack.EMPTY;
 		if (heater != null && heater.getItem(heaterSlot).isEmpty() && recipe.heat().isPresent()) {
 			var fuelValues = ((net.minecraft.world.level.block.entity.BlockEntity) heater).getLevel().fuelValues();
-			for (int stack = held; stack < stacks.size() && fuel.isEmpty(); stack++) {
+			// The longest-burning fuel at the recipe's heat, so planks are used before bowls or sticks; ties go to storage.
+			int best = -1;
+			for (int stack = held; stack < stacks.size(); stack++) {
 				ItemStack candidate = stacks.get(stack);
 				if (!CabinStation.ordinary(candidate) || !CookingHeat.ofFuel(candidate, fuelValues).equals(recipe.heat())) continue;
 				int burn = fuelValues.burnDuration(candidate);
-				if (burn <= 0) continue;
+				if (burn > 0 && (best < 0 || burn > fuelValues.burnDuration(stacks.get(best)))) best = stack;
+			}
+			if (best >= 0) {
+				ItemStack candidate = stacks.get(best);
+				int burn = fuelValues.burnDuration(candidate);
 				int count = Math.min(candidate.getCount(), Math.min(candidate.getMaxStackSize(), Math.max(1, (recipe.time() + burn - 1) / burn)));
 				fuel = candidate.split(count);
-				if (stack < inventoryStart) withdrawn.add(fuel.copy());
+				if (best < inventoryStart) withdrawn.add(fuel.copy());
 			}
 		}
 

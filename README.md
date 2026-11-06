@@ -54,6 +54,13 @@ A station lights new fuel only when it has something to cook, but lit fuel alway
 
 The **cookbook**, crafted from a book and a bowl, lists every recipe by station. Each page shows the ingredients, heat, time, and water, and explains the technique behind the dish. An ingredient that another recipe makes links to that recipe. Recipes you have everything for show in green. Household members in a cabin with central storage also count stored items. The pot and oven screens have a recipe button that fills the station from your inventory, skipping named and customised items. Inside a cabin, only the household can use the stations.
 
+Install a Kitchen Book through **Books**, then fund the purchase in the **Kitchen** category. It needs a 5×5 main room and adds an empty 5×5 kitchen south of the east corridor, lit by two hanging lanterns. Owners and residents furnish it with their own stations. Once central storage is installed, every cooking station inside the kitchen draws on it:
+- The recipe button fills the station from storage first, then your inventory.
+- It also gives the stove or oven an empty-slot top-up of the longest-burning fuel at the recipe's heat.
+- Displaced items and shift-clicked outputs go to your inventory, then storage.
+
+Each transfer is recorded before it happens, so a crash completes it or undoes it, never both. For development, use `/give @s portable_pocket_cabin:kitchen_book`. [Kitchen screenshots](screenshots/cabin/kitchen) show the room, a furnished kitchen, and a fill from storage.
+
 The [cooking book](.workflow/cooking/book) describes the full cooking design, including later stations and processes.
 
 The registry uses schema 10 for household roles, centered interiors, and connected corridors. Earlier schemas are rejected without rewriting the save. Back up an older world and create a new one; for development, replace the world with `just fresh-world`. New cabins begin with solid walls.
