@@ -99,7 +99,9 @@ final class CookingBlocks {
 				CookingItems.CHOPPED_APPLE, CookingItems.SLICED_BROWN_MUSHROOMS, CookingItems.SLICED_RED_MUSHROOMS,
 				CookingItems.SAUTEED_MUSHROOMS, CookingItems.FRIED_EGG, CookingItems.VEGETABLE_SOUP, CookingItems.APPLE_COMPOTE,
 				CookingItems.GRATED_CARROT, CookingItems.APPLE_JUICE, CookingItems.SWEET_BERRY_JUICE, CookingItems.MELON_JUICE,
-				CookingItems.CARROT_JUICE, CookingItems.APPLE_POMACE, CookingItems.PULP, CookingItems.PRESS_CAKE}) {
+				CookingItems.CARROT_JUICE, CookingItems.APPLE_POMACE, CookingItems.PULP, CookingItems.PRESS_CAKE,
+				CookingItems.SUNFLOWER_SEEDS, CookingItems.TOASTED_PUMPKIN_SEEDS, CookingItems.SUNFLOWER_OIL, CookingItems.PUMPKIN_SEED_OIL,
+				CookingItems.FRIED_POTATOES, CookingItems.STIR_FRIED_VEGETABLES}) {
 				entries.accept(item);
 			}
 		});

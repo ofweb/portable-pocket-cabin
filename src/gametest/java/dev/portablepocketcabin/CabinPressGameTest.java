@@ -118,6 +118,106 @@ public final class CabinPressGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void sunflowerSeedsPressIntoFryingOil(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var threshed = CookingStation.CUTTING.find(level, CookingInput.of(List.of(new ItemStack(Items.SUNFLOWER)))).orElseThrow();
+		helper.assertTrue(threshed.value().result().item().value() == CookingItems.SUNFLOWER_SEEDS && threshed.value().result().count() == 4,
+			"A sunflower threshes into four seeds");
+		var press = press(helper);
+		press.setItem(0, new ItemStack(CookingItems.SUNFLOWER_SEEDS, 4));
+		press.setItem(PRESS.containerSlot, new ItemStack(Items.GLASS_BOTTLE));
+		tick(helper, press, 60);
+		var oil = press.getItem(PRESS.outputSlot);
+		helper.assertTrue(oil.is(CookingItems.SUNFLOWER_OIL) && press.getItem(PRESS.byproductSlot).is(CookingItems.PRESS_CAKE),
+			"Sunflower seeds press into oil and press cake");
+
+		helper.setBlock(BASE.offset(2, 0, 0), CookingBlocks.STOVE);
+		helper.setBlock(BASE.offset(2, 1, 0), CookingBlocks.WOK);
+		var wok = (ProcessStationBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.offset(2, 1, 0)));
+		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+		use(helper, player, oil.copy(), BASE.offset(2, 1, 0));
+		helper.assertTrue(wok.oil() == 1, "Sunflower oil fills the wok");
+		helper.assertTrue(player.getInventory().contains(new ItemStack(Items.GLASS_BOTTLE)), "Pouring the oil gives the bottle back");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void toastedPumpkinSeedsPressIntoDressingOil(GameTestHelper helper) {
+		var level = helper.getLevel();
+		helper.setBlock(BASE.offset(2, 0, 0), CookingBlocks.STOVE);
+		helper.setBlock(BASE.offset(2, 1, 0), CookingBlocks.SKILLET);
+		var stove = (StoveBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.offset(2, 0, 0)));
+		var skillet = (SkilletBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.offset(2, 1, 0)));
+		stove.setItem(0, new ItemStack(Items.COAL));
+		helper.assertTrue(skillet.add(level, new ItemStack(Items.PUMPKIN_SEEDS)), "Pumpkin seeds go on the skillet");
+		for (int i = 0; i < 110; i++) {
+			StoveBlockEntity.serverTick(level, stove.getBlockPos(), stove.getBlockState(), stove);
+			SkilletBlockEntity.serverTick(level, skillet.getBlockPos(), skillet.getBlockState(), skillet);
+		}
+		helper.assertTrue(skillet.getItem(0).is(CookingItems.TOASTED_PUMPKIN_SEEDS), "Pumpkin seeds toast at medium heat");
+
+		var press = press(helper);
+		press.setItem(0, new ItemStack(CookingItems.TOASTED_PUMPKIN_SEEDS, 4));
+		press.setItem(PRESS.containerSlot, new ItemStack(Items.GLASS_BOTTLE));
+		tick(helper, press, 60);
+		var oil = press.getItem(PRESS.outputSlot);
+		helper.assertTrue(oil.is(CookingItems.PUMPKIN_SEED_OIL), "Toasted seeds press into pumpkin seed oil");
+
+		helper.setBlock(BASE.offset(0, 0, 2), CookingBlocks.COOKING_POT);
+		var pot = (CookingPotBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.offset(0, 0, 2)));
+		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+		use(helper, player, oil.copy(), BASE.offset(0, 0, 2));
+		helper.assertTrue(pot.oil() == 0, "Pumpkin seed oil is not a frying oil, so it does not fill the pot");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void sunflowerOilDeepFriesPotatoesAndStirFriesVegetables(GameTestHelper helper) {
+		var level = helper.getLevel();
+		helper.setBlock(BASE, CookingBlocks.STOVE);
+		helper.setBlock(BASE.above(), CookingBlocks.COOKING_POT);
+		var stove = (StoveBlockEntity) level.getBlockEntity(helper.absolutePos(BASE));
+		var pot = (CookingPotBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.above()));
+		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+		use(helper, player, new ItemStack(CookingItems.SUNFLOWER_OIL), BASE.above());
+		use(helper, player, new ItemStack(CookingItems.SUNFLOWER_OIL), BASE.above());
+		pot.setItem(0, new ItemStack(CookingItems.DICED_POTATO, 4));
+		stove.setItem(0, new ItemStack(Items.BLAZE_ROD));
+		for (int i = 0; i < 105; i++) {
+			StoveBlockEntity.serverTick(level, stove.getBlockPos(), stove.getBlockState(), stove);
+			CookingPotBlockEntity.serverTick(level, pot.getBlockPos(), pot.getBlockState(), pot);
+		}
+		var fried = pot.getItem(CookingPotBlockEntity.OUTPUT_SLOT);
+		helper.assertTrue(fried.is(CookingItems.FRIED_POTATOES) && fried.getCount() == 4 && pot.oil() == 1,
+			"Diced potatoes deep-fry in sunflower oil and use one level");
+
+		helper.setBlock(BASE.offset(2, 0, 0), CookingBlocks.STOVE);
+		helper.setBlock(BASE.offset(2, 1, 0), CookingBlocks.WOK);
+		var wokStove = (StoveBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.offset(2, 0, 0)));
+		var wok = (ProcessStationBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.offset(2, 1, 0)));
+		use(helper, player, new ItemStack(CookingItems.SUNFLOWER_OIL), BASE.offset(2, 1, 0));
+		wok.setItem(0, new ItemStack(CookingItems.CHOPPED_CARROT));
+		wok.setItem(1, new ItemStack(CookingItems.SLICED_BROWN_MUSHROOMS));
+		wok.setItem(2, new ItemStack(CookingItems.CHOPPED_BEETROOT));
+		wok.setItem(CookingMenu.Kind.WOK.containerSlot, new ItemStack(Items.BOWL));
+		wokStove.setItem(0, new ItemStack(Items.BLAZE_ROD));
+		for (int i = 0; i < 125; i++) {
+			StoveBlockEntity.serverTick(level, wokStove.getBlockPos(), wokStove.getBlockState(), wokStove);
+			ProcessStationBlockEntity.serverTick(level, wok.getBlockPos(), wok.getBlockState(), wok);
+		}
+		helper.assertTrue(wok.getItem(CookingMenu.Kind.WOK.outputSlot).is(CookingItems.STIR_FRIED_VEGETABLES) && wok.oil() == 0,
+			"Vegetables stir-fry in the oiled wok");
+		helper.succeed();
+	}
+
+	private static void use(GameTestHelper helper, net.minecraft.world.entity.player.Player player, ItemStack stack, BlockPos relative) {
+		var pos = helper.absolutePos(relative);
+		player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, stack);
+		var hit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(pos), Direction.UP, pos, false);
+		helper.getLevel().getBlockState(pos).useItemOn(stack, helper.getLevel(), player, net.minecraft.world.InteractionHand.MAIN_HAND, hit);
+	}
+
 	private static ProcessStationBlockEntity press(GameTestHelper helper) {
 		helper.setBlock(BASE, CookingBlocks.PRESS);
 		return (ProcessStationBlockEntity) helper.getLevel().getBlockEntity(helper.absolutePos(BASE));

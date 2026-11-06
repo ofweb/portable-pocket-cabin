@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "toasting",
+  "ingredients": [
+    {
+      "item": "minecraft:pumpkin_seeds"
+    }
+  ],
+  "heat": "medium",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:toasted_pumpkin_seeds"
+  }
+}

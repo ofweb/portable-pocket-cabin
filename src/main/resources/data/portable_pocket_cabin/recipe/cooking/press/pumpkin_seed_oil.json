@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:press",
+  "technique": "pressing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:toasted_pumpkin_seeds",
+      "count": 4
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "time": 60,
+  "remainders": [
+    {
+      "id": "portable_pocket_cabin:press_cake"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:pumpkin_seed_oil"
+  }
+}

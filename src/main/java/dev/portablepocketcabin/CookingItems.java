@@ -27,7 +27,10 @@ final class CookingItems {
 	static final Item GRILLED_PORK_SKEWER = register("grilled_pork_skewer", properties -> properties.food(new FoodProperties(10, 12.0F, false)));
 	static final Item GRILLED_CHICKEN_SKEWER = register("grilled_chicken_skewer", properties -> properties.food(new FoodProperties(9, 10.8F, false)));
 	static final Item GRILLED_MUTTON_SKEWER = register("grilled_mutton_skewer", properties -> properties.food(new FoodProperties(9, 10.8F, false)));
-	/** Oils that fill the cooking pot and wok. B-0052 adds the oils themselves. */
+	/**
+	 * Frying oils, which fill the cooking pot and wok. Sunflower oil is the first. Pumpkin seed oil is not one: toasted,
+	 * it smokes at frying heat, so it is kept for dressings.
+	 */
 	static final net.minecraft.tags.TagKey<Item> COOKING_OILS = net.minecraft.tags.TagKey.create(
 		Registries.ITEM, PortablePocketCabin.id("cooking_oils"));
 
@@ -38,6 +41,13 @@ final class CookingItems {
 	static final Item SLICED_BROWN_MUSHROOMS = register("sliced_brown_mushrooms", UnaryOperator.identity());
 	static final Item SLICED_RED_MUSHROOMS = register("sliced_red_mushrooms", UnaryOperator.identity());
 	static final Item GRATED_CARROT = register("grated_carrot", UnaryOperator.identity());
+	static final Item SUNFLOWER_SEEDS = register("sunflower_seeds", UnaryOperator.identity());
+	static final Item TOASTED_PUMPKIN_SEEDS = register("toasted_pumpkin_seeds", UnaryOperator.identity());
+	static final Item SUNFLOWER_OIL = register("sunflower_oil", properties -> properties.stacksTo(16));
+	static final Item PUMPKIN_SEED_OIL = register("pumpkin_seed_oil", properties -> properties.stacksTo(16));
+	static final Item FRIED_POTATOES = register("fried_potatoes", properties -> properties.food(food(3, 3.6F)));
+	static final Item STIR_FRIED_VEGETABLES = register("stir_fried_vegetables",
+		properties -> properties.stacksTo(16).food(food(8, 9.6F)).usingConvertsTo(Items.BOWL));
 
 	/** The solids a press leaves behind. All three compost, and press cake also feeds cows, sheep, and goats. */
 	static final Item APPLE_POMACE = register("apple_pomace", UnaryOperator.identity());

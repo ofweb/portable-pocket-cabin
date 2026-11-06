@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/pumpkin_seed_oil",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 3099164
+      }
+    ]
+  }
+}

@@ -166,5 +166,15 @@
   "item.portable_pocket_cabin.melon_juice": "Melon Juice",
   "item.portable_pocket_cabin.carrot_juice": "Carrot Juice",
   "technique.portable_pocket_cabin.grating": "Grating",
-  "technique.portable_pocket_cabin.grating.description": "Rub chopped carrot against the fine edge of the blade until it falls apart into shreds. Grated, it gives up its juice in the press."
+  "technique.portable_pocket_cabin.grating.description": "Rub chopped carrot against the fine edge of the blade until it falls apart into shreds. Grated, it gives up its juice in the press.",
+  "item.portable_pocket_cabin.sunflower_seeds": "Sunflower Seeds",
+  "item.portable_pocket_cabin.toasted_pumpkin_seeds": "Toasted Pumpkin Seeds",
+  "item.portable_pocket_cabin.sunflower_oil": "Sunflower Oil",
+  "item.portable_pocket_cabin.pumpkin_seed_oil": "Pumpkin Seed Oil",
+  "item.portable_pocket_cabin.fried_potatoes": "Fried Potatoes",
+  "item.portable_pocket_cabin.stir_fried_vegetables": "Stir-fried Vegetables",
+  "technique.portable_pocket_cabin.threshing": "Threshing",
+  "technique.portable_pocket_cabin.threshing.description": "Beat the dried sunflower head against the board until the seeds come loose, then pick out the seeds from the chaff.",
+  "technique.portable_pocket_cabin.toasting": "Toasting",
+  "technique.portable_pocket_cabin.toasting.description": "Dry-roast seeds in a pan without oil until they smell nutty and darken. Toasting deepens their flavour, as for Styrian pumpkin seed oil."
 }

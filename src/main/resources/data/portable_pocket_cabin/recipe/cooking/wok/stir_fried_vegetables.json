@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:wok",
+  "technique": "stir_frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chopped_carrot"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_beetroot"
+    },
+    {
+      "item": "portable_pocket_cabin:sliced_brown_mushrooms"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "oil": 1,
+  "heat": "high",
+  "time": 120,
+  "result": {
+    "id": "portable_pocket_cabin:stir_fried_vegetables"
+  }
+}
