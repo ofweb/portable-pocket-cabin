@@ -10,7 +10,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.ArrayList;
@@ -117,24 +116,13 @@ final class CookbookAvailability {
 
 	/** Whether the sources hold every counted ingredient and the container, using each item for only one entry. */
 	static boolean canMake(CookingRecipe recipe, List<ItemStack> sources) {
-		List<ItemStack> left = new ArrayList<>();
-		for (ItemStack stack : sources) if (CabinStation.ordinary(stack)) left.add(stack.copy());
-		for (CookingRecipe.Counted entry : recipe.ingredients()) {
-			if (!take(left, entry.ingredient(), entry.count())) return false;
-		}
-		return recipe.container().map(container -> take(left, container.ingredient(), container.count())).orElse(true);
+		return CookingAllocation.allocate(demands(recipe), sources).isPresent();
 	}
 
-	private static boolean take(List<ItemStack> left, Ingredient ingredient, int count) {
-		int needed = count;
-		for (ItemStack stack : left) {
-			if (needed == 0) break;
-			if (!stack.isEmpty() && ingredient.test(stack)) {
-				int used = Math.min(needed, stack.getCount());
-				stack.shrink(used);
-				needed -= used;
-			}
-		}
-		return needed == 0;
+	/** The recipe's counted ingredients, then its container. */
+	static List<CookingRecipe.Counted> demands(CookingRecipe recipe) {
+		List<CookingRecipe.Counted> demands = new ArrayList<>(recipe.ingredients());
+		recipe.container().ifPresent(demands::add);
+		return demands;
 	}
 }

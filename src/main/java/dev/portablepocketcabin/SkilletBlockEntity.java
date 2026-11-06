@@ -17,9 +17,17 @@ final class SkilletBlockEntity extends DisplayStationBlockEntity implements Cook
 	private final int[] progress = new int[SLOTS];
 	private final CookingRecipe[] recipes = new CookingRecipe[SLOTS];
 	private final boolean[] looked = new boolean[SLOTS];
+	private int generation;
+	private CookingStation.Lookup lookup = CookingStation.SKILLET::find;
 
 	SkilletBlockEntity(BlockPos pos, BlockState state) {
 		super(CookingBlocks.SKILLET_ENTITY, pos, state, SLOTS);
+	}
+
+	/** Replaces the recipe lookup, for GameTests. */
+	void lookup(CookingStation.Lookup lookup) {
+		this.lookup = lookup;
+		Arrays.fill(looked, false);
 	}
 
 	int progress(int slot) {
@@ -27,10 +35,14 @@ final class SkilletBlockEntity extends DisplayStationBlockEntity implements Cook
 	}
 
 	private Optional<CookingRecipe> recipe(ServerLevel level, int slot) {
+		if (generation != CookingStation.recipeGeneration()) {
+			Arrays.fill(looked, false);
+			generation = CookingStation.recipeGeneration();
+		}
 		if (!looked[slot]) {
 			ItemStack stack = items.get(slot);
 			recipes[slot] = stack.isEmpty() ? null
-				: CookingStation.SKILLET.find(level, CookingInput.of(List.of(stack))).map(holder -> holder.value()).orElse(null);
+				: lookup.find(level, CookingInput.of(List.of(stack))).map(holder -> holder.value()).orElse(null);
 			looked[slot] = true;
 		}
 		return Optional.ofNullable(recipes[slot]);
@@ -38,7 +50,7 @@ final class SkilletBlockEntity extends DisplayStationBlockEntity implements Cook
 
 	/** Puts one item on a free spot if the skillet can cook it. */
 	boolean add(ServerLevel level, ItemStack held) {
-		if (CookingStation.SKILLET.find(level, CookingInput.of(List.of(held.copyWithCount(1)))).isEmpty()) return false;
+		if (lookup.find(level, CookingInput.of(List.of(held.copyWithCount(1)))).isEmpty()) return false;
 		for (int slot = 0; slot < SLOTS; slot++) {
 			if (items.get(slot).isEmpty()) {
 				items.set(slot, held.split(1));

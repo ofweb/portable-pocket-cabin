@@ -118,7 +118,7 @@ All stations are blocks with block entities that use standard ticking. That mean
 
 Shared rules:
 
-- A station looks up its current recipe from its inputs when they change, not every tick.
+- A station looks up its current recipe from its inputs when they change, not every tick, and again after a successful datapack reload, so added, changed, and removed recipes take effect without touching the station.
 - Progress advances by one per tick only while the heat equals the recipe's heat. Otherwise it holds its value, and the screen shows a status line, for example "Needs low heat".
 - When progress reaches `time` and the output and byproduct slots have room, the station consumes the inputs, the container, and the water, then adds the output and byproducts. A full output slot pauses progress.
 - A change of inputs that changes the matched recipe resets progress to 0. Breaking a station drops all its contents, and progress restarts when the items are cooked again.
@@ -183,7 +183,8 @@ Vanilla outputs keep their vanilla food values. The new soups stack to 16, unlik
 
 - The pot and oven screens have a recipe-panel button, like the vanilla recipe book. It lists that station's synced recipes and marks the ones the player can fill. The panel asks with the same availability payload, flagged for the open station. That reply counts the player's inventory and the station's own ingredients but not central storage, because filling does not use storage until B-0041.
 - Selecting a recipe sends a `CookingFill.Request(pos, recipeId)`. The server checks that the player has that station's menu open and that the recipe belongs to the station. The server first returns the current ingredient-slot contents to the player, then moves the recipe's ingredients and container from the player's inventory.
-- Filling skips named and customised stacks, using the same check as the crafting room, `CabinStation.ordinary`. Bowls already in the pot stay when they are enough for the recipe. Nothing moves when the recipe can't be made.
+- Filling skips named and customised stacks, using the same check as the crafting room, `CabinStation.ordinary`. Bowls already in the pot stay when they are enough for the recipe. The whole transfer is planned before anything moves. Nothing moves when the recipe can't be made or the displaced items don't fit in the inventory.
+- Availability and filling share one assignment of stacks to counted ingredients, so overlapping ingredients, such as a plank tag and oak planks in one recipe, work in any inventory order.
 - The server code takes an ingredient source list. B-0041 adds central storage in front of the player inventory, and adds fuel filling, without changing the payload.
 
 ## Vanilla food removal

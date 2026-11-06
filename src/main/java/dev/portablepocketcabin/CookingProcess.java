@@ -24,6 +24,8 @@ final class CookingProcess {
 	private final int byproductSlot;
 	private RecipeHolder<CookingRecipe> recipe;
 	private boolean dirty = true;
+	private int generation;
+	private CookingStation.Lookup lookup;
 	private boolean loaded;
 	private int progress;
 
@@ -33,6 +35,13 @@ final class CookingProcess {
 		this.containerSlot = containerSlot;
 		this.outputSlot = outputSlot;
 		this.byproductSlot = byproductSlot;
+		this.lookup = station::find;
+	}
+
+	/** Replaces the recipe lookup, for GameTests. */
+	void lookup(CookingStation.Lookup lookup) {
+		this.lookup = lookup;
+		dirty = true;
 	}
 
 	void markDirty() {
@@ -44,12 +53,13 @@ final class CookingProcess {
 	}
 
 	Optional<CookingRecipe> recipe(ServerLevel level, Container container, int water) {
-		if (dirty) {
-			var found = station.find(level, input(container, water)).orElse(null);
+		if (dirty || generation != CookingStation.recipeGeneration()) {
+			var found = lookup.find(level, input(container, water)).orElse(null);
 			boolean same = found != null && (loaded || recipe != null && found.id().equals(recipe.id()));
 			if (!same) progress = 0;
 			recipe = found;
 			dirty = false;
+			generation = CookingStation.recipeGeneration();
 			loaded = false;
 		}
 		return Optional.ofNullable(recipe).map(RecipeHolder::value);

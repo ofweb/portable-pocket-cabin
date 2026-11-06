@@ -47,6 +47,10 @@ final class CookingPotBlockEntity extends CookingStationBlockEntity implements C
 		return process.progress();
 	}
 
+	CookingProcess process() {
+		return process;
+	}
+
 	/** Fills the pot from a water bucket. Returns false when the pot is already full. */
 	boolean fillWater() {
 		if (water >= CookingStation.MAX_WATER) return false;

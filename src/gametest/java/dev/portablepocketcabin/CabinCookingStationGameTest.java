@@ -4,12 +4,16 @@ import net.fabricmc.fabric.api.entity.FakePlayer;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -379,7 +383,7 @@ public final class CabinCookingStationGameTest {
 			"The other vegetables go in");
 		helper.assertTrue(pot.getItem(CookingPotBlockEntity.CONTAINER_SLOT).getCount() == 3, "Three bowls go in");
 		helper.assertTrue(inventory.countItem(Items.STICK) == 1 && inventory.countItem(Items.BOWL) == 3,
-			"The stick and the single bowl come back to the player");
+			"The stick comes back, and the pot uses its own bowl first");
 		helper.assertTrue(inventory.getItem(0).has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)
 			&& inventory.countItem(CookingItems.CHOPPED_CARROT) == 4, "The named carrot stays with the player");
 
@@ -429,6 +433,93 @@ public final class CabinCookingStationGameTest {
 		helper.assertTrue(pot.getItem(CookingPotBlockEntity.CONTAINER_SLOT).getCount() == 8 && inventory.countItem(Items.BOWL) == 0,
 			"Bowls that already suffice stay in the pot");
 		inventory.clearContent();
+		helper.succeed();
+	}
+
+	@GameTest
+	public void overlappingIngredientsFindAWorkingAssignment(GameTestHelper helper) {
+		var planks = helper.getLevel().registryAccess().lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.PLANKS);
+		var recipe = new CookingRecipe(CookingStation.OVEN, "baking",
+			List.of(new CookingRecipe.Counted(Ingredient.of(planks), 1), new CookingRecipe.Counted(Ingredient.of(Items.OAK_PLANKS), 1)),
+			Optional.empty(), 0, List.of(), Optional.of(CookingHeat.LOW), 100, new ItemStackTemplate(Items.BREAD, 1));
+		helper.assertTrue(CookbookAvailability.canMake(recipe, List.of(new ItemStack(Items.OAK_PLANKS), new ItemStack(Items.BIRCH_PLANKS))),
+			"The tag takes birch so the exact ingredient can take oak");
+		helper.assertTrue(!CookbookAvailability.canMake(recipe, List.of(new ItemStack(Items.OAK_PLANKS), new ItemStack(Items.STICK))),
+			"One oak plank cannot fill both ingredients");
+		var oven = oven(helper, ItemStack.EMPTY);
+		var inventory = FakePlayer.get(helper.getLevel()).getInventory();
+		inventory.clearContent();
+		inventory.setItem(0, new ItemStack(Items.OAK_PLANKS));
+		inventory.setItem(1, new ItemStack(Items.BIRCH_PLANKS));
+		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe, inventory, List.of(CookingFill.inventory(inventory))),
+			"Filling uses the same assignment");
+		helper.assertTrue(oven.getItem(0).is(Items.BIRCH_PLANKS) && oven.getItem(1).is(Items.OAK_PLANKS) && inventory.isEmpty(),
+			"Birch goes in for the tag and oak for the exact ingredient");
+		inventory.clearContent();
+		helper.succeed();
+	}
+
+	@GameTest
+	public void fillingWithAFullInventoryLosesNothing(GameTestHelper helper) {
+		var oven = oven(helper, ItemStack.EMPTY);
+		oven.setItem(0, new ItemStack(Items.WHEAT, 3));
+		var inventory = FakePlayer.get(helper.getLevel()).getInventory();
+		inventory.clearContent();
+		for (int slot = 0; slot < 36; slot++) inventory.setItem(slot, new ItemStack(Items.STONE, 64));
+		var bread = recipe(helper, "cooking/oven/bread");
+		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, bread, inventory, List.of(CookingFill.inventory(inventory)))
+			&& oven.getItem(0).is(Items.WHEAT) && oven.getItem(0).getCount() == 3, "Wheat already in the oven stays there");
+		oven.setItem(1, new ItemStack(Items.STICK));
+		helper.assertTrue(!CookingFill.fill(oven, CookingStation.OVEN, bread, inventory, List.of(CookingFill.inventory(inventory)))
+			&& oven.getItem(0).getCount() == 3 && oven.getItem(1).is(Items.STICK), "Nothing moves when a displaced stick has no room");
+		var dropped = helper.getLevel().getEntitiesOfClass(ItemEntity.class, new AABB(oven.getBlockPos()).inflate(3));
+		helper.assertTrue(dropped.isEmpty(), "Nothing is dropped");
+		inventory.clearContent();
+		helper.succeed();
+	}
+
+	@GameTest
+	public void recipeReloadsRefreshCachedLookups(GameTestHelper helper) {
+		var level = helper.getLevel();
+		helper.setBlock(BASE, Blocks.CAMPFIRE);
+		var pot = pot(helper);
+		fillSoup(pot);
+		@SuppressWarnings("unchecked")
+		var soup = (net.minecraft.world.item.crafting.RecipeHolder<CookingRecipe>) level.getServer().getRecipeManager()
+			.byKey(net.minecraft.resources.ResourceKey.create(Registries.RECIPE, PortablePocketCabin.id("cooking/pot/vegetable_soup"))).orElseThrow();
+		var current = new Object[] {null};
+		pot.process().lookup((world, input) -> Optional.ofNullable((net.minecraft.world.item.crafting.RecipeHolder<CookingRecipe>) current[0]));
+		tickPot(helper, pot, 1);
+		helper.assertTrue(pot.process().time() == 0, "No recipe matches before it exists");
+		current[0] = soup;
+		tickPot(helper, pot, 1);
+		helper.assertTrue(pot.process().time() == 0, "Unchanged contents keep the cached lookup");
+		CookingStation.recipesReloaded();
+		tickPot(helper, pot, 1);
+		helper.assertTrue(pot.process().time() == soup.value().time() && pot.progress() == 1, "An added recipe is found after a reload");
+		var quick = soup.value();
+		current[0] = new net.minecraft.world.item.crafting.RecipeHolder<>(soup.id(), new CookingRecipe(quick.station(), quick.technique(),
+			quick.ingredients(), quick.container(), quick.water(), quick.remainders(), quick.heat(), 50, quick.result()));
+		CookingStation.recipesReloaded();
+		tickPot(helper, pot, 1);
+		helper.assertTrue(pot.process().time() == 50 && pot.progress() == 2, "A replaced recipe takes effect and keeps its progress");
+		current[0] = null;
+		CookingStation.recipesReloaded();
+		tickPot(helper, pot, 1);
+		helper.assertTrue(pot.process().time() == 0 && pot.progress() == 0, "A removed recipe stops cooking");
+
+		helper.setBlock(BASE.offset(2, 0, 0), Blocks.CAMPFIRE);
+		helper.setBlock(BASE.offset(2, 1, 0), CookingBlocks.SKILLET);
+		var skillet = (SkilletBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.offset(2, 1, 0)));
+		skillet.add(level, new ItemStack(Items.EGG));
+		var egg = new Object[] {null};
+		skillet.lookup((world, input) -> Optional.ofNullable((net.minecraft.world.item.crafting.RecipeHolder<CookingRecipe>) egg[0]));
+		helper.assertTrue(!skillet.wantsHeat(level), "The skillet has no recipe for the egg");
+		egg[0] = level.getServer().getRecipeManager()
+			.byKey(net.minecraft.resources.ResourceKey.create(Registries.RECIPE, PortablePocketCabin.id("cooking/skillet/fried_egg"))).orElseThrow();
+		helper.assertTrue(!skillet.wantsHeat(level), "The skillet keeps its cached lookup");
+		CookingStation.recipesReloaded();
+		helper.assertTrue(skillet.wantsHeat(level), "The skillet finds the recipe after a reload");
 		helper.succeed();
 	}
 

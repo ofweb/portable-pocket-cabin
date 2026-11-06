@@ -1,5 +1,6 @@
 package dev.portablepocketcabin;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -44,7 +45,26 @@ enum CookingStation {
 			new RecipeSerializer<>(CookingRecipe.codec(this), CookingRecipe.streamCodec(this)));
 	}
 
+	/** Looks up a station's recipe. Stations take one so GameTests can change recipes without a datapack reload. */
+	interface Lookup {
+		Optional<RecipeHolder<CookingRecipe>> find(ServerLevel level, CookingInput input);
+	}
+
+	private static int recipeGeneration;
+
+	/** Changes whenever recipes reload, so stations know their cached recipe lookups are stale. */
+	static int recipeGeneration() {
+		return recipeGeneration;
+	}
+
+	static void recipesReloaded() {
+		recipeGeneration++;
+	}
+
 	static void register() {
+		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resources, success) -> {
+			if (success) recipesReloaded();
+		});
 		for (CookingStation station : values()) {
 			RecipeSynchronization.synchronizeRecipeSerializer(station.serializer);
 		}
