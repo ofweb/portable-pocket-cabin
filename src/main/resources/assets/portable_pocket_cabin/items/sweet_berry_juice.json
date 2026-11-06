@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/sweet_berry_juice",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 11544122
+      }
+    ]
+  }
+}

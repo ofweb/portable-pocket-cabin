@@ -1,5 +1,6 @@
 package dev.portablepocketcabin;
 
+import net.fabricmc.fabric.api.registry.CompostableRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -7,6 +8,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.Consumables;
 
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
@@ -35,6 +37,17 @@ final class CookingItems {
 	static final Item CHOPPED_APPLE = register("chopped_apple", UnaryOperator.identity());
 	static final Item SLICED_BROWN_MUSHROOMS = register("sliced_brown_mushrooms", UnaryOperator.identity());
 	static final Item SLICED_RED_MUSHROOMS = register("sliced_red_mushrooms", UnaryOperator.identity());
+	static final Item GRATED_CARROT = register("grated_carrot", UnaryOperator.identity());
+
+	/** The solids a press leaves behind. All three compost, and press cake also feeds cows, sheep, and goats. */
+	static final Item APPLE_POMACE = register("apple_pomace", UnaryOperator.identity());
+	static final Item PULP = register("pulp", UnaryOperator.identity());
+	static final Item PRESS_CAKE = register("press_cake", UnaryOperator.identity());
+
+	static final Item APPLE_JUICE = register("apple_juice", properties -> drink(properties, 3, 1.2F));
+	static final Item SWEET_BERRY_JUICE = register("sweet_berry_juice", properties -> drink(properties, 3, 1.2F));
+	static final Item MELON_JUICE = register("melon_juice", properties -> drink(properties, 3, 1.2F));
+	static final Item CARROT_JUICE = register("carrot_juice", properties -> drink(properties, 3, 1.2F));
 
 	static final Item SAUTEED_MUSHROOMS = register("sauteed_mushrooms", properties -> properties.food(food(3, 3.6F)));
 	static final Item FRIED_EGG = register("fried_egg", properties -> properties.food(food(3, 3.6F)));
@@ -47,11 +60,19 @@ final class CookingItems {
 	}
 
 	static void register() {
-		// Triggers static registration during mod initialization.
+		CompostableRegistry.INSTANCE.add(APPLE_POMACE, 0.65F);
+		CompostableRegistry.INSTANCE.add(PULP, 0.65F);
+		CompostableRegistry.INSTANCE.add(PRESS_CAKE, 0.65F);
 	}
 
 	private static FoodProperties food(int nutrition, float saturation) {
 		return new FoodProperties(nutrition, saturation, false);
+	}
+
+	/** A bottled drink: it can be drunk when full, like a honey bottle, and gives the glass bottle back. */
+	private static Item.Properties drink(Item.Properties properties, int nutrition, float saturation) {
+		return properties.stacksTo(16).food(new FoodProperties(nutrition, saturation, true), Consumables.DEFAULT_DRINK)
+			.usingConvertsTo(Items.GLASS_BOTTLE);
 	}
 
 	private static Item register(String name, UnaryOperator<Item.Properties> properties) {

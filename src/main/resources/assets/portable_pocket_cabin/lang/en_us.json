@@ -156,5 +156,15 @@
   "block.portable_pocket_cabin.press": "Press",
   "screen.portable_pocket_cabin.cookbook.station.press": "Press",
   "technique.portable_pocket_cabin.pressing": "Pressing",
-  "technique.portable_pocket_cabin.pressing.description": "Squeeze prepared fruit or seeds under a slowly tightened screw. The liquid runs into the bottle, and the dry solids stay behind in the press."
+  "technique.portable_pocket_cabin.pressing.description": "Squeeze prepared fruit or seeds under a slowly tightened screw. The liquid runs into the bottle, and the dry solids stay behind in the press.",
+  "item.portable_pocket_cabin.grated_carrot": "Grated Carrot",
+  "item.portable_pocket_cabin.apple_pomace": "Apple Pomace",
+  "item.portable_pocket_cabin.pulp": "Pulp",
+  "item.portable_pocket_cabin.press_cake": "Press Cake",
+  "item.portable_pocket_cabin.apple_juice": "Apple Juice",
+  "item.portable_pocket_cabin.sweet_berry_juice": "Sweet Berry Juice",
+  "item.portable_pocket_cabin.melon_juice": "Melon Juice",
+  "item.portable_pocket_cabin.carrot_juice": "Carrot Juice",
+  "technique.portable_pocket_cabin.grating": "Grating",
+  "technique.portable_pocket_cabin.grating.description": "Rub chopped carrot against the fine edge of the blade until it falls apart into shreds. Grated, it gives up its juice in the press."
 }

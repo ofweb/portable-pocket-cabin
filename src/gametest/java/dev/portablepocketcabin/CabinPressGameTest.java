@@ -71,6 +71,53 @@ public final class CabinPressGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void pressMakesJuicesAndTheirSolids(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var grated = CookingStation.CUTTING.find(level, CookingInput.of(List.of(new ItemStack(CookingItems.CHOPPED_CARROT)))).orElseThrow();
+		helper.assertTrue(grated.value().result().item().value() == CookingItems.GRATED_CARROT, "Chopped carrot grates on the cutting board");
+		var press = press(helper);
+		Object[][] juices = {
+			{CookingItems.CHOPPED_APPLE, CookingItems.APPLE_JUICE, CookingItems.APPLE_POMACE},
+			{Items.SWEET_BERRIES, CookingItems.SWEET_BERRY_JUICE, CookingItems.PULP},
+			{Items.MELON_SLICE, CookingItems.MELON_JUICE, CookingItems.PULP},
+			{CookingItems.GRATED_CARROT, CookingItems.CARROT_JUICE, CookingItems.PULP},
+		};
+		for (Object[] juice : juices) {
+			for (int slot = 0; slot < PRESS.size; slot++) press.setItem(slot, ItemStack.EMPTY);
+			press.setItem(0, new ItemStack((net.minecraft.world.item.Item) juice[0], 4));
+			press.setItem(PRESS.containerSlot, new ItemStack(Items.GLASS_BOTTLE));
+			tick(helper, press, 60);
+			helper.assertTrue(press.getItem(PRESS.outputSlot).is((net.minecraft.world.item.Item) juice[1])
+				&& press.getItem(PRESS.byproductSlot).is((net.minecraft.world.item.Item) juice[2]) && press.getItem(0).isEmpty(),
+				"Four " + juice[0] + " press into " + juice[1] + " and " + juice[2]);
+		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void juicesGiveTheBottleBackAndSolidsAreUseful(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+		for (var juice : List.of(CookingItems.APPLE_JUICE, CookingItems.SWEET_BERRY_JUICE, CookingItems.MELON_JUICE, CookingItems.CARROT_JUICE)) {
+			var stack = new ItemStack(juice);
+			helper.assertTrue(stack.has(net.minecraft.core.component.DataComponents.FOOD)
+				&& stack.get(net.minecraft.core.component.DataComponents.FOOD).canAlwaysEat(), juice + " can be drunk when full");
+			helper.assertTrue(stack.finishUsingItem(level, player).is(Items.GLASS_BOTTLE), juice + " gives the bottle back");
+		}
+		for (var solid : List.of(CookingItems.APPLE_POMACE, CookingItems.PULP, CookingItems.PRESS_CAKE)) {
+			helper.assertTrue(net.minecraft.world.level.block.ComposterBlock.COMPOSTABLES.getFloat(solid) > 0, solid + " composts");
+		}
+		var cake = new ItemStack(CookingItems.PRESS_CAKE);
+		var cow = helper.spawn(net.minecraft.world.entity.EntityTypes.COW, BASE.above());
+		var sheep = helper.spawn(net.minecraft.world.entity.EntityTypes.SHEEP, BASE.above());
+		var goat = helper.spawn(net.minecraft.world.entity.EntityTypes.GOAT, BASE.above());
+		var pig = helper.spawn(net.minecraft.world.entity.EntityTypes.PIG, BASE.above());
+		helper.assertTrue(cow.isFood(cake) && sheep.isFood(cake) && goat.isFood(cake), "Press cake feeds cows, sheep, and goats");
+		helper.assertTrue(!pig.isFood(cake), "Pigs do not eat press cake");
+		helper.succeed();
+	}
+
 	private static ProcessStationBlockEntity press(GameTestHelper helper) {
 		helper.setBlock(BASE, CookingBlocks.PRESS);
 		return (ProcessStationBlockEntity) helper.getLevel().getBlockEntity(helper.absolutePos(BASE));
