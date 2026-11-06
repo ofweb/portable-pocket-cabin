@@ -5,23 +5,29 @@ Feature ID: B-0046
 
 ## Goal
 
-Players turn grain, milk, and salt into the basics of a kitchen the way people have for centuries:
+Players turn grain and milk into the basics of a kitchen, the way people have for centuries:
 - They mill wheat into flour, grow a sourdough starter, knead and proof dough, and bake bread, pastry, cakes, cookies, and pie.
-- They settle milk and skim the cream, churn butter, culture yogurt, and set, press, and age cheese.
+- They settle milk and skim the cream, churn butter, culture yogurt, and set, press, brine, and age cheese.
 
-Each step is a real process that the [cookbook](../../context.md#cookbook) explains. Together they show how much work lies behind a loaf of bread or a wedge of cheese. The four vanilla bakes that [B-0045](../B-0045/brief.md) made from whole wheat now need flour, butter, and pastry.
+Each step is a real process that the [cookbook](../../context.md#cookbook) explains. Together they show how much work lies behind a loaf of bread or a wedge of cheese.
+
+B-0046 ships in phase 3 of the [cooking program](../../cooking/program.md), together with:
+- [B-0047](../../backlog.md#b-0047-stocks-sauces-and-flavour), which adds salt.
+- [B-0048](../../backlog.md#b-0048-fermentation-drying-and-preservation), which adds the fermentation crock, ageing shelf, drying rack, and brine barrel.
+
+It uses the prep counter and strainer from [B-0053](../../backlog.md#b-0053-prep-counter-and-specialty-cooking-stations).
 
 ## Stories and acceptance
 
-### S1: Mill grain and salt
+### S1: Mill grain
 
-Story: A player mills wheat into flour and rock salt into salt.
+Story: A player mills wheat into flour.
 
 Acceptance:
 
-- The mill is a container station without heat, like a furnace without fuel.
+- The mill is a container station without heat, like a furnace without fuel. It grinds, crushes, cracks, and crumbles.
 - Wheat grinds into wheat flour.
-- Rock salt is a new ore in dripstone caves and badlands. It grinds into salt.
+- **Shared station:** the mill also serves B-0047, which grinds rock salt, and later features that grind spices, grains, and meal.
 
 ### S2: Mix and shape on the prep counter
 
@@ -29,22 +35,21 @@ Story: A player places a mixing bowl on a prep counter, puts ingredients in it, 
 
 Acceptance:
 
-- **Prep counter:** a work surface. Counter-top stations sit on it, as a pot sits on a stove. The cutting board can also sit on it.
-- **Mixing bowl:** sits only on a prep counter. Ingredients go in, and using the spoon on the bowl mixes, kneads, whisks, rubs in, or works them, as the recipe says.
-- **Shaping:** the prep counter itself shapes dough into rolls and fills and closes pies.
+- **Mixing bowl:** sits on the B-0053 prep counter. Ingredients go in, and using the spoon on the bowl mixes, kneads, whisks, rubs in, or works them, as the recipe says.
+- **Shaping:** the prep counter shapes dough into rolls and fills and closes pies.
 - **Water:** recipes take water as water bottles, and return the empty bottles.
 
-### S3: Leaven with sourdough
+### S3: Leaven
 
-Story: A player starts a sourdough starter and keeps it going.
+Story: A player starts a sourdough starter, keeps it going, and makes yeast.
 
 Acceptance:
 
-- The fermentation crock is a time station. Its recipes progress without heat over a set time, like a slow furnace.
-- Wheat flour and water in the crock become a sourdough starter after a day.
-- Feeding a starter with flour and water gives two starters, so one starter keeps a household baking.
-- Bread dough is wheat flour, starter, water, and salt, kneaded in the mixing bowl, then proofed in a proofing basket.
-- The proofing basket is a time station.
+- **Starter:** wheat flour and water become a sourdough starter after a day in the B-0048 fermentation crock.
+- **Feeding:** feeding a starter with flour and water gives two starters, so one starter keeps a household baking.
+- **Yeast:** a starter grown in sugar water in the crock, then dried on the drying rack.
+- **Bread dough:** wheat flour, yeast or starter, water, and salt, kneaded in the mixing bowl, then proofed.
+- **Proofing basket:** a time station. Recipes in it progress without heat over a set time.
 
 ### S4: Bake
 
@@ -57,7 +62,8 @@ Acceptance:
   - **Cookies:** from flour, butter, sugar, egg, and cocoa.
   - **Cake:** from flour, sugar, eggs, butter, and milk.
   - **Pumpkin pie:** from shortcrust pastry with pumpkin, egg, and sugar.
-- Shortcrust pastry is flour, butter, water, and salt. The butter is rubbed in with the mixing bowl, then the pastry is chilled on the ageing shelf.
+- **Shortcrust pastry:** flour, butter, water, and salt. The butter is rubbed in with the mixing bowl, then the pastry is chilled on the ageing shelf.
+- **Sweet yeast dough:** for enriched bakes.
 - Baked goods keep vanilla food values unless the design gives a reason to change them.
 
 ### S5: Separate cream and churn butter
@@ -82,19 +88,20 @@ Acceptance:
 
 ### S7: Make cheese
 
-Story: A player makes rennet from a plant, sets curds, and presses and ages cheese.
+Story: A player makes rennet from a plant, sets curds, and presses, drains, brines, and ages cheese.
 
 Acceptance:
 
 - **Cardoon:** a new wild thistle in meadows and savannas. It can be replanted.
-- **Vegetable rennet:** cardoon flowers steeped in salt water in the crock, as traditional cheeses still use.
+- **Vegetable rennet:** cardoon flowers steeped in salt water in the crock, as traditional Iberian cheeses still use.
 - **Curds and whey:** milk warmed in the cooking pot at low heat with rennet, set, then cut.
 - **Cheese press:** a container station that presses curds.
 - **The cheeses:**
   - **Fresh cheese:** curds and salt, pressed lightly.
-  - **Aged hard cheese:** curds dry-salted, pressed hard, then aged on the ageing shelf.
+  - **Quark:** skimmed milk soured with buttermilk in the crock, then drained in the strainer.
+  - **Cream cheese:** cream cultured in the crock, drained in the strainer, then salted.
+  - **Aged hard cheese:** curds pressed hard, brined in the brine barrel, then aged on the ageing shelf.
   - **Aged soft cheese:** curds and salt, drained and ripened on the ageing shelf.
-- **Ageing shelf:** a time station. Its holding times are longer than the crock's.
 
 ## Feature-wide constraints and acceptance
 
@@ -102,27 +109,26 @@ Acceptance:
 - Time stations progress only while their chunk ticks, so they pause while an empty cabin is packed. Catch-up remains open under Direction.
 - Every new item and recipe appears in the cookbook, with its technique explained.
 - Recipes are data, so datapacks can change times and add products.
+- Products that need ingredients from later features ship with those features, under the program's [rule for shared chains](../../cooking/program.md#rule-for-shared-chains).
 
 ## Scope
 
-- **Stations:**
-  - Taken from B-0053: the prep counter.
-  - Its own: the mixing bowl with its spoon, the mill, the proofing basket, the dairy pan, the butter churn, and the cheese press.
-  - Taken from B-0048: the fermentation crock and the ageing shelf.
-- **Ingredients:** rock salt, taken from B-0047, and cardoon, a new plant.
-- **Products:** the flour, starter, dough, pastry, bake, butter, cultured milk, rennet, curd, and cheese chains in the stories.
+- **Stations:** the mill, the mixing bowl with its spoon, the proofing basket, the dairy pan, the butter churn, and the cheese press.
+- **Plant:** cardoon.
+- **Products:** the wheat flour, leavening, dough, pastry, bake, butter, cultured milk, rennet, curd, and cheese chains in the stories.
+- **The rest of the grains, flours, starches, doughs, and dairy products** in the [intermediate products](../../cooking/intermediates.md) list, as their ingredients arrive with B-0049, B-0050, and B-0052.
 
 ## Non-goals
 
-- **B-0053:** the strainer, grill, wok, and æbleskive pan, and the strained cheeses, quark and cream cheese, which need the strainer.
-- **B-0048:** the drying rack, brine barrel, and smoker, dried yeast, and brined cheeses.
-- **B-0050:** rye, corn, rice, and other grains and their flours.
-- **B-0049:** calf rennet from butchery. It may later join vegetable rennet as a second source.
-- **B-0047 and B-0052:** oils and oil-based doughs.
+- **B-0053:** the prep counter and strainer themselves.
+- **B-0048:** the crock, ageing shelf, drying rack, and brine barrel themselves.
+- **B-0047:** salt and sugars.
+- **B-0049:** calf rennet. It later joins vegetable rennet as a second source.
 - **B-0051:** food benefits beyond vanilla values.
 
 ## Related records
 
+- [Cooking program](../../cooking/program.md).
 - [Cooking stations and cookbook](../B-0045/brief.md).
 - [Manual kitchen](../B-0041/brief.md).
 - [Cooking stations list](../../cooking/stations.md).
@@ -134,4 +140,4 @@ Acceptance:
 
 - **Time:** times are in game time. A "day" is one Minecraft day. B-0033 tunes them.
 - **Containers:** milk stays in buckets. Cream comes in bottles, skimmed milk in buckets, and yogurt and crème fraîche in bowls. The design may adjust these.
-- **Time station form:** the design settles whether time stations hold several batches and how they show progress.
+- **Time station form:** the joint phase 3 design settles whether time stations hold several batches and how they show progress.

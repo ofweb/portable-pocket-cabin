@@ -69,7 +69,7 @@ How players get each item:
 | sea lettuce | Beaches | Forage | B-0050 |
 | wakame | Cold oceans | Forage | B-0050 |
 | water bottle of seawater | Any ocean | Fill a glass bottle in the ocean | B-0047 |
-| rock salt | Dripstone caves and badlands, as an ore | Mine | B-0046 |
+| rock salt | Dripstone caves and badlands, as an ore | Mine | B-0047 |
 
 ## Grains and field crops
 
