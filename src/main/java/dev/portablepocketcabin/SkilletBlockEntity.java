@@ -9,6 +9,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /** A skillet holds up to four items, like a campfire, and cooks each one on its own while heated. */
@@ -16,7 +17,9 @@ final class SkilletBlockEntity extends DisplayStationBlockEntity implements Cook
 	static final int SLOTS = 4;
 	private final int[] progress = new int[SLOTS];
 	private final CookingRecipe[] recipes = new CookingRecipe[SLOTS];
+	private final String[] recipeIds = new String[SLOTS];
 	private final boolean[] looked = new boolean[SLOTS];
+	private final boolean[] loaded = new boolean[SLOTS];
 	private int generation;
 	private CookingStation.Lookup lookup = CookingStation.SKILLET::find;
 
@@ -41,8 +44,15 @@ final class SkilletBlockEntity extends DisplayStationBlockEntity implements Cook
 		}
 		if (!looked[slot]) {
 			ItemStack stack = items.get(slot);
-			recipes[slot] = stack.isEmpty() ? null
-				: lookup.find(level, CookingInput.of(List.of(stack))).map(holder -> holder.value()).orElse(null);
+			var found = stack.isEmpty() ? null
+				: lookup.find(level, CookingInput.of(List.of(stack))).orElse(null);
+			String id = found == null ? null : found.id().identifier().toString();
+			if (!Objects.equals(recipeIds[slot], id) && !(loaded[slot] && recipeIds[slot] == null && id != null)) {
+				progress[slot] = 0;
+			}
+			recipes[slot] = found == null ? null : found.value();
+			recipeIds[slot] = id;
+			loaded[slot] = false;
 			looked[slot] = true;
 		}
 		return Optional.ofNullable(recipes[slot]);
@@ -123,6 +133,9 @@ final class SkilletBlockEntity extends DisplayStationBlockEntity implements Cook
 	protected void saveAdditional(ValueOutput output) {
 		super.saveAdditional(output);
 		output.putIntArray("progress", progress);
+		for (int slot = 0; slot < SLOTS; slot++) {
+			if (recipeIds[slot] != null) output.putString("recipe_" + slot, recipeIds[slot]);
+		}
 	}
 
 	@Override
@@ -130,5 +143,10 @@ final class SkilletBlockEntity extends DisplayStationBlockEntity implements Cook
 		super.loadAdditional(input);
 		int[] saved = input.getIntArray("progress").orElse(new int[SLOTS]);
 		System.arraycopy(saved, 0, progress, 0, Math.min(saved.length, SLOTS));
+		for (int slot = 0; slot < SLOTS; slot++) {
+			recipeIds[slot] = input.getString("recipe_" + slot).orElse(null);
+			loaded[slot] = true;
+			looked[slot] = false;
+		}
 	}
 }

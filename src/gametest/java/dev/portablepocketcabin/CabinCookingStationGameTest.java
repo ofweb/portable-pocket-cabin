@@ -192,6 +192,13 @@ public final class CabinCookingStationGameTest {
 			&& copy.getItem(CookingPotBlockEntity.CONTAINER_SLOT).getCount() == 3, "The pot keeps its water, progress, and items");
 		CookingPotBlockEntity.serverTick(level, copy.getBlockPos(), copy.getBlockState(), copy);
 		helper.assertTrue(copy.progress() == 41, "Saved progress survives the first recipe lookup");
+		var replacementSoup = new net.minecraft.world.item.crafting.RecipeHolder<>(
+			net.minecraft.resources.ResourceKey.create(Registries.RECIPE, PortablePocketCabin.id("test/replacement_soup")),
+			recipe(helper, "cooking/pot/vegetable_soup"));
+		var changedPot = reload(helper, pot, new CookingPotBlockEntity(pot.getBlockPos(), pot.getBlockState()));
+		changedPot.process().lookup((world, input) -> Optional.of(replacementSoup));
+		CookingPotBlockEntity.serverTick(level, changedPot.getBlockPos(), changedPot.getBlockState(), changedPot);
+		helper.assertTrue(changedPot.progress() == 1, "Saved pot progress resets when a different recipe matches");
 
 		helper.setBlock(BASE.offset(2, 0, 0), CookingBlocks.STOVE);
 		helper.setBlock(BASE.offset(2, 1, 0), CookingBlocks.SKILLET);
@@ -209,6 +216,13 @@ public final class CabinCookingStationGameTest {
 			"The stove keeps its fire");
 		var skilletCopy = reload(helper, skillet, new SkilletBlockEntity(skillet.getBlockPos(), skillet.getBlockState()));
 		helper.assertTrue(skilletCopy.getItem(0).is(Items.EGG) && skilletCopy.progress(0) == 30, "The skillet keeps its food and progress");
+		var replacementEgg = new net.minecraft.world.item.crafting.RecipeHolder<>(
+			net.minecraft.resources.ResourceKey.create(Registries.RECIPE, PortablePocketCabin.id("test/replacement_egg")),
+			recipe(helper, "cooking/skillet/fried_egg"));
+		var changedSkillet = reload(helper, skillet, new SkilletBlockEntity(skillet.getBlockPos(), skillet.getBlockState()));
+		changedSkillet.lookup((world, input) -> Optional.of(replacementEgg));
+		SkilletBlockEntity.serverTick(level, changedSkillet.getBlockPos(), changedSkillet.getBlockState(), changedSkillet);
+		helper.assertTrue(changedSkillet.progress(0) == 1, "Saved skillet progress resets when a different recipe matches");
 		helper.succeed();
 	}
 
@@ -513,6 +527,11 @@ public final class CabinCookingStationGameTest {
 		CookingStation.recipesReloaded();
 		tickPot(helper, pot, 1);
 		helper.assertTrue(pot.process().time() == 50 && pot.progress() == 2, "A replaced recipe takes effect and keeps its progress");
+		current[0] = new net.minecraft.world.item.crafting.RecipeHolder<>(
+			net.minecraft.resources.ResourceKey.create(Registries.RECIPE, PortablePocketCabin.id("test/other_soup")), quick);
+		CookingStation.recipesReloaded();
+		tickPot(helper, pot, 1);
+		helper.assertTrue(pot.progress() == 1, "A different matching recipe starts the pot over after reload");
 		current[0] = null;
 		CookingStation.recipesReloaded();
 		tickPot(helper, pot, 1);
@@ -530,6 +549,13 @@ public final class CabinCookingStationGameTest {
 		helper.assertTrue(!skillet.wantsHeat(level), "The skillet keeps its cached lookup");
 		CookingStation.recipesReloaded();
 		helper.assertTrue(skillet.wantsHeat(level), "The skillet finds the recipe after a reload");
+		tickSkillet(helper, skillet, 10);
+		egg[0] = new net.minecraft.world.item.crafting.RecipeHolder<>(
+			net.minecraft.resources.ResourceKey.create(Registries.RECIPE, PortablePocketCabin.id("test/other_egg")),
+			recipe(helper, "cooking/skillet/fried_egg"));
+		CookingStation.recipesReloaded();
+		tickSkillet(helper, skillet, 1);
+		helper.assertTrue(skillet.progress(0) == 1, "A different matching recipe starts the skillet over after reload");
 		helper.succeed();
 	}
 

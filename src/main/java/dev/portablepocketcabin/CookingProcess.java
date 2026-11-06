@@ -27,6 +27,7 @@ final class CookingProcess {
 	private int generation;
 	private CookingStation.Lookup lookup;
 	private boolean loaded;
+	private String savedRecipeId;
 	private int progress;
 
 	CookingProcess(CookingStation station, int containerSlot, int outputSlot, int byproductSlot) {
@@ -55,12 +56,15 @@ final class CookingProcess {
 	Optional<CookingRecipe> recipe(ServerLevel level, Container container, int water) {
 		if (dirty || generation != CookingStation.recipeGeneration()) {
 			var found = lookup.find(level, input(container, water)).orElse(null);
-			boolean same = found != null && (loaded || recipe != null && found.id().equals(recipe.id()));
+			boolean same = found != null && (loaded
+				? savedRecipeId == null || savedRecipeId.equals(found.id().identifier().toString())
+				: recipe != null && found.id().equals(recipe.id()));
 			if (!same) progress = 0;
 			recipe = found;
 			dirty = false;
 			generation = CookingStation.recipeGeneration();
 			loaded = false;
+			savedRecipeId = null;
 		}
 		return Optional.ofNullable(recipe).map(RecipeHolder::value);
 	}
@@ -130,10 +134,14 @@ final class CookingProcess {
 
 	void save(ValueOutput output) {
 		output.putInt("progress", progress);
+		String id = loaded ? savedRecipeId : recipe == null ? null : recipe.id().identifier().toString();
+		if (id != null) output.putString("recipe", id);
 	}
 
 	void load(ValueInput input) {
 		progress = input.getIntOr("progress", 0);
+		savedRecipeId = input.getString("recipe").orElse(null);
+		recipe = null;
 		dirty = true;
 		loaded = true;
 	}
