@@ -8,11 +8,12 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 final class CookingItems {
 	static final Item KITCHEN_KNIFE = register("kitchen_knife", properties -> properties.stacksTo(1));
-	static final Item COOKBOOK = register("cookbook", properties -> properties.stacksTo(1));
+	static final Item COOKBOOK = register("cookbook", properties -> properties.stacksTo(1), CookbookItem::new);
 
 	static final Item CHOPPED_CARROT = register("chopped_carrot", UnaryOperator.identity());
 	static final Item DICED_POTATO = register("diced_potato", UnaryOperator.identity());
@@ -40,7 +41,11 @@ final class CookingItems {
 	}
 
 	private static Item register(String name, UnaryOperator<Item.Properties> properties) {
+		return register(name, properties, Item::new);
+	}
+
+	private static Item register(String name, UnaryOperator<Item.Properties> properties, Function<Item.Properties, Item> factory) {
 		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, PortablePocketCabin.id(name));
-		return Registry.register(BuiltInRegistries.ITEM, key, new Item(properties.apply(new Item.Properties().setId(key))));
+		return Registry.register(BuiltInRegistries.ITEM, key, factory.apply(properties.apply(new Item.Properties().setId(key))));
 	}
 }

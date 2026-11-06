@@ -182,4 +182,41 @@ public final class CabinCookingGameTest {
 			"Prepared ingredients are not edible");
 		helper.succeed();
 	}
+
+	@GameTest
+	public void cookbookCountsInventoryAndHouseholdStorage(GameTestHelper helper) {
+		var recipes = CookbookAvailability.recipes(helper.getLevel().getServer().getRecipeManager().getRecipes());
+		Identifier bread = PortablePocketCabin.id("cooking/oven/bread");
+		Identifier soup = PortablePocketCabin.id("cooking/pot/vegetable_soup");
+		Identifier cake = PortablePocketCabin.id("cooking/oven/cake");
+		helper.assertTrue(CookbookAvailability.available(recipes, List.of(new ItemStack(Items.WHEAT, 3))).contains(bread),
+			"Three wheat make bread");
+		helper.assertTrue(!CookbookAvailability.available(recipes, List.of(new ItemStack(Items.WHEAT, 2))).contains(bread),
+			"Two wheat do not");
+		helper.assertTrue(CookbookAvailability.available(recipes, List.of(new ItemStack(Items.WHEAT), new ItemStack(Items.WHEAT, 2))).contains(bread),
+			"Wheat counts across stacks");
+		var named = new ItemStack(Items.WHEAT, 3);
+		named.set(DataComponents.CUSTOM_NAME, net.minecraft.network.chat.Component.literal("Seed wheat"));
+		helper.assertTrue(!CookbookAvailability.available(recipes, List.of(named)).contains(bread), "Named stacks do not count");
+		var vegetables = List.of(new ItemStack(CookingItems.CHOPPED_CARROT), new ItemStack(CookingItems.DICED_POTATO),
+			new ItemStack(CookingItems.CHOPPED_BEETROOT));
+		helper.assertTrue(!CookbookAvailability.available(recipes, java.util.stream.Stream.concat(vegetables.stream(), java.util.stream.Stream.of(new ItemStack(Items.BOWL, 2))).toList()).contains(soup),
+			"Soup needs its three bowls");
+		helper.assertTrue(CookbookAvailability.available(recipes, java.util.stream.Stream.concat(vegetables.stream(), java.util.stream.Stream.of(new ItemStack(Items.BOWL, 3))).toList()).contains(soup),
+			"Soup is ready with three bowls");
+		helper.assertTrue(CookbookAvailability.available(recipes, List.of(new ItemStack(Items.WHEAT, 3), new ItemStack(Items.SUGAR, 2),
+			new ItemStack(Items.EGG), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.MILK_BUCKET))).contains(cake),
+			"Cake counts three single milk buckets");
+
+		var registry = new CabinRegistry();
+		var cabin = CabinEnchantingGameTest.cabin(registry);
+		cabin = registry.updateUpgradeState(cabin.uuid(), cabin.upgrades().withStorage(
+			new CabinStorageState(true, 1, List.of(new ItemStack(Items.WHEAT, 2)))));
+		var inventory = List.of(new ItemStack(Items.WHEAT));
+		helper.assertTrue(CookbookAvailability.available(recipes, CookbookAvailability.sources(cabin, cabin.owner(), inventory)).contains(bread),
+			"Household storage adds to the inventory");
+		helper.assertTrue(!CookbookAvailability.available(recipes, CookbookAvailability.sources(cabin, UUID.randomUUID(), inventory)).contains(bread),
+			"A guest's cookbook does not count the cabin's storage");
+		helper.succeed();
+	}
 }

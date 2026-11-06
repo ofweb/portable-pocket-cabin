@@ -22,12 +22,7 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 
 	@Override
 	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-		int[] dx = {0, 4, imageWidth - 4}, dy = {0, 4, imageHeight - 4};
-		int[] sx = {0, 4, 172}, sy = {0, 4, 162};
-		int[] widths = {4, imageWidth - 8, 4}, heights = {4, imageHeight - 8, 4};
-		for (int y = 0; y < 3; y++) for (int x = 0; x < 3; x++)
-			graphics.blit(RenderPipelines.GUI_TEXTURED, PANEL, leftPos + dx[x], topPos + dy[y], sx[x], sy[y],
-				widths[x], heights[y], x == 1 ? 1 : 4, y == 1 ? 1 : 4, 256, 256);
+		panel(graphics, leftPos, topPos, imageWidth, imageHeight);
 		for (int[] slot : menu.kind().slots) slot(graphics, slot[0], slot[1]);
 		for (int row = 0; row < 3; row++) for (int col = 0; col < 9; col++)
 			slot(graphics, 8 + col * 18, CookingMenu.INVENTORY_Y + row * 18);
@@ -50,6 +45,16 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 		} else if (menu.data(CookingMenu.DATA_HEAT) > 0) {
 			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FLAME, leftPos + 97, topPos + 46, 14, 14);
 		}
+	}
+
+	/** A plain inventory-style panel of any size, stretched from the corners and edges of the inventory texture. */
+	static void panel(GuiGraphicsExtractor graphics, int left, int top, int width, int height) {
+		int[] dx = {0, 4, width - 4}, dy = {0, 4, height - 4};
+		int[] sx = {0, 4, 172}, sy = {0, 4, 162};
+		int[] widths = {4, width - 8, 4}, heights = {4, height - 8, 4};
+		for (int y = 0; y < 3; y++) for (int x = 0; x < 3; x++)
+			graphics.blit(RenderPipelines.GUI_TEXTURED, PANEL, left + dx[x], top + dy[y], sx[x], sy[y],
+				widths[x], heights[y], x == 1 ? 1 : 4, y == 1 ? 1 : 4, 256, 256);
 	}
 
 	/** The unlit flame outline from the furnace background. */

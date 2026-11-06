@@ -29,6 +29,10 @@ final class CookingScreenshots {
 				player.getInventory().setItem(0, new ItemStack(CookingItems.KITCHEN_KNIFE));
 				player.getInventory().setItem(1, new ItemStack(Items.OAK_PLANKS, 16));
 				player.getInventory().setItem(2, new ItemStack(Items.BOWL, 6));
+				player.getInventory().setItem(3, new ItemStack(CookingItems.CHOPPED_CARROT, 2));
+				player.getInventory().setItem(4, new ItemStack(CookingItems.DICED_POTATO, 2));
+				player.getInventory().setItem(5, new ItemStack(CookingItems.CHOPPED_BEETROOT, 2));
+				player.getInventory().setItem(6, new ItemStack(CookingItems.COOKBOOK));
 				server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "time set noon");
 				server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "weather clear");
 				BlockPos base = player.blockPosition().offset(0, 40, 0);
@@ -83,6 +87,17 @@ final class CookingScreenshots {
 			shot(context, "stove-screen");
 			open(context, world, origin[0].offset(2, 0, -3), CookingMenu.Kind.OVEN);
 			shot(context, "oven-screen");
+			world.getServer().runOnServer(server -> world.getConnection().getServerPlayer().closeContainer());
+			world.getConnection().waitForClientboundPackets();
+			context.runOnClient(client -> CookbookScreen.open());
+			context.waitForScreen(CookbookScreen.class);
+			world.getConnection().waitForServerboundPackets();
+			world.getConnection().waitForClientboundPackets();
+			shot(context, "cookbook-list");
+			context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).select(PortablePocketCabin.id("cooking/pot/vegetable_soup")));
+			shot(context, "cookbook-detail");
+			context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).select(PortablePocketCabin.id("cooking/oven/cake")));
+			shot(context, "cookbook-cake");
 		}
 	}
 
