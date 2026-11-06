@@ -69,7 +69,7 @@ How players get each item:
 | sea lettuce | Beaches | Forage | B-0050 |
 | wakame | Cold oceans | Forage | B-0050 |
 | water bottle of seawater | Any ocean | Fill a glass bottle in the ocean | B-0047 |
-| rock salt | Dripstone caves and badlands, as an ore | Mine | B-0047 |
+| rock salt | Dripstone caves and badlands, as an ore | Mine | B-0046 |
 
 ## Grains and field crops
 
@@ -105,6 +105,7 @@ How players get each item:
 | bell pepper | Savannas | Farm | B-0050 |
 | paprika pepper | Savannas | Farm | B-0050 |
 | cabbage | Plains, villages | Farm | B-0050 |
+| cardoon | Meadows and savannas, as a wild thistle | Forage, replant | B-0046 |
 | red cabbage | Taigas | Farm | B-0050 |
 | cassava | Jungles, savannas | Farm | B-0050 |
 | celery | Swamps | Farm | B-0050 |

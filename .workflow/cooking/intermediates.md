@@ -112,7 +112,7 @@ Feature: B-0046.
 | yogurt | milk, *yogurt* | Cooking pot (low): warm milk → Fermentation crock: culture for a day. A spoon of yogurt starts the next batch. |
 | crème fraîche | *cream*, *buttermilk* | Fermentation crock: culture for a day |
 | crema | *cream*, *buttermilk*, *lime juice*, *salt* | Fermentation crock: culture → Mixing bowl: stir in lime and salt |
-| rennet | *calf stomach* | Fermentation crock: steep in salt water |
+| rennet | cardoon flowers, or a *calf stomach* from B-0049 | Fermentation crock: steep in salt water |
 | curds | milk, *rennet* | Cooking pot (low): warm milk, add rennet, cut the set curd. Also gives *whey*. |
 | whey | milk | Left in the pot after setting *curds* |
 | quark | *skimmed milk*, *buttermilk* | Fermentation crock: sour for a day → Strainer: drain in cloth |
@@ -535,7 +535,7 @@ Every product in *italics* in the recipe catalogue and in this document has a de
 
 - **Wood ash:** lye for pretzels, hominy, masa, and ramen noodles comes from wood ash, which players make on purpose. They burn logs in the oven at high heat until only white ash remains, then leach water through it. Burning fuel leaves no ash.
 - **Salt by-products:** boiling down seawater leaves *nigari*, which sets tofu. Making salt then feeds Japanese cooking.
-- **Rennet:** cheese needs rennet from a calf stomach, which the butchery reference now lists. Using the whole animal reaches dairy too.
+- **Rennet:** B-0046 makes vegetable rennet from cardoon flowers, as traditional Iberian cheeses do. B-0049 may add calf rennet from the calf stomach the butchery reference lists, so using the whole animal reaches dairy too.
 - **No distilling:** kirsch and rum are bought from villagers. Wine, sake, mirin, vinegar, and beer are fermented in B-0048.
 - **Cultures that carry over:** sourdough starter, yogurt, and koji each return some of themselves, so only the first batch needs a source.
 - **Duck:** cassoulet needs duck, a new animal with its own carcass and butchery.

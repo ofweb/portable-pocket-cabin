@@ -25,7 +25,7 @@ Station kinds work like vanilla blocks:
 
 | Station | Kind | Steps | Supports | Feature |
 |---|---|---|---|---|
-| Prep counter | Work surface | 90 | Holds the cutting board, mixing bowl, strainer, and mortar and pestle. Takes shaping, rolling, filling, wrapping, skewering, layering, and assembling a dish from its components. | B-0053 |
+| Prep counter | Work surface | 90 | Holds the cutting board, mixing bowl, strainer, and mortar and pestle. Takes shaping, rolling, filling, wrapping, skewering, layering, and assembling a dish from its components. | B-0046 |
 
 ### Cooking with heat
 
@@ -61,8 +61,8 @@ Station kinds work like vanilla blocks:
 | Station | Steps | Techniques | Feature |
 |---|---|---|---|
 | Drying rack | 61 | Dry, sun-dry, wither | B-0048 |
-| Fermentation crock | 36 | Ferment, culture, sour, pickle, soak, sprout, steep, infuse | B-0048 |
-| Ageing shelf | 31 | Age, ripen, cure, oxidise, rest, set, settle, chill, cool | B-0048 |
+| Fermentation crock | 36 | Ferment, culture, sour, pickle, soak, sprout, steep, infuse | B-0046, used by B-0048 |
+| Ageing shelf | 31 | Age, ripen, cure, oxidise, rest, set, settle, chill, cool | B-0046, used by B-0048 |
 | Brine barrel | 12 | Salt, brine, cure, marinate | B-0048 |
 | Proofing basket | 10 | Proof | B-0046 |
 | Dairy pan | 2 | Settle milk, skim cream | B-0046 |
@@ -82,14 +82,14 @@ The knife, a spoon for the mixing bowl, a pestle, a cleaver, glass bottles for s
 - **Pickling happens in the fermentation crock.** The pickling jar is merged into it.
 - **The grill has its own fuel slot.** Fuel sets its heat, as in the oven.
 - **The fruit press is renamed the press,** because it presses oil as well as juice. The cheese press keeps its name.
-- **B-0053 owns the prep counter, strainer, grill, wok, and æbleskive pan,** and oil filling for deep-frying in the cooking pot.
+- **B-0046 brings forward the prep counter,** with the fermentation crock and ageing shelf, because milling, baking, and dairy need them. B-0053 owns the strainer, grill, wok, and æbleskive pan, and oil filling for deep-frying in the cooking pot.
 
 ## What the counts show
 
 - **The cooking pot does the most work,** with 190 of the 890 steps. That is realistic, since real kitchens do most cooking in a pot.
 - **The counter takes the hand work.** The prep counter, cutting board, mixing bowl, strainer, and mortar and pestle together cover about 310 steps.
 - **Small stations are agreed:** the butter churn (1 step) and dairy pan (2) teach real dairy steps.
-- **B-0053 owns the five stations that had no feature:** the prep counter, strainer, grill, wok, and æbleskive pan.
+- **B-0053 owns four of the stations that had no feature:** the strainer, grill, wok, and æbleskive pan. B-0046 owns the prep counter.
 
 ## Proposals
 
