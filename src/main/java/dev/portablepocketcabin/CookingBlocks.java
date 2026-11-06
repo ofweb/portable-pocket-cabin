@@ -101,7 +101,8 @@ final class CookingBlocks {
 				CookingItems.GRATED_CARROT, CookingItems.APPLE_JUICE, CookingItems.SWEET_BERRY_JUICE, CookingItems.MELON_JUICE,
 				CookingItems.CARROT_JUICE, CookingItems.APPLE_POMACE, CookingItems.PULP, CookingItems.PRESS_CAKE,
 				CookingItems.SUNFLOWER_SEEDS, CookingItems.TOASTED_PUMPKIN_SEEDS, CookingItems.SUNFLOWER_OIL, CookingItems.PUMPKIN_SEED_OIL,
-				CookingItems.FRIED_POTATOES, CookingItems.STIR_FRIED_VEGETABLES}) {
+				CookingItems.FRIED_POTATOES, CookingItems.STIR_FRIED_VEGETABLES, CookingItems.UNSTRAINED_BERRY_CORDIAL,
+				CookingItems.SWEET_BERRY_CORDIAL, CookingItems.APPLE_SYRUP}) {
 				entries.accept(item);
 			}
 		});

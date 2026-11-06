@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "reducing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:apple_juice",
+      "count": 4
+    }
+  ],
+  "heat": "low",
+  "time": 400,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 3
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:apple_syrup"
+  }
+}

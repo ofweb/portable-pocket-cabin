@@ -176,5 +176,12 @@
   "technique.portable_pocket_cabin.threshing": "Threshing",
   "technique.portable_pocket_cabin.threshing.description": "Beat the dried sunflower head against the board until the seeds come loose, then pick out the seeds from the chaff.",
   "technique.portable_pocket_cabin.toasting": "Toasting",
-  "technique.portable_pocket_cabin.toasting.description": "Dry-roast seeds in a pan without oil until they smell nutty and darken. Toasting deepens their flavour, as for Styrian pumpkin seed oil."
+  "technique.portable_pocket_cabin.toasting.description": "Dry-roast seeds in a pan without oil until they smell nutty and darken. Toasting deepens their flavour, as for Styrian pumpkin seed oil.",
+  "item.portable_pocket_cabin.unstrained_berry_cordial": "Unstrained Berry Cordial",
+  "item.portable_pocket_cabin.sweet_berry_cordial": "Sweet Berry Cordial",
+  "item.portable_pocket_cabin.apple_syrup": "Apple Syrup",
+  "technique.portable_pocket_cabin.making_cordial": "Making cordial",
+  "technique.portable_pocket_cabin.making_cordial.description": "Simmer fruit gently with sugar and a little water until the fruit bursts and colours the syrup. Strained and bottled, it keeps, and a splash diluted with water makes a drink such as saftevand.",
+  "technique.portable_pocket_cabin.reducing": "Reducing",
+  "technique.portable_pocket_cabin.reducing.description": "Simmer a liquid slowly, uncovered, so its water steams away. Four bottles of apple juice cook down to one of thick, dark syrup."
 }

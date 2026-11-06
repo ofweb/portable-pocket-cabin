@@ -58,6 +58,11 @@ final class CookingItems {
 	static final Item SWEET_BERRY_JUICE = register("sweet_berry_juice", properties -> drink(properties, 3, 1.2F));
 	static final Item MELON_JUICE = register("melon_juice", properties -> drink(properties, 3, 1.2F));
 	static final Item CARROT_JUICE = register("carrot_juice", properties -> drink(properties, 3, 1.2F));
+	/** Berries simmered with sugar and water, still full of skins and seeds until it is strained. */
+	static final Item UNSTRAINED_BERRY_CORDIAL = register("unstrained_berry_cordial", properties -> properties.stacksTo(16));
+	/** A concentrate that the B-0046 mixing bowl dilutes into saftevand. Until then it is a sweet drink on its own. */
+	static final Item SWEET_BERRY_CORDIAL = register("sweet_berry_cordial", properties -> drink(properties, 4, 1.2F));
+	static final Item APPLE_SYRUP = register("apple_syrup", properties -> drink(properties, 6, 1.2F));
 
 	static final Item SAUTEED_MUSHROOMS = register("sauteed_mushrooms", properties -> properties.food(food(3, 3.6F)));
 	static final Item FRIED_EGG = register("fried_egg", properties -> properties.food(food(3, 3.6F)));

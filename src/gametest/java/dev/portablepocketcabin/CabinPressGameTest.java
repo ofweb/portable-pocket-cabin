@@ -211,6 +211,49 @@ public final class CabinPressGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void berriesMakeCordialAndJuiceReducesToSyrup(GameTestHelper helper) {
+		var level = helper.getLevel();
+		helper.setBlock(BASE, CookingBlocks.STOVE);
+		helper.setBlock(BASE.above(), CookingBlocks.COOKING_POT);
+		var stove = (StoveBlockEntity) level.getBlockEntity(helper.absolutePos(BASE));
+		var pot = (CookingPotBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.above()));
+		pot.fillWater();
+		pot.setItem(0, new ItemStack(Items.SWEET_BERRIES, 6));
+		pot.setItem(1, new ItemStack(Items.SUGAR, 2));
+		pot.setItem(CookingPotBlockEntity.CONTAINER_SLOT, new ItemStack(Items.GLASS_BOTTLE));
+		stove.setItem(0, new ItemStack(Items.OAK_PLANKS, 4));
+		tickPot(helper, stove, pot, 205);
+		var unstrained = pot.getItem(CookingPotBlockEntity.OUTPUT_SLOT);
+		helper.assertTrue(unstrained.is(CookingItems.UNSTRAINED_BERRY_CORDIAL) && pot.water() == CookingStation.MAX_WATER - 1,
+			"Berries, sugar, and water simmer into unstrained cordial");
+
+		helper.setBlock(BASE.offset(2, 0, 0), CookingBlocks.PREP_COUNTER);
+		helper.setBlock(BASE.offset(2, 1, 0), CookingBlocks.STRAINER);
+		var strainer = (ProcessStationBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.offset(2, 1, 0)));
+		strainer.setItem(0, unstrained.copy());
+		for (int i = 0; i < 60; i++) ProcessStationBlockEntity.serverTick(level, strainer.getBlockPos(), strainer.getBlockState(), strainer);
+		var kind = CookingMenu.Kind.STRAINER;
+		helper.assertTrue(strainer.getItem(kind.outputSlot).is(CookingItems.SWEET_BERRY_CORDIAL) && strainer.getItem(kind.byproductSlot).is(CookingItems.PULP),
+			"Straining leaves cordial in its bottle and the pulp behind");
+
+		for (int slot = 0; slot < pot.getContainerSize(); slot++) pot.setItem(slot, ItemStack.EMPTY);
+		pot.setItem(0, new ItemStack(CookingItems.APPLE_JUICE, 4));
+		tickPot(helper, stove, pot, 405);
+		helper.assertTrue(pot.getItem(CookingPotBlockEntity.OUTPUT_SLOT).is(CookingItems.APPLE_SYRUP), "Apple juice reduces into syrup");
+		var bottles = pot.getItem(CookingPotBlockEntity.BYPRODUCT_SLOT);
+		helper.assertTrue(bottles.is(Items.GLASS_BOTTLE) && bottles.getCount() == 3, "Reducing gives back three bottles");
+		helper.succeed();
+	}
+
+	private static void tickPot(GameTestHelper helper, StoveBlockEntity stove, CookingPotBlockEntity pot, int ticks) {
+		for (int i = 0; i < ticks; i++) {
+			if (stove.getItem(0).isEmpty()) stove.setItem(0, new ItemStack(Items.OAK_PLANKS, 4));
+			StoveBlockEntity.serverTick(helper.getLevel(), stove.getBlockPos(), stove.getBlockState(), stove);
+			CookingPotBlockEntity.serverTick(helper.getLevel(), pot.getBlockPos(), pot.getBlockState(), pot);
+		}
+	}
+
 	private static void use(GameTestHelper helper, net.minecraft.world.entity.player.Player player, ItemStack stack, BlockPos relative) {
 		var pos = helper.absolutePos(relative);
 		player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, stack);
