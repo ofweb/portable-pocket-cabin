@@ -51,6 +51,14 @@ The familiar arboretum entrance door loads the space on entry and returns player
 
 When players return to an empty packed cabin, existing greenhouse plants can progress toward their normal mature state under suitable growing conditions. Only time while the server operates counts. This catch-up does not harvest or replant. Those actions require separate automation capabilities. The [greenhouse brief](features/B-0019/brief.md) owns the room behavior.
 
+### Cooking time stations catch-up
+
+Cooking time stations count server time that passed while their chunk was unloaded or their cabin was packed, the way greenhouse plants do. These are the fermentation crock, ageing shelf, drying rack, brine barrel, proofing basket, and dairy pan.
+- **What progresses:** each batch can progress to its result.
+- **What doesn't:** nothing is collected, refilled, or started.
+- **What counts:** only time while the server operates.
+- **Heated stations:** stations that need heat keep the B-0045 rule and pause with their fire.
+
 ### Mailbox access
 
 Players can deliver mail to a cabin, and its owner can collect it through household interfaces. The [mailbox brief](features/B-0003/brief.md) owns installation prerequisites, access points, permissions, and delivery behavior.

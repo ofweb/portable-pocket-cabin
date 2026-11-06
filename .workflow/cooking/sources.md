@@ -36,7 +36,7 @@ How players get each item:
 | squid | Oceans | Vanilla | Vanilla |
 | sugar | Crafted from sugar cane | Vanilla | Vanilla |
 | sugar cane | Beside water | Vanilla | Vanilla |
-| sunflower | Sunflower plains | Vanilla. Its seed head is new: it gives *sunflower seeds* when dried. | Vanilla, B-0050 |
+| sunflower | Sunflower plains | Vanilla. A sunflower dries on the plant like a real seed head; threshing it on the cutting board gives *sunflower seeds*. | Vanilla, B-0052 |
 | sweet berries | Taigas | Vanilla | Vanilla |
 | water | Anywhere | Vanilla | Vanilla |
 | wheat | Villages, grass | Vanilla | Vanilla |
@@ -49,6 +49,7 @@ How players get each item:
 | pig carcass | Pigs, in grassy biomes | Raise | B-0049 |
 | chicken carcass | Chickens, in grassy biomes | Raise | B-0049 |
 | duck carcass | Ducks, a new animal of rivers and swamps | Raise | B-0049 |
+| goat carcass | Goats, in mountains | Raise | B-0049 |
 
 ## Fish and seafood
 
@@ -105,6 +106,7 @@ How players get each item:
 | bell pepper | Savannas | Farm | B-0050 |
 | paprika pepper | Savannas | Farm | B-0050 |
 | cabbage | Plains, villages | Farm | B-0050 |
+| cardoon | Meadows and savannas, as a wild thistle | Forage, replant | B-0046 |
 | red cabbage | Taigas | Farm | B-0050 |
 | cassava | Jungles, savannas | Farm | B-0050 |
 | celery | Swamps | Farm | B-0050 |
@@ -227,8 +229,9 @@ How players get each item:
 - **One plant, several ingredients.** Cilantro gives coriander seed, olives are green or black by ripeness, the elder gives elderflowers in spring and elderberries in autumn, and tea becomes sencha, matcha, or black tea by how it is processed.
 - **New world content is large.** About 125 raw ingredients are new: four kinds of animal carcass, six kinds of seafood, sea plants, rock salt, and over 100 plants. B-0049 and B-0050 own them, and their shaping should start from this list.
 
-## Open questions
+## Decisions
 
-- **Seasons:** elderflower and elderberry, and rosehip, imply seasons, which Minecraft does not have. They could instead be two growth stages of the same bush.
-- **Biome fit:** Minecraft has no Mediterranean biome. Windswept savannas stand in for olives, rosemary, and oregano.
-- **Plant count:** B-0050 may group close varieties, such as the basils or the grapes, to keep the number of new plants manageable.
+- **Seasons:** elderflower and elderberry, and rosehip, come from two growth stages of the same bush, because Minecraft has no seasons.
+- **Biome fit:** windswept savannas stand in for a Mediterranean biome, for olives, rosemary, and oregano.
+- **Plant count:** all 118 plants stay distinct, each with its own seeds and art.
+- **Fruit trees:** fruit grows on fruiting leaves of new tree species and is picked without breaking the tree.

@@ -82,7 +82,7 @@ The knife, a spoon for the mixing bowl, a pestle, a cleaver, glass bottles for s
 - **Pickling happens in the fermentation crock.** The pickling jar is merged into it.
 - **The grill has its own fuel slot.** Fuel sets its heat, as in the oven.
 - **The fruit press is renamed the press,** because it presses oil as well as juice. The cheese press keeps its name.
-- **B-0053 owns the prep counter, strainer, grill, wok, and æbleskive pan,** and oil filling for deep-frying in the cooking pot.
+- **B-0053 owns the prep counter, strainer, grill, wok, and æbleskive pan,** and oil filling for deep-frying in the cooking pot. The [cooking program](program.md) ships it first.
 
 ## What the counts show
 
