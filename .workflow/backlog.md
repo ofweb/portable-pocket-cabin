@@ -316,7 +316,8 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 
 ## B-0053: Prep counter and specialty cooking stations
 
-- Status: Ready for Shape
+- Status: Ready for Design
 - Value: Add the prep counter as the kitchen work surface, with the strainer on it, plus the grill, wok, and æbleskive pan, and oil for deep-frying in the cooking pot.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Uses B-0045. Holds counter-top stations from B-0045, B-0046, and B-0047. Players can place it in the B-0041 kitchen. Used by dishes across B-0046 through B-0052. The [station list](cooking/stations.md) gives each station's techniques and step counts.
+- Feature Brief: [Prep counter and specialty stations brief](features/B-0053/brief.md).
