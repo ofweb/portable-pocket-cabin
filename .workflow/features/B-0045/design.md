@@ -133,9 +133,10 @@ Shared rules:
 | Stove | Shaped: `I I` / `IFI`, with I iron ingot and F furnace |
 | Cooking pot | Shaped: `C C` / `C C` / `CCC`, with C copper ingot |
 | Skillet | Shaped: `II ` / `IIS`, with I iron ingot and S stick |
+| Oven | Shaped: `BBB` / `BFB` / `BBB`, with B brick and F furnace |
 | Cookbook | Shapeless: book and bowl |
 
-The oven, cutting board, and kitchen knife recipes are added with their stations.
+The cutting board and kitchen knife recipes are added with the cutting board.
 
 ### Permissions
 

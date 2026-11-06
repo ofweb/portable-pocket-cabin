@@ -63,18 +63,15 @@ abstract class CookingStationBlock extends BaseEntityBlock {
 		return InteractionResult.SUCCESS_SERVER;
 	}
 
-	static final class Stove extends CookingStationBlock {
-		static final MapCodec<Stove> CODEC = simpleCodec(Stove::new);
+	/** A station with its own fire: it faces the player, shows when lit, and a shovel puts it out. */
+	abstract static class Fired extends CookingStationBlock {
+		private final CookingMenu.Kind kind;
 
-		Stove(Properties properties) {
+		Fired(Properties properties, CookingMenu.Kind kind) {
 			super(properties);
+			this.kind = kind;
 			registerDefaultState(stateDefinition.any().setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH)
 				.setValue(BlockStateProperties.LIT, false));
-		}
-
-		@Override
-		protected MapCodec<? extends BaseEntityBlock> codec() {
-			return CODEC;
 		}
 
 		@Override
@@ -91,8 +88,8 @@ abstract class CookingStationBlock extends BaseEntityBlock {
 		protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
 			InteractionHand hand, BlockHitResult hit) {
 			if (!stack.is(ItemTags.SHOVELS) || !state.getValue(BlockStateProperties.LIT)) return InteractionResult.TRY_WITH_EMPTY_HAND;
-			if (level instanceof ServerLevel serverLevel && level.getBlockEntity(pos) instanceof StoveBlockEntity stove
-				&& CookingStationBlockEntity.mayUse(stove, player) && stove.extinguish()) {
+			if (level instanceof ServerLevel serverLevel && level.getBlockEntity(pos) instanceof FiredStationBlockEntity station
+				&& CookingStationBlockEntity.mayUse(station, player) && station.extinguish()) {
 				level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
 				if (player instanceof ServerPlayer serverPlayer) stack.hurtAndBreak(1, serverLevel, serverPlayer, item -> { });
 			}
@@ -101,7 +98,20 @@ abstract class CookingStationBlock extends BaseEntityBlock {
 
 		@Override
 		protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-			return openMenu(level, pos, player, CookingMenu.Kind.STOVE);
+			return openMenu(level, pos, player, kind);
+		}
+	}
+
+	static final class Stove extends Fired {
+		static final MapCodec<Stove> CODEC = simpleCodec(Stove::new);
+
+		Stove(Properties properties) {
+			super(properties, CookingMenu.Kind.STOVE);
+		}
+
+		@Override
+		protected MapCodec<? extends BaseEntityBlock> codec() {
+			return CODEC;
 		}
 
 		@Override
@@ -114,6 +124,32 @@ abstract class CookingStationBlock extends BaseEntityBlock {
 			return level instanceof ServerLevel
 				? createTickerHelper(type, CookingBlocks.STOVE_ENTITY, (world, pos, blockState, stove) ->
 					StoveBlockEntity.serverTick((ServerLevel) world, pos, blockState, stove))
+				: null;
+		}
+	}
+
+	static final class Oven extends Fired {
+		static final MapCodec<Oven> CODEC = simpleCodec(Oven::new);
+
+		Oven(Properties properties) {
+			super(properties, CookingMenu.Kind.OVEN);
+		}
+
+		@Override
+		protected MapCodec<? extends BaseEntityBlock> codec() {
+			return CODEC;
+		}
+
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return new OvenBlockEntity(pos, state);
+		}
+
+		@Override
+		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+			return level instanceof ServerLevel
+				? createTickerHelper(type, CookingBlocks.OVEN_ENTITY, (world, pos, blockState, oven) ->
+					OvenBlockEntity.serverTick((ServerLevel) world, pos, blockState, oven))
 				: null;
 		}
 	}

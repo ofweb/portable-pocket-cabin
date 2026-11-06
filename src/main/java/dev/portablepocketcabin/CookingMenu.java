@@ -45,7 +45,8 @@ final class CookingMenu extends AbstractContainerMenu {
 
 	enum Kind {
 		STOVE(1, new int[][] {{80, 53}}),
-		POT(9, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}});
+		POT(9, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}}),
+		OVEN(9, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}});
 
 		final int size;
 		final int[][] slots;
@@ -56,7 +57,7 @@ final class CookingMenu extends AbstractContainerMenu {
 		}
 
 		boolean takeOnly(int slot) {
-			return this == POT && (slot == CookingPotBlockEntity.OUTPUT_SLOT || slot == CookingPotBlockEntity.BYPRODUCT_SLOT);
+			return this != STOVE && (slot == CookingPotBlockEntity.OUTPUT_SLOT || slot == CookingPotBlockEntity.BYPRODUCT_SLOT);
 		}
 	}
 
@@ -101,6 +102,7 @@ final class CookingMenu extends AbstractContainerMenu {
 		ContainerData data = switch (station) {
 			case StoveBlockEntity stove -> stove.data;
 			case CookingPotBlockEntity pot -> pot.data;
+			case OvenBlockEntity oven -> oven.data;
 			default -> new SimpleContainerData(DATA_COUNT);
 		};
 		return new CookingMenu(kind, containerId, inventory, station, data, pos);
@@ -135,6 +137,10 @@ final class CookingMenu extends AbstractContainerMenu {
 			if (!moveItemStackTo(stack, stationSlots, end, true)) return ItemStack.EMPTY;
 		} else if (kind == Kind.STOVE) {
 			if (!moveItemStackTo(stack, 0, 1, false)) return ItemStack.EMPTY;
+		} else if (kind == Kind.OVEN) {
+			boolean fuel = player.level().fuelValues().isFuel(stack);
+			if (!(fuel && moveItemStackTo(stack, OvenBlockEntity.FUEL_SLOT, OvenBlockEntity.FUEL_SLOT + 1, false))
+				&& !moveItemStackTo(stack, 0, CookingStation.OVEN.ingredientSlots(), false)) return ItemStack.EMPTY;
 		} else if (stack.is(Items.BOWL)) {
 			if (!moveItemStackTo(stack, CookingPotBlockEntity.CONTAINER_SLOT, CookingPotBlockEntity.CONTAINER_SLOT + 1, false)
 				&& !moveItemStackTo(stack, 0, CookingStation.POT.ingredientSlots(), false)) return ItemStack.EMPTY;

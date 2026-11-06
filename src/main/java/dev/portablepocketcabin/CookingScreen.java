@@ -32,12 +32,7 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 			slot(graphics, 8 + col * 18, CookingMenu.INVENTORY_Y + row * 18);
 		for (int col = 0; col < 9; col++) slot(graphics, 8 + col * 18, CookingMenu.INVENTORY_Y + 58);
 		if (menu.kind() == CookingMenu.Kind.STOVE) {
-			int duration = menu.data(CookingMenu.DATA_LIT_DURATION);
-			int left = menu.data(CookingMenu.DATA_LIT_TIME);
-			if (duration > 0 && left > 0) {
-				int height = Math.max(1, Math.round(14F * left / duration));
-				graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FLAME, 14, 14, 0, 14 - height, leftPos + 81, topPos + 36 + 14 - height, 14, height);
-			}
+			flame(graphics, 81, 36);
 			return;
 		}
 		int time = menu.data(CookingMenu.DATA_TIME);
@@ -46,9 +41,20 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 			int width = Math.round(24F * progress / time);
 			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ARROW, 24, 16, 0, 0, leftPos + 92, topPos + 26, width, 16);
 		}
-		if (menu.data(CookingMenu.DATA_HEAT) > 0) {
+		if (menu.kind() == CookingMenu.Kind.OVEN) {
+			flame(graphics, 97, 46);
+		} else if (menu.data(CookingMenu.DATA_HEAT) > 0) {
 			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FLAME, leftPos + 97, topPos + 46, 14, 14);
 		}
+	}
+
+	/** A flame that shrinks as the burning fuel runs down, like a furnace's. */
+	private void flame(GuiGraphicsExtractor graphics, int x, int y) {
+		int duration = menu.data(CookingMenu.DATA_LIT_DURATION);
+		int left = menu.data(CookingMenu.DATA_LIT_TIME);
+		if (duration <= 0 || left <= 0) return;
+		int height = Math.max(1, Math.round(14F * left / duration));
+		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FLAME, 14, 14, 0, 14 - height, leftPos + x, topPos + y + 14 - height, 14, height);
 	}
 
 	private void slot(GuiGraphicsExtractor graphics, int x, int y) {
@@ -59,10 +65,11 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 	protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
 		graphics.text(font, title, 8, 6, 0xff404040, false);
 		graphics.text(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0xff404040, false);
-		graphics.text(font, status(), 8, CookingMenu.INVENTORY_Y - 22, 0xff404040, false);
+		Component status = status();
+		graphics.text(font, status, imageWidth - 8 - font.width(status), 6, 0xff404040, false);
 		if (menu.kind() == CookingMenu.Kind.POT) {
 			graphics.text(font, Component.translatable("screen.portable_pocket_cabin.cooking.water",
-				menu.data(CookingMenu.DATA_WATER), CookingStation.MAX_WATER), 8, 60, 0xff404040, false);
+				menu.data(CookingMenu.DATA_WATER), CookingStation.MAX_WATER), 68, 61, 0xff404040, false);
 		}
 	}
 

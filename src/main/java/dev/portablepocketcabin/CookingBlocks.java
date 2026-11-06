@@ -21,6 +21,9 @@ final class CookingBlocks {
 	static final Block STOVE = register("stove", CookingStationBlock.Stove::new, BlockBehaviour.Properties.of()
 		.strength(3.5F).sound(SoundType.METAL).requiresCorrectToolForDrops()
 		.lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 13 : 0));
+	static final Block OVEN = register("oven", CookingStationBlock.Oven::new, BlockBehaviour.Properties.of()
+		.strength(3.5F).sound(SoundType.STONE).requiresCorrectToolForDrops()
+		.lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 13 : 0));
 	static final Block COOKING_POT = register("cooking_pot", CookingStationBlock.Pot::new, BlockBehaviour.Properties.of()
 		.strength(2.0F).sound(SoundType.COPPER).noOcclusion());
 	static final Block SKILLET = register("skillet", CookingStationBlock.Skillet::new, BlockBehaviour.Properties.of()
@@ -28,6 +31,8 @@ final class CookingBlocks {
 
 	static final BlockEntityType<StoveBlockEntity> STOVE_ENTITY = registerEntity("stove",
 		new BlockEntityType<>(StoveBlockEntity::new, Set.of(STOVE)));
+	static final BlockEntityType<OvenBlockEntity> OVEN_ENTITY = registerEntity("oven",
+		new BlockEntityType<>(OvenBlockEntity::new, Set.of(OVEN)));
 	static final BlockEntityType<CookingPotBlockEntity> COOKING_POT_ENTITY = registerEntity("cooking_pot",
 		new BlockEntityType<>(CookingPotBlockEntity::new, Set.of(COOKING_POT)));
 	static final BlockEntityType<SkilletBlockEntity> SKILLET_ENTITY = registerEntity("skillet",
@@ -40,6 +45,7 @@ final class CookingBlocks {
 		CookingMenu.register();
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register(entries -> {
 			entries.accept(STOVE);
+			entries.accept(OVEN);
 			entries.accept(COOKING_POT);
 			entries.accept(SKILLET);
 		});

@@ -17,6 +17,7 @@ import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 public final class CabinCookingStationGameTest {
@@ -213,6 +214,103 @@ public final class CabinCookingStationGameTest {
 			helper.assertTrue(stove.getBlockState().getValue(BlockStateProperties.LIT), "The stove is lit");
 			helper.assertTrue(skillet.getItem(0).is(CookingItems.FRIED_EGG), "The egg is fried");
 		});
+	}
+
+	@GameTest
+	public void ovenBakesCakeInSixSlots(GameTestHelper helper) {
+		var oven = oven(helper, new ItemStack(Items.OAK_PLANKS, 2));
+		fillCake(oven);
+		tickOven(helper, oven, 1);
+		helper.assertTrue(oven.heat().equals(Optional.of(CookingHeat.LOW)) && oven.getBlockState().getValue(BlockStateProperties.LIT),
+			"The oven lights its own fuel for the cake");
+		tickOven(helper, oven, 199);
+		helper.assertTrue(oven.getItem(OvenBlockEntity.OUTPUT_SLOT).is(Items.CAKE), "The oven bakes a cake");
+		helper.assertTrue(oven.getItem(OvenBlockEntity.BYPRODUCT_SLOT).is(Items.BUCKET)
+			&& oven.getItem(OvenBlockEntity.BYPRODUCT_SLOT).getCount() == 3, "The cake returns three empty buckets");
+		helper.assertTrue(oven.getItem(0).is(Items.WHEAT) && oven.getItem(0).getCount() == 2, "Extra wheat stays in its slot");
+		for (int slot = 1; slot < 6; slot++) helper.assertTrue(oven.getItem(slot).isEmpty(), "The other ingredients are used up");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void ovenBakesOnlyAtTheRecipeHeat(GameTestHelper helper) {
+		var oven = oven(helper, new ItemStack(Items.OAK_PLANKS));
+		oven.setItem(0, new ItemStack(Items.WHEAT, 3));
+		tickOven(helper, oven, 20);
+		helper.assertTrue(oven.heat().equals(Optional.of(CookingHeat.LOW)) && oven.progress() == 0, "Bread does not bake at low heat");
+		var shovel = new ItemStack(Items.IRON_SHOVEL);
+		use(helper, BASE, shovel);
+		helper.assertTrue(!oven.burner().burning() && !oven.getBlockState().getValue(BlockStateProperties.LIT), "A shovel puts the oven out");
+		oven.setItem(OvenBlockEntity.FUEL_SLOT, new ItemStack(Items.COAL));
+		tickOven(helper, oven, 200);
+		helper.assertTrue(oven.getItem(OvenBlockEntity.OUTPUT_SLOT).is(Items.BREAD), "Bread bakes at medium heat");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void ovenStaysColdWithNothingToBake(GameTestHelper helper) {
+		var oven = oven(helper, new ItemStack(Items.OAK_PLANKS, 4));
+		oven.setItem(0, new ItemStack(Items.STICK));
+		tickOven(helper, oven, 5);
+		helper.assertTrue(!oven.burner().burning() && oven.getItem(OvenBlockEntity.FUEL_SLOT).getCount() == 4,
+			"An oven without a recipe does not light");
+		oven.clearContent();
+		oven.setItem(OvenBlockEntity.FUEL_SLOT, new ItemStack(Items.OAK_PLANKS, 4));
+		fillCake(oven);
+		oven.setItem(OvenBlockEntity.BYPRODUCT_SLOT, new ItemStack(Items.STONE));
+		tickOven(helper, oven, 5);
+		helper.assertTrue(!oven.burner().burning() && oven.progress() == 0, "A blocked byproduct slot keeps the oven cold");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void hoppersUseStationsLikeAFurnace(GameTestHelper helper) {
+		var oven = oven(helper, ItemStack.EMPTY);
+		helper.assertTrue(Arrays.equals(oven.getSlotsForFace(Direction.UP), new int[] {0, 1, 2, 3, 4, 5}),
+			"Ingredients go into the top of the oven");
+		helper.assertTrue(oven.canPlaceItemThroughFace(OvenBlockEntity.FUEL_SLOT, new ItemStack(Items.COAL), Direction.NORTH)
+			&& !oven.canPlaceItemThroughFace(OvenBlockEntity.FUEL_SLOT, new ItemStack(Items.WHEAT), Direction.NORTH),
+			"Only fuel goes into the side of the oven");
+		helper.assertTrue(oven.canTakeItemThroughFace(OvenBlockEntity.FUEL_SLOT, new ItemStack(Items.BUCKET), Direction.DOWN)
+			&& !oven.canTakeItemThroughFace(OvenBlockEntity.FUEL_SLOT, new ItemStack(Items.COAL), Direction.DOWN)
+			&& !oven.canTakeItemThroughFace(0, new ItemStack(Items.WHEAT), Direction.DOWN),
+			"Only spent fuel, output, and byproducts come out of the oven");
+		var pot = pot(helper);
+		helper.assertTrue(Arrays.equals(pot.getSlotsForFace(Direction.EAST), new int[] {CookingPotBlockEntity.CONTAINER_SLOT})
+			&& !pot.canTakeItemThroughFace(0, new ItemStack(CookingItems.CHOPPED_CARROT), Direction.DOWN)
+			&& pot.canTakeItemThroughFace(CookingPotBlockEntity.OUTPUT_SLOT, new ItemStack(CookingItems.VEGETABLE_SOUP), Direction.DOWN),
+			"Containers go into the side of the pot, and only food comes out");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void ovenKeepsItsStateWhenSaved(GameTestHelper helper) {
+		var oven = oven(helper, new ItemStack(Items.OAK_PLANKS));
+		fillCake(oven);
+		tickOven(helper, oven, 60);
+		var copy = reload(helper, oven, new OvenBlockEntity(oven.getBlockPos(), oven.getBlockState()));
+		helper.assertTrue(copy.progress() == 60 && copy.burner().litTime() == oven.burner().litTime()
+			&& copy.heat().equals(Optional.of(CookingHeat.LOW)) && copy.getItem(3).is(Items.MILK_BUCKET),
+			"The oven keeps its progress, fire, and ingredients");
+		helper.succeed();
+	}
+
+	private static OvenBlockEntity oven(GameTestHelper helper, ItemStack fuel) {
+		helper.setBlock(BASE, CookingBlocks.OVEN);
+		var oven = (OvenBlockEntity) helper.getLevel().getBlockEntity(helper.absolutePos(BASE));
+		oven.setItem(OvenBlockEntity.FUEL_SLOT, fuel);
+		return oven;
+	}
+
+	private static void fillCake(OvenBlockEntity oven) {
+		oven.setItem(0, new ItemStack(Items.WHEAT, 5));
+		oven.setItem(1, new ItemStack(Items.SUGAR, 2));
+		oven.setItem(2, new ItemStack(Items.EGG));
+		for (int slot = 3; slot < 6; slot++) oven.setItem(slot, new ItemStack(Items.MILK_BUCKET));
+	}
+
+	private static void tickOven(GameTestHelper helper, OvenBlockEntity oven, int ticks) {
+		for (int i = 0; i < ticks; i++) OvenBlockEntity.serverTick(helper.getLevel(), oven.getBlockPos(), oven.getBlockState(), oven);
 	}
 
 	private static StoveBlockEntity stove(GameTestHelper helper, ItemStack fuel) {

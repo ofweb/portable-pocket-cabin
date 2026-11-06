@@ -75,5 +75,6 @@
   "screen.portable_pocket_cabin.cooking.heat.high": "high",
   "tag.item.portable_pocket_cabin.heat.low": "Low Heat Fuel",
   "tag.item.portable_pocket_cabin.heat.medium": "Medium Heat Fuel",
-  "tag.item.portable_pocket_cabin.heat.high": "High Heat Fuel"
+  "tag.item.portable_pocket_cabin.heat.high": "High Heat Fuel",
+  "block.portable_pocket_cabin.oven": "Oven"
 }
