@@ -106,7 +106,7 @@ Villagers sell some prepared ingredients and vanilla foods. Buying cheese means 
 
 ## How the cabin fits
 
-- **Kitchen:** an installable room with supplied stations. Later cooking features add purchases for their own stations, such as a pantry wall, a cellar of ageing shelves and crocks, or a butchery corner.
+- **Kitchen:** an installable room where the household places its own stations, which draw ingredients and fuel from central storage. Later cooking features may add kitchen purchases, such as a larger room.
 - **Storage:** the kitchen fills stations from central storage first, including fuel at the right heat level. The cookbook counts storage when it shows what the player can make.
 - **Greenhouse and livestock:** they grow the crops and raise the animals that supply the kitchen.
 - **Automation:** an automation book reveals kitchen automation.

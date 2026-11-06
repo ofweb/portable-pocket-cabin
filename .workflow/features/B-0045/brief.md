@@ -128,7 +128,7 @@ This feature includes the six stations and the knife, heat levels from fuel and 
 
 ## Non-goals
 
-- The kitchen room and its supplied stations belong to B-0041.
+- The kitchen room, where stations draw on central storage, belongs to B-0041.
 - Food benefits beyond hunger and saturation belong to B-0051. New dishes give hunger and saturation only.
 - Milling, flour, dough, and dairy belong to B-0046. Stocks, sauces, and seasoning belong to B-0047. Drying, fermentation, smoking, and preservation belong to B-0048. Butchery belongs to B-0049. New crops belong to B-0050. Drinks belong to B-0052.
 - Cooking automation belongs to B-0025.
