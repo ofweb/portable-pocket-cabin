@@ -81,9 +81,16 @@ final class CookbookAvailability {
 		return available(recipes(player.level().getServer().getRecipeManager().getRecipes()), sources(cabin, player.getUUID(), inventory));
 	}
 
-	/** The station's recipes that the recipe panel can fill from the player's inventory and the station's own ingredients. */
+	/**
+	 * The station's recipes that the recipe panel can fill: from the player's inventory and the station's own
+	 * ingredients, and from central storage when the station is in the kitchen.
+	 */
 	static Set<Identifier> fillable(ServerPlayer player, Container station, CookingStation kind) {
-		List<ItemStack> sources = new ArrayList<>(player.getInventory().getNonEquipmentItems());
+		List<ItemStack> sources = new ArrayList<>();
+		if (station instanceof CookingStationBlockEntity entity) {
+			CabinKitchenStorage.cabinFor(player, entity.getBlockPos()).ifPresent(cabin -> sources.addAll(cabin.upgrades().storage().stacks()));
+		}
+		sources.addAll(player.getInventory().getNonEquipmentItems());
 		for (int slot = 0; slot < kind.ingredientSlots(); slot++) sources.add(station.getItem(slot));
 		if (kind == CookingStation.POT) sources.add(station.getItem(CookingPotBlockEntity.CONTAINER_SLOT));
 		var recipes = recipes(player.level().getServer().getRecipeManager().getRecipes()).stream()

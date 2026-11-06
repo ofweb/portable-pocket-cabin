@@ -12,7 +12,7 @@ import java.util.List;
 /** A cabin book describes the upgrades it reveals through the shared installer. */
 final class CabinBookItem extends Item {
 
-	enum Type { STORAGE, CRAFTING, GREENHOUSE, ENCHANTING }
+	enum Type { STORAGE, CRAFTING, GREENHOUSE, ENCHANTING, KITCHEN }
 
 	private final Type type;
 	CabinBookItem(Properties properties, Type type) {
@@ -36,6 +36,7 @@ final class CabinBookItem extends Item {
 			case STORAGE -> state.storage().revealed();
 			case CRAFTING -> state.crafting().revealed();
 			case GREENHOUSE -> state.greenhouse().revealed();
+			case KITCHEN -> state.kitchen().revealed();
 		};
 	}
 
@@ -45,6 +46,7 @@ final class CabinBookItem extends Item {
 			case STORAGE -> state.withStorage(state.storage().reveal());
 			case CRAFTING -> state.withCrafting(state.crafting().reveal());
 			case GREENHOUSE -> state.withGreenhouse(state.greenhouse().reveal());
+			case KITCHEN -> state.withKitchen(state.kitchen().reveal());
 		};
 	}
 
@@ -66,6 +68,7 @@ final class CabinBookItem extends Item {
 				Component.translatable("book.portable_pocket_cabin.stonecutting"),
 				Component.translatable("book.portable_pocket_cabin.smithing"));
 			case GREENHOUSE -> List.of(Component.translatable("book.portable_pocket_cabin.greenhouse"));
+			case KITCHEN -> List.of(Component.translatable("book.portable_pocket_cabin.kitchen"));
 		};
 	}
 }

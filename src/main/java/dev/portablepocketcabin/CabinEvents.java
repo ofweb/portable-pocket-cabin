@@ -81,6 +81,7 @@ final class CabinEvents {
 			ServerPlayer player = handler.player;
 			server.execute(() -> {
 				CabinStorage.recover(player);
+				CabinKitchenStorage.recover(player);
 				CabinReconciliation.reconcileOwnerInventory(player);
 				recoverOfflineOccupant(player);
 			});

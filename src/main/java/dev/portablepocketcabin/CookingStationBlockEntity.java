@@ -2,6 +2,7 @@ package dev.portablepocketcabin;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
@@ -15,14 +16,35 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /** A cooking station that holds items in slots. Inside a cabin, only the household may use it. */
 abstract class CookingStationBlockEntity extends BlockEntity implements Container {
 	protected final NonNullList<ItemStack> items;
+	/** The last storage transfer applied to this station, which kitchen recovery reads (ADR-0012). */
+	private UUID lastTransfer;
 
 	CookingStationBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int size) {
 		super(type, pos, state);
 		items = NonNullList.withSize(size, ItemStack.EMPTY);
+	}
+
+	Optional<UUID> lastTransfer() {
+		return Optional.ofNullable(lastTransfer);
+	}
+
+	/** Sets every slot for a confirmed storage transfer and records its operation id. */
+	void applyTransfer(UUID operation, List<ItemStack> contents) {
+		if (contents.size() != items.size()) throw new IllegalArgumentException("Transfer contents do not match the station");
+		for (int slot = 0; slot < items.size(); slot++) items.set(slot, contents.get(slot).copy());
+		lastTransfer = operation;
+		setChanged();
+	}
+
+	/** Every slot's contents, copied. */
+	List<ItemStack> contents() {
+		return items.stream().map(ItemStack::copy).toList();
 	}
 
 	/** Called whenever slot contents change, so a station can look up its recipe again. */
@@ -101,6 +123,7 @@ abstract class CookingStationBlockEntity extends BlockEntity implements Containe
 	protected void saveAdditional(ValueOutput output) {
 		super.saveAdditional(output);
 		ContainerHelper.saveAllItems(output, items);
+		output.storeNullable("last_transfer", UUIDUtil.STRING_CODEC, lastTransfer);
 	}
 
 	@Override
@@ -108,6 +131,7 @@ abstract class CookingStationBlockEntity extends BlockEntity implements Containe
 		super.loadAdditional(input);
 		items.clear();
 		ContainerHelper.loadAllItems(input, items);
+		lastTransfer = input.read("last_transfer", UUIDUtil.STRING_CODEC).orElse(null);
 		contentsChanged();
 	}
 

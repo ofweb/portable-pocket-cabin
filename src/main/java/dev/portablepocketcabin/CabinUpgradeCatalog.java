@@ -155,6 +155,14 @@ final class CabinUpgradeCatalog {
 					current == 3 ? List.of() : craftingRequirements(cabin, next), current == 3,
 					current == 0 && cabin.progression().generalSize() < 5 ? "Expand the main room to 5x5 first" : ""))));
 		}
+		if (cabin.upgrades().kitchen().revealed()) {
+			boolean installed = cabin.upgrades().kitchen().level() > 0;
+			Identifier icon = PortablePocketCabin.id("cooking_pot");
+			groups.add(new Group(PortablePocketCabin.id("kitchen"), "Kitchen", icon, List.of(new Offer(
+				CabinUpgradeState.Target.kitchen(), "Kitchen", installed ? "Installed" : "Install a 5x5 kitchen room",
+				icon, cabin.upgrades().kitchen().level(), 1, installed ? List.of() : kitchenRequirements(cabin), installed,
+				!installed && cabin.progression().generalSize() < 5 ? "Expand the main room to 5x5 first" : ""))));
+		}
 		if (cabin.upgrades().enchanting().revealed()) {
 			int current = cabin.upgrades().enchanting().level();
 			int next = Math.min(5, current + 1);
@@ -273,6 +281,13 @@ final class CabinUpgradeCatalog {
 		if (level == 1) result.add(new CabinUpgradeState.Requirement(
 			BuiltInRegistries.ITEM.getKey(cabin.palette().walls().structuralWoodBlock().asItem()), 16));
 		return List.copyOf(result);
+	}
+
+	static List<CabinUpgradeState.Requirement> kitchenRequirements(CabinRecord cabin) {
+		return List.of(
+			new CabinUpgradeState.Requirement(BuiltInRegistries.ITEM.getKey(cabin.palette().walls().structuralWoodBlock().asItem()), 16),
+			new CabinUpgradeState.Requirement(Identifier.withDefaultNamespace("copper_ingot"), 8),
+			new CabinUpgradeState.Requirement(Identifier.withDefaultNamespace("amethyst_block"), 4));
 	}
 
 	static List<CabinUpgradeState.Requirement> storageRequirements(int level) {

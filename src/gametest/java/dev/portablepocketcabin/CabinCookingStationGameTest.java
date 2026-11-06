@@ -389,8 +389,7 @@ public final class CabinCookingStationGameTest {
 		inventory.setItem(2, new ItemStack(CookingItems.DICED_POTATO));
 		inventory.setItem(3, new ItemStack(CookingItems.CHOPPED_BEETROOT));
 		inventory.setItem(4, new ItemStack(Items.BOWL, 5));
-		helper.assertTrue(CookingFill.fill(pot, CookingStation.POT, recipe(helper, "cooking/pot/vegetable_soup"), inventory,
-			List.of(CookingFill.inventory(inventory))), "The soup fills");
+		helper.assertTrue(CookingFill.fill(pot, CookingStation.POT, recipe(helper, "cooking/pot/vegetable_soup"), inventory), "The soup fills");
 		helper.assertTrue(pot.getItem(0).is(CookingItems.CHOPPED_CARROT) && pot.getItem(0).getCount() == 1
 			&& !pot.getItem(0).has(net.minecraft.core.component.DataComponents.CUSTOM_NAME), "An ordinary carrot goes in, not the named one");
 		helper.assertTrue(pot.getItem(1).is(CookingItems.DICED_POTATO) && pot.getItem(2).is(CookingItems.CHOPPED_BEETROOT),
@@ -407,8 +406,7 @@ public final class CabinCookingStationGameTest {
 		pot.setItem(0, new ItemStack(Items.STICK));
 		var oven = oven(helper, ItemStack.EMPTY);
 		oven.setItem(0, new ItemStack(Items.STICK));
-		helper.assertTrue(!CookingFill.fill(oven, CookingStation.OVEN, recipe(helper, "cooking/oven/bread"), inventory,
-			List.of(CookingFill.inventory(inventory))) && oven.getItem(0).is(Items.STICK) && inventory.countItem(Items.WHEAT) == 2,
+		helper.assertTrue(!CookingFill.fill(oven, CookingStation.OVEN, recipe(helper, "cooking/oven/bread"), inventory) && oven.getItem(0).is(Items.STICK) && inventory.countItem(Items.WHEAT) == 2,
 			"Nothing moves when an ingredient is missing");
 		inventory.clearContent();
 		helper.succeed();
@@ -424,8 +422,7 @@ public final class CabinCookingStationGameTest {
 		inventory.setItem(1, new ItemStack(Items.SUGAR, 5));
 		inventory.setItem(2, new ItemStack(Items.EGG, 4));
 		for (int slot = 3; slot < 7; slot++) inventory.setItem(slot, new ItemStack(Items.MILK_BUCKET));
-		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe(helper, "cooking/oven/cake"), inventory,
-			List.of(CookingFill.inventory(inventory))), "The cake fills");
+		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe(helper, "cooking/oven/cake"), inventory), "The cake fills");
 		helper.assertTrue(oven.getItem(0).getCount() == 3 && oven.getItem(1).getCount() == 2 && oven.getItem(2).getCount() == 1,
 			"Wheat, sugar, and egg go in by their counts");
 		for (int slot = 3; slot < 6; slot++) helper.assertTrue(oven.getItem(slot).is(Items.MILK_BUCKET), "Each milk bucket takes a slot");
@@ -442,8 +439,7 @@ public final class CabinCookingStationGameTest {
 		var inventory = FakePlayer.get(helper.getLevel()).getInventory();
 		inventory.clearContent();
 		inventory.setItem(0, new ItemStack(CookingItems.CHOPPED_BEETROOT, 6));
-		helper.assertTrue(CookingFill.fill(pot, CookingStation.POT, recipe(helper, "cooking/pot/beetroot_soup"), inventory,
-			List.of(CookingFill.inventory(inventory))), "Beetroot soup fills from the pot's own bowls");
+		helper.assertTrue(CookingFill.fill(pot, CookingStation.POT, recipe(helper, "cooking/pot/beetroot_soup"), inventory), "Beetroot soup fills from the pot's own bowls");
 		helper.assertTrue(pot.getItem(CookingPotBlockEntity.CONTAINER_SLOT).getCount() == 8 && inventory.countItem(Items.BOWL) == 0,
 			"Bowls that already suffice stay in the pot");
 		inventory.clearContent();
@@ -465,7 +461,7 @@ public final class CabinCookingStationGameTest {
 		inventory.clearContent();
 		inventory.setItem(0, new ItemStack(Items.OAK_PLANKS));
 		inventory.setItem(1, new ItemStack(Items.BIRCH_PLANKS));
-		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe, inventory, List.of(CookingFill.inventory(inventory))),
+		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe, inventory),
 			"Filling uses the same assignment");
 		helper.assertTrue(oven.getItem(0).is(Items.BIRCH_PLANKS) && oven.getItem(1).is(Items.OAK_PLANKS) && inventory.isEmpty(),
 			"Birch goes in for the tag and oak for the exact ingredient");
@@ -473,11 +469,11 @@ public final class CabinCookingStationGameTest {
 
 		oven.clearContent();
 		inventory.setItem(0, new ItemStack(Items.OAK_PLANKS, 2));
-		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe, inventory, List.of(CookingFill.inventory(inventory))),
+		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe, inventory),
 			"Two oak planks fill both ingredients");
 		helper.assertTrue(oven.getItem(0).getCount() == 1 && oven.getItem(1).getCount() == 1
 			&& recipe.assign(CookingInput.of(oven.getItems(6))).isPresent(), "Each ingredient keeps its own slot, so the oven matches");
-		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe, inventory, List.of(CookingFill.inventory(inventory)))
+		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe, inventory)
 			&& oven.getItem(0).getCount() == 1 && oven.getItem(1).getCount() == 1, "Filling again keeps a valid layout");
 		inventory.clearContent();
 		helper.succeed();
@@ -491,10 +487,10 @@ public final class CabinCookingStationGameTest {
 		inventory.clearContent();
 		for (int slot = 0; slot < 36; slot++) inventory.setItem(slot, new ItemStack(Items.STONE, 64));
 		var bread = recipe(helper, "cooking/oven/bread");
-		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, bread, inventory, List.of(CookingFill.inventory(inventory)))
+		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, bread, inventory)
 			&& oven.getItem(0).is(Items.WHEAT) && oven.getItem(0).getCount() == 3, "Wheat already in the oven stays there");
 		oven.setItem(1, new ItemStack(Items.STICK));
-		helper.assertTrue(!CookingFill.fill(oven, CookingStation.OVEN, bread, inventory, List.of(CookingFill.inventory(inventory)))
+		helper.assertTrue(!CookingFill.fill(oven, CookingStation.OVEN, bread, inventory)
 			&& oven.getItem(0).getCount() == 3 && oven.getItem(1).is(Items.STICK), "Nothing moves when a displaced stick has no room");
 		var dropped = helper.getLevel().getEntitiesOfClass(ItemEntity.class, new AABB(oven.getBlockPos()).inflate(3));
 		helper.assertTrue(dropped.isEmpty(), "Nothing is dropped");

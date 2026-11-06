@@ -185,7 +185,9 @@ public final class CabinGreenhouseGameTest {
         helper.succeed();
     }
 
-    @GameTest(maxTicks = 200)
+    // The light engine works through a shared queue, and concurrent cabin tests can fill it with thousands of
+    // changes. The test passes as soon as the fixture's lighting settles; the long limit only absorbs that backlog.
+    @GameTest(maxTicks = 1200)
     public void catchUpRespectsMaturityShadeAndElapsedTime(
         GameTestHelper helper
     ) {

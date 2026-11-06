@@ -49,10 +49,12 @@ public final class PortablePocketCabin implements ModInitializer {
 			LOGGER.info("Portable Pocket Cabin {} ready; pocket dimension loaded={}", VERSION,
 				server.getLevel(PocketDimension.LEVEL_KEY) != null);
 			LOGGER.info("Cabin registry loaded; cabins={}, next cell={}", registry.size(), registry.nextCellIndex());
+			CabinKitchenStorage.recoverAll(server);
 			DedicatedServerStartupCheck.onServerStarted(server);
 			CabinCorridorStartupCheck.onServerStarted(server);
 			CabinGreenhouseStartupCheck.onServerStarted(server);
 			CabinEnchantingStartupCheck.onServerStarted(server);
+			CabinKitchenStartupCheck.onServerStarted(server);
 		});
 	}
 

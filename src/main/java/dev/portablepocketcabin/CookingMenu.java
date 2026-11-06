@@ -7,6 +7,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
@@ -134,7 +135,15 @@ final class CookingMenu extends AbstractContainerMenu {
 		int stationSlots = kind.size;
 		int end = stationSlots + 36;
 		if (index < stationSlots) {
-			if (!moveItemStackTo(stack, stationSlots, end, true)) return ItemStack.EMPTY;
+			boolean moved = moveItemStackTo(stack, stationSlots, end, true);
+			if (kind.takeOnly(index) && !stack.isEmpty() && player instanceof ServerPlayer serverPlayer
+				&& container instanceof CookingStationBlockEntity station) {
+				// In the kitchen, output that does not fit in the inventory goes to central storage.
+				slot.setChanged();
+				if (CabinKitchenStorage.overflow(serverPlayer, station, index) || moved) return original;
+				return ItemStack.EMPTY;
+			}
+			if (!moved) return ItemStack.EMPTY;
 		} else if (kind == Kind.STOVE) {
 			if (!moveItemStackTo(stack, 0, 1, false)) return ItemStack.EMPTY;
 		} else if (kind == Kind.OVEN) {

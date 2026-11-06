@@ -237,15 +237,6 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 - Relationships: Uses B-0005 and B-0038. Integrates B-0004. Used by B-0042.
 - Feature Brief: [Manual smelting room brief](features/B-0040/brief.md).
 
-## B-0041: Manual kitchen room
-
-- Status: Ready for Design
-- Value: Give the household a kitchen that works without storage or automation and uses installed storage automatically.
-- Direction: [Manual production rooms](direction.md#manual-production-rooms).
-- Relationships: Uses B-0005, B-0038, and B-0045; extends B-0004; used by B-0025.
-- Feature Brief: [Manual kitchen brief](features/B-0041/brief.md).
-- Open proposals: Later stations may need purchases and a larger room. B-0053 could add a prep counter.
-
 ## B-0042: Smelting jobs
 
 - Status: Ready for Shape
@@ -328,4 +319,4 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 - Status: Ready for Shape
 - Value: Add the prep counter as the kitchen work surface, with the strainer on it, plus the grill, wok, and æbleskive pan, and oil for deep-frying in the cooking pot.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Relationships: Uses B-0045. Holds counter-top stations from B-0045, B-0046, and B-0047. Used by B-0041 and by dishes across B-0046 through B-0052. The [station list](cooking/stations.md) gives each station's techniques and step counts.
+- Relationships: Uses B-0045. Holds counter-top stations from B-0045, B-0046, and B-0047. Players can place it in the B-0041 kitchen. Used by dishes across B-0046 through B-0052. The [station list](cooking/stations.md) gives each station's techniques and step counts.
