@@ -6,6 +6,17 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
+import net.minecraft.client.input.MouseButtonEvent;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 
 /** A furnace-style screen: slots, a progress arrow, a flame for the current heat, and a status line. */
 final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
@@ -15,14 +26,112 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 	private static final Identifier FLAME = Identifier.withDefaultNamespace("container/furnace/lit_progress");
 	private static final Identifier ARROW = Identifier.withDefaultNamespace("container/furnace/burn_progress");
 
+	private static final int PANEL_WIDTH = 124;
+	private static final int ROW = 18;
+	/** The station recipes the server last said the recipe panel can fill. */
+	static Set<Identifier> fillable = Set.of();
+	private final List<RecipeHolder<CookingRecipe>> recipes = new ArrayList<>();
+	private boolean panelOpen;
+	private int scroll;
+
 	CookingScreen(CookingMenu menu, Inventory inventory, Component title) {
 		super(menu, inventory, title, 176, 166);
 		inventoryLabelY = CookingMenu.INVENTORY_Y - 11;
 	}
 
+	private CookingStation station() {
+		return switch (menu.kind()) {
+			case POT -> CookingStation.POT;
+			case OVEN -> CookingStation.OVEN;
+			default -> null;
+		};
+	}
+
+	@Override
+	protected void init() {
+		super.init();
+		CookingStation station = station();
+		if (station == null) return;
+		if (panelOpen) leftPos = Math.max(leftPos, PANEL_WIDTH + 8);
+		recipes.clear();
+		if (minecraft.level != null) {
+			CookbookAvailability.recipes(minecraft.level.recipeAccess().getSynchronizedRecipes().recipes()).stream()
+				.filter(holder -> holder.value().station() == station)
+				.sorted(Comparator.comparing(holder -> holder.value().result().create().getHoverName().getString()))
+				.forEach(recipes::add);
+		}
+		addRenderableWidget(new ImageButton(leftPos + 7, topPos + 26, 20, 18, RecipeBookComponent.RECIPE_BUTTON_SPRITES,
+			button -> togglePanel(), Component.translatable("screen.portable_pocket_cabin.cooking.recipes")));
+	}
+
+	/** Shows or hides the recipe panel, asking the server which recipes it can fill when it opens. */
+	void togglePanel() {
+		panelOpen = !panelOpen;
+		scroll = 0;
+		rebuildWidgets();
+		if (panelOpen) ClientPlayNetworking.send(new CookbookAvailability.Request(true));
+	}
+
+	private int panelLeft() {
+		return leftPos - PANEL_WIDTH - 4;
+	}
+
+	private int visibleRows() {
+		return (imageHeight - 28) / ROW;
+	}
+
+	private void extractPanel(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+		int x = panelLeft();
+		panel(graphics, x, topPos, PANEL_WIDTH, imageHeight);
+		graphics.text(font, Component.translatable("screen.portable_pocket_cabin.cooking.recipes"), x + 8, topPos + 6, 0xff404040, false);
+		int y = topPos + 18;
+		for (int index = scroll; index < recipes.size() && index < scroll + visibleRows(); index++) {
+			var holder = recipes.get(index);
+			int rowY = y + (index - scroll) * ROW;
+			boolean canFill = fillable.contains(holder.id().identifier());
+			boolean hovered = mouseX >= x + 6 && mouseX < x + PANEL_WIDTH - 6 && mouseY >= rowY && mouseY < rowY + ROW;
+			if (hovered && canFill) graphics.fill(x + 6, rowY, x + PANEL_WIDTH - 6, rowY + ROW, 0x30000000);
+			ItemStack result = holder.value().result().create();
+			graphics.item(result, x + 7, rowY + 1);
+			String name = result.getHoverName().getString();
+			int width = PANEL_WIDTH - 36;
+			if (font.width(name) > width) name = font.plainSubstrByWidth(name, width - font.width("…")).stripTrailing() + "…";
+			graphics.text(font, name, x + 26, rowY + 5, canFill ? 0xff2a7a2a : 0xff808080, false);
+		}
+	}
+
+	@Override
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		if (panelOpen) {
+			int x = panelLeft();
+			int y = topPos + 18;
+			if (event.x() >= x + 6 && event.x() < x + PANEL_WIDTH - 6 && event.y() >= y && event.y() < y + visibleRows() * ROW) {
+				int index = scroll + (int) ((event.y() - y) / ROW);
+				if (index < recipes.size()) fill(recipes.get(index).id().identifier());
+				return true;
+			}
+		}
+		return super.mouseClicked(event, doubleClick);
+	}
+
+	/** Asks the server to fill the station for a recipe the panel shows as fillable. */
+	void fill(Identifier recipe) {
+		if (fillable.contains(recipe)) ClientPlayNetworking.send(new CookingFill.Request(menu.pos(), recipe));
+	}
+
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double horizontal, double vertical) {
+		if (panelOpen && mouseX < leftPos) {
+			scroll = Math.max(0, Math.min(recipes.size() - visibleRows(), scroll - (int) Math.signum(vertical)));
+			return true;
+		}
+		return super.mouseScrolled(mouseX, mouseY, horizontal, vertical);
+	}
+
 	@Override
 	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
 		panel(graphics, leftPos, topPos, imageWidth, imageHeight);
+		if (panelOpen) extractPanel(graphics, mouseX, mouseY);
 		for (int[] slot : menu.kind().slots) slot(graphics, slot[0], slot[1]);
 		for (int row = 0; row < 3; row++) for (int col = 0; col < 9; col++)
 			slot(graphics, 8 + col * 18, CookingMenu.INVENTORY_Y + row * 18);

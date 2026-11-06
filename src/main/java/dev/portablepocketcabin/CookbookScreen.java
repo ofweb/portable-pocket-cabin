@@ -61,7 +61,7 @@ final class CookbookScreen extends Screen {
 	static void open() {
 		var minecraft = net.minecraft.client.Minecraft.getInstance();
 		minecraft.gui.setScreen(new CookbookScreen());
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(new CookbookAvailability.Request());
+		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(new CookbookAvailability.Request(false));
 	}
 
 	@Override

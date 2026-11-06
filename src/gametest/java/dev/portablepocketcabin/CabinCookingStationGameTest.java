@@ -21,6 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public final class CabinCookingStationGameTest {
@@ -353,6 +354,88 @@ public final class CabinCookingStationGameTest {
 		helper.assertTrue(!skillet.canTakeItem(hopper, 0, skillet.getItem(0)) && !skillet.canPlaceItem(1, new ItemStack(Items.EGG)),
 			"Hoppers cannot move items on the skillet");
 		helper.succeed();
+	}
+
+	@GameTest
+	public void recipePanelFillsThePotAndReturnsWhatWasThere(GameTestHelper helper) {
+		var pot = pot(helper);
+		pot.setItem(0, new ItemStack(Items.STICK));
+		pot.setItem(CookingPotBlockEntity.CONTAINER_SLOT, new ItemStack(Items.BOWL));
+		var player = FakePlayer.get(helper.getLevel());
+		var inventory = player.getInventory();
+		inventory.clearContent();
+		var named = new ItemStack(CookingItems.CHOPPED_CARROT);
+		named.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, net.minecraft.network.chat.Component.literal("Prize carrot"));
+		inventory.setItem(0, named);
+		inventory.setItem(1, new ItemStack(CookingItems.CHOPPED_CARROT, 4));
+		inventory.setItem(2, new ItemStack(CookingItems.DICED_POTATO));
+		inventory.setItem(3, new ItemStack(CookingItems.CHOPPED_BEETROOT));
+		inventory.setItem(4, new ItemStack(Items.BOWL, 5));
+		helper.assertTrue(CookingFill.fill(pot, CookingStation.POT, recipe(helper, "cooking/pot/vegetable_soup"), inventory,
+			List.of(CookingFill.inventory(inventory))), "The soup fills");
+		helper.assertTrue(pot.getItem(0).is(CookingItems.CHOPPED_CARROT) && pot.getItem(0).getCount() == 1
+			&& !pot.getItem(0).has(net.minecraft.core.component.DataComponents.CUSTOM_NAME), "An ordinary carrot goes in, not the named one");
+		helper.assertTrue(pot.getItem(1).is(CookingItems.DICED_POTATO) && pot.getItem(2).is(CookingItems.CHOPPED_BEETROOT),
+			"The other vegetables go in");
+		helper.assertTrue(pot.getItem(CookingPotBlockEntity.CONTAINER_SLOT).getCount() == 3, "Three bowls go in");
+		helper.assertTrue(inventory.countItem(Items.STICK) == 1 && inventory.countItem(Items.BOWL) == 3,
+			"The stick and the single bowl come back to the player");
+		helper.assertTrue(inventory.getItem(0).has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)
+			&& inventory.countItem(CookingItems.CHOPPED_CARROT) == 4, "The named carrot stays with the player");
+
+		inventory.clearContent();
+		inventory.setItem(0, new ItemStack(Items.WHEAT, 2));
+		pot.clearContent();
+		pot.setItem(0, new ItemStack(Items.STICK));
+		var oven = oven(helper, ItemStack.EMPTY);
+		oven.setItem(0, new ItemStack(Items.STICK));
+		helper.assertTrue(!CookingFill.fill(oven, CookingStation.OVEN, recipe(helper, "cooking/oven/bread"), inventory,
+			List.of(CookingFill.inventory(inventory))) && oven.getItem(0).is(Items.STICK) && inventory.countItem(Items.WHEAT) == 2,
+			"Nothing moves when an ingredient is missing");
+		inventory.clearContent();
+		helper.succeed();
+	}
+
+	@GameTest
+	public void recipePanelFillsCakeIntoSixSlots(GameTestHelper helper) {
+		var oven = oven(helper, new ItemStack(Items.OAK_PLANKS));
+		var player = FakePlayer.get(helper.getLevel());
+		var inventory = player.getInventory();
+		inventory.clearContent();
+		inventory.setItem(0, new ItemStack(Items.WHEAT, 10));
+		inventory.setItem(1, new ItemStack(Items.SUGAR, 5));
+		inventory.setItem(2, new ItemStack(Items.EGG, 4));
+		for (int slot = 3; slot < 7; slot++) inventory.setItem(slot, new ItemStack(Items.MILK_BUCKET));
+		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe(helper, "cooking/oven/cake"), inventory,
+			List.of(CookingFill.inventory(inventory))), "The cake fills");
+		helper.assertTrue(oven.getItem(0).getCount() == 3 && oven.getItem(1).getCount() == 2 && oven.getItem(2).getCount() == 1,
+			"Wheat, sugar, and egg go in by their counts");
+		for (int slot = 3; slot < 6; slot++) helper.assertTrue(oven.getItem(slot).is(Items.MILK_BUCKET), "Each milk bucket takes a slot");
+		helper.assertTrue(oven.getItem(OvenBlockEntity.FUEL_SLOT).is(Items.OAK_PLANKS) && inventory.countItem(Items.MILK_BUCKET) == 1,
+			"The fuel stays and one milk bucket is left over");
+		inventory.clearContent();
+		helper.succeed();
+	}
+
+	@GameTest
+	public void recipePanelKeepsBowlsAlreadyInThePot(GameTestHelper helper) {
+		var pot = pot(helper);
+		pot.setItem(CookingPotBlockEntity.CONTAINER_SLOT, new ItemStack(Items.BOWL, 8));
+		var inventory = FakePlayer.get(helper.getLevel()).getInventory();
+		inventory.clearContent();
+		inventory.setItem(0, new ItemStack(CookingItems.CHOPPED_BEETROOT, 6));
+		helper.assertTrue(CookingFill.fill(pot, CookingStation.POT, recipe(helper, "cooking/pot/beetroot_soup"), inventory,
+			List.of(CookingFill.inventory(inventory))), "Beetroot soup fills from the pot's own bowls");
+		helper.assertTrue(pot.getItem(CookingPotBlockEntity.CONTAINER_SLOT).getCount() == 8 && inventory.countItem(Items.BOWL) == 0,
+			"Bowls that already suffice stay in the pot");
+		inventory.clearContent();
+		helper.succeed();
+	}
+
+	private static CookingRecipe recipe(GameTestHelper helper, String path) {
+		return (CookingRecipe) helper.getLevel().getServer().getRecipeManager()
+			.byKey(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.RECIPE, PortablePocketCabin.id(path)))
+			.orElseThrow().value();
 	}
 
 	private static CuttingBoardBlockEntity board(GameTestHelper helper) {

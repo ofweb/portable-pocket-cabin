@@ -111,5 +111,6 @@
   "technique.portable_pocket_cabin.baking": "Baking",
   "technique.portable_pocket_cabin.baking.description": "Cook with dry heat all around, in a closed oven. Starches set, sugars brown, and steam and gas from eggs make doughs and batters rise.",
   "technique.portable_pocket_cabin.drying": "Drying",
-  "technique.portable_pocket_cabin.drying.description": "Take the water out of food with gentle heat over a long time. Without water, the bacteria and moulds that spoil food cannot grow, so dried food keeps."
+  "technique.portable_pocket_cabin.drying.description": "Take the water out of food with gentle heat over a long time. Without water, the bacteria and moulds that spoil food cannot grow, so dried food keeps.",
+  "screen.portable_pocket_cabin.cooking.recipes": "Recipes"
 }

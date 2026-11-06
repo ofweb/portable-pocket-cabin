@@ -83,6 +83,10 @@ final class CookingScreenshots {
 			shot(context, "stations");
 			open(context, world, origin[0].offset(-4, 1, -3), CookingMenu.Kind.POT);
 			shot(context, "pot-screen");
+			context.runOnClient(client -> ((CookingScreen) client.gui.screen()).togglePanel());
+			world.getConnection().waitForServerboundPackets();
+			world.getConnection().waitForClientboundPackets();
+			shot(context, "pot-recipe-panel");
 			open(context, world, origin[0].offset(-4, 0, -3), CookingMenu.Kind.STOVE);
 			shot(context, "stove-screen");
 			open(context, world, origin[0].offset(2, 0, -3), CookingMenu.Kind.OVEN);

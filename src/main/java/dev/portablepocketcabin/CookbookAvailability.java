@@ -8,6 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -28,10 +29,13 @@ final class CookbookAvailability {
 	private CookbookAvailability() {
 	}
 
-	/** Sent by the client when the cookbook opens. */
-	record Request() implements CustomPacketPayload {
+	/**
+	 * Sent by the client when the cookbook or a station screen opens. For a station, the reply covers what the recipe
+	 * panel can fill: that station's recipes, from the inventory and what the station already holds.
+	 */
+	record Request(boolean station) implements CustomPacketPayload {
 		static final Type<Request> TYPE = new Type<>(PortablePocketCabin.id("cookbook_availability_request"));
-		static final StreamCodec<RegistryFriendlyByteBuf, Request> CODEC = StreamCodec.unit(new Request());
+		static final StreamCodec<RegistryFriendlyByteBuf, Request> CODEC = ByteBufCodecs.BOOL.map(Request::new, Request::station).cast();
 
 		@Override
 		public Type<Request> type() {
@@ -39,12 +43,12 @@ final class CookbookAvailability {
 		}
 	}
 
-	/** The ids of the recipes the player can make now. */
-	record Reply(Set<Identifier> recipes) implements CustomPacketPayload {
+	/** The ids of the recipes the player can make now, for the cookbook or for the open station. */
+	record Reply(Set<Identifier> recipes, boolean station) implements CustomPacketPayload {
 		static final Type<Reply> TYPE = new Type<>(PortablePocketCabin.id("cookbook_availability"));
-		static final StreamCodec<RegistryFriendlyByteBuf, Reply> CODEC = Identifier.STREAM_CODEC
-			.apply(ByteBufCodecs.collection(java.util.HashSet::new, 4096)).map(Set::copyOf, java.util.HashSet::new)
-			.map(Reply::new, Reply::recipes).cast();
+		static final StreamCodec<RegistryFriendlyByteBuf, Reply> CODEC = StreamCodec.composite(
+			Identifier.STREAM_CODEC.apply(ByteBufCodecs.collection(java.util.HashSet::new, 4096)).map(Set::copyOf, java.util.HashSet::new),
+			Reply::recipes, ByteBufCodecs.BOOL, Reply::station, Reply::new);
 
 		@Override
 		public Type<Reply> type() {
@@ -55,8 +59,16 @@ final class CookbookAvailability {
 	static void register() {
 		PayloadTypeRegistry.serverboundPlay().register(Request.TYPE, Request.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(Reply.TYPE, Reply.CODEC);
-		ServerPlayNetworking.registerGlobalReceiver(Request.TYPE, (request, context) ->
-			ServerPlayNetworking.send(context.player(), new Reply(available(context.player()))));
+		ServerPlayNetworking.registerGlobalReceiver(Request.TYPE, (request, context) -> {
+			ServerPlayer player = context.player();
+			if (!request.station()) {
+				ServerPlayNetworking.send(player, new Reply(available(player), false));
+			} else if (player.containerMenu instanceof CookingMenu menu && menu.stillValid(player)
+				&& player.level().getBlockEntity(menu.pos()) instanceof CookingStationBlockEntity station && menu.kind() != CookingMenu.Kind.STOVE) {
+				CookingStation kind = menu.kind() == CookingMenu.Kind.POT ? CookingStation.POT : CookingStation.OVEN;
+				ServerPlayNetworking.send(player, new Reply(fillable(player, station, kind), true));
+			}
+		});
 	}
 
 	static Set<Identifier> available(ServerPlayer player) {
@@ -68,6 +80,16 @@ final class CookbookAvailability {
 			cabin = CabinRegistry.get(player.level().getServer()).findByCell(cell).orElse(null);
 		}
 		return available(recipes(player.level().getServer().getRecipeManager().getRecipes()), sources(cabin, player.getUUID(), inventory));
+	}
+
+	/** The station's recipes that the recipe panel can fill from the player's inventory and the station's own ingredients. */
+	static Set<Identifier> fillable(ServerPlayer player, Container station, CookingStation kind) {
+		List<ItemStack> sources = new ArrayList<>(player.getInventory().getNonEquipmentItems());
+		for (int slot = 0; slot < kind.ingredientSlots(); slot++) sources.add(station.getItem(slot));
+		if (kind == CookingStation.POT) sources.add(station.getItem(CookingPotBlockEntity.CONTAINER_SLOT));
+		var recipes = recipes(player.level().getServer().getRecipeManager().getRecipes()).stream()
+			.filter(holder -> holder.value().station() == kind).toList();
+		return available(recipes, sources);
 	}
 
 	/** The stacks a player may cook from: storage first when they are household in a cabin with storage, then their inventory. */

@@ -112,6 +112,22 @@ final class CabinCorridorStartupCheck {
 		require(loose.isAlive() && guestPlayer.getInventory().countItem(Items.EMERALD) == 0, "Guests cannot collect items");
 		loose.playerTouch(residentPlayer);
 		require(!loose.isAlive() && residentPlayer.getInventory().countItem(Items.EMERALD) == 2, "Residents can collect items");
+		BlockPos stationPos = mainRoom.offset(1, 0, 1);
+		var before = pocket.getBlockState(stationPos);
+		pocket.setBlockAndUpdate(stationPos, CookingBlocks.COOKING_POT.defaultBlockState());
+		var pot = (CookingPotBlockEntity) pocket.getBlockEntity(stationPos);
+		require(!pot.stillValid(guestPlayer) && pot.stillValid(residentPlayer), "Only the household can open a cooking station");
+		pocket.setBlockAndUpdate(stationPos, CookingBlocks.SKILLET.defaultBlockState());
+		var skillet = (SkilletBlockEntity) pocket.getBlockEntity(stationPos);
+		var hit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(stationPos), net.minecraft.core.Direction.UP, stationPos, false);
+		for (var player : List.of(guestPlayer, residentPlayer)) {
+			player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.EGG));
+			pocket.getBlockState(stationPos).useItemOn(player.getMainHandItem(), pocket, player, net.minecraft.world.InteractionHand.MAIN_HAND, hit);
+			require(skillet.getItem(0).isEmpty() == (player == guestPlayer), player == guestPlayer
+				? "Guests cannot use a cooking station" : "Residents can use a cooking station");
+		}
+		skillet.clearContent();
+		pocket.setBlockAndUpdate(stationPos, before);
 		for (var player : List.of(guestPlayer, residentPlayer)) player.getInventory().clearContent();
 		UUID known = UUID.randomUUID();
 		server.services().nameToIdCache().add(new net.minecraft.server.players.NameAndId(known, "cabin_known"));
