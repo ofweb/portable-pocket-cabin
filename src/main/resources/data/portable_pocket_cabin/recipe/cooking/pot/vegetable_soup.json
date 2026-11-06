@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chopped_carrot"
+    },
+    {
+      "item": "portable_pocket_cabin:diced_potato"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_beetroot"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl",
+    "count": 3
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 300,
+  "result": {
+    "id": "portable_pocket_cabin:vegetable_soup",
+    "count": 3
+  }
+}

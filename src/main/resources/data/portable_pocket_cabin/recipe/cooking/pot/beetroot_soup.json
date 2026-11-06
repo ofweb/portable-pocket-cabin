@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chopped_beetroot",
+      "count": 6
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 300,
+  "result": {
+    "id": "minecraft:beetroot_soup"
+  }
+}

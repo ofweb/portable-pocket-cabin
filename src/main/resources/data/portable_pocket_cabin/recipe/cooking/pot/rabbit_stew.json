@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "stewing",
+  "ingredients": [
+    {
+      "item": "minecraft:cooked_rabbit"
+    },
+    {
+      "item": "minecraft:baked_potato"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_carrot"
+    },
+    {
+      "item": "portable_pocket_cabin:sauteed_mushrooms"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 300,
+  "result": {
+    "id": "minecraft:rabbit_stew"
+  }
+}

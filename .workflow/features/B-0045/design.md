@@ -78,7 +78,9 @@ Cake shows counted ingredients and remainders:
 - `time` is in ticks.
 - `technique` is a key for the cookbook's explanation text in `en_us.json`, such as `cooking.technique.simmering`.
 
-`placementInfo()` returns `PlacementInfo.NOT_PLACEABLE`, so the vanilla recipe book never tries to place these recipes. `recipeBookCategory()` returns one registered `portable_pocket_cabin:cooking` category.
+`isSpecial()` returns true and `placementInfo()` returns `PlacementInfo.NOT_PLACEABLE`, so the vanilla recipe book neither lists nor places these recipes. `recipeBookCategory()` returns one registered `portable_pocket_cabin:cooking` category.
+
+A result or remainder must fit one stack. Item stack sizes are not known while recipes load, so a GameTest checks every loaded cooking recipe instead of the recipe format.
 
 ### Client sync
 
@@ -137,7 +139,7 @@ There are no custom textures yet. The stations use block models that reference v
 - Oven: brick sides with a furnace front.
 - Cutting board: a one-pixel plank slab.
 
-Prepared items and new dishes get simple generated placeholder textures. B-0034 replaces them with final art.
+Prepared items and new dishes use placeholder models that reuse vanilla textures. B-0034 replaces them with final art.
 
 ## Items
 
@@ -149,10 +151,10 @@ Prepared items and new dishes get simple generated placeholder textures. B-0034 
 | Sliced brown mushrooms, sliced red mushrooms | Prepared | Not edible |
 | Sautéed mushrooms | Prepared and edible | 3 hunger, 3.6 saturation |
 | Fried egg | Dish | 3 hunger, 3.6 saturation |
-| Vegetable soup | Dish in a bowl | 7 hunger, 8.4 saturation, returns the bowl |
-| Apple compote | Dish in a bowl | 5 hunger, 6.0 saturation, returns the bowl |
+| Vegetable soup | Dish in a bowl, stacks to 16 | 7 hunger, 8.4 saturation, returns the bowl |
+| Apple compote | Dish in a bowl, stacks to 16 | 5 hunger, 6.0 saturation, returns the bowl |
 
-Vanilla outputs keep their vanilla food values. Recipe times start at 100 ticks for skillet recipes, 200 for oven recipes, and 300 for pot recipes. B-0033 tunes them.
+Vanilla outputs keep their vanilla food values. The new soups stack to 16, unlike vanilla stews, because a pot makes several portions into one output slot. Recipe times start at 100 ticks for skillet recipes, 200 for oven recipes, and 300 for pot recipes. B-0033 tunes them.
 
 ## Cookbook
 
@@ -222,5 +224,5 @@ Each step is a commit with its tests green:
 
 ## Assumptions
 
-- Fabric's `fabric:load_conditions` with a false condition removes an overridden vanilla recipe. The first delivery step's GameTest confirms this. The fallback is a `RecipeManager` filter by recipe id.
+- Fabric's `fabric:load_conditions` with the `fabric:false` condition removes an overridden vanilla recipe. A GameTest confirms all 35 are gone and that non-food recipes remain.
 - Placeholder textures are acceptable until B-0034.

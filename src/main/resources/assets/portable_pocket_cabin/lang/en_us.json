@@ -48,5 +48,17 @@
   "book.portable_pocket_cabin.enchanting_2": "Enchanting 2: apply up to level 2",
   "book.portable_pocket_cabin.enchanting_3": "Enchanting 3: apply up to level 3",
   "book.portable_pocket_cabin.enchanting_4": "Enchanting 4: apply up to level 4",
-  "book.portable_pocket_cabin.enchanting_5": "Enchanting 5: no room level cap"
+  "book.portable_pocket_cabin.enchanting_5": "Enchanting 5: no room level cap",
+  "item.portable_pocket_cabin.kitchen_knife": "Kitchen Knife",
+  "item.portable_pocket_cabin.cookbook": "Cookbook",
+  "item.portable_pocket_cabin.chopped_carrot": "Chopped Carrot",
+  "item.portable_pocket_cabin.diced_potato": "Diced Potato",
+  "item.portable_pocket_cabin.chopped_beetroot": "Chopped Beetroot",
+  "item.portable_pocket_cabin.chopped_apple": "Chopped Apple",
+  "item.portable_pocket_cabin.sliced_brown_mushrooms": "Sliced Brown Mushrooms",
+  "item.portable_pocket_cabin.sliced_red_mushrooms": "Sliced Red Mushrooms",
+  "item.portable_pocket_cabin.sauteed_mushrooms": "Sautéed Mushrooms",
+  "item.portable_pocket_cabin.fried_egg": "Fried Egg",
+  "item.portable_pocket_cabin.vegetable_soup": "Vegetable Soup",
+  "item.portable_pocket_cabin.apple_compote": "Apple Compote"
 }

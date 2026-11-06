@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chopped_apple",
+      "count": 3
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl",
+    "count": 2
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 300,
+  "result": {
+    "id": "portable_pocket_cabin:apple_compote",
+    "count": 2
+  }
+}
