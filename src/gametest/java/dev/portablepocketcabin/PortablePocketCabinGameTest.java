@@ -57,16 +57,15 @@ public final class PortablePocketCabinGameTest {
 	}
 
 	@GameTest
-	public void storageResidentsIgnoreLegacyPrivateEntry(GameTestHelper helper) {
+	public void storageAccessFollowsHouseholdRole(GameTestHelper helper) {
 		var registry = new CabinRegistry();
 		UUID owner = UUID.randomUUID(), resident = UUID.randomUUID();
 		var cabin = deployRegistryCabin(registry, owner, 0);
-		registry.trust(cabin.uuid(), owner, resident);
-		registry.setEntryPermission(cabin.uuid(), owner, CabinEntryPermission.OWNER_ONLY);
+		registry.addResident(cabin.uuid(), owner, resident);
 		cabin = registry.find(cabin.uuid()).orElseThrow();
 		helper.assertTrue(CabinStorage.mayUse(cabin, resident), "An assigned resident must retain household storage access");
 		helper.assertTrue(!CabinStorage.mayUse(cabin, UUID.randomUUID()), "Guests must not inspect private storage");
-		registry.untrust(cabin.uuid(), owner, resident);
+		registry.removeResident(cabin.uuid(), owner, resident);
 		helper.assertTrue(!CabinStorage.mayUse(registry.find(cabin.uuid()).orElseThrow(), resident), "Removal must revoke storage access immediately");
 		helper.succeed();
 	}
