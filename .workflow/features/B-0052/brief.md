@@ -1,6 +1,6 @@
 # Players press juice and oil and make drinks
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0052
 
 ## Goal

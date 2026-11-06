@@ -183,5 +183,9 @@
   "technique.portable_pocket_cabin.making_cordial": "Making cordial",
   "technique.portable_pocket_cabin.making_cordial.description": "Simmer fruit gently with sugar and a little water until the fruit bursts and colours the syrup. Strained and bottled, it keeps, and a splash diluted with water makes a drink such as saftevand.",
   "technique.portable_pocket_cabin.reducing": "Reducing",
-  "technique.portable_pocket_cabin.reducing.description": "Simmer a liquid slowly, uncovered, so its water steams away. Four bottles of apple juice cook down to one of thick, dark syrup."
+  "technique.portable_pocket_cabin.reducing.description": "Simmer a liquid slowly, uncovered, so its water steams away. Four bottles of apple juice cook down to one of thick, dark syrup.",
+  "item.portable_pocket_cabin.sunflower_oil.cookbook_note": "The everyday frying oil. Pour it into a cooking pot or wok to deep-fry or stir-fry.",
+  "item.portable_pocket_cabin.pumpkin_seed_oil.cookbook_note": "A dark, nutty finishing oil for dressings, as in Styria. It smokes at frying heat, so it does not go in the pot or wok.",
+  "item.portable_pocket_cabin.apple_juice.cookbook_note": "Fresh-pressed apple juice, æblemost in Denmark.",
+  "item.portable_pocket_cabin.sweet_berry_cordial.cookbook_note": "A concentrate. Diluted with water, a splash makes saftevand."
 }
