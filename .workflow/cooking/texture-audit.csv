@@ -1,0 +1,641 @@
+kind,name,book_page,runtime_id,status,candidate_match,candidate_source,candidate_license,candidate_url,candidate_file,preview_checked,other_candidate_urls,next_action
+ingredients,ají amarillo,.workflow/cooking/book/ingredients/aji-amarillo.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,allspice,.workflow/cooking/book/ingredients/allspice.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,almond,.workflow/cooking/book/ingredients/almond.md,,CC0 candidate; in-game review needed,plural file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/almonds.png,,,Extract named sprite; review in game
+ingredients,anchovy,.workflow/cooking/book/ingredients/anchovy.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,anise seed,.workflow/cooking/book/ingredients/anise-seed.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,annatto seed,.workflow/cooking/book/ingredients/annatto-seed.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,apple,.workflow/cooking/book/ingredients/apple.md,minecraft:apple,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,apricot,.workflow/cooking/book/ingredients/apricot.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,asparagus,.workflow/cooking/book/ingredients/asparagus.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/asparagus.png,,,Extract named sprite; review in game
+ingredients,aubergine,.workflow/cooking/book/ingredients/aubergine.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/eggplant.png,,,Extract named sprite; review in game
+ingredients,azuki bean,.workflow/cooking/book/ingredients/azuki-bean.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,barley,.workflow/cooking/book/ingredients/barley.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,basil,.workflow/cooking/book/ingredients/basil.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,bay laurel leaf,.workflow/cooking/book/ingredients/bay-laurel-leaf.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,bean sprouts,.workflow/cooking/book/ingredients/bean-sprouts.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,beetroot,.workflow/cooking/book/ingredients/beetroot.md,minecraft:beetroot,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,bell pepper,.workflow/cooking/book/ingredients/bell-pepper.md,,CC0 variant; adaptation needed,color variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/bell_pepper_red.png,yes; 16x16,,Extract named sprite; adapt and review in game
+ingredients,betel leaf,.workflow/cooking/book/ingredients/betel-leaf.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,bird's eye chili,.workflow/cooking/book/ingredients/bird-s-eye-chili.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,black bean,.workflow/cooking/book/ingredients/black-bean.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,black olive,.workflow/cooking/book/ingredients/black-olive.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/olives_black.png,,,Extract named sprite; review in game
+ingredients,blackcurrant,.workflow/cooking/book/ingredients/blackcurrant.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,blue corn,.workflow/cooking/book/ingredients/blue-corn.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/corn_maize_blue.png,,,Extract named sprite; review in game
+ingredients,bonito,.workflow/cooking/book/ingredients/bonito.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,brown mushroom,.workflow/cooking/book/ingredients/brown-mushroom.md,minecraft:brown_mushroom,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,cabbage,.workflow/cooking/book/ingredients/cabbage.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/cabbage.png,,https://github.com/malcolmriley/unused-textures/blob/master/items/food_cabbage.png | https://github.com/malcolmriley/unused-textures/blob/master/items/food_cabbage.png,Extract named sprite; review in game
+ingredients,cactus,.workflow/cooking/book/ingredients/cactus.md,,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,caraway seed,.workflow/cooking/book/ingredients/caraway-seed.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,cardamom pod,.workflow/cooking/book/ingredients/cardamom-pod.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,carrot,.workflow/cooking/book/ingredients/carrot.md,minecraft:carrot,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,cassava,.workflow/cooking/book/ingredients/cassava.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,celery,.workflow/cooking/book/ingredients/celery.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/celery.png,,,Extract named sprite; review in game
+ingredients,cherry,.workflow/cooking/book/ingredients/cherry.md,,CC0 candidate; in-game review needed,plural file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/cherries.png,,,Extract named sprite; review in game
+ingredients,chicken carcass,.workflow/cooking/book/ingredients/chicken-carcass.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,chickpea,.workflow/cooking/book/ingredients/chickpea.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/garbanzo_beans.png,,,Extract named sprite; review in game
+ingredients,cilantro,.workflow/cooking/book/ingredients/cilantro.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,cinnamon bark,.workflow/cooking/book/ingredients/cinnamon-bark.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/cinnamon.png,,,Extract named sprite; review in game
+ingredients,clove bud,.workflow/cooking/book/ingredients/clove-bud.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,cocoa beans,.workflow/cooking/book/ingredients/cocoa-beans.md,minecraft:cocoa_beans,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,coconut,.workflow/cooking/book/ingredients/coconut.md,,CC0 variant; adaptation needed,whole fruit variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/coconut_whole.png,,,Extract named sprite; adapt and review in game
+ingredients,cod,.workflow/cooking/book/ingredients/cod.md,minecraft:cod,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,coffee cherry,.workflow/cooking/book/ingredients/coffee-cherry.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,coriander seed,.workflow/cooking/book/ingredients/coriander-seed.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,corn,.workflow/cooking/book/ingredients/corn.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/corn.png,,,Extract named sprite; review in game
+ingredients,courgette,.workflow/cooking/book/ingredients/courgette.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,cow carcass,.workflow/cooking/book/ingredients/cow-carcass.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,cucumber,.workflow/cooking/book/ingredients/cucumber.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/cucumber.png,,,Extract named sprite; review in game
+ingredients,cumin seed,.workflow/cooking/book/ingredients/cumin-seed.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,dill,.workflow/cooking/book/ingredients/dill.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,duck carcass,.workflow/cooking/book/ingredients/duck-carcass.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,egg,.workflow/cooking/book/ingredients/egg.md,minecraft:egg,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,elderberry,.workflow/cooking/book/ingredients/elderberry.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,elderflower,.workflow/cooking/book/ingredients/elderflower.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,galangal,.workflow/cooking/book/ingredients/galangal.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,garlic,.workflow/cooking/book/ingredients/garlic.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/garlic.png,yes; 16x16,https://github.com/malcolmriley/unused-textures/blob/master/items/food_garlic.png | https://github.com/malcolmriley/unused-textures/blob/master/items/food_garlic.png,Extract named sprite; review in game
+ingredients,ginger,.workflow/cooking/book/ingredients/ginger.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/ginger.png,,,Extract named sprite; review in game
+ingredients,glass bottle,.workflow/cooking/book/ingredients/glass-bottle.md,,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,glutinous rice,.workflow/cooking/book/ingredients/glutinous-rice.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,grape,.workflow/cooking/book/ingredients/grape.md,,CC0 variant; adaptation needed,color variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/grapes_purple.png,,,Extract named sprite; adapt and review in game
+ingredients,green chili,.workflow/cooking/book/ingredients/green-chili.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/chili_pepper_green.png,,,Extract named sprite; review in game
+ingredients,green olive,.workflow/cooking/book/ingredients/green-olive.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/olives_green.png,,,Extract named sprite; review in game
+ingredients,green papaya,.workflow/cooking/book/ingredients/green-papaya.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,herring,.workflow/cooking/book/ingredients/herring.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,holy basil,.workflow/cooking/book/ingredients/holy-basil.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,honey,.workflow/cooking/book/ingredients/honey.md,,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,hops,.workflow/cooking/book/ingredients/hops.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,ice,.workflow/cooking/book/ingredients/ice.md,,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,kelp,.workflow/cooking/book/ingredients/kelp.md,minecraft:kelp,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,laver,.workflow/cooking/book/ingredients/laver.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,lemon,.workflow/cooking/book/ingredients/lemon.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/lemon.png,,,Extract named sprite; review in game
+ingredients,lemongrass,.workflow/cooking/book/ingredients/lemongrass.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,lettuce,.workflow/cooking/book/ingredients/lettuce.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/lettuce.png,,https://github.com/malcolmriley/unused-textures/blob/master/items/food_lettuce.png | https://github.com/malcolmriley/unused-textures/blob/master/items/food_lettuce.png,Extract named sprite; review in game
+ingredients,lime,.workflow/cooking/book/ingredients/lime.md,,CC0 pack candidate; extraction needed,listed as Lime,SuryaniD/16x16 Food Icons Variety Pack,CC0,https://suryanid.itch.io/16x16-food-icons-variety-pack,Lime (file name unverified),,,Download pack; locate Lime sprite; review in game
+ingredients,logs,.workflow/cooking/book/ingredients/logs.md,,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,long bean,.workflow/cooking/book/ingredients/long-bean.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,makrut lime leaf,.workflow/cooking/book/ingredients/makrut-lime-leaf.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,mango,.workflow/cooking/book/ingredients/mango.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/mango.png,,,Extract named sprite; review in game
+ingredients,marjoram,.workflow/cooking/book/ingredients/marjoram.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,milk,.workflow/cooking/book/ingredients/milk.md,,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,mint,.workflow/cooking/book/ingredients/mint.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,mussels,.workflow/cooking/book/ingredients/mussels.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,mustard seed,.workflow/cooking/book/ingredients/mustard-seed.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,nutmeg seed,.workflow/cooking/book/ingredients/nutmeg-seed.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,oil palm fruit,.workflow/cooking/book/ingredients/oil-palm-fruit.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,olive,.workflow/cooking/book/ingredients/olive.md,,CC0 variant; adaptation needed,color variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/olives_green.png,,,Extract named sprite; adapt and review in game
+ingredients,onion,.workflow/cooking/book/ingredients/onion.md,,CC0 variant; adaptation needed,color variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/onion_brown.png,,https://github.com/malcolmriley/unused-textures/blob/master/items/food_onion.png | https://github.com/malcolmriley/unused-textures/blob/master/items/food_onion.png,Extract named sprite; adapt and review in game
+ingredients,orange,.workflow/cooking/book/ingredients/orange.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/orange.png,,,Extract named sprite; review in game
+ingredients,oregano,.workflow/cooking/book/ingredients/oregano.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,oyster mushroom,.workflow/cooking/book/ingredients/oyster-mushroom.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,oyster,.workflow/cooking/book/ingredients/oyster.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/oyster.png,,,Extract named sprite; review in game
+ingredients,palm sap,.workflow/cooking/book/ingredients/palm-sap.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,pandan leaf,.workflow/cooking/book/ingredients/pandan-leaf.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,paprika pepper,.workflow/cooking/book/ingredients/paprika-pepper.md,,CC0 variant; adaptation needed,similar pepper; adaptation needed,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/bell_pepper_red.png,,,Extract named sprite; adapt and review in game
+ingredients,parsley,.workflow/cooking/book/ingredients/parsley.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,peanut,.workflow/cooking/book/ingredients/peanut.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/peanut.png,,,Extract named sprite; review in game
+ingredients,peppercorn,.workflow/cooking/book/ingredients/peppercorn.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,pig carcass,.workflow/cooking/book/ingredients/pig-carcass.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,pineapple,.workflow/cooking/book/ingredients/pineapple.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/pineapple.png,,,Extract named sprite; review in game
+ingredients,plum,.workflow/cooking/book/ingredients/plum.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/plum.png,,,Extract named sprite; review in game
+ingredients,poblano chili,.workflow/cooking/book/ingredients/poblano-chili.md,,CC0 variant; adaptation needed,similar chili; adaptation needed,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/chili_pepper_green.png,,,Extract named sprite; adapt and review in game
+ingredients,potato,.workflow/cooking/book/ingredients/potato.md,minecraft:potato,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,prawns,.workflow/cooking/book/ingredients/prawns.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/shrimp.png,,,Extract named sprite; review in game
+ingredients,pumpkin,.workflow/cooking/book/ingredients/pumpkin.md,minecraft:pumpkin,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,purple corn,.workflow/cooking/book/ingredients/purple-corn.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,radish,.workflow/cooking/book/ingredients/radish.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/radish.png,,https://github.com/malcolmriley/unused-textures/blob/master/items/food_radish.png | https://github.com/malcolmriley/unused-textures/blob/master/items/food_radish.png | https://github.com/Futureazoo/TextureRepository/blob/master/futureazoo/items/food/radish.png,Extract named sprite; review in game
+ingredients,rapeseed,.workflow/cooking/book/ingredients/rapeseed.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,raspberry,.workflow/cooking/book/ingredients/raspberry.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/rubus_raspberry.png,,,Extract named sprite; review in game
+ingredients,red cabbage,.workflow/cooking/book/ingredients/red-cabbage.md,,CC0 variant; adaptation needed,recolor needed,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/cabbage.png,,,Extract named sprite; adapt and review in game
+ingredients,red chili,.workflow/cooking/book/ingredients/red-chili.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/chili_pepper_red.png,,,Extract named sprite; review in game
+ingredients,red grape,.workflow/cooking/book/ingredients/red-grape.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/grapes_purple.png,,,Extract named sprite; review in game
+ingredients,red onion,.workflow/cooking/book/ingredients/red-onion.md,,CC0 variant; adaptation needed,color variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/onion_purple.png,,,Extract named sprite; adapt and review in game
+ingredients,redcurrant,.workflow/cooking/book/ingredients/redcurrant.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,rhubarb,.workflow/cooking/book/ingredients/rhubarb.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,rice,.workflow/cooking/book/ingredients/rice.md,,no matching source found,,,,,,,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/rice_plate.png | https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/rice_plate.png,Search broader or create original 16 px art
+ingredients,rock salt,.workflow/cooking/book/ingredients/rock-salt.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,rosehip,.workflow/cooking/book/ingredients/rosehip.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,roselle,.workflow/cooking/book/ingredients/roselle.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,rosemary,.workflow/cooking/book/ingredients/rosemary.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,rye,.workflow/cooking/book/ingredients/rye.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,salmon,.workflow/cooking/book/ingredients/salmon.md,minecraft:salmon,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,savory,.workflow/cooking/book/ingredients/savory.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,sea lettuce,.workflow/cooking/book/ingredients/sea-lettuce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,sesame seed,.workflow/cooking/book/ingredients/sesame-seed.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,shaded tea leaf,.workflow/cooking/book/ingredients/shaded-tea-leaf.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,shallot,.workflow/cooking/book/ingredients/shallot.md,,CC0 variant; adaptation needed,similar allium; adaptation needed,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/onion_purple.png,,,Extract named sprite; adapt and review in game
+ingredients,soybean,.workflow/cooking/book/ingredients/soybean.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,spring onion,.workflow/cooking/book/ingredients/spring-onion.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/scallions.png,,,Extract named sprite; review in game
+ingredients,squid,.workflow/cooking/book/ingredients/squid.md,,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,star anise pod,.workflow/cooking/book/ingredients/star-anise-pod.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,strawberry,.workflow/cooking/book/ingredients/strawberry.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/strawberry.png,,,Extract named sprite; review in game
+ingredients,sugar cane,.workflow/cooking/book/ingredients/sugar-cane.md,,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,sugar,.workflow/cooking/book/ingredients/sugar.md,minecraft:sugar,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,sunflower,.workflow/cooking/book/ingredients/sunflower.md,,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,sweet berries,.workflow/cooking/book/ingredients/sweet-berries.md,,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,sweet potato,.workflow/cooking/book/ingredients/sweet-potato.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,tamarind pod,.workflow/cooking/book/ingredients/tamarind-pod.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,tea leaf,.workflow/cooking/book/ingredients/tea-leaf.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,Thai aubergine,.workflow/cooking/book/ingredients/thai-aubergine.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,Thai basil,.workflow/cooking/book/ingredients/thai-basil.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,thyme,.workflow/cooking/book/ingredients/thyme.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,tomatillo,.workflow/cooking/book/ingredients/tomatillo.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,tomato,.workflow/cooking/book/ingredients/tomato.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/tomato.png,,https://github.com/malcolmriley/unused-textures/blob/master/items/food_tomato.png | https://github.com/malcolmriley/unused-textures/blob/master/items/food_tomato.png,Extract named sprite; review in game
+ingredients,turmeric,.workflow/cooking/book/ingredients/turmeric.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,ume plum,.workflow/cooking/book/ingredients/ume-plum.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,vanilla pod,.workflow/cooking/book/ingredients/vanilla-pod.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/vanilla.png,,,Extract named sprite; review in game
+ingredients,wakame,.workflow/cooking/book/ingredients/wakame.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,wasabi root,.workflow/cooking/book/ingredients/wasabi-root.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,water bottle of seawater,.workflow/cooking/book/ingredients/water-bottle-of-seawater.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,water chestnut,.workflow/cooking/book/ingredients/water-chestnut.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,water,.workflow/cooking/book/ingredients/water.md,,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,wheat,.workflow/cooking/book/ingredients/wheat.md,minecraft:wheat,existing vanilla art,,,,,,,,Use Minecraft asset reference
+ingredients,white bean,.workflow/cooking/book/ingredients/white-bean.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+ingredients,white grape,.workflow/cooking/book/ingredients/white-grape.md,,CC0 candidate; in-game review needed,same ingredient,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/grapes_green.png,,,Extract named sprite; review in game
+ingredients,yerba mate leaf,.workflow/cooking/book/ingredients/yerba-mate-leaf.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,achiote oil,.workflow/cooking/book/products/achiote-oil.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,aged hard cheese,.workflow/cooking/book/products/aged-hard-cheese.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,aged soft cheese,.workflow/cooking/book/products/aged-soft-cheese.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,ajitsuke tamago,.workflow/cooking/book/products/ajitsuke-tamago.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,al pastor adobo,.workflow/cooking/book/products/al-pastor-adobo.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,anise,.workflow/cooking/book/products/anise.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,anko,.workflow/cooking/book/products/anko.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,anticucho marinade,.workflow/cooking/book/products/anticucho-marinade.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,aonori,.workflow/cooking/book/products/aonori.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,apple compote,.workflow/cooking/book/products/apple-compote.md,portable_pocket_cabin:apple_compote,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,apple juice,.workflow/cooking/book/products/apple-juice.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,back fat,.workflow/cooking/book/products/back-fat.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,bacon,.workflow/cooking/book/products/bacon.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/bacon.png,,,Extract named sprite; review in game
+products,bay leaf,.workflow/cooking/book/products/bay-leaf.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,béchamel,.workflow/cooking/book/products/bechamel.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,beef bones,.workflow/cooking/book/products/beef-bones.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,beef chuck,.workflow/cooking/book/products/beef-chuck.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,beef heart,.workflow/cooking/book/products/beef-heart.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,beef round,.workflow/cooking/book/products/beef-round.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,beef sirloin,.workflow/cooking/book/products/beef-sirloin.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,beef stock,.workflow/cooking/book/products/beef-stock.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,beer,.workflow/cooking/book/products/beer.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,black pepper,.workflow/cooking/book/products/black-pepper.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,black tea,.workflow/cooking/book/products/black-tea.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,blackcurrant juice,.workflow/cooking/book/products/blackcurrant-juice.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,blue corn masa,.workflow/cooking/book/products/blue-corn-masa.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,bonito flakes,.workflow/cooking/book/products/bonito-flakes.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,bouquet garni,.workflow/cooking/book/products/bouquet-garni.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,bread dough,.workflow/cooking/book/products/bread-dough.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,bread roll,.workflow/cooking/book/products/bread-roll.md,,CC0 candidate; in-game review needed,same product,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/breadroll.png,,,Extract named sprite; review in game
+products,bread,.workflow/cooking/book/products/bread.md,minecraft:bread,existing vanilla art,,,,,,,,Use Minecraft asset reference
+products,breadcrumbs,.workflow/cooking/book/products/breadcrumbs.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,brown sugar,.workflow/cooking/book/products/brown-sugar.md,,reference candidate; rights review needed,exact,AverageAnime/create-food-multiloader,GPL-3.0,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/brown_sugar.png,common/src/main/resources/assets/createfood/textures/item/brown_sugar.png,,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/brown_sugar.png,Verify original texture rights before reuse
+products,buttermilk,.workflow/cooking/book/products/buttermilk.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,calf stomach,.workflow/cooking/book/products/calf-stomach.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,caramel,.workflow/cooking/book/products/caramel.md,,reference candidate; rights review needed,exact,AverageAnime/create-food-multiloader,GPL-3.0,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/caramel.png,common/src/main/resources/assets/createfood/textures/item/caramel.png,,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/caramel.png,Verify original texture rights before reuse
+products,caraway,.workflow/cooking/book/products/caraway.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,cardamom,.workflow/cooking/book/products/cardamom.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,carne seca,.workflow/cooking/book/products/carne-seca.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,cassis syrup,.workflow/cooking/book/products/cassis-syrup.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,chancaca syrup,.workflow/cooking/book/products/chancaca-syrup.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,chashu pork,.workflow/cooking/book/products/chashu-pork.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,cherry compote,.workflow/cooking/book/products/cherry-compote.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,cherry sauce,.workflow/cooking/book/products/cherry-sauce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,chicken bones,.workflow/cooking/book/products/chicken-bones.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,chicken drumsticks,.workflow/cooking/book/products/chicken-drumsticks.md,,CC0 candidate; in-game review needed,same cut,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/chicken_drumstick_raw.png,,,Extract named sprite; review in game
+products,chicken stock,.workflow/cooking/book/products/chicken-stock.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,chicken thighs,.workflow/cooking/book/products/chicken-thighs.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,chickpea flour,.workflow/cooking/book/products/chickpea-flour.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,chili powder,.workflow/cooking/book/products/chili-powder.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,chocolate sauce,.workflow/cooking/book/products/chocolate-sauce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,chocolate sponge,.workflow/cooking/book/products/chocolate-sponge.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,chocolate,.workflow/cooking/book/products/chocolate.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/chocolate.png,,https://github.com/Futureazoo/TextureRepository/blob/master/futureazoo/items/food/chocolate.png | https://github.com/Futureazoo/TextureRepository/blob/master/futureazoo/items/food/chocolate.png,Extract named sprite; review in game
+products,chopped almonds,.workflow/cooking/book/products/chopped-almonds.md,,CC0 variant; adaptation needed,chopping needed,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/almonds.png,,,Extract named sprite; adapt and review in game
+products,chorizo,.workflow/cooking/book/products/chorizo.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,choux pastry,.workflow/cooking/book/products/choux-pastry.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,cinnamon,.workflow/cooking/book/products/cinnamon.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/cinnamon.png,,,Extract named sprite; review in game
+products,cloves,.workflow/cooking/book/products/cloves.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,coarse salt,.workflow/cooking/book/products/coarse-salt.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,cocktail sausages,.workflow/cooking/book/products/cocktail-sausages.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,cocoa butter,.workflow/cooking/book/products/cocoa-butter.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,cocoa powder,.workflow/cooking/book/products/cocoa-powder.md,,reference candidate; rights review needed,exact,AverageAnime/create-food-multiloader,GPL-3.0,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/cocoa_powder.png,common/src/main/resources/assets/createfood/textures/item/cocoa_powder.png,,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/cocoa_powder.png,Verify original texture rights before reuse
+products,coconut cream,.workflow/cooking/book/products/coconut-cream.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,coconut milk,.workflow/cooking/book/products/coconut-milk.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,condensed milk,.workflow/cooking/book/products/condensed-milk.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,corn tortillas,.workflow/cooking/book/products/corn-tortillas.md,,CC0 variant; adaptation needed,similar flatbread; adaptation needed,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/flatbread.png,,,Extract named sprite; adapt and review in game
+products,cornstarch,.workflow/cooking/book/products/cornstarch.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,cotija cheese,.workflow/cooking/book/products/cotija-cheese.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,cracked rye,.workflow/cooking/book/products/cracked-rye.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,cream cheese,.workflow/cooking/book/products/cream-cheese.md,,reference candidate; rights review needed,exact,AverageAnime/create-food-multiloader,GPL-3.0,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/cream_cheese.png,common/src/main/resources/assets/createfood/textures/item/cream_cheese.png,,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/cream_cheese.png,Verify original texture rights before reuse
+products,cream,.workflow/cooking/book/products/cream.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,crema,.workflow/cooking/book/products/crema.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,crème fraîche,.workflow/cooking/book/products/creme-fraiche.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,crushed ice,.workflow/cooking/book/products/crushed-ice.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,cucumber relish,.workflow/cooking/book/products/cucumber-relish.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,cumin,.workflow/cooking/book/products/cumin.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,curds,.workflow/cooking/book/products/curds.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,curry ketchup,.workflow/cooking/book/products/curry-ketchup.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,curry powder,.workflow/cooking/book/products/curry-powder.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dashi,.workflow/cooking/book/products/dashi.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dendê oil,.workflow/cooking/book/products/dende-oil.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,desiccated coconut,.workflow/cooking/book/products/desiccated-coconut.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dressed chicken,.workflow/cooking/book/products/dressed-chicken.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dressed cow,.workflow/cooking/book/products/dressed-cow.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dressed duck,.workflow/cooking/book/products/dressed-duck.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dressed pig,.workflow/cooking/book/products/dressed-pig.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried apple,.workflow/cooking/book/products/dried-apple.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried azuki beans,.workflow/cooking/book/products/dried-azuki-beans.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried berries,.workflow/cooking/book/products/dried-berries.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried black beans,.workflow/cooking/book/products/dried-black-beans.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried chickpeas,.workflow/cooking/book/products/dried-chickpeas.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried chilies,.workflow/cooking/book/products/dried-chilies.md,,CC0 variant; adaptation needed,drying needed,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/chili_pepper_red.png,,,Extract named sprite; adapt and review in game
+products,dried corn husks,.workflow/cooking/book/products/dried-corn-husks.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried corn,.workflow/cooking/book/products/dried-corn.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried fruit,.workflow/cooking/book/products/dried-fruit.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried hibiscus,.workflow/cooking/book/products/dried-hibiscus.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried mint,.workflow/cooking/book/products/dried-mint.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried oregano,.workflow/cooking/book/products/dried-oregano.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried rosehip,.workflow/cooking/book/products/dried-rosehip.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried shrimp,.workflow/cooking/book/products/dried-shrimp.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried soybeans,.workflow/cooking/book/products/dried-soybeans.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried wakame,.workflow/cooking/book/products/dried-wakame.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dried white beans,.workflow/cooking/book/products/dried-white-beans.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,duck confit,.workflow/cooking/book/products/duck-confit.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,duck legs,.workflow/cooking/book/products/duck-legs.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,dulce de leche,.workflow/cooking/book/products/dulce-de-leche.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,empanada dough,.workflow/cooking/book/products/empanada-dough.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,evaporated milk,.workflow/cooking/book/products/evaporated-milk.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,fish sauce,.workflow/cooking/book/products/fish-sauce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,flatbread dough,.workflow/cooking/book/products/flatbread-dough.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,fried egg,.workflow/cooking/book/products/fried-egg.md,portable_pocket_cabin:fried_egg,CC0 candidate; in-game review needed,word order,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/egg_fried.png,yes; 16x16,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/fried_egg_plate.png | https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/fried_egg_plate.png,Extract named sprite; review in game
+products,fried potatoes,.workflow/cooking/book/products/fried-potatoes.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,gherkins,.workflow/cooking/book/products/gherkins.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,gingerbread,.workflow/cooking/book/products/gingerbread.md,,CC0 variant; adaptation needed,shaped variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/gingerbread_man.png,,,Extract named sprite; adapt and review in game
+products,glass noodles,.workflow/cooking/book/products/glass-noodles.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,glutinous rice flour,.workflow/cooking/book/products/glutinous-rice-flour.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,green curry paste,.workflow/cooking/book/products/green-curry-paste.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,gyoza wrappers,.workflow/cooking/book/products/gyoza-wrappers.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,ham,.workflow/cooking/book/products/ham.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/ham.png,,,Extract named sprite; review in game
+products,hard-boiled egg,.workflow/cooking/book/products/hard-boiled-egg.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,herbes de Provence,.workflow/cooking/book/products/herbes-de-provence.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,hominy,.workflow/cooking/book/products/hominy.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,jam,.workflow/cooking/book/products/jam.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,Japanese mayonnaise,.workflow/cooking/book/products/japanese-mayonnaise.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,kammerjunkere,.workflow/cooking/book/products/kammerjunkere.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,kansui,.workflow/cooking/book/products/kansui.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,karrysalat,.workflow/cooking/book/products/karrysalat.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,katsuobushi,.workflow/cooking/book/products/katsuobushi.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,kirsch,.workflow/cooking/book/products/kirsch.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,koji rice,.workflow/cooking/book/products/koji-rice.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,koji spores,.workflow/cooking/book/products/koji-spores.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,kombu,.workflow/cooking/book/products/kombu.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,lard,.workflow/cooking/book/products/lard.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,leverpostej,.workflow/cooking/book/products/leverpostej.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,lime juice,.workflow/cooking/book/products/lime-juice.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,lye solution,.workflow/cooking/book/products/lye-solution.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,malted barley,.workflow/cooking/book/products/malted-barley.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,masa,.workflow/cooking/book/products/masa.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,masarepa,.workflow/cooking/book/products/masarepa.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,massaman curry paste,.workflow/cooking/book/products/massaman-curry-paste.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,matcha powder,.workflow/cooking/book/products/matcha-powder.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,mayonnaise,.workflow/cooking/book/products/mayonnaise.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,Mexican chocolate,.workflow/cooking/book/products/mexican-chocolate.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,miang sauce,.workflow/cooking/book/products/miang-sauce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,Minas cheese,.workflow/cooking/book/products/minas-cheese.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,minced beef,.workflow/cooking/book/products/minced-beef.md,,license hold,exact,Futureazoo/TextureRepository,CC-BY-NC-SA-4.0,https://github.com/Futureazoo/TextureRepository/blob/master/futureazoo/items/tech/minced_beef.png,futureazoo/items/tech/minced_beef.png,,https://github.com/Futureazoo/TextureRepository/blob/master/futureazoo/items/tech/minced_beef.png,Resolve source license before reuse
+products,minced pork,.workflow/cooking/book/products/minced-pork.md,,license hold,exact,Futureazoo/TextureRepository,CC-BY-NC-SA-4.0,https://github.com/Futureazoo/TextureRepository/blob/master/futureazoo/items/tech/minced_pork.png,futureazoo/items/tech/minced_pork.png,,https://github.com/Futureazoo/TextureRepository/blob/master/futureazoo/items/tech/minced_pork.png,Resolve source license before reuse
+products,mint syrup,.workflow/cooking/book/products/mint-syrup.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,mirin,.workflow/cooking/book/products/mirin.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,miso,.workflow/cooking/book/products/miso.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,mitarashi glaze,.workflow/cooking/book/products/mitarashi-glaze.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,mole paste,.workflow/cooking/book/products/mole-paste.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,mustard,.workflow/cooking/book/products/mustard.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,nam prik pao,.workflow/cooking/book/products/nam-prik-pao.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,nigari,.workflow/cooking/book/products/nigari.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,nopales,.workflow/cooking/book/products/nopales.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,nori,.workflow/cooking/book/products/nori.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,nutmeg,.workflow/cooking/book/products/nutmeg.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,okonomi sauce,.workflow/cooking/book/products/okonomi-sauce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,olive oil,.workflow/cooking/book/products/olive-oil.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,oyster sauce,.workflow/cooking/book/products/oyster-sauce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,palm sugar,.workflow/cooking/book/products/palm-sugar.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,panela,.workflow/cooking/book/products/panela.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,panko,.workflow/cooking/book/products/panko.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,paprika,.workflow/cooking/book/products/paprika.md,,reference candidate; rights review needed,exact,AverageAnime/create-food-multiloader,GPL-3.0,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/paprika.png,common/src/main/resources/assets/createfood/textures/item/paprika.png,,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/paprika.png,Verify original texture rights before reuse
+products,peanut sauce,.workflow/cooking/book/products/peanut-sauce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pickled beetroot,.workflow/cooking/book/products/pickled-beetroot.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pickled ginger,.workflow/cooking/book/products/pickled-ginger.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pickled herring,.workflow/cooking/book/products/pickled-herring.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pickling spice,.workflow/cooking/book/products/pickling-spice.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pig trotters,.workflow/cooking/book/products/pig-trotters.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pino,.workflow/cooking/book/products/pino.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,poached chicken,.workflow/cooking/book/products/poached-chicken.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pork belly,.workflow/cooking/book/products/pork-belly.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pork bone broth,.workflow/cooking/book/products/pork-bone-broth.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pork bones,.workflow/cooking/book/products/pork-bones.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pork casing,.workflow/cooking/book/products/pork-casing.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pork liver,.workflow/cooking/book/products/pork-liver.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pork loin with rind,.workflow/cooking/book/products/pork-loin-with-rind.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pork shoulder,.workflow/cooking/book/products/pork-shoulder.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pork stock,.workflow/cooking/book/products/pork-stock.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,potato starch,.workflow/cooking/book/products/potato-starch.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,prawn shells,.workflow/cooking/book/products/prawn-shells.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,prawn stock,.workflow/cooking/book/products/prawn-stock.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,pretzel,.workflow/cooking/book/products/pretzel.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/pretzel.png,,,Extract named sprite; review in game
+products,puff pastry,.workflow/cooking/book/products/puff-pastry.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,quark,.workflow/cooking/book/products/quark.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,queso blanco,.workflow/cooking/book/products/queso-blanco.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,queso fresco,.workflow/cooking/book/products/queso-fresco.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,queso Oaxaca,.workflow/cooking/book/products/queso-oaxaca.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,raisins,.workflow/cooking/book/products/raisins.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/raisins.png,,,Extract named sprite; review in game
+products,ramen noodles,.workflow/cooking/book/products/ramen-noodles.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,raw bratwurst,.workflow/cooking/book/products/raw-bratwurst.md,,CC0 variant; adaptation needed,generic sausage variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/sausage.png,,,Extract named sprite; adapt and review in game
+products,raw butter,.workflow/cooking/book/products/raw-butter.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,red chili sauce,.workflow/cooking/book/products/red-chili-sauce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,red curry paste,.workflow/cooking/book/products/red-curry-paste.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,red wine,.workflow/cooking/book/products/red-wine.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,redcurrant jelly,.workflow/cooking/book/products/redcurrant-jelly.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,refried beans,.workflow/cooking/book/products/refried-beans.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,remoulade,.workflow/cooking/book/products/remoulade.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,rennet,.workflow/cooking/book/products/rennet.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,rice flour,.workflow/cooking/book/products/rice-flour.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,rice noodles,.workflow/cooking/book/products/rice-noodles.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,rice pudding,.workflow/cooking/book/products/rice-pudding.md,,reference candidate; rights review needed,serving variant,AverageAnime/create-food-multiloader,GPL-3.0,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/rice_pudding_bowl.png,common/src/main/resources/assets/createfood/textures/item/rice_pudding_bowl.png,,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/rice_pudding_bowl.png,Verify original texture rights before reuse
+products,rice vinegar,.workflow/cooking/book/products/rice-vinegar.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,roasted barley,.workflow/cooking/book/products/roasted-barley.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,roasted cocoa nibs,.workflow/cooking/book/products/roasted-cocoa-nibs.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,roasted coffee,.workflow/cooking/book/products/roasted-coffee.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,roasted malt,.workflow/cooking/book/products/roasted-malt.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,roasted peanuts,.workflow/cooking/book/products/roasted-peanuts.md,,CC0 variant; adaptation needed,roasting needed,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/peanut.png,,,Extract named sprite; adapt and review in game
+products,roux,.workflow/cooking/book/products/roux.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,rugbrød,.workflow/cooking/book/products/rugbrod.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,rum,.workflow/cooking/book/products/rum.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,rye flour,.workflow/cooking/book/products/rye-flour.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,sake,.workflow/cooking/book/products/sake.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,salmon fillet,.workflow/cooking/book/products/salmon-fillet.md,,CC0 variant; adaptation needed,generic fish variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/fish_fillet.png,,,Extract named sprite; adapt and review in game
+products,salsa roja,.workflow/cooking/book/products/salsa-roja.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,salsa verde,.workflow/cooking/book/products/salsa-verde.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,salt,.workflow/cooking/book/products/salt.md,,reference candidate; rights review needed,exact,AverageAnime/create-food-multiloader,GPL-3.0,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/salt.png,common/src/main/resources/assets/createfood/textures/item/salt.png,,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/salt.png,Verify original texture rights before reuse
+products,salted anchovies,.workflow/cooking/book/products/salted-anchovies.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,salted butter,.workflow/cooking/book/products/salted-butter.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,salted salmon,.workflow/cooking/book/products/salted-salmon.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,satay marinade,.workflow/cooking/book/products/satay-marinade.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,sauerkraut,.workflow/cooking/book/products/sauerkraut.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,sautéed mushrooms,.workflow/cooking/book/products/sauteed-mushrooms.md,portable_pocket_cabin:sauteed_mushrooms,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,sencha leaves,.workflow/cooking/book/products/sencha-leaves.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,sesame oil,.workflow/cooking/book/products/sesame-oil.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,shortcrust pastry,.workflow/cooking/book/products/shortcrust-pastry.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,shoyu tare,.workflow/cooking/book/products/shoyu-tare.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,shrimp paste,.workflow/cooking/book/products/shrimp-paste.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,simple syrup,.workflow/cooking/book/products/simple-syrup.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,skimmed milk,.workflow/cooking/book/products/skimmed-milk.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,sliced almonds,.workflow/cooking/book/products/sliced-almonds.md,,CC0 variant; adaptation needed,slicing needed,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/almonds.png,,,Extract named sprite; adapt and review in game
+products,smoked sausage,.workflow/cooking/book/products/smoked-sausage.md,,CC0 variant; adaptation needed,smoking needed,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/sausage.png,,,Extract named sprite; adapt and review in game
+products,sour cassava starch,.workflow/cooking/book/products/sour-cassava-starch.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,sourdough starter,.workflow/cooking/book/products/sourdough-starter.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,soy sauce,.workflow/cooking/book/products/soy-sauce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,spätzle,.workflow/cooking/book/products/spatzle.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,spring roll wrappers,.workflow/cooking/book/products/spring-roll-wrappers.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,squid tentacles,.workflow/cooking/book/products/squid-tentacles.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,star anise,.workflow/cooking/book/products/star-anise.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,steamed rice,.workflow/cooking/book/products/steamed-rice.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,strudel dough,.workflow/cooking/book/products/strudel-dough.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,suet,.workflow/cooking/book/products/suet.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,sunflower seeds,.workflow/cooking/book/products/sunflower-seeds.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,sushi rice,.workflow/cooking/book/products/sushi-rice.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,sweet chili sauce,.workflow/cooking/book/products/sweet-chili-sauce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,sweet potato starch,.workflow/cooking/book/products/sweet-potato-starch.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,sweet yeast dough,.workflow/cooking/book/products/sweet-yeast-dough.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,tallow,.workflow/cooking/book/products/tallow.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,tamarind paste,.workflow/cooking/book/products/tamarind-paste.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,tamarind pulp,.workflow/cooking/book/products/tamarind-pulp.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,tapioca starch,.workflow/cooking/book/products/tapioca-starch.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,tartlet shells,.workflow/cooking/book/products/tartlet-shells.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,tenkasu,.workflow/cooking/book/products/tenkasu.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,tentsuyu,.workflow/cooking/book/products/tentsuyu.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,Thai tea leaves,.workflow/cooking/book/products/thai-tea-leaves.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,toasted coconut,.workflow/cooking/book/products/toasted-coconut.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,toasted corn,.workflow/cooking/book/products/toasted-corn.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,toasted sesame seeds,.workflow/cooking/book/products/toasted-sesame-seeds.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,tofu,.workflow/cooking/book/products/tofu.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/tofu.png,,,Extract named sprite; review in game
+products,tomato caldillo,.workflow/cooking/book/products/tomato-caldillo.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,tonkatsu sauce,.workflow/cooking/book/products/tonkatsu-sauce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,Toulouse sausage,.workflow/cooking/book/products/toulouse-sausage.md,,CC0 variant; adaptation needed,generic sausage variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/sausage.png,,,Extract named sprite; adapt and review in game
+products,umeboshi,.workflow/cooking/book/products/umeboshi.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,vanilla custard,.workflow/cooking/book/products/vanilla-custard.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,vanilla,.workflow/cooking/book/products/vanilla.md,,CC0 candidate; in-game review needed,exact file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/vanilla.png,,,Extract named sprite; review in game
+products,vegetable oil,.workflow/cooking/book/products/vegetable-oil.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,wasabi,.workflow/cooking/book/products/wasabi.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,wheat flour,.workflow/cooking/book/products/wheat-flour.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,whey,.workflow/cooking/book/products/whey.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,whipped cream,.workflow/cooking/book/products/whipped-cream.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,white fish fillet,.workflow/cooking/book/products/white-fish-fillet.md,,CC0 variant; adaptation needed,generic fish variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/fish_fillet.png,,,Extract named sprite; adapt and review in game
+products,white wine,.workflow/cooking/book/products/white-wine.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,wine vinegar,.workflow/cooking/book/products/wine-vinegar.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,wood ash,.workflow/cooking/book/products/wood-ash.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,Worcestershire sauce,.workflow/cooking/book/products/worcestershire-sauce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,yakitori tare,.workflow/cooking/book/products/yakitori-tare.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,yeast,.workflow/cooking/book/products/yeast.md,,license hold,exact,Foreck1/foreck-textures,conflicting,https://github.com/Foreck1/foreck-textures/blob/main/textures/x16items/yeast.png,textures/x16items/yeast.png,,https://github.com/Foreck1/foreck-textures/blob/main/textures/x16items/yeast.png,Resolve source license before reuse
+products,yerba mate,.workflow/cooking/book/products/yerba-mate.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+products,yogurt,.workflow/cooking/book/products/yogurt.md,,reference candidate; rights review needed,serving variant,AverageAnime/create-food-multiloader,GPL-3.0,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/yogurt_bowl.png,common/src/main/resources/assets/createfood/textures/item/yogurt_bowl.png,,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/yogurt_bowl.png,Verify original texture rights before reuse
+dishes,Æblemost,.workflow/cooking/book/dishes/aeblemost.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Æbleskiver,.workflow/cooking/book/dishes/aebleskiver.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Agua de jamaica,.workflow/cooking/book/dishes/agua-de-jamaica.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Agua de tamarindo,.workflow/cooking/book/dishes/agua-de-tamarindo.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Aguapanela con limón,.workflow/cooking/book/dishes/aguapanela-con-limon.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Alfajores de maicena,.workflow/cooking/book/dishes/alfajores-de-maicena.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Anticuchos,.workflow/cooking/book/dishes/anticuchos.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Apfelstrudel,.workflow/cooking/book/dishes/apfelstrudel.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Arepas con queso,.workflow/cooking/book/dishes/arepas-con-queso.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Arroz con leche,.workflow/cooking/book/dishes/arroz-con-leche.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Berliner,.workflow/cooking/book/dishes/berliner.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Bienenstich,.workflow/cooking/book/dishes/bienenstich.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Boeuf bourguignon,.workflow/cooking/book/dishes/boeuf-bourguignon.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Boller i karry,.workflow/cooking/book/dishes/boller-i-karry.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Bratwurst mit Sauerkraut,.workflow/cooking/book/dishes/bratwurst-mit-sauerkraut.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Brezeln,.workflow/cooking/book/dishes/brezeln.md,,CC0 candidate; in-game review needed,same dish,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/pretzel.png,,,Extract named sprite; review in game
+dishes,Brigadeiros,.workflow/cooking/book/dishes/brigadeiros.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Brunsviger,.workflow/cooking/book/dishes/brunsviger.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Bua loy,.workflow/cooking/book/dishes/bua-loy.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Café de olla,.workflow/cooking/book/dishes/cafe-de-olla.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Canelés,.workflow/cooking/book/dishes/caneles.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Carnitas tacos,.workflow/cooking/book/dishes/carnitas-tacos.md,,CC0 variant; adaptation needed,generic dish variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/taco.png,,,Extract named sprite; adapt and review in game
+dishes,Cassoulet,.workflow/cooking/book/dishes/cassoulet.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Ceviche,.workflow/cooking/book/dishes/ceviche.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Cha manao,.workflow/cooking/book/dishes/cha-manao.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Cha yen,.workflow/cooking/book/dishes/cha-yen.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Champurrado,.workflow/cooking/book/dishes/champurrado.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Chicha morada,.workflow/cooking/book/dishes/chicha-morada.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Chiles rellenos,.workflow/cooking/book/dishes/chiles-rellenos.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Chocolat chaud,.workflow/cooking/book/dishes/chocolat-chaud.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Churros,.workflow/cooking/book/dishes/churros.md,,CC0 candidate; in-game review needed,singular file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/churro.png,,,Extract named sprite; review in game
+dishes,Citron pressé,.workflow/cooking/book/dishes/citron-presse.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Citronnade maison,.workflow/cooking/book/dishes/citronnade-maison.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Conchas,.workflow/cooking/book/dishes/conchas.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Coq au vin,.workflow/cooking/book/dishes/coq-au-vin.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Coxinha,.workflow/cooking/book/dishes/coxinha.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Crème brûlée,.workflow/cooking/book/dishes/creme-brulee.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Croque monsieur,.workflow/cooking/book/dishes/croque-monsieur.md,,CC0 variant; adaptation needed,generic sandwich variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/sandwich.png,,,Extract named sprite; adapt and review in game
+dishes,Currywurst,.workflow/cooking/book/dishes/currywurst.md,,CC0 variant; adaptation needed,sauce and side needed,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/sausage.png,,,Extract named sprite; adapt and review in game
+dishes,Daifuku mochi,.workflow/cooking/book/dishes/daifuku-mochi.md,,CC0 variant; adaptation needed,generic dish variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/mochi.png,yes; 16x16,,Extract named sprite; adapt and review in game
+dishes,Dorayaki,.workflow/cooking/book/dishes/dorayaki.md,,CC0 variant; adaptation needed,filling and shape needed,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/pancakes.png,,,Extract named sprite; adapt and review in game
+dishes,Elote,.workflow/cooking/book/dishes/elote.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Empanadas de carne,.workflow/cooking/book/dishes/empanadas-de-carne.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Enchiladas verdes,.workflow/cooking/book/dishes/enchiladas-verdes.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Feijoada,.workflow/cooking/book/dishes/feijoada.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Fischbrötchen,.workflow/cooking/book/dishes/fischbrotchen.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Fiskefrikadeller,.workflow/cooking/book/dishes/fiskefrikadeller.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Flæskesteg med rødkål,.workflow/cooking/book/dishes/flaeskesteg-med-rodkal.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Flammkuchen,.workflow/cooking/book/dishes/flammkuchen.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Flan napolitano,.workflow/cooking/book/dishes/flan-napolitano.md,,CC0 variant; adaptation needed,same dish family,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/flan.png,,,Extract named sprite; adapt and review in game
+dishes,French onion soup,.workflow/cooking/book/dishes/french-onion-soup.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Frikadeller,.workflow/cooking/book/dishes/frikadeller.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Früchtetee,.workflow/cooking/book/dishes/fruchtetee.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Gai satay,.workflow/cooking/book/dishes/gai-satay.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Gammeldags æblekage,.workflow/cooking/book/dishes/gammeldags-aeblekage.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Gougères,.workflow/cooking/book/dishes/gougeres.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Green curry,.workflow/cooking/book/dishes/green-curry.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Gyoza,.workflow/cooking/book/dishes/gyoza.md,,CC0 variant; adaptation needed,same dish family,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/dumpling.png,,,Extract named sprite; adapt and review in game
+dishes,Hojicha,.workflow/cooking/book/dishes/hojicha.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Horchata de arroz,.workflow/cooking/book/dishes/horchata-de-arroz.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Hyldeblomstsaft,.workflow/cooking/book/dishes/hyldeblomstsaft.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Kalter Kakao,.workflow/cooking/book/dishes/kalter-kakao.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Karaage,.workflow/cooking/book/dishes/karaage.md,,CC0 variant; adaptation needed,similar fried chicken; adaptation needed,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/chicken_nuggets.png,,,Extract named sprite; adapt and review in game
+dishes,Kartoffelpuffer,.workflow/cooking/book/dishes/kartoffelpuffer.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Käsekuchen,.workflow/cooking/book/dishes/kasekuchen.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Käsespätzle,.workflow/cooking/book/dishes/kasespatzle.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Khanom krok,.workflow/cooking/book/dishes/khanom-krok.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Kinderpunsch,.workflow/cooking/book/dishes/kinderpunsch.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Koji amazake,.workflow/cooking/book/dishes/koji-amazake.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Koldskål med kammerjunkere,.workflow/cooking/book/dishes/koldskal-med-kammerjunkere.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Korokke,.workflow/cooking/book/dishes/korokke.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Limonada de coco,.workflow/cooking/book/dishes/limonada-de-coco.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Limonada suíça,.workflow/cooking/book/dishes/limonada-suica.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Llapingachos,.workflow/cooking/book/dishes/llapingachos.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Lomo saltado,.workflow/cooking/book/dishes/lomo-saltado.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Madeleines,.workflow/cooking/book/dishes/madeleines.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Maki sushi,.workflow/cooking/book/dishes/maki-sushi.md,,CC0 variant; adaptation needed,same dish family,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/sushi_roll.png,,,Extract named sprite; adapt and review in game
+dishes,Malzkaffee,.workflow/cooking/book/dishes/malzkaffee.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Mango sticky rice,.workflow/cooking/book/dishes/mango-sticky-rice.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Massaman curry,.workflow/cooking/book/dishes/massaman-curry.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Matcha,.workflow/cooking/book/dishes/matcha.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Mazamorra morada,.workflow/cooking/book/dishes/mazamorra-morada.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Menthe à l'eau,.workflow/cooking/book/dishes/menthe-a-l-eau.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Miang kham,.workflow/cooking/book/dishes/miang-kham.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Miso soup,.workflow/cooking/book/dishes/miso-soup.md,,CC0 candidate; in-game review needed,word order,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/soup_miso.png,yes; 16x16,,Extract named sprite; review in game
+dishes,Mitarashi dango,.workflow/cooking/book/dishes/mitarashi-dango.md,,CC0 variant; adaptation needed,sauce variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/dango.png,,,Extract named sprite; adapt and review in game
+dishes,Mole poblano,.workflow/cooking/book/dishes/mole-poblano.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Moqueca baiana,.workflow/cooking/book/dishes/moqueca-baiana.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Moules marinières,.workflow/cooking/book/dishes/moules-marinieres.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Mugicha,.workflow/cooking/book/dishes/mugicha.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Nam krajeab,.workflow/cooking/book/dishes/nam-krajeab.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Nam manao,.workflow/cooking/book/dishes/nam-manao.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Nam takrai,.workflow/cooking/book/dishes/nam-takrai.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Obatzda with bread,.workflow/cooking/book/dishes/obatzda-with-bread.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Okonomiyaki,.workflow/cooking/book/dishes/okonomiyaki.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Onigiri,.workflow/cooking/book/dishes/onigiri.md,,CC0 candidate; in-game review needed,same dish,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/rice_ball.png,yes; 16x16,,Extract named sprite; review in game
+dishes,Pad kra pao,.workflow/cooking/book/dishes/pad-kra-pao.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Pad Thai,.workflow/cooking/book/dishes/pad-thai.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Pambazos,.workflow/cooking/book/dishes/pambazos.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Pão de queijo,.workflow/cooking/book/dishes/pao-de-queijo.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Pastel de choclo,.workflow/cooking/book/dishes/pastel-de-choclo.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Pfefferminztee,.workflow/cooking/book/dishes/pfefferminztee.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Picarones,.workflow/cooking/book/dishes/picarones.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Pissaladière,.workflow/cooking/book/dishes/pissaladiere.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Poh pia tod,.workflow/cooking/book/dishes/poh-pia-tod.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Pølsehorn,.workflow/cooking/book/dishes/polsehorn.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Pozole rojo,.workflow/cooking/book/dishes/pozole-rojo.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Profiteroles,.workflow/cooking/book/dishes/profiteroles.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Quesadillas,.workflow/cooking/book/dishes/quesadillas.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Quiche Lorraine,.workflow/cooking/book/dishes/quiche-lorraine.md,,CC0 variant; adaptation needed,generic dish variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/quiche.png,yes; 16x16,,Extract named sprite; adapt and review in game
+dishes,Rabarbersaft,.workflow/cooking/book/dishes/rabarbersaft.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Ratatouille,.workflow/cooking/book/dishes/ratatouille.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Rinderrouladen,.workflow/cooking/book/dishes/rinderrouladen.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Risalamande med kirsebærsauce,.workflow/cooking/book/dishes/risalamande-med-kirsebaersauce.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Rødgrød med fløde,.workflow/cooking/book/dishes/rodgrod-med-flode.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Rugbrød,.workflow/cooking/book/dishes/rugbrod.md,,CC0 variant; adaptation needed,dark bread variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/bread_loaf_brown.png,,,Extract named sprite; adapt and review in game
+dishes,Sangkhaya fak thong,.workflow/cooking/book/dishes/sangkhaya-fak-thong.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Sauerbraten,.workflow/cooking/book/dishes/sauerbraten.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Schwarzwälder Kirschtorte,.workflow/cooking/book/dishes/schwarzwalder-kirschtorte.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Sencha,.workflow/cooking/book/dishes/sencha.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Shoyu ramen,.workflow/cooking/book/dishes/shoyu-ramen.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Sildemad med karrysalat,.workflow/cooking/book/dishes/sildemad-med-karrysalat.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Sirop de cassis à l'eau,.workflow/cooking/book/dishes/sirop-de-cassis-a-l-eau.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Smørrebrød med leverpostej,.workflow/cooking/book/dishes/smorrebrod-med-leverpostej.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Socca,.workflow/cooking/book/dishes/socca.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Solbærsaft,.workflow/cooking/book/dishes/solbaersaft.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Som tam,.workflow/cooking/book/dishes/som-tam.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Sopes,.workflow/cooking/book/dishes/sopes.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Spätzle,.workflow/cooking/book/dishes/spatzle.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Stegt flæsk med persillesovs,.workflow/cooking/book/dishes/stegt-flaesk-med-persillesovs.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Tacos al pastor,.workflow/cooking/book/dishes/tacos-al-pastor.md,,CC0 variant; adaptation needed,generic dish variant,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/taco.png,,,Extract named sprite; adapt and review in game
+dishes,Taiyaki,.workflow/cooking/book/dishes/taiyaki.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Takoyaki,.workflow/cooking/book/dishes/takoyaki.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Tamales,.workflow/cooking/book/dishes/tamales.md,,CC0 candidate; in-game review needed,singular file name,ARoachIFoundOnMyPillow/16x16 Food,CC0,https://opengameart.org/content/16x16-food,food/tamale.png,,,Extract named sprite; review in game
+dishes,Tarte Tatin,.workflow/cooking/book/dishes/tarte-tatin.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Tarteletter med høns i asparges,.workflow/cooking/book/dishes/tarteletter-med-hons-i-asparges.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Tempura,.workflow/cooking/book/dishes/tempura.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Tequeños,.workflow/cooking/book/dishes/tequenos.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Tereré,.workflow/cooking/book/dishes/terere.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Teriyaki salmon,.workflow/cooking/book/dishes/teriyaki-salmon.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Tlacoyos,.workflow/cooking/book/dishes/tlacoyos.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Tod mun pla,.workflow/cooking/book/dishes/tod-mun-pla.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Tom kha gai,.workflow/cooking/book/dishes/tom-kha-gai.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Tom yum goong,.workflow/cooking/book/dishes/tom-yum-goong.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Tub tim grob,.workflow/cooking/book/dishes/tub-tim-grob.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Varm hyldebærsaft,.workflow/cooking/book/dishes/varm-hyldebaersaft.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+dishes,Yakitori,.workflow/cooking/book/dishes/yakitori.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Æbleskive pan,.workflow/cooking/book/stations/aebleskive-pan.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Ageing shelf,.workflow/cooking/book/stations/ageing-shelf.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Brine barrel,.workflow/cooking/book/stations/brine-barrel.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Butcher block,.workflow/cooking/book/stations/butcher-block.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Butter churn,.workflow/cooking/book/stations/butter-churn.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Campfire,.workflow/cooking/book/stations/campfire.md,minecraft:campfire,existing vanilla art,,,,,,,,Use Minecraft asset reference
+stations,Cheese press,.workflow/cooking/book/stations/cheese-press.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Cooking pot,.workflow/cooking/book/stations/cooking-pot.md,portable_pocket_cabin:cooking_pot,model exists; custom texture needed,,,,,,,,Design station texture for existing model
+stations,Cutting board,.workflow/cooking/book/stations/cutting-board.md,portable_pocket_cabin:cutting_board,model exists; custom texture needed,,,,,,,,Design station texture for existing model
+stations,Dairy pan,.workflow/cooking/book/stations/dairy-pan.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Drying rack,.workflow/cooking/book/stations/drying-rack.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Fermentation crock,.workflow/cooking/book/stations/fermentation-crock.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Grill,.workflow/cooking/book/stations/grill.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Hanging hook,.workflow/cooking/book/stations/hanging-hook.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Meat grinder,.workflow/cooking/book/stations/meat-grinder.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Mill,.workflow/cooking/book/stations/mill.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Mixing bowl,.workflow/cooking/book/stations/mixing-bowl.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Mortar and pestle,.workflow/cooking/book/stations/mortar-and-pestle.md,,reusable candidate; visual review needed,exact,cleannrooster/forg-cleannrooster-assets,MIT,https://github.com/cleannrooster/forg-cleannrooster-assets/blob/main/item/potions/mortar_and_pestle.png,item/potions/mortar_and_pestle.png,yes; 16x16,https://github.com/cleannrooster/forg-cleannrooster-assets/blob/main/item/potions/mortar_and_pestle.png,Inspect sprite at 16 px; record credit/license
+stations,Oven,.workflow/cooking/book/stations/oven.md,portable_pocket_cabin:oven,model exists; custom texture needed,,,,,,,,Design station texture for existing model
+stations,Prep counter,.workflow/cooking/book/stations/prep-counter.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Press,.workflow/cooking/book/stations/press.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Proofing basket,.workflow/cooking/book/stations/proofing-basket.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Sausage stuffer,.workflow/cooking/book/stations/sausage-stuffer.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Skillet,.workflow/cooking/book/stations/skillet.md,portable_pocket_cabin:skillet,model exists; custom texture needed,,,,,,,,Design station texture for existing model
+stations,Smoker,.workflow/cooking/book/stations/smoker.md,minecraft:smoker,existing vanilla art,,,,,,,,Use Minecraft asset reference
+stations,Stove,.workflow/cooking/book/stations/stove.md,portable_pocket_cabin:stove,model exists; custom texture needed,,,,,,,,Design station texture for existing model
+stations,Strainer,.workflow/cooking/book/stations/strainer.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+stations,Wok,.workflow/cooking/book/stations/wok.md,,no matching source found,,,,,,,,Search broader or create original 16 px art
+runtime-only,baked potato,,minecraft:baked_potato,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,beef,,minecraft:beef,existing vanilla art,,,,,,,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/beef_plate.png,Use Minecraft asset reference
+runtime-only,beetroot soup,,minecraft:beetroot_soup,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,bowl,,minecraft:bowl,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,cake,,minecraft:cake,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,chicken,,minecraft:chicken,existing vanilla art,,,,,,,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/chicken_plate.png,Use Minecraft asset reference
+runtime-only,cooked beef,,minecraft:cooked_beef,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,cooked chicken,,minecraft:cooked_chicken,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,cooked cod,,minecraft:cooked_cod,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,cooked mutton,,minecraft:cooked_mutton,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,cooked porkchop,,minecraft:cooked_porkchop,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,cooked rabbit,,minecraft:cooked_rabbit,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,cooked salmon,,minecraft:cooked_salmon,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,cookie,,minecraft:cookie,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,dried kelp,,minecraft:dried_kelp,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,milk bucket,,minecraft:milk_bucket,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,mushroom stew,,minecraft:mushroom_stew,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,mutton,,minecraft:mutton,existing vanilla art,,,,,,,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/mutton_plate.png,Use Minecraft asset reference
+runtime-only,porkchop,,minecraft:porkchop,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,pumpkin pie,,minecraft:pumpkin_pie,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,rabbit,,minecraft:rabbit,existing vanilla art,,,,,,,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/rabbit_plate.png,Use Minecraft asset reference
+runtime-only,rabbit stew,,minecraft:rabbit_stew,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,red mushroom,,minecraft:red_mushroom,existing vanilla art,,,,,,,,Use Minecraft asset reference
+runtime-only,chopped apple,,portable_pocket_cabin:chopped_apple,no matching source found,,,,,,,,Search broader or create original 16 px art
+runtime-only,chopped beetroot,,portable_pocket_cabin:chopped_beetroot,no matching source found,,,,,,,,Search broader or create original 16 px art
+runtime-only,chopped carrot,,portable_pocket_cabin:chopped_carrot,no matching source found,,,,,,,,Search broader or create original 16 px art
+runtime-only,diced potato,,portable_pocket_cabin:diced_potato,no matching source found,,,,,,,,Search broader or create original 16 px art
+runtime-only,sliced brown mushrooms,,portable_pocket_cabin:sliced_brown_mushrooms,reference candidate; rights review needed,singular,AverageAnime/create-food-multiloader,GPL-3.0,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/sliced_brown_mushroom.png,common/src/main/resources/assets/createfood/textures/item/sliced_brown_mushroom.png,yes; 16x16,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/sliced_brown_mushroom.png,Verify original texture rights before reuse
+runtime-only,sliced red mushrooms,,portable_pocket_cabin:sliced_red_mushrooms,reference candidate; rights review needed,singular,AverageAnime/create-food-multiloader,GPL-3.0,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/sliced_red_mushroom.png,common/src/main/resources/assets/createfood/textures/item/sliced_red_mushroom.png,yes; 16x16,https://github.com/AverageAnime/create-food-multiloader/blob/1.21.1/common/src/main/resources/assets/createfood/textures/item/sliced_red_mushroom.png,Verify original texture rights before reuse
+runtime-only,vegetable soup,,portable_pocket_cabin:vegetable_soup,no matching source found,,,,,,,,Search broader or create original 16 px art

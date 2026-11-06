@@ -1,5 +1,11 @@
 # External references
 
+## Cooking texture sources
+
+- Link: [16x16 Food](https://opengameart.org/content/16x16-food), [SuryaniD food icons](https://suryanid.itch.io/16x16-food-icons-variety-pack), [Unused Textures](https://github.com/malcolmriley/unused-textures), [Create: Food](https://github.com/AverageAnime/create-food-multiloader), [Foreck's Textures](https://github.com/Foreck1/foreck-textures), [OpenTextures](https://github.com/FreneticScribbler/OpenTextures), [TextureRepository](https://github.com/Futureazoo/TextureRepository), and [CleanRooster Assets](https://github.com/cleannrooster/forg-cleannrooster-assets).
+- Relevance: Candidate sprites and models for the [cooking texture audit](cooking/texture-audit.md). The CC0 16x16 Food archive provides the broadest directly indexed food set. Unused Textures supplies 16 × 16 alternatives with attribution.
+- Unverified: In-game fit of each candidate, the SuryaniD archive contents, Create: Food texture origin and reuse rights, and Foreck's conflicting license wording.
+
 ## Biomes O' Plenty
 
 - Link: [Project repository](https://github.com/Glitchfiend/BiomesOPlenty), [26.2 biome registrations](https://github.com/Glitchfiend/BiomesOPlenty/blob/26.2/common/src/main/java/biomesoplenty/api/biome/BOPBiomes.java), [26.2 build targets](https://github.com/Glitchfiend/BiomesOPlenty/blob/26.2/gradle.properties).
