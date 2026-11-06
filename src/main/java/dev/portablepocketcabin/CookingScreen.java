@@ -138,7 +138,7 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 			return;
 		}
 		graphics.blit(RenderPipelines.GUI_TEXTURED, FURNACE, leftPos + 91, topPos + 26, 79, 34, 24, 17, 24, 17, 256, 256);
-		emptyFlame(graphics, 97, 46);
+		if (station() != null && station().heated()) emptyFlame(graphics, 97, 46);
 		int time = menu.data(CookingMenu.DATA_TIME);
 		int progress = menu.data(CookingMenu.DATA_PROGRESS);
 		if (time > 0 && progress > 0) {

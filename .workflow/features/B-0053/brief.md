@@ -1,6 +1,6 @@
 # The kitchen gets a prep counter and specialty stations
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0053
 
 ## Goal

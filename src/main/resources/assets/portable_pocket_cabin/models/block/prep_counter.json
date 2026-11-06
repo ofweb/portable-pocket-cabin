@@ -3,6 +3,6 @@
   "textures": {
     "top": "minecraft:block/smooth_stone",
     "bottom": "minecraft:block/spruce_planks",
-    "side": "minecraft:block/barrel_side"
+    "side": "minecraft:block/spruce_planks"
   }
 }
