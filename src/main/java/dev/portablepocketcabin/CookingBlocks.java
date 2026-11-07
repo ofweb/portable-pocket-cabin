@@ -175,7 +175,9 @@ final class CookingBlocks {
 				CookingItems.FRIED_POTATOES, CookingItems.STIR_FRIED_VEGETABLES, CookingItems.UNSTRAINED_BERRY_CORDIAL,
 				CookingItems.SWEET_BERRY_CORDIAL, CookingItems.APPLE_SYRUP, CookingItems.ROCK_SALT, CookingItems.SALT,
 				CookingItems.COARSE_SALT, CookingItems.WET_SALT, CookingItems.SEAWATER, CookingItems.NIGARI, CookingItems.CANE_JUICE,
-				CookingItems.CANE_SUGAR_PASTE, CookingItems.BROWN_SUGAR, CookingItems.PANELA, CookingItems.SIMPLE_SYRUP, CookingItems.CARAMEL}) {
+				CookingItems.CANE_SUGAR_PASTE, CookingItems.BROWN_SUGAR, CookingItems.PANELA, CookingItems.SIMPLE_SYRUP, CookingItems.CARAMEL,
+				CookingItems.CREAM, CookingItems.SKIMMED_MILK_BUCKET, CookingItems.WARM_MILK_BUCKET, CookingItems.RAW_BUTTER,
+				CookingItems.SALTED_BUTTER, CookingItems.BUTTERMILK, CookingItems.WHIPPED_CREAM, CookingItems.YOGURT, CookingItems.CREME_FRAICHE}) {
 				entries.accept(item);
 			}
 		});

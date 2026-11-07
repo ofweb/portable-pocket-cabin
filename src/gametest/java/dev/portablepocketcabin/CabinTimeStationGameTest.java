@@ -58,8 +58,8 @@ public final class CabinTimeStationGameTest {
 			station.rewind(CookingStation.DAY);
 			tick(helper, station);
 		}
-		helper.assertTrue(pan.getItem(CookingMenu.Kind.DAIRY_PAN.outputSlot).getCount() == 2
-			&& pan.getItem(CookingMenu.Kind.DAIRY_PAN.byproductSlot).is(Items.BUCKET), "Milk settles in the dairy pan");
+		helper.assertTrue(pan.getItem(CookingMenu.Kind.DAIRY_PAN.outputSlot).is(CookingItems.CREAM)
+			&& pan.getItem(CookingMenu.Kind.DAIRY_PAN.byproductSlot).is(CookingItems.SKIMMED_MILK_BUCKET), "Milk settles in the dairy pan");
 		helper.assertTrue(barrel.getItem(CookingMenu.Kind.BRINE.outputSlot).is(Items.COOKED_COD), "Fish cures in the brine barrel");
 		helper.assertTrue(basket.getItem(CookingMenu.Kind.PROOFING.outputSlot).is(Items.BREAD), "Dough proofs in the basket");
 		helper.succeed();

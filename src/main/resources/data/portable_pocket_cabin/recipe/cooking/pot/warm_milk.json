@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "warming",
+  "ingredients": [
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "heat": "low",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:warm_milk_bucket"
+  }
+}

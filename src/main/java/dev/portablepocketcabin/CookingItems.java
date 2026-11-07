@@ -70,6 +70,20 @@ final class CookingItems {
 	static final Item CARAMEL = register("caramel", properties -> properties.food(food(2, 1.2F)));
 	/** Sugars a phase 3 recipe accepts wherever it asks for sugar: white sugar and brown sugar. */
 	static final net.minecraft.tags.TagKey<Item> SUGARS = net.minecraft.tags.TagKey.create(Registries.ITEM, PortablePocketCabin.id("sugars"));
+	/** Cream skimmed from milk settled in the dairy pan, in a bottle. */
+	static final Item CREAM = register("cream", properties -> properties.stacksTo(16));
+	static final Item SKIMMED_MILK_BUCKET = register("skimmed_milk_bucket",
+		properties -> drink(properties, 2, 1.2F).stacksTo(1).usingConvertsTo(Items.BUCKET).craftRemainder(Items.BUCKET));
+	/** Milk warmed in the pot, ready to culture or to set with rennet. */
+	static final Item WARM_MILK_BUCKET = register("warm_milk_bucket", properties -> properties.stacksTo(1).craftRemainder(Items.BUCKET));
+	static final Item RAW_BUTTER = register("raw_butter", UnaryOperator.identity());
+	static final Item SALTED_BUTTER = register("salted_butter", UnaryOperator.identity());
+	/** The liquid left from churning butter. Live buttermilk starts the first yogurt. */
+	static final Item BUTTERMILK = register("buttermilk", properties -> drink(properties, 2, 1.2F));
+	static final Item WHIPPED_CREAM = register("whipped_cream",
+		properties -> properties.stacksTo(16).food(food(3, 1.8F)).usingConvertsTo(Items.BOWL));
+	static final Item YOGURT = register("yogurt", properties -> properties.stacksTo(16).food(food(4, 4.8F)).usingConvertsTo(Items.BOWL));
+	static final Item CREME_FRAICHE = register("creme_fraiche", properties -> properties.stacksTo(16));
 	static final Item STIR_FRIED_VEGETABLES = register("stir_fried_vegetables",
 		properties -> properties.stacksTo(16).food(food(8, 9.6F)).usingConvertsTo(Items.BOWL));
 

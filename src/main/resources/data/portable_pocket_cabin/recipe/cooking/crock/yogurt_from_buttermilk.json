@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "culturing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:warm_milk_bucket"
+    },
+    {
+      "item": "portable_pocket_cabin:buttermilk"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl",
+    "count": 4
+  },
+  "time": 24000,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    },
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:yogurt",
+    "count": 4
+  }
+}
