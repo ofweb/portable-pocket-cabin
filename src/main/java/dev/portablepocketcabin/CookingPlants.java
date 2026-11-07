@@ -100,7 +100,20 @@ final class CookingPlants {
 	private CookingPlants() {
 	}
 
+	/** The name a plant's wild feature and biome tag use: the plant, or the tree for fruiting leaves. */
+	static String wildName(String plant) {
+		return plant.endsWith("_leaves") ? plant.substring(0, plant.length() - "_leaves".length()) : plant;
+	}
+
 	static void register() {
+		// Each plant grows wild in the biomes of its tag, grows_wild/<plant>, through its placed feature, wild_<plant>.
+		for (String plant : PLANTS.keySet()) {
+			String name = wildName(plant);
+			net.fabricmc.fabric.api.biome.v1.BiomeModifications.addFeature(
+				net.fabricmc.fabric.api.biome.v1.BiomeSelectors.tag(net.minecraft.tags.TagKey.create(Registries.BIOME, PortablePocketCabin.id("grows_wild/" + name))),
+				net.minecraft.world.level.levelgen.GenerationStep.Decoration.VEGETAL_DECORATION,
+				ResourceKey.create(Registries.PLACED_FEATURE, PortablePocketCabin.id("wild_" + name)));
+		}
 		// Shears on a vanilla rose bush pick its hips, about one time in three, and wear the shears.
 		net.fabricmc.fabric.api.event.player.UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
 			var stack = player.getItemInHand(hand);

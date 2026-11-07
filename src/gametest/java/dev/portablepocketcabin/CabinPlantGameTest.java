@@ -195,6 +195,39 @@ public final class CabinPlantGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void everyPlantGrowsWildAndTradersSellPlantingStock(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var access = level.registryAccess();
+		var placed = access.lookupOrThrow(net.minecraft.core.registries.Registries.PLACED_FEATURE);
+		var biomes = access.lookupOrThrow(net.minecraft.core.registries.Registries.BIOME);
+		for (String plant : CookingPlants.PLANTS.keySet()) {
+			String name = CookingPlants.wildName(plant);
+			helper.assertTrue(placed.get(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.PLACED_FEATURE,
+				PortablePocketCabin.id("wild_" + name))).isPresent(), name + " has a wild placed feature");
+			var tag = biomes.get(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.BIOME, PortablePocketCabin.id("grows_wild/" + name)));
+			helper.assertTrue(tag.isPresent() && tag.get().size() > 0, name + " grows wild in some biome");
+		}
+		var configured = access.lookupOrThrow(net.minecraft.core.registries.Registries.CONFIGURED_FEATURE);
+		var generator = level.getChunkSource().getGenerator();
+		int x = 0;
+		for (String plant : List.of("barley", "thyme_bush", "cucumber_vine")) {
+			BlockPos spot = new BlockPos(1 + x, 2, 7);
+			x += 2;
+			helper.setBlock(spot.below(), Blocks.GRASS_BLOCK);
+			var feature = configured.getOrThrow(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.CONFIGURED_FEATURE,
+				PortablePocketCabin.id("wild_" + plant)));
+			feature.value().place(level, generator, RandomSource.create(1), helper.absolutePos(spot));
+			helper.assertTrue(level.getBlockState(helper.absolutePos(spot)).is(CookingPlants.PLANTS.get(plant)), "Wild " + plant + " stands on grass");
+		}
+		var trades = access.lookupOrThrow(net.minecraft.core.registries.Registries.VILLAGER_TRADE);
+		helper.assertTrue(trades.get(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.VILLAGER_TRADE,
+			PortablePocketCabin.id("wandering_trader/emerald_plum_sapling"))).isPresent(), "Wandering traders can sell plum saplings");
+		helper.assertTrue(trades.get(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.VILLAGER_TRADE,
+			PortablePocketCabin.id("farmer/3/emerald_barley_seeds"))).isPresent(), "Journeyman farmers can sell barley seeds");
+		helper.succeed();
+	}
+
 	private static void tick(GameTestHelper helper, BlockPos relative, int ticks) {
 		var level = helper.getLevel();
 		var pos = helper.absolutePos(relative);
