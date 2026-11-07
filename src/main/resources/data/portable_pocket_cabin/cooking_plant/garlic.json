@@ -1,0 +1,10 @@
+{
+  "soil": [
+    "minecraft:farmland"
+  ],
+  "light": 9,
+  "water": "nearby",
+  "support": "none",
+  "growth_chance": 0.25,
+  "shade": false
+}

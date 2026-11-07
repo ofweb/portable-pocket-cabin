@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "portable_pocket_cabin:block/radish_stage0"
+    },
+    "age=1": {
+      "model": "portable_pocket_cabin:block/radish_stage1"
+    },
+    "age=2": {
+      "model": "portable_pocket_cabin:block/radish_stage2"
+    },
+    "age=3": {
+      "model": "portable_pocket_cabin:block/radish_stage3"
+    },
+    "age=4": {
+      "model": "portable_pocket_cabin:block/radish_stage4"
+    },
+    "age=5": {
+      "model": "portable_pocket_cabin:block/radish_stage5"
+    },
+    "age=6": {
+      "model": "portable_pocket_cabin:block/radish_stage6"
+    },
+    "age=7": {
+      "model": "portable_pocket_cabin:block/radish_stage7"
+    }
+  }
+}
