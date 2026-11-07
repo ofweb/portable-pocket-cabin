@@ -137,6 +137,12 @@ final class CookingItems {
 	static final Item SMOKED_SALMON = register("smoked_salmon", properties -> properties.food(food(7, 11.2F)));
 	static final Item BRINED_PORK = register("brined_pork", UnaryOperator.identity());
 	static final Item SMOKED_PORK = register("smoked_pork", properties -> properties.food(food(8, 12.8F)));
+	/** Butter and flour cooked together: the base that thickens béchamel and gravies in later features. */
+	static final Item ROUX = register("roux", properties -> properties.stacksTo(16));
+	static final Item SWEET_BERRY_JAM = register("sweet_berry_jam", properties -> properties.stacksTo(16));
+	static final Item CARAMEL_SAUCE = register("caramel_sauce", properties -> drink(properties, 3, 1.8F));
+	static final Item FRIED_DOUGHNUT = register("fried_doughnut", properties -> properties.food(food(4, 2.4F)));
+	static final Item BERLINER = register("berliner", properties -> properties.food(food(6, 7.2F)));
 	static final Item STIR_FRIED_VEGETABLES = register("stir_fried_vegetables",
 		properties -> properties.stacksTo(16).food(food(8, 9.6F)).usingConvertsTo(Items.BOWL));
 

@@ -196,7 +196,8 @@ final class CookingBlocks {
 				CookingItems.CIDER_VINEGAR, CookingItems.BOILED_BEETROOT, CookingItems.SLICED_BEETROOT, CookingItems.PICKLED_BEETROOT,
 				CookingItems.PICKLED_CARROTS, CookingItems.DRIED_APPLE, CookingItems.DRIED_SWEET_BERRIES, CookingItems.SALTED_COD, CookingItems.SALT_COD,
 				CookingItems.BEEF_STRIPS, CookingItems.CURED_BEEF_STRIPS, CookingItems.JERKY, CookingItems.CURED_SALMON, CookingItems.SMOKED_SALMON,
-				CookingItems.BRINED_PORK, CookingItems.SMOKED_PORK}) {
+				CookingItems.BRINED_PORK, CookingItems.SMOKED_PORK, CookingItems.ROUX, CookingItems.SWEET_BERRY_JAM, CookingItems.CARAMEL_SAUCE,
+				CookingItems.FRIED_DOUGHNUT, CookingItems.BERLINER}) {
 				entries.accept(item);
 			}
 		});

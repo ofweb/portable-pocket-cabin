@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "filling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fried_doughnut",
+      "count": 4
+    },
+    {
+      "item": "portable_pocket_cabin:sweet_berry_jam"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "time": 40,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:berliner",
+    "count": 4
+  }
+}

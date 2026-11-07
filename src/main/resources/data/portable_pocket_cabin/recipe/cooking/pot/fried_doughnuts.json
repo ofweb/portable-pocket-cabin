@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "deep_frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:proofed_sweet_dough"
+    }
+  ],
+  "oil": 1,
+  "heat": "high",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:fried_doughnut",
+    "count": 4
+  }
+}

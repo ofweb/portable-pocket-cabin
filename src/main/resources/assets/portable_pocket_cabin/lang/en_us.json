@@ -359,5 +359,17 @@
   "technique.portable_pocket_cabin.salting.description": "Pack fish or meat in salt. Salt draws out water, and without water spoiling microbes cannot grow, which is how salt cod crossed oceans.",
   "technique.portable_pocket_cabin.curing": "Curing",
   "technique.portable_pocket_cabin.curing.description": "Rub salt, and sometimes sugar, into meat or fish and leave it to draw out moisture. Cured food keeps much longer and firms up before drying or smoking.",
-  "item.portable_pocket_cabin.cider_vinegar.cookbook_note": "The first vinegar comes from cider left open for five days. After that, a bottle of vinegar sours new cider in two."
+  "item.portable_pocket_cabin.cider_vinegar.cookbook_note": "The first vinegar comes from cider left open for five days. After that, a bottle of vinegar sours new cider in two.",
+  "item.portable_pocket_cabin.roux": "Roux",
+  "item.portable_pocket_cabin.sweet_berry_jam": "Sweet Berry Jam",
+  "item.portable_pocket_cabin.caramel_sauce": "Caramel Sauce",
+  "item.portable_pocket_cabin.fried_doughnut": "Fried Doughnut",
+  "item.portable_pocket_cabin.berliner": "Berliner",
+  "technique.portable_pocket_cabin.making_roux": "Making a roux",
+  "technique.portable_pocket_cabin.making_roux.description": "Melt butter, stir in the same weight of flour, and cook it gently. The fat coats the starch so it thickens a sauce smoothly instead of forming lumps.",
+  "technique.portable_pocket_cabin.making_jam": "Making jam",
+  "technique.portable_pocket_cabin.making_jam.description": "Boil fruit with plenty of sugar until it sets. Apple pomace adds pectin, the fruit fibre that makes jam gel, and the sugar keeps it from spoiling.",
+  "technique.portable_pocket_cabin.making_caramel_sauce": "Making caramel sauce",
+  "technique.portable_pocket_cabin.making_caramel_sauce.description": "Stir cream into hot caramel. It bubbles hard, then turns into a smooth, pourable sauce.",
+  "item.portable_pocket_cabin.sweet_berry_jam.cookbook_note": "Apple pomace from the press supplies the pectin that sets the jam."
 }
