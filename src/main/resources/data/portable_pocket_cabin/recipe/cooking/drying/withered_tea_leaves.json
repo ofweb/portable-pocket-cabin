@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:drying",
+  "technique": "withering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tea_leaf"
+    }
+  ],
+  "time": 6000,
+  "result": {
+    "id": "portable_pocket_cabin:withered_tea_leaves"
+  }
+}

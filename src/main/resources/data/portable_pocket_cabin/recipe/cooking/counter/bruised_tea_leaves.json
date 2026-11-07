@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "rolling_tea",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:withered_tea_leaves"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:bruised_tea_leaves"
+  }
+}

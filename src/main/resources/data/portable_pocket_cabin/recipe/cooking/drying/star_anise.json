@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:drying",
+  "technique": "drying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:star_anise_pod"
+    }
+  ],
+  "time": 12000,
+  "result": {
+    "id": "portable_pocket_cabin:star_anise"
+  }
+}

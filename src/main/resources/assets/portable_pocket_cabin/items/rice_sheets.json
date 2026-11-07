@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/rice_sheets",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 16053484
+      }
+    ]
+  }
+}

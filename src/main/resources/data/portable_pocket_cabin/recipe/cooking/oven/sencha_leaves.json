@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "drying_tea",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:rolled_tea_leaves",
+      "count": 4
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:sencha_leaves",
+    "count": 4
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "portable_pocket_cabin:ume_sapling"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "portable_pocket_cabin:blocks/ume_sapling"
+}

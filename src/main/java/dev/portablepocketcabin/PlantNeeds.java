@@ -145,7 +145,7 @@ record PlantNeeds(List<String> soil, int light, Water water, Support support, fl
 	boolean canGrow(LevelReader level, BlockPos pos) {
 		if (!soilMatches(level.getBlockState(pos.below()))) return false;
 		if (level.getRawBrightness(pos, 0) < light) return false;
-		if (shade && level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY() + 1) return false;
+		if (shade && !roofed(level, pos)) return false;
 		return switch (water) {
 			case NONE -> true;
 			case NEARBY -> waterNearby(level, pos.below());
@@ -154,7 +154,12 @@ record PlantNeeds(List<String> soil, int light, Water water, Support support, fl
 		};
 	}
 
-	private static boolean waterNearby(LevelReader level, BlockPos pos) {
+	/** Whether a block stands somewhere above the plant, shading it from the open sky. */
+	static boolean roofed(LevelReader level, BlockPos pos) {
+		return level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) > pos.getY() + 1;
+	}
+
+		private static boolean waterNearby(LevelReader level, BlockPos pos) {
 		for (BlockPos near : BlockPos.betweenClosed(pos.offset(-4, 0, -4), pos.offset(4, 1, 4))) {
 			if (level.getFluidState(near).is(FluidTags.WATER)) return true;
 		}

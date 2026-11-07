@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "age=0,shaded=false": {
+      "model": "portable_pocket_cabin:block/tea_bush_stage0"
+    },
+    "age=0,shaded=true": {
+      "model": "portable_pocket_cabin:block/tea_bush_stage0"
+    },
+    "age=1,shaded=false": {
+      "model": "portable_pocket_cabin:block/tea_bush_stage1"
+    },
+    "age=1,shaded=true": {
+      "model": "portable_pocket_cabin:block/tea_bush_stage1"
+    },
+    "age=2,shaded=false": {
+      "model": "portable_pocket_cabin:block/tea_bush_stage2"
+    },
+    "age=2,shaded=true": {
+      "model": "portable_pocket_cabin:block/tea_bush_stage2"
+    },
+    "age=3,shaded=false": {
+      "model": "portable_pocket_cabin:block/tea_bush_stage3"
+    },
+    "age=3,shaded=true": {
+      "model": "portable_pocket_cabin:block/tea_bush_stage3"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mortar",
+  "technique": "mashing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:simmered_azuki_beans",
+      "count": 2
+    }
+  ],
+  "time": 3,
+  "result": {
+    "id": "portable_pocket_cabin:azuki_mash"
+  }
+}

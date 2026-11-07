@@ -1,0 +1,36 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "infusing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:lemon_juice"
+    },
+    {
+      "item": "portable_pocket_cabin:simple_syrup"
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    },
+    {
+      "item": "portable_pocket_cabin:mint"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:citronnade_maison",
+    "count": 2
+  }
+}

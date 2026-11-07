@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "salt_curing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:ume_plum",
+      "count": 4
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 48000,
+  "result": {
+    "id": "portable_pocket_cabin:salted_ume",
+    "count": 4
+  }
+}

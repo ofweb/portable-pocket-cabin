@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:taiyaki_batter"
+    },
+    {
+      "item": "portable_pocket_cabin:anko"
+    }
+  ],
+  "heat": "medium",
+  "time": 160,
+  "tastes": [
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:taiyaki",
+    "count": 2
+  }
+}

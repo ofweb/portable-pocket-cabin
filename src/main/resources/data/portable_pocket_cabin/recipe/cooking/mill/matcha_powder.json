@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "stone_grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tencha"
+    }
+  ],
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:matcha_powder"
+  }
+}

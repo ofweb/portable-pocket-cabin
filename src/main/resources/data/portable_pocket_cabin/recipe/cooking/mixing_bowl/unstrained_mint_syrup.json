@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "steeping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:simple_syrup"
+    },
+    {
+      "item": "portable_pocket_cabin:mint",
+      "count": 4
+    }
+  ],
+  "time": 6,
+  "result": {
+    "id": "portable_pocket_cabin:unstrained_mint_syrup"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mortar",
+  "technique": "pounding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:steamed_mochi_dough"
+    }
+  ],
+  "time": 3,
+  "result": {
+    "id": "portable_pocket_cabin:mochi",
+    "count": 2
+  }
+}
