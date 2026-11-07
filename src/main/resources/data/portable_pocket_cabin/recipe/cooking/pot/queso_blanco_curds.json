@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "curdling",
+  "ingredients": [
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "portable_pocket_cabin:lime_juice"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "heat": "low",
+  "time": 100,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    },
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:queso_blanco_curds",
+    "count": 2
+  }
+}

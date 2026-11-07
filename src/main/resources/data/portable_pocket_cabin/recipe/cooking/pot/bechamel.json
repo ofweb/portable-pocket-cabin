@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "whisking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:roux"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "portable_pocket_cabin:nutmeg"
+    }
+  ],
+  "heat": "low",
+  "time": 100,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:bechamel",
+    "count": 2
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/pickling_spice",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 9071162
+      }
+    ]
+  }
+}

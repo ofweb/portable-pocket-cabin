@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "boiling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:oil_palm_fruit",
+      "count": 4
+    }
+  ],
+  "water": 1,
+  "heat": "high",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:boiled_oil_palm_fruit",
+    "count": 4
+  }
+}

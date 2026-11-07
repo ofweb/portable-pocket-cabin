@@ -1,0 +1,30 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:rice",
+      "count": 2
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "portable_pocket_cabin:vanilla"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "heat": "low",
+  "time": 400,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:warm_rice_pudding",
+    "count": 2
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "mashing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:boiled_oil_palm_fruit",
+      "count": 2
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:oil_palm_mash"
+  }
+}

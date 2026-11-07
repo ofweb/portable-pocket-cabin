@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "toasting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:massaman_spices"
+    }
+  ],
+  "heat": "medium",
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:toasted_massaman_spices"
+  }
+}

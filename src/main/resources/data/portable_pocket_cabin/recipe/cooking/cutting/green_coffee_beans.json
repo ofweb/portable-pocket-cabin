@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "hulling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_coffee_cherries"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:green_coffee_beans",
+    "count": 2
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "whisking",
+  "ingredients": [
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:vanilla"
+    },
+    {
+      "item": "portable_pocket_cabin:cornstarch"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:warm_vanilla_custard",
+    "count": 2
+  }
+}

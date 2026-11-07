@@ -360,6 +360,27 @@ final class CookingPlants {
 		PRODUCTS.add(ingredient("daifuku_mochi", food(4, 4.8F)));
 	}
 
+	/** Delivery 6 intermediates: jungle spices, coconut, starches, oils, sugars, sauces, bakes, tea, coffee, and mate. */
+	static {
+		String[] plain = {"cinnamon", "cloves", "dried_peppercorns", "black_pepper", "dried_cardamom_pods", "cardamom", "dried_nutmeg", "nutmeg", "dried_black_beans",
+			"blanched_vanilla_pods", "sweated_vanilla_pods", "vanilla", "curry_spice_mix", "toasted_curry_spices", "curry_powder", "pickling_spice",
+			"massaman_spices", "toasted_massaman_spices", "massaman_curry_mix", "massaman_curry_paste", "satay_spices", "soaked_chilies",
+			"al_pastor_adobo", "boiled_oil_palm_fruit", "oil_palm_mash", "grated_coconut", "soaked_grated_coconut", "desiccated_coconut",
+			"toasted_coconut", "satay_marinade", "grated_cassava", "wet_tapioca_starch", "tapioca_starch", "grated_sweet_potato",
+			"wet_sweet_potato_starch", "sweet_potato_starch", "fermented_tapioca_starch", "sour_cassava_starch", "glass_noodle_dough",
+			"fresh_glass_noodles", "glass_noodles", "thick_palm_syrup", "palm_sugar", "mexican_chocolate_mix", "mexican_chocolate_paste",
+			"mexican_chocolate", "toasted_chilies", "mole_spices", "mole_base", "ground_mole_base", "mole_paste", "bechamel", "crema",
+			"queso_blanco_curds", "queso_blanco", "curry_ketchup_base", "curry_ketchup", "karrysalat", "chopped_gherkins", "remoulade",
+			"gingerbread_dough", "rested_gingerbread_dough", "gingerbread", "kammerjunkere_dough", "shaped_kammerjunkere", "baked_kammerjunkere",
+			"kammerjunkere", "warm_rice_pudding", "rice_pudding", "warm_vanilla_custard", "vanilla_custard", "thai_tea_leaves",
+			"fermented_coffee_cherries", "dried_coffee_cherries", "green_coffee_beans", "roasted_coffee_beans", "roasted_coffee",
+			"seared_yerba_mate_leaves", "dried_yerba_mate_leaves", "aged_yerba_mate", "yerba_mate"};
+		for (String name : plain) PRODUCTS.add(ingredient(name, null));
+		String[] bottles = {"lime_juice", "coconut_milk", "settled_coconut_milk", "coconut_cream", "unstrained_achiote_oil", "achiote_oil", "dende_oil",
+			"unstrained_chancaca_syrup", "chancaca_syrup"};
+		for (String name : bottles) PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16))));
+	}
+
 	/** Picked from vanilla rose bushes with shears. */
 	static final Item ROSEHIP = ingredient("rosehip", null);
 

@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:mole_base"
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:ground_mole_base"
+  }
+}

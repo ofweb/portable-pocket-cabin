@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_cardamom_pods"
+    }
+  ],
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:cardamom",
+    "count": 2
+  }
+}

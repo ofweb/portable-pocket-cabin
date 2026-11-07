@@ -1,0 +1,28 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:turmeric"
+    },
+    {
+      "item": "portable_pocket_cabin:coriander_seed"
+    },
+    {
+      "item": "portable_pocket_cabin:cumin"
+    },
+    {
+      "item": "portable_pocket_cabin:cardamom"
+    },
+    {
+      "item": "portable_pocket_cabin:black_pepper"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_chilies"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:curry_spice_mix"
+  }
+}

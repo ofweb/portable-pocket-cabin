@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:mortar",
+  "technique": "grinding_coarsely",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:mexican_chocolate_mix"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:mexican_chocolate_paste"
+  }
+}

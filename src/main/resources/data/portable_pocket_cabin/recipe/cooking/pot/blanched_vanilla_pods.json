@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "blanching",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:vanilla_pod",
+      "count": 4
+    }
+  ],
+  "water": 1,
+  "heat": "low",
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:blanched_vanilla_pods",
+    "count": 4
+  }
+}

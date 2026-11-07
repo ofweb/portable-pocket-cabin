@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "searing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:yerba_mate_leaf"
+    }
+  ],
+  "heat": "high",
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:seared_yerba_mate_leaves"
+  }
+}

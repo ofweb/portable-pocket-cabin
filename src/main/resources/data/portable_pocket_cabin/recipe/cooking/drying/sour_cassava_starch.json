@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:drying",
+  "technique": "drying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fermented_tapioca_starch"
+    }
+  ],
+  "sun": true,
+  "time": 12000,
+  "result": {
+    "id": "portable_pocket_cabin:sour_cassava_starch"
+  }
+}

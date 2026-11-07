@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:toasted_curry_spices"
+    }
+  ],
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:curry_powder",
+    "count": 4
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "sweating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:blanched_vanilla_pods",
+      "count": 4
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "portable_pocket_cabin:sweated_vanilla_pods",
+    "count": 4
+  }
+}

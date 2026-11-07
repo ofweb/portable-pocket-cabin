@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:black_tea"
+    },
+    {
+      "item": "portable_pocket_cabin:star_anise"
+    },
+    {
+      "item": "portable_pocket_cabin:vanilla"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:thai_tea_leaves",
+    "count": 4
+  }
+}

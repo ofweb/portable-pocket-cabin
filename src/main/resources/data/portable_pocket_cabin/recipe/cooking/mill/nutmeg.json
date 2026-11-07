@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_nutmeg"
+    }
+  ],
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:nutmeg",
+    "count": 2
+  }
+}

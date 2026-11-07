@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cumin"
+    },
+    {
+      "item": "portable_pocket_cabin:cinnamon"
+    },
+    {
+      "item": "portable_pocket_cabin:cardamom"
+    },
+    {
+      "item": "portable_pocket_cabin:cloves"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:massaman_spices"
+  }
+}

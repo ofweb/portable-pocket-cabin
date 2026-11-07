@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:mortar",
+  "technique": "pounding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:ground_mole_base"
+    },
+    {
+      "item": "portable_pocket_cabin:mexican_chocolate"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:mole_paste",
+    "count": 2
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "extruding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:glass_noodle_dough"
+    }
+  ],
+  "water": 1,
+  "heat": "high",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:fresh_glass_noodles",
+    "count": 2
+  }
+}

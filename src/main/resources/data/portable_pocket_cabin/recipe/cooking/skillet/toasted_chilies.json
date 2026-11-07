@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "toasting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_chilies"
+    }
+  ],
+  "heat": "medium",
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:toasted_chilies"
+  }
+}

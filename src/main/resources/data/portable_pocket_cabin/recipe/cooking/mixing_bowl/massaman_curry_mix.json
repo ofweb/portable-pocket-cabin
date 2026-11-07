@@ -1,0 +1,25 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_chilies"
+    },
+    {
+      "item": "portable_pocket_cabin:shallot"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    },
+    {
+      "item": "portable_pocket_cabin:lemongrass"
+    },
+    {
+      "item": "portable_pocket_cabin:toasted_massaman_spices"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:massaman_curry_mix"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:roasted_coffee_beans",
+      "count": 2
+    }
+  ],
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:roasted_coffee",
+    "count": 2
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "soaking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_chilies",
+      "count": 2
+    }
+  ],
+  "water": 1,
+  "heat": "low",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:soaked_chilies",
+    "count": 2
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/aged_yerba_mate",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 8026682
+      }
+    ]
+  }
+}
