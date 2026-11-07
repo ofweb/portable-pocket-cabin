@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/herbes_de_provence",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 6978106
+      }
+    ]
+  }
+}

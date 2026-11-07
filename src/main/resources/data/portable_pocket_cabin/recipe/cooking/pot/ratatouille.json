@@ -1,0 +1,34 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "stewing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sauteed_vegetables"
+    },
+    {
+      "item": "portable_pocket_cabin:tomato",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    },
+    {
+      "item": "portable_pocket_cabin:herbes_de_provence"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 400,
+  "tastes": [
+    "sweet",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:ratatouille"
+  }
+}

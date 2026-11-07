@@ -148,6 +148,20 @@ final class CookingPlants {
 		fruitTree("almond", () -> ALMOND);
 	}
 
+	// Delivery 4: windswept savannas and hills.
+	static final Item PURPLE_CORN = ingredient("purple_corn", null);
+	static final Item AJI_AMARILLO = ingredient("aji_amarillo", null);
+	static final Item GREEN_OLIVE = ingredient("green_olive", null);
+	static final Item BLACK_OLIVE = ingredient("black_olive", null);
+	/** Olive leaves give green olives at their first fruit stage, and black olives if left to ripen one stage more. */
+	static final Block OLIVE_LEAVES = fruitTree("olive",
+		properties -> new FruitingLeavesBlock.TwoStageFruit(properties, () -> GREEN_OLIVE, () -> BLACK_OLIVE), List.of(GREEN_OLIVE, BLACK_OLIVE));
+	static {
+		for (String herb : new String[] {"rosemary", "oregano", "savory"}) selfBush(herb + "_bush", herb, null);
+		fieldCrop("purple_corn", "purple_corn_seeds");
+		fieldCrop("aji_amarillo", "aji_amarillo_seeds");
+	}
+
 	/** Delivery 1 products: what the plains, meadow, and forest plants complete in the recipe catalogue. */
 	static final List<Item> PRODUCTS = new ArrayList<>();
 	static {
@@ -215,6 +229,16 @@ final class CookingPlants {
 		PRODUCTS.add(ingredient("kasekuchen", food(8, 9.6F)));
 		PRODUCTS.add(ingredient("obatzda_with_bread", food(8, 9.6F)));
 		PRODUCTS.add(ingredient("quesadilla", food(6, 7.2F)));
+	}
+
+	/** Delivery 4 products: olive oil, dried Mediterranean herbs, the anticucho marinade, and ratatouille. */
+	static {
+		String[] plain = {"olive_paste", "dried_oregano", "dried_rosemary", "dried_savory", "dried_thyme", "herbes_de_provence", "anticucho_marinade",
+			"diced_aubergine", "diced_courgette", "diced_bell_pepper", "sauteed_vegetables"};
+		for (String name : plain) PRODUCTS.add(ingredient(name, null));
+		for (String name : new String[] {"unsettled_olive_oil", "olive_oil"}) PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16))));
+		PRODUCTS.add(registerItem("ratatouille", properties -> new Item(properties.stacksTo(16).food(food(8, 9.6F))
+			.usingConvertsTo(net.minecraft.world.item.Items.BOWL))));
 	}
 
 	/** Picked from vanilla rose bushes with shears. */
@@ -317,14 +341,19 @@ final class CookingPlants {
 
 	/** A fruit tree species: {@code <tree>_leaves} that fruit, and a {@code <tree>_sapling} that grows the {@code <tree>} feature. */
 	private static Block fruitTree(String tree, java.util.function.Supplier<Item> fruit) {
-		Block leaves = registerBlockWithItem(tree + "_leaves", properties -> new FruitingLeavesBlock(properties, fruit), BlockBehaviour.Properties.of()
+		return fruitTree(tree, properties -> new FruitingLeavesBlock(properties, fruit), List.of(fruit.get()));
+	}
+
+	/** A fruit tree species whose leaves are made by {@code leaves}, giving {@code gives} in order of ripening. */
+	private static Block fruitTree(String tree, java.util.function.Function<BlockBehaviour.Properties, Block> factory, List<Item> gives) {
+		Block leaves = registerBlockWithItem(tree + "_leaves", factory, BlockBehaviour.Properties.of()
 			.strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY)
 			.isValidSpawn((state, level, pos, type) -> false).isSuffocating((state, level, pos) -> false).isViewBlocking((state, level, pos) -> false));
 		Block sapling = registerBlockWithItem(tree + "_sapling", properties -> new FruitSaplingBlock(FruitSaplingBlock.grower(tree), properties),
 			BlockBehaviour.Properties.of().noCollision().randomTicks().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY));
 		PLANTS.put(tree + "_leaves", leaves);
 		PLANTED_FROM.put(tree + "_leaves", sapling.asItem());
-		GIVES.put(tree + "_leaves", List.of(fruit.get()));
+		GIVES.put(tree + "_leaves", gives);
 		return leaves;
 	}
 

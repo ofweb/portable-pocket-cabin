@@ -224,3 +224,21 @@ The check also listed 36 intermediates that phase 3's ingredients already allowe
   - Madeleines bake without a mould.
   - The mixing bowl gains a second byproduct slot, because Käsekuchen filling gives back a bowl and a bottle.
 
+## Delivery 4 as built
+
+- **Bushes:** rosemary, oregano, and savory. Each is planted from what it gives, like thyme.
+- **Field crops:** purple corn and ají amarillo.
+- **Olive tree:** its leaves have a fourth stage. They give green olives at the first fruit stage. Left one stage longer, they give black olives instead. Both kinds press into olive oil through the `portable_pocket_cabin:olives` tag.
+- **Where they grow:** the olive tree and the three herbs grow wild in windswept savannas. Purple corn and ají amarillo grow in windswept hills, gravelly hills, and forests.
+- **Olive oil:** it joins `portable_pocket_cabin:cooking_oils`, so it fills the pot and wok.
+- **Completed chains:** the completion check found 4 intermediates and 1 dish, and all of them shipped:
+  - Olive oil: the mill crushes olives to a paste, the press presses it, and the ageing shelf settles it.
+  - Dried oregano, and herbes de Provence from dried thyme, rosemary, oregano, and savory.
+  - Anticucho marinade.
+  - Ratatouille.
+- **Adaptations:**
+  - Anticucho marinade is blended in the mixing bowl, because the mill takes one ingredient.
+  - Ratatouille's vegetables are diced on the cutting board, then sautéed together in olive oil in the wok, then stewed in the pot with tomatoes, onion, garlic, and herbes de Provence. The catalogue sautés them on the skillet, which takes one ingredient and no oil.
+  - Dried thyme, rosemary, and savory are added as the drying step for herbes de Provence.
+  - Purple corn and ají amarillo complete no chain yet. Chicha morada needs pineapple, cinnamon, and cloves from the jungles in delivery 6. Lomo saltado and ceviche need meat and fish from B-0049.
+

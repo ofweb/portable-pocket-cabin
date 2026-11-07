@@ -1,0 +1,28 @@
+{
+  "type": "portable_pocket_cabin:wok",
+  "technique": "sauteing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:diced_aubergine"
+    },
+    {
+      "item": "portable_pocket_cabin:diced_courgette"
+    },
+    {
+      "item": "portable_pocket_cabin:diced_bell_pepper"
+    },
+    {
+      "item": "portable_pocket_cabin:olive_oil"
+    }
+  ],
+  "heat": "medium",
+  "time": 120,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:sauteed_vegetables"
+  }
+}

@@ -91,6 +91,7 @@ Milk settles in the dairy pan into cream and skimmed milk. Cream churns into but
 - **Rosehips:** shears pick them from rose bushes.
 - **Taigas and coasts:** red cabbage, rhubarb, blackcurrants, and redcurrants grow in taigas. Wasabi grows on gravel beside running water. Wakame, laver, and sea lettuce grow underwater in cold oceans, on stony shores, and on beaches.
 - **Savannas, deserts, and badlands:** peppers, chilies, tomatillos, aubergines, sesame, peanuts, chickpeas, basil, anise, roselle, and blue corn. Tomatoes and grapes climb trellises. Lemon, orange, apricot, almond, tamarind, and bay laurel trees grow there too. Cumin grows at desert oases.
+- **Windswept savannas and hills:** olive trees, rosemary, oregano, and savory grow in windswept savannas. Olive leaves give green olives, then black olives if left longer, and both press into olive oil. Purple corn and ají amarillo grow in the windswept hills.
 
 Each plant's growing needs, such as soil, light, and water, are data, and the cookbook's Garden section shows where it grows and what it needs. The plants complete new chains: rye bread, corn tortillas, sauerkraut, gherkins, wine vinegar, mustard and mayonnaise, jams, nori, cassis, redcurrant jelly, rødgrød, salsas, spices, red wine, Käsekuchen, Madeleines, and more.
 
