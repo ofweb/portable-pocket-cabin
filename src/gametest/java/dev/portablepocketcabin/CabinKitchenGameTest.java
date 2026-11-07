@@ -151,7 +151,7 @@ public final class CabinKitchenGameTest {
 		var oven = (OvenBlockEntity) level.getBlockEntity(helper.absolutePos(new BlockPos(1, 2, 1)));
 		var player = FakePlayer.get(level);
 		player.getInventory().clearContent();
-		var plan = CookingFill.plan(oven, CookingStation.OVEN, recipe(helper, "cooking/oven/bread"), player.getInventory(),
+		var plan = CookingFill.plan(oven, CookingStation.OVEN, recipe(helper, "portable_pocket_cabin_gametest:legacy_bread"), player.getInventory(),
 			cabin.upgrades().storage(), null, -1).orElseThrow();
 		boolean confirmed = CabinKitchenStorage.commit(player, cabin, List.of(new CabinKitchenStorage.StationAfter(oven, plan.station())),
 			plan.inventory(), plan.storage().orElseThrow(), plan.withdrawn(), plan.deposited());
@@ -242,7 +242,8 @@ public final class CabinKitchenGameTest {
 
 	private static CookingRecipe recipe(GameTestHelper helper, String path) {
 		return (CookingRecipe) helper.getLevel().getServer().getRecipeManager()
-			.byKey(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.RECIPE, PortablePocketCabin.id(path)))
+			.byKey(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.RECIPE,
+				path.contains(":") ? net.minecraft.resources.Identifier.parse(path) : PortablePocketCabin.id(path)))
 			.orElseThrow().value();
 	}
 

@@ -84,6 +84,24 @@ final class CookingItems {
 		properties -> properties.stacksTo(16).food(food(3, 1.8F)).usingConvertsTo(Items.BOWL));
 	static final Item YOGURT = register("yogurt", properties -> properties.stacksTo(16).food(food(4, 4.8F)).usingConvertsTo(Items.BOWL));
 	static final Item CREME_FRAICHE = register("creme_fraiche", properties -> properties.stacksTo(16));
+	static final Item WHEAT_FLOUR = register("wheat_flour", UnaryOperator.identity());
+	/** A live culture of flour and water. Feeding it doubles it, so one starter keeps a household baking. */
+	static final Item SOURDOUGH_STARTER = register("sourdough_starter", UnaryOperator.identity());
+	static final Item YEAST_CULTURE = register("yeast_culture", properties -> properties.stacksTo(16));
+	static final Item YEAST = register("yeast", UnaryOperator.identity());
+	/** What raises a dough: sourdough starter or dried yeast. */
+	static final net.minecraft.tags.TagKey<Item> LEAVENS = net.minecraft.tags.TagKey.create(Registries.ITEM, PortablePocketCabin.id("leavens"));
+	static final Item BREAD_DOUGH = register("bread_dough", UnaryOperator.identity());
+	static final Item PROOFED_BREAD_DOUGH = register("proofed_bread_dough", UnaryOperator.identity());
+	static final Item SHAPED_ROLLS = register("shaped_rolls", UnaryOperator.identity());
+	static final Item BREAD_ROLL = register("bread_roll", properties -> properties.food(food(3, 3.6F)));
+	static final Item SHORTCRUST_DOUGH = register("shortcrust_dough", UnaryOperator.identity());
+	static final Item SHORTCRUST_PASTRY = register("shortcrust_pastry", UnaryOperator.identity());
+	static final Item UNBAKED_PUMPKIN_PIE = register("unbaked_pumpkin_pie", UnaryOperator.identity());
+	static final Item COOKIE_DOUGH = register("cookie_dough", UnaryOperator.identity());
+	static final Item CAKE_BATTER = register("cake_batter", UnaryOperator.identity());
+	static final Item SWEET_YEAST_DOUGH = register("sweet_yeast_dough", UnaryOperator.identity());
+	static final Item PROOFED_SWEET_DOUGH = register("proofed_sweet_dough", UnaryOperator.identity());
 	static final Item STIR_FRIED_VEGETABLES = register("stir_fried_vegetables",
 		properties -> properties.stacksTo(16).food(food(8, 9.6F)).usingConvertsTo(Items.BOWL));
 

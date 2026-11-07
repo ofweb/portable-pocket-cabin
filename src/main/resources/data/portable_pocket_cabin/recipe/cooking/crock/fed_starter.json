@@ -1,0 +1,33 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "feeding_a_starter",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sourdough_starter"
+    },
+    {
+      "item": "portable_pocket_cabin:wheat_flour"
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    }
+  ],
+  "time": 12000,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:sourdough_starter",
+    "count": 2
+  }
+}

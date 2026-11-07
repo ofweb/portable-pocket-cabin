@@ -67,7 +67,7 @@ public final class CabinCookingGameTest {
 	@GameTest
 	public void countedMatchingFitsCakeInSixSlots(GameTestHelper helper) {
 		var cake = (CookingRecipe) helper.getLevel().getServer().getRecipeManager()
-			.byKey(ResourceKey.create(Registries.RECIPE, PortablePocketCabin.id("cooking/oven/cake"))).orElseThrow().value();
+			.byKey(ResourceKey.create(Registries.RECIPE, Identifier.parse("portable_pocket_cabin_gametest:legacy_cake"))).orElseThrow().value();
 		var slots = new ArrayList<>(List.of(new ItemStack(Items.WHEAT, 5), new ItemStack(Items.SUGAR, 2), new ItemStack(Items.EGG),
 			new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.MILK_BUCKET)));
 		var input = CookingInput.of(slots);
@@ -98,8 +98,8 @@ public final class CabinCookingGameTest {
 		var codec = Recipe.CODEC;
 		var recipes = helper.getLevel().getServer().getRecipeManager().getRecipes().stream()
 			.filter(holder -> holder.value() instanceof CookingRecipe).toList();
-		helper.assertTrue(recipes.stream().filter(holder -> holder.id().identifier().getNamespace().equals(PortablePocketCabin.MOD_ID)).count() == 68,
-			"All 68 cooking recipes load, found " + recipes.size());
+		helper.assertTrue(recipes.stream().filter(holder -> holder.id().identifier().getNamespace().equals(PortablePocketCabin.MOD_ID)).count() == 84,
+			"All 84 cooking recipes load, found " + recipes.size());
 		for (var holder : recipes) {
 			var recipe = (CookingRecipe) holder.value();
 			for (var output : concat(recipe.result(), recipe.remainders())) {
@@ -187,9 +187,9 @@ public final class CabinCookingGameTest {
 	@GameTest
 	public void cookbookCountsInventoryAndHouseholdStorage(GameTestHelper helper) {
 		var recipes = CookbookAvailability.recipes(helper.getLevel().getServer().getRecipeManager().getRecipes());
-		Identifier bread = PortablePocketCabin.id("cooking/oven/bread");
+		Identifier bread = Identifier.parse("portable_pocket_cabin_gametest:legacy_bread");
 		Identifier soup = PortablePocketCabin.id("cooking/pot/vegetable_soup");
-		Identifier cake = PortablePocketCabin.id("cooking/oven/cake");
+		Identifier cake = Identifier.parse("portable_pocket_cabin_gametest:legacy_cake");
 		helper.assertTrue(CookbookAvailability.available(recipes, List.of(new ItemStack(Items.WHEAT, 3))).contains(bread),
 			"Three wheat make bread");
 		helper.assertTrue(!CookbookAvailability.available(recipes, List.of(new ItemStack(Items.WHEAT, 2))).contains(bread),

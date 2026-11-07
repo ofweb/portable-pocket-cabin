@@ -177,7 +177,11 @@ final class CookingBlocks {
 				CookingItems.COARSE_SALT, CookingItems.WET_SALT, CookingItems.SEAWATER, CookingItems.NIGARI, CookingItems.CANE_JUICE,
 				CookingItems.CANE_SUGAR_PASTE, CookingItems.BROWN_SUGAR, CookingItems.PANELA, CookingItems.SIMPLE_SYRUP, CookingItems.CARAMEL,
 				CookingItems.CREAM, CookingItems.SKIMMED_MILK_BUCKET, CookingItems.WARM_MILK_BUCKET, CookingItems.RAW_BUTTER,
-				CookingItems.SALTED_BUTTER, CookingItems.BUTTERMILK, CookingItems.WHIPPED_CREAM, CookingItems.YOGURT, CookingItems.CREME_FRAICHE}) {
+				CookingItems.SALTED_BUTTER, CookingItems.BUTTERMILK, CookingItems.WHIPPED_CREAM, CookingItems.YOGURT, CookingItems.CREME_FRAICHE,
+				CookingItems.WHEAT_FLOUR, CookingItems.SOURDOUGH_STARTER, CookingItems.YEAST_CULTURE, CookingItems.YEAST, CookingItems.BREAD_DOUGH,
+				CookingItems.PROOFED_BREAD_DOUGH, CookingItems.SHAPED_ROLLS, CookingItems.BREAD_ROLL, CookingItems.SHORTCRUST_DOUGH,
+				CookingItems.SHORTCRUST_PASTRY, CookingItems.UNBAKED_PUMPKIN_PIE, CookingItems.COOKIE_DOUGH, CookingItems.CAKE_BATTER,
+				CookingItems.SWEET_YEAST_DOUGH, CookingItems.PROOFED_SWEET_DOUGH}) {
 				entries.accept(item);
 			}
 		});

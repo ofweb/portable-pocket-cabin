@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:shaped_rolls",
+      "count": 2
+    }
+  ],
+  "heat": "medium",
+  "time": 160,
+  "result": {
+    "id": "portable_pocket_cabin:bread_roll",
+    "count": 2
+  }
+}

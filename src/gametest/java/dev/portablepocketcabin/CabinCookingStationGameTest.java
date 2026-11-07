@@ -406,7 +406,7 @@ public final class CabinCookingStationGameTest {
 		pot.setItem(0, new ItemStack(Items.STICK));
 		var oven = oven(helper, ItemStack.EMPTY);
 		oven.setItem(0, new ItemStack(Items.STICK));
-		helper.assertTrue(!CookingFill.fill(oven, CookingStation.OVEN, recipe(helper, "cooking/oven/bread"), inventory) && oven.getItem(0).is(Items.STICK) && inventory.countItem(Items.WHEAT) == 2,
+		helper.assertTrue(!CookingFill.fill(oven, CookingStation.OVEN, recipe(helper, "portable_pocket_cabin_gametest:legacy_bread"), inventory) && oven.getItem(0).is(Items.STICK) && inventory.countItem(Items.WHEAT) == 2,
 			"Nothing moves when an ingredient is missing");
 		inventory.clearContent();
 		helper.succeed();
@@ -422,7 +422,7 @@ public final class CabinCookingStationGameTest {
 		inventory.setItem(1, new ItemStack(Items.SUGAR, 5));
 		inventory.setItem(2, new ItemStack(Items.EGG, 4));
 		for (int slot = 3; slot < 7; slot++) inventory.setItem(slot, new ItemStack(Items.MILK_BUCKET));
-		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe(helper, "cooking/oven/cake"), inventory), "The cake fills");
+		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, recipe(helper, "portable_pocket_cabin_gametest:legacy_cake"), inventory), "The cake fills");
 		helper.assertTrue(oven.getItem(0).getCount() == 3 && oven.getItem(1).getCount() == 2 && oven.getItem(2).getCount() == 1,
 			"Wheat, sugar, and egg go in by their counts");
 		for (int slot = 3; slot < 6; slot++) helper.assertTrue(oven.getItem(slot).is(Items.MILK_BUCKET), "Each milk bucket takes a slot");
@@ -486,7 +486,7 @@ public final class CabinCookingStationGameTest {
 		var inventory = FakePlayer.get(helper.getLevel()).getInventory();
 		inventory.clearContent();
 		for (int slot = 0; slot < 36; slot++) inventory.setItem(slot, new ItemStack(Items.STONE, 64));
-		var bread = recipe(helper, "cooking/oven/bread");
+		var bread = recipe(helper, "portable_pocket_cabin_gametest:legacy_bread");
 		helper.assertTrue(CookingFill.fill(oven, CookingStation.OVEN, bread, inventory)
 			&& oven.getItem(0).is(Items.WHEAT) && oven.getItem(0).getCount() == 3, "Wheat already in the oven stays there");
 		oven.setItem(1, new ItemStack(Items.STICK));
@@ -557,7 +557,8 @@ public final class CabinCookingStationGameTest {
 
 	private static CookingRecipe recipe(GameTestHelper helper, String path) {
 		return (CookingRecipe) helper.getLevel().getServer().getRecipeManager()
-			.byKey(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.RECIPE, PortablePocketCabin.id(path)))
+			.byKey(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.RECIPE,
+				path.contains(":") ? net.minecraft.resources.Identifier.parse(path) : PortablePocketCabin.id(path)))
 			.orElseThrow().value();
 	}
 

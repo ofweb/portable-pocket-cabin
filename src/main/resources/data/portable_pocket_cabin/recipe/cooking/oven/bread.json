@@ -3,8 +3,7 @@
   "technique": "baking",
   "ingredients": [
     {
-      "item": "minecraft:wheat",
-      "count": 3
+      "item": "portable_pocket_cabin:proofed_bread_dough"
     }
   ],
   "heat": "medium",

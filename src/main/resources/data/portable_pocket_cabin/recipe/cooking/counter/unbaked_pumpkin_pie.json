@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "filling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:shortcrust_pastry"
+    },
+    {
+      "item": "minecraft:pumpkin"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:unbaked_pumpkin_pie"
+  }
+}

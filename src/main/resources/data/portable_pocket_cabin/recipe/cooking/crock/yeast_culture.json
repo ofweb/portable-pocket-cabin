@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "fermenting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sourdough_starter"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "portable_pocket_cabin:yeast_culture"
+  }
+}

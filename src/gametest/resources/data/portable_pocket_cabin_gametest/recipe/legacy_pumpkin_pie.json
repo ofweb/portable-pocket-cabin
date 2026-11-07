@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "minecraft:pumpkin"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:egg"
+    }
+  ],
+  "heat": "medium",
+  "time": 200,
+  "result": {
+    "id": "minecraft:pumpkin_pie"
+  }
+}

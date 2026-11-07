@@ -3,29 +3,11 @@
   "technique": "baking",
   "ingredients": [
     {
-      "item": "minecraft:wheat",
-      "count": 3
-    },
-    {
-      "item": "minecraft:sugar",
-      "count": 2
-    },
-    {
-      "item": "minecraft:egg"
-    },
-    {
-      "item": "minecraft:milk_bucket",
-      "count": 3
-    }
-  ],
-  "remainders": [
-    {
-      "id": "minecraft:bucket",
-      "count": 3
+      "item": "portable_pocket_cabin:cake_batter"
     }
   ],
   "heat": "low",
-  "time": 200,
+  "time": 300,
   "result": {
     "id": "minecraft:cake"
   }

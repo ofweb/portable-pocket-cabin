@@ -3,13 +3,7 @@
   "technique": "baking",
   "ingredients": [
     {
-      "item": "minecraft:pumpkin"
-    },
-    {
-      "item": "minecraft:sugar"
-    },
-    {
-      "item": "minecraft:egg"
+      "item": "portable_pocket_cabin:unbaked_pumpkin_pie"
     }
   ],
   "heat": "medium",
