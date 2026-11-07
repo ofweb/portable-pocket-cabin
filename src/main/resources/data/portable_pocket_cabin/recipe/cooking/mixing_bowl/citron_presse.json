@@ -1,0 +1,28 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "diluting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:lemon_juice"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:citron_presse",
+    "count": 2
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:strainer",
+  "technique": "straining",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:hot_hibiscus"
+    }
+  ],
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:strained_hibiscus"
+  }
+}

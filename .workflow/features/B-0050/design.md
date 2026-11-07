@@ -203,3 +203,24 @@ The check also listed 36 intermediates that phase 3's ingredients already allowe
   - Sirop de cassis à l'eau, Solbærsaft, Rødgrød med fløde, and Gammeldags æblekage.
 - **Cassis syrup:** it reduces blackcurrant juice with sugar, so it stays apart from Solbærsaft, which cooks whole blackcurrants.
 
+## Delivery 3 as built
+
+- **Field crops:** blue corn, aubergine, bell and paprika peppers, tomatillo, green, poblano, and red chilies, basil, roselle, sesame, peanut, chickpea, anise, and cumin.
+- **Trellis vines:** tomato, grape, and red grape.
+- **Fruit trees:** bay laurel, apricot, lemon, orange, tamarind, and almond.
+- **Where they grow:** most grow wild in savannas. Blue corn and red chili also grow in badlands. Cumin grows in deserts, planted on sand or farmland with water nearby.
+- **Completed chains:** the completion check found 22 intermediates and 11 dishes, and all of them shipped:
+  - Spices: anise, cumin, paprika, chili powder, bay leaf, and bouquet garni.
+  - Salsas: salsa roja and salsa verde.
+  - Sesame: toasted sesame seeds and sesame oil.
+  - Nuts and pulses: chickpea flour, roasted peanuts, and chopped and sliced almonds.
+  - Blue corn masa, red wine, and raisins.
+  - Tamarind pulp and paste, and dried hibiscus.
+  - Dishes: Madeleines, Citron pressé, Käsekuchen, Obatzda with bread, Früchtetee, Nam krajeab, Agua de jamaica, Agua de tamarindo, Hyldeblomstsaft, Rabarbersaft, and Quesadillas.
+- **Adaptations:**
+  - Nam krajeab and Agua de jamaica share one hibiscus infusion. The shelf chills Agua de jamaica, and Nam krajeab is served over crushed ice, since the catalogue gives both the same inputs.
+  - Sliced almonds are cut with the knife, and chopped almonds pounded with the pestle.
+  - Hyldeblomstsaft infuses elderflowers in simple syrup.
+  - Madeleines bake without a mould.
+  - The mixing bowl gains a second byproduct slot, because Käsekuchen filling gives back a bowl and a bottle.
+

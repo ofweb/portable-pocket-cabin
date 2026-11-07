@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/fruchtetee_blend",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 9052208
+      }
+    ]
+  }
+}

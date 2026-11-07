@@ -1,0 +1,10 @@
+{
+  "soil": [
+    "#minecraft:supports_vegetation"
+  ],
+  "light": 9,
+  "water": "none",
+  "support": "none",
+  "growth_chance": 0.1,
+  "shade": false
+}

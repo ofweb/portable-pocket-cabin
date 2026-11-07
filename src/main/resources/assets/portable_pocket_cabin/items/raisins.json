@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/raisins",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 4860442
+      }
+    ]
+  }
+}

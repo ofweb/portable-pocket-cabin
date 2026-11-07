@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "nixtamalizing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:blue_corn",
+      "count": 4
+    },
+    {
+      "item": "portable_pocket_cabin:lye_solution"
+    }
+  ],
+  "heat": "low",
+  "time": 300,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:blue_hominy",
+    "count": 4
+  }
+}

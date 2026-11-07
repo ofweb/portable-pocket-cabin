@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "toasting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_cumin_seed"
+    }
+  ],
+  "heat": "medium",
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:toasted_cumin_seed"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "tying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:thyme"
+    },
+    {
+      "item": "portable_pocket_cabin:bay_leaf"
+    },
+    {
+      "item": "portable_pocket_cabin:parsley"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:bouquet_garni"
+  }
+}

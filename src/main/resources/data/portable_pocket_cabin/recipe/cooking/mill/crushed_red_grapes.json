@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "crushing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:red_grape",
+      "count": 4
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:crushed_red_grapes"
+  }
+}

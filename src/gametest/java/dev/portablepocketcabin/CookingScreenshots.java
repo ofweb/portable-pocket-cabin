@@ -174,6 +174,8 @@ final class CookingScreenshots {
 		shot(context, "cookbook-garden-cucumber");
 		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectPlant("wasabi"));
 		shot(context, "cookbook-garden-wasabi");
+		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectPlant("lemon_leaves"));
+		shot(context, "cookbook-garden-lemon");
 		context.runOnClient(client -> client.gui.setScreen(null));
 	}
 

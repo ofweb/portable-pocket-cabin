@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "toasting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sesame_seed"
+    }
+  ],
+  "heat": "low",
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:toasted_sesame_seeds"
+  }
+}

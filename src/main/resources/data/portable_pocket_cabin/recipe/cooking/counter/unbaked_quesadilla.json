@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "filling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:corn_tortilla"
+    },
+    {
+      "item": "portable_pocket_cabin:queso_oaxaca"
+    },
+    {
+      "item": "portable_pocket_cabin:poblano_chili"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:unbaked_quesadilla"
+  }
+}

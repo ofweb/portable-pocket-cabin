@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/toasted_cumin_seed",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 5913114
+      }
+    ]
+  }
+}

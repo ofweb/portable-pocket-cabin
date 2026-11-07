@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "making_wine",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:crushed_red_grapes",
+      "count": 4
+    }
+  ],
+  "time": 48000,
+  "result": {
+    "id": "portable_pocket_cabin:fermented_red_grapes",
+    "count": 4
+  }
+}

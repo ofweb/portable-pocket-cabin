@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "infusing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:simple_syrup"
+    },
+    {
+      "item": "portable_pocket_cabin:elderflower",
+      "count": 4
+    },
+    {
+      "item": "portable_pocket_cabin:lemon"
+    }
+  ],
+  "time": 48000,
+  "result": {
+    "id": "portable_pocket_cabin:infused_elderflower"
+  }
+}

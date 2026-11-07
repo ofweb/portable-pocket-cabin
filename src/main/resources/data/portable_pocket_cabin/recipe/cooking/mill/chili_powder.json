@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_chilies"
+    }
+  ],
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:chili_powder",
+    "count": 2
+  }
+}

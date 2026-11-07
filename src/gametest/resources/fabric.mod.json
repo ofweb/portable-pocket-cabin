@@ -29,7 +29,8 @@
       "dev.portablepocketcabin.CabinPlantGameTest",
       "dev.portablepocketcabin.CabinGardenRecipeGameTest",
       "dev.portablepocketcabin.CabinPhase3GapGameTest",
-      "dev.portablepocketcabin.CabinNorthernGardenGameTest"
+      "dev.portablepocketcabin.CabinNorthernGardenGameTest",
+      "dev.portablepocketcabin.CabinSavannaGardenGameTest"
     ],
     "fabric-client-gametest": [
       "dev.portablepocketcabin.PortablePocketCabinClientGameTest"

@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:strained_hibiscus"
+    },
+    {
+      "item": "portable_pocket_cabin:crushed_ice"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:nam_krajeab"
+  }
+}

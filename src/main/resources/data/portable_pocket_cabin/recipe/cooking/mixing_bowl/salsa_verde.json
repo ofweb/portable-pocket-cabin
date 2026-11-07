@@ -1,0 +1,30 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:roasted_tomatillo",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:green_chili"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:cilantro"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 6,
+  "tastes": [
+    "salty",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:salsa_verde"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:toasted_cumin_seed",
+      "count": 2
+    }
+  ],
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:cumin",
+    "count": 2
+  }
+}

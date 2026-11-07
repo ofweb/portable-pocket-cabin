@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:charred_tomato",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:dried_chilies"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 6,
+  "result": {
+    "id": "portable_pocket_cabin:raw_salsa_roja"
+  }
+}
