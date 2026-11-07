@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "dicing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:courgette"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:diced_courgette",
+    "count": 2
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_thyme"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_rosemary"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_oregano"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_savory"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:herbes_de_provence",
+    "count": 4
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_chilies"
+    },
+    {
+      "item": "portable_pocket_cabin:wine_vinegar"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    },
+    {
+      "item": "portable_pocket_cabin:cumin"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_oregano"
+    }
+  ],
+  "time": 6,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:anticucho_marinade",
+    "count": 2
+  }
+}

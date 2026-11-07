@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "dicing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:bell_pepper"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:diced_bell_pepper",
+    "count": 2
+  }
+}

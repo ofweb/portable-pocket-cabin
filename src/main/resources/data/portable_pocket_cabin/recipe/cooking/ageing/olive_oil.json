@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "settling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:unsettled_olive_oil"
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "portable_pocket_cabin:olive_oil"
+  }
+}
