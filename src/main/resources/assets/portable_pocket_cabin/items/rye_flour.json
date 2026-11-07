@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/rye_flour",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 12100218
+      }
+    ]
+  }
+}

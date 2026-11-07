@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "shaping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:masa"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:raw_tortilla",
+    "count": 2
+  }
+}

@@ -32,6 +32,15 @@
     "minecraft:melon_slice",
     "minecraft:cake",
     "minecraft:cookie",
-    "minecraft:pumpkin_pie"
+    "minecraft:pumpkin_pie",
+    "portable_pocket_cabin:strawberry_jam",
+    "portable_pocket_cabin:raspberry_jam",
+    "portable_pocket_cabin:strawberry",
+    "portable_pocket_cabin:raspberry",
+    "portable_pocket_cabin:plum",
+    "portable_pocket_cabin:elderberry",
+    "portable_pocket_cabin:white_grape",
+    "portable_pocket_cabin:corn",
+    "portable_pocket_cabin:cooked_corn"
   ]
 }

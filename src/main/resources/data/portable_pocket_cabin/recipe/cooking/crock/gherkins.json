@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "pickling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cucumber",
+      "count": 4
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    },
+    {
+      "item": "portable_pocket_cabin:dill"
+    },
+    {
+      "item": "portable_pocket_cabin:wine_vinegar"
+    }
+  ],
+  "time": 24000,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:gherkins",
+    "count": 4
+  }
+}

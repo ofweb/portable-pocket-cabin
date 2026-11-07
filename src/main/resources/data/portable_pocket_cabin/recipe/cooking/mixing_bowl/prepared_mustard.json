@@ -1,0 +1,35 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:ground_mustard"
+    },
+    {
+      "item": "portable_pocket_cabin:wine_vinegar"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    }
+  ],
+  "time": 3,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:prepared_mustard"
+  }
+}

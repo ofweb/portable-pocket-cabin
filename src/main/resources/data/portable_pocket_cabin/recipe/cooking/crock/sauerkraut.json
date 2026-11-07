@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "fermenting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:shredded_cabbage",
+      "count": 4
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 48000,
+  "result": {
+    "id": "portable_pocket_cabin:sauerkraut",
+    "count": 4
+  }
+}

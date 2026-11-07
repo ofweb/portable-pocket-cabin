@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:drying",
+  "technique": "drying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sprouted_barley"
+    }
+  ],
+  "time": 12000,
+  "result": {
+    "id": "portable_pocket_cabin:malted_barley"
+  }
+}

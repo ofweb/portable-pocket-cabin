@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:press",
+  "technique": "pressing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:crushed_white_grapes"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "time": 60,
+  "remainders": [
+    {
+      "id": "portable_pocket_cabin:pulp"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:white_grape_must"
+  }
+}

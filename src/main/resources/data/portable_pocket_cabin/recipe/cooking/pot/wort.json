@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "brewing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:malted_barley",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:hops"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 300,
+  "result": {
+    "id": "portable_pocket_cabin:wort"
+  }
+}

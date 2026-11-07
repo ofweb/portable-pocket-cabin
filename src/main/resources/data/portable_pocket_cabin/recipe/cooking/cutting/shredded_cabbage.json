@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "shredding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cabbage"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:shredded_cabbage",
+    "count": 2
+  }
+}

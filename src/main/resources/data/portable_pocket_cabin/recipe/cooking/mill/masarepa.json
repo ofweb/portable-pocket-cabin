@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_cooked_corn"
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:masarepa"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "shallow_frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:potato_batter"
+    }
+  ],
+  "heat": "medium",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:kartoffelpuffer"
+  }
+}

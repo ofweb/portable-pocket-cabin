@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "roasting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:malted_barley",
+      "count": 4
+    }
+  ],
+  "heat": "high",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:roasted_malt",
+    "count": 4
+  }
+}

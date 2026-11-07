@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "boiling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:spatzle_dough"
+    }
+  ],
+  "water": 1,
+  "heat": "high",
+  "time": 100,
+  "tastes": [
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:spatzle",
+    "count": 2
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "emulsifying",
+  "ingredients": [
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "#portable_pocket_cabin:cooking_oils"
+    },
+    {
+      "item": "portable_pocket_cabin:prepared_mustard"
+    },
+    {
+      "item": "portable_pocket_cabin:wine_vinegar"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 8,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:mayonnaise"
+  }
+}

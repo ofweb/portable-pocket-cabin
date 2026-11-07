@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:grated_potato",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:wheat_flour"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:potato_batter"
+  }
+}

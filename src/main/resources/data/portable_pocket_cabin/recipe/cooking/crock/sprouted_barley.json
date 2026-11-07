@@ -1,0 +1,31 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "sprouting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:barley",
+      "count": 4
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    }
+  ],
+  "time": 24000,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:sprouted_barley",
+    "count": 4
+  }
+}

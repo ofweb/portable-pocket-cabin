@@ -94,6 +94,34 @@ final class CookingPlants {
 	static final Item PLUM = ingredient("plum", food(3, 1.8F));
 	static final Block PLUM_LEAVES = fruitTree("plum", () -> PLUM);
 
+	/** Delivery 1 products: what the plains, meadow, and forest plants complete in the recipe catalogue. */
+	static final List<Item> PRODUCTS = new ArrayList<>();
+	static {
+		String[] plain = {"rye_flour", "cracked_rye", "soaked_corn", "wet_cornstarch", "cornstarch", "corn_kernels", "corn_husk", "dried_corn_husks",
+			"dried_corn", "wood_ash", "hominy", "masa", "cooked_corn", "dried_cooked_corn", "masarepa", "raw_tortilla", "roasted_barley",
+			"sprouted_barley", "malted_barley", "roasted_malt", "ground_malt", "rugbrod_dough", "proofed_rugbrod_dough", "spatzle_dough",
+			"ground_mustard", "dried_white_beans", "shredded_cabbage", "crushed_white_grapes", "dried_rosehip", "chopped_onion",
+			"grated_potato", "potato_batter", "caramelised_onion"};
+		for (String name : plain) PRODUCTS.add(ingredient(name, null));
+		String[] bottles = {"lye_solution", "prepared_mustard", "mayonnaise", "white_grape_must", "white_wine", "wine_vinegar", "wort", "beer",
+			"strawberry_jam", "raspberry_jam"};
+		for (String name : bottles) PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16))));
+		PRODUCTS.add(ingredient("toasted_corn", food(2, 1.2F)));
+		PRODUCTS.add(ingredient("corn_tortilla", food(2, 1.2F)));
+		PRODUCTS.add(ingredient("rugbrod", food(5, 6.0F)));
+		PRODUCTS.add(ingredient("spatzle", food(5, 6.0F)));
+		PRODUCTS.add(ingredient("sauerkraut", food(2, 2.4F)));
+		PRODUCTS.add(ingredient("gherkins", food(2, 1.6F)));
+		PRODUCTS.add(ingredient("kartoffelpuffer", food(5, 6.0F)));
+		PRODUCTS.add(registerItem("kasespatzle", properties -> new Item(properties.stacksTo(16).food(food(9, 10.8F)))));
+		PRODUCTS.add(registerItem("malzkaffee", properties -> new Item(properties.stacksTo(16)
+			.food(new FoodProperties(2, 1.2F, true), net.minecraft.world.item.component.Consumables.DEFAULT_DRINK)
+			.usingConvertsTo(net.minecraft.world.item.Items.GLASS_BOTTLE))));
+		PRODUCTS.add(registerItem("mugicha", properties -> new Item(properties.stacksTo(16)
+			.food(new FoodProperties(1, 0.6F, true), net.minecraft.world.item.component.Consumables.DEFAULT_DRINK)
+			.usingConvertsTo(net.minecraft.world.item.Items.GLASS_BOTTLE))));
+	}
+
 	/** Picked from vanilla rose bushes with shears. */
 	static final Item ROSEHIP = ingredient("rosehip", null);
 
