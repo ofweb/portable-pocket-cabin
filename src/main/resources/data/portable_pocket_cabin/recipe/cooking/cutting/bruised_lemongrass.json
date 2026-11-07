@@ -1,0 +1,12 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "bruising",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:lemongrass"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:bruised_lemongrass"
+  }
+}

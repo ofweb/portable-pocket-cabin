@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "infusing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:bruised_lemongrass",
+      "count": 2
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:unstrained_nam_takrai"
+  }
+}

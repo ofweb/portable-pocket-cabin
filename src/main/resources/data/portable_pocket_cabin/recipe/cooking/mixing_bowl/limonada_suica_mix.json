@@ -1,0 +1,35 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:lime",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:condensed_milk"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    },
+    {
+      "item": "portable_pocket_cabin:crushed_ice"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:limonada_suica_mix",
+    "count": 2
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:coconut_cream"
+    },
+    {
+      "item": "portable_pocket_cabin:lime",
+      "count": 2
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:crushed_ice"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:limonada_de_coco_mix"
+  }
+}

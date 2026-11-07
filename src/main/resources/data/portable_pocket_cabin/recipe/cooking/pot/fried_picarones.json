@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "deep_frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:rested_picarones_dough"
+    }
+  ],
+  "oil": 1,
+  "heat": "high",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:fried_picarones",
+    "count": 4
+  }
+}

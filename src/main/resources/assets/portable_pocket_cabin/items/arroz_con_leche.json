@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/arroz_con_leche",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 16314592
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "boiling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:coated_water_chestnut",
+      "count": 2
+    }
+  ],
+  "water": 1,
+  "heat": "high",
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:boiled_tub_tim",
+    "count": 2
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:coconut_sticky_rice"
+    },
+    {
+      "item": "portable_pocket_cabin:sliced_mango"
+    },
+    {
+      "item": "portable_pocket_cabin:coconut_cream"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "sweet",
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:mango_sticky_rice"
+  }
+}

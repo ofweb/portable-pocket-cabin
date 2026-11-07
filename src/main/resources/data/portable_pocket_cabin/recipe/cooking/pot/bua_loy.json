@@ -1,0 +1,36 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "warming_gently",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:boiled_bua_loy",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:coconut_milk"
+    },
+    {
+      "item": "portable_pocket_cabin:palm_sugar"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 100,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "sweet",
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:bua_loy"
+  }
+}

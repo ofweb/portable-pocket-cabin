@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "boiling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sweet_potato"
+    },
+    {
+      "item": "minecraft:pumpkin"
+    }
+  ],
+  "water": 1,
+  "heat": "high",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:boiled_picarones_vegetables"
+  }
+}

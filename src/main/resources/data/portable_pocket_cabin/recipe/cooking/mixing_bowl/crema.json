@@ -16,6 +16,9 @@
   "remainders": [
     {
       "id": "minecraft:glass_bottle"
+    },
+    {
+      "id": "minecraft:bowl"
     }
   ],
   "result": {

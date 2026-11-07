@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "scalding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sour_cassava_starch",
+      "count": 2
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "#portable_pocket_cabin:cooking_oils"
+    }
+  ],
+  "heat": "low",
+  "time": 60,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    },
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:scalded_starch"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "folding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:rice_pudding"
+    },
+    {
+      "item": "portable_pocket_cabin:whipped_cream"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_almonds"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:risalamande"
+  }
+}

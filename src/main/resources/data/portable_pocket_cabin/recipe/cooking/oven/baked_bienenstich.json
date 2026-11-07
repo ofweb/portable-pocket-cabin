@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:unbaked_bienenstich"
+    }
+  ],
+  "heat": "medium",
+  "time": 300,
+  "result": {
+    "id": "portable_pocket_cabin:baked_bienenstich"
+  }
+}

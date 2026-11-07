@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "cooking_dough",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:wheat_flour",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "water": 1,
+  "heat": "low",
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:churro_dough"
+  }
+}

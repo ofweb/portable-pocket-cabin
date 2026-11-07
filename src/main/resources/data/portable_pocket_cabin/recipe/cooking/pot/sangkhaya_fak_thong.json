@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "steaming",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:hollowed_pumpkin"
+    },
+    {
+      "item": "portable_pocket_cabin:sangkhaya_custard"
+    }
+  ],
+  "water": 1,
+  "heat": "medium",
+  "time": 300,
+  "tastes": [
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:sangkhaya_fak_thong",
+    "count": 2
+  }
+}

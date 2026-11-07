@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fried_picarones",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:chancaca_syrup"
+    }
+  ],
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:picarones",
+    "count": 2
+  }
+}

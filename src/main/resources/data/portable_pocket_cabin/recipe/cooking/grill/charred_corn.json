@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:grill",
+  "technique": "charring",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:corn"
+    }
+  ],
+  "heat": "high",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:charred_corn"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking_in_a_water_bath",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:caramel"
+    },
+    {
+      "item": "portable_pocket_cabin:flan_custard"
+    }
+  ],
+  "heat": "low",
+  "time": 400,
+  "tastes": [
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:flan_napolitano"
+  }
+}

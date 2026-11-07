@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:proofing",
+  "technique": "proofing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:picarones_dough"
+    }
+  ],
+  "time": 6000,
+  "result": {
+    "id": "portable_pocket_cabin:rested_picarones_dough"
+  }
+}

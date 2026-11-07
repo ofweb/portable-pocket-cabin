@@ -381,6 +381,33 @@ final class CookingPlants {
 		for (String name : bottles) PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16))));
 	}
 
+	/** Delivery 6 dishes: the jungle desserts, drinks, breads, and snacks. */
+	static {
+		String[] plain = {"creme_brulee_custard", "baked_creme_brulee", "socca_batter", "unbaked_apfelstrudel", "unbaked_bienenstich", "baked_bienenstich",
+			"risalamande", "aebleskiver_batter", "plain_aebleskiver", "steamed_glutinous_rice", "coconut_sticky_rice", "sliced_mango", "bua_loy_dough",
+			"bua_loy_balls", "boiled_bua_loy", "khanom_krok_batter", "diced_water_chestnut", "coated_water_chestnut", "boiled_tub_tim",
+			"hollowed_pumpkin", "sangkhaya_custard", "bruised_lemongrass", "churro_dough", "fried_churros", "flan_custard", "charred_corn",
+			"soaked_horchata_rice", "horchata_base", "arepa_dough", "shaped_arepas", "arepas", "scalded_starch", "pao_de_queijo_dough",
+			"pao_de_queijo_balls", "alfajor_dough", "alfajor_rounds", "alfajor_biscuits", "boiled_picarones_vegetables", "picarones_dough",
+			"rested_picarones_dough", "fried_picarones", "raw_tequenos"};
+		for (String name : plain) PRODUCTS.add(ingredient(name, null));
+		String[] bottles = {"vanilla_infused_cream", "koldskal", "unstrained_hyldebaersaft", "sweet_coconut_sauce", "strong_thai_tea", "strained_thai_tea",
+			"brewed_black_tea", "unstrained_nam_takrai", "strained_horchata", "unstrained_cafe_de_olla", "unstrained_chicha_morada",
+			"strained_chicha_morada", "limonada_suica_mix", "limonada_de_coco_mix", "aguapanela"};
+		for (String name : bottles) PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16))));
+		String[] drinks = {"kinderpunsch", "varm_hyldebaersaft", "nam_manao", "cha_yen", "cha_manao", "nam_takrai", "horchata_de_arroz", "champurrado", "cafe_de_olla",
+			"chicha_morada", "aguapanela_con_limon", "limonada_suica", "terere", "limonada_de_coco", "chilled_koldskal"};
+		for (String name : drinks) {
+			PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16)
+				.food(new FoodProperties(3, 1.2F, true), net.minecraft.world.item.component.Consumables.DEFAULT_DRINK)
+				.usingConvertsTo(net.minecraft.world.item.Items.GLASS_BOTTLE))));
+		}
+		String[] dishes = {"creme_brulee", "socca", "apfelstrudel", "bienenstich", "risalamande_med_kirsebaersauce", "koldskal_med_kammerjunkere", "aebleskiver",
+			"mango_sticky_rice", "bua_loy", "khanom_krok", "tub_tim_grob", "sangkhaya_fak_thong", "churros", "flan_napolitano", "arroz_con_leche",
+			"elote", "arepas_con_queso", "pao_de_queijo", "alfajores_de_maicena", "picarones", "tequenos"};
+		for (String name : dishes) PRODUCTS.add(ingredient(name, food(6, 7.2F)));
+	}
+
 	/** Picked from vanilla rose bushes with shears. */
 	static final Item ROSEHIP = ingredient("rosehip", null);
 

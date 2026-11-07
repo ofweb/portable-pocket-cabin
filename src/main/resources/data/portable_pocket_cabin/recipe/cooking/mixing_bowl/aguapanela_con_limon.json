@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:aguapanela"
+    },
+    {
+      "item": "portable_pocket_cabin:lime"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:aguapanela_con_limon"
+  }
+}

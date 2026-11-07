@@ -1,0 +1,28 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "whisking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:buttermilk"
+    },
+    {
+      "item": "portable_pocket_cabin:yogurt"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:vanilla"
+    },
+    {
+      "item": "portable_pocket_cabin:lemon"
+    }
+  ],
+  "time": 6,
+  "result": {
+    "id": "portable_pocket_cabin:koldskal"
+  }
+}

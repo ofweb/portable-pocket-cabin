@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "cutting_rounds",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:alfajor_dough"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:alfajor_rounds",
+    "count": 4
+  }
+}

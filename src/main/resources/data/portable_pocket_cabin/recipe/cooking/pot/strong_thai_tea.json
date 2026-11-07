@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "brewing_tea",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:thai_tea_leaves"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "medium",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:strong_thai_tea"
+  }
+}

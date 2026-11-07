@@ -1,0 +1,34 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "whisking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:masa"
+    },
+    {
+      "item": "portable_pocket_cabin:mexican_chocolate"
+    },
+    {
+      "item": "portable_pocket_cabin:panela"
+    },
+    {
+      "item": "portable_pocket_cabin:cinnamon"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "heat": "low",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:champurrado"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "sandwiching",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:alfajor_biscuits",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:dulce_de_leche"
+    },
+    {
+      "item": "portable_pocket_cabin:desiccated_coconut"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:alfajores_de_maicena"
+  }
+}

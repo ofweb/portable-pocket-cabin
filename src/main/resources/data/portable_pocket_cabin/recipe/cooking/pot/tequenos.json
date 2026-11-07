@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "deep_frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:raw_tequenos",
+      "count": 4
+    }
+  ],
+  "oil": 1,
+  "heat": "high",
+  "time": 100,
+  "tastes": [
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tequenos",
+    "count": 4
+  }
+}

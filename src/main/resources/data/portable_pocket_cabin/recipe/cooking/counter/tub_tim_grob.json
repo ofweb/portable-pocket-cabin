@@ -1,0 +1,31 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:boiled_tub_tim"
+    },
+    {
+      "item": "portable_pocket_cabin:coconut_milk"
+    },
+    {
+      "item": "portable_pocket_cabin:simple_syrup"
+    },
+    {
+      "item": "portable_pocket_cabin:crushed_ice"
+    }
+  ],
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "tastes": [
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tub_tim_grob"
+  }
+}
