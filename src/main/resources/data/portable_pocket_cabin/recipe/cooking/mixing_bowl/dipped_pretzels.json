@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "dipping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:shaped_pretzels",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:lye_solution"
+    },
+    {
+      "item": "portable_pocket_cabin:coarse_salt"
+    }
+  ],
+  "time": 2,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:dipped_pretzels",
+    "count": 2
+  }
+}

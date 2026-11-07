@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "boiling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:diced_nopales",
+      "count": 4
+    }
+  ],
+  "water": 1,
+  "heat": "high",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:nopales",
+    "count": 4
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "topping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:proofed_sweet_dough"
+    },
+    {
+      "item": "portable_pocket_cabin:brown_sugar"
+    },
+    {
+      "item": "portable_pocket_cabin:raw_butter"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:unbaked_brunsviger"
+  }
+}

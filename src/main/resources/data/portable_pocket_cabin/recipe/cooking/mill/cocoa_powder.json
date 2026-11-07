@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cocoa_press_cake"
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:cocoa_powder",
+    "count": 2
+  }
+}

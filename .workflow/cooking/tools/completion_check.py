@@ -52,6 +52,9 @@ for f in os.listdir(ROOT+'/src/main/resources/assets/portable_pocket_cabin/items
 lang=json.load(open(ROOT+'/src/main/resources/assets/portable_pocket_cabin/lang/en_us.json'))
 for k,v in lang.items():
     if k.startswith('item.portable_pocket_cabin.') or k.startswith('block.portable_pocket_cabin.'): mod.add(norm(v))
+# Catalogue names the mod already covers under another name: vanilla bread, the corn tortilla item, any of the jams,
+# vanilla dried kelp as kombu, the skimmed milk bucket, and sunflower oil as the frying oil.
+mod |= {'bread', 'corn tortillas', 'jam', 'kombu', 'skimmed milk', 'vegetable oil'}
 def solve(avail):
     avail=set(avail); made=set(); changed=True
     def ok(groups, proc):

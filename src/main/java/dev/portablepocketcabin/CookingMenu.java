@@ -56,7 +56,7 @@ final class CookingMenu extends AbstractContainerMenu {
 		STOVE(null, new int[][] {{80, 53}}, -1, -1, -1),
 		POT(CookingStation.POT, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}, {142, 53}}, 6, 7, 8, 9),
 		OVEN(CookingStation.OVEN, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}}, -1, 7, 8),
-		COUNTER(CookingStation.COUNTER, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {124, 26}, {124, 53}}, -1, 6, 7),
+		COUNTER(CookingStation.COUNTER, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {124, 26}, {124, 53}, {142, 53}}, -1, 6, 7, 8),
 		STRAINER(CookingStation.STRAINER, new int[][] {{39, 17}, {57, 17}, {39, 35}, {57, 35}, {48, 56}, {124, 26}, {124, 53}}, 4, 5, 6),
 		WOK(CookingStation.WOK, new int[][] {{39, 17}, {57, 17}, {39, 35}, {57, 35}, {48, 56}, {124, 26}, {124, 53}}, 4, 5, 6),
 		PRESS(CookingStation.PRESS, new int[][] {{48, 26}, {48, 56}, {124, 26}, {124, 53}}, 1, 2, 3),

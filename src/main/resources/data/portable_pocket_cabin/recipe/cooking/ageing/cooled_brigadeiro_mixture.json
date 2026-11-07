@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "cooling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:brigadeiro_mixture"
+    }
+  ],
+  "time": 1000,
+  "result": {
+    "id": "portable_pocket_cabin:cooled_brigadeiro_mixture"
+  }
+}

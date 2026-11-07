@@ -200,6 +200,7 @@ final class CookingBlocks {
 				CookingItems.FRIED_DOUGHNUT, CookingItems.BERLINER}) {
 				entries.accept(item);
 			}
+			for (Item item : CookingItems.PHASE3_EXTRAS) entries.accept(item);
 		});
 	}
 

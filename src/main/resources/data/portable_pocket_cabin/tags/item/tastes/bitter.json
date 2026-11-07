@@ -13,6 +13,10 @@
     "portable_pocket_cabin:roasted_malt",
     "portable_pocket_cabin:radish",
     "portable_pocket_cabin:mustard_seed",
-    "portable_pocket_cabin:prepared_mustard"
+    "portable_pocket_cabin:prepared_mustard",
+    "portable_pocket_cabin:cocoa_powder",
+    "portable_pocket_cabin:roasted_cocoa_nibs",
+    "portable_pocket_cabin:cocoa_mass",
+    "portable_pocket_cabin:chocolate"
   ]
 }

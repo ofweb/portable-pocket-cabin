@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:proofing",
+  "technique": "proofing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pretzel_dough"
+    }
+  ],
+  "time": 2000,
+  "result": {
+    "id": "portable_pocket_cabin:proofed_pretzel_dough"
+  }
+}

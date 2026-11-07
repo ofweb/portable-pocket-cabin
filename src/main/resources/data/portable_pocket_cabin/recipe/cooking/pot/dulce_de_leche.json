@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "caramelising",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:condensed_milk"
+    }
+  ],
+  "heat": "low",
+  "time": 600,
+  "result": {
+    "id": "portable_pocket_cabin:dulce_de_leche"
+  }
+}

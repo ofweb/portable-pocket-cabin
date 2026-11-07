@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "laminating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:puff_dough"
+    },
+    {
+      "item": "portable_pocket_cabin:raw_butter"
+    }
+  ],
+  "time": 120,
+  "result": {
+    "id": "portable_pocket_cabin:laminated_dough"
+  }
+}

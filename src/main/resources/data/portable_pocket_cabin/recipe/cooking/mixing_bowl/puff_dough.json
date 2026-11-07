@@ -1,0 +1,36 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:wheat_flour",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:raw_butter"
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:puff_dough"
+  }
+}

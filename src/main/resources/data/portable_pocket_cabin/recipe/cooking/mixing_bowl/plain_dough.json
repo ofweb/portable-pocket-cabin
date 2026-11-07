@@ -1,0 +1,33 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "kneading",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:wheat_flour",
+      "count": 2
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 6,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:plain_dough"
+  }
+}

@@ -77,9 +77,15 @@ public final class CabinGardenRecipeGameTest {
 
 	@GameTest
 	public void everyDeliveryRecipeIsFoundFromItsInputs(GameTestHelper helper) {
+		assertFoundFromInputs(helper, RECIPES);
+		helper.succeed();
+	}
+
+	/** Each recipe loads, and its own station finds exactly it from its inputs, so no other recipe takes them. */
+	static void assertFoundFromInputs(GameTestHelper helper, String[] recipes) {
 		var level = helper.getLevel();
 		var manager = level.getServer().getRecipeManager();
-		for (String path : RECIPES) {
+		for (String path : recipes) {
 			var id = PortablePocketCabin.id("cooking/" + path);
 			var holder = manager.byKey(ResourceKey.create(Registries.RECIPE, id)).orElse(null);
 			helper.assertTrue(holder != null && holder.value() instanceof CookingRecipe, "Recipe loads: " + id);
@@ -100,8 +106,7 @@ public final class CabinGardenRecipeGameTest {
 			helper.assertTrue(found.isPresent() && found.get().id().identifier().equals(id),
 				"Its station finds " + id + " from its inputs, found " + found.map(f -> f.id().identifier().toString()).orElse("nothing"));
 		}
-		helper.succeed();
-	}
+		}
 
 	@GameTest
 	public void whiteGrapesBecomeWineThenVinegar(GameTestHelper helper) {

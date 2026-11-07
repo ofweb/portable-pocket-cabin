@@ -1,0 +1,25 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "reducing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:condensed_milk"
+    },
+    {
+      "item": "portable_pocket_cabin:cocoa_powder"
+    },
+    {
+      "item": "portable_pocket_cabin:raw_butter"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:brigadeiro_mixture"
+  }
+}

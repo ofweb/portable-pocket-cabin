@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:press",
+  "technique": "pressing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:roasted_cocoa_nibs",
+      "count": 4
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "time": 60,
+  "remainders": [
+    {
+      "id": "portable_pocket_cabin:cocoa_press_cake"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:cocoa_butter"
+  }
+}

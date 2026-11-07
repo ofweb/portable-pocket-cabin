@@ -1,0 +1,33 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:wheat_flour"
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    },
+    {
+      "item": "#portable_pocket_cabin:cooking_oils"
+    }
+  ],
+  "time": 2,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tenkasu_batter"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "ageing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fresh_cheese"
+    }
+  ],
+  "time": 168000,
+  "result": {
+    "id": "portable_pocket_cabin:minas_cheese"
+  }
+}

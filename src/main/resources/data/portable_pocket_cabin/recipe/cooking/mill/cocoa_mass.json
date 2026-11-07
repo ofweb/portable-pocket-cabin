@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:roasted_cocoa_nibs",
+      "count": 2
+    }
+  ],
+  "time": 400,
+  "result": {
+    "id": "portable_pocket_cabin:cocoa_mass"
+  }
+}

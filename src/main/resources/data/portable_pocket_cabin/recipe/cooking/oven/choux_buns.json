@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:choux_pastry"
+    }
+  ],
+  "heat": "medium",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:choux_buns",
+    "count": 4
+  }
+}

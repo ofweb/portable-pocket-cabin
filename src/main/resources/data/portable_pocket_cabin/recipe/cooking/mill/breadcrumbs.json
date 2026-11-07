@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_bread"
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:breadcrumbs",
+    "count": 2
+  }
+}
