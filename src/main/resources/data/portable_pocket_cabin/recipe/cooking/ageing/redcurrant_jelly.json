@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "setting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:strained_redcurrant_jelly"
+    }
+  ],
+  "time": 2000,
+  "result": {
+    "id": "portable_pocket_cabin:redcurrant_jelly"
+  }
+}

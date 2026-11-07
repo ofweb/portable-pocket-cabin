@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "making_cordial",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:blackcurrant",
+      "count": 6
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:unstrained_solbaersaft"
+  }
+}

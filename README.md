@@ -89,8 +89,9 @@ Milk settles in the dairy pan into cream and skimmed milk. Cream churns into but
 - **Bushes:** thyme, marjoram, strawberries, raspberries, and oyster mushrooms regrow after picking. The elder gives elderflower, then elderberries.
 - **Trees:** plum trees grow from saplings, and their leaves flower and fruit again after picking.
 - **Rosehips:** shears pick them from rose bushes.
+- **Taigas and coasts:** red cabbage, rhubarb, blackcurrants, and redcurrants grow in taigas. Wasabi grows on gravel beside running water. Wakame, laver, and sea lettuce grow underwater in cold oceans, on stony shores, and on beaches.
 
-Each plant's growing needs, such as soil, light, and water, are data, and the cookbook's Garden section shows where it grows and what it needs. The plants complete new chains: rye bread, corn tortillas, sauerkraut, gherkins, wine vinegar, mustard and mayonnaise, jams, and more.
+Each plant's growing needs, such as soil, light, and water, are data, and the cookbook's Garden section shows where it grows and what it needs. The plants complete new chains: rye bread, corn tortillas, sauerkraut, gherkins, wine vinegar, mustard and mayonnaise, jams, nori, cassis, redcurrant jelly, rødgrød, and more.
 
 A station lights new fuel only when it has something to cook, but lit fuel always burns down. Cooking advances only at the recipe's heat. When the wrong fuel is burning, use a shovel on the stove or oven to put it out. The next fuel then lights at its own heat. Hoppers work with the container stations as with a furnace, but never reach seasoning slots. On the grill they only add fuel and take spent fuel. On the ageing shelf and drying rack they add items a recipe takes and take finished ones.
 

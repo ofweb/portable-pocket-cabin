@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/strained_redcurrant_jelly",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 13643834
+      }
+    ]
+  }
+}

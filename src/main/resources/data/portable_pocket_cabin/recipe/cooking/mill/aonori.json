@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "crumbling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_sea_lettuce"
+    }
+  ],
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:aonori",
+    "count": 2
+  }
+}

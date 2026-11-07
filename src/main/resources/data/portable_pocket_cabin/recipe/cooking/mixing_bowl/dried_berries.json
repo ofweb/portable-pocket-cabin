@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_sweet_berries"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_blackcurrant"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_raspberry"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:dried_berries",
+    "count": 3
+  }
+}

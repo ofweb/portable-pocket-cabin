@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/toasted_sweet_crumbs",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 13142586
+      }
+    ]
+  }
+}

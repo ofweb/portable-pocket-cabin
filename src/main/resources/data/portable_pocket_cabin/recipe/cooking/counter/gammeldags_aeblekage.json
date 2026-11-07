@@ -1,0 +1,35 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "layering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:apple_compote"
+    },
+    {
+      "item": "portable_pocket_cabin:toasted_sweet_crumbs"
+    },
+    {
+      "item": "portable_pocket_cabin:whipped_cream"
+    },
+    {
+      "item": "portable_pocket_cabin:redcurrant_jelly"
+    }
+  ],
+  "time": 40,
+  "remainders": [
+    {
+      "id": "minecraft:bowl",
+      "count": 2
+    },
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "sweet",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:gammeldags_aeblekage"
+  }
+}

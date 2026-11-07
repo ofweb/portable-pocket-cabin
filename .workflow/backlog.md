@@ -270,7 +270,7 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 
 ## B-0050: Cooking crops and foraging
 
-- Status: In Implementation. Delivery 1 of 6, plains, meadows, and forests, is implemented.
+- Status: In Implementation. Deliveries 1 and 2 of 6 are implemented: plains, meadows, and forests; then taigas, cold waters, and coasts.
 - Value: Add grains, vegetables, herbs, spices, chilies, fruit, and mushrooms with growing requirements, cultivation methods, and wild sources that reward exploration.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Grown in B-0019. Used by B-0045 recipes.
