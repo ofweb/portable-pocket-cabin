@@ -1381,5 +1381,22 @@
   "technique.portable_pocket_cabin.shaping_rice.description": "Press warm rice with wet, salted hands into a firm triangle that holds together.",
   "technique.portable_pocket_cabin.curdling_with_a_coagulant": "Curdling with a coagulant",
   "technique.portable_pocket_cabin.curdling_with_a_coagulant.description": "Stir nigari or lime juice into hot milk, so the proteins clump into curds at once without rennet.",
-  "screen.portable_pocket_cabin.cookbook.soil.minecraft.sand": "sand"
+  "screen.portable_pocket_cabin.cookbook.soil.minecraft.sand": "sand",
+  "item.portable_pocket_cabin.cow_carcass": "Cow Carcass",
+  "item.portable_pocket_cabin.dressed_cow": "Dressed Cow",
+  "item.portable_pocket_cabin.pig_carcass": "Pig Carcass",
+  "item.portable_pocket_cabin.dressed_pig": "Dressed Pig",
+  "item.portable_pocket_cabin.sheep_carcass": "Sheep Carcass",
+  "item.portable_pocket_cabin.dressed_sheep": "Dressed Sheep",
+  "item.portable_pocket_cabin.chicken_carcass": "Chicken Carcass",
+  "item.portable_pocket_cabin.dressed_chicken": "Dressed Chicken",
+  "item.portable_pocket_cabin.rabbit_carcass": "Rabbit Carcass",
+  "item.portable_pocket_cabin.dressed_rabbit": "Dressed Rabbit",
+  "item.portable_pocket_cabin.goat_carcass": "Goat Carcass",
+  "item.portable_pocket_cabin.dressed_goat": "Dressed Goat",
+  "technique.portable_pocket_cabin.scalding_carcass": "Scalding the carcass",
+  "technique.portable_pocket_cabin.scalding_carcass.description": "Dip a carcass in hot water, well below boiling, so feathers and bristles loosen at the roots and pull out cleanly.",
+  "tooltip.portable_pocket_cabin.carcass.bled": "Bled",
+  "tooltip.portable_pocket_cabin.carcass.scalded": "Scalded",
+  "tooltip.portable_pocket_cabin.carcass.fleece": "Fleece: %s"
 }

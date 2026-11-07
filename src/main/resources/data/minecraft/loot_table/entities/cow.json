@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "portable_pocket_cabin:cow_carcass"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "minecraft:entities/cow"
+}

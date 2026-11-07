@@ -33,6 +33,19 @@ public final class PortablePocketCabinClient implements ClientModInitializer {
 				lines.add(Math.min(1, lines.size()), net.minecraft.network.chat.Component.translatable("tooltip.portable_pocket_cabin.quality." + quality)
 					.withStyle(net.minecraft.ChatFormatting.GOLD));
 			}
+			Butchery.CarcassState carcass = stack.get(Butchery.CARCASS);
+			if (carcass != null) {
+				int at = Math.min(1, lines.size());
+				if (carcass.fleece().isPresent()) {
+					lines.add(at, net.minecraft.network.chat.Component.translatable("tooltip.portable_pocket_cabin.carcass.fleece",
+						net.minecraft.network.chat.Component.translatable("color.minecraft." + carcass.fleece().get().getSerializedName()))
+						.withStyle(net.minecraft.ChatFormatting.GRAY));
+				}
+				if (carcass.scalded()) lines.add(at, net.minecraft.network.chat.Component.translatable("tooltip.portable_pocket_cabin.carcass.scalded")
+					.withStyle(net.minecraft.ChatFormatting.GRAY));
+				if (carcass.bled()) lines.add(at, net.minecraft.network.chat.Component.translatable("tooltip.portable_pocket_cabin.carcass.bled")
+					.withStyle(net.minecraft.ChatFormatting.GRAY));
+			}
 		});
 	}
 }

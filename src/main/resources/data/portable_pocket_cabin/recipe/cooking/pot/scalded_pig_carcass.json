@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "scalding_carcass",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pig_carcass"
+    }
+  ],
+  "water": 1,
+  "heat": "low",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:pig_carcass",
+    "components": {
+      "portable_pocket_cabin:carcass": {
+        "scalded": true
+      }
+    }
+  }
+}
