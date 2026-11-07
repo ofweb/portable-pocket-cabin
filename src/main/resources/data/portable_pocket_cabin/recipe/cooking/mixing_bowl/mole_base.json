@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:toasted_chilies",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:roasted_peanuts"
+    },
+    {
+      "item": "portable_pocket_cabin:toasted_sesame_seeds"
+    },
+    {
+      "item": "portable_pocket_cabin:raisins"
+    },
+    {
+      "item": "portable_pocket_cabin:corn_tortilla"
+    },
+    {
+      "item": "portable_pocket_cabin:mole_spices"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:mole_base"
+  }
+}

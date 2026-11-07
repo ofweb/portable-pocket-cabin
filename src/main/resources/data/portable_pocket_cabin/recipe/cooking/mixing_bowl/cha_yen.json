@@ -1,0 +1,31 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "sweetening",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:strained_thai_tea"
+    },
+    {
+      "item": "portable_pocket_cabin:condensed_milk"
+    },
+    {
+      "item": "portable_pocket_cabin:evaporated_milk"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:crushed_ice"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:cha_yen",
+    "count": 2
+  }
+}

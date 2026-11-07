@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "rolling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:strudel_dough"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_apple",
+      "count": 2
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:cinnamon"
+    },
+    {
+      "item": "portable_pocket_cabin:raisins"
+    },
+    {
+      "item": "portable_pocket_cabin:buttered_crumbs"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:unbaked_apfelstrudel"
+  }
+}

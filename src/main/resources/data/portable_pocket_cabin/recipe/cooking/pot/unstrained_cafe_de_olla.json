@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:roasted_coffee"
+    },
+    {
+      "item": "portable_pocket_cabin:cinnamon"
+    },
+    {
+      "item": "portable_pocket_cabin:panela"
+    },
+    {
+      "item": "portable_pocket_cabin:cloves"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:unstrained_cafe_de_olla"
+  }
+}

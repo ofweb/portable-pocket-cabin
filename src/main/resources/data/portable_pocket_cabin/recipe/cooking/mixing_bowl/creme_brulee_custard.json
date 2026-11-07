@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "tempering_eggs",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:vanilla_infused_cream"
+    },
+    {
+      "item": "minecraft:egg",
+      "count": 2
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:creme_brulee_custard",
+    "count": 2
+  }
+}

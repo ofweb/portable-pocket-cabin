@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "crushing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:aged_yerba_mate"
+    }
+  ],
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:yerba_mate",
+    "count": 2
+  }
+}

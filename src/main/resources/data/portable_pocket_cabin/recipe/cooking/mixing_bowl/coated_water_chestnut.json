@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "coating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:diced_water_chestnut",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:tapioca_starch"
+    },
+    {
+      "item": "minecraft:beetroot"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:coated_water_chestnut",
+    "count": 2
+  }
+}

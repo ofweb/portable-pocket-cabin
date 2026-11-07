@@ -143,5 +143,11 @@ def items(spec):
         else: tinted(n,tex,color)
         NAMES[f"item.portable_pocket_cabin.{n}"]=title
 def tech(spec):
-    for k,(n,d) in spec.items(): NAMES[f"technique.portable_pocket_cabin.{k}"]=n; NAMES[f"technique.portable_pocket_cabin.{k}.description"]=d
+    """Names new techniques. A technique that already exists keeps its text: a delivery that means something else gives its own technique id."""
+    existing=_j.load(open(A+'/lang/en_us.json'))
+    for k,(n,d) in spec.items():
+        key=f"technique.portable_pocket_cabin.{k}"
+        if key in existing and (existing[key]!=n or existing[key+".description"]!=d):
+            raise SystemExit(f"technique {k} already exists; reuse it as it is or give the new use its own id")
+        NAMES[key]=n; NAMES[key+".description"]=d
 GB={"item":"minecraft:glass_bottle"}; B=("minecraft:glass_bottle",1); BOWL={"item":"minecraft:bowl"}

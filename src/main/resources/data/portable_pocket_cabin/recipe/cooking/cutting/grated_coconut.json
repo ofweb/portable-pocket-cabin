@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "grating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:coconut"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:grated_coconut",
+    "count": 2
+  }
+}

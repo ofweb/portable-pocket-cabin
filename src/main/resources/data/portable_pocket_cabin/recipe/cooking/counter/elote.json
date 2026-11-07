@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "seasoning",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:charred_corn"
+    },
+    {
+      "item": "portable_pocket_cabin:crema"
+    },
+    {
+      "item": "portable_pocket_cabin:cotija_cheese"
+    },
+    {
+      "item": "portable_pocket_cabin:chili_powder"
+    },
+    {
+      "item": "portable_pocket_cabin:lime"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:elote"
+  }
+}

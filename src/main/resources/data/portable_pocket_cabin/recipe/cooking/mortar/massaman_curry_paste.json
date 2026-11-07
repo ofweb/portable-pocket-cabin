@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mortar",
+  "technique": "pounding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:massaman_curry_mix"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:massaman_curry_paste",
+    "count": 2
+  }
+}

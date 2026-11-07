@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "caramelising",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:baked_creme_brulee"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "heat": "high",
+  "time": 60,
+  "tastes": [
+    "sweet",
+    "bitter"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:creme_brulee"
+  }
+}

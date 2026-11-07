@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "sweetening",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:strained_horchata"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:horchata_de_arroz"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "rolling_balls",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:bua_loy_dough"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:bua_loy_balls",
+    "count": 4
+  }
+}

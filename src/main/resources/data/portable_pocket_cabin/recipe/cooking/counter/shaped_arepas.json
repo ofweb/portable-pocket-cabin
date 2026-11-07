@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "shaping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:arepa_dough"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:shaped_arepas",
+    "count": 2
+  }
+}

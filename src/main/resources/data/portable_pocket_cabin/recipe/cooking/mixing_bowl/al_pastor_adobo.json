@@ -1,0 +1,34 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:soaked_chilies"
+    },
+    {
+      "item": "portable_pocket_cabin:annatto_seed"
+    },
+    {
+      "item": "portable_pocket_cabin:pineapple"
+    },
+    {
+      "item": "portable_pocket_cabin:wine_vinegar"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    },
+    {
+      "item": "portable_pocket_cabin:cumin"
+    }
+  ],
+  "time": 6,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:al_pastor_adobo",
+    "count": 2
+  }
+}

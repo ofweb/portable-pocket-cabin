@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "rolling_balls",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pao_de_queijo_dough"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:pao_de_queijo_balls"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:alfajor_rounds",
+      "count": 4
+    }
+  ],
+  "heat": "low",
+  "time": 160,
+  "result": {
+    "id": "portable_pocket_cabin:alfajor_biscuits",
+    "count": 4
+  }
+}

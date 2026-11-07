@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "reducing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:palm_sap",
+      "count": 4
+    }
+  ],
+  "heat": "high",
+  "time": 400,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 4
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:thick_palm_syrup"
+  }
+}

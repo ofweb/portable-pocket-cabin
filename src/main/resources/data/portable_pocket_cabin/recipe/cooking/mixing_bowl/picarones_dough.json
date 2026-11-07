@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "kneading",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:boiled_picarones_vegetables"
+    },
+    {
+      "item": "portable_pocket_cabin:wheat_flour",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:yeast"
+    },
+    {
+      "item": "portable_pocket_cabin:anise"
+    }
+  ],
+  "time": 6,
+  "result": {
+    "id": "portable_pocket_cabin:picarones_dough"
+  }
+}

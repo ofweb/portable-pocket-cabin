@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "wet_grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:soaked_horchata_rice"
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:horchata_base"
+  }
+}

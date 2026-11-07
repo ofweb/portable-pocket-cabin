@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/churros",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 13140010
+      }
+    ]
+  }
+}

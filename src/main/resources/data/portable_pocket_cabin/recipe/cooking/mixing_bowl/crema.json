@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "stirring",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:creme_fraiche"
+    },
+    {
+      "item": "portable_pocket_cabin:lime_juice"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 2,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    },
+    {
+      "id": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:crema"
+  }
+}

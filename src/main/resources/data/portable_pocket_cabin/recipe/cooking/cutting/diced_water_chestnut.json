@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "dicing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:water_chestnut"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:diced_water_chestnut",
+    "count": 2
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "filling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:baked_bienenstich"
+    },
+    {
+      "item": "portable_pocket_cabin:vanilla_custard"
+    }
+  ],
+  "time": 40,
+  "tastes": [
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:bienenstich"
+  }
+}

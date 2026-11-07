@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:roasted_cocoa_nibs",
+      "count": 2
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:cinnamon"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:mexican_chocolate_mix"
+  }
+}

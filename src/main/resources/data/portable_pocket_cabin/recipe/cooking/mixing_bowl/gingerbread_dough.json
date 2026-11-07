@@ -1,0 +1,34 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:wheat_flour",
+      "count": 2
+    },
+    {
+      "item": "minecraft:honey_bottle"
+    },
+    {
+      "item": "portable_pocket_cabin:brown_sugar"
+    },
+    {
+      "item": "portable_pocket_cabin:cinnamon"
+    },
+    {
+      "item": "portable_pocket_cabin:cloves"
+    },
+    {
+      "item": "portable_pocket_cabin:ginger"
+    }
+  ],
+  "time": 6,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:gingerbread_dough"
+  }
+}

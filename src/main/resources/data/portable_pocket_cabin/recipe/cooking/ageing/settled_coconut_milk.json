@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "settling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:coconut_milk"
+    }
+  ],
+  "time": 6000,
+  "result": {
+    "id": "portable_pocket_cabin:settled_coconut_milk"
+  }
+}

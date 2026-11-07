@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "ageing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_yerba_mate_leaves"
+    }
+  ],
+  "time": 120000,
+  "result": {
+    "id": "portable_pocket_cabin:aged_yerba_mate"
+  }
+}

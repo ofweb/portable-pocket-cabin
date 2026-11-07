@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "chopping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:gherkins"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:chopped_gherkins",
+    "count": 2
+  }
+}

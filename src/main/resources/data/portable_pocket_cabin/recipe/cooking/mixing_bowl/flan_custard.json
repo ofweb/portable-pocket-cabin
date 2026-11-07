@@ -1,0 +1,32 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "minecraft:egg",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:condensed_milk"
+    },
+    {
+      "item": "portable_pocket_cabin:evaporated_milk"
+    },
+    {
+      "item": "portable_pocket_cabin:cream_cheese"
+    },
+    {
+      "item": "portable_pocket_cabin:vanilla"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:flan_custard"
+  }
+}

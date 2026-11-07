@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:shaped_kammerjunkere"
+    }
+  ],
+  "heat": "medium",
+  "time": 160,
+  "result": {
+    "id": "portable_pocket_cabin:baked_kammerjunkere",
+    "count": 6
+  }
+}

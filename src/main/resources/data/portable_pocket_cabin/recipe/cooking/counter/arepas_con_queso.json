@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "filling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:arepas"
+    },
+    {
+      "item": "portable_pocket_cabin:queso_blanco"
+    },
+    {
+      "item": "portable_pocket_cabin:salted_butter"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:arepas_con_queso"
+  }
+}

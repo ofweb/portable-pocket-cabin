@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "fermenting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:coffee_cherry",
+      "count": 4
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "portable_pocket_cabin:fermented_coffee_cherries",
+    "count": 4
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "wrapping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:puff_dough"
+    },
+    {
+      "item": "portable_pocket_cabin:queso_blanco"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:raw_tequenos",
+    "count": 4
+  }
+}

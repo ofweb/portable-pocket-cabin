@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "setting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:mexican_chocolate_paste"
+    }
+  ],
+  "time": 6000,
+  "result": {
+    "id": "portable_pocket_cabin:mexican_chocolate",
+    "count": 2
+  }
+}

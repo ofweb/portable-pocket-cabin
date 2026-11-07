@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cornstarch",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:wheat_flour"
+    },
+    {
+      "item": "portable_pocket_cabin:raw_butter"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "minecraft:egg"
+    }
+  ],
+  "time": 6,
+  "result": {
+    "id": "portable_pocket_cabin:alfajor_dough"
+  }
+}

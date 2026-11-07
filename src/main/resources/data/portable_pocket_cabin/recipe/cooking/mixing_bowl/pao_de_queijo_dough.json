@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:scalded_starch"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "portable_pocket_cabin:minas_cheese"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 6,
+  "result": {
+    "id": "portable_pocket_cabin:pao_de_queijo_dough"
+  }
+}

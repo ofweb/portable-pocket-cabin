@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/tub_tim_grob",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 15782104
+      }
+    ]
+  }
+}

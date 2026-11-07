@@ -1,0 +1,31 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:purple_corn",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:pineapple"
+    },
+    {
+      "item": "minecraft:apple"
+    },
+    {
+      "item": "portable_pocket_cabin:cinnamon"
+    },
+    {
+      "item": "portable_pocket_cabin:cloves"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 400,
+  "result": {
+    "id": "portable_pocket_cabin:unstrained_chicha_morada"
+  }
+}

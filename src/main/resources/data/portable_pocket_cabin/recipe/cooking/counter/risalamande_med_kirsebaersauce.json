@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:risalamande"
+    },
+    {
+      "item": "portable_pocket_cabin:cherry_sauce"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "sweet",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:risalamande_med_kirsebaersauce"
+  }
+}

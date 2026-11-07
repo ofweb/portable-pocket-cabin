@@ -272,3 +272,40 @@ The check also listed 36 intermediates that phase 3's ingredients already allowe
   - Mint syrup and citronnade maison start from the existing simple syrup, which already dissolves sugar in the pot.
   - Onigiri uses umeboshi. The salted salmon filling waits for B-0049.
 
+## Delivery 6 as built
+
+- **Field crops:** black bean, Thai aubergine, cassava, sweet potato, bird's eye chili, holy basil, Thai basil, lemongrass, cardamom, galangal, ginger, turmeric, and pineapple. Cardamom gives pods and more seeds. Pineapple grows from its crown.
+- **Trellis vines:** long bean, peppercorn, vanilla, and betel.
+- **Bush:** pandan.
+- **Fruit trees:** papaya (green papaya), makrut lime (leaves), allspice, annatto, clove, nutmeg, lime, mango, coffee, yerba mate, oil palm, and coconut palm.
+- **Special harvests:** `HarvestTrunkBlock` is a trunk with a `ready` state.
+  - **Cinnamon:** the cinnamon tree grows a cinnamon log trunk. An axe strips one or two pieces of bark without breaking the trunk, wears the axe, and leaves the trunk stripped. The bark grows back.
+  - **Palm sap:** oil palm and coconut palm share a palm log trunk. It fills with sap over time, and a glass bottle taps it.
+  - Both trunks are logs, so their trees' leaves don't decay. The cinnamon tree has its own leaves, which drop cinnamon saplings.
+- **Coconut palm:** its sapling can also be planted on sand, and it grows wild on beaches. Biome tags can't say "beaches beside jungles", so it grows on every beach.
+- **Where they grow:**
+  - Most plants grow in jungles, sparse jungles, and bamboo jungles.
+  - Cassava, sweet potato, and pineapple also grow in savannas.
+  - Coffee and yerba mate grow in sparse jungles, standing in for jungle edges.
+- **Oils and sugar:** dendê oil joins `portable_pocket_cabin:cooking_oils`, and palm sugar joins `portable_pocket_cabin:sugars`.
+- **Completed chains:** the completion check found 40 intermediates and 35 dishes, and all of them shipped:
+  - Spices: cinnamon, cloves, black pepper, cardamom, nutmeg, vanilla, curry powder, pickling spice, and massaman curry paste.
+  - Coconut: coconut milk, coconut cream, desiccated coconut, and toasted coconut.
+  - Starches and noodles: tapioca starch, sour cassava starch, sweet potato starch, and glass noodles.
+  - Oils, syrups, and sugars: achiote oil, dendê oil, lime juice, palm sugar, chancaca syrup, and Mexican chocolate.
+  - Sauces and salads: al pastor adobo, mole paste, satay marinade, béchamel, crema, queso blanco, curry ketchup, karrysalat, and remoulade.
+  - Bakes, puddings, and drinks: gingerbread, kammerjunkere, rice pudding, vanilla custard, Thai tea leaves, roasted coffee, and yerba mate. Dried black beans also shipped.
+  - Dishes: Crème brûlée, Socca, Apfelstrudel, Bienenstich, Kinderpunsch, Mango sticky rice, Bua loy, Khanom krok, Tub tim grob, Sangkhaya fak thong, Nam manao, Cha yen, Cha manao, Nam takrai, Churros, Flan napolitano, Arroz con leche, Elote, Horchata de arroz, Champurrado, Café de olla, Arepas con queso, Pão de queijo, Alfajores de maicena, Picarones, Tequeños, Chicha morada, Aguapanela con limón, Limonada suíça, Tereré, Limonada de coco, Risalamande med kirsebærsauce, Koldskål med kammerjunkere, Æbleskiver, and Varm hyldebærsaft.
+- **Adaptations:**
+  - Single-input stations: the catalogue toasts or blends several ingredients at once on the skillet or mill, which take one. Curry powder, massaman curry paste, mole paste, and Mexican chocolate first gather their ingredients in the mixing bowl. The mortar takes two ingredients, so it pounds in the last one. Al pastor adobo blends in the mixing bowl, like the anticucho marinade.
+  - Coconut milk soaks grated coconut with water in the mixing bowl before the press, because the press takes one ingredient.
+  - Kammerjunkere dough uses salted butter, because the catalogue gives it the same ingredients as æbleskiver batter.
+  - Tequeños wrap the existing puff dough, which has the same ingredients as tequeño dough.
+  - Crema cultures cream with the existing crème fraîche, then stirs in lime and salt.
+  - Æbleskiver are served at the prep counter with any jam, from the `portable_pocket_cabin:jams` tag. The æbleskive pan has no seasoning slots, so khanom krok carries no tastes.
+  - Ovens have no water, so a water bath is a technique name only.
+- **Techniques:** the delivery scripts had overwritten the text of some existing techniques. The original text is restored. Uses that mean something different have their own technique:
+  - Skimming coconut cream, searing yerba mate leaves, warming coconut sauces, brewing tea, tempering eggs, and spreading a topping.
+  - From delivery 5, shaping rice and curdling with a coagulant.
+  - The plant generator now refuses to change an existing technique's text.
+

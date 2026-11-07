@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "sweetening",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:brewed_black_tea"
+    },
+    {
+      "item": "portable_pocket_cabin:lime"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:cha_manao"
+  }
+}

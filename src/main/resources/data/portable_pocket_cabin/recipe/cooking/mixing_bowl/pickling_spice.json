@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:mustard_seed"
+    },
+    {
+      "item": "portable_pocket_cabin:black_pepper"
+    },
+    {
+      "item": "portable_pocket_cabin:bay_leaf"
+    },
+    {
+      "item": "portable_pocket_cabin:cloves"
+    },
+    {
+      "item": "portable_pocket_cabin:allspice"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:pickling_spice",
+    "count": 4
+  }
+}

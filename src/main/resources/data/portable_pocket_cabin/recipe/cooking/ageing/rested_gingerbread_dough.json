@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "resting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:gingerbread_dough"
+    }
+  ],
+  "time": 12000,
+  "result": {
+    "id": "portable_pocket_cabin:rested_gingerbread_dough"
+  }
+}

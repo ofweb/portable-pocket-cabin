@@ -182,6 +182,10 @@ final class CookingScreenshots {
 		shot(context, "cookbook-garden-rice");
 		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectPlant("tea_bush"));
 		shot(context, "cookbook-garden-tea");
+		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectPlant("cinnamon_log"));
+		shot(context, "cookbook-garden-cinnamon");
+		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectPlant("coconut_leaves"));
+		shot(context, "cookbook-garden-coconut");
 		context.runOnClient(client -> client.gui.setScreen(null));
 	}
 

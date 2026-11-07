@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:cheese_press",
+  "technique": "pressing_curds",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:queso_blanco_curds",
+      "count": 2
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:queso_blanco",
+    "count": 2
+  }
+}

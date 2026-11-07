@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:press",
+  "technique": "pressing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:lime",
+      "count": 2
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:lime_juice"
+  }
+}

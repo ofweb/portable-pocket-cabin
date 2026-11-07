@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "soaking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:steamed_glutinous_rice",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:sweet_coconut_sauce"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:coconut_sticky_rice",
+    "count": 2
+  }
+}

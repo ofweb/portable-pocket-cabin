@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "axis=y,ready=true": {
+      "model": "portable_pocket_cabin:block/cinnamon_log"
+    },
+    "axis=x,ready=true": {
+      "model": "portable_pocket_cabin:block/cinnamon_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=z,ready=true": {
+      "model": "portable_pocket_cabin:block/cinnamon_log_horizontal",
+      "x": 90
+    },
+    "axis=y,ready=false": {
+      "model": "portable_pocket_cabin:block/cinnamon_log_harvested"
+    },
+    "axis=x,ready=false": {
+      "model": "portable_pocket_cabin:block/cinnamon_log_harvested_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=z,ready=false": {
+      "model": "portable_pocket_cabin:block/cinnamon_log_harvested_horizontal",
+      "x": 90
+    }
+  }
+}

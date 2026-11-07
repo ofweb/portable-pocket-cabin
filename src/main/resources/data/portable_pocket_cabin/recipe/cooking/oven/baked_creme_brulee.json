@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking_in_a_water_bath",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:creme_brulee_custard"
+    }
+  ],
+  "heat": "low",
+  "time": 300,
+  "result": {
+    "id": "portable_pocket_cabin:baked_creme_brulee"
+  }
+}

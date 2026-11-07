@@ -1,0 +1,28 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:mayonnaise"
+    },
+    {
+      "item": "portable_pocket_cabin:curry_powder"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_apple"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:karrysalat",
+    "count": 2
+  }
+}

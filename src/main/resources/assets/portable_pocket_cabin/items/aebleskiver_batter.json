@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/aebleskiver_batter",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 15784096
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:aebleskive_pan",
+  "technique": "cooking_in_wells",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:aebleskiver_batter"
+    }
+  ],
+  "heat": "medium",
+  "time": 120,
+  "result": {
+    "id": "portable_pocket_cabin:plain_aebleskiver",
+    "count": 7
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "stage=0": {
+      "model": "portable_pocket_cabin:block/oil_palm_sapling"
+    },
+    "stage=1": {
+      "model": "portable_pocket_cabin:block/oil_palm_sapling"
+    }
+  }
+}

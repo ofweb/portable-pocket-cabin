@@ -1,0 +1,30 @@
+{
+  "type": "portable_pocket_cabin:strainer",
+  "technique": "washing_starch",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:grated_cassava",
+      "count": 2
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    }
+  ],
+  "time": 100,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:wet_tapioca_starch"
+  }
+}
