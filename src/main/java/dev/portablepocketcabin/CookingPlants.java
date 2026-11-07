@@ -90,6 +90,10 @@ final class CookingPlants {
 	static final Item ELDERFLOWER = ingredient("elderflower", null);
 	static final Item ELDERBERRY = ingredient("elderberry", null);
 	static final Block ELDER_BUSH = bush("elder_bush", "elder_cutting", () -> ELDERFLOWER, () -> ELDERBERRY);
+	// Delivery 1: fruit trees. Each species has a sapling and fruiting leaves on a vanilla trunk.
+	static final Item PLUM = ingredient("plum", food(3, 1.8F));
+	static final Block PLUM_LEAVES = fruitTree("plum", () -> PLUM);
+
 	/** Picked from vanilla rose bushes with shears. */
 	static final Item ROSEHIP = ingredient("rosehip", null);
 
@@ -165,6 +169,17 @@ final class CookingPlants {
 		item[0] = registerItem(produce, properties -> new BlockItem(block, (food == null ? properties : properties.food(food)).useItemDescriptionPrefix()));
 		PLANTS.put(plant, block);
 		return block;
+	}
+
+	/** A fruit tree species: {@code <tree>_leaves} that fruit, and a {@code <tree>_sapling} that grows the {@code <tree>} feature. */
+	private static Block fruitTree(String tree, java.util.function.Supplier<Item> fruit) {
+		Block leaves = registerBlockWithItem(tree + "_leaves", properties -> new FruitingLeavesBlock(properties, fruit), BlockBehaviour.Properties.of()
+			.strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY)
+			.isValidSpawn((state, level, pos, type) -> false).isSuffocating((state, level, pos) -> false).isViewBlocking((state, level, pos) -> false));
+		registerBlockWithItem(tree + "_sapling", properties -> new FruitSaplingBlock(FruitSaplingBlock.grower(tree), properties),
+			BlockBehaviour.Properties.of().noCollision().randomTicks().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY));
+		PLANTS.put(tree + "_leaves", leaves);
+		return leaves;
 	}
 
 	private static BlockBehaviour.Properties bushProperties() {

@@ -474,5 +474,8 @@
   "item.portable_pocket_cabin.elder_cutting": "Elder Cutting",
   "item.portable_pocket_cabin.elderflower": "Elderflower",
   "item.portable_pocket_cabin.elderberry": "Elderberry",
-  "item.portable_pocket_cabin.rosehip": "Rosehip"
+  "item.portable_pocket_cabin.rosehip": "Rosehip",
+  "block.portable_pocket_cabin.plum_leaves": "Plum Leaves",
+  "block.portable_pocket_cabin.plum_sapling": "Plum Sapling",
+  "item.portable_pocket_cabin.plum": "Plum"
 }

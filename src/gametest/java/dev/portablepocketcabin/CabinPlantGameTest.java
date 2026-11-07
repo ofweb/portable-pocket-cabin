@@ -157,6 +157,44 @@ public final class CabinPlantGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void plumSaplingsGrowTreesThatFruitAgain(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var base = new BlockPos(4, 2, 4);
+		helper.setBlock(base.below(), Blocks.GRASS_BLOCK);
+		var sapling = (net.minecraft.world.level.block.SaplingBlock) ((net.minecraft.world.item.BlockItem) CookingPlants.item("plum_sapling")).getBlock();
+		helper.setBlock(base, sapling);
+		var pos = helper.absolutePos(base);
+		for (int i = 0; i < 10 && level.getBlockState(pos).is(sapling); i++) {
+			sapling.advanceTree(level, pos, level.getBlockState(pos), RandomSource.create(i));
+		}
+		helper.assertTrue(level.getBlockState(pos).is(Blocks.OAK_LOG), "A plum sapling grows an oak-wood trunk");
+		BlockPos leaves = null;
+		for (BlockPos near : BlockPos.betweenClosed(pos.offset(-3, 1, -3), pos.offset(3, 7, 3))) {
+			if (level.getBlockState(near).is(CookingPlants.PLUM_LEAVES)) {
+				leaves = near.immutable();
+				break;
+			}
+		}
+		helper.assertTrue(leaves != null, "The tree has plum leaves");
+		var random = RandomSource.create(7);
+		for (int i = 0; i < 200 && level.getBlockState(leaves).getValue(FruitingLeavesBlock.AGE) < FruitingLeavesBlock.FRUITING; i++) {
+			level.getBlockState(leaves).randomTick(level, leaves, random);
+		}
+		helper.assertTrue(level.getBlockState(leaves).getValue(FruitingLeavesBlock.AGE) == FruitingLeavesBlock.FRUITING, "Plum leaves flower, then fruit");
+		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+		var hit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(leaves), net.minecraft.core.Direction.UP, leaves, false);
+		level.getBlockState(leaves).useWithoutItem(level, player, hit);
+		helper.assertTrue(level.getBlockState(leaves).is(CookingPlants.PLUM_LEAVES) && level.getBlockState(leaves).getValue(FruitingLeavesBlock.AGE) == 0,
+			"Picking plums leaves the leaves on the tree to fruit again");
+		var plums = level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(leaves).inflate(2));
+		helper.assertTrue(plums.stream().anyMatch(entity -> entity.getItem().is(CookingPlants.PLUM)), "Picking drops plums");
+		helper.assertTrue(CabinGreenhouseGrowth.canProgress(CookingPlants.PLUM_LEAVES.defaultBlockState())
+			&& !CabinGreenhouseGrowth.canProgress(CookingPlants.PLUM_LEAVES.defaultBlockState().setValue(FruitingLeavesBlock.AGE, 2)),
+			"The greenhouse brings fruit trees into fruit, and stops there");
+		helper.succeed();
+	}
+
 	private static void tick(GameTestHelper helper, BlockPos relative, int ticks) {
 		var level = helper.getLevel();
 		var pos = helper.absolutePos(relative);
