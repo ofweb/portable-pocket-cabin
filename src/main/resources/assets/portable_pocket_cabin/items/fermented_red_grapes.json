@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/fermented_red_grapes",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 4852272
+      }
+    ]
+  }
+}

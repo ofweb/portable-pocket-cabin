@@ -1,0 +1,25 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chopped_rhubarb",
+      "count": 4
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:lemon"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:unstrained_rabarbersaft"
+  }
+}

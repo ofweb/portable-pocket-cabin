@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "charring",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tomato"
+    }
+  ],
+  "heat": "high",
+  "time": 80,
+  "result": {
+    "id": "portable_pocket_cabin:charred_tomato"
+  }
+}

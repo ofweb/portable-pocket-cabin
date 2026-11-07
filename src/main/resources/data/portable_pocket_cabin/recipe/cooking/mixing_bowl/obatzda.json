@@ -1,0 +1,34 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mashing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:aged_soft_cheese"
+    },
+    {
+      "item": "portable_pocket_cabin:salted_butter"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:paprika"
+    },
+    {
+      "item": "portable_pocket_cabin:caraway_seed"
+    },
+    {
+      "item": "portable_pocket_cabin:beer"
+    }
+  ],
+  "time": 6,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:obatzda",
+    "count": 2
+  }
+}

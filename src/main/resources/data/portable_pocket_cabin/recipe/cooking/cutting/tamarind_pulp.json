@@ -1,0 +1,12 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "shelling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tamarind_pod"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tamarind_pulp"
+  }
+}

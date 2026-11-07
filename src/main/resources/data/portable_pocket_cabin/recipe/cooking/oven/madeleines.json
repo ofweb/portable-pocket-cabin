@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:madeleine_batter"
+    }
+  ],
+  "heat": "medium",
+  "time": 160,
+  "tastes": [
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:madeleines",
+    "count": 6
+  }
+}

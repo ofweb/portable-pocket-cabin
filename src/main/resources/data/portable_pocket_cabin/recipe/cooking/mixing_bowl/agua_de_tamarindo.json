@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "sweetening",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tamarind_water"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:agua_de_tamarindo"
+  }
+}

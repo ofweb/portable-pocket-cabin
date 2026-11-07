@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:strainer",
+  "technique": "straining",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:infused_elderflower"
+    }
+  ],
+  "time": 60,
+  "remainders": [
+    {
+      "id": "portable_pocket_cabin:pulp"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:hyldeblomstsaft"
+  }
+}

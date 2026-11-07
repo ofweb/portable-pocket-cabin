@@ -111,6 +111,43 @@ final class CookingPlants {
 	static final Block LAVER = seaPlant("laver_plant", "laver");
 	static final Block SEA_LETTUCE = seaPlant("sea_lettuce_plant", "sea_lettuce");
 
+	// Delivery 3: savannas, deserts, and badlands.
+	static final Item BLUE_CORN = ingredient("blue_corn", null);
+	static final Item AUBERGINE = ingredient("aubergine", food(1, 0.6F));
+	static final Item BELL_PEPPER = ingredient("bell_pepper", food(2, 1.2F));
+	static final Item PAPRIKA_PEPPER = ingredient("paprika_pepper", null);
+	static final Item TOMATILLO = ingredient("tomatillo", food(1, 0.6F));
+	static final Item GREEN_CHILI = ingredient("green_chili", null);
+	static final Item POBLANO_CHILI = ingredient("poblano_chili", null);
+	static final Item RED_CHILI = ingredient("red_chili", null);
+	static final Item BASIL = ingredient("basil", null);
+	static final Item ROSELLE = ingredient("roselle", null);
+	static final Item TOMATO = ingredient("tomato", food(2, 1.2F));
+	static final Item GRAPE = ingredient("grape", food(2, 1.2F));
+	static final Item RED_GRAPE = ingredient("red_grape", food(2, 1.2F));
+	static final Item BAY_LAUREL_LEAF = ingredient("bay_laurel_leaf", null);
+	static final Item APRICOT = ingredient("apricot", food(3, 1.8F));
+	static final Item LEMON = ingredient("lemon", food(1, 0.6F));
+	static final Item ORANGE = ingredient("orange", food(3, 1.8F));
+	static final Item TAMARIND_POD = ingredient("tamarind_pod", null);
+	static final Item ALMOND = ingredient("almond", food(2, 1.2F));
+	static {
+		String[][] crops = {{"blue_corn", "blue_corn_seeds"}, {"aubergine", "aubergine_seeds"}, {"bell_pepper", "bell_pepper_seeds"},
+			{"paprika_pepper", "paprika_pepper_seeds"}, {"tomatillo", "tomatillo_seeds"}, {"green_chili", "green_chili_seeds"},
+			{"poblano_chili", "poblano_chili_seeds"}, {"red_chili", "red_chili_seeds"}, {"basil", "basil_seeds"}, {"roselle", "roselle_seeds"},
+			{"sesame", "sesame_seed"}, {"peanut", "peanut"}, {"chickpea", "chickpea"}, {"anise", "anise_seed"}, {"cumin", "cumin_seed"}};
+		for (String[] crop : crops) fieldCrop(crop[0], crop[1]);
+		trellisCrop("tomato_vine", "tomato_seeds", () -> TOMATO);
+		trellisCrop("grape_vine", "grape_cutting", () -> GRAPE);
+		trellisCrop("red_grape_vine", "red_grape_cutting", () -> RED_GRAPE);
+		fruitTree("bay_laurel", () -> BAY_LAUREL_LEAF);
+		fruitTree("apricot", () -> APRICOT);
+		fruitTree("lemon", () -> LEMON);
+		fruitTree("orange", () -> ORANGE);
+		fruitTree("tamarind", () -> TAMARIND_POD);
+		fruitTree("almond", () -> ALMOND);
+	}
+
 	/** Delivery 1 products: what the plains, meadow, and forest plants complete in the recipe catalogue. */
 	static final List<Item> PRODUCTS = new ArrayList<>();
 	static {
@@ -154,6 +191,30 @@ final class CookingPlants {
 		PRODUCTS.add(ingredient("gammeldags_aeblekage", food(8, 9.6F)));
 		PRODUCTS.add(registerItem("rodgrod_med_flode", properties -> new Item(properties.stacksTo(16).food(food(7, 8.4F))
 			.usingConvertsTo(net.minecraft.world.item.Items.BOWL))));
+	}
+
+	/** Delivery 3 products: spices and chilies, salsas, sesame, almonds and peanuts, red wine, citrus and hibiscus drinks, and the dishes they complete. */
+	static {
+		String[] plain = {"toasted_sesame_seeds", "sesame_paste", "dried_chickpeas", "chickpea_flour", "blue_hominy", "blue_corn_masa", "charred_tomato",
+			"raw_salsa_roja", "salsa_roja", "roasted_tomatillo", "salsa_verde", "tamarind_pulp", "anise", "dried_cumin_seed", "toasted_cumin_seed", "cumin",
+			"dried_paprika_pepper", "paprika", "dried_chilies", "chili_powder", "bay_leaf", "bouquet_garni", "roasted_peanut_pods", "blanched_almonds",
+			"chopped_almonds", "sliced_almonds", "crushed_red_grapes", "fermented_red_grapes", "dried_hibiscus", "brown_butter", "madeleine_batter",
+			"cheesecake_filling", "unbaked_kasekuchen", "fruchtetee_blend", "chopped_rhubarb", "unbaked_quesadilla", "obatzda"};
+		for (String name : plain) PRODUCTS.add(ingredient(name, null));
+		String[] bottles = {"sesame_oil", "soaked_tamarind", "tamarind_paste", "young_red_wine", "red_wine", "lemon_juice", "hot_hibiscus",
+			"strained_hibiscus", "tamarind_water", "infused_elderflower", "unstrained_rabarbersaft"};
+		for (String name : bottles) PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16))));
+		for (String name : new String[] {"citron_presse", "fruchtetee", "nam_krajeab", "agua_de_jamaica", "agua_de_tamarindo", "hyldeblomstsaft", "rabarbersaft"}) {
+			PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16)
+				.food(new FoodProperties(3, 1.2F, true), net.minecraft.world.item.component.Consumables.DEFAULT_DRINK)
+				.usingConvertsTo(net.minecraft.world.item.Items.GLASS_BOTTLE))));
+		}
+		PRODUCTS.add(ingredient("roasted_peanuts", food(2, 1.2F)));
+		PRODUCTS.add(ingredient("raisins", food(2, 1.2F)));
+		PRODUCTS.add(ingredient("madeleines", food(3, 2.4F)));
+		PRODUCTS.add(ingredient("kasekuchen", food(8, 9.6F)));
+		PRODUCTS.add(ingredient("obatzda_with_bread", food(8, 9.6F)));
+		PRODUCTS.add(ingredient("quesadilla", food(6, 7.2F)));
 	}
 
 	/** Picked from vanilla rose bushes with shears. */

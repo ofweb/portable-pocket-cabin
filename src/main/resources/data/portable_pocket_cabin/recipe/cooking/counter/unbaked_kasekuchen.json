@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "filling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:shortcrust_pastry"
+    },
+    {
+      "item": "portable_pocket_cabin:cheesecake_filling"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:unbaked_kasekuchen"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "seasoning",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:quesadilla"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:quesadilla"
+  }
+}

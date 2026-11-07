@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "steeping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_hibiscus",
+      "count": 2
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:hot_hibiscus"
+  }
+}

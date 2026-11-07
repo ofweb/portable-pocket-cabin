@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "frying_salsa",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:raw_salsa_roja"
+    }
+  ],
+  "heat": "low",
+  "time": 100,
+  "tastes": [
+    "salty",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:salsa_roja"
+  }
+}

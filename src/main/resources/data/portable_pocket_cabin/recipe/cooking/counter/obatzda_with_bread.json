@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:obatzda"
+    },
+    {
+      "item": "portable_pocket_cabin:pretzel"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:obatzda_with_bread"
+  }
+}

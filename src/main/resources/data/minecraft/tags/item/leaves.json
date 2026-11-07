@@ -1,6 +1,12 @@
 {
   "replace": false,
   "values": [
-    "portable_pocket_cabin:plum_leaves"
+    "portable_pocket_cabin:plum_leaves",
+    "portable_pocket_cabin:bay_laurel_leaves",
+    "portable_pocket_cabin:apricot_leaves",
+    "portable_pocket_cabin:lemon_leaves",
+    "portable_pocket_cabin:orange_leaves",
+    "portable_pocket_cabin:tamarind_leaves",
+    "portable_pocket_cabin:almond_leaves"
   ]
 }

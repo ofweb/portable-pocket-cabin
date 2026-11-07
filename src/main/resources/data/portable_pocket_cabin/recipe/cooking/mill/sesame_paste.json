@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:toasted_sesame_seeds",
+      "count": 4
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:sesame_paste"
+  }
+}

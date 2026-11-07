@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_berries"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_hibiscus"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_rosehip"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_apple"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:fruchtetee_blend",
+    "count": 2
+  }
+}

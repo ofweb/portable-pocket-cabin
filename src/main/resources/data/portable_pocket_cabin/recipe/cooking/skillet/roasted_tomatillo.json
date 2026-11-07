@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "roasting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tomatillo"
+    }
+  ],
+  "heat": "high",
+  "time": 80,
+  "result": {
+    "id": "portable_pocket_cabin:roasted_tomatillo"
+  }
+}

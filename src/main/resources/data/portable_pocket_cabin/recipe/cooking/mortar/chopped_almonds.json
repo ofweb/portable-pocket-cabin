@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:mortar",
+  "technique": "pounding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:blanched_almonds"
+    }
+  ],
+  "time": 3,
+  "result": {
+    "id": "portable_pocket_cabin:chopped_almonds"
+  }
+}
