@@ -1,0 +1,11 @@
+{
+  "carcass": "portable_pocket_cabin:pig_carcass",
+  "dressing": "scrape",
+  "scald": true,
+  "dressing_gives": [
+    {
+      "id": "portable_pocket_cabin:pig_bristles"
+    }
+  ],
+  "dressed": "portable_pocket_cabin:dressed_pig"
+}

@@ -27,6 +27,9 @@ public final class PortablePocketCabinClient implements ClientModInitializer {
 		BlockEntityRenderers.register(CookingBlocks.CUTTING_BOARD_ENTITY, CookingItemsRenderer.cuttingBoard());
 		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(PlantNeeds.Sync.TYPE,
 			(sync, context) -> PlantNeeds.client = Map.copyOf(sync.needs()));
+		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(CarcassData.Sync.TYPE,
+			(sync, context) -> CarcassData.client = Map.copyOf(sync.carcasses()));
+		BlockEntityRenderers.register(Butchery.HANGING_HOOK_ENTITY, HangingHookRenderer::new);
 		net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> {
 			Integer quality = stack.get(Seasoning.DISH_QUALITY);
 			if (quality != null) {

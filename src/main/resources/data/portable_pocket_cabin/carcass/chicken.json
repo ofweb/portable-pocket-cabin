@@ -1,0 +1,12 @@
+{
+  "carcass": "portable_pocket_cabin:chicken_carcass",
+  "dressing": "pluck",
+  "scald": true,
+  "dressing_gives": [
+    {
+      "id": "minecraft:feather",
+      "count": 2
+    }
+  ],
+  "dressed": "portable_pocket_cabin:dressed_chicken"
+}

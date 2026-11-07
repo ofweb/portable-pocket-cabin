@@ -1,0 +1,10 @@
+{
+  "carcass": "portable_pocket_cabin:goat_carcass",
+  "dressing": "skin",
+  "dressing_gives": [
+    {
+      "id": "minecraft:leather"
+    }
+  ],
+  "dressed": "portable_pocket_cabin:dressed_goat"
+}

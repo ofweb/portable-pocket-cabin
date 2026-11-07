@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "facing=north,hanging=true": {
+      "model": "portable_pocket_cabin:block/hanging_hook",
+      "y": 0
+    },
+    "facing=north,hanging=false": {
+      "model": "portable_pocket_cabin:block/hanging_hook_wall",
+      "y": 180
+    },
+    "facing=east,hanging=true": {
+      "model": "portable_pocket_cabin:block/hanging_hook",
+      "y": 90
+    },
+    "facing=east,hanging=false": {
+      "model": "portable_pocket_cabin:block/hanging_hook_wall",
+      "y": 270
+    },
+    "facing=south,hanging=true": {
+      "model": "portable_pocket_cabin:block/hanging_hook",
+      "y": 180
+    },
+    "facing=south,hanging=false": {
+      "model": "portable_pocket_cabin:block/hanging_hook_wall",
+      "y": 0
+    },
+    "facing=west,hanging=true": {
+      "model": "portable_pocket_cabin:block/hanging_hook",
+      "y": 270
+    },
+    "facing=west,hanging=false": {
+      "model": "portable_pocket_cabin:block/hanging_hook_wall",
+      "y": 90
+    }
+  }
+}

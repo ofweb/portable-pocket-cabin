@@ -1398,5 +1398,13 @@
   "technique.portable_pocket_cabin.scalding_carcass.description": "Dip a carcass in hot water, well below boiling, so feathers and bristles loosen at the roots and pull out cleanly.",
   "tooltip.portable_pocket_cabin.carcass.bled": "Bled",
   "tooltip.portable_pocket_cabin.carcass.scalded": "Scalded",
-  "tooltip.portable_pocket_cabin.carcass.fleece": "Fleece: %s"
+  "tooltip.portable_pocket_cabin.carcass.fleece": "Fleece: %s",
+  "block.portable_pocket_cabin.hanging_hook": "Hanging Hook",
+  "item.portable_pocket_cabin.blood": "Blood",
+  "item.portable_pocket_cabin.pig_bristles": "Pig Bristles",
+  "message.portable_pocket_cabin.hook.no_blood": "Blood can only be collected from a fresh carcass, before it is scalded.",
+  "message.portable_pocket_cabin.hook.needs_scalding": "Scald this carcass in a cooking pot first, so the feathers or bristles come away.",
+  "message.portable_pocket_cabin.hook.pluck_by_hand": "Pluck the feathers by hand.",
+  "message.portable_pocket_cabin.hook.skin_with_knife": "Skin this carcass with a knife, or sneak to take it down.",
+  "message.portable_pocket_cabin.hook.scrape_with_knife": "Scrape this carcass with a knife, or sneak to take it down."
 }

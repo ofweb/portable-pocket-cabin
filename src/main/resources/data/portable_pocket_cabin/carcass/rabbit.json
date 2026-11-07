@@ -1,0 +1,13 @@
+{
+  "carcass": "portable_pocket_cabin:rabbit_carcass",
+  "dressing": "skin",
+  "dressing_gives": [
+    {
+      "id": "minecraft:rabbit_hide"
+    },
+    {
+      "id": "minecraft:rabbit_foot"
+    }
+  ],
+  "dressed": "portable_pocket_cabin:dressed_rabbit"
+}

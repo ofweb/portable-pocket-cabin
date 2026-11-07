@@ -68,11 +68,31 @@ final class Butchery {
 		}
 	}
 
+	/** Blood collected from a fresh carcass, for blood sausage. */
+	static final Item BLOOD = item("blood", new Item.Properties().stacksTo(16));
+	/** Scraped from a scalded pig. They make brushes. */
+	static final Item PIG_BRISTLES = item("pig_bristles", new Item.Properties());
+
+	static final net.minecraft.world.level.block.Block HANGING_HOOK = CookingBlocks.register("hanging_hook", HangingHookBlock::new,
+		net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().strength(2.0F).sound(net.minecraft.world.level.block.SoundType.CHAIN)
+			.noOcclusion().pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY));
+	static final net.minecraft.world.level.block.entity.BlockEntityType<HangingHookBlockEntity> HANGING_HOOK_ENTITY = CookingBlocks.registerEntity(
+		"hanging_hook", new net.minecraft.world.level.block.entity.BlockEntityType<>(HangingHookBlockEntity::new, java.util.Set.of(HANGING_HOOK)));
+
 	private Butchery() {
 	}
 
 	static void register() {
-		// Triggers static registration during mod initialization.
+		CarcassData.register();
+		net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents.modifyOutputEvent(net.minecraft.world.item.CreativeModeTabs.FUNCTIONAL_BLOCKS)
+			.register(entries -> entries.accept(HANGING_HOOK));
+		net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents.modifyOutputEvent(net.minecraft.world.item.CreativeModeTabs.FOOD_AND_DRINKS)
+			.register(entries -> {
+				for (Item carcass : CARCASSES.values()) entries.accept(carcass);
+				for (Item dressed : DRESSED.values()) entries.accept(dressed);
+				entries.accept(BLOOD);
+				entries.accept(PIG_BRISTLES);
+			});
 	}
 
 	/** A carcass's state: fresh when it has none recorded. */
