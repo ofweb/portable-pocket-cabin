@@ -28,6 +28,8 @@ final class ProcessStationBlockEntity extends CookingStationBlockEntity implemen
 	private int oil;
 	private CookingHeat lastHeat;
 	private boolean paused;
+	/** The game time of the last tick, for time stations (ADR-0013), or -1 before the first. */
+	private long lastTime = -1;
 	final ContainerData data = new CookingMenu.Data() {
 		@Override
 		public int get(int index) {
@@ -47,10 +49,10 @@ final class ProcessStationBlockEntity extends CookingStationBlockEntity implemen
 	ProcessStationBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, CookingMenu.Kind kind) {
 		super(type, pos, state, kind.size);
 		this.kind = kind;
-		this.process = new CookingProcess(kind.station, kind.containerSlot, kind.outputSlot, kind.byproductSlot);
+		this.process = new CookingProcess(kind.station, kind.containerSlot, kind.outputSlot, kind.byproductSlots);
 		this.top = IntStream.range(0, kind.station.ingredientSlots()).toArray();
 		this.side = kind.containerSlot >= 0 ? new int[] {kind.containerSlot} : new int[0];
-		this.bottom = new int[] {kind.outputSlot, kind.byproductSlot};
+		this.bottom = java.util.stream.IntStream.concat(IntStream.of(kind.outputSlot), IntStream.of(kind.byproductSlots)).toArray();
 	}
 
 	static ProcessStationBlockEntity counter(BlockPos pos, BlockState state) {
@@ -109,13 +111,39 @@ final class ProcessStationBlockEntity extends CookingStationBlockEntity implemen
 		return kind.station.heated() && process.wantsHeat(level, this, liquid());
 	}
 
+	/**
+	 * One use of the station's tool at a worked station, such as the spoon on the mixing bowl. Returns whether a recipe
+	 * took the use.
+	 */
+	boolean work(ServerLevel level) {
+		if (!kind.station.worked() || covered() || !process.ready(level, this, liquid())) return false;
+		process.tick(level, this, liquid(), Optional.empty(), 1);
+		saveChanged();
+		return true;
+	}
+
+	/** The game time since the last tick, for time stations, or one tick for the others. */
+	private long elapsed(ServerLevel level) {
+		if (!kind.station.timeStation()) return 1;
+		long now = level.getGameTime();
+		long elapsed = lastTime < 0 ? 1 : now - lastTime;
+		lastTime = now;
+		return elapsed;
+	}
+
+	/** Moves the saved time back, as if the station had been unloaded for {@code ticks}. For GameTests. */
+	void rewind(long ticks) {
+		if (lastTime >= 0) lastTime -= ticks;
+	}
+
 	static void serverTick(ServerLevel level, BlockPos pos, BlockState state, ProcessStationBlockEntity station) {
 		station.paused = station.covered();
-		if (station.paused) return;
+		long elapsed = station.elapsed(level);
+		if (station.paused || station.kind.station.worked()) return;
 		Optional<CookingHeat> heat = station.kind.station.heated() ? CookingVessel.heatAt(level, pos) : Optional.empty();
 		station.lastHeat = heat.orElse(null);
 		int before = station.process.progress();
-		int used = station.process.tick(level, station, station.liquid(), heat);
+		int used = station.process.tick(level, station, station.liquid(), heat, elapsed);
 		if (used > 0) {
 			station.oil -= used;
 			station.setChanged();
@@ -146,13 +174,14 @@ final class ProcessStationBlockEntity extends CookingStationBlockEntity implemen
 
 	@Override
 	public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {
-		return slot == kind.outputSlot || slot == kind.byproductSlot;
+		return kind.takeOnly(slot);
 	}
 
 	@Override
 	protected void saveAdditional(ValueOutput output) {
 		super.saveAdditional(output);
 		if (kind.station.holdsOil()) output.putInt("oil", oil);
+		if (kind.station.timeStation()) output.putLong("last_time", lastTime);
 		process.save(output);
 	}
 
@@ -160,6 +189,7 @@ final class ProcessStationBlockEntity extends CookingStationBlockEntity implemen
 	protected void loadAdditional(ValueInput input) {
 		super.loadAdditional(input);
 		oil = input.getIntOr("oil", 0);
+		lastTime = input.getLongOr("last_time", -1);
 		process.load(input);
 	}
 }

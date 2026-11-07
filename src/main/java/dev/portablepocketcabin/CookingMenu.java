@@ -52,7 +52,7 @@ final class CookingMenu extends AbstractContainerMenu {
 	 */
 	enum Kind {
 		STOVE(null, new int[][] {{80, 53}}, -1, -1, -1),
-		POT(CookingStation.POT, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}}, 6, 7, 8),
+		POT(CookingStation.POT, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}, {142, 53}}, 6, 7, 8, 9),
 		OVEN(CookingStation.OVEN, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}}, -1, 7, 8),
 		COUNTER(CookingStation.COUNTER, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {124, 26}, {124, 53}}, -1, 6, 7),
 		STRAINER(CookingStation.STRAINER, new int[][] {{39, 17}, {57, 17}, {39, 35}, {57, 35}, {48, 56}, {124, 26}, {124, 53}}, 4, 5, 6),
@@ -64,19 +64,25 @@ final class CookingMenu extends AbstractContainerMenu {
 		final int[][] slots;
 		final int containerSlot;
 		final int outputSlot;
+		/** The first byproduct slot, or -1. Some stations have a second, for recipes that leave two kinds of remainder. */
 		final int byproductSlot;
+		final int[] byproductSlots;
 
-		Kind(CookingStation station, int[][] slots, int containerSlot, int outputSlot, int byproductSlot) {
+		Kind(CookingStation station, int[][] slots, int containerSlot, int outputSlot, int... byproductSlots) {
 			this.station = station;
 			this.size = slots.length;
 			this.slots = slots;
 			this.containerSlot = containerSlot;
 			this.outputSlot = outputSlot;
-			this.byproductSlot = byproductSlot;
+			this.byproductSlots = byproductSlots;
+			this.byproductSlot = byproductSlots.length == 0 ? -1 : byproductSlots[0];
 		}
 
 		boolean takeOnly(int slot) {
-			return slot >= 0 && (slot == outputSlot || slot == byproductSlot);
+			if (slot < 0) return false;
+			if (slot == outputSlot) return true;
+			for (int byproduct : byproductSlots) if (slot == byproduct) return true;
+			return false;
 		}
 
 		/** The screen for a station's recipes, or null for stations without one, such as the skillet. */

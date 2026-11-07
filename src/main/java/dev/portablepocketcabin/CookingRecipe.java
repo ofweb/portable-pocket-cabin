@@ -35,7 +35,8 @@ record CookingRecipe(
 	List<ItemStackTemplate> remainders,
 	Optional<CookingHeat> heat,
 	int time,
-	ItemStackTemplate result
+	ItemStackTemplate result,
+	Optional<Boolean> sun
 ) implements Recipe<CookingInput> {
 	record Counted(Ingredient ingredient, int count) {
 		static final Codec<Counted> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -59,6 +60,11 @@ record CookingRecipe(
 		this(station, technique, ingredients, container, water, 0, remainders, heat, time, result);
 	}
 
+	CookingRecipe(CookingStation station, String technique, List<Counted> ingredients, Optional<Counted> container, int water,
+		int oil, List<ItemStackTemplate> remainders, Optional<CookingHeat> heat, int time, ItemStackTemplate result) {
+		this(station, technique, ingredients, container, water, oil, remainders, heat, time, result, Optional.empty());
+	}
+
 	static MapCodec<CookingRecipe> codec(CookingStation station) {
 		MapCodec<CookingRecipe> codec = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			Codec.STRING.optionalFieldOf("technique", "").forGetter(CookingRecipe::technique),
@@ -68,10 +74,11 @@ record CookingRecipe(
 			Codec.intRange(0, CookingStation.MAX_WATER).optionalFieldOf("oil", 0).forGetter(CookingRecipe::oil),
 			ItemStackTemplate.CODEC.listOf().optionalFieldOf("remainders", List.of()).forGetter(CookingRecipe::remainders),
 			CookingHeat.CODEC.optionalFieldOf("heat").forGetter(CookingRecipe::heat),
-			Codec.intRange(0, 72000).optionalFieldOf("time", 0).forGetter(CookingRecipe::time),
-			ItemStackTemplate.CODEC.fieldOf("result").forGetter(CookingRecipe::result)
-		).apply(instance, (technique, ingredients, container, water, oil, remainders, heat, time, result) ->
-			new CookingRecipe(station, technique, ingredients, container, water, oil, remainders, heat, time, result)));
+			Codec.intRange(0, 10 * CookingStation.DAY).optionalFieldOf("time", 0).forGetter(CookingRecipe::time),
+			ItemStackTemplate.CODEC.fieldOf("result").forGetter(CookingRecipe::result),
+			Codec.BOOL.optionalFieldOf("sun").forGetter(CookingRecipe::sun)
+		).apply(instance, (technique, ingredients, container, water, oil, remainders, heat, time, result, sun) ->
+			new CookingRecipe(station, technique, ingredients, container, water, oil, remainders, heat, time, result, sun)));
 		return codec.validate(recipe -> recipe.validate().map(error -> DataResult.<CookingRecipe>error(() -> error))
 			.orElseGet(() -> DataResult.success(recipe)));
 	}
@@ -87,8 +94,9 @@ record CookingRecipe(
 			ByteBufCodecs.optional(CookingHeat.STREAM_CODEC), CookingRecipe::heat,
 			ByteBufCodecs.VAR_INT, CookingRecipe::time,
 			ItemStackTemplate.STREAM_CODEC, CookingRecipe::result,
-			(technique, ingredients, container, water, oil, remainders, heat, time, result) ->
-				new CookingRecipe(station, technique, ingredients, container, water, oil, remainders, heat, time, result)
+			ByteBufCodecs.optional(ByteBufCodecs.BOOL), CookingRecipe::sun,
+			(technique, ingredients, container, water, oil, remainders, heat, time, result, sun) ->
+				new CookingRecipe(station, technique, ingredients, container, water, oil, remainders, heat, time, result, sun)
 		);
 	}
 
@@ -102,8 +110,9 @@ record CookingRecipe(
 		if (oil > 0 && !station.holdsOil()) return Optional.of("Only cooking pot and wok recipes use oil");
 		if (water > 0 && oil > 0) return Optional.of("A recipe uses water or oil, not both");
 		if (container.isPresent() && !station.takesContainer()) {
-			return Optional.of("Only cooking pot, wok, strainer, and press recipes use a container");
+			return Optional.of("A " + station.name() + " recipe has no container");
 		}
+		if (sun.isPresent() && station != CookingStation.DRYING) return Optional.of("Only drying rack recipes use sun");
 		if (station.singleInput() && (ingredients.size() != 1 || ingredients.getFirst().count() != 1)) {
 			return Optional.of("A " + station.name() + " recipe takes exactly one item");
 		}
@@ -116,6 +125,7 @@ record CookingRecipe(
 	 */
 	Optional<int[]> assign(CookingInput input) {
 		if (input.water() < water || input.oil() < oil) return Optional.empty();
+		if (sun.isPresent() && sun.get() != input.sky()) return Optional.empty();
 		if (container.isPresent()) {
 			Counted needed = container.get();
 			if (!needed.ingredient().test(input.container()) || input.container().getCount() < needed.count()) {

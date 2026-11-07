@@ -18,10 +18,13 @@ final class CookingPotBlockEntity extends CookingStationBlockEntity implements C
 	static final int CONTAINER_SLOT = 6;
 	static final int OUTPUT_SLOT = 7;
 	static final int BYPRODUCT_SLOT = 8;
+	/** A second byproduct slot, for recipes such as sea salt that leave nigari and empty bottles. */
+	static final int SECOND_BYPRODUCT_SLOT = 9;
 	private static final int[] TOP = {0, 1, 2, 3, 4, 5};
 	private static final int[] SIDE = {CONTAINER_SLOT};
-	private static final int[] BOTTOM = {OUTPUT_SLOT, BYPRODUCT_SLOT};
-	private final CookingProcess process = new CookingProcess(CookingStation.POT, CONTAINER_SLOT, OUTPUT_SLOT, BYPRODUCT_SLOT);
+	private static final int[] BOTTOM = {OUTPUT_SLOT, BYPRODUCT_SLOT, SECOND_BYPRODUCT_SLOT};
+	private final CookingProcess process = new CookingProcess(CookingStation.POT, CONTAINER_SLOT, OUTPUT_SLOT, BYPRODUCT_SLOT,
+		SECOND_BYPRODUCT_SLOT);
 	/** The liquid level, from 0 to 3, and whether that liquid is oil rather than water. */
 	private int level;
 	private boolean oil;
@@ -42,7 +45,7 @@ final class CookingPotBlockEntity extends CookingStationBlockEntity implements C
 	};
 
 	CookingPotBlockEntity(BlockPos pos, BlockState state) {
-		super(CookingBlocks.COOKING_POT_ENTITY, pos, state, 9);
+		super(CookingBlocks.COOKING_POT_ENTITY, pos, state, 10);
 	}
 
 	int water() {
@@ -125,7 +128,7 @@ final class CookingPotBlockEntity extends CookingStationBlockEntity implements C
 
 	@Override
 	public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
-		return slot == OUTPUT_SLOT || slot == BYPRODUCT_SLOT;
+		return slot == OUTPUT_SLOT || slot == BYPRODUCT_SLOT || slot == SECOND_BYPRODUCT_SLOT;
 	}
 
 	@Override

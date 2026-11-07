@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:drying",
+  "technique": "drying",
+  "ingredients": [
+    {
+      "item": "minecraft:rotten_flesh"
+    }
+  ],
+  "sun": false,
+  "time": 300,
+  "result": {
+    "id": "minecraft:string"
+  }
+}

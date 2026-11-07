@@ -23,7 +23,22 @@ enum CookingStation {
 	GRILL("grill", 1, true),
 	WOK("wok", 4, true),
 	AEBLESKIVE_PAN("aebleskive_pan", 1, true),
-	PRESS("press", 1, false);
+	PRESS("press", 1, false),
+	MILL("mill", 1, false),
+	MIXING_BOWL("mixing_bowl", 6, false),
+	MORTAR("mortar", 2, false),
+	CHURN("churn", 2, false),
+	CHEESE_PRESS("cheese_press", 2, false),
+	PROOFING("proofing", 1, false),
+	DAIRY_PAN("dairy_pan", 1, false),
+	CROCK("crock", 4, false),
+	BRINE("brine", 4, false),
+	AGEING("ageing", 1, false),
+	DRYING("drying", 1, false);
+
+	/** Minecraft time: a day and an hour in ticks, as time stations count them. */
+	static final int DAY = 24000;
+	static final int HOUR = 1000;
 
 	static final int MAX_WATER = 3;
 	static final RecipeBookCategory RECIPE_BOOK_CATEGORY = Registry.register(
@@ -99,16 +114,38 @@ enum CookingStation {
 
 	/** Whether recipes may name a container, such as the bowls soup is served in or the bottles a strainer or press fills. */
 	boolean takesContainer() {
-		return this == POT || this == WOK || this == STRAINER || this == PRESS;
+		return switch (this) {
+			case POT, WOK, STRAINER, PRESS, MILL, MIXING_BOWL, DAIRY_PAN, CROCK -> true;
+			default -> false;
+		};
 	}
 
-	/** Whether recipes need a positive time: heated stations, and the counter, strainer, and press, which work without heat. */
+	/** Whether recipes need a positive time. Only the cutting board, which cuts at once, does without. */
 	boolean timed() {
-		return heated || this == COUNTER || this == STRAINER || this == PRESS;
+		return this != CUTTING;
 	}
 
 	boolean singleInput() {
-		return this == CUTTING || this == SKILLET || this == GRILL || this == AEBLESKIVE_PAN;
+		return switch (this) {
+			case CUTTING, SKILLET, GRILL, AEBLESKIVE_PAN, AGEING, DRYING -> true;
+			default -> false;
+		};
+	}
+
+	/** Whether a recipe's time counts tool uses rather than ticks: the spoon, the pestle, and the churn's handle. */
+	boolean worked() {
+		return this == MIXING_BOWL || this == MORTAR || this == CHURN;
+	}
+
+	/**
+	 * Whether the station counts game time, so that a batch keeps progressing while its chunk is unloaded or its
+	 * cabin is packed (ADR-0013).
+	 */
+	boolean timeStation() {
+		return switch (this) {
+			case PROOFING, DAIRY_PAN, CROCK, BRINE, AGEING, DRYING -> true;
+			default -> false;
+		};
 	}
 
 	RecipeType<CookingRecipe> type() {
