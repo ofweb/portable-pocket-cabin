@@ -70,8 +70,28 @@ record PlantNeeds(List<String> soil, int light, Water water, Support support, fl
 	).apply(instance, PlantNeeds::new));
 
 	private static Map<Identifier, PlantNeeds> current = Map.of();
+	/** The growing needs the server last sent, for the cookbook's Garden pages. */
+	static Map<Identifier, PlantNeeds> client = Map.of();
+
+	/** Sends every plant's growing needs to a client, on joining and after each datapack reload. */
+	record Sync(Map<Identifier, PlantNeeds> needs) implements net.minecraft.network.protocol.common.custom.CustomPacketPayload {
+		static final Type<Sync> TYPE = new Type<>(PortablePocketCabin.id("plant_needs"));
+		static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, Sync> CODEC =
+			net.minecraft.network.codec.ByteBufCodecs.<net.minecraft.network.RegistryFriendlyByteBuf, Identifier, PlantNeeds, Map<Identifier, PlantNeeds>>map(
+				HashMap::new, Identifier.STREAM_CODEC, net.minecraft.network.codec.ByteBufCodecs.fromCodec(PlantNeeds.CODEC)).map(Sync::new, Sync::needs);
+
+		@Override
+		public Type<Sync> type() {
+			return TYPE;
+		}
+	}
 
 	static void register() {
+		net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.clientboundPlay().register(Sync.TYPE, Sync.CODEC);
+		net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.JOIN.register((handler, sender, server) ->
+			net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(handler.getPlayer(), new Sync(current)));
+		net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register((player, joined) ->
+			net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(player, new Sync(current)));
 		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(PortablePocketCabin.id("cooking_plants"),
 			new SimpleReloadListener<Map<Identifier, PlantNeeds>>() {
 				@Override

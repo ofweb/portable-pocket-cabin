@@ -30,6 +30,10 @@ final class CookingPlants {
 		net.minecraft.resources.Identifier.withDefaultNamespace("supports_vegetation"));
 	/** Every plant block, by plant name, in registration order. */
 	static final Map<String, Block> PLANTS = new LinkedHashMap<>();
+	/** What each plant gives, by plant name, for the cookbook's Garden pages. */
+	static final Map<String, List<Item>> GIVES = new LinkedHashMap<>();
+	/** What each plant is planted from: its seeds, cutting, sapling, or the produce itself. */
+	static final Map<String, Item> PLANTED_FROM = new LinkedHashMap<>();
 	/** Every item the plants give or are planted from, in registration order, for the creative tab. */
 	static final List<Item> ITEMS = new ArrayList<>();
 
@@ -182,6 +186,9 @@ final class CookingPlants {
 			.noCollision().randomTicks().instabreak().sound(SoundType.CROP).pushReaction(PushReaction.DESTROY));
 		seeds[0] = registerItem(seed, properties -> new BlockItem(block[0], properties.useItemDescriptionPrefix()));
 		PLANTS.put(plant, block[0]);
+		PLANTED_FROM.put(plant, seeds[0]);
+		Item produce = BuiltInRegistries.ITEM.getOptional(PortablePocketCabin.id(plant)).orElse(null);
+		GIVES.put(plant, produce != null && produce != seeds[0] ? List.of(produce, seeds[0]) : List.of(seeds[0]));
 		return block[0];
 	}
 
@@ -192,14 +199,17 @@ final class CookingPlants {
 			.randomTicks().strength(0.3F).sound(SoundType.CROP).noOcclusion().pushReaction(PushReaction.DESTROY));
 		seeds[0] = registerItem(seed, properties -> new BlockItem(block[0], properties.useItemDescriptionPrefix()));
 		PLANTS.put(plant, block[0]);
+		PLANTED_FROM.put(plant, seeds[0]);
+		GIVES.put(plant, List.of(produce.get()));
 		return block[0];
 	}
 
 	/** A bush planted from a cutting, giving {@code flowering} at its flowering stage when not null, and {@code ripe} when ripe. */
 	private static Block bush(String plant, String cutting, java.util.function.Supplier<Item> flowering, java.util.function.Supplier<Item> ripe) {
 		Block block = registerBlock(plant, properties -> new HerbBushBlock(properties, flowering, ripe), bushProperties());
-		registerItem(cutting, properties -> new BlockItem(block, properties.useItemDescriptionPrefix()));
+		PLANTED_FROM.put(plant, registerItem(cutting, properties -> new BlockItem(block, properties.useItemDescriptionPrefix())));
 		PLANTS.put(plant, block);
+		GIVES.put(plant, flowering == null ? List.of(ripe.get()) : List.of(flowering.get(), ripe.get()));
 		return block;
 	}
 
@@ -209,6 +219,8 @@ final class CookingPlants {
 		Block block = registerBlock(plant, properties -> new HerbBushBlock(properties, null, () -> item[0]), bushProperties());
 		item[0] = registerItem(produce, properties -> new BlockItem(block, (food == null ? properties : properties.food(food)).useItemDescriptionPrefix()));
 		PLANTS.put(plant, block);
+		PLANTED_FROM.put(plant, item[0]);
+		GIVES.put(plant, List.of(item[0]));
 		return block;
 	}
 
@@ -217,9 +229,11 @@ final class CookingPlants {
 		Block leaves = registerBlockWithItem(tree + "_leaves", properties -> new FruitingLeavesBlock(properties, fruit), BlockBehaviour.Properties.of()
 			.strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY)
 			.isValidSpawn((state, level, pos, type) -> false).isSuffocating((state, level, pos) -> false).isViewBlocking((state, level, pos) -> false));
-		registerBlockWithItem(tree + "_sapling", properties -> new FruitSaplingBlock(FruitSaplingBlock.grower(tree), properties),
+		Block sapling = registerBlockWithItem(tree + "_sapling", properties -> new FruitSaplingBlock(FruitSaplingBlock.grower(tree), properties),
 			BlockBehaviour.Properties.of().noCollision().randomTicks().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY));
 		PLANTS.put(tree + "_leaves", leaves);
+		PLANTED_FROM.put(tree + "_leaves", sapling.asItem());
+		GIVES.put(tree + "_leaves", List.of(fruit.get()));
 		return leaves;
 	}
 

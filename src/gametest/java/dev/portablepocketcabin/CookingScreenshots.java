@@ -104,7 +104,66 @@ final class CookingScreenshots {
 			captureCounterStations(context, world, origin[0]);
 			capturePress(context, world, origin[0]);
 			capturePhase3(context, world, origin[0]);
+			captureGarden(context, world, origin[0]);
 		}
+	}
+
+	/** B-0050 delivery 1: a plot of crops, vines on trellises, bushes, and a fruiting plum tree, and two Garden pages. */
+	private static void captureGarden(ClientGameTestContext context, TestSingleplayerContext world, BlockPos base) {
+		world.getServer().runOnServer(server -> {
+			var player = world.getConnection().getServerPlayer();
+			var level = player.level();
+			player.closeContainer();
+			for (int x = -6; x <= 6; x++) for (int z = 3; z <= 12; z++) {
+				level.setBlockAndUpdate(base.offset(x, -1, z), Blocks.GRASS_BLOCK.defaultBlockState());
+				for (int y = 0; y < 8; y++) level.setBlockAndUpdate(base.offset(x, y, z), Blocks.AIR.defaultBlockState());
+			}
+			String[] crops = {"barley", "corn", "cabbage", "onion", "lettuce", "radish", "cilantro", "garlic"};
+			for (int i = 0; i < crops.length; i++) {
+				var pos = base.offset(-4 + i + (i >= 4 ? 1 : 0), 0, 4);
+				level.setBlockAndUpdate(pos.below(), Blocks.FARMLAND.defaultBlockState());
+				var crop = (net.minecraft.world.level.block.CropBlock) CookingPlants.PLANTS.get(crops[i]);
+				level.setBlockAndUpdate(pos, crop.getStateForAge(crops[i].equals("cilantro") ? 6 : crops[i].equals("onion") ? 5 : 7));
+			}
+			level.setBlockAndUpdate(base.offset(0, -1, 4), Blocks.WATER.defaultBlockState());
+			String[] vines = {"cucumber_vine", "white_grape_vine", "hop_vine"};
+			for (int i = 0; i < vines.length; i++) {
+				var pos = base.offset(-4 + i, 0, 3);
+				level.setBlockAndUpdate(pos.below(), Blocks.FARMLAND.defaultBlockState());
+				level.setBlockAndUpdate(pos, ((net.minecraft.world.level.block.CropBlock) CookingPlants.PLANTS.get(vines[i])).getStateForAge(7));
+			}
+			String[] bushes = {"thyme_bush", "strawberry_bush", "raspberry_bush", "elder_bush"};
+			for (int i = 0; i < bushes.length; i++) {
+				level.setBlockAndUpdate(base.offset(i, 0, 3), CookingPlants.PLANTS.get(bushes[i]).defaultBlockState()
+					.setValue(HerbBushBlock.AGE, bushes[i].equals("elder_bush") ? 2 : 3));
+			}
+			level.setBlockAndUpdate(base.offset(4, -1, 3), Blocks.OAK_LOG.defaultBlockState());
+			level.setBlockAndUpdate(base.offset(4, 0, 3), CookingPlants.OYSTER_MUSHROOM.defaultBlockState().setValue(HerbBushBlock.AGE, 3));
+			var treePos = base.offset(5, 0, 6);
+			var sapling = (net.minecraft.world.level.block.SaplingBlock) ((net.minecraft.world.item.BlockItem) CookingPlants.item("plum_sapling")).getBlock();
+			level.setBlockAndUpdate(treePos, sapling.defaultBlockState());
+			for (int i = 0; i < 10 && level.getBlockState(treePos).is(sapling); i++) {
+				sapling.advanceTree(level, treePos, level.getBlockState(treePos), net.minecraft.util.RandomSource.create(i));
+			}
+			for (BlockPos near : BlockPos.betweenClosed(treePos.offset(-3, 1, -3), treePos.offset(3, 8, 3))) {
+				var state = level.getBlockState(near);
+				if (state.is(CookingPlants.PLUM_LEAVES)) level.setBlockAndUpdate(near, state.setValue(FruitingLeavesBlock.AGE, (near.getX() + near.getZ()) % 3 == 0 ? 1 : 2));
+			}
+			player.teleportTo(level, base.getX() + .5, base.getY(), base.getZ() + 10.5, java.util.Set.of(), 180, 25, false);
+		});
+		world.getConnection().waitForClientboundPackets();
+		world.getConnection().waitForChunksRender();
+		context.waitTicks(20);
+		shot(context, "garden");
+		context.runOnClient(client -> CookbookScreen.open());
+		context.waitForScreen(CookbookScreen.class);
+		world.getConnection().waitForServerboundPackets();
+		world.getConnection().waitForClientboundPackets();
+		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectPlant("plum_leaves"));
+		shot(context, "cookbook-garden-plum");
+		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectPlant("cucumber_vine"));
+		shot(context, "cookbook-garden-cucumber");
+		context.runOnClient(client -> client.gui.setScreen(null));
 	}
 
 	/** Phase 3: the mill, mixing bowl, crock, ageing shelf, and drying rack, a seasoned dish, and the cookbook's tastes. */

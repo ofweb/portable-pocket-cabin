@@ -162,3 +162,29 @@ Client GameTests capture a field of the delivery's crops, a fruiting tree, a tre
 - **Tuning:** growth chances, yields, and patch rarity are first guesses. B-0033 tunes them.
 - **Tree trunks:** fruit trees reuse vanilla logs: oak, birch, jungle, acacia, or cherry, as the species suits. A new wood type per species waits for real art.
 - **Seed items:** seeds are their own items, except where the ingredient replants itself, as garlic, onion, and potato-like roots do.
+
+## Delivery 1 as built
+
+The [completion check](../../cooking/tools/completion_check.py) found 23 intermediate products and 6 dishes that delivery 1 completes. All of them shipped, adapted to the existing stations:
+
+- **Grain:**
+  - Rye flour and cracked rye. Cracked rye uses the mortar, so the mill keeps one rye recipe.
+  - Roasted barley, malted barley, and roasted malt.
+  - Rugbrød.
+- **Corn:**
+  - Husking corn on the cutting board gives a husk and keeps the kernels.
+  - Dried corn and dried corn husks.
+  - Cornstarch.
+  - Wood ash and lye, hominy, masa, and corn tortillas.
+  - Masarepa and toasted corn.
+- **Ferments:**
+  - Sauerkraut and gherkins.
+  - White wine and wine vinegar.
+  - Wort and beer, which are cooking ingredients only.
+  - Dried rosehip.
+- **Condiments:**
+  - Mustard and mayonnaise.
+  - Strawberry and raspberry jam. These join a `jams` tag with sweet berry jam, and the Berliner takes any of them.
+- **Dishes:** spätzle and Käsespätzle, Kartoffelpuffer, Malzkaffee, Mugicha, and Rugbrød.
+
+The check also lists 36 intermediates that phase 3's ingredients already allowed but phase 3 did not ship. Among them are chocolate, puff pastry, and breadcrumbs. They are a follow-up outside this delivery.

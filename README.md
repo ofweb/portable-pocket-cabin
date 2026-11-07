@@ -81,6 +81,15 @@ Milk settles in the dairy pan into cream and skimmed milk. Cream churns into but
 
 **Seasoning.** The pot, oven, wok, counter, and mixing bowl screens have two seasoning slots. A dish names the tastes it wants: salty, sweet, sour, bitter, or umami. Each seasoning that brings a wanted taste raises the dish from plain to seasoned to well balanced, and an unwanted or doubled taste lowers it. Quality shows in the tooltip and makes the dish a little more filling. The counter seasons skillet and grill dishes afterwards. The cookbook shows each dish's tastes and has a page for every taste.
 
+**Garden.** Cooking plants grow wild in the biomes they come from, and wandering traders and farmers sometimes sell their seeds. The plains, meadows, and forests come first:
+- **Field crops:** barley, rye, corn, rapeseed, mustard, caraway, white beans, asparagus, cabbage, courgette, lettuce, radish, spring onion, garlic, onions, shallots, cilantro, dill, and parsley. Plant them on farmland with water nearby. Cilantro left to flower gives coriander seed.
+- **Vines:** cucumber, white grapes, and hops climb a trellis on farmland. Picking a ripe vine leaves it to fruit again.
+- **Bushes:** thyme, marjoram, strawberries, raspberries, and oyster mushrooms regrow after picking. The elder gives elderflower, then elderberries.
+- **Trees:** plum trees grow from saplings, and their leaves flower and fruit again after picking.
+- **Rosehips:** shears pick them from rose bushes.
+
+Each plant's growing needs, such as soil, light, and water, are data, and the cookbook's Garden section shows where it grows and what it needs. The plants complete new chains: rye bread, corn tortillas, sauerkraut, gherkins, wine vinegar, mustard and mayonnaise, jams, and more.
+
 A station lights new fuel only when it has something to cook, but lit fuel always burns down. Cooking advances only at the recipe's heat. When the wrong fuel is burning, use a shovel on the stove or oven to put it out. The next fuel then lights at its own heat. Hoppers work with the container stations as with a furnace, but never reach seasoning slots. On the grill they only add fuel and take spent fuel. On the ageing shelf and drying rack they add items a recipe takes and take finished ones.
 
 The **cookbook**, crafted from a book and a bowl, lists every recipe by station. Each page shows the ingredients, heat, time, strokes, water, oil, and tastes, and explains the technique behind the dish. An ingredient that another recipe makes links to that recipe. Recipes you have everything for show in green. Household members in a cabin with central storage also count stored items. Station screens have a recipe button that fills the station from your inventory, skipping named and customised items. Inside a cabin, only the household can use the stations.
