@@ -245,11 +245,47 @@ GameTests:
 
 Client GameTests capture the hook with a hanging carcass, the block mid-butchery, and the cookbook's Butchery pages for `screenshots/cooking/`.
 
+## Delivery 1 as built
+
+- **Carcasses:**
+  - The cow, mooshroom, pig, sheep, chicken, rabbit, and goat entity loot tables are overridden as data, in `data/minecraft/loot_table/entities/`, instead of through Fabric's loot events.
+  - The sheep table picks the fleece colour with one alternative per colour, as vanilla picks its wool. The duck comes in delivery 3.
+- **Scalding:** pot recipes scald pig and chicken carcasses. Their results set the `carcass` component, and they use the `scalding_carcass` technique, because `scalding` already names scalding starch for pão de queijo.
+- **Hanging hook:**
+  - Using an empty hand on a carcass that needs the knife says so. Sneaking with an empty hand always takes the carcass down, which is how an unscalded bird goes to the pot.
+  - Blood comes as a `blood` bottle. Pig bristles craft a brush in place of the feather.
+- **Butcher block:**
+  - It is a full block that lets light through, so the carcass on top is lit.
+  - The cleaver has 250 uses.
+  - Parts that don't fit go to kitchen storage through the existing station overflow receipt, then drop on top of the block.
+- **Parts:** every part in the reference is an item. Muscle cuts are edible raw like vanilla meat, and raw chicken parts carry vanilla's food poisoning.
+- **Meat tags:**
+  - The existing seared meat, skewer, and brined pork recipes take `portable_pocket_cabin:meat/<animal>` in place of vanilla raw meat.
+  - Beef strips take vanilla beef or sirloin only, so dicing chuck and slicing round get their own cutting board recipes.
+  - Chevon sears into a new cooked chevon.
+- **By-products:**
+  - Lard, tallow, and schmaltz render in the pot into a bottle, then strain, leaving cracklings. They join `cooking_oils`.
+  - Gelatin simmers from trotters, chicken feet, or pork skin.
+  - Calf rennet steeps from the calf stomach with salt and water in the crock. The curd recipe takes `portable_pocket_cabin:rennets`.
+  - Bones of any animal, through `portable_pocket_cabin:bones`, grind into bone meal.
+- **Completed chains:** the completion check found 15 intermediates and 22 dishes, and all of them shipped.
+  - Intermediates: bacon, ham, carne seca, beef, chicken, and pork stock, pork bone broth, lard, tallow, pino, poached chicken, empanada dough, red chili sauce, refried beans, and tomato caldillo.
+  - Dishes: French onion soup, Quiche Lorraine, Boeuf bourguignon, Coq au vin, Croque monsieur, Rinderrouladen, Sauerbraten, Flammkuchen, Massaman curry, Chiles rellenos, Carnitas tacos, Tamales, Pozole rojo, Tacos al pastor, Mole poblano, Conchas, Empanadas de carne, Pastel de choclo, Coxinha, Anticuchos, Stegt flæsk med persillesovs, and Tarteletter med høns i asparges.
+  - The check also learned that the quesadilla, pretzel, and apple juice are the catalogue's Quesadillas, Brezeln, and Æblemost.
+- **Adaptations:**
+  - Recipes that sear a cut sear a prepared piece: diced beef, rouladen, or marinated beef. A single raw cut on the skillet stays the existing seared meat recipe.
+  - Boeuf bourguignon and coq au vin share a garniture of crisp bacon, sautéed mushrooms, and onion, so their braises fit the pot's six slots. Coq au vin braises its chicken without searing.
+  - The sauerbraten marinade is blended in the mixing bowl, because the brine barrel takes four ingredients.
+  - Empanada dough adds an egg, because flour, lard, water, and salt are the flatbread dough's ingredients now that lard is a frying oil.
+  - Empanadas de carne use pino as their filling, since the catalogue lists the same ingredients.
+  - Anticuchos are served with a baked potato and cooked corn.
+  - Stegt flæsk needs boiled potatoes, which are added.
+
 ## Assumptions
 
 - **Crafting:**
   - The hanging hook: an iron ingot over a chain.
-  - The butcher block: a log slab on two logs.
+  - The butcher block: three wooden slabs on two logs.
   - The meat grinder: iron ingots around a lever.
   - The sausage stuffer: iron ingots around a piston.
 - **Tuning:** part counts, hunger values, prawn timing, and fish shares are first guesses for B-0033.

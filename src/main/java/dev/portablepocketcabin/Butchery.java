@@ -88,7 +88,7 @@ final class Butchery {
 	static final Item CLEAVER = item("cleaver", new Item.Properties().durability(250));
 	static final net.minecraft.world.level.block.Block BUTCHER_BLOCK = CookingBlocks.register("butcher_block", ButcherBlockBlock::new,
 		net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().strength(2.5F).sound(net.minecraft.world.level.block.SoundType.WOOD)
-			.ignitedByLava());
+			.ignitedByLava().noOcclusion());
 	static final net.minecraft.world.level.block.entity.BlockEntityType<ButcherBlockBlockEntity> BUTCHER_BLOCK_ENTITY = CookingBlocks.registerEntity(
 		"butcher_block", new net.minecraft.world.level.block.entity.BlockEntityType<>(ButcherBlockBlockEntity::new, java.util.Set.of(BUTCHER_BLOCK)));
 
