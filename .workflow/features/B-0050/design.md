@@ -34,7 +34,10 @@ Rules for every plant:
   - Plants follow vanilla rules for bone meal, trampling, and breaking.
   - Field and paddy crops extend `CropBlock`. Bushes and leaves keep an `age` property, so greenhouse catch-up treats them like vanilla crops.
   - A `CookingPlant` marker interface lets the greenhouse allowlist accept them.
-- **The trellis:** a craftable block of sticks that stands on farmland.
+- **The trellis:** a craftable block of sticks that stands on farmland. These plants climb one, as the [sources](../../cooking/sources.md) say:
+  - **Delivery 1:** cucumber, white grape, and hops.
+  - **Delivery 3:** tomato, grape, and red grape.
+  - **Delivery 6:** long bean, peppercorn, vanilla, and betel.
 - **One plant, several ingredients:**
   - Cilantro gives leaves when ripe, and coriander seed if it is left one stage longer to flower.
   - Olive leaves give green olives at the first fruit stage and black olives at the second.
