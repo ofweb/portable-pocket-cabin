@@ -119,6 +119,24 @@ final class CookingItems {
 	static final Item HARD_CHEESE_WEDGE = register("hard_cheese_wedge", properties -> properties.food(food(4, 6.4F)));
 	static final Item SOFT_CHEESE_CURDS = register("soft_cheese_curds", UnaryOperator.identity());
 	static final Item AGED_SOFT_CHEESE = register("aged_soft_cheese", properties -> properties.food(food(4, 5.0F)));
+	/** Apple juice fermented in the crock. It exists only as the step to vinegar. */
+	static final Item CIDER = register("cider", properties -> properties.stacksTo(16));
+	static final Item CIDER_VINEGAR = register("cider_vinegar", properties -> properties.stacksTo(16));
+	static final Item BOILED_BEETROOT = register("boiled_beetroot", UnaryOperator.identity());
+	static final Item SLICED_BEETROOT = register("sliced_beetroot", UnaryOperator.identity());
+	static final Item PICKLED_BEETROOT = register("pickled_beetroot", properties -> properties.food(food(3, 3.6F)));
+	static final Item PICKLED_CARROTS = register("pickled_carrots", properties -> properties.food(food(3, 3.6F)));
+	static final Item DRIED_APPLE = register("dried_apple", properties -> properties.food(food(3, 2.4F)));
+	static final Item DRIED_SWEET_BERRIES = register("dried_sweet_berries", properties -> properties.food(food(2, 1.6F)));
+	static final Item SALTED_COD = register("salted_cod", UnaryOperator.identity());
+	static final Item SALT_COD = register("salt_cod", properties -> properties.food(food(6, 9.6F)));
+	static final Item BEEF_STRIPS = register("beef_strips", UnaryOperator.identity());
+	static final Item CURED_BEEF_STRIPS = register("cured_beef_strips", UnaryOperator.identity());
+	static final Item JERKY = register("jerky", properties -> properties.food(food(5, 8.0F)));
+	static final Item CURED_SALMON = register("cured_salmon", UnaryOperator.identity());
+	static final Item SMOKED_SALMON = register("smoked_salmon", properties -> properties.food(food(7, 11.2F)));
+	static final Item BRINED_PORK = register("brined_pork", UnaryOperator.identity());
+	static final Item SMOKED_PORK = register("smoked_pork", properties -> properties.food(food(8, 12.8F)));
 	static final Item STIR_FRIED_VEGETABLES = register("stir_fried_vegetables",
 		properties -> properties.stacksTo(16).food(food(8, 9.6F)).usingConvertsTo(Items.BOWL));
 

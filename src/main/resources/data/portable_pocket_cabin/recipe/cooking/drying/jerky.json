@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:drying",
+  "technique": "drying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cured_beef_strips"
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "portable_pocket_cabin:jerky"
+  }
+}

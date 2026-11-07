@@ -192,7 +192,11 @@ final class CookingBlocks {
 				CookingItems.SWEET_YEAST_DOUGH, CookingItems.PROOFED_SWEET_DOUGH, CookingItems.CARDOON_FLOWER, CookingItems.VEGETABLE_RENNET,
 				CookingItems.CURDS, CookingItems.WHEY, CookingItems.FRESH_CHEESE, CookingItems.PRESSED_CHEESE, CookingItems.SOURED_MILK_BUCKET,
 				CookingItems.QUARK, CookingItems.DRAINED_CREAM, CookingItems.CREAM_CHEESE, CookingItems.BRINED_CHEESE, CookingItems.AGED_HARD_CHEESE,
-				CookingItems.HARD_CHEESE_WEDGE, CookingItems.SOFT_CHEESE_CURDS, CookingItems.AGED_SOFT_CHEESE}) {
+				CookingItems.HARD_CHEESE_WEDGE, CookingItems.SOFT_CHEESE_CURDS, CookingItems.AGED_SOFT_CHEESE, CookingItems.CIDER,
+				CookingItems.CIDER_VINEGAR, CookingItems.BOILED_BEETROOT, CookingItems.SLICED_BEETROOT, CookingItems.PICKLED_BEETROOT,
+				CookingItems.PICKLED_CARROTS, CookingItems.DRIED_APPLE, CookingItems.DRIED_SWEET_BERRIES, CookingItems.SALTED_COD, CookingItems.SALT_COD,
+				CookingItems.BEEF_STRIPS, CookingItems.CURED_BEEF_STRIPS, CookingItems.JERKY, CookingItems.CURED_SALMON, CookingItems.SMOKED_SALMON,
+				CookingItems.BRINED_PORK, CookingItems.SMOKED_PORK}) {
 				entries.accept(item);
 			}
 		});

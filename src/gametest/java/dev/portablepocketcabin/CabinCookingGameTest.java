@@ -47,7 +47,7 @@ public final class CabinCookingGameTest {
 				new ItemStack(CookingItems.CHOPPED_BEETROOT)), bowl, 1, CookingItems.VEGETABLE_SOUP, 3),
 			new Case(CookingStation.OVEN, List.of(new ItemStack(Items.WHEAT, 3)), ItemStack.EMPTY, 0, Items.BREAD, 1),
 			new Case(CookingStation.OVEN, List.of(new ItemStack(Items.WHEAT, 2), new ItemStack(Items.COCOA_BEANS)), ItemStack.EMPTY, 0, Items.COOKIE, 8),
-			new Case(CookingStation.OVEN, List.of(new ItemStack(Items.KELP)), ItemStack.EMPTY, 0, Items.DRIED_KELP, 1)
+			new Case(CookingStation.DRYING, List.of(new ItemStack(Items.KELP)), ItemStack.EMPTY, 0, Items.DRIED_KELP, 1)
 		);
 		for (var test : cases) {
 			var input = new CookingInput(test.inputs(), test.container(), test.water());
@@ -98,8 +98,8 @@ public final class CabinCookingGameTest {
 		var codec = Recipe.CODEC;
 		var recipes = helper.getLevel().getServer().getRecipeManager().getRecipes().stream()
 			.filter(holder -> holder.value() instanceof CookingRecipe).toList();
-		helper.assertTrue(recipes.stream().filter(holder -> holder.id().identifier().getNamespace().equals(PortablePocketCabin.MOD_ID)).count() == 97,
-			"All 97 cooking recipes load, found " + recipes.size());
+		helper.assertTrue(recipes.stream().filter(holder -> holder.id().identifier().getNamespace().equals(PortablePocketCabin.MOD_ID)).count() == 113,
+			"All 113 cooking recipes load, found " + recipes.size());
 		for (var holder : recipes) {
 			var recipe = (CookingRecipe) holder.value();
 			for (var output : concat(recipe.result(), recipe.remainders())) {

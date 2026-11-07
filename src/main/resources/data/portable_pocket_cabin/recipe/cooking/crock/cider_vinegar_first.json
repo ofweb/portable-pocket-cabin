@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "souring",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cider",
+      "count": 4
+    }
+  ],
+  "time": 120000,
+  "result": {
+    "id": "portable_pocket_cabin:cider_vinegar",
+    "count": 4
+  }
+}

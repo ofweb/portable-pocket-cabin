@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "slicing",
+  "ingredients": [
+    {
+      "item": "minecraft:beef"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:beef_strips",
+    "count": 2
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:brine",
+  "technique": "curing",
+  "ingredients": [
+    {
+      "item": "minecraft:salmon",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "portable_pocket_cabin:cured_salmon",
+    "count": 2
+  }
+}

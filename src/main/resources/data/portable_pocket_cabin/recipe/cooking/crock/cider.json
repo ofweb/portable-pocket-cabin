@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "fermenting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:apple_juice",
+      "count": 4
+    }
+  ],
+  "time": 48000,
+  "result": {
+    "id": "portable_pocket_cabin:cider",
+    "count": 4
+  }
+}
