@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/clove_bud",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 8010266
+      }
+    ]
+  }
+}

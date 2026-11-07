@@ -155,7 +155,7 @@ final class CookingPlants {
 	static final Item BLACK_OLIVE = ingredient("black_olive", null);
 	/** Olive leaves give green olives at their first fruit stage, and black olives if left to ripen one stage more. */
 	static final Block OLIVE_LEAVES = fruitTree("olive",
-		properties -> new FruitingLeavesBlock.TwoStageFruit(properties, () -> GREEN_OLIVE, () -> BLACK_OLIVE), List.of(GREEN_OLIVE, BLACK_OLIVE));
+		properties -> new FruitingLeavesBlock.TwoStageFruit(properties, () -> GREEN_OLIVE, () -> BLACK_OLIVE), List.of(GREEN_OLIVE, BLACK_OLIVE), false);
 	static {
 		for (String herb : new String[] {"rosemary", "oregano", "savory"}) selfBush(herb + "_bush", herb, null);
 		fieldCrop("purple_corn", "purple_corn_seeds");
@@ -189,6 +189,73 @@ final class CookingPlants {
 		fruitTree("sweet_cherry", () -> CHERRY);
 		fruitTree("ume", () -> UME_PLUM);
 		fruitTree("star_anise", () -> STAR_ANISE_POD);
+	}
+
+	// Delivery 6: jungles. Field crops replant from what they give, apart from the chilies, basils, cardamom, and pineapple.
+	static final Item THAI_AUBERGINE = ingredient("thai_aubergine", food(1, 0.6F));
+	static final Item BIRDS_EYE_CHILI = ingredient("birds_eye_chili", null);
+	static final Item HOLY_BASIL = ingredient("holy_basil", null);
+	static final Item THAI_BASIL = ingredient("thai_basil", null);
+	static final Item CARDAMOM_POD = ingredient("cardamom_pod", null);
+	static final Item PINEAPPLE = ingredient("pineapple", food(3, 1.8F));
+	static final Item LONG_BEAN = ingredient("long_bean", food(1, 0.6F));
+	static final Item PEPPERCORN = ingredient("peppercorn", null);
+	static final Item VANILLA_POD = ingredient("vanilla_pod", null);
+	static final Item BETEL_LEAF = ingredient("betel_leaf", null);
+	static final Item GREEN_PAPAYA = ingredient("green_papaya", food(1, 0.6F));
+	static final Item MAKRUT_LIME_LEAF = ingredient("makrut_lime_leaf", null);
+	static final Item ALLSPICE = ingredient("allspice", null);
+	static final Item ANNATTO_SEED = ingredient("annatto_seed", null);
+	static final Item CLOVE_BUD = ingredient("clove_bud", null);
+	static final Item NUTMEG_SEED = ingredient("nutmeg_seed", null);
+	static final Item LIME = ingredient("lime", food(1, 0.6F));
+	static final Item MANGO = ingredient("mango", food(4, 2.4F));
+	static final Item COFFEE_CHERRY = ingredient("coffee_cherry", null);
+	static final Item YERBA_MATE_LEAF = ingredient("yerba_mate_leaf", null);
+	static final Item COCONUT = ingredient("coconut", null);
+	static final Item OIL_PALM_FRUIT = ingredient("oil_palm_fruit", null);
+	static final Item CINNAMON_BARK = ingredient("cinnamon_bark", null);
+	static final Item PALM_SAP = registerItem("palm_sap", properties -> new Item(properties.stacksTo(16)));
+	/** Cinnamon trunks give their bark to an axe and grow it back. */
+	static final Block CINNAMON_LOG = registerBlockWithItem("cinnamon_log",
+		properties -> new HarvestTrunkBlock(properties, HarvestTrunkBlock.Harvest.BARK, () -> CINNAMON_BARK), trunkProperties());
+	/** Oil palm and coconut palm trunks fill with sap that a glass bottle taps. */
+	static final Block PALM_LOG = registerBlockWithItem("palm_log",
+		properties -> new HarvestTrunkBlock(properties, HarvestTrunkBlock.Harvest.SAP, () -> PALM_SAP), trunkProperties());
+	static {
+		String[][] crops = {{"black_bean", "black_bean"}, {"thai_aubergine", "thai_aubergine_seeds"}, {"cassava", "cassava"},
+			{"sweet_potato", "sweet_potato"}, {"birds_eye_chili", "birds_eye_chili_seeds"}, {"holy_basil", "holy_basil_seeds"},
+			{"thai_basil", "thai_basil_seeds"}, {"lemongrass", "lemongrass"}, {"cardamom", "cardamom_seeds"}, {"galangal", "galangal"},
+			{"ginger", "ginger"}, {"turmeric", "turmeric"}, {"pineapple", "pineapple_crown"}};
+		for (String[] crop : crops) fieldCrop(crop[0], crop[1]);
+		GIVES.put("cardamom", List.of(CARDAMOM_POD, PLANTED_FROM.get("cardamom")));
+		trellisCrop("long_bean_vine", "long_bean_seeds", () -> LONG_BEAN);
+		trellisCrop("peppercorn_vine", "peppercorn_cutting", () -> PEPPERCORN);
+		trellisCrop("vanilla_vine", "vanilla_cutting", () -> VANILLA_POD);
+		trellisCrop("betel_vine", "betel_cutting", () -> BETEL_LEAF);
+		selfBush("pandan_bush", "pandan_leaf", null);
+		fruitTree("papaya", () -> GREEN_PAPAYA);
+		fruitTree("makrut_lime", () -> MAKRUT_LIME_LEAF);
+		fruitTree("allspice", () -> ALLSPICE);
+		fruitTree("annatto", () -> ANNATTO_SEED);
+		fruitTree("clove", () -> CLOVE_BUD);
+		fruitTree("nutmeg", () -> NUTMEG_SEED);
+		fruitTree("lime", () -> LIME);
+		fruitTree("mango", () -> MANGO);
+		fruitTree("coffee", () -> COFFEE_CHERRY);
+		fruitTree("yerba_mate", () -> YERBA_MATE_LEAF);
+		fruitTree("oil_palm", properties -> new FruitingLeavesBlock(properties, () -> OIL_PALM_FRUIT), List.of(OIL_PALM_FRUIT, PALM_SAP), false);
+		fruitTree("coconut", properties -> new FruitingLeavesBlock(properties, () -> COCONUT), List.of(COCONUT, PALM_SAP), true);
+		// The cinnamon tree's leaves only drop saplings. Its garden entry is its trunk, which gives the bark.
+		registerBlockWithItem("cinnamon_leaves", properties -> new net.minecraft.world.level.block.UntintedParticleLeavesBlock(0.01F,
+			net.minecraft.core.particles.ParticleTypes.CHERRY_LEAVES, properties), BlockBehaviour.Properties.of().strength(0.2F).randomTicks()
+			.sound(SoundType.GRASS).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY).isValidSpawn((state, level, pos, type) -> false)
+			.isSuffocating((state, level, pos) -> false).isViewBlocking((state, level, pos) -> false));
+		Block sapling = registerBlockWithItem("cinnamon_sapling", properties -> new FruitSaplingBlock(FruitSaplingBlock.grower("cinnamon"), properties),
+			saplingProperties());
+		PLANTS.put("cinnamon_log", CINNAMON_LOG);
+		PLANTED_FROM.put("cinnamon_log", sapling.asItem());
+		GIVES.put("cinnamon_log", List.of(CINNAMON_BARK));
 	}
 
 	/** Delivery 1 products: what the plains, meadow, and forest plants complete in the recipe catalogue. */
@@ -299,9 +366,10 @@ final class CookingPlants {
 	private CookingPlants() {
 	}
 
-	/** The name a plant's wild feature and biome tag use: the plant, or the tree for fruiting leaves. */
+	/** The name a plant's wild feature and biome tag use: the plant, or the tree for fruiting leaves or a harvested trunk. */
 	static String wildName(String plant) {
-		return plant.endsWith("_leaves") ? plant.substring(0, plant.length() - "_leaves".length()) : plant;
+		if (plant.endsWith("_leaves")) return plant.substring(0, plant.length() - "_leaves".length());
+		return plant.endsWith("_log") ? plant.substring(0, plant.length() - "_log".length()) : plant;
 	}
 
 	static void register() {
@@ -403,16 +471,19 @@ final class CookingPlants {
 
 	/** A fruit tree species: {@code <tree>_leaves} that fruit, and a {@code <tree>_sapling} that grows the {@code <tree>} feature. */
 	private static Block fruitTree(String tree, java.util.function.Supplier<Item> fruit) {
-		return fruitTree(tree, properties -> new FruitingLeavesBlock(properties, fruit), List.of(fruit.get()));
+		return fruitTree(tree, properties -> new FruitingLeavesBlock(properties, fruit), List.of(fruit.get()), false);
 	}
 
-	/** A fruit tree species whose leaves are made by {@code leaves}, giving {@code gives} in order of ripening. */
-	private static Block fruitTree(String tree, java.util.function.Function<BlockBehaviour.Properties, Block> factory, List<Item> gives) {
+	/**
+	 * A fruit tree species whose leaves are made by {@code leaves}, giving {@code gives} in order of ripening. A beach
+	 * tree's sapling can also be planted on sand.
+	 */
+	private static Block fruitTree(String tree, java.util.function.Function<BlockBehaviour.Properties, Block> factory, List<Item> gives, boolean beach) {
 		Block leaves = registerBlockWithItem(tree + "_leaves", factory, BlockBehaviour.Properties.of()
 			.strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY)
 			.isValidSpawn((state, level, pos, type) -> false).isSuffocating((state, level, pos) -> false).isViewBlocking((state, level, pos) -> false));
-		Block sapling = registerBlockWithItem(tree + "_sapling", properties -> new FruitSaplingBlock(FruitSaplingBlock.grower(tree), properties),
-			BlockBehaviour.Properties.of().noCollision().randomTicks().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY));
+		Block sapling = registerBlockWithItem(tree + "_sapling", properties -> new FruitSaplingBlock(FruitSaplingBlock.grower(tree), beach, properties),
+			saplingProperties());
 		PLANTS.put(tree + "_leaves", leaves);
 		PLANTED_FROM.put(tree + "_leaves", sapling.asItem());
 		GIVES.put(tree + "_leaves", gives);
@@ -428,6 +499,15 @@ final class CookingPlants {
 		PLANTED_FROM.put(plant, item);
 		GIVES.put(plant, List.of(item));
 		return block;
+	}
+
+	private static BlockBehaviour.Properties saplingProperties() {
+		return BlockBehaviour.Properties.of().noCollision().randomTicks().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY);
+	}
+
+	private static BlockBehaviour.Properties trunkProperties() {
+		return BlockBehaviour.Properties.of().strength(2.0F).randomTicks().sound(SoundType.WOOD).ignitedByLava()
+			.instrument(net.minecraft.world.level.block.state.properties.NoteBlockInstrument.BASS);
 	}
 
 	private static BlockBehaviour.Properties bushProperties() {
