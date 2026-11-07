@@ -162,6 +162,35 @@ final class CookingPlants {
 		fieldCrop("aji_amarillo", "aji_amarillo_seeds");
 	}
 
+	// Delivery 5: rivers, swamps, cherry groves, and bamboo jungles.
+	static final Item RICE = ingredient("rice", null);
+	static final Item GLUTINOUS_RICE = ingredient("glutinous_rice", null);
+	static final Item CELERY = ingredient("celery", food(1, 0.6F));
+	static final Item CHERRY = ingredient("cherry", food(2, 1.2F));
+	static final Item UME_PLUM = ingredient("ume_plum", null);
+	static final Item STAR_ANISE_POD = ingredient("star_anise_pod", null);
+	static final Item TEA_LEAF = ingredient("tea_leaf", null);
+	static final Item SHADED_TEA_LEAF = ingredient("shaded_tea_leaf", null);
+	/** Rice, glutinous rice, and water chestnut grow standing in water one block deep. */
+	static final Block RICE_CROP = paddyCrop("rice", "rice_seedlings");
+	static final Block GLUTINOUS_RICE_CROP = paddyCrop("glutinous_rice", "glutinous_rice_seedlings");
+	static final Block WATER_CHESTNUT_CROP = paddyCrop("water_chestnut", "water_chestnut");
+	/** Tea gives tea leaves, or shaded tea leaves when it ripens under a roof. */
+	static final Block TEA_BUSH;
+	static {
+		TEA_BUSH = registerBlock("tea_bush", properties -> new HerbBushBlock.Tea(properties, () -> TEA_LEAF, () -> SHADED_TEA_LEAF), bushProperties());
+		PLANTED_FROM.put("tea_bush", registerItem("tea_cutting", properties -> new BlockItem(TEA_BUSH, properties.useItemDescriptionPrefix())));
+		PLANTS.put("tea_bush", TEA_BUSH);
+		GIVES.put("tea_bush", List.of(TEA_LEAF, SHADED_TEA_LEAF));
+		fieldCrop("soybean", "soybean");
+		fieldCrop("azuki_bean", "azuki_bean");
+		fieldCrop("celery", "celery_seeds");
+		selfBush("mint_bush", "mint", null);
+		fruitTree("sweet_cherry", () -> CHERRY);
+		fruitTree("ume", () -> UME_PLUM);
+		fruitTree("star_anise", () -> STAR_ANISE_POD);
+	}
+
 	/** Delivery 1 products: what the plains, meadow, and forest plants complete in the recipe catalogue. */
 	static final List<Item> PRODUCTS = new ArrayList<>();
 	static {
@@ -241,6 +270,29 @@ final class CookingPlants {
 			.usingConvertsTo(net.minecraft.world.item.Items.BOWL))));
 	}
 
+	/** Delivery 5 products: rice, tofu, tea, anko, mint, cherry, and ume, and the drinks and sweets they complete. */
+	static {
+		String[] plain = {"dried_azuki_beans", "dried_mint", "dried_soybeans", "star_anise", "bean_sprouts", "soaked_soybeans", "soybean_mash", "soy_curds",
+			"tofu", "rice_flour", "steamed_rice", "soaked_glutinous_rice", "wet_glutinous_rice_flour", "glutinous_rice_flour", "rice_noodle_batter",
+			"rice_sheets", "fresh_rice_noodles", "rice_noodles", "steamed_tea_leaves", "rolled_tea_leaves", "sencha_leaves", "withered_tea_leaves",
+			"bruised_tea_leaves", "oxidised_tea_leaves", "black_tea", "steamed_shaded_tea_leaves", "tencha", "matcha_powder", "hojicha_leaves",
+			"salted_ume", "umeboshi", "simmered_azuki_beans", "azuki_mash", "anko", "dorayaki_batter", "dorayaki_pancakes", "taiyaki_batter",
+			"steamed_mochi_dough", "mochi", "cherry_compote", "cherry_sauce"};
+		for (String name : plain) PRODUCTS.add(ingredient(name, null));
+		for (String name : new String[] {"unstrained_soy_milk", "soy_milk", "unstrained_mint_syrup", "mint_syrup"}) {
+			PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16))));
+		}
+		for (String name : new String[] {"menthe_a_leau", "citronnade_maison", "pfefferminztee", "sencha", "hojicha", "matcha"}) {
+			PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16)
+				.food(new FoodProperties(3, 1.2F, true), net.minecraft.world.item.component.Consumables.DEFAULT_DRINK)
+				.usingConvertsTo(net.minecraft.world.item.Items.GLASS_BOTTLE))));
+		}
+		PRODUCTS.add(ingredient("onigiri", food(6, 7.2F)));
+		PRODUCTS.add(ingredient("dorayaki", food(6, 7.2F)));
+		PRODUCTS.add(ingredient("taiyaki", food(6, 7.2F)));
+		PRODUCTS.add(ingredient("daifuku_mochi", food(4, 4.8F)));
+	}
+
 	/** Picked from vanilla rose bushes with shears. */
 	static final Item ROSEHIP = ingredient("rosehip", null);
 
@@ -295,9 +347,19 @@ final class CookingPlants {
 
 	/** A field crop block named after its plant, planted from {@code seed}, which may be the ingredient itself. */
 	private static Block fieldCrop(String plant, String seed) {
+		return crop(plant, seed, false);
+	}
+
+	/** A paddy crop named after its plant, planted from {@code seed} into a water source one block deep. */
+	private static Block paddyCrop(String plant, String seed) {
+		return crop(plant, seed, true);
+	}
+
+	private static Block crop(String plant, String seed, boolean paddy) {
 		Block[] block = new Block[1];
 		Item[] seeds = new Item[1];
-		block[0] = registerBlock(plant, properties -> new FieldCropBlock(properties, () -> seeds[0]), BlockBehaviour.Properties.of()
+		block[0] = registerBlock(plant, properties -> paddy ? new PaddyCropBlock(properties, () -> seeds[0]) : new FieldCropBlock(properties, () -> seeds[0]),
+			BlockBehaviour.Properties.of()
 			.noCollision().randomTicks().instabreak().sound(SoundType.CROP).pushReaction(PushReaction.DESTROY));
 		seeds[0] = registerItem(seed, properties -> new BlockItem(block[0], properties.useItemDescriptionPrefix()));
 		PLANTS.put(plant, block[0]);

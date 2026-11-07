@@ -1,0 +1,25 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "wrapping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:mochi"
+    },
+    {
+      "item": "portable_pocket_cabin:anko"
+    },
+    {
+      "item": "portable_pocket_cabin:strawberry"
+    },
+    {
+      "item": "portable_pocket_cabin:potato_starch"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:daifuku_mochi"
+  }
+}

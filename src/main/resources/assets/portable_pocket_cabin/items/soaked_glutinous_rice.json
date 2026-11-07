@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/soaked_glutinous_rice",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 16579828
+      }
+    ]
+  }
+}

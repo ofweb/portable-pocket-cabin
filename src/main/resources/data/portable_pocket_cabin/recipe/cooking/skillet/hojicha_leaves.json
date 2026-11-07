@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "roasting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sencha_leaves"
+    }
+  ],
+  "heat": "high",
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:hojicha_leaves"
+  }
+}

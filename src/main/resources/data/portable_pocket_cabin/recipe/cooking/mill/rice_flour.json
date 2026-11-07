@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:rice",
+      "count": 2
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:rice_flour",
+    "count": 2
+  }
+}

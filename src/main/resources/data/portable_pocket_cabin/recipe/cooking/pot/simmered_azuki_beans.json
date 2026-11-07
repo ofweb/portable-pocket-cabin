@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_azuki_beans",
+      "count": 4
+    }
+  ],
+  "water": 1,
+  "heat": "low",
+  "time": 300,
+  "result": {
+    "id": "portable_pocket_cabin:simmered_azuki_beans",
+    "count": 4
+  }
+}

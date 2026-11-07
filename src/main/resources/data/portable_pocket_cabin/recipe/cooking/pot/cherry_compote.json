@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cherry",
+      "count": 4
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:cornstarch"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:cherry_compote",
+    "count": 2
+  }
+}

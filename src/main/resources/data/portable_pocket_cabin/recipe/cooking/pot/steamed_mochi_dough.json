@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "steaming",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:glutinous_rice_flour",
+      "count": 2
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "water": 1,
+  "heat": "medium",
+  "time": 150,
+  "result": {
+    "id": "portable_pocket_cabin:steamed_mochi_dough"
+  }
+}

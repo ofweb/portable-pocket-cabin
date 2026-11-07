@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "thickening",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:azuki_mash",
+      "count": 2
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:anko",
+    "count": 2
+  }
+}

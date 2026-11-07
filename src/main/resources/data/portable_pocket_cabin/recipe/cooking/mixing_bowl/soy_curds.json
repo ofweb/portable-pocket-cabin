@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "curdling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:soy_milk",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:nigari"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:soy_curds",
+    "count": 2
+  }
+}

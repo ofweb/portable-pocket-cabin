@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "whisking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:wheat_flour"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "time": 6,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:taiyaki_batter"
+  }
+}

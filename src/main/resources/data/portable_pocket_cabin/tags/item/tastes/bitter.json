@@ -26,6 +26,13 @@
     "portable_pocket_cabin:aubergine",
     "portable_pocket_cabin:green_olive",
     "portable_pocket_cabin:black_olive",
-    "portable_pocket_cabin:olive_oil"
+    "portable_pocket_cabin:olive_oil",
+    "portable_pocket_cabin:tea_leaf",
+    "portable_pocket_cabin:shaded_tea_leaf",
+    "portable_pocket_cabin:black_tea",
+    "portable_pocket_cabin:sencha",
+    "portable_pocket_cabin:matcha",
+    "portable_pocket_cabin:hojicha",
+    "portable_pocket_cabin:pfefferminztee"
   ]
 }

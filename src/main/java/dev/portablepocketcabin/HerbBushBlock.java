@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.VegetationBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -29,9 +30,10 @@ import java.util.function.Supplier;
 /**
  * A perennial plant that regrows after picking, like a sweet berry bush: thyme, strawberries, raspberries, and oyster
  * mushrooms. A two-season bush, the elder, gives one harvest at its flowering stage and another when it fruits.
- * Picking sets it back to its first grown stage.
+ * Picking sets it back to its first grown stage. Tea remembers whether it ripened under a roof, and then gives shaded
+ * tea leaves.
  */
-final class HerbBushBlock extends VegetationBlock implements BonemealableBlock, CookingPlant {
+class HerbBushBlock extends VegetationBlock implements BonemealableBlock, CookingPlant {
 	static final int MAX_AGE = 3;
 	static final IntegerProperty AGE = BlockStateProperties.AGE_3;
 	private static final VoxelShape YOUNG = Block.box(3, 0, 3, 13, 8, 13);
@@ -47,6 +49,11 @@ final class HerbBushBlock extends VegetationBlock implements BonemealableBlock, 
 		this.ripe = ripe;
 		this.codec = simpleCodec(p -> new HerbBushBlock(p, flowering, ripe));
 		registerDefaultState(stateDefinition.any().setValue(AGE, 0));
+	}
+
+	/** The bush's state after growing to {@code age} at {@code pos}. */
+	BlockState grown(BlockState state, LevelReader level, BlockPos pos, int age) {
+		return state.setValue(AGE, age);
 	}
 
 	@Override
@@ -79,7 +86,7 @@ final class HerbBushBlock extends VegetationBlock implements BonemealableBlock, 
 	protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		int age = state.getValue(AGE);
 		if (age < MAX_AGE && needs().canGrow(level, pos) && random.nextFloat() < needs().growthChance()) {
-			level.setBlock(pos, state.setValue(AGE, age + 1), Block.UPDATE_CLIENTS);
+			level.setBlock(pos, grown(state, level, pos, age + 1), Block.UPDATE_CLIENTS);
 		}
 	}
 
@@ -115,6 +122,42 @@ final class HerbBushBlock extends VegetationBlock implements BonemealableBlock, 
 
 	@Override
 	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-		level.setBlock(pos, state.setValue(AGE, Math.min(MAX_AGE, state.getValue(AGE) + 1)), Block.UPDATE_CLIENTS);
+		level.setBlock(pos, grown(state, level, pos, Math.min(MAX_AGE, state.getValue(AGE) + 1)), Block.UPDATE_CLIENTS);
+	}
+
+	/** A tea bush: it gives tea leaves, or shaded tea leaves when it ripened with a roof over it. */
+	static final class Tea extends HerbBushBlock {
+		static final BooleanProperty SHADED = BooleanProperty.create("shaded");
+		private final Supplier<Item> shadedLeaves;
+		private final MapCodec<Tea> teaCodec;
+
+		Tea(Properties properties, Supplier<Item> leaves, Supplier<Item> shadedLeaves) {
+			super(properties, null, leaves);
+			this.shadedLeaves = shadedLeaves;
+			this.teaCodec = simpleCodec(p -> new Tea(p, leaves, shadedLeaves));
+			registerDefaultState(defaultBlockState().setValue(SHADED, false));
+		}
+
+		@Override
+		protected MapCodec<? extends VegetationBlock> codec() {
+			return teaCodec;
+		}
+
+		@Override
+		protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+			super.createBlockStateDefinition(builder);
+			builder.add(SHADED);
+		}
+
+		@Override
+		BlockState grown(BlockState state, LevelReader level, BlockPos pos, int age) {
+			return super.grown(state, level, pos, age).setValue(SHADED, age == MAX_AGE && PlantNeeds.roofed(level, pos));
+		}
+
+		@Override
+		Item harvest(BlockState state) {
+			Item leaves = super.harvest(state);
+			return leaves != null && state.getValue(SHADED) ? shadedLeaves.get() : leaves;
+		}
 	}
 }

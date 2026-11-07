@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "whisking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:matcha_powder"
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    }
+  ],
+  "time": 6,
+  "result": {
+    "id": "portable_pocket_cabin:matcha"
+  }
+}

@@ -242,3 +242,33 @@ The check also listed 36 intermediates that phase 3's ingredients already allowe
   - Dried thyme, rosemary, and savory are added as the drying step for herbes de Provence.
   - Purple corn and ají amarillo complete no chain yet. Chicha morada needs pineapple, cinnamon, and cloves from the jungles in delivery 6. Lomo saltado and ceviche need meat and fish from B-0049.
 
+## Delivery 5 as built
+
+- **Paddy crops:** rice, glutinous rice, and water chestnut. `PaddyCropBlock` stands in a water source one block deep, over dirt, mud, or farmland, and always holds that water, like seagrass. It can't be planted on dry ground. Breaking it leaves the water behind, and a bucket can't drain it.
+- **Field crops:** soybean, azuki bean, and celery.
+- **Bushes:**
+  - Mint is planted from what it gives.
+  - Tea is planted from a cutting. A tea bush remembers whether it ripened with a roof over it. If it did, picking gives shaded tea leaves instead of tea leaves.
+- **Fruit trees:** sweet cherry and ume on cherry trunks, and star anise on a jungle trunk. The cherry species is called sweet cherry, so its blocks don't share names with vanilla cherry leaves and saplings.
+- **Where they grow:**
+  - Rice grows in swamps and rivers.
+  - Glutinous rice grows in bamboo jungles and rivers. Rivers are added because bamboo jungles have little shallow water.
+  - Water chestnut grows in swamps and mangrove swamps.
+  - Soybean grows in plains and bamboo jungles, azuki bean in cherry groves, and celery and mint in swamps. Mint also grows on riverbanks.
+  - Tea, sweet cherry, and ume grow in cherry groves. Star anise grows in bamboo jungles.
+- **Bean sprouts:** dried soybeans sprout in the fermentation crock with water.
+- **Completed chains:** the completion check found 17 intermediates and 10 dishes, and all of them shipped:
+  - Rice: steamed rice, rice flour, rice noodles, and glutinous rice flour.
+  - Soy: dried soybeans, bean sprouts, and tofu, by way of soy milk curdled with nigari and pressed in the cheese press.
+  - Tea: sencha leaves, black tea, and matcha powder.
+  - Azuki: dried azuki beans and anko.
+  - Mint: dried mint and mint syrup.
+  - Fruit and spice: cherry compote, cherry sauce, umeboshi, and star anise.
+  - Dishes: Menthe à l'eau, Citronnade maison, Pfefferminztee, Onigiri, Dorayaki, Daifuku mochi, Taiyaki, Sencha, Matcha, and Hojicha.
+- **Adaptations:**
+  - Cherry sauce is cherry compote pressed through the strainer, because the catalogue gives both the same inputs.
+  - Soybeans for tofu are soaked in the mixing bowl, so they don't collide with bean sprouts in the crock.
+  - Matcha whisks the powder with a water bottle in the mixing bowl, without heating the water first.
+  - Mint syrup and citronnade maison start from the existing simple syrup, which already dissolves sugar in the pot.
+  - Onigiri uses umeboshi. The salted salmon filling waits for B-0049.
+

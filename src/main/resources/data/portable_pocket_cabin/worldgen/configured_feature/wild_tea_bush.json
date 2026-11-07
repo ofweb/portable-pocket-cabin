@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "portable_pocket_cabin:tea_bush",
+        "Properties": {
+          "age": "3",
+          "shaded": "false"
+        }
+      }
+    }
+  }
+}

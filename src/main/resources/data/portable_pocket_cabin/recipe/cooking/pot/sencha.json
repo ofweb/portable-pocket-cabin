@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "steeping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sencha_leaves"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:sencha"
+  }
+}

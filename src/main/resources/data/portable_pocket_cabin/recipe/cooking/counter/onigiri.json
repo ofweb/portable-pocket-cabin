@@ -1,0 +1,28 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "shaping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:steamed_rice",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    },
+    {
+      "item": "portable_pocket_cabin:nori"
+    },
+    {
+      "item": "portable_pocket_cabin:umeboshi"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:onigiri",
+    "count": 2
+  }
+}

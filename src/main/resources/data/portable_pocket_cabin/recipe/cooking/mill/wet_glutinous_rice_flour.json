@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "wet_grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:soaked_glutinous_rice",
+      "count": 2
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:wet_glutinous_rice_flour",
+    "count": 2
+  }
+}

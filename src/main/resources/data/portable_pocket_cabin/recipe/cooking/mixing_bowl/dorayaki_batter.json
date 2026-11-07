@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "whisking",
+  "ingredients": [
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "minecraft:honey_bottle"
+    },
+    {
+      "item": "portable_pocket_cabin:wheat_flour"
+    }
+  ],
+  "time": 6,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:dorayaki_batter"
+  }
+}

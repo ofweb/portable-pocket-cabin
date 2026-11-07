@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "steaming",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:rice_noodle_batter"
+    }
+  ],
+  "water": 1,
+  "heat": "medium",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:rice_sheets",
+    "count": 2
+  }
+}

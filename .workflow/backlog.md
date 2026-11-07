@@ -270,7 +270,7 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 
 ## B-0050: Cooking crops and foraging
 
-- Status: In Implementation. Deliveries 1 to 4 of 6 are implemented: plains, meadows, and forests; taigas, cold waters, and coasts; savannas, deserts, and badlands; and windswept savannas and hills.
+- Status: In Implementation. Deliveries 1 to 5 of 6 are implemented: plains, meadows, and forests; taigas, cold waters, and coasts; savannas, deserts, and badlands; windswept savannas and hills; and rivers, swamps, cherry groves, and bamboo jungles.
 - Value: Add grains, vegetables, herbs, spices, chilies, fruit, and mushrooms with growing requirements, cultivation methods, and wild sources that reward exploration.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Grown in B-0019. Used by B-0045 recipes.
