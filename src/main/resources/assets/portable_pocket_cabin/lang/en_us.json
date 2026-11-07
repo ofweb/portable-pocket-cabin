@@ -205,5 +205,12 @@
   "screen.portable_pocket_cabin.cookbook.station.crock": "Fermentation crock",
   "screen.portable_pocket_cabin.cookbook.station.brine": "Brine barrel",
   "screen.portable_pocket_cabin.cookbook.station.ageing": "Ageing shelf",
-  "screen.portable_pocket_cabin.cookbook.station.drying": "Drying rack"
+  "screen.portable_pocket_cabin.cookbook.station.drying": "Drying rack",
+  "block.portable_pocket_cabin.proofing_basket": "Proofing Basket",
+  "block.portable_pocket_cabin.dairy_pan": "Dairy Pan",
+  "block.portable_pocket_cabin.fermentation_crock": "Fermentation Crock",
+  "block.portable_pocket_cabin.brine_barrel": "Brine Barrel",
+  "block.portable_pocket_cabin.ageing_shelf": "Ageing Shelf",
+  "block.portable_pocket_cabin.drying_rack": "Drying Rack",
+  "screen.portable_pocket_cabin.cooking.hours_left": "%s h left"
 }

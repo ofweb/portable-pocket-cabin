@@ -178,4 +178,67 @@ final class ProcessStationBlock extends CookingStationBlock {
 			return ticker(config, level, type);
 		}
 	}
+
+	/** The ageing shelf and drying rack: items are placed on spots and taken back by hand, with no screen. */
+	static final class SpotStation extends CookingStationBlock {
+		private final Supplier<BlockEntityType<SpotStationBlockEntity>> type;
+		private final java.util.function.BiFunction<BlockPos, BlockState, SpotStationBlockEntity> factory;
+		private final VoxelShape shape;
+		private final MapCodec<SpotStation> codec;
+
+		SpotStation(Properties properties, Supplier<BlockEntityType<SpotStationBlockEntity>> type,
+			java.util.function.BiFunction<BlockPos, BlockState, SpotStationBlockEntity> factory, VoxelShape shape) {
+			super(properties);
+			this.type = type;
+			this.factory = factory;
+			this.shape = shape;
+			this.codec = simpleCodec(p -> new SpotStation(p, type, factory, shape));
+		}
+
+		@Override
+		protected MapCodec<? extends BaseEntityBlock> codec() {
+			return codec;
+		}
+
+		@Override
+		protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+			return shape;
+		}
+
+		@Override
+		protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+			InteractionHand hand, BlockHitResult hit) {
+			if (!(level instanceof ServerLevel server)) return InteractionResult.SUCCESS;
+			if (!(level.getBlockEntity(pos) instanceof SpotStationBlockEntity spots) || !CookingStationBlockEntity.mayUse(spots, player)) {
+				return InteractionResult.FAIL;
+			}
+			ItemStack held = player.getAbilities().instabuild ? stack.copy() : stack;
+			return spots.add(server, held) ? InteractionResult.SUCCESS_SERVER : InteractionResult.TRY_WITH_EMPTY_HAND;
+		}
+
+		@Override
+		protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+			if (!(level instanceof ServerLevel server)) return InteractionResult.SUCCESS;
+			if (!(level.getBlockEntity(pos) instanceof SpotStationBlockEntity spots) || !CookingStationBlockEntity.mayUse(spots, player)) {
+				return InteractionResult.FAIL;
+			}
+			ItemStack taken = spots.take(server);
+			if (taken.isEmpty()) return InteractionResult.PASS;
+			if (!player.getInventory().add(taken)) player.drop(taken, false);
+			return InteractionResult.SUCCESS_SERVER;
+		}
+
+		@Override
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+			return factory.apply(pos, state);
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+			if (!(level instanceof ServerLevel) || blockEntityType != type.get()) return null;
+			return (world, pos, blockState, entity) -> SpotStationBlockEntity.serverTick((ServerLevel) world, pos, blockState,
+				(SpotStationBlockEntity) entity);
+		}
+	}
 }

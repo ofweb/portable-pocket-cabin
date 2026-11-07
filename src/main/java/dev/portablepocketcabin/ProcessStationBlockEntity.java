@@ -28,14 +28,16 @@ final class ProcessStationBlockEntity extends CookingStationBlockEntity implemen
 	private int oil;
 	private CookingHeat lastHeat;
 	private boolean paused;
-	/** The game time of the last tick, for time stations (ADR-0013), or -1 before the first. */
-	private long lastTime = -1;
+	/** The saved time before a station's first tick. */
+	private static final long NEVER = Long.MIN_VALUE;
+	/** The game time of the last tick, for time stations (ADR-0013). */
+	private long lastTime = NEVER;
 	final ContainerData data = new CookingMenu.Data() {
 		@Override
 		public int get(int index) {
 			return switch (index) {
-				case CookingMenu.DATA_PROGRESS -> process.progress();
-				case CookingMenu.DATA_TIME -> process.time();
+				case CookingMenu.DATA_PROGRESS -> process.progress() / scale();
+				case CookingMenu.DATA_TIME -> process.time() / scale();
 				case CookingMenu.DATA_WATER -> oil;
 				case CookingMenu.DATA_LIQUID -> 1;
 				case CookingMenu.DATA_HEAT -> lastHeat == null ? 0 : lastHeat.ordinal() + 1;
@@ -45,6 +47,11 @@ final class ProcessStationBlockEntity extends CookingStationBlockEntity implemen
 			};
 		}
 	};
+
+	/** Menu data are sent as short numbers, so time stations, whose recipes run for days, report seconds. */
+	private int scale() {
+		return kind.station.timeStation() ? CookingMenu.TIME_STATION_SCALE : 1;
+	}
 
 	ProcessStationBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, CookingMenu.Kind kind) {
 		super(type, pos, state, kind.size);
@@ -126,14 +133,14 @@ final class ProcessStationBlockEntity extends CookingStationBlockEntity implemen
 	private long elapsed(ServerLevel level) {
 		if (!kind.station.timeStation()) return 1;
 		long now = level.getGameTime();
-		long elapsed = lastTime < 0 ? 1 : now - lastTime;
+		long elapsed = lastTime == NEVER ? 1 : now - lastTime;
 		lastTime = now;
 		return elapsed;
 	}
 
 	/** Moves the saved time back, as if the station had been unloaded for {@code ticks}. For GameTests. */
 	void rewind(long ticks) {
-		if (lastTime >= 0) lastTime -= ticks;
+		if (lastTime != NEVER) lastTime -= ticks;
 	}
 
 	static void serverTick(ServerLevel level, BlockPos pos, BlockState state, ProcessStationBlockEntity station) {
@@ -189,7 +196,7 @@ final class ProcessStationBlockEntity extends CookingStationBlockEntity implemen
 	protected void loadAdditional(ValueInput input) {
 		super.loadAdditional(input);
 		oil = input.getIntOr("oil", 0);
-		lastTime = input.getLongOr("last_time", -1);
+		lastTime = input.getLongOr("last_time", NEVER);
 		process.load(input);
 	}
 }

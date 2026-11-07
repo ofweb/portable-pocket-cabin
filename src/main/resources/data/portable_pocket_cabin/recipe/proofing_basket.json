@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:bamboo"
+  },
+  "pattern": [
+    "B B",
+    " B "
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:proofing_basket"
+  }
+}

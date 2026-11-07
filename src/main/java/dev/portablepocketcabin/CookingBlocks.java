@@ -67,6 +67,24 @@ final class CookingBlocks {
 		ProcessStationBlock.Config.of(CookingMenu.Kind.CHURN, () -> CookingBlocks.BUTTER_CHURN_ENTITY)
 			.shape(Block.box(3, 0, 3, 13, 16, 13)).handWork(SoundEvents.WOOD_HIT)),
 		BlockBehaviour.Properties.of().strength(2.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava());
+	static final Block PROOFING_BASKET = register("proofing_basket", properties -> new ProcessStationBlock(properties,
+		ProcessStationBlock.Config.of(CookingMenu.Kind.PROOFING, () -> CookingBlocks.PROOFING_BASKET_ENTITY).shape(Block.box(2, 0, 2, 14, 5, 14))),
+		BlockBehaviour.Properties.of().strength(0.8F).sound(SoundType.BAMBOO_WOOD).noOcclusion().ignitedByLava());
+	static final Block DAIRY_PAN = register("dairy_pan", properties -> new ProcessStationBlock(properties,
+		ProcessStationBlock.Config.of(CookingMenu.Kind.DAIRY_PAN, () -> CookingBlocks.DAIRY_PAN_ENTITY).shape(Block.box(1, 0, 1, 15, 4, 15))),
+		BlockBehaviour.Properties.of().strength(1.0F).sound(SoundType.COPPER).noOcclusion());
+	static final Block CROCK = register("fermentation_crock", properties -> new ProcessStationBlock(properties,
+		ProcessStationBlock.Config.of(CookingMenu.Kind.CROCK, () -> CookingBlocks.CROCK_ENTITY).shape(Block.box(2, 0, 2, 14, 14, 14))),
+		BlockBehaviour.Properties.of().strength(1.5F).sound(SoundType.DECORATED_POT).noOcclusion());
+	static final Block BRINE_BARREL = register("brine_barrel", properties -> new ProcessStationBlock(properties,
+		ProcessStationBlock.Config.of(CookingMenu.Kind.BRINE, () -> CookingBlocks.BRINE_BARREL_ENTITY)),
+		BlockBehaviour.Properties.of().strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
+	static final Block AGEING_SHELF = register("ageing_shelf", properties -> new ProcessStationBlock.SpotStation(properties,
+		() -> CookingBlocks.AGEING_SHELF_ENTITY, SpotStationBlockEntity::ageingShelf, Block.box(0, 0, 0, 16, 10, 16)),
+		BlockBehaviour.Properties.of().strength(2.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava());
+	static final Block DRYING_RACK = register("drying_rack", properties -> new ProcessStationBlock.SpotStation(properties,
+		() -> CookingBlocks.DRYING_RACK_ENTITY, SpotStationBlockEntity::dryingRack, Block.box(0, 0, 0, 16, 13, 16)),
+		BlockBehaviour.Properties.of().strength(1.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava());
 	static final Block CHEESE_PRESS = register("cheese_press", properties -> new ProcessStationBlock(properties,
 		ProcessStationBlock.Config.of(CookingMenu.Kind.CHEESE_PRESS, () -> CookingBlocks.CHEESE_PRESS_ENTITY)),
 		BlockBehaviour.Properties.of().strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
@@ -91,6 +109,14 @@ final class CookingBlocks {
 		new BlockEntityType<>(AebleskivePanBlockEntity::new, Set.of(AEBLESKIVE_PAN)));
 	static final BlockEntityType<ProcessStationBlockEntity> PRESS_ENTITY = registerEntity("press",
 		new BlockEntityType<>(ProcessStationBlockEntity::press, Set.of(PRESS)));
+	static final BlockEntityType<ProcessStationBlockEntity> PROOFING_BASKET_ENTITY = process("proofing_basket", PROOFING_BASKET, CookingMenu.Kind.PROOFING);
+	static final BlockEntityType<ProcessStationBlockEntity> DAIRY_PAN_ENTITY = process("dairy_pan", DAIRY_PAN, CookingMenu.Kind.DAIRY_PAN);
+	static final BlockEntityType<ProcessStationBlockEntity> CROCK_ENTITY = process("fermentation_crock", CROCK, CookingMenu.Kind.CROCK);
+	static final BlockEntityType<ProcessStationBlockEntity> BRINE_BARREL_ENTITY = process("brine_barrel", BRINE_BARREL, CookingMenu.Kind.BRINE);
+	static final BlockEntityType<SpotStationBlockEntity> AGEING_SHELF_ENTITY = registerEntity("ageing_shelf",
+		new BlockEntityType<>(SpotStationBlockEntity::ageingShelf, Set.of(AGEING_SHELF)));
+	static final BlockEntityType<SpotStationBlockEntity> DRYING_RACK_ENTITY = registerEntity("drying_rack",
+		new BlockEntityType<>(SpotStationBlockEntity::dryingRack, Set.of(DRYING_RACK)));
 	static final BlockEntityType<ProcessStationBlockEntity> MILL_ENTITY = process("mill", MILL, CookingMenu.Kind.MILL);
 	static final BlockEntityType<ProcessStationBlockEntity> MIXING_BOWL_ENTITY = process("mixing_bowl", MIXING_BOWL, CookingMenu.Kind.MIXING_BOWL);
 	static final BlockEntityType<ProcessStationBlockEntity> MORTAR_ENTITY = process("mortar", MORTAR, CookingMenu.Kind.MORTAR);
@@ -121,6 +147,12 @@ final class CookingBlocks {
 			entries.accept(MORTAR);
 			entries.accept(BUTTER_CHURN);
 			entries.accept(CHEESE_PRESS);
+			entries.accept(PROOFING_BASKET);
+			entries.accept(DAIRY_PAN);
+			entries.accept(CROCK);
+			entries.accept(BRINE_BARREL);
+			entries.accept(AGEING_SHELF);
+			entries.accept(DRYING_RACK);
 		});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
 			entries.accept(CookingItems.KITCHEN_KNIFE);

@@ -33,6 +33,8 @@ final class CookingMenu extends AbstractContainerMenu {
 	static final int DATA_PAUSED = 8;
 	static final int DATA_COUNT = 9;
 	static final int INVENTORY_Y = 84;
+	/** Time stations report progress and time in seconds, so that days fit the menu's short data values. */
+	static final int TIME_STATION_SCALE = 20;
 
 	/** Read-only menu data that a station computes on demand. */
 	abstract static class Data implements ContainerData {
@@ -62,7 +64,11 @@ final class CookingMenu extends AbstractContainerMenu {
 		MIXING_BOWL(CookingStation.MIXING_BOWL, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}}, 6, 7, 8),
 		MORTAR(CookingStation.MORTAR, new int[][] {{39, 26}, {57, 26}, {124, 26}}, -1, 2),
 		CHURN(CookingStation.CHURN, new int[][] {{39, 26}, {57, 26}, {124, 26}, {124, 53}, {142, 53}}, -1, 2, 3, 4),
-		CHEESE_PRESS(CookingStation.CHEESE_PRESS, new int[][] {{39, 26}, {57, 26}, {124, 26}, {124, 53}}, -1, 2, 3);
+		CHEESE_PRESS(CookingStation.CHEESE_PRESS, new int[][] {{39, 26}, {57, 26}, {124, 26}, {124, 53}}, -1, 2, 3),
+		PROOFING(CookingStation.PROOFING, new int[][] {{48, 26}, {124, 26}}, -1, 1),
+		DAIRY_PAN(CookingStation.DAIRY_PAN, new int[][] {{48, 26}, {48, 56}, {124, 26}, {124, 53}}, 1, 2, 3),
+		CROCK(CookingStation.CROCK, new int[][] {{39, 17}, {57, 17}, {39, 35}, {57, 35}, {48, 56}, {124, 26}, {124, 53}, {142, 53}}, 4, 5, 6, 7),
+		BRINE(CookingStation.BRINE, new int[][] {{39, 17}, {57, 17}, {39, 35}, {57, 35}, {124, 26}, {124, 53}}, -1, 4, 5);
 
 		final CookingStation station;
 		final int size;

@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:dairy_pan",
+  "technique": "settling",
+  "ingredients": [
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle",
+    "count": 2
+  },
+  "time": 24000,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    }
+  ],
+  "result": {
+    "id": "minecraft:honey_bottle",
+    "count": 2
+  }
+}

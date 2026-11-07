@@ -205,6 +205,11 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 		}
 		if (menu.data(CookingMenu.DATA_PAUSED) != 0) return Component.translatable("screen.portable_pocket_cabin.cooking.covered");
 		int needed = menu.data(CookingMenu.DATA_NEEDED_HEAT);
+		if (station() != null && station().timeStation() && menu.data(CookingMenu.DATA_TIME) > 0) {
+			int left = (menu.data(CookingMenu.DATA_TIME) - menu.data(CookingMenu.DATA_PROGRESS)) * CookingMenu.TIME_STATION_SCALE;
+			return Component.translatable("screen.portable_pocket_cabin.cooking.hours_left",
+				Math.max(1, (left + CookingStation.HOUR - 1) / CookingStation.HOUR));
+		}
 		if (station() != null && !station().heated()) {
 			return Component.translatable(menu.data(CookingMenu.DATA_TIME) > 0
 				? "screen.portable_pocket_cabin.cooking.working" : "screen.portable_pocket_cabin.cooking.idle");

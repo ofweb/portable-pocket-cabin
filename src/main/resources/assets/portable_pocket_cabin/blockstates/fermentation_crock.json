@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "portable_pocket_cabin:block/fermentation_crock"
+    },
+    "facing=east": {
+      "model": "portable_pocket_cabin:block/fermentation_crock",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "portable_pocket_cabin:block/fermentation_crock",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "portable_pocket_cabin:block/fermentation_crock",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:proofing",
+  "technique": "proofing",
+  "ingredients": [
+    {
+      "item": "minecraft:wheat"
+    }
+  ],
+  "time": 2000,
+  "result": {
+    "id": "minecraft:bread"
+  }
+}

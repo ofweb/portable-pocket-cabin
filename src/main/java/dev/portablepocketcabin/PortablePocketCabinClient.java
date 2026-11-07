@@ -15,6 +15,8 @@ public final class PortablePocketCabinClient implements ClientModInitializer {
 		BlockEntityRenderers.register(CookingBlocks.SKILLET_ENTITY, CookingItemsRenderer.skillet());
 		BlockEntityRenderers.register(CookingBlocks.GRILL_ENTITY, CookingItemsRenderer.grill());
 		BlockEntityRenderers.register(CookingBlocks.AEBLESKIVE_PAN_ENTITY, CookingItemsRenderer.aebleskivePan());
+		BlockEntityRenderers.register(CookingBlocks.AGEING_SHELF_ENTITY, CookingItemsRenderer.ageingShelf());
+		BlockEntityRenderers.register(CookingBlocks.DRYING_RACK_ENTITY, CookingItemsRenderer.dryingRack());
 		CookbookItem.opener = CookbookScreen::open;
 		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(CookbookAvailability.Reply.TYPE,
 			(reply, context) -> {

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "portable_pocket_cabin:block/dairy_pan"
+    },
+    "facing=east": {
+      "model": "portable_pocket_cabin:block/dairy_pan",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "portable_pocket_cabin:block/dairy_pan",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "portable_pocket_cabin:block/dairy_pan",
+      "y": 270
+    }
+  }
+}
