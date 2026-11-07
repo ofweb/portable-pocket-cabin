@@ -126,6 +126,25 @@ final class Butchery {
 	/** Goat meat seared on the skillet, as mutton is. */
 	static final Item COOKED_CHEVON = item("cooked_chevon", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(6, 9.6F, false)));
 
+	/** Minces meat and fish: each turn of its handle, with an empty hand, grinds once. It stands on the prep counter. */
+	static final net.minecraft.world.level.block.Block MEAT_GRINDER = CookingBlocks.register("meat_grinder",
+		properties -> new ProcessStationBlock.CounterTopStation(properties, ProcessStationBlock.Config.of(CookingMenu.Kind.MEAT_GRINDER,
+			() -> Butchery.MEAT_GRINDER_ENTITY).shape(net.minecraft.world.level.block.Block.box(3, 0, 3, 13, 12, 13))
+			.handWork(net.minecraft.sounds.SoundEvents.GRINDSTONE_USE)),
+		net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().strength(2.0F).sound(net.minecraft.world.level.block.SoundType.METAL)
+			.noOcclusion().pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY));
+	/** Fills casings with a filling: each turn of its handle presses once. It stands on the prep counter. */
+	static final net.minecraft.world.level.block.Block SAUSAGE_STUFFER = CookingBlocks.register("sausage_stuffer",
+		properties -> new ProcessStationBlock.CounterTopStation(properties, ProcessStationBlock.Config.of(CookingMenu.Kind.SAUSAGE_STUFFER,
+			() -> Butchery.SAUSAGE_STUFFER_ENTITY).shape(net.minecraft.world.level.block.Block.box(4, 0, 2, 12, 14, 14))
+			.handWork(net.minecraft.sounds.SoundEvents.PISTON_EXTEND)),
+		net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().strength(2.0F).sound(net.minecraft.world.level.block.SoundType.METAL)
+			.noOcclusion().pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY));
+	static final net.minecraft.world.level.block.entity.BlockEntityType<ProcessStationBlockEntity> MEAT_GRINDER_ENTITY =
+		CookingBlocks.process("meat_grinder", MEAT_GRINDER, CookingMenu.Kind.MEAT_GRINDER);
+	static final net.minecraft.world.level.block.entity.BlockEntityType<ProcessStationBlockEntity> SAUSAGE_STUFFER_ENTITY =
+		CookingBlocks.process("sausage_stuffer", SAUSAGE_STUFFER, CookingMenu.Kind.SAUSAGE_STUFFER);
+
 	/** Delivery 1 products: stocks, rendered fats, gelatin, cured meats, and the dishes the cuts complete. */
 	static final java.util.List<Item> PRODUCTS = new java.util.ArrayList<>();
 	static {
@@ -152,6 +171,19 @@ final class Butchery {
 		for (String name : dishes) PRODUCTS.add(item(name, new Item.Properties().food(new net.minecraft.world.food.FoodProperties(9, 10.8F, false))));
 	}
 
+	/** Delivery 2 products: mince, sausages, and the dishes they complete. */
+	static {
+		String[] plain = {"minced_beef", "minced_pork", "bratwurst_filling", "raw_bratwurst", "toulouse_filling", "chorizo_filling", "fresh_chorizo",
+			"smoked_sausage_filling", "raw_smoked_sausage", "cocktail_sausage_filling", "raw_cocktail_sausages", "poached_cocktail_sausages",
+			"blood_sausage_filling", "raw_blood_sausage", "warm_sauerkraut", "feijoada_beans", "frikadeller_fars", "poached_boller",
+			"boller_i_karry_stew", "raw_polsehorn", "proofed_polsehorn"};
+		for (String name : plain) PRODUCTS.add(item(name, new Item.Properties()));
+		String[] sausages = {"blood_sausage", "chorizo", "cocktail_sausages", "fried_bratwurst", "smoked_sausage", "toulouse_sausage"};
+		for (String name : sausages) PRODUCTS.add(item(name, new Item.Properties().food(new net.minecraft.world.food.FoodProperties(5, 6.0F, false))));
+		String[] dishes = {"bratwurst_mit_sauerkraut", "currywurst", "feijoada", "frikadeller", "boller_i_karry", "polsehorn"};
+		for (String name : dishes) PRODUCTS.add(item(name, new Item.Properties().food(new net.minecraft.world.food.FoodProperties(9, 10.8F, false))));
+	}
+
 	private Butchery() {
 	}
 
@@ -161,6 +193,8 @@ final class Butchery {
 			.register(entries -> {
 				entries.accept(HANGING_HOOK);
 				entries.accept(BUTCHER_BLOCK);
+				entries.accept(MEAT_GRINDER);
+				entries.accept(SAUSAGE_STUFFER);
 			});
 		net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents.modifyOutputEvent(net.minecraft.world.item.CreativeModeTabs.TOOLS_AND_UTILITIES)
 			.register(entries -> entries.accept(CLEAVER));

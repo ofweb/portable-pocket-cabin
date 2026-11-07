@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "poaching",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:raw_cocktail_sausages",
+      "count": 6
+    }
+  ],
+  "water": 1,
+  "heat": "low",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:poached_cocktail_sausages",
+    "count": 6
+  }
+}

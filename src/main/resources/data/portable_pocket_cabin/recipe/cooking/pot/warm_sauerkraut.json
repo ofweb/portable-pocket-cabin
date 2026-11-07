@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "warming_gently",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sauerkraut",
+      "count": 2
+    }
+  ],
+  "heat": "low",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:warm_sauerkraut",
+    "count": 2
+  }
+}

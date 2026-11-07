@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "experience": 0.35,
+  "cookingtime": 400,
+  "ingredient": "portable_pocket_cabin:raw_smoked_sausage",
+  "result": {
+    "id": "portable_pocket_cabin:smoked_sausage"
+  }
+}

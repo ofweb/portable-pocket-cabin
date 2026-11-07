@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "rolling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:bread_dough"
+    },
+    {
+      "item": "portable_pocket_cabin:cocktail_sausages",
+      "count": 4
+    },
+    {
+      "item": "minecraft:egg"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:raw_polsehorn",
+    "count": 4
+  }
+}

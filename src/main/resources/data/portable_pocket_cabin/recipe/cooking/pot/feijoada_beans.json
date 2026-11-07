@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "soaking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_black_beans",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:carne_seca"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    }
+  ],
+  "water": 1,
+  "heat": "low",
+  "time": 400,
+  "result": {
+    "id": "portable_pocket_cabin:feijoada_beans",
+    "count": 2
+  }
+}

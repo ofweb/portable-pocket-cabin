@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:meat_grinder",
+  "technique": "mincing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:beef_chuck"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:minced_beef",
+    "count": 2
+  }
+}

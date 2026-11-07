@@ -1,0 +1,31 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fried_bratwurst"
+    },
+    {
+      "item": "portable_pocket_cabin:warm_sauerkraut"
+    },
+    {
+      "item": "portable_pocket_cabin:prepared_mustard"
+    },
+    {
+      "item": "portable_pocket_cabin:bread_roll"
+    }
+  ],
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "salty",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:bratwurst_mit_sauerkraut"
+  }
+}

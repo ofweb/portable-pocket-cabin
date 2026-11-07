@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:sausage_stuffer",
+  "technique": "stuffing_sausages",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:blood_sausage_filling"
+    }
+  ],
+  "container": {
+    "item": "portable_pocket_cabin:pork_casing"
+  },
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:raw_blood_sausage",
+    "count": 2
+  }
+}

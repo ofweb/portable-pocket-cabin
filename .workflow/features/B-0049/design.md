@@ -281,6 +281,26 @@ Client GameTests capture the hook with a hanging carcass, the block mid-butchery
   - Anticuchos are served with a baked potato and cooked corn.
   - Stegt flæsk needs boiled potatoes, which are added.
 
+## Delivery 2 as built
+
+- **Stations:** the meat grinder and sausage stuffer are hand-worked counter-top stations, built like the churn and the mortar.
+  - An empty-hand use turns the handle once, and sneaking opens the screen.
+  - The grinder has two ingredient slots. The stuffer has one, with the casing in its container slot.
+  - Both recipe types count turns, and both work with hoppers.
+- **Completed chains:** the completion check found 7 intermediates and 6 dishes for the two stations, and all of them shipped.
+  - Intermediates: minced beef and pork, raw bratwurst, Toulouse sausage, chorizo (cured on the ageing shelf), smoked sausage (vanilla smoker), and cocktail sausages (poached, then smoked).
+  - Dishes: Bratwurst mit Sauerkraut, Currywurst, Feijoada, Frikadeller, Boller i karry, and Pølsehorn.
+- **Blood sausage:** blood, back fat, barley, and salt are stuffed into pork casing and poached, as the design promised.
+- **Waiting for delivery 4:**
+  - The fish chains: fillets, salted salmon, ceviche, and fiskefrikadeller.
+  - Leverpostej, which needs salted anchovies.
+- **Adaptations:**
+  - The sausage fillings are seasoned in the mixing bowl, each with its own ingredients, so no two share their inputs.
+  - Boller i karry poach the frikadeller fars, the same forcemeat. They are then stewed with a roux, curry powder, butter, and pork stock, and served with steamed rice.
+  - Feijoada soaks its beans with carne seca, onion, and garlic first, so the simmer fits the pot's six slots.
+  - Frikadeller fry on the skillet without the catalogue's butter, because the skillet takes one ingredient.
+- **Completion check:** it now knows the four butchery stations, and the catalogue rows that list a carcass's parts together.
+
 ## Assumptions
 
 - **Crafting:**

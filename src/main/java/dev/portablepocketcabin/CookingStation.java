@@ -34,7 +34,9 @@ enum CookingStation {
 	CROCK("crock", 4, false),
 	BRINE("brine", 4, false),
 	AGEING("ageing", 1, false),
-	DRYING("drying", 1, false);
+	DRYING("drying", 1, false),
+	MEAT_GRINDER("meat_grinder", 2, false),
+	SAUSAGE_STUFFER("sausage_stuffer", 1, false);
 
 	/** Minecraft time: a day and an hour in ticks, as time stations count them. */
 	static final int DAY = 24000;
@@ -115,7 +117,7 @@ enum CookingStation {
 	/** Whether recipes may name a container, such as the bowls soup is served in or the bottles a strainer or press fills. */
 	boolean takesContainer() {
 		return switch (this) {
-			case POT, WOK, STRAINER, PRESS, MILL, MIXING_BOWL, DAIRY_PAN, CROCK -> true;
+			case POT, WOK, STRAINER, PRESS, MILL, MIXING_BOWL, DAIRY_PAN, CROCK, SAUSAGE_STUFFER -> true;
 			default -> false;
 		};
 	}
@@ -140,9 +142,12 @@ enum CookingStation {
 		};
 	}
 
-	/** Whether a recipe's time counts tool uses rather than ticks: the spoon, the pestle, and the churn's handle. */
+	/**
+	 * Whether a recipe's time counts tool uses rather than ticks: the spoon, the pestle, and the handles of the churn,
+	 * meat grinder, and sausage stuffer.
+	 */
 	boolean worked() {
-		return this == MIXING_BOWL || this == MORTAR || this == CHURN;
+		return this == MIXING_BOWL || this == MORTAR || this == CHURN || this == MEAT_GRINDER || this == SAUSAGE_STUFFER;
 	}
 
 	/**

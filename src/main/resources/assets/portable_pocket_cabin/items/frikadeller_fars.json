@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/frikadeller_fars",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 14721168
+      }
+    ]
+  }
+}

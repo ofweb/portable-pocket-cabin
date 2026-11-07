@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:frikadeller_fars"
+    }
+  ],
+  "heat": "medium",
+  "time": 160,
+  "result": {
+    "id": "portable_pocket_cabin:frikadeller",
+    "count": 3
+  }
+}

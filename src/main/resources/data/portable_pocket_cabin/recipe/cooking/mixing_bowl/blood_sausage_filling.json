@@ -1,0 +1,30 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:blood",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:back_fat"
+    },
+    {
+      "item": "portable_pocket_cabin:barley"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:blood_sausage_filling",
+    "count": 2
+  }
+}

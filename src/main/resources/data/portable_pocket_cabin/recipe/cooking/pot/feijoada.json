@@ -1,0 +1,35 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:feijoada_beans",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:smoked_sausage"
+    },
+    {
+      "item": "portable_pocket_cabin:pork_belly"
+    },
+    {
+      "item": "portable_pocket_cabin:pig_trotters"
+    },
+    {
+      "item": "portable_pocket_cabin:bay_leaf"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 1200,
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:feijoada",
+    "count": 2
+  }
+}

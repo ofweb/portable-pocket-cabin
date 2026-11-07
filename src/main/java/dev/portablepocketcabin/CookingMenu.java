@@ -63,6 +63,9 @@ final class CookingMenu extends AbstractContainerMenu {
 		MILL(CookingStation.MILL, new int[][] {{48, 26}, {48, 56}, {124, 26}, {124, 53}}, 1, 2, 3),
 		MIXING_BOWL(CookingStation.MIXING_BOWL, new int[][] {{30, 17}, {48, 17}, {66, 17}, {30, 35}, {48, 35}, {66, 35}, {48, 56}, {124, 26}, {124, 53}, {142, 53}}, 6, 7, 8, 9),
 		MORTAR(CookingStation.MORTAR, new int[][] {{39, 26}, {57, 26}, {124, 26}}, -1, 2),
+		MEAT_GRINDER(CookingStation.MEAT_GRINDER, new int[][] {{39, 26}, {57, 26}, {124, 26}}, -1, 2),
+		/** The casing goes in the container slot below the filling. */
+		SAUSAGE_STUFFER(CookingStation.SAUSAGE_STUFFER, new int[][] {{48, 26}, {48, 56}, {124, 26}}, 1, 2),
 		CHURN(CookingStation.CHURN, new int[][] {{39, 26}, {57, 26}, {124, 26}, {124, 53}, {142, 53}}, -1, 2, 3, 4),
 		CHEESE_PRESS(CookingStation.CHEESE_PRESS, new int[][] {{39, 26}, {57, 26}, {124, 26}, {124, 53}}, -1, 2, 3),
 		PROOFING(CookingStation.PROOFING, new int[][] {{48, 26}, {124, 26}}, -1, 1),

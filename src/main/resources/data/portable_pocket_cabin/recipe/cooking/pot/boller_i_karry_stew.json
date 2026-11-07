@@ -1,0 +1,33 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "thickening",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:poached_boller",
+      "count": 3
+    },
+    {
+      "item": "portable_pocket_cabin:roux"
+    },
+    {
+      "item": "portable_pocket_cabin:curry_powder"
+    },
+    {
+      "item": "portable_pocket_cabin:salted_butter"
+    },
+    {
+      "item": "portable_pocket_cabin:pork_stock"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:boller_i_karry_stew",
+    "count": 2
+  }
+}

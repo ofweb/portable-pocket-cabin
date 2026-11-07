@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "seasoning_mince",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:minced_pork",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:cocktail_sausage_filling",
+    "count": 2
+  }
+}

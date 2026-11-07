@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:raw_bratwurst"
+    }
+  ],
+  "heat": "medium",
+  "time": 120,
+  "result": {
+    "id": "portable_pocket_cabin:fried_bratwurst"
+  }
+}

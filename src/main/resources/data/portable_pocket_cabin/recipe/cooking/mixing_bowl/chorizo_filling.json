@@ -1,0 +1,32 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "seasoning_mince",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:minced_pork",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:paprika"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    },
+    {
+      "item": "portable_pocket_cabin:wine_vinegar"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:chorizo_filling",
+    "count": 2
+  }
+}

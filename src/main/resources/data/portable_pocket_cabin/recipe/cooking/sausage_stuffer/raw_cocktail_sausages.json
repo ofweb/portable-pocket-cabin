@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:sausage_stuffer",
+  "technique": "stuffing_sausages",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cocktail_sausage_filling"
+    }
+  ],
+  "container": {
+    "item": "portable_pocket_cabin:pork_casing"
+  },
+  "time": 6,
+  "result": {
+    "id": "portable_pocket_cabin:raw_cocktail_sausages",
+    "count": 6
+  }
+}

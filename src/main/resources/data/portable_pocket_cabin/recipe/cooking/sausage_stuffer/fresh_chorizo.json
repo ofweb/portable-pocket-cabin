@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:sausage_stuffer",
+  "technique": "stuffing_sausages",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chorizo_filling"
+    }
+  ],
+  "container": {
+    "item": "portable_pocket_cabin:pork_casing"
+  },
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:fresh_chorizo",
+    "count": 2
+  }
+}
