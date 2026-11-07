@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "tearing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:crustless_bread"
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:fresh_panko",
+    "count": 2
+  }
+}

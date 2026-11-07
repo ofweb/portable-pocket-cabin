@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "winnowing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:roasted_cocoa_beans"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:roasted_cocoa_nibs",
+    "count": 2
+  }
+}

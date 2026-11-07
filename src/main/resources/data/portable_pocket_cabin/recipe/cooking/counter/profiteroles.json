@@ -1,0 +1,32 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "filling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:choux_buns",
+      "count": 4
+    },
+    {
+      "item": "portable_pocket_cabin:whipped_cream"
+    },
+    {
+      "item": "portable_pocket_cabin:chocolate_sauce"
+    }
+  ],
+  "time": 40,
+  "remainders": [
+    {
+      "id": "minecraft:bowl"
+    },
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:profiteroles",
+    "count": 4
+  }
+}

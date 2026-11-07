@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "reducing",
+  "ingredients": [
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars",
+      "count": 2
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "heat": "low",
+  "time": 400,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:condensed_milk"
+  }
+}

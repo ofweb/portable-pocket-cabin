@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "crushing",
+  "ingredients": [
+    {
+      "item": "minecraft:ice"
+    }
+  ],
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:crushed_ice",
+    "count": 2
+  }
+}

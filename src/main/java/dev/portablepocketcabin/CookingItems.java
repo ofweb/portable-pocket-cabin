@@ -143,6 +143,31 @@ final class CookingItems {
 	static final Item CARAMEL_SAUCE = register("caramel_sauce", properties -> drink(properties, 3, 1.8F));
 	static final Item FRIED_DOUGHNUT = register("fried_doughnut", properties -> properties.food(food(4, 2.4F)));
 	static final Item BERLINER = register("berliner", properties -> properties.food(food(6, 7.2F)));
+	/**
+	 * Phase 3 products that the catalogue's chains allowed but the phase 3 deliveries left out: pastry and noodle doughs,
+	 * cocoa and chocolate, milk reductions, Latin American cheeses, and the dishes they complete.
+	 */
+	static final java.util.List<Item> PHASE3_EXTRAS = new java.util.ArrayList<>();
+	static {
+		String[] plain = {"wet_potato_starch", "potato_starch", "dried_bread", "breadcrumbs", "crustless_bread", "fresh_panko", "panko",
+			"flatbread_dough", "strudel_dough", "plain_dough", "gyoza_wrappers", "spring_roll_batter", "spring_roll_wrappers", "ramen_dough",
+			"ramen_noodles", "tenkasu_batter", "tenkasu", "puff_dough", "laminated_dough", "puff_pastry", "choux_panade", "choux_pastry",
+			"tartlet_rings", "tartlet_shells", "pretzel_dough", "proofed_pretzel_dough", "shaped_pretzels", "dipped_pretzels", "sponge_batter",
+			"stretched_curds", "fermented_cocoa_beans", "dried_cocoa_beans", "roasted_cocoa_beans", "roasted_cocoa_nibs", "cocoa_press_cake",
+			"cocoa_powder", "cocoa_mass", "tempered_chocolate", "crushed_ice", "diced_nopales", "choux_buns", "gougere_dough", "unbaked_brunsviger",
+			"brigadeiro_mixture", "cooled_brigadeiro_mixture"};
+		for (String name : plain) PHASE3_EXTRAS.add(register(name, UnaryOperator.identity()));
+		String[] bottles = {"kansui", "cocoa_butter", "condensed_milk", "evaporated_milk", "dulce_de_leche", "chocolate_sauce", "warm_cocoa"};
+		for (String name : bottles) PHASE3_EXTRAS.add(register(name, properties -> properties.stacksTo(16)));
+		Object[][] foods = {{"hard_boiled_egg", 3, 3.6F}, {"queso_oaxaca", 4, 4.8F}, {"cotija_cheese", 4, 5.0F}, {"minas_cheese", 4, 5.0F},
+			{"nopales", 2, 1.2F}, {"chocolate", 3, 2.4F}, {"chocolate_sponge", 4, 3.6F}, {"pretzel", 5, 6.0F}, {"tarte_tatin", 8, 9.6F},
+			{"profiteroles", 4, 4.8F}, {"gougeres", 4, 4.8F}, {"brigadeiros", 2, 1.6F}, {"brunsviger", 6, 6.0F}};
+		for (Object[] food : foods) {
+			PHASE3_EXTRAS.add(register((String) food[0], properties -> properties.food(food((int) food[1], (float) food[2]))));
+		}
+		PHASE3_EXTRAS.add(register("chocolat_chaud", properties -> drink(properties, 4, 2.4F)));
+		PHASE3_EXTRAS.add(register("kalter_kakao", properties -> drink(properties, 4, 2.4F)));
+	}
 	static final Item STIR_FRIED_VEGETABLES = register("stir_fried_vegetables",
 		properties -> properties.stacksTo(16).food(food(8, 9.6F)).usingConvertsTo(Items.BOWL));
 

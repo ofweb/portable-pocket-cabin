@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "setting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tempered_chocolate"
+    }
+  ],
+  "time": 1000,
+  "result": {
+    "id": "portable_pocket_cabin:chocolate",
+    "count": 2
+  }
+}

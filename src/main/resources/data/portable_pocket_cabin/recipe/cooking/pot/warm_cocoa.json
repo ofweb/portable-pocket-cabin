@@ -1,0 +1,30 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "dissolving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cocoa_powder"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle",
+    "count": 3
+  },
+  "heat": "low",
+  "time": 100,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:warm_cocoa",
+    "count": 3
+  }
+}

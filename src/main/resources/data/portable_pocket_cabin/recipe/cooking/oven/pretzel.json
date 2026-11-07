@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dipped_pretzels",
+      "count": 2
+    }
+  ],
+  "heat": "medium",
+  "time": 160,
+  "tastes": [
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:pretzel",
+    "count": 2
+  }
+}

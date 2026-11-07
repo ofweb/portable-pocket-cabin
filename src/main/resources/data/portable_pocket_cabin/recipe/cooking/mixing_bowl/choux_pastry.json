@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "beating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:choux_panade"
+    },
+    {
+      "item": "minecraft:egg",
+      "count": 2
+    }
+  ],
+  "time": 6,
+  "result": {
+    "id": "portable_pocket_cabin:choux_pastry"
+  }
+}

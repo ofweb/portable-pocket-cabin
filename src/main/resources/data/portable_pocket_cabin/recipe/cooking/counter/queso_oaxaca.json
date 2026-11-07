@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "winding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:stretched_curds"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:queso_oaxaca"
+  }
+}

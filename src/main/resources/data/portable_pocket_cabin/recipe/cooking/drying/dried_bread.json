@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:drying",
+  "technique": "drying",
+  "ingredients": [
+    {
+      "item": "minecraft:bread"
+    }
+  ],
+  "time": 12000,
+  "result": {
+    "id": "portable_pocket_cabin:dried_bread"
+  }
+}

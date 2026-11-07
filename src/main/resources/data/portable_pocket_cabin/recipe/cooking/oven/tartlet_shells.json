@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tartlet_rings",
+      "count": 4
+    }
+  ],
+  "heat": "medium",
+  "time": 160,
+  "result": {
+    "id": "portable_pocket_cabin:tartlet_shells",
+    "count": 4
+  }
+}

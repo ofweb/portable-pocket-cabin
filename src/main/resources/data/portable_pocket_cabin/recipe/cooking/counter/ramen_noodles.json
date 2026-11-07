@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "rolling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:ramen_dough"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:ramen_noodles",
+    "count": 2
+  }
+}

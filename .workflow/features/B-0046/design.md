@@ -405,3 +405,32 @@ Each step is a commit with its tests green. As built, dairy came before flour an
   - Times, use counts, food values, and the saturation bonus are first guesses. B-0033 tunes them.
 - **Ore:** rock salt ore frequency is a first guess. B-0033 tunes it.
 - **Recipe counts:** the cookbook groups phase 3's roughly 90 new recipes by station, as before.
+
+## Gap filled after phase 3
+
+B-0050's completion check found products that phase 3's ingredients already allowed but phase 3 did not ship. A follow-up after B-0050 delivery 1 adds them, so every chain phase 3 allows is complete:
+
+- **Bread products:** potato starch, breadcrumbs, and panko.
+- **Doughs and pastry:**
+  - Flatbread and strudel dough.
+  - Gyoza and spring roll wrappers.
+  - Kansui and ramen noodles.
+  - Tenkasu.
+  - Puff pastry and tartlet shells, and choux pastry.
+  - Pretzels.
+  - Chocolate sponge.
+- **Cheeses:** queso Oaxaca, cotija, and Minas cheese.
+- **Milk:** condensed and evaporated milk, and dulce de leche.
+- **Simple preparations:** hard-boiled eggs, nopales, and crushed ice.
+- **Cocoa:** the cocoa chain from fermented beans to nibs, cocoa butter, cocoa powder, chocolate, and chocolate sauce.
+- **Dishes:** Tarte Tatin, Profiteroles, Gougères, Chocolat chaud, Brezeln, Kalter Kakao, Brigadeiros, and Brunsviger.
+
+Adaptations:
+
+- **Strudel dough:** it rests flatbread dough on the ageing shelf, since both doughs take the same ingredients.
+- **Gyoza and spring rolls:** gyoza dough is salted, and spring roll batter is unsalted and wetter, so their recipes stay apart.
+- **Cotija and Minas cheese:** both start as fresh cheese. Cotija dries on the rack, and Minas cheese ages a week on the shelf.
+- **Evaporated milk:** it reduces warm milk, so that it doesn't collide with warming milk.
+- **Kombu:** vanilla dried kelp stands in as kombu.
+- **Prep counter:** the counter gains a second byproduct slot, because Profiteroles give back a bowl and a bottle.
+

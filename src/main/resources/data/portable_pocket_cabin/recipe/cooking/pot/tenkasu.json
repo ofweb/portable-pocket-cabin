@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "deep_frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tenkasu_batter"
+    }
+  ],
+  "oil": 1,
+  "heat": "high",
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:tenkasu",
+    "count": 4
+  }
+}

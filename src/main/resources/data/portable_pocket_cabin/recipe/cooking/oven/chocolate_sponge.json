@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sponge_batter"
+    }
+  ],
+  "heat": "medium",
+  "time": 200,
+  "tastes": [
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:chocolate_sponge",
+    "count": 2
+  }
+}

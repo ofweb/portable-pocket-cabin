@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "whisking",
+  "ingredients": [
+    {
+      "item": "minecraft:egg",
+      "count": 2
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:wheat_flour"
+    },
+    {
+      "item": "portable_pocket_cabin:cocoa_powder"
+    }
+  ],
+  "time": 8,
+  "result": {
+    "id": "portable_pocket_cabin:sponge_batter"
+  }
+}

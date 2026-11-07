@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "tempering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cocoa_mass"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:cocoa_butter"
+    }
+  ],
+  "time": 10,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tempered_chocolate"
+  }
+}

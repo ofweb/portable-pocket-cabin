@@ -1,0 +1,33 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "melting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chocolate"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle",
+    "count": 3
+  },
+  "heat": "low",
+  "time": 100,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    }
+  ],
+  "tastes": [
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:chocolat_chaud",
+    "count": 3
+  }
+}

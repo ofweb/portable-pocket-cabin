@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "fermenting",
+  "ingredients": [
+    {
+      "item": "minecraft:cocoa_beans",
+      "count": 4
+    }
+  ],
+  "time": 48000,
+  "result": {
+    "id": "portable_pocket_cabin:fermented_cocoa_beans",
+    "count": 4
+  }
+}

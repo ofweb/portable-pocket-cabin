@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "resting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:flatbread_dough"
+    }
+  ],
+  "time": 1000,
+  "result": {
+    "id": "portable_pocket_cabin:strudel_dough"
+  }
+}

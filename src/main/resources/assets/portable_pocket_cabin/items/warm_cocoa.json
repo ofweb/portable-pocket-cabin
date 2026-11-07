@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/warm_cocoa",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 8014384
+      }
+    ]
+  }
+}

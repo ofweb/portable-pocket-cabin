@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "cutting_rings",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:puff_pastry"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tartlet_rings",
+    "count": 4
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:gougere_dough"
+    }
+  ],
+  "heat": "medium",
+  "time": 200,
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:gougeres",
+    "count": 4
+  }
+}

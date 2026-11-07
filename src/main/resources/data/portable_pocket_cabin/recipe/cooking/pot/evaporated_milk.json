@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "reducing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:warm_milk_bucket"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "heat": "low",
+  "time": 400,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:evaporated_milk"
+  }
+}

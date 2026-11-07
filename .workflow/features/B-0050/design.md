@@ -187,4 +187,4 @@ The [completion check](../../cooking/tools/completion_check.py) found 23 interme
   - Strawberry and raspberry jam. These join a `jams` tag with sweet berry jam, and the Berliner takes any of them.
 - **Dishes:** spätzle and Käsespätzle, Kartoffelpuffer, Malzkaffee, Mugicha, and Rugbrød.
 
-The check also lists 36 intermediates that phase 3's ingredients already allowed but phase 3 did not ship. Among them are chocolate, puff pastry, and breadcrumbs. They are a follow-up outside this delivery.
+The check also listed 36 intermediates that phase 3's ingredients already allowed but phase 3 did not ship, such as chocolate, puff pastry, and breadcrumbs. A follow-up after delivery 1 shipped them, as the [phase 3 design](../B-0046/design.md#gap-filled-after-phase-3) records.
