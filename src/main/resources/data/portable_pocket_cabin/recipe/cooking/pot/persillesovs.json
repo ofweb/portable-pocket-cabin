@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "stirring",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:bechamel"
+    },
+    {
+      "item": "portable_pocket_cabin:parsley"
+    }
+  ],
+  "heat": "low",
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:persillesovs"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pino"
+    },
+    {
+      "item": "portable_pocket_cabin:hard_boiled_egg"
+    },
+    {
+      "item": "portable_pocket_cabin:black_olive"
+    },
+    {
+      "item": "portable_pocket_cabin:pastelera"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "heat": "high",
+  "time": 400,
+  "tastes": [
+    "sweet",
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:pastel_de_choclo",
+    "count": 2
+  }
+}

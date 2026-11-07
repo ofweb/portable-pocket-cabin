@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "crimping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:empanada_dough"
+    },
+    {
+      "item": "portable_pocket_cabin:pino"
+    },
+    {
+      "item": "portable_pocket_cabin:hard_boiled_egg"
+    },
+    {
+      "item": "portable_pocket_cabin:green_olive"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:raw_empanadas",
+    "count": 4
+  }
+}

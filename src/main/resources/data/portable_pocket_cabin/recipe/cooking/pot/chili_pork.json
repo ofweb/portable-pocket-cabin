@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pork_shoulder"
+    },
+    {
+      "item": "portable_pocket_cabin:red_chili_sauce"
+    }
+  ],
+  "heat": "low",
+  "time": 400,
+  "result": {
+    "id": "portable_pocket_cabin:chili_pork",
+    "count": 2
+  }
+}

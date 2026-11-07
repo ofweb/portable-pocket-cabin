@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:brine",
+  "technique": "dry_curing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pork_belly"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "time": 168000,
+  "result": {
+    "id": "portable_pocket_cabin:cured_pork_belly"
+  }
+}

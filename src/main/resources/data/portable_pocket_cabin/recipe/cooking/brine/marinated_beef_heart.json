@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:brine",
+  "technique": "marinating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:beef_heart"
+    },
+    {
+      "item": "portable_pocket_cabin:anticucho_marinade"
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "portable_pocket_cabin:marinated_beef_heart"
+  }
+}

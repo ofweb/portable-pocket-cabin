@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "crisping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:carnitas_pork"
+    }
+  ],
+  "heat": "high",
+  "time": 80,
+  "result": {
+    "id": "portable_pocket_cabin:crisp_carnitas"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "wrapping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tamal_masa"
+    },
+    {
+      "item": "portable_pocket_cabin:chili_pork"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_corn_husks",
+      "count": 2
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:raw_tamales",
+    "count": 4
+  }
+}

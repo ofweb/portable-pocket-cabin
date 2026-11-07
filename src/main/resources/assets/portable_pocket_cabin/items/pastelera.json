@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/pastelera",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 15784048
+      }
+    ]
+  }
+}

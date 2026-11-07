@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "cooking_slowly",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:raw_pino"
+    }
+  ],
+  "heat": "medium",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:pino"
+  }
+}

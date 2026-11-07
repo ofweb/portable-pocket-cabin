@@ -1,0 +1,25 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fried_chile_relleno"
+    },
+    {
+      "item": "portable_pocket_cabin:tomato_caldillo"
+    }
+  ],
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "salty",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:chiles_rellenos"
+  }
+}

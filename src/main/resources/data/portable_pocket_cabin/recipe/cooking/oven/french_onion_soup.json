@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "gratinating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:onion_soup"
+    },
+    {
+      "item": "minecraft:bread"
+    },
+    {
+      "item": "portable_pocket_cabin:aged_hard_cheese"
+    }
+  ],
+  "heat": "high",
+  "time": 100,
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:french_onion_soup"
+  }
+}

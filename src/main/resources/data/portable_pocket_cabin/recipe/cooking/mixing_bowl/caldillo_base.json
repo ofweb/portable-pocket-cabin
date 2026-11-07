@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tomato",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:caldillo_base"
+  }
+}

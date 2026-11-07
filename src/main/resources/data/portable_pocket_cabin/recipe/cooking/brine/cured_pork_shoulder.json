@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:brine",
+  "technique": "curing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pork_shoulder"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 72000,
+  "result": {
+    "id": "portable_pocket_cabin:cured_pork_shoulder"
+  }
+}

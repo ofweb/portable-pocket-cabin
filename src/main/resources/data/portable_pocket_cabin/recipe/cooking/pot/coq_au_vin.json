@@ -1,0 +1,43 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "braising",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chicken_thighs"
+    },
+    {
+      "item": "portable_pocket_cabin:chicken_drumsticks"
+    },
+    {
+      "item": "portable_pocket_cabin:garniture"
+    },
+    {
+      "item": "portable_pocket_cabin:red_wine"
+    },
+    {
+      "item": "portable_pocket_cabin:chicken_stock"
+    },
+    {
+      "item": "portable_pocket_cabin:bouquet_garni"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 1000,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:coq_au_vin",
+    "count": 2
+  }
+}

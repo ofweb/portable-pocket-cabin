@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "frying_salsa",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:red_chili_blend"
+    },
+    {
+      "item": "portable_pocket_cabin:pork_stock"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:red_chili_sauce",
+    "count": 2
+  }
+}

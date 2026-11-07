@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:caramelised_onion",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:beef_stock"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 400,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:onion_soup"
+  }
+}

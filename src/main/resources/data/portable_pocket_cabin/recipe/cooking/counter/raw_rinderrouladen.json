@@ -1,0 +1,30 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "rolling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:thin_beef_slices"
+    },
+    {
+      "item": "portable_pocket_cabin:prepared_mustard"
+    },
+    {
+      "item": "portable_pocket_cabin:bacon"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:gherkins"
+    }
+  ],
+  "time": 40,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:raw_rinderrouladen"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "garnishing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:mole_chicken"
+    },
+    {
+      "item": "portable_pocket_cabin:toasted_sesame_seeds"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "sweet",
+    "bitter",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:mole_poblano"
+  }
+}

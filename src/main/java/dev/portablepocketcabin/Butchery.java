@@ -126,6 +126,32 @@ final class Butchery {
 	/** Goat meat seared on the skillet, as mutton is. */
 	static final Item COOKED_CHEVON = item("cooked_chevon", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(6, 9.6F, false)));
 
+	/** Delivery 1 products: stocks, rendered fats, gelatin, cured meats, and the dishes the cuts complete. */
+	static final java.util.List<Item> PRODUCTS = new java.util.ArrayList<>();
+	static {
+		String[] plain = {"gelatin", "roasted_beef_bones", "cured_pork_belly", "bacon", "cured_pork_shoulder", "smoked_pork_shoulder", "ham", "salted_beef_round",
+			"carne_seca", "diced_beef", "thin_beef_slices", "sliced_pork_belly", "poached_chicken_thighs", "poached_chicken", "raw_pino", "pino",
+			"fresh_empanada_dough", "empanada_dough", "red_chili_blend", "red_chili_sauce", "cooked_black_beans", "black_bean_mash", "refried_beans",
+			"caldillo_base", "tomato_caldillo", "crisp_bacon", "browned_beef", "garniture", "onion_soup", "blind_baked_shell", "quiche_custard",
+			"unbaked_croque_monsieur", "raw_rinderrouladen", "seared_rinderrouladen", "marinated_beef_round", "seared_marinated_beef",
+			"unbaked_flammkuchen", "crisp_pork_belly", "boiled_potatoes", "persillesovs", "creamed_chicken_sauce", "hons_i_asparges", "massaman_sauce",
+			"charred_poblano", "stuffed_poblano", "relleno_batter", "fried_chile_relleno", "carnitas_pork", "crisp_carnitas", "chili_pork",
+			"tamal_masa", "raw_tamales", "pozole_base", "marinated_al_pastor", "roasted_al_pastor", "al_pastor_meat", "mole_chicken", "concha_topping",
+			"unbaked_conchas", "raw_empanadas", "corn_paste", "pastelera", "coxinha_dough", "raw_coxinhas", "marinated_beef_heart",
+			"raw_anticucho_skewer", "anticucho_skewer"};
+		for (String name : plain) PRODUCTS.add(item(name, new Item.Properties()));
+		String[] bottles = {"sauerbraten_marinade", "unstrained_lard", "lard", "unstrained_tallow", "tallow", "unstrained_schmaltz", "schmaltz", "unstrained_beef_stock", "beef_stock",
+			"unstrained_chicken_stock", "chicken_stock", "unstrained_pork_stock", "pork_stock", "unstrained_pork_bone_broth", "pork_bone_broth",
+			"calf_rennet"};
+		for (String name : bottles) PRODUCTS.add(item(name, new Item.Properties().stacksTo(16)));
+		PRODUCTS.add(item("cracklings", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(2, 1.6F, false))));
+		String[] dishes = {"roast_chicken", "french_onion_soup", "quiche_lorraine", "boeuf_bourguignon", "coq_au_vin", "croque_monsieur", "rinderrouladen",
+			"sauerbraten", "flammkuchen", "stegt_flaesk_med_persillesovs", "tarteletter_med_hons_i_asparges", "massaman_curry", "chiles_rellenos",
+			"carnitas_tacos", "tamales", "pozole_rojo", "tacos_al_pastor", "mole_poblano", "conchas", "empanadas_de_carne", "pastel_de_choclo",
+			"coxinhas", "anticuchos"};
+		for (String name : dishes) PRODUCTS.add(item(name, new Item.Properties().food(new net.minecraft.world.food.FoodProperties(9, 10.8F, false))));
+	}
+
 	private Butchery() {
 	}
 
@@ -146,6 +172,7 @@ final class Butchery {
 				entries.accept(PIG_BRISTLES);
 				for (Item part : PARTS.values()) entries.accept(part);
 				entries.accept(COOKED_CHEVON);
+				for (Item product : PRODUCTS) entries.accept(product);
 			});
 	}
 

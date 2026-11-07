@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_black_beans",
+      "count": 2
+    }
+  ],
+  "water": 1,
+  "heat": "low",
+  "time": 400,
+  "result": {
+    "id": "portable_pocket_cabin:cooked_black_beans",
+    "count": 2
+  }
+}

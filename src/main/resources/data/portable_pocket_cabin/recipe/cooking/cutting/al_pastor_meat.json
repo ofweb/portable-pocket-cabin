@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "shaving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:roasted_al_pastor"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:al_pastor_meat",
+    "count": 4
+  }
+}

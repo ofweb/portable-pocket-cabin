@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "thickening",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:roux"
+    },
+    {
+      "item": "portable_pocket_cabin:chicken_stock"
+    },
+    {
+      "item": "portable_pocket_cabin:cream"
+    }
+  ],
+  "heat": "low",
+  "time": 150,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:creamed_chicken_sauce"
+  }
+}

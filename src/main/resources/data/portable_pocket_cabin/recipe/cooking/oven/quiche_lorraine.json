@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:blind_baked_shell"
+    },
+    {
+      "item": "portable_pocket_cabin:crisp_bacon"
+    },
+    {
+      "item": "portable_pocket_cabin:quiche_custard"
+    }
+  ],
+  "heat": "low",
+  "time": 300,
+  "tastes": [
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:quiche_lorraine"
+  }
+}

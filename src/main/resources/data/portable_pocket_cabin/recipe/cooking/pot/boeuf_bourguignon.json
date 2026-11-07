@@ -1,0 +1,41 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "braising",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:browned_beef",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:garniture"
+    },
+    {
+      "item": "portable_pocket_cabin:red_wine"
+    },
+    {
+      "item": "portable_pocket_cabin:beef_stock"
+    },
+    {
+      "item": "portable_pocket_cabin:bouquet_garni"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 1200,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:boeuf_bourguignon",
+    "count": 2
+  }
+}

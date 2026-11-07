@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "shaping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:coxinha_dough"
+    },
+    {
+      "item": "portable_pocket_cabin:poached_chicken"
+    },
+    {
+      "item": "portable_pocket_cabin:cream_cheese"
+    },
+    {
+      "item": "portable_pocket_cabin:breadcrumbs"
+    },
+    {
+      "item": "minecraft:egg"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:raw_coxinhas",
+    "count": 4
+  }
+}

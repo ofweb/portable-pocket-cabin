@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "topping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:flatbread_dough"
+    },
+    {
+      "item": "portable_pocket_cabin:creme_fraiche"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:bacon"
+    }
+  ],
+  "time": 40,
+  "remainders": [
+    {
+      "id": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:unbaked_flammkuchen"
+  }
+}

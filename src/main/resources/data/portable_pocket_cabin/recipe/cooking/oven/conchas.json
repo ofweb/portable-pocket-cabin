@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:unbaked_conchas"
+    }
+  ],
+  "heat": "medium",
+  "time": 200,
+  "tastes": [
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:conchas",
+    "count": 6
+  }
+}

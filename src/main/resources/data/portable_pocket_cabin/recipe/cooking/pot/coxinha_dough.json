@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "cooking_dough",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chicken_stock"
+    },
+    {
+      "item": "portable_pocket_cabin:wheat_flour",
+      "count": 2
+    }
+  ],
+  "heat": "low",
+  "time": 100,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:coxinha_dough"
+  }
+}

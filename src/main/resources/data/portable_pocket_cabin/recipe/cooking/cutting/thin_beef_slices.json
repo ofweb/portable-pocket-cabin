@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "slicing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:beef_round"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:thin_beef_slices",
+    "count": 2
+  }
+}

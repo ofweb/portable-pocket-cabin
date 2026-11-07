@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "portable_pocket_cabin:beef_bones",
+    "portable_pocket_cabin:marrow_bones",
+    "portable_pocket_cabin:pork_bones",
+    "portable_pocket_cabin:lamb_bones",
+    "portable_pocket_cabin:goat_bones",
+    "portable_pocket_cabin:chicken_bones",
+    "portable_pocket_cabin:rabbit_bones"
+  ]
+}

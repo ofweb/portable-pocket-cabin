@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "#portable_pocket_cabin:bones"
+    }
+  ],
+  "time": 60,
+  "result": {
+    "id": "minecraft:bone_meal",
+    "count": 3
+  }
+}

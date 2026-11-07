@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:crisp_pork_belly",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:boiled_potatoes",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:persillesovs"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:stegt_flaesk_med_persillesovs"
+  }
+}

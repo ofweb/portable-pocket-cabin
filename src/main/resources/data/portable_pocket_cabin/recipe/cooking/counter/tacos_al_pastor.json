@@ -1,0 +1,35 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "assembling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:al_pastor_meat"
+    },
+    {
+      "item": "portable_pocket_cabin:pineapple"
+    },
+    {
+      "item": "portable_pocket_cabin:corn_tortilla",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:cilantro"
+    },
+    {
+      "item": "portable_pocket_cabin:salsa_verde"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "sweet",
+    "sour",
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tacos_al_pastor",
+    "count": 2
+  }
+}

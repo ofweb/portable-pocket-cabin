@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering_stock",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chicken_bones"
+    },
+    {
+      "item": "portable_pocket_cabin:onion"
+    },
+    {
+      "item": "minecraft:carrot"
+    },
+    {
+      "item": "portable_pocket_cabin:celery"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 800,
+  "result": {
+    "id": "portable_pocket_cabin:unstrained_chicken_stock"
+  }
+}

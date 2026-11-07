@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "slicing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pork_belly"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:sliced_pork_belly",
+    "count": 2
+  }
+}

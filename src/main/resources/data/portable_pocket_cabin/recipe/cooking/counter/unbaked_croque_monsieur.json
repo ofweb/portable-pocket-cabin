@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "assembling",
+  "ingredients": [
+    {
+      "item": "minecraft:bread"
+    },
+    {
+      "item": "portable_pocket_cabin:ham"
+    },
+    {
+      "item": "portable_pocket_cabin:bechamel"
+    },
+    {
+      "item": "portable_pocket_cabin:aged_hard_cheese"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:unbaked_croque_monsieur"
+  }
+}

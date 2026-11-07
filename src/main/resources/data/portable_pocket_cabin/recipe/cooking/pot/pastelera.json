@@ -1,0 +1,25 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:corn_paste"
+    },
+    {
+      "item": "portable_pocket_cabin:basil"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:pastelera"
+  }
+}

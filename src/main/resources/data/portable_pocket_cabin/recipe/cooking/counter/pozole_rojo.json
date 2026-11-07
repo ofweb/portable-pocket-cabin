@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "garnishing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pozole_base"
+    },
+    {
+      "item": "portable_pocket_cabin:shredded_cabbage"
+    },
+    {
+      "item": "portable_pocket_cabin:radish"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_oregano"
+    },
+    {
+      "item": "portable_pocket_cabin:lime"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:pozole_rojo"
+  }
+}

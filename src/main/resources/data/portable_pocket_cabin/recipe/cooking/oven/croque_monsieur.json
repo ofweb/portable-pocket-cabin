@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "grilling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:unbaked_croque_monsieur"
+    }
+  ],
+  "heat": "high",
+  "time": 100,
+  "tastes": [
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:croque_monsieur"
+  }
+}

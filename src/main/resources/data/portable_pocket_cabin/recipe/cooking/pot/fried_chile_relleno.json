@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "deep_frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:stuffed_poblano"
+    },
+    {
+      "item": "portable_pocket_cabin:relleno_batter"
+    }
+  ],
+  "oil": 1,
+  "heat": "high",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:fried_chile_relleno"
+  }
+}

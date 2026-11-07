@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "blind_baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:shortcrust_pastry"
+    }
+  ],
+  "heat": "medium",
+  "time": 160,
+  "result": {
+    "id": "portable_pocket_cabin:blind_baked_shell"
+  }
+}

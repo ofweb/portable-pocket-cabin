@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:crisp_bacon"
+    },
+    {
+      "item": "portable_pocket_cabin:sauteed_mushrooms"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:garniture"
+  }
+}

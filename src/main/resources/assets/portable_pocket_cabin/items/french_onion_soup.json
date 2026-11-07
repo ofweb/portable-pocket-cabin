@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/french_onion_soup",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 11565626
+      }
+    ]
+  }
+}

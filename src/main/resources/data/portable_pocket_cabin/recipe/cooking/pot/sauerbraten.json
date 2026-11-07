@@ -1,0 +1,36 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "braising",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:seared_marinated_beef"
+    },
+    {
+      "item": "portable_pocket_cabin:beef_stock"
+    },
+    {
+      "item": "portable_pocket_cabin:gingerbread"
+    },
+    {
+      "item": "portable_pocket_cabin:raisins"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 800,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "sour",
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:sauerbraten",
+    "count": 2
+  }
+}

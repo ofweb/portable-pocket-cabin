@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:soaked_chilies",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    },
+    {
+      "item": "portable_pocket_cabin:cumin"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:red_chili_blend"
+  }
+}

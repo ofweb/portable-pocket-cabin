@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "searing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:raw_rinderrouladen"
+    }
+  ],
+  "heat": "high",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:seared_rinderrouladen"
+  }
+}

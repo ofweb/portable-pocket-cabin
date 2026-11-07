@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:strainer",
+  "technique": "straining",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:unstrained_lard"
+    }
+  ],
+  "time": 60,
+  "remainders": [
+    {
+      "id": "portable_pocket_cabin:cracklings"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:lard"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering_stock",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pork_bones"
+    },
+    {
+      "item": "portable_pocket_cabin:onion"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 800,
+  "result": {
+    "id": "portable_pocket_cabin:unstrained_pork_stock"
+  }
+}
