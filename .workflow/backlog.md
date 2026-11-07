@@ -262,11 +262,12 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 
 ## B-0049: Butchery and carcasses
 
-- Status: Ready for Design
+- Status: Ready for Implementation
 - Value: Let animals drop carcasses that players bleed, skin or pluck, and butcher into cuts, offal, bones, and fat, using the whole animal. Fish are scaled, gutted, and filleted.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Uses B-0045. Uses animals from B-0022. The [butchery reference](cooking/butchery.md) lists every part of each carcass.
 - Feature Brief: [Butchery and seafood brief](features/B-0049/brief.md).
+- Design: [Butchery and seafood design](features/B-0049/design.md). Ships stage by stage in four deliveries.
 
 ## B-0051: Food benefits
 
