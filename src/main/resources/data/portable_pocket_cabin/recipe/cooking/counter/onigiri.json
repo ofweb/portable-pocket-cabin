@@ -1,6 +1,6 @@
 {
   "type": "portable_pocket_cabin:counter",
-  "technique": "shaping",
+  "technique": "shaping_rice",
   "ingredients": [
     {
       "item": "portable_pocket_cabin:steamed_rice",

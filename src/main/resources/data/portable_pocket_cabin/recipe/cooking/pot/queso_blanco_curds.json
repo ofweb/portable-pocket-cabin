@@ -1,6 +1,6 @@
 {
   "type": "portable_pocket_cabin:pot",
-  "technique": "curdling",
+  "technique": "curdling_with_a_coagulant",
   "ingredients": [
     {
       "item": "minecraft:milk_bucket"
