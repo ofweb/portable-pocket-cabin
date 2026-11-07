@@ -174,7 +174,8 @@ final class CookingBlocks {
 				CookingItems.SUNFLOWER_SEEDS, CookingItems.TOASTED_PUMPKIN_SEEDS, CookingItems.SUNFLOWER_OIL, CookingItems.PUMPKIN_SEED_OIL,
 				CookingItems.FRIED_POTATOES, CookingItems.STIR_FRIED_VEGETABLES, CookingItems.UNSTRAINED_BERRY_CORDIAL,
 				CookingItems.SWEET_BERRY_CORDIAL, CookingItems.APPLE_SYRUP, CookingItems.ROCK_SALT, CookingItems.SALT,
-				CookingItems.COARSE_SALT, CookingItems.WET_SALT, CookingItems.SEAWATER, CookingItems.NIGARI}) {
+				CookingItems.COARSE_SALT, CookingItems.WET_SALT, CookingItems.SEAWATER, CookingItems.NIGARI, CookingItems.CANE_JUICE,
+				CookingItems.CANE_SUGAR_PASTE, CookingItems.BROWN_SUGAR, CookingItems.PANELA, CookingItems.SIMPLE_SYRUP, CookingItems.CARAMEL}) {
 				entries.accept(item);
 			}
 		});

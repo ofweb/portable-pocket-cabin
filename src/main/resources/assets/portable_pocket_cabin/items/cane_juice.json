@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/cane_juice",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 12108906
+      }
+    ]
+  }
+}

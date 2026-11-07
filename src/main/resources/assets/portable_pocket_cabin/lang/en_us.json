@@ -228,5 +228,21 @@
   "technique.portable_pocket_cabin.slow_drying.description": "Let wet salt dry slowly in the shade. The slower the water leaves, the larger the crystals grow, giving coarse salt flakes.",
   "technique.portable_pocket_cabin.pounding": "Pounding",
   "technique.portable_pocket_cabin.pounding.description": "Strike and grind with the pestle against the mortar's rough bowl, crushing crystals or seeds by hand.",
-  "item.portable_pocket_cabin.coarse_salt.cookbook_note": "Wet salt dried slowly in the shade grows these large crystals. In the sun it dries quickly into fine salt."
+  "item.portable_pocket_cabin.coarse_salt.cookbook_note": "Wet salt dried slowly in the shade grows these large crystals. In the sun it dries quickly into fine salt.",
+  "item.portable_pocket_cabin.cane_juice": "Cane Juice",
+  "item.portable_pocket_cabin.cane_sugar_paste": "Cane Sugar Paste",
+  "item.portable_pocket_cabin.brown_sugar": "Brown Sugar",
+  "item.portable_pocket_cabin.panela": "Panela",
+  "item.portable_pocket_cabin.simple_syrup": "Simple Syrup",
+  "item.portable_pocket_cabin.caramel": "Caramel",
+  "technique.portable_pocket_cabin.crushing": "Crushing",
+  "technique.portable_pocket_cabin.crushing.description": "Crush stalks or fruit between rollers or stones so their juice runs out into the bottle.",
+  "technique.portable_pocket_cabin.boiling_down": "Boiling down",
+  "technique.portable_pocket_cabin.boiling_down.description": "Boil cane juice hard until its water is gone and only a thick, dark paste is left. Its molasses stays in, which gives brown sugar and panela their flavour.",
+  "technique.portable_pocket_cabin.setting": "Setting",
+  "technique.portable_pocket_cabin.setting.description": "Leave a hot mixture to cool and firm up undisturbed, as panela sets into hard blocks of cane sugar.",
+  "technique.portable_pocket_cabin.dissolving": "Dissolving",
+  "technique.portable_pocket_cabin.dissolving.description": "Warm sugar in water, stirring, until no grains are left and the syrup runs clear.",
+  "technique.portable_pocket_cabin.caramelising": "Caramelising",
+  "technique.portable_pocket_cabin.caramelising.description": "Heat sugar on its own until it melts and turns amber. The sugar breaks down into hundreds of new compounds, which is why caramel tastes richer and slightly bitter."
 }

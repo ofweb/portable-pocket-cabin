@@ -60,6 +60,16 @@ final class CookingItems {
 	static final Item SEAWATER = register("seawater", properties -> properties.stacksTo(16));
 	/** The bitter liquid left from making sea salt. It sets tofu in later features. */
 	static final Item NIGARI = register("nigari", properties -> properties.stacksTo(16));
+	/** Juice crushed from sugar cane in the mill. */
+	static final Item CANE_JUICE = register("cane_juice", properties -> properties.stacksTo(16));
+	/** Cane juice boiled down to a thick paste that sets as panela or dries into brown sugar. */
+	static final Item CANE_SUGAR_PASTE = register("cane_sugar_paste", UnaryOperator.identity());
+	static final Item BROWN_SUGAR = register("brown_sugar", UnaryOperator.identity());
+	static final Item PANELA = register("panela", UnaryOperator.identity());
+	static final Item SIMPLE_SYRUP = register("simple_syrup", properties -> properties.stacksTo(16));
+	static final Item CARAMEL = register("caramel", properties -> properties.food(food(2, 1.2F)));
+	/** Sugars a phase 3 recipe accepts wherever it asks for sugar: white sugar and brown sugar. */
+	static final net.minecraft.tags.TagKey<Item> SUGARS = net.minecraft.tags.TagKey.create(Registries.ITEM, PortablePocketCabin.id("sugars"));
 	static final Item STIR_FRIED_VEGETABLES = register("stir_fried_vegetables",
 		properties -> properties.stacksTo(16).food(food(8, 9.6F)).usingConvertsTo(Items.BOWL));
 
