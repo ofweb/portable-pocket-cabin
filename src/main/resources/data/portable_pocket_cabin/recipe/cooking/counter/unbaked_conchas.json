@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "scoring",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:proofed_sweet_dough"
+    },
+    {
+      "item": "portable_pocket_cabin:concha_topping"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:unbaked_conchas"
+  }
+}

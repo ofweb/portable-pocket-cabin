@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "frying_paste",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:massaman_curry_paste"
+    },
+    {
+      "item": "portable_pocket_cabin:coconut_milk"
+    }
+  ],
+  "heat": "medium",
+  "time": 100,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:massaman_sauce"
+  }
+}

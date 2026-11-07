@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "beating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:masa",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:lard"
+    },
+    {
+      "item": "portable_pocket_cabin:chicken_stock"
+    }
+  ],
+  "time": 6,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tamal_masa",
+    "count": 2
+  }
+}

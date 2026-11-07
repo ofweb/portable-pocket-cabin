@@ -105,6 +105,13 @@ Milk settles in the dairy pan into cream and skimmed milk. Cream churns into but
 
 Each plant's growing needs, such as soil, light, and water, are data, and the cookbook's Garden section shows where it grows and what it needs. The plants complete new chains: rye bread, corn tortillas, sauerkraut, gherkins, wine vinegar, mustard and mayonnaise, jams, nori, cassis, redcurrant jelly, rødgrød, salsas, spices, red wine, Käsekuchen, Madeleines, and more.
 
+**Butchery.** Cows, pigs, sheep, chickens, rabbits, and goats drop a whole carcass instead of meat, hide, feathers, or wool:
+1. **Hang:** put the carcass on a hanging hook, under a block or on a wall. A glass bottle collects blood from a fresh carcass.
+2. **Dress:** skin cows, sheep, rabbits, and goats with the knife, for leather, wool of the sheep's colour, or rabbit hide. Scald chickens and pigs in a cooking pot first, then pluck chickens by hand and scrape pigs with the knife.
+3. **Butcher:** put the dressed carcass on a butcher block. Each cleaver use takes the next part in real butchery order, from steaks and roasts to offal, bones, and fat. Sneak to take the rest at once.
+
+Bones become bone meal and stocks, fat renders into lard, tallow, and schmaltz for frying, trotters and feet give gelatin, and a calf's stomach gives rennet. Dressed chickens roast whole. The cuts complete bacon, ham, carne seca, boeuf bourguignon, coq au vin, tamales, tacos al pastor, empanadas, and more. Each animal's parts are data, and the cookbook's Butchery section lists them in order. [Butchery screenshots](screenshots/cooking) show the hook, the block, and the cookbook pages.
+
 A station lights new fuel only when it has something to cook, but lit fuel always burns down. Cooking advances only at the recipe's heat. When the wrong fuel is burning, use a shovel on the stove or oven to put it out. The next fuel then lights at its own heat. Hoppers work with the container stations as with a furnace, but never reach seasoning slots. On the grill they only add fuel and take spent fuel. On the ageing shelf and drying rack they add items a recipe takes and take finished ones.
 
 The **cookbook**, crafted from a book and a bowl, lists every recipe by station. Each page shows the ingredients, heat, time, strokes, water, oil, and tastes, and explains the technique behind the dish. An ingredient that another recipe makes links to that recipe. Recipes you have everything for show in green. Household members in a cabin with central storage also count stored items. Station screens have a recipe button that fills the station from your inventory, skipping named and customised items. Inside a cabin, only the household can use the stations.

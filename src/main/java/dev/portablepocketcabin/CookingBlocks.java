@@ -211,7 +211,7 @@ final class CookingBlocks {
 		return type[0];
 	}
 
-	private static Block register(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties) {
+	static Block register(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties) {
 		ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, PortablePocketCabin.id(name));
 		Block block = Registry.register(BuiltInRegistries.BLOCK, key, factory.apply(properties.setId(key)));
 		ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, PortablePocketCabin.id(name));
@@ -219,7 +219,7 @@ final class CookingBlocks {
 		return block;
 	}
 
-	private static <T extends BlockEntityType<?>> T registerEntity(String name, T type) {
+	static <T extends BlockEntityType<?>> T registerEntity(String name, T type) {
 		return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, PortablePocketCabin.id(name), type);
 	}
 }

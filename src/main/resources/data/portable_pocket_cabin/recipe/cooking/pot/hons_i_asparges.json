@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:creamed_chicken_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:poached_chicken"
+    },
+    {
+      "item": "portable_pocket_cabin:asparagus"
+    }
+  ],
+  "heat": "low",
+  "time": 150,
+  "result": {
+    "id": "portable_pocket_cabin:hons_i_asparges"
+  }
+}

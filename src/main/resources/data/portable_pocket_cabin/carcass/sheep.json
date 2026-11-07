@@ -1,0 +1,44 @@
+{
+  "carcass": "portable_pocket_cabin:sheep_carcass",
+  "dressing": "skin",
+  "dressed": "portable_pocket_cabin:dressed_sheep",
+  "parts": [
+    {
+      "id": "portable_pocket_cabin:lamb_chops",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:leg_of_lamb"
+    },
+    {
+      "id": "portable_pocket_cabin:lamb_shoulder"
+    },
+    {
+      "id": "portable_pocket_cabin:lamb_stew_meat",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:lamb_shanks",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:lamb_liver"
+    },
+    {
+      "id": "portable_pocket_cabin:lamb_kidneys"
+    },
+    {
+      "id": "portable_pocket_cabin:lamb_heart"
+    },
+    {
+      "id": "portable_pocket_cabin:sheep_casing"
+    },
+    {
+      "id": "portable_pocket_cabin:lamb_bones",
+      "count": 3
+    },
+    {
+      "id": "portable_pocket_cabin:lamb_fat"
+    }
+  ]
+}

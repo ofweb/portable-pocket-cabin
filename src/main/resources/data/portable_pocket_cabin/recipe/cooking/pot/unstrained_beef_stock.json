@@ -1,0 +1,31 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering_stock",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:roasted_beef_bones",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:onion"
+    },
+    {
+      "item": "minecraft:carrot"
+    },
+    {
+      "item": "portable_pocket_cabin:celery"
+    },
+    {
+      "item": "portable_pocket_cabin:bay_leaf"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 1200,
+  "result": {
+    "id": "portable_pocket_cabin:unstrained_beef_stock"
+  }
+}

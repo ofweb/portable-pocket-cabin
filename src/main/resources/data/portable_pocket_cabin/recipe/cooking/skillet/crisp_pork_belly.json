@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sliced_pork_belly"
+    }
+  ],
+  "heat": "medium",
+  "time": 120,
+  "result": {
+    "id": "portable_pocket_cabin:crisp_pork_belly"
+  }
+}

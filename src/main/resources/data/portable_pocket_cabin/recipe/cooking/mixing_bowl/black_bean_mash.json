@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mashing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cooked_black_beans",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:lard"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:black_bean_mash",
+    "count": 2
+  }
+}

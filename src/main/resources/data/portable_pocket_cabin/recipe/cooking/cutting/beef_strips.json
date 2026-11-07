@@ -3,7 +3,10 @@
   "technique": "slicing",
   "ingredients": [
     {
-      "item": "minecraft:beef"
+      "item": [
+        "minecraft:beef",
+        "portable_pocket_cabin:beef_sirloin"
+      ]
     }
   ],
   "result": {

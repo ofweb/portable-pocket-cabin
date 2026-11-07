@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:unbaked_flammkuchen"
+    }
+  ],
+  "heat": "high",
+  "time": 120,
+  "tastes": [
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:flammkuchen"
+  }
+}

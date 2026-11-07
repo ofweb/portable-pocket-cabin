@@ -66,6 +66,10 @@ final class CookingItemsRenderer<T extends CookingStationBlockEntity>
 			new float[][] {{0.3F, 0.3F, 0.34F}, {0.7F, 0.3F, 0.34F}, {0.3F, 0.7F, 0.34F}, {0.7F, 0.7F, 0.34F}});
 	}
 
+	static BlockEntityRendererProvider<ButcherBlockBlockEntity, State> butcherBlock() {
+		return context -> new CookingItemsRenderer<>(context, 16.1F / 16, new float[][] {{0.5F, 0.5F, 0.8F}});
+	}
+
 	static BlockEntityRendererProvider<CuttingBoardBlockEntity, State> cuttingBoard() {
 		return context -> new CookingItemsRenderer<>(context, 1.1F / 16, new float[][] {{0.5F, 0.5F, 0.5F}});
 	}

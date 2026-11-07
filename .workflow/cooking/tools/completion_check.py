@@ -55,6 +55,8 @@ for k,v in lang.items():
 # Catalogue names the mod already covers under another name: vanilla bread, the corn tortilla item, any of the jams,
 # vanilla dried kelp as kombu, the skimmed milk bucket, and sunflower oil as the frying oil.
 mod |= {'bread', 'corn tortillas', 'jam', 'kombu', 'skimmed milk', 'vegetable oil'}
+# Dishes the mod has under another name: the quesadilla, the pretzel, and apple juice.
+mod |= {'quesadillas', 'brezeln', 'æblemost'}
 def solve(avail):
     avail=set(avail); made=set(); changed=True
     def ok(groups, proc):

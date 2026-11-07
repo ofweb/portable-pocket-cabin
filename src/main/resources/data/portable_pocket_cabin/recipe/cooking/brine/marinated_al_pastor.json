@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:brine",
+  "technique": "marinating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pork_shoulder"
+    },
+    {
+      "item": "portable_pocket_cabin:al_pastor_adobo"
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "portable_pocket_cabin:marinated_al_pastor"
+  }
+}

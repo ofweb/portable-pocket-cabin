@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "stuffing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:charred_poblano"
+    },
+    {
+      "item": "portable_pocket_cabin:queso_oaxaca"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:stuffed_poblano"
+  }
+}

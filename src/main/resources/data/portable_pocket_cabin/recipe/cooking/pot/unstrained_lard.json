@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "rendering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:back_fat",
+      "count": 2
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "heat": "low",
+  "time": 300,
+  "result": {
+    "id": "portable_pocket_cabin:unstrained_lard"
+  }
+}

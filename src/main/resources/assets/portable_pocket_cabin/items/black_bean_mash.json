@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/black_bean_mash",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 3811882
+      }
+    ]
+  }
+}

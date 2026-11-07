@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "poaching",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chicken_thighs",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:onion"
+    },
+    {
+      "item": "portable_pocket_cabin:bay_leaf"
+    }
+  ],
+  "water": 1,
+  "heat": "low",
+  "time": 300,
+  "result": {
+    "id": "portable_pocket_cabin:poached_chicken_thighs",
+    "count": 2
+  }
+}

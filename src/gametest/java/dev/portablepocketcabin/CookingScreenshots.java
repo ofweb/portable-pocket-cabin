@@ -105,6 +105,7 @@ final class CookingScreenshots {
 			capturePress(context, world, origin[0]);
 			capturePhase3(context, world, origin[0]);
 			captureGarden(context, world, origin[0]);
+			captureButchery(context, world, origin[0]);
 		}
 	}
 
@@ -186,6 +187,46 @@ final class CookingScreenshots {
 		shot(context, "cookbook-garden-cinnamon");
 		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectPlant("coconut_leaves"));
 		shot(context, "cookbook-garden-coconut");
+		context.runOnClient(client -> client.gui.setScreen(null));
+	}
+
+	/** B-0049: a cow carcass on a hanging hook, a dressed pig part-butchered on the block, and a Butchery page. */
+	private static void captureButchery(ClientGameTestContext context, TestSingleplayerContext world, BlockPos base) {
+		BlockPos spot = base.offset(14, 0, 0);
+		world.getServer().runOnServer(server -> {
+			var player = world.getConnection().getServerPlayer();
+			var level = player.level();
+			player.closeContainer();
+			for (int x = -3; x <= 3; x++) for (int z = -3; z <= 5; z++) {
+				level.setBlockAndUpdate(spot.offset(x, -1, z), Blocks.SPRUCE_PLANKS.defaultBlockState());
+				for (int y = 0; y < 5; y++) level.setBlockAndUpdate(spot.offset(x, y, z), Blocks.AIR.defaultBlockState());
+			}
+			BlockPos hookPos = spot.offset(-1, 1, 0);
+			for (int x = -2; x <= 0; x++) for (int y = 0; y <= 2; y++) level.setBlockAndUpdate(spot.offset(x, y, -1), Blocks.SPRUCE_PLANKS.defaultBlockState());
+			for (int x = -2; x <= 0; x++) level.setBlockAndUpdate(spot.offset(x, 2, 0), Blocks.SPRUCE_PLANKS.defaultBlockState());
+			level.setBlockAndUpdate(hookPos, Butchery.HANGING_HOOK.defaultBlockState()
+				.setValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING, Direction.SOUTH));
+			var hook = (HangingHookBlockEntity) level.getBlockEntity(hookPos);
+			hook.setItem(0, new ItemStack(Butchery.CARCASSES.get("cow")));
+			level.sendBlockUpdated(hookPos, level.getBlockState(hookPos), level.getBlockState(hookPos), 3);
+			level.setBlockAndUpdate(spot.offset(1, 0, 0), Butchery.BUTCHER_BLOCK.defaultBlockState());
+			var block = (ButcherBlockBlockEntity) level.getBlockEntity(spot.offset(1, 0, 0));
+			ItemStack pig = new ItemStack(Butchery.DRESSED.get("pig"));
+			pig.set(Butchery.BUTCHERED, 3);
+			block.setItem(0, pig);
+			level.sendBlockUpdated(spot.offset(1, 0, 0), level.getBlockState(spot.offset(1, 0, 0)), level.getBlockState(spot.offset(1, 0, 0)), 3);
+			player.teleportTo(level, spot.getX() + .5, spot.getY(), spot.getZ() + 3.2, java.util.Set.of(), 180, 18, false);
+		});
+		world.getConnection().waitForClientboundPackets();
+		world.getConnection().waitForChunksRender();
+		context.waitTicks(20);
+		shot(context, "butchery");
+		context.runOnClient(client -> CookbookScreen.open());
+		context.waitForScreen(CookbookScreen.class);
+		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectCarcass("cow"));
+		shot(context, "cookbook-butchery-cow");
+		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectCarcass("chicken"));
+		shot(context, "cookbook-butchery-chicken");
 		context.runOnClient(client -> client.gui.setScreen(null));
 	}
 

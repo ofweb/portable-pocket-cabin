@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/goat_stew_meat",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 14198928
+      }
+    ]
+  }
+}

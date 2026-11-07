@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "roasting_whole",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dressed_chicken"
+    }
+  ],
+  "heat": "medium",
+  "time": 400,
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:roast_chicken"
+  }
+}

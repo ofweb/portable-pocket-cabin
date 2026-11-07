@@ -1,0 +1,468 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "white"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "white"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "orange"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "orange"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "magenta"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "magenta"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "light_blue"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "light_blue"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "yellow"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "yellow"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "lime"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "lime"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "pink"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "pink"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "gray"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "gray"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "light_gray"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "light_gray"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "cyan"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "cyan"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "purple"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "purple"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "blue"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "blue"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "brown"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "brown"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "green"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "green"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "red"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "red"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "minecraft:components": {
+                      "minecraft:sheep/color": "black"
+                    },
+                    "minecraft:type_specific/sheep": {
+                      "sheared": false
+                    }
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_components",
+                  "components": {
+                    "portable_pocket_cabin:carcass": {
+                      "fleece": "black"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sheep_carcass"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "random_sequence": "minecraft:entities/sheep"
+}

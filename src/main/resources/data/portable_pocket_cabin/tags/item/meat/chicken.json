@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:chicken",
+    "portable_pocket_cabin:chicken_breast",
+    "portable_pocket_cabin:chicken_thighs",
+    "portable_pocket_cabin:chicken_drumsticks",
+    "portable_pocket_cabin:chicken_wings"
+  ]
+}

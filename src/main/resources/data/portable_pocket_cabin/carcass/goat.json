@@ -1,0 +1,42 @@
+{
+  "carcass": "portable_pocket_cabin:goat_carcass",
+  "dressing": "skin",
+  "dressing_gives": [
+    {
+      "id": "minecraft:leather"
+    }
+  ],
+  "dressed": "portable_pocket_cabin:dressed_goat",
+  "parts": [
+    {
+      "id": "portable_pocket_cabin:chevon_chops",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:goat_leg"
+    },
+    {
+      "id": "portable_pocket_cabin:goat_shoulder"
+    },
+    {
+      "id": "portable_pocket_cabin:goat_stew_meat",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:goat_liver"
+    },
+    {
+      "id": "portable_pocket_cabin:goat_heart"
+    },
+    {
+      "id": "portable_pocket_cabin:goat_casing"
+    },
+    {
+      "id": "portable_pocket_cabin:goat_bones",
+      "count": 3
+    },
+    {
+      "id": "portable_pocket_cabin:goat_fat"
+    }
+  ]
+}

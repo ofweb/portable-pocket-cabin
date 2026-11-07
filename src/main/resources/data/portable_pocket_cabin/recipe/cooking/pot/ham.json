@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "poaching",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:smoked_pork_shoulder"
+    }
+  ],
+  "water": 1,
+  "heat": "low",
+  "time": 400,
+  "result": {
+    "id": "portable_pocket_cabin:ham",
+    "count": 4
+  }
+}

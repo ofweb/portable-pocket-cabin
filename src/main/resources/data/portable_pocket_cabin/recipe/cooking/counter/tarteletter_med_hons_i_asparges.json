@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "filling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tartlet_shells"
+    },
+    {
+      "item": "portable_pocket_cabin:hons_i_asparges"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tarteletter_med_hons_i_asparges"
+  }
+}

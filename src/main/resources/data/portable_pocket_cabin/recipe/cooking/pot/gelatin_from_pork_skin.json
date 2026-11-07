@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "extracting_gelatin",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pork_skin"
+    }
+  ],
+  "water": 1,
+  "heat": "low",
+  "time": 400,
+  "result": {
+    "id": "portable_pocket_cabin:gelatin",
+    "count": 2
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "shredding_meat",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:poached_chicken_thighs"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:poached_chicken",
+    "count": 2
+  }
+}

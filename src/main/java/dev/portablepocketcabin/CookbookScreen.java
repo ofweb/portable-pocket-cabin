@@ -41,6 +41,9 @@ final class CookbookScreen extends Screen {
 	 * A list row: a station header, a recipe, the tastes header (all null), one of the five tastes, the Garden header
 	 * (an empty plant name), or a plant.
 	 */
+	/** Butchery rows and pages use the plant field, prefixed with this, so they select like Garden pages. */
+	private static final String BUTCHERY = "butchery:";
+
 	private record Row(CookingStation header, RecipeHolder<CookingRecipe> recipe, Seasoning.Taste taste, String plant) {
 		Row(CookingStation header, RecipeHolder<CookingRecipe> recipe) {
 			this(header, recipe, null, null);
@@ -58,8 +61,13 @@ final class CookbookScreen extends Screen {
 			return plant != null && plant.isEmpty();
 		}
 
+		boolean butcheryHeader() {
+			return BUTCHERY.equals(plant);
+		}
+
+		/** A Garden plant or a Butchery animal: a row that opens its own page. */
 		boolean plantRow() {
-			return plant != null && !plant.isEmpty();
+			return plant != null && !plant.isEmpty() && !plant.equals(BUTCHERY);
 		}
 	}
 
@@ -135,6 +143,16 @@ final class CookbookScreen extends Screen {
 			rows.add(new Row(null, null, null, ""));
 			rows.addAll(garden);
 		}
+		List<Row> butchery = new ArrayList<>();
+		for (Identifier animal : butcheryOrder()) {
+			if (query.isEmpty() || carcassName(animal).getString().toLowerCase(Locale.ROOT).contains(query)) {
+				butchery.add(new Row(null, null, null, BUTCHERY + animal));
+			}
+		}
+		if (!butchery.isEmpty()) {
+			rows.add(new Row(null, null, null, BUTCHERY));
+			rows.addAll(butchery);
+		}
 		CookingStation station = null;
 		for (RecipeHolder<CookingRecipe> holder : recipes) {
 			if (!query.isEmpty() && !matches(holder.value(), query) && !name(holder).getString().toLowerCase(Locale.ROOT).contains(query)) continue;
@@ -170,7 +188,8 @@ final class CookbookScreen extends Screen {
 		super.extractRenderState(graphics, mouseX, mouseY, partialTick);
 		extractList(graphics, mouseX, mouseY);
 		links.clear();
-		if (selectedPlant != null) extractPlant(graphics, mouseX, mouseY);
+		if (selectedPlant != null && selectedPlant.startsWith(BUTCHERY)) extractCarcass(graphics, mouseX, mouseY);
+		else if (selectedPlant != null) extractPlant(graphics, mouseX, mouseY);
 		else if (selectedTaste != null) extractTaste(graphics, mouseX, mouseY);
 		else if (selected != null) extractDetail(graphics, mouseX, mouseY);
 	}
@@ -190,9 +209,10 @@ final class CookbookScreen extends Screen {
 		for (int index = scroll; index < rows.size() && index < scroll + visibleRows(); index++) {
 			Row row = rows.get(index);
 			int rowY = y + (index - scroll) * ROW;
-			if (row.header() != null || row.tastesHeader() || row.gardenHeader()) {
+			if (row.header() != null || row.tastesHeader() || row.gardenHeader() || row.butcheryHeader()) {
 				Component header = row.header() != null ? stationName(row.header()) : Component.translatable(row.gardenHeader()
-					? "screen.portable_pocket_cabin.cookbook.garden_header" : "screen.portable_pocket_cabin.cookbook.tastes_header");
+					? "screen.portable_pocket_cabin.cookbook.garden_header" : row.butcheryHeader()
+					? "screen.portable_pocket_cabin.cookbook.butchery_header" : "screen.portable_pocket_cabin.cookbook.tastes_header");
 				graphics.text(font, header.copy().withStyle(ChatFormatting.BOLD), x, rowY + 6, TEXT, false);
 				continue;
 			}
@@ -200,8 +220,12 @@ final class CookbookScreen extends Screen {
 				boolean hoveredPlant = mouseX >= x && mouseX < x + LIST_WIDTH - 8 && mouseY >= rowY && mouseY < rowY + ROW;
 				if (row.plant().equals(selectedPlant)) graphics.fill(x, rowY, x + LIST_WIDTH - 8, rowY + ROW, 0x40000000);
 				else if (hoveredPlant) graphics.fill(x, rowY, x + LIST_WIDTH - 8, rowY + ROW, 0x20000000);
-				graphics.item(new ItemStack(CookingPlants.PLANTED_FROM.get(row.plant())), x + 1, rowY + 1);
-				graphics.text(font, fit(plantName(row.plant()).getString(), LIST_WIDTH - 32), x + 20, rowY + 5, TEXT, false);
+				boolean animal = row.plant().startsWith(BUTCHERY);
+				Identifier carcass = animal ? Identifier.parse(row.plant().substring(BUTCHERY.length())) : null;
+				graphics.item(animal ? new ItemStack(CarcassData.client.get(carcass).carcass()) : new ItemStack(CookingPlants.PLANTED_FROM.get(row.plant())),
+					x + 1, rowY + 1);
+				Component name = animal ? carcassName(carcass) : plantName(row.plant());
+				graphics.text(font, fit(name.getString(), LIST_WIDTH - 32), x + 20, rowY + 5, TEXT, false);
 				continue;
 			}
 			if (row.taste() != null) {
@@ -425,6 +449,76 @@ final class CookbookScreen extends Screen {
 			}
 		}
 		return Component.literal(String.join(", ", soils));
+	}
+
+	/** The animals and fish with carcass data, in the order the butchery reference lists them, then any datapack adds. */
+	private static List<Identifier> butcheryOrder() {
+		List<Identifier> order = new ArrayList<>(CarcassData.client.keySet());
+		List<String> known = List.of(Butchery.ANIMALS);
+		order.sort(Comparator.<Identifier>comparingInt(id -> known.contains(id.getPath()) ? known.indexOf(id.getPath()) : known.size())
+			.thenComparing(Identifier::toString));
+		return order;
+	}
+
+	/** An animal's or fish's Butchery name, from the lang when it has one, otherwise its carcass item's name. */
+	private static Component carcassName(Identifier animal) {
+		String key = "butchery." + animal.getNamespace() + "." + animal.getPath();
+		if (Language.getInstance().has(key)) return Component.translatable(key);
+		CarcassData data = CarcassData.client.get(animal);
+		return data == null ? Component.literal(animal.toString()) : new ItemStack(data.carcass()).getHoverName();
+	}
+
+	/** An animal's Butchery page: how it is dressed, what dressing gives, and every part in the order the block takes them. */
+	private void extractCarcass(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+		Identifier animal = Identifier.parse(selectedPlant.substring(BUTCHERY.length()));
+		CarcassData data = CarcassData.client.get(animal);
+		if (data == null) return;
+		int x = left + LIST_WIDTH + 12;
+		int right = left + WIDTH - 8;
+		int y = top + 8;
+		ItemStack carcass = new ItemStack(data.carcass());
+		graphics.item(carcass, x, y);
+		hoverItem(graphics, carcass, x, y, mouseX, mouseY);
+		graphics.text(font, carcassName(animal).copy().withStyle(ChatFormatting.BOLD), x + 20, y + 4, TEXT, false);
+		y += 22;
+		Component dressing = Component.translatable("screen.portable_pocket_cabin.cookbook.dressing." + data.dressing().getSerializedName());
+		if (data.scald()) dressing = dressing.copy().append(" ").append(Component.translatable("screen.portable_pocket_cabin.cookbook.scald_first"));
+		graphics.textWithWordWrap(font, dressing, x, y, right - x, TEXT, false);
+		y += font.split(dressing, right - x).size() * font.lineHeight + 4;
+		y = itemRow(graphics, data.dressingGives(), "screen.portable_pocket_cabin.cookbook.dressing_gives", x, y, right, mouseX, mouseY);
+		y = itemRow(graphics, data.parts(), "screen.portable_pocket_cabin.cookbook.parts_in_order", x, y, right, mouseX, mouseY);
+		String note = "butchery." + animal.getNamespace() + "." + animal.getPath() + ".note";
+		if (Language.getInstance().has(note)) graphics.textWithWordWrap(font, Component.translatable(note), x, y + 2, right - x, MUTED, false);
+	}
+
+	/** A heading and a wrapped row of item icons with their counts, hovering for names. Returns the y below it. */
+	private int itemRow(GuiGraphicsExtractor graphics, List<net.minecraft.world.item.ItemStackTemplate> items, String heading, int x, int y, int right,
+		int mouseX, int mouseY) {
+		if (items.isEmpty()) return y;
+		graphics.text(font, Component.translatable(heading), x, y, TEXT, false);
+		y += 11;
+		int column = x;
+		for (var template : items) {
+			if (column + 18 > right) {
+				column = x;
+				y += 18;
+			}
+			ItemStack stack = template.create();
+			graphics.item(stack, column, y);
+			if (stack.getCount() > 1) {
+				String count = String.valueOf(stack.getCount());
+				graphics.text(font, count, column + 17 - font.width(count), y + 9, 0xffffffff, true);
+			}
+			hoverItem(graphics, stack, column, y, mouseX, mouseY);
+			column += 18;
+		}
+		return y + 22;
+	}
+
+	/** Shows an animal's Butchery page, as the cookbook client GameTest does. */
+	void selectCarcass(String animal) {
+		selectedPlant = BUTCHERY + PortablePocketCabin.id(animal);
+		selectedTaste = null;
 	}
 
 	/** Shows a plant's Garden page, as the cookbook client GameTest does. */

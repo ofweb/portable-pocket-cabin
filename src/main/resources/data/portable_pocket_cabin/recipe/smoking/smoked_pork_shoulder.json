@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "experience": 0.35,
+  "cookingtime": 400,
+  "ingredient": "portable_pocket_cabin:cured_pork_shoulder",
+  "result": {
+    "id": "portable_pocket_cabin:smoked_pork_shoulder"
+  }
+}

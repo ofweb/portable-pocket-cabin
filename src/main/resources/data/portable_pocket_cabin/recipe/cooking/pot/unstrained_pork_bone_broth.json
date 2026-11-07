@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "boiling_broth",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pork_bones",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:pig_trotters"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "high",
+  "time": 1600,
+  "result": {
+    "id": "portable_pocket_cabin:unstrained_pork_bone_broth"
+  }
+}

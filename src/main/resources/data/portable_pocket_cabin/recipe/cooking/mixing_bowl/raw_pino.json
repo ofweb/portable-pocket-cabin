@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:diced_beef",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:cumin"
+    },
+    {
+      "item": "portable_pocket_cabin:paprika"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:raw_pino",
+    "count": 2
+  }
+}

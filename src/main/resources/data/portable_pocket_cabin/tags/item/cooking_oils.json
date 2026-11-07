@@ -3,6 +3,9 @@
   "values": [
     "portable_pocket_cabin:sunflower_oil",
     "portable_pocket_cabin:olive_oil",
-    "portable_pocket_cabin:dende_oil"
+    "portable_pocket_cabin:dende_oil",
+    "portable_pocket_cabin:lard",
+    "portable_pocket_cabin:tallow",
+    "portable_pocket_cabin:schmaltz"
   ]
 }

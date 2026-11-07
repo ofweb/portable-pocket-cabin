@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/hons_i_asparges",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 15263936
+      }
+    ]
+  }
+}

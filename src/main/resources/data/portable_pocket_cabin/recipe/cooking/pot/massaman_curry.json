@@ -1,0 +1,43 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "braising",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:massaman_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:beef_chuck"
+    },
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:roasted_peanuts"
+    },
+    {
+      "item": "portable_pocket_cabin:tamarind_paste"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 1000,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "sweet",
+    "sour",
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:massaman_curry",
+    "count": 2
+  }
+}

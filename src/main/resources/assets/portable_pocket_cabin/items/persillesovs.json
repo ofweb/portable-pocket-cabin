@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/persillesovs",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 15266000
+      }
+    ]
+  }
+}

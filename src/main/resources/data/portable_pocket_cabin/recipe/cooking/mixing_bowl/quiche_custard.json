@@ -1,0 +1,25 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "whisking",
+  "ingredients": [
+    {
+      "item": "minecraft:egg",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:cream"
+    },
+    {
+      "item": "portable_pocket_cabin:aged_hard_cheese"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:quiche_custard"
+  }
+}

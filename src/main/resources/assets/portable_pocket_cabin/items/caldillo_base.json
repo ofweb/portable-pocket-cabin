@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/caldillo_base",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 13647914
+      }
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "carcass": "portable_pocket_cabin:cow_carcass",
+  "dressing": "skin",
+  "dressing_gives": [
+    {
+      "id": "minecraft:leather",
+      "count": 2
+    }
+  ],
+  "dressed": "portable_pocket_cabin:dressed_cow",
+  "parts": [
+    {
+      "id": "portable_pocket_cabin:beef_sirloin",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:beef_rib_roast"
+    },
+    {
+      "id": "portable_pocket_cabin:beef_brisket"
+    },
+    {
+      "id": "portable_pocket_cabin:beef_chuck"
+    },
+    {
+      "id": "portable_pocket_cabin:beef_round"
+    },
+    {
+      "id": "portable_pocket_cabin:beef_shank"
+    },
+    {
+      "id": "portable_pocket_cabin:stew_beef",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:oxtail"
+    },
+    {
+      "id": "portable_pocket_cabin:beef_tongue"
+    },
+    {
+      "id": "portable_pocket_cabin:beef_liver"
+    },
+    {
+      "id": "portable_pocket_cabin:beef_heart"
+    },
+    {
+      "id": "portable_pocket_cabin:beef_kidneys"
+    },
+    {
+      "id": "portable_pocket_cabin:tripe"
+    },
+    {
+      "id": "portable_pocket_cabin:calf_stomach"
+    },
+    {
+      "id": "portable_pocket_cabin:beef_bones",
+      "count": 4
+    },
+    {
+      "id": "portable_pocket_cabin:marrow_bones"
+    },
+    {
+      "id": "portable_pocket_cabin:suet",
+      "count": 2
+    }
+  ]
+}

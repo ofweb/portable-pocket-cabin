@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/empanadas_de_carne",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 14725216
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "searing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:diced_beef"
+    }
+  ],
+  "heat": "high",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:browned_beef"
+  }
+}

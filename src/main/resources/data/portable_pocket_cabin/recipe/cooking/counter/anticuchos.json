@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:anticucho_skewer",
+      "count": 2
+    },
+    {
+      "item": "minecraft:baked_potato"
+    },
+    {
+      "item": "portable_pocket_cabin:cooked_corn"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:anticuchos"
+  }
+}

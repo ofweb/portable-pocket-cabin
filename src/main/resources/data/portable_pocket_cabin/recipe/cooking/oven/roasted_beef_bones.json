@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "roasting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:beef_bones",
+      "count": 2
+    }
+  ],
+  "heat": "high",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:roasted_beef_bones",
+    "count": 2
+  }
+}

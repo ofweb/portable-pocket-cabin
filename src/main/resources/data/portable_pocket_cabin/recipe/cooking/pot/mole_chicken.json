@@ -1,0 +1,30 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:mole_paste"
+    },
+    {
+      "item": "portable_pocket_cabin:chicken_stock"
+    },
+    {
+      "item": "portable_pocket_cabin:poached_chicken",
+      "count": 2
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 800,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:mole_chicken",
+    "count": 2
+  }
+}

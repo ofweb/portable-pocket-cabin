@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "roasting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:marinated_al_pastor"
+    }
+  ],
+  "heat": "high",
+  "time": 400,
+  "result": {
+    "id": "portable_pocket_cabin:roasted_al_pastor"
+  }
+}
