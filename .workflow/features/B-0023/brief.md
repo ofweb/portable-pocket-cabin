@@ -115,3 +115,4 @@ Installation, cultivation, woodland exploration, and return landmarks.
 ## Open questions and assumptions
 
 - Design must verify [woodland fit and door safety](../../../experiments/room-layout/README.md) and fruit compatibility.
+- **Fruit trees:** the [B-0050 design](../B-0050/design.md) adds fruit tree species that grow outdoors and in the greenhouse. When the arboretum is built, they become selectable arboretum tree types alongside the vanilla trees.
