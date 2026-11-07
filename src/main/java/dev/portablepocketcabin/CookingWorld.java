@@ -23,8 +23,9 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
-/** Cooking ingredients that come from the world: rock salt ore in dripstone caves and badlands, and seawater. */
+/** Cooking ingredients that come from the world: rock salt ore, wild cardoon in meadows and savannas, and seawater. */
 final class CookingWorld {
+	static final ResourceKey<PlacedFeature> CARDOON_PATCH = ResourceKey.create(Registries.PLACED_FEATURE, PortablePocketCabin.id("cardoon_patch"));
 	static final ResourceKey<PlacedFeature> ROCK_SALT_ORE = ResourceKey.create(Registries.PLACED_FEATURE, PortablePocketCabin.id("rock_salt_ore"));
 
 	private CookingWorld() {
@@ -33,6 +34,8 @@ final class CookingWorld {
 	static void register() {
 		BiomeModifications.addFeature(BiomeSelectors.tag(BiomeTags.IS_BADLANDS).or(BiomeSelectors.includeByKey(Biomes.DRIPSTONE_CAVES)),
 			GenerationStep.Decoration.UNDERGROUND_ORES, ROCK_SALT_ORE);
+		BiomeModifications.addFeature(BiomeSelectors.tag(BiomeTags.IS_SAVANNA).or(BiomeSelectors.includeByKey(Biomes.MEADOW)),
+			GenerationStep.Decoration.VEGETAL_DECORATION, CARDOON_PATCH);
 		UseItemCallback.EVENT.register((player, level, hand) -> {
 			ItemStack held = player.getItemInHand(hand);
 			if (!held.is(Items.GLASS_BOTTLE)) return InteractionResult.PASS;

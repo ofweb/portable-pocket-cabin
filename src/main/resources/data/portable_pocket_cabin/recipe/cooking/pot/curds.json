@@ -1,0 +1,28 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "curdling",
+  "ingredients": [
+    {
+      "item": "minecraft:milk_bucket",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:vegetable_rennet"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:bucket",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:whey"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:curds",
+    "count": 4
+  }
+}

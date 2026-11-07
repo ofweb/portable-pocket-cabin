@@ -93,6 +93,11 @@ final class CookingBlocks {
 	static final Block ROCK_SALT_ORE = register("rock_salt_ore", Block::new, BlockBehaviour.Properties.of()
 		.strength(3.0F).sound(SoundType.STONE).requiresCorrectToolForDrops());
 
+	/** Cardoon, a wild thistle whose flowers steep into vegetable rennet. Its item replants it. */
+	static final Block CARDOON = register("cardoon", CardoonBlock::new, BlockBehaviour.Properties.of()
+		.noCollision().instabreak().randomTicks().sound(SoundType.GRASS).noOcclusion()
+		.pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY));
+
 	static final BlockEntityType<StoveBlockEntity> STOVE_ENTITY = registerEntity("stove",
 		new BlockEntityType<>(StoveBlockEntity::new, Set.of(STOVE)));
 	static final BlockEntityType<OvenBlockEntity> OVEN_ENTITY = registerEntity("oven",
@@ -158,7 +163,10 @@ final class CookingBlocks {
 			entries.accept(AGEING_SHELF);
 			entries.accept(DRYING_RACK);
 		});
-		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.NATURAL_BLOCKS).register(entries -> entries.accept(ROCK_SALT_ORE));
+		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.NATURAL_BLOCKS).register(entries -> {
+			entries.accept(ROCK_SALT_ORE);
+			entries.accept(CARDOON);
+		});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
 			entries.accept(CookingItems.KITCHEN_KNIFE);
 			entries.accept(CookingItems.COOKBOOK);
@@ -181,7 +189,10 @@ final class CookingBlocks {
 				CookingItems.WHEAT_FLOUR, CookingItems.SOURDOUGH_STARTER, CookingItems.YEAST_CULTURE, CookingItems.YEAST, CookingItems.BREAD_DOUGH,
 				CookingItems.PROOFED_BREAD_DOUGH, CookingItems.SHAPED_ROLLS, CookingItems.BREAD_ROLL, CookingItems.SHORTCRUST_DOUGH,
 				CookingItems.SHORTCRUST_PASTRY, CookingItems.UNBAKED_PUMPKIN_PIE, CookingItems.COOKIE_DOUGH, CookingItems.CAKE_BATTER,
-				CookingItems.SWEET_YEAST_DOUGH, CookingItems.PROOFED_SWEET_DOUGH}) {
+				CookingItems.SWEET_YEAST_DOUGH, CookingItems.PROOFED_SWEET_DOUGH, CookingItems.CARDOON_FLOWER, CookingItems.VEGETABLE_RENNET,
+				CookingItems.CURDS, CookingItems.WHEY, CookingItems.FRESH_CHEESE, CookingItems.PRESSED_CHEESE, CookingItems.SOURED_MILK_BUCKET,
+				CookingItems.QUARK, CookingItems.DRAINED_CREAM, CookingItems.CREAM_CHEESE, CookingItems.BRINED_CHEESE, CookingItems.AGED_HARD_CHEESE,
+				CookingItems.HARD_CHEESE_WEDGE, CookingItems.SOFT_CHEESE_CURDS, CookingItems.AGED_SOFT_CHEESE}) {
 				entries.accept(item);
 			}
 		});

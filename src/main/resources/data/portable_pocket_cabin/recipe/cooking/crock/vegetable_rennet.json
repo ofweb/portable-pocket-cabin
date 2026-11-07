@@ -1,0 +1,28 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "steeping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cardoon_flower",
+      "count": 3
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "portable_pocket_cabin:vegetable_rennet"
+  }
+}

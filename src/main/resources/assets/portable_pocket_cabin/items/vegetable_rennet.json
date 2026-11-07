@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/vegetable_rennet",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 9075274
+      }
+    ]
+  }
+}

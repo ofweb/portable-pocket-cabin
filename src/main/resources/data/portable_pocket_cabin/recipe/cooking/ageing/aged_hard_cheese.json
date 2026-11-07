@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "ageing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:brined_cheese"
+    }
+  ],
+  "time": 72000,
+  "result": {
+    "id": "portable_pocket_cabin:aged_hard_cheese"
+  }
+}

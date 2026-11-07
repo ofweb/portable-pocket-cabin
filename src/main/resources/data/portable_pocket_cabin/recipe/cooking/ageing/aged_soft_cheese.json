@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "ripening",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:soft_cheese_curds"
+    }
+  ],
+  "time": 48000,
+  "result": {
+    "id": "portable_pocket_cabin:aged_soft_cheese"
+  }
+}

@@ -102,6 +102,23 @@ final class CookingItems {
 	static final Item CAKE_BATTER = register("cake_batter", UnaryOperator.identity());
 	static final Item SWEET_YEAST_DOUGH = register("sweet_yeast_dough", UnaryOperator.identity());
 	static final Item PROOFED_SWEET_DOUGH = register("proofed_sweet_dough", UnaryOperator.identity());
+	static final Item CARDOON_FLOWER = register("cardoon_flower", UnaryOperator.identity());
+	/** Cardoon flowers steeped in salt water: the rennet that sets milk into curds. */
+	static final Item VEGETABLE_RENNET = register("vegetable_rennet", properties -> properties.stacksTo(16));
+	static final Item CURDS = register("curds", UnaryOperator.identity());
+	/** The liquid left when curds set. Pigs eat it. */
+	static final Item WHEY = register("whey", properties -> drink(properties, 1, 0.6F));
+	static final Item FRESH_CHEESE = register("fresh_cheese", properties -> properties.food(food(3, 3.6F)));
+	static final Item PRESSED_CHEESE = register("pressed_cheese", UnaryOperator.identity());
+	static final Item SOURED_MILK_BUCKET = register("soured_milk_bucket", properties -> properties.stacksTo(1).craftRemainder(Items.BUCKET));
+	static final Item QUARK = register("quark", properties -> properties.stacksTo(16).food(food(3, 3.6F)).usingConvertsTo(Items.BOWL));
+	static final Item DRAINED_CREAM = register("drained_cream", UnaryOperator.identity());
+	static final Item CREAM_CHEESE = register("cream_cheese", UnaryOperator.identity());
+	static final Item BRINED_CHEESE = register("brined_cheese", UnaryOperator.identity());
+	static final Item AGED_HARD_CHEESE = register("aged_hard_cheese", UnaryOperator.identity());
+	static final Item HARD_CHEESE_WEDGE = register("hard_cheese_wedge", properties -> properties.food(food(4, 6.4F)));
+	static final Item SOFT_CHEESE_CURDS = register("soft_cheese_curds", UnaryOperator.identity());
+	static final Item AGED_SOFT_CHEESE = register("aged_soft_cheese", properties -> properties.food(food(4, 5.0F)));
 	static final Item STIR_FRIED_VEGETABLES = register("stir_fried_vegetables",
 		properties -> properties.stacksTo(16).food(food(8, 9.6F)).usingConvertsTo(Items.BOWL));
 
