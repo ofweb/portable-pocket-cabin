@@ -3,17 +3,17 @@
   "technique": "baking",
   "ingredients": [
     {
-      "item": "minecraft:wheat",
-      "count": 2
-    },
-    {
-      "item": "minecraft:cocoa_beans"
+      "item": "portable_pocket_cabin:cookie_dough"
     }
   ],
   "heat": "medium",
-  "time": 200,
+  "time": 160,
   "result": {
     "id": "minecraft:cookie",
     "count": 8
-  }
+  },
+  "tastes": [
+    "sweet",
+    "salty"
+  ]
 }

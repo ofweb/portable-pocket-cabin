@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "T": "minecraft:terracotta"
+  },
+  "pattern": [
+    "T T",
+    "T T",
+    "TTT"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:fermentation_crock"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "shaping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:proofed_bread_dough"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:shaped_rolls",
+    "count": 2
+  }
+}

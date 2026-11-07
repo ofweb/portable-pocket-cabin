@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:brine",
+  "technique": "brining",
+  "ingredients": [
+    {
+      "item": "minecraft:cod",
+      "count": 2
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "minecraft:cooked_cod",
+    "count": 2
+  }
+}

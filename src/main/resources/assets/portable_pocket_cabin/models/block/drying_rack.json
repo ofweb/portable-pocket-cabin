@@ -1,0 +1,170 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "minecraft:block/stripped_spruce_log",
+    "leg": "minecraft:block/stripped_spruce_log",
+    "board": "minecraft:block/scaffolding_top"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        2,
+        13,
+        2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#leg"
+        },
+        "south": {
+          "texture": "#leg"
+        },
+        "east": {
+          "texture": "#leg"
+        },
+        "west": {
+          "texture": "#leg"
+        },
+        "up": {
+          "texture": "#leg"
+        },
+        "down": {
+          "texture": "#leg"
+        }
+      }
+    },
+    {
+      "from": [
+        14,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        13,
+        2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#leg"
+        },
+        "south": {
+          "texture": "#leg"
+        },
+        "east": {
+          "texture": "#leg"
+        },
+        "west": {
+          "texture": "#leg"
+        },
+        "up": {
+          "texture": "#leg"
+        },
+        "down": {
+          "texture": "#leg"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        14
+      ],
+      "to": [
+        2,
+        13,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#leg"
+        },
+        "south": {
+          "texture": "#leg"
+        },
+        "east": {
+          "texture": "#leg"
+        },
+        "west": {
+          "texture": "#leg"
+        },
+        "up": {
+          "texture": "#leg"
+        },
+        "down": {
+          "texture": "#leg"
+        }
+      }
+    },
+    {
+      "from": [
+        14,
+        0,
+        14
+      ],
+      "to": [
+        16,
+        13,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#leg"
+        },
+        "south": {
+          "texture": "#leg"
+        },
+        "east": {
+          "texture": "#leg"
+        },
+        "west": {
+          "texture": "#leg"
+        },
+        "up": {
+          "texture": "#leg"
+        },
+        "down": {
+          "texture": "#leg"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        12,
+        0
+      ],
+      "to": [
+        16,
+        13,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#board"
+        },
+        "south": {
+          "texture": "#board"
+        },
+        "east": {
+          "texture": "#board"
+        },
+        "west": {
+          "texture": "#board"
+        },
+        "up": {
+          "texture": "#board"
+        },
+        "down": {
+          "texture": "#board"
+        }
+      }
+    }
+  ]
+}

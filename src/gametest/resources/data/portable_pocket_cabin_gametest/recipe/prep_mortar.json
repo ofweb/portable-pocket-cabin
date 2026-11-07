@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mortar",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "minecraft:gravel",
+      "count": 2
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "minecraft:flint"
+  }
+}

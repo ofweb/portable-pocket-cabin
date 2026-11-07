@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "setting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cane_sugar_paste"
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "portable_pocket_cabin:panela"
+  }
+}

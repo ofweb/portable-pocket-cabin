@@ -1,0 +1,36 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "fermenting",
+  "ingredients": [
+    {
+      "item": "minecraft:wheat",
+      "count": 2
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "time": 24000,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    },
+    {
+      "id": "minecraft:stick"
+    }
+  ],
+  "result": {
+    "id": "minecraft:bread"
+  }
+}

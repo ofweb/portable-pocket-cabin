@@ -1,6 +1,6 @@
 # Players ferment, dry, cure, smoke, and age food
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0048
 
 ## Goal

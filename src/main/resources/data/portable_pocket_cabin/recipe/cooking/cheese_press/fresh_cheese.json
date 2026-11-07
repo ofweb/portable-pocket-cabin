@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:cheese_press",
+  "technique": "pressing_curds",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:curds",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:fresh_cheese",
+    "count": 2
+  }
+}

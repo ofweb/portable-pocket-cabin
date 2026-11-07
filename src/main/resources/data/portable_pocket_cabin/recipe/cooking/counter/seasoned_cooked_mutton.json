@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "seasoning",
+  "ingredients": [
+    {
+      "item": "minecraft:cooked_mutton"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "minecraft:cooked_mutton"
+  }
+}

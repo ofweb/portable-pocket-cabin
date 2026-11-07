@@ -13,5 +13,8 @@
   "result": {
     "id": "portable_pocket_cabin:fried_potatoes",
     "count": 4
-  }
+  },
+  "tastes": [
+    "salty"
+  ]
 }

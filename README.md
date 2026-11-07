@@ -60,9 +60,30 @@ Juices are drinks that give the bottle back. Simmer six sweet berries, two sugar
 
 Sunflower oil is the frying oil. Thresh a sunflower on the cutting board into four seeds, then press four seeds into a bottle of oil. Use the bottle on a cooking pot or wok to add a level of oil, up to three. Diced potatoes deep-fry in the pot at high heat, and chopped carrot, beetroot, and brown mushrooms stir-fry in the wok. Pumpkin seeds toasted on the skillet press into pumpkin seed oil, a dressing oil that doesn't go in the pot or wok.
 
-A station lights new fuel only when it has something to cook, but lit fuel always burns down. Cooking advances only at the recipe's heat. When the wrong fuel is burning, use a shovel on the stove or oven to put it out. The next fuel then lights at its own heat. Hoppers work with the pot, stove, oven, counter, strainer, wok, and press as with a furnace. On the grill they only add fuel and take spent fuel.
+**Milling, baking, and dairy.** More stations take over the kitchen's hand work:
+- **Mill:** grinds wheat into flour, rock salt into salt, and crushes sugar cane into juice.
+- **Mixing bowl and mortar and pestle:** both sit on a prep counter. Use the wooden spoon on the bowl, or the pestle on the mortar, once per stroke. Each recipe says how many strokes it takes.
+- **Butter churn:** use it with an empty hand to churn, or sneak-use it to open its screen.
+- **Cheese press:** presses curds into cheese.
 
-The **cookbook**, crafted from a book and a bowl, lists every recipe by station. Each page shows the ingredients, heat, time, water, and oil, and explains the technique behind the dish. An ingredient that another recipe makes links to that recipe. Recipes you have everything for show in green. Household members in a cabin with central storage also count stored items. The pot, oven, counter, strainer, wok, and press screens have a recipe button that fills the station from your inventory, skipping named and customised items. Inside a cabin, only the household can use the stations.
+Bread starts with a sourdough starter: flour and water left in the fermentation crock for a day. Feeding a starter flour and water doubles it, and a starter grown in sugar water dries into yeast. Bread dough kneads in the mixing bowl, proofs in the proofing basket, and bakes in the oven, or the counter shapes it into rolls. Shortcrust pastry, cookie dough, cake batter, and sweet dough mix in the bowl with salted butter. The oven no longer bakes bread, cookies, cake, or pumpkin pie straight from wheat.
+
+Milk settles in the dairy pan into cream and skimmed milk. Cream churns into butter and buttermilk. Buttermilk starts the first yogurt in the crock, and yogurt starts every batch after. Cardoon, a wild thistle of meadows and savannas, flowers into the vegetable rennet that sets milk into curds and whey. Curds become fresh cheese, pressed cheese that brines and ages into hard cheese, or a ripened soft cheese.
+
+**Time stations.** The fermentation crock, brine barrel, proofing basket, and dairy pan each run one batch over Minecraft hours or days, and their screens show the time left. The ageing shelf and drying rack hold four items that each age or dry on their own. Some drying needs sun, and wet salt dried in the shade grows coarse salt. Time stations keep working while their chunk is unloaded or their cabin is packed. When they next load they finish the batch they were running, but they never start another.
+
+**Salt, sugar, sauces, and preserving.**
+- **Salt:** rock salt ore generates in dripstone caves and badlands. A glass bottle filled in an ocean gives seawater, which boils down into wet salt and nigari.
+- **Sugars and syrups:** cane juice boils down into a paste that dries into brown sugar or sets into panela. Sugar caramelises on the skillet, and the pot makes simple syrup, roux, jam, and caramel sauce.
+- **Cider and vinegar:** apple juice ferments into cider, then sours into cider vinegar. The first batch takes five days; after that, a bottle of vinegar speeds up the next.
+- **Pickles and drying:** vinegar pickles beetroot and carrots. The drying rack dries fruit, kelp, salt cod, and jerky.
+- **Curing and smoking:** salmon and pork cure in the brine barrel, then smoke in the vanilla smoker.
+
+**Seasoning.** The pot, oven, wok, counter, and mixing bowl screens have two seasoning slots. A dish names the tastes it wants: salty, sweet, sour, bitter, or umami. Each seasoning that brings a wanted taste raises the dish from plain to seasoned to well balanced, and an unwanted or doubled taste lowers it. Quality shows in the tooltip and makes the dish a little more filling. The counter seasons skillet and grill dishes afterwards. The cookbook shows each dish's tastes and has a page for every taste.
+
+A station lights new fuel only when it has something to cook, but lit fuel always burns down. Cooking advances only at the recipe's heat. When the wrong fuel is burning, use a shovel on the stove or oven to put it out. The next fuel then lights at its own heat. Hoppers work with the container stations as with a furnace, but never reach seasoning slots. On the grill they only add fuel and take spent fuel. On the ageing shelf and drying rack they add items a recipe takes and take finished ones.
+
+The **cookbook**, crafted from a book and a bowl, lists every recipe by station. Each page shows the ingredients, heat, time, strokes, water, oil, and tastes, and explains the technique behind the dish. An ingredient that another recipe makes links to that recipe. Recipes you have everything for show in green. Household members in a cabin with central storage also count stored items. Station screens have a recipe button that fills the station from your inventory, skipping named and customised items. Inside a cabin, only the household can use the stations.
 
 Install a Kitchen Book through **Books**, then fund the purchase in the **Kitchen** category. It needs a 5×5 main room and adds an empty 5×5 kitchen south of the east corridor, lit by two hanging lanterns. Owners and residents furnish it with their own stations. Once central storage is installed, every cooking station inside the kitchen draws on it:
 - The recipe button fills the station from storage first, then your inventory.

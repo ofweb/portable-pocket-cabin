@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "culturing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:skimmed_milk_bucket"
+    },
+    {
+      "item": "portable_pocket_cabin:buttermilk"
+    }
+  ],
+  "time": 24000,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:soured_milk_bucket"
+  }
+}

@@ -26,6 +26,8 @@ final class SurfaceCooking {
 	private final boolean[] loaded;
 	private int generation;
 	private CookingStation.Lookup lookup;
+	/** Whether a drying rack has open sky above it, which sun recipes need and shade recipes refuse. */
+	private boolean sky = true;
 
 	/** What a tick did: whether any spot finished, and whether any spot cooked. */
 	record Tick(boolean finished, boolean cooking) {
@@ -53,6 +55,18 @@ final class SurfaceCooking {
 		Arrays.fill(looked, false);
 	}
 
+	/** Sets whether the surface has open sky above it. A change looks the recipes up again. */
+	void sky(boolean sky) {
+		if (this.sky != sky) {
+			this.sky = sky;
+			invalidate();
+		}
+	}
+
+	private CookingInput input(ItemStack stack) {
+		return new CookingInput(List.of(stack), ItemStack.EMPTY, 0, 0, sky);
+	}
+
 	int progress(int spot) {
 		return progress[spot];
 	}
@@ -69,7 +83,7 @@ final class SurfaceCooking {
 		}
 		if (!looked[spot]) {
 			ItemStack stack = items.get(spot);
-			var found = stack.isEmpty() ? null : lookup.find(level, CookingInput.of(List.of(stack))).orElse(null);
+			var found = stack.isEmpty() ? null : lookup.find(level, input(stack)).orElse(null);
 			String id = found == null ? null : found.id().identifier().toString();
 			if (!Objects.equals(recipeIds[spot], id) && !(loaded[spot] && recipeIds[spot] == null && id != null)) {
 				progress[spot] = 0;
@@ -85,7 +99,7 @@ final class SurfaceCooking {
 
 	/** Whether the surface has a recipe for the item. */
 	boolean cooks(ServerLevel level, ItemStack held) {
-		return !held.isEmpty() && lookup.find(level, CookingInput.of(List.of(held.copyWithCount(1)))).isPresent();
+		return !held.isEmpty() && lookup.find(level, input(held.copyWithCount(1))).isPresent();
 	}
 
 	/** Puts one item on a free spot if the surface can cook it. */
@@ -136,12 +150,23 @@ final class SurfaceCooking {
 
 	/** Advances every spot whose recipe wants this heat. A spot that waits to be turned holds still. */
 	Tick tick(ServerLevel level, List<ItemStack> items, Optional<CookingHeat> heat) {
+		return tick(level, items, heat, 1);
+	}
+
+	/**
+	 * Advances every spot by {@code elapsed} ticks. Time stations pass the game time since their last tick, and each
+	 * spot finishes at most its current item, so catch-up never starts the next one (ADR-0013).
+	 */
+	Tick tick(ServerLevel level, List<ItemStack> items, Optional<CookingHeat> heat, long elapsed) {
 		boolean finished = false, cooking = false;
+		if (elapsed <= 0) return new Tick(false, false);
 		for (int spot = 0; spot < spots; spot++) {
 			CookingRecipe recipe = recipe(level, items, spot).orElse(null);
 			if (recipe == null || !heat.equals(recipe.heat()) || needsTurning(spot)) continue;
 			cooking = true;
-			if (++progress[spot] >= recipe.time()) {
+			int limit = turning && !turned[spot] ? recipe.time() / 2 : recipe.time();
+			progress[spot] = (int) Math.min(limit, progress[spot] + elapsed);
+			if (progress[spot] >= recipe.time()) {
 				items.set(spot, recipe.result().create());
 				reset(spot);
 				finished = true;

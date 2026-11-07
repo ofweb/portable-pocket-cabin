@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:wheat_flour",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:salted_butter"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:cocoa_beans"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:cookie_dough"
+  }
+}

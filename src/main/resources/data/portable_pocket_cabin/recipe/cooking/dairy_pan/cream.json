@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:dairy_pan",
+  "technique": "skimming",
+  "ingredients": [
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle",
+    "count": 2
+  },
+  "time": 24000,
+  "remainders": [
+    {
+      "id": "portable_pocket_cabin:skimmed_milk_bucket"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:cream",
+    "count": 2
+  }
+}

@@ -8,6 +8,12 @@
     "portable_pocket_cabin:strainer",
     "portable_pocket_cabin:grill",
     "portable_pocket_cabin:wok",
-    "portable_pocket_cabin:aebleskive_pan"
+    "portable_pocket_cabin:aebleskive_pan",
+    "portable_pocket_cabin:mill",
+    "portable_pocket_cabin:mixing_bowl",
+    "portable_pocket_cabin:mortar",
+    "portable_pocket_cabin:dairy_pan",
+    "portable_pocket_cabin:fermentation_crock",
+    "portable_pocket_cabin:rock_salt_ore"
   ]
 }

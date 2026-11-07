@@ -1,6 +1,6 @@
 # Players mill, bake, and make dairy from scratch
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0046
 
 ## Goal

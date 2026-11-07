@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "minecraft:cobblestone"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "minecraft:gravel"
+  }
+}

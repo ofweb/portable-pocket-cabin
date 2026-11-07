@@ -20,5 +20,9 @@
   "result": {
     "id": "portable_pocket_cabin:apple_compote",
     "count": 2
-  }
+  },
+  "tastes": [
+    "sweet",
+    "sour"
+  ]
 }

@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:strainer",
+  "technique": "draining",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:curds",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:soft_cheese_curds"
+  }
+}

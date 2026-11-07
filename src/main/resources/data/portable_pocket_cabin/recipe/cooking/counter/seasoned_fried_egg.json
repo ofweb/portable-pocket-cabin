@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "seasoning",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fried_egg"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:fried_egg"
+  }
+}

@@ -56,6 +56,16 @@ final class CookingItemsRenderer<T extends CookingStationBlockEntity>
 		return context -> new CookingItemsRenderer<>(context, 2.5F / 16, wells);
 	}
 
+	static BlockEntityRendererProvider<SpotStationBlockEntity, State> ageingShelf() {
+		return context -> new CookingItemsRenderer<>(context, 10.1F / 16,
+			new float[][] {{0.3F, 0.3F, 0.34F}, {0.7F, 0.3F, 0.34F}, {0.3F, 0.7F, 0.34F}, {0.7F, 0.7F, 0.34F}});
+	}
+
+	static BlockEntityRendererProvider<SpotStationBlockEntity, State> dryingRack() {
+		return context -> new CookingItemsRenderer<>(context, 13.1F / 16,
+			new float[][] {{0.3F, 0.3F, 0.34F}, {0.7F, 0.3F, 0.34F}, {0.3F, 0.7F, 0.34F}, {0.7F, 0.7F, 0.34F}});
+	}
+
 	static BlockEntityRendererProvider<CuttingBoardBlockEntity, State> cuttingBoard() {
 		return context -> new CookingItemsRenderer<>(context, 1.1F / 16, new float[][] {{0.5F, 0.5F, 0.5F}});
 	}

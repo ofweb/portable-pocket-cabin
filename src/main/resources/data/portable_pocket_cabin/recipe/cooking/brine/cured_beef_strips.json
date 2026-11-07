@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:brine",
+  "technique": "curing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:beef_strips",
+      "count": 4
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 12000,
+  "result": {
+    "id": "portable_pocket_cabin:cured_beef_strips",
+    "count": 4
+  }
+}

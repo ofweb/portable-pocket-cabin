@@ -1,0 +1,48 @@
+{
+  "type": "minecraft:block",
+  "functions": [
+    {
+      "function": "minecraft:explosion_decay"
+    }
+  ],
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "portable_pocket_cabin:cardoon"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "portable_pocket_cabin:cardoon",
+          "properties": {
+            "age": "3"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "portable_pocket_cabin:cardoon_flower"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 1.0,
+            "max": 2.0
+          }
+        }
+      ]
+    }
+  ],
+  "random_sequence": "portable_pocket_cabin:blocks/cardoon"
+}

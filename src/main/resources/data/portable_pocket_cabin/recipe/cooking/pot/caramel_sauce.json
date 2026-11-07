@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "making_caramel_sauce",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:caramel"
+    },
+    {
+      "item": "portable_pocket_cabin:cream"
+    }
+  ],
+  "heat": "low",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:caramel_sauce"
+  }
+}

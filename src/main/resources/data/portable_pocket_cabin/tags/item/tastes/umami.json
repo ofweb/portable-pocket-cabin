@@ -1,0 +1,31 @@
+{
+  "replace": false,
+  "values": [
+    "portable_pocket_cabin:aged_hard_cheese",
+    "portable_pocket_cabin:hard_cheese_wedge",
+    "portable_pocket_cabin:aged_soft_cheese",
+    "portable_pocket_cabin:sliced_brown_mushrooms",
+    "portable_pocket_cabin:sliced_red_mushrooms",
+    "portable_pocket_cabin:sauteed_mushrooms",
+    "portable_pocket_cabin:smoked_salmon",
+    "portable_pocket_cabin:salt_cod",
+    "portable_pocket_cabin:jerky",
+    "portable_pocket_cabin:smoked_pork",
+    "portable_pocket_cabin:grilled_beef_skewer",
+    "portable_pocket_cabin:grilled_pork_skewer",
+    "portable_pocket_cabin:grilled_chicken_skewer",
+    "portable_pocket_cabin:grilled_mutton_skewer",
+    "portable_pocket_cabin:stir_fried_vegetables",
+    "portable_pocket_cabin:vegetable_soup",
+    "minecraft:dried_kelp",
+    "minecraft:brown_mushroom",
+    "minecraft:red_mushroom",
+    "minecraft:mushroom_stew",
+    "minecraft:rabbit_stew",
+    "minecraft:cooked_beef",
+    "minecraft:cooked_porkchop",
+    "minecraft:cooked_chicken",
+    "minecraft:cooked_mutton",
+    "minecraft:cooked_rabbit"
+  ]
+}

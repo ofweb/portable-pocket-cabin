@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:churn",
+  "technique": "churning",
+  "ingredients": [
+    {
+      "item": "minecraft:snowball",
+      "count": 2
+    }
+  ],
+  "time": 2,
+  "remainders": [
+    {
+      "id": "minecraft:stick"
+    },
+    {
+      "id": "minecraft:string"
+    }
+  ],
+  "result": {
+    "id": "minecraft:snow_block"
+  }
+}

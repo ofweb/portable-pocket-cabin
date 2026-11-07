@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "minecraft:polished_andesite"
+  },
+  "pattern": [
+    "A A",
+    " A "
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:mortar"
+  }
+}

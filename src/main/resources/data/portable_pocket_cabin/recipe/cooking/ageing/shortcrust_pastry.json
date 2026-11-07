@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "chilling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:shortcrust_dough"
+    }
+  ],
+  "time": 1000,
+  "result": {
+    "id": "portable_pocket_cabin:shortcrust_pastry"
+  }
+}

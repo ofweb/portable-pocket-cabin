@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "ageing",
+  "ingredients": [
+    {
+      "item": "minecraft:cobblestone"
+    }
+  ],
+  "time": 48000,
+  "result": {
+    "id": "minecraft:mossy_cobblestone"
+  }
+}

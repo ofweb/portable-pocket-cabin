@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "portable_pocket_cabin:salt",
+    "portable_pocket_cabin:coarse_salt",
+    "portable_pocket_cabin:brown_sugar",
+    "portable_pocket_cabin:cider_vinegar",
+    "portable_pocket_cabin:nigari",
+    "minecraft:sugar",
+    "minecraft:dried_kelp"
+  ]
+}

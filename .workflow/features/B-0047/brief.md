@@ -1,6 +1,6 @@
 # Players make salt, sugars, and sauces, and learn to season
 
-Status: Ready
+Status: Implemented
 Feature ID: B-0047
 
 ## Goal

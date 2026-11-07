@@ -15,7 +15,17 @@
       "dev.portablepocketcabin.CabinCookingStationGameTest",
       "dev.portablepocketcabin.CabinKitchenGameTest",
       "dev.portablepocketcabin.CabinCounterStationGameTest",
-      "dev.portablepocketcabin.CabinPressGameTest"
+      "dev.portablepocketcabin.CabinPressGameTest",
+      "dev.portablepocketcabin.CabinCookingEngineGameTest",
+      "dev.portablepocketcabin.CabinPreparationStationGameTest",
+      "dev.portablepocketcabin.CabinTimeStationGameTest",
+      "dev.portablepocketcabin.CabinSaltAndSugarGameTest",
+      "dev.portablepocketcabin.CabinDairyGameTest",
+      "dev.portablepocketcabin.CabinBakingGameTest",
+      "dev.portablepocketcabin.CabinCheeseGameTest",
+      "dev.portablepocketcabin.CabinPreservingGameTest",
+      "dev.portablepocketcabin.CabinSauceGameTest",
+      "dev.portablepocketcabin.CabinSeasoningGameTest"
     ],
     "fabric-client-gametest": [
       "dev.portablepocketcabin.PortablePocketCabinClientGameTest"

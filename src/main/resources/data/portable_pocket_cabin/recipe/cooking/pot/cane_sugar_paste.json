@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "boiling_down",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cane_juice",
+      "count": 3
+    }
+  ],
+  "heat": "high",
+  "time": 300,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 3
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:cane_sugar_paste"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "working",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:drained_cream"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 3,
+  "result": {
+    "id": "portable_pocket_cabin:cream_cheese"
+  }
+}

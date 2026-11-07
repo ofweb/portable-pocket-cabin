@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "portable_pocket_cabin:block/proofing_basket"
+    },
+    "facing=east": {
+      "model": "portable_pocket_cabin:block/proofing_basket",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "portable_pocket_cabin:block/proofing_basket",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "portable_pocket_cabin:block/proofing_basket",
+      "y": 270
+    }
+  }
+}

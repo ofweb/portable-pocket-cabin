@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "crushing",
+  "ingredients": [
+    {
+      "item": "minecraft:sugar_cane",
+      "count": 4
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:cane_juice"
+  }
+}

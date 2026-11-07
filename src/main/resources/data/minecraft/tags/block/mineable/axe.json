@@ -3,6 +3,12 @@
   "values": [
     "portable_pocket_cabin:cutting_board",
     "portable_pocket_cabin:prep_counter",
-    "portable_pocket_cabin:press"
+    "portable_pocket_cabin:press",
+    "portable_pocket_cabin:butter_churn",
+    "portable_pocket_cabin:cheese_press",
+    "portable_pocket_cabin:proofing_basket",
+    "portable_pocket_cabin:brine_barrel",
+    "portable_pocket_cabin:ageing_shelf",
+    "portable_pocket_cabin:drying_rack"
   ]
 }

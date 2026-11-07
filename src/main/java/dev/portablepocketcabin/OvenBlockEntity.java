@@ -18,7 +18,8 @@ final class OvenBlockEntity extends FiredStationBlockEntity implements WorldlyCo
 	private static final int[] TOP = {0, 1, 2, 3, 4, 5};
 	private static final int[] SIDE = {FUEL_SLOT};
 	private static final int[] BOTTOM = {OUTPUT_SLOT, BYPRODUCT_SLOT, FUEL_SLOT};
-	private final CookingProcess process = new CookingProcess(CookingStation.OVEN, -1, OUTPUT_SLOT, BYPRODUCT_SLOT);
+	private final CookingProcess process = new CookingProcess(CookingStation.OVEN, -1, OUTPUT_SLOT, BYPRODUCT_SLOT)
+		.seasoning(CookingMenu.Kind.OVEN.seasoningSlots);
 	final ContainerData data = new CookingMenu.Data() {
 		@Override
 		public int get(int index) {
@@ -35,7 +36,7 @@ final class OvenBlockEntity extends FiredStationBlockEntity implements WorldlyCo
 	};
 
 	OvenBlockEntity(BlockPos pos, BlockState state) {
-		super(CookingBlocks.OVEN_ENTITY, pos, state, 9, FUEL_SLOT);
+		super(CookingBlocks.OVEN_ENTITY, pos, state, CookingMenu.Kind.OVEN.size, FUEL_SLOT);
 	}
 
 	int progress() {
@@ -56,6 +57,7 @@ final class OvenBlockEntity extends FiredStationBlockEntity implements WorldlyCo
 
 	@Override
 	public boolean canPlaceItem(int slot, ItemStack stack) {
+		if (CookingMenu.Kind.OVEN.seasoning(slot)) return stack.is(Seasoning.SEASONINGS);
 		return slot < FUEL_SLOT || slot == FUEL_SLOT && isFuel(stack);
 	}
 

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": "minecraft:stick",
+    "P": "#minecraft:planks",
+    "B": "minecraft:bucket"
+  },
+  "pattern": [
+    " S ",
+    "P P",
+    "PBP"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:butter_churn"
+  }
+}

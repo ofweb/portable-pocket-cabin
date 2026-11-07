@@ -1,0 +1,25 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "making_jam",
+  "ingredients": [
+    {
+      "item": "minecraft:sweet_berries",
+      "count": 6
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars",
+      "count": 3
+    },
+    {
+      "item": "portable_pocket_cabin:apple_pomace"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "heat": "low",
+  "time": 300,
+  "result": {
+    "id": "portable_pocket_cabin:sweet_berry_jam"
+  }
+}

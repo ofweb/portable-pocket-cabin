@@ -60,6 +60,12 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 			button -> togglePanel(), Component.translatable("screen.portable_pocket_cabin.cooking.recipes")));
 	}
 
+	/** Where a station slot's centre is on screen, in GUI coordinates. For client GameTests that hover over items. */
+	int[] slotCentre(int slot) {
+		int[] position = menu.kind().slots[slot];
+		return new int[] {leftPos + position[0] + 8, topPos + position[1] + 8};
+	}
+
 	/** Shows or hides the recipe panel, asking the server which recipes it can fill when it opens. */
 	void togglePanel() {
 		panelOpen = !panelOpen;
@@ -152,6 +158,16 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 		}
 	}
 
+	/** An empty seasoning slot names itself, since nothing else on the screen labels it. */
+	@Override
+	protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+		super.extractTooltip(graphics, mouseX, mouseY);
+		if (hoveredSlot != null && !hoveredSlot.hasItem() && hoveredSlot.container != minecraft.player.getInventory()
+			&& menu.kind().seasoning(hoveredSlot.getContainerSlot())) {
+			graphics.setTooltipForNextFrame(font, Component.translatable("screen.portable_pocket_cabin.cooking.seasoning"), mouseX, mouseY);
+		}
+	}
+
 	/** A plain inventory-style panel of any size, stretched from the corners and edges of the inventory texture. */
 	static void panel(GuiGraphicsExtractor graphics, int left, int top, int width, int height) {
 		int[] dx = {0, 4, width - 4}, dy = {0, 4, height - 4};
@@ -205,6 +221,14 @@ final class CookingScreen extends AbstractContainerScreen<CookingMenu> {
 		}
 		if (menu.data(CookingMenu.DATA_PAUSED) != 0) return Component.translatable("screen.portable_pocket_cabin.cooking.covered");
 		int needed = menu.data(CookingMenu.DATA_NEEDED_HEAT);
+		if (station() != null && station().timeStation() && menu.data(CookingMenu.DATA_TIME) > 0) {
+			int left = (menu.data(CookingMenu.DATA_TIME) - menu.data(CookingMenu.DATA_PROGRESS)) * CookingMenu.TIME_STATION_SCALE;
+			return Component.translatable("screen.portable_pocket_cabin.cooking.hours_left",
+				Math.max(1, (left + CookingStation.HOUR - 1) / CookingStation.HOUR));
+		}
+		if (station() != null && station().worked() && menu.data(CookingMenu.DATA_TIME) > 0) {
+			return Component.translatable("screen.portable_pocket_cabin.cooking.uses", menu.data(CookingMenu.DATA_PROGRESS), menu.data(CookingMenu.DATA_TIME));
+		}
 		if (station() != null && !station().heated()) {
 			return Component.translatable(menu.data(CookingMenu.DATA_TIME) > 0
 				? "screen.portable_pocket_cabin.cooking.working" : "screen.portable_pocket_cabin.cooking.idle");

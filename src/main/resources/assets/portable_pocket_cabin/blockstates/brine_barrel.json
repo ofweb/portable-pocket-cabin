@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "portable_pocket_cabin:block/brine_barrel"
+    },
+    "facing=east": {
+      "model": "portable_pocket_cabin:block/brine_barrel",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "portable_pocket_cabin:block/brine_barrel",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "portable_pocket_cabin:block/brine_barrel",
+      "y": 270
+    }
+  }
+}
