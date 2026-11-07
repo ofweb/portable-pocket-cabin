@@ -25,6 +25,9 @@ import java.util.function.Function;
  * startup; their growing needs and wild placement come from data. Each delivery adds its region's plants.
  */
 final class CookingPlants {
+	/** Ground a wild plant can stand on even when it is not the plant's farming soil: grass, dirt, moss, mud, and farmland. */
+	static final net.minecraft.tags.TagKey<Block> WILD_GROUND = net.minecraft.tags.TagKey.create(Registries.BLOCK,
+		net.minecraft.resources.Identifier.withDefaultNamespace("supports_vegetation"));
 	/** Every plant block, by plant name, in registration order. */
 	static final Map<String, Block> PLANTS = new LinkedHashMap<>();
 	/** Every item the plants give or are planted from, in registration order, for the creative tab. */
@@ -67,10 +70,48 @@ final class CookingPlants {
 	static final Block MUSTARD_CROP = fieldCrop("mustard", "mustard_seed");
 	static final Block CARAWAY_CROP = fieldCrop("caraway", "caraway_seed");
 
+	// Delivery 1: climbing plants on trellises.
+	static final Block TRELLIS = registerBlockWithItem("trellis", TrellisBlock::new, BlockBehaviour.Properties.of()
+		.strength(0.5F).sound(SoundType.WOOD).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY));
+	static final Item CUCUMBER = ingredient("cucumber", food(2, 1.2F));
+	static final Item WHITE_GRAPE = ingredient("white_grape", food(2, 1.2F));
+	static final Item HOPS = ingredient("hops", null);
+	static final Block CUCUMBER_VINE = trellisCrop("cucumber_vine", "cucumber_seeds", () -> CUCUMBER);
+	static final Block WHITE_GRAPE_VINE = trellisCrop("white_grape_vine", "white_grape_cutting", () -> WHITE_GRAPE);
+	static final Block HOP_VINE = trellisCrop("hop_vine", "hop_rhizome", () -> HOPS);
+
+	// Delivery 1: perennial bushes that regrow after picking. Each is planted from what it gives, like sweet berries.
+	static final Block THYME_BUSH = selfBush("thyme_bush", "thyme", null);
+	static final Block MARJORAM_BUSH = selfBush("marjoram_bush", "marjoram", null);
+	static final Block STRAWBERRY_BUSH = selfBush("strawberry_bush", "strawberry", food(2, 1.2F));
+	static final Block RASPBERRY_BUSH = selfBush("raspberry_bush", "raspberry", food(2, 1.2F));
+	static final Block OYSTER_MUSHROOM = selfBush("oyster_mushrooms", "oyster_mushroom", null);
+	/** The elder flowers, then fruits: elderflower at its flowering stage, elderberries when ripe. */
+	static final Item ELDERFLOWER = ingredient("elderflower", null);
+	static final Item ELDERBERRY = ingredient("elderberry", null);
+	static final Block ELDER_BUSH = bush("elder_bush", "elder_cutting", () -> ELDERFLOWER, () -> ELDERBERRY);
+	/** Picked from vanilla rose bushes with shears. */
+	static final Item ROSEHIP = ingredient("rosehip", null);
+
 	private CookingPlants() {
 	}
 
 	static void register() {
+		// Shears on a vanilla rose bush pick its hips, about one time in three, and wear the shears.
+		net.fabricmc.fabric.api.event.player.UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
+			var stack = player.getItemInHand(hand);
+			if (!stack.is(net.minecraft.world.item.Items.SHEARS) || !level.getBlockState(hit.getBlockPos()).is(net.minecraft.world.level.block.Blocks.ROSE_BUSH)) {
+				return net.minecraft.world.InteractionResult.PASS;
+			}
+			if (level instanceof net.minecraft.server.level.ServerLevel server) {
+				if (server.getRandom().nextInt(3) == 0) {
+					Block.popResource(level, hit.getBlockPos(), new net.minecraft.world.item.ItemStack(ROSEHIP, 1 + server.getRandom().nextInt(2)));
+				}
+				level.playSound(null, hit.getBlockPos(), net.minecraft.sounds.SoundEvents.SHEEP_SHEAR, net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.0F);
+				stack.hurtAndBreak(1, player, hand);
+			}
+			return net.minecraft.world.InteractionResult.SUCCESS;
+		});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.NATURAL_BLOCKS).register(entries -> {
 			for (Item item : ITEMS) entries.accept(item);
 		});
@@ -97,6 +138,44 @@ final class CookingPlants {
 		seeds[0] = registerItem(seed, properties -> new BlockItem(block[0], properties.useItemDescriptionPrefix()));
 		PLANTS.put(plant, block[0]);
 		return block[0];
+	}
+
+	private static Block trellisCrop(String plant, String seed, java.util.function.Supplier<Item> produce) {
+		Block[] block = new Block[1];
+		Item[] seeds = new Item[1];
+		block[0] = registerBlock(plant, properties -> new TrellisCropBlock(properties, () -> seeds[0], produce), BlockBehaviour.Properties.of()
+			.randomTicks().strength(0.3F).sound(SoundType.CROP).noOcclusion().pushReaction(PushReaction.DESTROY));
+		seeds[0] = registerItem(seed, properties -> new BlockItem(block[0], properties.useItemDescriptionPrefix()));
+		PLANTS.put(plant, block[0]);
+		return block[0];
+	}
+
+	/** A bush planted from a cutting, giving {@code flowering} at its flowering stage when not null, and {@code ripe} when ripe. */
+	private static Block bush(String plant, String cutting, java.util.function.Supplier<Item> flowering, java.util.function.Supplier<Item> ripe) {
+		Block block = registerBlock(plant, properties -> new HerbBushBlock(properties, flowering, ripe), bushProperties());
+		registerItem(cutting, properties -> new BlockItem(block, properties.useItemDescriptionPrefix()));
+		PLANTS.put(plant, block);
+		return block;
+	}
+
+	/** A bush planted from what it gives, as sweet berries are. */
+	private static Block selfBush(String plant, String produce, FoodProperties food) {
+		Item[] item = new Item[1];
+		Block block = registerBlock(plant, properties -> new HerbBushBlock(properties, null, () -> item[0]), bushProperties());
+		item[0] = registerItem(produce, properties -> new BlockItem(block, (food == null ? properties : properties.food(food)).useItemDescriptionPrefix()));
+		PLANTS.put(plant, block);
+		return block;
+	}
+
+	private static BlockBehaviour.Properties bushProperties() {
+		return BlockBehaviour.Properties.of().randomTicks().noCollision().instabreak().sound(SoundType.SWEET_BERRY_BUSH)
+			.pushReaction(PushReaction.DESTROY);
+	}
+
+	private static Block registerBlockWithItem(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties) {
+		Block block = registerBlock(name, factory, properties);
+		registerItem(name, itemProperties -> new BlockItem(block, itemProperties.useBlockDescriptionPrefix()));
+		return block;
 	}
 
 	private static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties) {

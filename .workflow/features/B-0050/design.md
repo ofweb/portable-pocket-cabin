@@ -42,7 +42,7 @@ Rules for every plant:
   - Cilantro gives leaves when ripe, and coriander seed if it is left one stage longer to flower.
   - Olive leaves give green olives at the first fruit stage and black olives at the second.
   - Tea gives tea leaves. A tea bush kept under a roof for its last stage gives shaded tea leaves.
-- **Rosehip:** using shears on a vanilla rose bush gives rosehips and leaves the bush in place, once per day of game time.
+- **Rosehip:** using shears on a vanilla rose bush gives one or two rosehips about one time in three, wears the shears, and leaves the bush in place.
 - **Bean sprouts:** dried soybeans sprout in the fermentation crock.
 
 ### Growing needs as data
