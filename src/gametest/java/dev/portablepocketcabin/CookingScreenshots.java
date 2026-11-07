@@ -68,10 +68,8 @@ final class CookingScreenshots {
 				skillet.add(level, new ItemStack(Items.EGG));
 				skillet.add(level, new ItemStack(Items.BROWN_MUSHROOM));
 				var oven = (OvenBlockEntity) level.getBlockEntity(base.offset(2, 0, -3));
-				oven.setItem(0, new ItemStack(Items.WHEAT, 3));
-				oven.setItem(1, new ItemStack(Items.SUGAR, 2));
-				oven.setItem(2, new ItemStack(Items.EGG));
-				for (int slot = 3; slot < 6; slot++) oven.setItem(slot, new ItemStack(Items.MILK_BUCKET));
+				oven.setItem(0, new ItemStack(CookingItems.CAKE_BATTER));
+				oven.setItem(CookingMenu.Kind.OVEN.seasoningSlots[0], new ItemStack(Items.SUGAR));
 				oven.setItem(OvenBlockEntity.FUEL_SLOT, new ItemStack(Items.OAK_PLANKS, 8));
 				var board = (CuttingBoardBlockEntity) level.getBlockEntity(base.offset(4, 1, -3));
 				board.place(level, new ItemStack(Items.CARROT, 6));
@@ -105,7 +103,98 @@ final class CookingScreenshots {
 			context.runOnClient(client -> client.gui.setScreen(null));
 			captureCounterStations(context, world, origin[0]);
 			capturePress(context, world, origin[0]);
+			capturePhase3(context, world, origin[0]);
 		}
+	}
+
+	/** Phase 3: the mill, mixing bowl, crock, ageing shelf, and drying rack, a seasoned dish, and the cookbook's tastes. */
+	private static void capturePhase3(ClientGameTestContext context, TestSingleplayerContext world, BlockPos base) {
+		world.getServer().runOnServer(server -> {
+			var player = world.getConnection().getServerPlayer();
+			var level = player.level();
+			player.closeContainer();
+			var facing = Direction.SOUTH;
+			level.setBlockAndUpdate(base.offset(-4, 0, -5), CookingBlocks.MILL.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, facing));
+			var mill = (ProcessStationBlockEntity) level.getBlockEntity(base.offset(-4, 0, -5));
+			mill.setItem(0, new ItemStack(Items.WHEAT, 12));
+			mill.setItem(CookingMenu.Kind.MILL.outputSlot, new ItemStack(CookingItems.WHEAT_FLOUR, 5));
+			level.setBlockAndUpdate(base.offset(-2, 0, -5), CookingBlocks.PREP_COUNTER.defaultBlockState());
+			level.setBlockAndUpdate(base.offset(-2, 1, -5), CookingBlocks.MIXING_BOWL.defaultBlockState());
+			var bowl = (ProcessStationBlockEntity) level.getBlockEntity(base.offset(-2, 1, -5));
+			bowl.setItem(0, new ItemStack(CookingItems.WHEAT_FLOUR, 3));
+			bowl.setItem(1, new ItemStack(CookingItems.SOURDOUGH_STARTER));
+			bowl.setItem(2, net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.POTION, net.minecraft.world.item.alchemy.Potions.WATER));
+			bowl.setItem(3, new ItemStack(CookingItems.SALT));
+			bowl.work(level);
+			bowl.work(level);
+			bowl.work(level);
+			level.setBlockAndUpdate(base.offset(0, 0, -5), CookingBlocks.CROCK.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, facing));
+			var crock = (ProcessStationBlockEntity) level.getBlockEntity(base.offset(0, 0, -5));
+			crock.setItem(0, new ItemStack(CookingItems.APPLE_JUICE, 4));
+			level.setBlockAndUpdate(base.offset(2, 0, -5), CookingBlocks.AGEING_SHELF.defaultBlockState());
+			var shelf = (SpotStationBlockEntity) level.getBlockEntity(base.offset(2, 0, -5));
+			for (var item : java.util.List.of(CookingItems.BRINED_CHEESE, CookingItems.SOFT_CHEESE_CURDS, CookingItems.CANE_SUGAR_PASTE, CookingItems.SHORTCRUST_DOUGH)) {
+				shelf.add(level, new ItemStack(item));
+			}
+			level.setBlockAndUpdate(base.offset(4, 0, -5), CookingBlocks.DRYING_RACK.defaultBlockState());
+			var rack = (SpotStationBlockEntity) level.getBlockEntity(base.offset(4, 0, -5));
+			for (var item : java.util.List.of(Items.KELP, CookingItems.SALTED_COD, CookingItems.CHOPPED_APPLE, CookingItems.CURED_BEEF_STRIPS)) {
+				rack.add(level, new ItemStack(item));
+			}
+			level.setBlockAndUpdate(base.offset(-4, 0, -4), CookingBlocks.BUTTER_CHURN.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, facing));
+			level.setBlockAndUpdate(base.offset(0, 0, -4), CookingBlocks.CHEESE_PRESS.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, facing));
+			level.setBlockAndUpdate(base.offset(2, 0, -4), CookingBlocks.BRINE_BARREL.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, facing));
+			level.setBlockAndUpdate(base.offset(4, 0, -4), CookingBlocks.DAIRY_PAN.defaultBlockState());
+			level.setBlockAndUpdate(base.offset(-2, 0, -4), CookingBlocks.PROOFING_BASKET.defaultBlockState());
+			var pot = (CookingPotBlockEntity) level.getBlockEntity(base.offset(-4, 1, -3));
+			var soup = Seasoning.apply(new ItemStack(CookingItems.VEGETABLE_SOUP, 3), Seasoning.WELL_BALANCED);
+			pot.setItem(CookingPotBlockEntity.OUTPUT_SLOT, soup);
+			pot.setItem(CookingMenu.Kind.POT.seasoningSlots[0], new ItemStack(Items.DRIED_KELP, 4));
+			// A strip of floor north of the stations, to look back at the new rows from the other side.
+			for (int x = -5; x <= 5; x++) for (int z = -9; z <= -6; z++) {
+				level.setBlockAndUpdate(base.offset(x, -1, z), net.minecraft.world.level.block.Blocks.SMOOTH_STONE.defaultBlockState());
+				for (int y = 0; y < 4; y++) level.setBlockAndUpdate(base.offset(x, y, z), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
+			}
+			player.teleportTo(level, base.getX() + .5, base.getY(), base.getZ() - 8.5, java.util.Set.of(), 0, 25, false);
+		});
+		world.getConnection().waitForClientboundPackets();
+		world.getConnection().waitForChunksRender();
+		context.waitTicks(20);
+		shot(context, "phase3-stations");
+		world.getServer().runOnServer(server -> {
+			var player = world.getConnection().getServerPlayer();
+			player.teleportTo(player.level(), base.getX() + .5, base.getY(), base.getZ() - 1.5, java.util.Set.of(), 180, 35, false);
+		});
+		world.getConnection().waitForClientboundPackets();
+		open(context, world, base.offset(-4, 0, -5), CookingMenu.Kind.MILL);
+		shot(context, "mill-screen");
+		open(context, world, base.offset(-2, 1, -5), CookingMenu.Kind.MIXING_BOWL);
+		shot(context, "mixing-bowl-screen");
+		open(context, world, base.offset(0, 0, -5), CookingMenu.Kind.CROCK);
+		context.waitTicks(5);
+		shot(context, "crock-screen");
+		open(context, world, base.offset(-4, 1, -3), CookingMenu.Kind.POT);
+		double[] cursor = context.computeOnClient(client -> {
+			int[] centre = ((CookingScreen) client.gui.screen()).slotCentre(CookingPotBlockEntity.OUTPUT_SLOT);
+			double scale = client.getWindow().getGuiScale();
+			return new double[] {centre[0] * scale, centre[1] * scale};
+		});
+		context.getInput().setCursorPos(cursor[0], cursor[1]);
+		context.waitTicks(3);
+		context.takeScreenshot(TestScreenshotOptions.of("cooking-seasoned-tooltip").disableCounterPrefix());
+		world.getServer().runOnServer(server -> world.getConnection().getServerPlayer().closeContainer());
+		world.getConnection().waitForClientboundPackets();
+		context.runOnClient(client -> CookbookScreen.open());
+		context.waitForScreen(CookbookScreen.class);
+		world.getConnection().waitForServerboundPackets();
+		world.getConnection().waitForClientboundPackets();
+		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectTaste(Seasoning.Taste.UMAMI));
+		shot(context, "cookbook-umami");
+		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).select(PortablePocketCabin.id("cooking/crock/sourdough_starter")));
+		shot(context, "cookbook-sourdough");
+		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).select(PortablePocketCabin.id("cooking/pot/vegetable_soup")));
+		shot(context, "cookbook-soup-tastes");
+		context.runOnClient(client -> client.gui.setScreen(null));
 	}
 
 	/** B-0052: the press part-way through a batch of apple juice, and the cookbook's sunflower oil page. */

@@ -260,33 +260,6 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 - Feature Brief: [Book vendors brief](features/B-0044/brief.md).
 - Relationships: Supplies books for the B-0038 installation flow.
 
-## B-0046: Milling, baking, and dairy
-
-- Status: Ready for Implementation
-- Value: Let players mill grain into flour, make doughs, starters, and baked goods, and turn milk into butter, cream, yogurt, and cheese. Butter comes from settling milk, skimming cream, churning, and salting.
-- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Relationships: Uses B-0045 and B-0053, and ships together with B-0047 and B-0048 in phase 3 of the [cooking program](cooking/program.md). Replaces the B-0045 bread, cookie, cake, and pumpkin pie recipes with flour, butter, and pastry chains. Adds cardoon for vegetable rennet. Uses milk and eggs from B-0022.
-- Feature Brief: [Milling, baking, and dairy brief](features/B-0046/brief.md).
-- Design: [Phase 3 design](features/B-0046/design.md).
-
-## B-0047: Stocks, sauces, and flavour
-
-- Status: Ready for Implementation
-- Value: Let players make stocks, dashi, and sauces, and learn the five basic tastes through seasoning and balance.
-- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Relationships: Uses B-0045, B-0053, and B-0052, and ships together with B-0046 and B-0048 in phase 3 of the [cooking program](cooking/program.md). Seasoning quality feeds B-0051.
-- Feature Brief: [Salt, sugars, and sauces brief](features/B-0047/brief.md).
-- Design: [Phase 3 design](features/B-0046/design.md).
-
-## B-0048: Fermentation, drying, and preservation
-
-- Status: Ready for Implementation
-- Value: Let players ferment, dry, smoke, cure, pickle, and age ingredients over time.
-- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Relationships: Uses B-0045 and B-0052, and ships together with B-0046 and B-0047 in phase 3 of the [cooking program](cooking/program.md). Replaces the B-0045 oven recipe for dried kelp with the drying rack. Time stations follow the [cooking time stations catch-up](direction.md#cooking-time-stations-catch-up).
-- Feature Brief: [Fermentation, drying, and preservation brief](features/B-0048/brief.md).
-- Design: [Phase 3 design](features/B-0046/design.md).
-
 ## B-0049: Butchery and carcasses
 
 - Status: Ready for Design

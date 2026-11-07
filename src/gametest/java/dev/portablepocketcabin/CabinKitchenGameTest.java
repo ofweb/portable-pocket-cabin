@@ -139,6 +139,29 @@ public final class CabinKitchenGameTest {
 	}
 
 	@GameTest
+	public void kitchenFillsPhase3StationsFromStorage(GameTestHelper helper) {
+		var level = helper.getLevel();
+		BlockPos base = new BlockPos(1, 2, 1);
+		helper.setBlock(base, CookingBlocks.CROCK);
+		helper.setBlock(base.east(2), CookingBlocks.PREP_COUNTER);
+		helper.setBlock(base.east(2).above(), CookingBlocks.MIXING_BOWL);
+		var crock = (ProcessStationBlockEntity) level.getBlockEntity(helper.absolutePos(base));
+		var bowl = (ProcessStationBlockEntity) level.getBlockEntity(helper.absolutePos(base.east(2).above()));
+		var inventory = FakePlayer.get(level).getInventory();
+		inventory.clearContent();
+		var storage = new CabinStorageState(true, 1, List.of(new ItemStack(CookingItems.APPLE_JUICE, 8), new ItemStack(CookingItems.RAW_BUTTER),
+			new ItemStack(CookingItems.SALT, 4)));
+		var cider = CookingFill.plan(crock, CookingStation.CROCK, recipe(helper, "cooking/crock/cider"), inventory, storage, null, -1).orElseThrow();
+		helper.assertTrue(cider.station().get(0).is(CookingItems.APPLE_JUICE) && cider.station().get(0).getCount() == 4,
+			"The crock fills with apple juice from storage");
+		var butter = CookingFill.plan(bowl, CookingStation.MIXING_BOWL, recipe(helper, "cooking/mixing_bowl/salted_butter"), inventory, storage, null, -1)
+			.orElseThrow();
+		helper.assertTrue(count(butter.withdrawn(), CookingItems.RAW_BUTTER) == 1 && count(butter.withdrawn(), CookingItems.SALT) == 1,
+			"The mixing bowl takes butter and salt from storage");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void kitchenCommitWritesAReceiptTheStationsConfirm(GameTestHelper helper) {
 		var level = helper.getLevel();
 		var server = level.getServer();

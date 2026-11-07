@@ -86,12 +86,12 @@ The vanilla smoker smokes cured food with new `minecraft:smoking` recipes in the
 | Product | Station | Inputs | Time |
 |---|---|---|---|
 | Wheat flour | Mill | Wheat, gives 1 flour | 100 ticks |
-| Sourdough starter | Crock | 2 flour, 1 water bottle, in a bowl | 1 day |
-| Fed starter | Crock | 1 starter, 1 flour, 1 water bottle, a bowl, gives 2 starters | Half a day |
-| Yeast culture | Crock | 1 starter, 1 sugar, 1 water bottle, in a bottle | 1 day |
-| Yeast | Drying rack | Yeast culture | Half a day |
+| Sourdough starter | Crock | 2 flour, 1 water bottle | 1 day |
+| Fed starter | Crock | 1 starter, 1 flour, 1 water bottle, gives 2 starters | Half a day |
+| Yeast culture | Crock | 1 starter, 1 sugar, 1 water bottle, which becomes the culture's bottle | 1 day |
+| Yeast | Drying rack | Yeast culture, gives 4 | Half a day |
 
-Bowls and bottles come back as remainders where a recipe uses water bottles or a starter.
+The starter is a lump of live dough, not a bowl. Water bottles come back as glass bottles.
 
 ### Doughs and bakes
 
@@ -135,7 +135,7 @@ Bowls and bottles come back as remainders where a recipe uses water bottles or a
 | Crème fraîche | Crock | 2 cream, 1 buttermilk, in a bowl, giving 3 glass bottles | 1 day |
 
 - **Containers:** milk stays in buckets. Cream and buttermilk come in bottles, skimmed and warm milk in buckets, and yogurt, whipped cream, and crème fraîche in bowls.
-- **The yogurt culture:** an item tag, `portable_pocket_cabin:yogurt_cultures`, holds yogurt and buttermilk. Buttermilk starts the first batch. Every batch gives back the milk bucket, and a batch started with buttermilk also gives back its bottle.
+- **The yogurt culture:** two crock recipes, one started with yogurt and one with buttermilk, since they need different numbers of bowls. Buttermilk starts the first batch. Every batch gives back the milk bucket, and a batch started with buttermilk also gives back its bottle.
 - **Foods:**
   - Yogurt restores 4 hunger and 4.8 saturation, and returns its bowl.
   - Buttermilk is a drink that restores 2 hunger.
@@ -151,8 +151,7 @@ Bowls and bottles come back as remainders where a recipe uses water bottles or a
 | Pressed cheese | Cheese press, hard | 4 curds | 400 ticks |
 | Soured milk | Crock | Skimmed milk bucket, 1 buttermilk, giving a glass bottle | 1 day |
 | Quark | Strainer | Soured milk bucket, in a bowl, giving a bucket | 100 ticks |
-| Cultured cream | Crock | 2 cream, 1 buttermilk, in a bowl, giving 3 glass bottles | 1 day |
-| Drained cream | Strainer | Cultured cream | 100 ticks |
+| Drained cream | Strainer | Crème fraîche, giving the bowl back | 100 ticks |
 | Cream cheese | Mixing bowl, work | Drained cream, salt | 3 uses |
 
 B-0048 brines and ages the [hard and soft cheeses](#cheese-ageing).
@@ -204,10 +203,10 @@ Brown sugar works wherever a recipe takes sugar, through the `portable_pocket_ca
 | Product | Station | Inputs | Time |
 |---|---|---|---|
 | Roux | Cooking pot, low heat | 1 salted butter, 1 flour, in a bowl | 100 ticks |
-| Sweet berry jam | Cooking pot, low heat | 6 sweet berries, 3 sugar, in a glass bottle | 300 ticks |
+| Sweet berry jam | Cooking pot, low heat | 6 sweet berries, 3 sugar, 1 apple pomace, in a glass bottle | 300 ticks |
 | Caramel sauce | Cooking pot, low heat | 1 caramel, 1 cream | 100 ticks |
 
-Roux is an ingredient for béchamel and gravies in later features. Jam fills Berliners. Caramel sauce is a drink until a dessert uses it.
+Roux is an ingredient for béchamel and gravies in later features. Apple pomace from the press supplies the pectin that sets jam, and it keeps jam apart from the B-0052 berry cordial, which takes berries and sugar alone. Jam fills Berliners. Caramel sauce is a drink until a dessert uses it.
 
 ### Mortar and pestle
 
@@ -368,13 +367,13 @@ GameTests for content:
 - **Kitchen:** a crock and a mixing bowl in the kitchen fill from storage.
 - **Crafting:** none of the new crafting recipes collides with a vanilla one.
 
-Server checks: a time station in a packed cabin finishes its batch after the cabin is unpacked.
+The packed-cabin case needs no separate server check: a packed cabin keeps its block entity data, so it is covered by the GameTests for saved time surviving a save and load, and for catching up from that saved time.
 
 Client GameTests capture the mill, mixing bowl, crock, shelf and rack with items, a seasoned dish's tooltip, and cookbook taste pages for `screenshots/cooking/`.
 
 ## Delivery
 
-Each step is a commit with its tests green:
+Each step is a commit with its tests green. As built, dairy came before flour and bakes, because pastry, cookies, cake, and sweet dough need salted butter. The Berliner shipped with the sauces, once jam existed.
 
 1. **Shared engine:**
    - Worked stations, two byproduct slots, sun, water bottle ingredients, and game-time progress with catch-up.

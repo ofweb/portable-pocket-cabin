@@ -37,7 +37,15 @@ final class CookbookScreen extends Screen {
 	/** The recipes the server last said the player can make. */
 	static Set<Identifier> available = Set.of();
 
-	private record Row(CookingStation header, RecipeHolder<CookingRecipe> recipe) {
+	/** A list row: a station header, a recipe, the tastes header (all null), or one of the five tastes. */
+	private record Row(CookingStation header, RecipeHolder<CookingRecipe> recipe, Seasoning.Taste taste) {
+		Row(CookingStation header, RecipeHolder<CookingRecipe> recipe) {
+			this(header, recipe, null);
+		}
+
+		boolean tastesHeader() {
+			return header == null && recipe == null && taste == null;
+		}
 	}
 
 	/** A clickable ingredient in the detail view, and the recipe it links to. */
@@ -49,6 +57,8 @@ final class CookbookScreen extends Screen {
 	private final List<Link> links = new ArrayList<>();
 	private final Deque<RecipeHolder<CookingRecipe>> history = new ArrayDeque<>();
 	private RecipeHolder<CookingRecipe> selected;
+	/** The taste page shown instead of a recipe, or null. */
+	private Seasoning.Taste selectedTaste;
 	private EditBox search;
 	private int scroll;
 	private int left;
@@ -91,6 +101,14 @@ final class CookbookScreen extends Screen {
 	private void rebuild() {
 		rows.clear();
 		String query = search.getValue().trim().toLowerCase(Locale.ROOT);
+		List<Row> tastes = new ArrayList<>();
+		for (Seasoning.Taste taste : Seasoning.Taste.values()) {
+			if (query.isEmpty() || tasteName(taste).getString().toLowerCase(Locale.ROOT).contains(query)) tastes.add(new Row(null, null, taste));
+		}
+		if (!tastes.isEmpty()) {
+			rows.add(new Row(null, null, null));
+			rows.addAll(tastes);
+		}
 		CookingStation station = null;
 		for (RecipeHolder<CookingRecipe> holder : recipes) {
 			if (!query.isEmpty() && !matches(holder.value(), query) && !name(holder).getString().toLowerCase(Locale.ROOT).contains(query)) continue;
@@ -126,7 +144,8 @@ final class CookbookScreen extends Screen {
 		super.extractRenderState(graphics, mouseX, mouseY, partialTick);
 		extractList(graphics, mouseX, mouseY);
 		links.clear();
-		if (selected != null) extractDetail(graphics, mouseX, mouseY);
+		if (selectedTaste != null) extractTaste(graphics, mouseX, mouseY);
+		else if (selected != null) extractDetail(graphics, mouseX, mouseY);
 	}
 
 	private int listTop() {
@@ -144,8 +163,16 @@ final class CookbookScreen extends Screen {
 		for (int index = scroll; index < rows.size() && index < scroll + visibleRows(); index++) {
 			Row row = rows.get(index);
 			int rowY = y + (index - scroll) * ROW;
-			if (row.header() != null) {
-				graphics.text(font, stationName(row.header()).copy().withStyle(ChatFormatting.BOLD), x, rowY + 6, TEXT, false);
+			if (row.header() != null || row.tastesHeader()) {
+				Component header = row.header() != null ? stationName(row.header()) : Component.translatable("screen.portable_pocket_cabin.cookbook.tastes_header");
+				graphics.text(font, header.copy().withStyle(ChatFormatting.BOLD), x, rowY + 6, TEXT, false);
+				continue;
+			}
+			if (row.taste() != null) {
+				boolean hoveredTaste = mouseX >= x && mouseX < x + LIST_WIDTH - 8 && mouseY >= rowY && mouseY < rowY + ROW;
+				if (row.taste() == selectedTaste) graphics.fill(x, rowY, x + LIST_WIDTH - 8, rowY + ROW, 0x40000000);
+				else if (hoveredTaste) graphics.fill(x, rowY, x + LIST_WIDTH - 8, rowY + ROW, 0x20000000);
+				graphics.text(font, tasteName(row.taste()), x + 20, rowY + 5, TEXT, false);
 				continue;
 			}
 			boolean hovered = mouseX >= x && mouseX < x + LIST_WIDTH - 8 && mouseY >= rowY && mouseY < rowY + ROW;
@@ -184,13 +211,28 @@ final class CookbookScreen extends Screen {
 		List<Component> facts = new ArrayList<>();
 		recipe.heat().ifPresent(heat -> facts.add(Component.translatable("screen.portable_pocket_cabin.cookbook.heat",
 			Component.translatable("screen.portable_pocket_cabin.cooking.heat." + heat.getSerializedName()))));
-		if (recipe.station().heated()) facts.add(Component.translatable("screen.portable_pocket_cabin.cookbook.time", recipe.time() / 20));
+		if (recipe.station().worked()) {
+			facts.add(Component.translatable("screen.portable_pocket_cabin.cookbook.uses", recipe.time()));
+		} else if (recipe.station().timeStation()) {
+			int hours = Math.max(1, recipe.time() / CookingStation.HOUR);
+			facts.add(hours >= 24 && hours % 24 == 0 ? Component.translatable("screen.portable_pocket_cabin.cookbook.days", hours / 24)
+				: Component.translatable("screen.portable_pocket_cabin.cookbook.hours", hours));
+		} else if (recipe.station().timed()) {
+			facts.add(Component.translatable("screen.portable_pocket_cabin.cookbook.time", Math.max(1, recipe.time() / 20)));
+		}
+		recipe.sun().ifPresent(sun -> facts.add(Component.translatable(sun ? "screen.portable_pocket_cabin.cookbook.sun"
+			: "screen.portable_pocket_cabin.cookbook.shade")));
 		if (recipe.water() > 0) facts.add(Component.translatable("screen.portable_pocket_cabin.cookbook.water", recipe.water()));
 		if (recipe.oil() > 0) facts.add(Component.translatable("screen.portable_pocket_cabin.cookbook.oil", recipe.oil()));
 		if (!facts.isEmpty()) {
 			Component line = facts.getFirst().copy();
 			for (Component fact : facts.subList(1, facts.size())) line = line.copy().append(" · ").append(fact);
 			graphics.text(font, line, x, y, MUTED, false);
+			y += 13;
+		}
+		Component tastes = tasteLine(Seasoning.tastes(result), recipe.tastes());
+		if (tastes != null) {
+			graphics.text(font, tastes, x, y, MUTED, false);
 			y += 13;
 		}
 		graphics.text(font, Component.translatable("screen.portable_pocket_cabin.cookbook.ingredients"), x, y, TEXT, false);
@@ -224,6 +266,64 @@ final class CookbookScreen extends Screen {
 			y += font.split(description, right - x).size() * font.lineHeight + 4;
 			graphics.textWithWordWrap(font, Component.translatable(note), x, y, right - x, MUTED, false);
 		}
+	}
+
+	/** The tastes a result has and the tastes its recipe wants for seasoning, or null when it has neither. */
+	private static Component tasteLine(java.util.Set<Seasoning.Taste> has, List<Seasoning.Taste> wants) {
+		if (has.isEmpty() && wants.isEmpty()) return null;
+		Component line = Component.empty();
+		if (!has.isEmpty()) line = line.copy().append(Component.translatable("screen.portable_pocket_cabin.cookbook.has_tastes", tasteList(has)));
+		if (!wants.isEmpty()) {
+			if (!has.isEmpty()) line = line.copy().append(" · ");
+			line = line.copy().append(Component.translatable("screen.portable_pocket_cabin.cookbook.wants_tastes", tasteList(wants)));
+		}
+		return line;
+	}
+
+	private static Component tasteList(java.util.Collection<Seasoning.Taste> tastes) {
+		Component list = Component.empty();
+		boolean first = true;
+		for (Seasoning.Taste taste : tastes) {
+			if (!first) list = list.copy().append(", ");
+			list = list.copy().append(tasteName(taste));
+			first = false;
+		}
+		return list;
+	}
+
+	static Component tasteName(Seasoning.Taste taste) {
+		return Component.translatable("taste.portable_pocket_cabin." + taste.getSerializedName());
+	}
+
+	/** A taste's page: what the taste is, and the ingredients and dishes in the mod that carry it. */
+	private void extractTaste(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+		int x = left + LIST_WIDTH + 12;
+		int right = left + WIDTH - 8;
+		int y = top + 8;
+		graphics.text(font, tasteName(selectedTaste).copy().withStyle(ChatFormatting.BOLD), x, y + 4, TEXT, false);
+		y += 20;
+		Component description = Component.translatable("taste.portable_pocket_cabin." + selectedTaste.getSerializedName() + ".description");
+		graphics.textWithWordWrap(font, description, x, y, right - x, TEXT, false);
+		y += font.split(description, right - x).size() * font.lineHeight + 8;
+		graphics.text(font, Component.translatable("screen.portable_pocket_cabin.cookbook.sources"), x, y, TEXT, false);
+		y += 12;
+		int column = x;
+		for (var holder : net.minecraft.core.registries.BuiltInRegistries.ITEM.getTagOrEmpty(selectedTaste.tag())) {
+			if (y > top + HEIGHT - 24) break;
+			ItemStack stack = new ItemStack(holder);
+			graphics.item(stack, column, y);
+			hoverItem(graphics, stack, column, y, mouseX, mouseY);
+			column += 18;
+			if (column + 16 > right) {
+				column = x;
+				y += 18;
+			}
+		}
+	}
+
+	/** Shows a taste's page, as the cookbook client GameTest does. */
+	void selectTaste(Seasoning.Taste taste) {
+		selectedTaste = taste;
 	}
 
 	/** Draws one ingredient line. An ingredient that another recipe makes is a link to that recipe. */
@@ -280,6 +380,7 @@ final class CookbookScreen extends Screen {
 		recipes.stream().filter(holder -> holder.id().identifier().equals(id)).findFirst().ifPresent(holder -> {
 			if (selected != null && selected != holder) history.push(selected);
 			selected = holder;
+			selectedTaste = null;
 		});
 	}
 
@@ -291,12 +392,13 @@ final class CookbookScreen extends Screen {
 		if (!history.isEmpty()) {
 			Component back = Component.translatable("screen.portable_pocket_cabin.cookbook.back");
 			int backX = left + WIDTH - 8 - font.width(back);
-			if (mouseX >= backX && mouseX < left + WIDTH - 8 && mouseY >= top + 8 && mouseY < top + 17) {
+			if (selectedTaste == null && mouseX >= backX && mouseX < left + WIDTH - 8 && mouseY >= top + 8 && mouseY < top + 17) {
 				selected = history.pop();
 				return true;
 			}
 		}
 		for (Link link : links) {
+			if (selectedTaste != null) break;
 			if (mouseX >= link.x() && mouseX < link.x() + link.width() && mouseY >= link.y() && mouseY < link.y() + 9) {
 				history.push(selected);
 				selected = link.target();
@@ -306,9 +408,14 @@ final class CookbookScreen extends Screen {
 		int x = left + 8;
 		if (mouseX >= x && mouseX < x + LIST_WIDTH - 8 && mouseY >= listTop() && mouseY < listTop() + visibleRows() * ROW) {
 			int index = scroll + (int) ((mouseY - listTop()) / ROW);
+			if (index < rows.size() && rows.get(index).taste() != null) {
+				selectedTaste = rows.get(index).taste();
+				return true;
+			}
 			if (index < rows.size() && rows.get(index).recipe() != null) {
 				history.clear();
 				selected = rows.get(index).recipe();
+				selectedTaste = null;
 				return true;
 			}
 		}
