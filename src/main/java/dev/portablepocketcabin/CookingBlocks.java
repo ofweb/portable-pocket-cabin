@@ -205,7 +205,7 @@ final class CookingBlocks {
 	}
 
 	/** The block entity type of a station whose slots follow its screen layout. */
-	private static BlockEntityType<ProcessStationBlockEntity> process(String name, Block block, CookingMenu.Kind kind) {
+	static BlockEntityType<ProcessStationBlockEntity> process(String name, Block block, CookingMenu.Kind kind) {
 		BlockEntityType<ProcessStationBlockEntity>[] type = new BlockEntityType[1];
 		type[0] = registerEntity(name, new BlockEntityType<>((pos, state) -> new ProcessStationBlockEntity(type[0], pos, state, kind), Set.of(block)));
 		return type[0];

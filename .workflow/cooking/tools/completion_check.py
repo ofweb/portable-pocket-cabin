@@ -37,7 +37,7 @@ def stations(proc):
     return names
 HAVE_STATIONS={'cutting board','skillet','cooking pot','oven','prep counter','strainer','grill','wok','æbleskive pan','press','mill','mixing bowl',
  'mortar and pestle','butter churn','cheese press','proofing basket','dairy pan','fermentation crock','ageing shelf','drying rack','brine barrel','smoker',
- 'stove','campfire'}
+ 'stove','campfire','hanging hook','butcher block','meat grinder','sausage stuffer'}
 # available raw names: vanilla ingredients from sources "Already in Minecraft"
 vanilla=set()
 sec=None
@@ -57,6 +57,9 @@ for k,v in lang.items():
 mod |= {'bread', 'corn tortillas', 'jam', 'kombu', 'skimmed milk', 'vegetable oil'}
 # Dishes the mod has under another name: the quesadilla, the pretzel, and apple juice.
 mod |= {'quesadillas', 'brezeln', 'æblemost'}
+# The catalogue lists a carcass's parts together in one row. The mod gives each part as its own item.
+mod |= {'beef chuck, beef round, beef sirloin, beef heart, calf stomach, beef bones, suet', 'chicken thighs, chicken drumsticks, chicken bones',
+        'pork shoulder, pork belly, pork loin with rind, pig trotters, pork bones, back fat, pork casing'}
 def solve(avail):
     avail=set(avail); made=set(); changed=True
     def ok(groups, proc):

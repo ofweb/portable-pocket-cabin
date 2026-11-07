@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "curing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fresh_chorizo"
+    }
+  ],
+  "time": 48000,
+  "result": {
+    "id": "portable_pocket_cabin:chorizo"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:proofing",
+  "technique": "proofing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:raw_polsehorn"
+    }
+  ],
+  "time": 6000,
+  "result": {
+    "id": "portable_pocket_cabin:proofed_polsehorn"
+  }
+}

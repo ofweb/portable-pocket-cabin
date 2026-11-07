@@ -262,7 +262,7 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 
 ## B-0049: Butchery and carcasses
 
-- Status: In Implementation. Delivery 1 of 4 is implemented: carcasses, the hanging hook, the butcher block, and the chains they complete.
+- Status: In Implementation. Deliveries 1 and 2 of 4 are implemented: carcasses, the hanging hook, the butcher block, the meat grinder, the sausage stuffer, and the chains they complete.
 - Value: Let animals drop carcasses that players bleed, skin or pluck, and butcher into cuts, offal, bones, and fat, using the whole animal. Fish are scaled, gutted, and filleted.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Uses B-0045. Uses animals from B-0022. The [butchery reference](cooking/butchery.md) lists every part of each carcass.

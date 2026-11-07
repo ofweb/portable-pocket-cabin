@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:proofed_polsehorn",
+      "count": 4
+    }
+  ],
+  "heat": "medium",
+  "time": 200,
+  "tastes": [
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:polsehorn",
+    "count": 4
+  }
+}
