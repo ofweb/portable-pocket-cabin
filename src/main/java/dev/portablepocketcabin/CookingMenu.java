@@ -78,15 +78,31 @@ final class CookingMenu extends AbstractContainerMenu {
 		/** The first byproduct slot, or -1. Some stations have a second, for recipes that leave two kinds of remainder. */
 		final int byproductSlot;
 		final int[] byproductSlots;
+		/** Two seasoning slots after the others, on stations whose dish recipes list tastes; otherwise none. */
+		final int[] seasoningSlots;
 
 		Kind(CookingStation station, int[][] slots, int containerSlot, int outputSlot, int... byproductSlots) {
 			this.station = station;
+			if (station != null && station.seasoned()) {
+				int[][] withSeasoning = java.util.Arrays.copyOf(slots, slots.length + 2);
+				withSeasoning[slots.length] = new int[] {8, 56};
+				withSeasoning[slots.length + 1] = new int[] {26, 56};
+				this.seasoningSlots = new int[] {slots.length, slots.length + 1};
+				slots = withSeasoning;
+			} else {
+				this.seasoningSlots = new int[0];
+			}
 			this.size = slots.length;
 			this.slots = slots;
 			this.containerSlot = containerSlot;
 			this.outputSlot = outputSlot;
 			this.byproductSlots = byproductSlots;
 			this.byproductSlot = byproductSlots.length == 0 ? -1 : byproductSlots[0];
+		}
+
+		boolean seasoning(int slot) {
+			for (int seasoning : seasoningSlots) if (slot == seasoning) return true;
+			return false;
 		}
 
 		boolean takeOnly(int slot) {

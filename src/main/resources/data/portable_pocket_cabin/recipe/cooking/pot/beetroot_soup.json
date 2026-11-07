@@ -15,5 +15,9 @@
   "time": 300,
   "result": {
     "id": "minecraft:beetroot_soup"
-  }
+  },
+  "tastes": [
+    "salty",
+    "sour"
+  ]
 }

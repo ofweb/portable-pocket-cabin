@@ -36,7 +36,8 @@ record CookingRecipe(
 	Optional<CookingHeat> heat,
 	int time,
 	ItemStackTemplate result,
-	Optional<Boolean> sun
+	Optional<Boolean> sun,
+	List<Seasoning.Taste> tastes
 ) implements Recipe<CookingInput> {
 	record Counted(Ingredient ingredient, int count) {
 		static final Codec<Counted> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -53,6 +54,7 @@ record CookingRecipe(
 	CookingRecipe {
 		ingredients = List.copyOf(ingredients);
 		remainders = List.copyOf(remainders);
+		tastes = List.copyOf(tastes);
 	}
 
 	CookingRecipe(CookingStation station, String technique, List<Counted> ingredients, Optional<Counted> container, int water,
@@ -62,7 +64,7 @@ record CookingRecipe(
 
 	CookingRecipe(CookingStation station, String technique, List<Counted> ingredients, Optional<Counted> container, int water,
 		int oil, List<ItemStackTemplate> remainders, Optional<CookingHeat> heat, int time, ItemStackTemplate result) {
-		this(station, technique, ingredients, container, water, oil, remainders, heat, time, result, Optional.empty());
+		this(station, technique, ingredients, container, water, oil, remainders, heat, time, result, Optional.empty(), List.of());
 	}
 
 	static MapCodec<CookingRecipe> codec(CookingStation station) {
@@ -76,9 +78,10 @@ record CookingRecipe(
 			CookingHeat.CODEC.optionalFieldOf("heat").forGetter(CookingRecipe::heat),
 			Codec.intRange(0, 10 * CookingStation.DAY).optionalFieldOf("time", 0).forGetter(CookingRecipe::time),
 			ItemStackTemplate.CODEC.fieldOf("result").forGetter(CookingRecipe::result),
-			Codec.BOOL.optionalFieldOf("sun").forGetter(CookingRecipe::sun)
-		).apply(instance, (technique, ingredients, container, water, oil, remainders, heat, time, result, sun) ->
-			new CookingRecipe(station, technique, ingredients, container, water, oil, remainders, heat, time, result, sun)));
+			Codec.BOOL.optionalFieldOf("sun").forGetter(CookingRecipe::sun),
+			Seasoning.Taste.CODEC.listOf().optionalFieldOf("tastes", List.of()).forGetter(CookingRecipe::tastes)
+		).apply(instance, (technique, ingredients, container, water, oil, remainders, heat, time, result, sun, tastes) ->
+			new CookingRecipe(station, technique, ingredients, container, water, oil, remainders, heat, time, result, sun, tastes)));
 		return codec.validate(recipe -> recipe.validate().map(error -> DataResult.<CookingRecipe>error(() -> error))
 			.orElseGet(() -> DataResult.success(recipe)));
 	}
@@ -95,8 +98,9 @@ record CookingRecipe(
 			ByteBufCodecs.VAR_INT, CookingRecipe::time,
 			ItemStackTemplate.STREAM_CODEC, CookingRecipe::result,
 			ByteBufCodecs.optional(ByteBufCodecs.BOOL), CookingRecipe::sun,
-			(technique, ingredients, container, water, oil, remainders, heat, time, result, sun) ->
-				new CookingRecipe(station, technique, ingredients, container, water, oil, remainders, heat, time, result, sun)
+			Seasoning.Taste.STREAM_CODEC.apply(ByteBufCodecs.list()), CookingRecipe::tastes,
+			(technique, ingredients, container, water, oil, remainders, heat, time, result, sun, tastes) ->
+				new CookingRecipe(station, technique, ingredients, container, water, oil, remainders, heat, time, result, sun, tastes)
 		);
 	}
 
@@ -113,6 +117,7 @@ record CookingRecipe(
 			return Optional.of("A " + station.name() + " recipe has no container");
 		}
 		if (sun.isPresent() && station != CookingStation.DRYING) return Optional.of("Only drying rack recipes use sun");
+		if (!tastes.isEmpty() && !station.seasoned()) return Optional.of("A " + station.name() + " has no seasoning slots for tastes");
 		if (station.singleInput() && (ingredients.size() != 1 || ingredients.getFirst().count() != 1)) {
 			return Optional.of("A " + station.name() + " recipe takes exactly one item");
 		}

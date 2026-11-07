@@ -59,7 +59,7 @@ final class CookingItems {
 	/** A bottle filled from water in an ocean. */
 	static final Item SEAWATER = register("seawater", properties -> properties.stacksTo(16));
 	/** The bitter liquid left from making sea salt. It sets tofu in later features. */
-	static final Item NIGARI = register("nigari", properties -> properties.stacksTo(16));
+	static final Item NIGARI = register("nigari", properties -> properties.stacksTo(16).craftRemainder(Items.GLASS_BOTTLE));
 	/** Juice crushed from sugar cane in the mill. */
 	static final Item CANE_JUICE = register("cane_juice", properties -> properties.stacksTo(16));
 	/** Cane juice boiled down to a thick paste that sets as panela or dries into brown sugar. */
@@ -121,7 +121,7 @@ final class CookingItems {
 	static final Item AGED_SOFT_CHEESE = register("aged_soft_cheese", properties -> properties.food(food(4, 5.0F)));
 	/** Apple juice fermented in the crock. It exists only as the step to vinegar. */
 	static final Item CIDER = register("cider", properties -> properties.stacksTo(16));
-	static final Item CIDER_VINEGAR = register("cider_vinegar", properties -> properties.stacksTo(16));
+	static final Item CIDER_VINEGAR = register("cider_vinegar", properties -> properties.stacksTo(16).craftRemainder(Items.GLASS_BOTTLE));
 	static final Item BOILED_BEETROOT = register("boiled_beetroot", UnaryOperator.identity());
 	static final Item SLICED_BEETROOT = register("sliced_beetroot", UnaryOperator.identity());
 	static final Item PICKLED_BEETROOT = register("pickled_beetroot", properties -> properties.food(food(3, 3.6F)));

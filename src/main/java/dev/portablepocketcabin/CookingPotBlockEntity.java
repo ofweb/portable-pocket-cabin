@@ -24,7 +24,7 @@ final class CookingPotBlockEntity extends CookingStationBlockEntity implements C
 	private static final int[] SIDE = {CONTAINER_SLOT};
 	private static final int[] BOTTOM = {OUTPUT_SLOT, BYPRODUCT_SLOT, SECOND_BYPRODUCT_SLOT};
 	private final CookingProcess process = new CookingProcess(CookingStation.POT, CONTAINER_SLOT, OUTPUT_SLOT, BYPRODUCT_SLOT,
-		SECOND_BYPRODUCT_SLOT);
+		SECOND_BYPRODUCT_SLOT).seasoning(CookingMenu.Kind.POT.seasoningSlots);
 	/** The liquid level, from 0 to 3, and whether that liquid is oil rather than water. */
 	private int level;
 	private boolean oil;
@@ -45,7 +45,7 @@ final class CookingPotBlockEntity extends CookingStationBlockEntity implements C
 	};
 
 	CookingPotBlockEntity(BlockPos pos, BlockState state) {
-		super(CookingBlocks.COOKING_POT_ENTITY, pos, state, 10);
+		super(CookingBlocks.COOKING_POT_ENTITY, pos, state, CookingMenu.Kind.POT.size);
 	}
 
 	int water() {
@@ -113,6 +113,7 @@ final class CookingPotBlockEntity extends CookingStationBlockEntity implements C
 
 	@Override
 	public boolean canPlaceItem(int slot, ItemStack stack) {
+		if (CookingMenu.Kind.POT.seasoning(slot)) return stack.is(Seasoning.SEASONINGS);
 		return slot < OUTPUT_SLOT;
 	}
 

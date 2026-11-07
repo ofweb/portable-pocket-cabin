@@ -20,5 +20,9 @@
   "time": 120,
   "result": {
     "id": "portable_pocket_cabin:stir_fried_vegetables"
-  }
+  },
+  "tastes": [
+    "salty",
+    "umami"
+  ]
 }

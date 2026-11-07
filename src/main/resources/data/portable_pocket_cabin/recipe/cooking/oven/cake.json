@@ -10,5 +10,8 @@
   "time": 300,
   "result": {
     "id": "minecraft:cake"
-  }
+  },
+  "tastes": [
+    "sweet"
+  ]
 }

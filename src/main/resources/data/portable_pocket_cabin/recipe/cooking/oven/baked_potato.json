@@ -10,5 +10,8 @@
   "time": 200,
   "result": {
     "id": "minecraft:baked_potato"
-  }
+  },
+  "tastes": [
+    "salty"
+  ]
 }

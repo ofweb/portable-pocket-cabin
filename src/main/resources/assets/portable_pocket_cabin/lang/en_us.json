@@ -371,5 +371,10 @@
   "technique.portable_pocket_cabin.making_jam.description": "Boil fruit with plenty of sugar until it sets. Apple pomace adds pectin, the fruit fibre that makes jam gel, and the sugar keeps it from spoiling.",
   "technique.portable_pocket_cabin.making_caramel_sauce": "Making caramel sauce",
   "technique.portable_pocket_cabin.making_caramel_sauce.description": "Stir cream into hot caramel. It bubbles hard, then turns into a smooth, pourable sauce.",
-  "item.portable_pocket_cabin.sweet_berry_jam.cookbook_note": "Apple pomace from the press supplies the pectin that sets the jam."
+  "item.portable_pocket_cabin.sweet_berry_jam.cookbook_note": "Apple pomace from the press supplies the pectin that sets the jam.",
+  "tooltip.portable_pocket_cabin.quality.1": "Seasoned",
+  "tooltip.portable_pocket_cabin.quality.2": "Well balanced",
+  "technique.portable_pocket_cabin.seasoning": "Seasoning",
+  "technique.portable_pocket_cabin.seasoning.description": "Finish a dish with the seasonings its tastes want. Put them in the seasoning slots: each wanted taste raises the dish's quality, and an unwanted or doubled taste lowers it.",
+  "screen.portable_pocket_cabin.cooking.seasoning": "Seasoning"
 }

@@ -132,6 +132,14 @@ enum CookingStation {
 		};
 	}
 
+	/** Whether the station's screen has seasoning slots, so that its dish recipes can list the tastes they want. */
+	boolean seasoned() {
+		return switch (this) {
+			case POT, OVEN, WOK, COUNTER, MIXING_BOWL -> true;
+			default -> false;
+		};
+	}
+
 	/** Whether a recipe's time counts tool uses rather than ticks: the spoon, the pestle, and the churn's handle. */
 	boolean worked() {
 		return this == MIXING_BOWL || this == MORTAR || this == CHURN;

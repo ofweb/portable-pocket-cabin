@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "seasoning",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:grilled_pork_skewer"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:grilled_pork_skewer"
+  }
+}

@@ -24,5 +24,12 @@ public final class PortablePocketCabinClient implements ClientModInitializer {
 				else CookbookScreen.available = reply.recipes();
 			});
 		BlockEntityRenderers.register(CookingBlocks.CUTTING_BOARD_ENTITY, CookingItemsRenderer.cuttingBoard());
+		net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> {
+			Integer quality = stack.get(Seasoning.DISH_QUALITY);
+			if (quality != null) {
+				lines.add(Math.min(1, lines.size()), net.minecraft.network.chat.Component.translatable("tooltip.portable_pocket_cabin.quality." + quality)
+					.withStyle(net.minecraft.ChatFormatting.GOLD));
+			}
+		});
 	}
 }

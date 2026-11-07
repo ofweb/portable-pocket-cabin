@@ -22,5 +22,9 @@
   "result": {
     "id": "portable_pocket_cabin:vegetable_soup",
     "count": 3
-  }
+  },
+  "tastes": [
+    "salty",
+    "umami"
+  ]
 }

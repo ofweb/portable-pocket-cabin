@@ -22,5 +22,8 @@
   "result": {
     "id": "portable_pocket_cabin:berliner",
     "count": 4
-  }
+  },
+  "tastes": [
+    "sweet"
+  ]
 }

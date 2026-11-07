@@ -56,7 +56,7 @@ final class ProcessStationBlockEntity extends CookingStationBlockEntity implemen
 	ProcessStationBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, CookingMenu.Kind kind) {
 		super(type, pos, state, kind.size);
 		this.kind = kind;
-		this.process = new CookingProcess(kind.station, kind.containerSlot, kind.outputSlot, kind.byproductSlots);
+		this.process = new CookingProcess(kind.station, kind.containerSlot, kind.outputSlot, kind.byproductSlots).seasoning(kind.seasoningSlots);
 		this.top = IntStream.range(0, kind.station.ingredientSlots()).toArray();
 		this.side = kind.containerSlot >= 0 ? new int[] {kind.containerSlot} : new int[0];
 		this.bottom = java.util.stream.IntStream.concat(IntStream.of(kind.outputSlot), IntStream.of(kind.byproductSlots)).toArray();
@@ -166,6 +166,7 @@ final class ProcessStationBlockEntity extends CookingStationBlockEntity implemen
 
 	@Override
 	public boolean canPlaceItem(int slot, ItemStack stack) {
+		if (kind.seasoning(slot)) return stack.is(Seasoning.SEASONINGS);
 		return slot < kind.station.ingredientSlots() || slot == kind.containerSlot;
 	}
 

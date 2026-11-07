@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "seasoning",
+  "ingredients": [
+    {
+      "item": "minecraft:cooked_cod"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "sour"
+  ],
+  "result": {
+    "id": "minecraft:cooked_cod"
+  }
+}

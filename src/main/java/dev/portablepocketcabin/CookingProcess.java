@@ -22,6 +22,7 @@ final class CookingProcess {
 	private final int containerSlot;
 	private final int outputSlot;
 	private final int[] byproductSlots;
+	private int[] seasoningSlots = new int[0];
 	private RecipeHolder<CookingRecipe> recipe;
 	private boolean dirty = true;
 	private int generation;
@@ -37,6 +38,12 @@ final class CookingProcess {
 		this.outputSlot = outputSlot;
 		this.byproductSlots = byproductSlots.clone();
 		this.lookup = station::find;
+	}
+
+	/** Sets the slots whose seasonings a finished dish uses for its quality. */
+	CookingProcess seasoning(int... slots) {
+		this.seasoningSlots = slots.clone();
+		return this;
 	}
 
 	/** Replaces the recipe lookup, for GameTests. */
@@ -106,8 +113,12 @@ final class CookingProcess {
 		int[] taken = current.consumption(input, assignment);
 		for (int slot = 0; slot < inputSlots; slot++) container.getItem(slot).shrink(taken[slot]);
 		current.container().ifPresent(needed -> container.getItem(containerSlot).shrink(needed.count()));
-		insert(container, outputSlot, current.result());
-		for (ItemStackTemplate remainder : current.remainders()) {
+		ItemStack made = made(container, current);
+		List<ItemStackTemplate> leftovers = leftovers(container, current);
+		if (!current.tastes().isEmpty()) for (int slot : seasoningSlots) container.getItem(slot).shrink(1);
+		if (container.getItem(outputSlot).isEmpty()) container.setItem(outputSlot, made);
+		else container.getItem(outputSlot).grow(made.getCount());
+		for (ItemStackTemplate remainder : leftovers) {
 			int slot = byproductSlotFor(container, remainder);
 			if (slot >= 0) insert(container, slot, remainder);
 		}
@@ -131,12 +142,34 @@ final class CookingProcess {
 		return new CookingInput(ingredients, held, liquid.water(), liquid.oil(), true);
 	}
 
+	/** The dish a batch makes: the recipe's result, with the quality its seasonings give when it lists tastes. */
+	private ItemStack made(Container container, CookingRecipe recipe) {
+		ItemStack made = recipe.result().create();
+		if (recipe.tastes().isEmpty() || seasoningSlots.length == 0) return made;
+		return Seasoning.apply(made, Seasoning.quality(recipe.tastes(), Seasoning.used(container, seasoningSlots)));
+	}
+
+	/** The recipe's remainders, plus what used seasonings leave behind, such as the bottle of a splash of vinegar. */
+	private List<ItemStackTemplate> leftovers(Container container, CookingRecipe recipe) {
+		if (recipe.tastes().isEmpty() || seasoningSlots.length == 0) return recipe.remainders();
+		List<ItemStackTemplate> leftovers = new ArrayList<>(recipe.remainders());
+		for (ItemStack seasoning : Seasoning.used(container, seasoningSlots)) {
+			ItemStackTemplate remainder = seasoning.getItem().getCraftingRemainder();
+			if (remainder != null) leftovers.add(remainder);
+		}
+		return leftovers;
+	}
+
 	/** Whether the result and every remainder fit. Remainders fill the byproduct slots in order, one kind of item per slot. */
 	private boolean canOutput(Container container, CookingRecipe recipe) {
-		if (!fits(container.getItem(outputSlot), recipe.result())) return false;
+		ItemStack output = container.getItem(outputSlot);
+		ItemStack made = made(container, recipe);
+		if (!output.isEmpty() && (!ItemStack.isSameItemSameComponents(output, made) || output.getCount() + made.getCount() > output.getMaxStackSize())) {
+			return false;
+		}
 		ItemStack[] byproducts = new ItemStack[byproductSlots.length];
 		for (int i = 0; i < byproducts.length; i++) byproducts[i] = container.getItem(byproductSlots[i]).copy();
-		for (ItemStackTemplate remainder : recipe.remainders()) {
+		for (ItemStackTemplate remainder : leftovers(container, recipe)) {
 			int chosen = choose(byproducts, remainder);
 			if (chosen < 0) return false;
 			if (byproducts[chosen].isEmpty()) byproducts[chosen] = remainder.create();

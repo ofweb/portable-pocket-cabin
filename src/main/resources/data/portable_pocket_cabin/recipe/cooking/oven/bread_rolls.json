@@ -12,5 +12,8 @@
   "result": {
     "id": "portable_pocket_cabin:bread_roll",
     "count": 2
-  }
+  },
+  "tastes": [
+    "salty"
+  ]
 }
