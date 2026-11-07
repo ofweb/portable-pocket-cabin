@@ -137,6 +137,15 @@ final class CookingScreenshots {
 				level.setBlockAndUpdate(base.offset(i, 0, 3), CookingPlants.PLANTS.get(bushes[i]).defaultBlockState()
 					.setValue(HerbBushBlock.AGE, bushes[i].equals("elder_bush") ? 2 : 3));
 			}
+			// Delivery 2: taiga crops and currants, and wasabi in a gravel bed beside flowing water.
+			level.setBlockAndUpdate(base.offset(-4, -1, 5), Blocks.FARMLAND.defaultBlockState());
+			level.setBlockAndUpdate(base.offset(-4, 0, 5), ((net.minecraft.world.level.block.CropBlock) CookingPlants.RED_CABBAGE_CROP).getStateForAge(7));
+			level.setBlockAndUpdate(base.offset(-3, -1, 5), Blocks.FARMLAND.defaultBlockState());
+			level.setBlockAndUpdate(base.offset(-3, 0, 5), ((net.minecraft.world.level.block.CropBlock) CookingPlants.RHUBARB_CROP).getStateForAge(7));
+			level.setBlockAndUpdate(base.offset(-2, 0, 5), CookingPlants.BLACKCURRANT_BUSH.defaultBlockState().setValue(HerbBushBlock.AGE, 3));
+			level.setBlockAndUpdate(base.offset(-1, 0, 5), CookingPlants.REDCURRANT_BUSH.defaultBlockState().setValue(HerbBushBlock.AGE, 3));
+			level.setBlockAndUpdate(base.offset(1, -1, 5), Blocks.GRAVEL.defaultBlockState());
+			level.setBlockAndUpdate(base.offset(1, 0, 5), ((net.minecraft.world.level.block.CropBlock) CookingPlants.WASABI_CROP).getStateForAge(7));
 			level.setBlockAndUpdate(base.offset(4, -1, 3), Blocks.OAK_LOG.defaultBlockState());
 			level.setBlockAndUpdate(base.offset(4, 0, 3), CookingPlants.OYSTER_MUSHROOM.defaultBlockState().setValue(HerbBushBlock.AGE, 3));
 			var treePos = base.offset(5, 0, 6);
@@ -163,6 +172,8 @@ final class CookingScreenshots {
 		shot(context, "cookbook-garden-plum");
 		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectPlant("cucumber_vine"));
 		shot(context, "cookbook-garden-cucumber");
+		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectPlant("wasabi"));
+		shot(context, "cookbook-garden-wasabi");
 		context.runOnClient(client -> client.gui.setScreen(null));
 	}
 

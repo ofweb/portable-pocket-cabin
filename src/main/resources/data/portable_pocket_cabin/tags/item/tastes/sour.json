@@ -24,6 +24,16 @@
     "portable_pocket_cabin:raspberry",
     "portable_pocket_cabin:rosehip",
     "portable_pocket_cabin:plum",
-    "portable_pocket_cabin:tarte_tatin"
+    "portable_pocket_cabin:tarte_tatin",
+    "portable_pocket_cabin:blackcurrant",
+    "portable_pocket_cabin:redcurrant",
+    "portable_pocket_cabin:rhubarb",
+    "portable_pocket_cabin:redcurrant_jelly",
+    "portable_pocket_cabin:cassis_syrup",
+    "portable_pocket_cabin:solbaersaft",
+    "portable_pocket_cabin:blackcurrant_juice",
+    "portable_pocket_cabin:rodgrod",
+    "portable_pocket_cabin:rodgrod_med_flode",
+    "portable_pocket_cabin:gammeldags_aeblekage"
   ]
 }

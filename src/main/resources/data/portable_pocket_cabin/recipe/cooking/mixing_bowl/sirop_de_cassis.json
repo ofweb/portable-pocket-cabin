@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "diluting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cassis_syrup"
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      },
+      "count": 2
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:sirop_de_cassis",
+    "count": 3
+  }
+}

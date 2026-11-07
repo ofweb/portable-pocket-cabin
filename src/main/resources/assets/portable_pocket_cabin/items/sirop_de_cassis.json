@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/sirop_de_cassis",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 6957648
+      }
+    ]
+  }
+}

@@ -188,3 +188,18 @@ The [completion check](../../cooking/tools/completion_check.py) found 23 interme
 - **Dishes:** spätzle and Käsespätzle, Kartoffelpuffer, Malzkaffee, Mugicha, and Rugbrød.
 
 The check also listed 36 intermediates that phase 3's ingredients already allowed but phase 3 did not ship, such as chocolate, puff pastry, and breadcrumbs. A follow-up after delivery 1 shipped them, as the [phase 3 design](../B-0046/design.md#gap-filled-after-phase-3) records.
+
+## Delivery 2 as built
+
+- **Plants:**
+  - Red cabbage, rhubarb, blackcurrant, and redcurrant grow wild in taigas.
+  - Wasabi grows on gravel and needs flowing water beside it.
+  - Wakame, laver, and sea lettuce are a new plant kind, sea plants. They stand underwater like seagrass in cold oceans, on stony shores, and on beaches. Their seaweed replants them in water.
+- **Completed chains:** the completion check found 8 intermediates and 4 dishes, and all of them shipped:
+  - Wasabi, nori, aonori, and dried wakame.
+  - Dried berries.
+  - Blackcurrant juice and cassis syrup.
+  - Redcurrant jelly.
+  - Sirop de cassis à l'eau, Solbærsaft, Rødgrød med fløde, and Gammeldags æblekage.
+- **Cassis syrup:** it reduces blackcurrant juice with sugar, so it stays apart from Solbærsaft, which cooks whole blackcurrants.
+

@@ -1,0 +1,11 @@
+{
+  "soil": [
+    "minecraft:gravel",
+    "minecraft:farmland"
+  ],
+  "light": 7,
+  "water": "running",
+  "support": "none",
+  "growth_chance": 0.1,
+  "shade": false
+}

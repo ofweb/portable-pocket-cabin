@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "grating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:wasabi_root"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:wasabi",
+    "count": 2
+  }
+}

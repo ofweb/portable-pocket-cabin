@@ -1,0 +1,34 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "thickening",
+  "ingredients": [
+    {
+      "item": "minecraft:sweet_berries",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:redcurrant",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:raspberry",
+      "count": 2
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:potato_starch"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl",
+    "count": 2
+  },
+  "heat": "low",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:rodgrod",
+    "count": 2
+  }
+}

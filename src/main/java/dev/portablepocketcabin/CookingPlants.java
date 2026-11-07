@@ -98,6 +98,19 @@ final class CookingPlants {
 	static final Item PLUM = ingredient("plum", food(3, 1.8F));
 	static final Block PLUM_LEAVES = fruitTree("plum", () -> PLUM);
 
+	// Delivery 2: taigas, cold waters, and coasts.
+	static final Item RED_CABBAGE = ingredient("red_cabbage", food(2, 1.2F));
+	static final Item RHUBARB = ingredient("rhubarb", null);
+	static final Block RED_CABBAGE_CROP = fieldCrop("red_cabbage", "red_cabbage_seeds");
+	static final Block RHUBARB_CROP = fieldCrop("rhubarb", "rhubarb_crown");
+	/** Wasabi grows in cold, running water on gravel, and replants from its root. */
+	static final Block WASABI_CROP = fieldCrop("wasabi", "wasabi_root");
+	static final Block BLACKCURRANT_BUSH = selfBush("blackcurrant_bush", "blackcurrant", food(2, 1.2F));
+	static final Block REDCURRANT_BUSH = selfBush("redcurrant_bush", "redcurrant", food(2, 1.2F));
+	static final Block WAKAME = seaPlant("wakame_plant", "wakame");
+	static final Block LAVER = seaPlant("laver_plant", "laver");
+	static final Block SEA_LETTUCE = seaPlant("sea_lettuce_plant", "sea_lettuce");
+
 	/** Delivery 1 products: what the plains, meadow, and forest plants complete in the recipe catalogue. */
 	static final List<Item> PRODUCTS = new ArrayList<>();
 	static {
@@ -124,6 +137,23 @@ final class CookingPlants {
 		PRODUCTS.add(registerItem("mugicha", properties -> new Item(properties.stacksTo(16)
 			.food(new FoodProperties(1, 0.6F, true), net.minecraft.world.item.component.Consumables.DEFAULT_DRINK)
 			.usingConvertsTo(net.minecraft.world.item.Items.GLASS_BOTTLE))));
+	}
+
+	/** Delivery 2 products: wasabi, sea vegetables, dried berries, and the blackcurrant and redcurrant drinks and desserts. */
+	static {
+		String[] plain = {"wasabi", "chopped_laver", "nori", "dried_sea_lettuce", "aonori", "dried_wakame", "dried_blackcurrant", "dried_raspberry",
+			"dried_berries", "crushed_blackcurrants", "buttered_crumbs", "toasted_sweet_crumbs", "rodgrod"};
+		for (String name : plain) PRODUCTS.add(ingredient(name, null));
+		String[] bottles = {"cassis_syrup", "unstrained_solbaersaft", "unstrained_redcurrant_jelly", "strained_redcurrant_jelly", "redcurrant_jelly"};
+		for (String name : bottles) PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16))));
+		for (String name : new String[] {"blackcurrant_juice", "solbaersaft", "sirop_de_cassis"}) {
+			PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16)
+				.food(new FoodProperties(3, 1.2F, true), net.minecraft.world.item.component.Consumables.DEFAULT_DRINK)
+				.usingConvertsTo(net.minecraft.world.item.Items.GLASS_BOTTLE))));
+		}
+		PRODUCTS.add(ingredient("gammeldags_aeblekage", food(8, 9.6F)));
+		PRODUCTS.add(registerItem("rodgrod_med_flode", properties -> new Item(properties.stacksTo(16).food(food(7, 8.4F))
+			.usingConvertsTo(net.minecraft.world.item.Items.BOWL))));
 	}
 
 	/** Picked from vanilla rose bushes with shears. */
@@ -235,6 +265,17 @@ final class CookingPlants {
 		PLANTED_FROM.put(tree + "_leaves", sapling.asItem());
 		GIVES.put(tree + "_leaves", List.of(fruit.get()));
 		return leaves;
+	}
+
+	/** A seaweed that grows wild underwater. What it gives also plants it again in water. */
+	private static Block seaPlant(String plant, String produce) {
+		Block block = registerBlock(plant, SeaPlantBlock::new, BlockBehaviour.Properties.of().replaceable().noCollision().instabreak()
+			.sound(SoundType.WET_GRASS).pushReaction(PushReaction.DESTROY));
+		Item item = registerItem(produce, properties -> new BlockItem(block, properties.useItemDescriptionPrefix()));
+		PLANTS.put(plant, block);
+		PLANTED_FROM.put(plant, item);
+		GIVES.put(plant, List.of(item));
+		return block;
 	}
 
 	private static BlockBehaviour.Properties bushProperties() {

@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/rodgrod_med_flode",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 13119552
+      }
+    ]
+  }
+}

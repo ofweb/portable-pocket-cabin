@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "reducing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:blackcurrant_juice",
+      "count": 2
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars",
+      "count": 2
+    }
+  ],
+  "heat": "low",
+  "time": 300,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:cassis_syrup"
+  }
+}
