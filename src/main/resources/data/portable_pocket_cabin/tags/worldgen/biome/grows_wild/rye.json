@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#minecraft:is_taiga",
+      "required": false
+    },
+    "minecraft:plains",
+    "minecraft:sunflower_plains"
+  ]
+}

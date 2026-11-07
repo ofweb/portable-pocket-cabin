@@ -3,6 +3,7 @@ package dev.portablepocketcabin;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.gui.screens.MenuScreens;
+import java.util.Map;
 
 public final class PortablePocketCabinClient implements ClientModInitializer {
 	@Override
@@ -24,6 +25,8 @@ public final class PortablePocketCabinClient implements ClientModInitializer {
 				else CookbookScreen.available = reply.recipes();
 			});
 		BlockEntityRenderers.register(CookingBlocks.CUTTING_BOARD_ENTITY, CookingItemsRenderer.cuttingBoard());
+		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(PlantNeeds.Sync.TYPE,
+			(sync, context) -> PlantNeeds.client = Map.copyOf(sync.needs()));
 		net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> {
 			Integer quality = stack.get(Seasoning.DISH_QUALITY);
 			if (quality != null) {

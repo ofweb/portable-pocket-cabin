@@ -1,0 +1,42 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:rye_flour",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:cracked_rye"
+    },
+    {
+      "item": "portable_pocket_cabin:sourdough_starter"
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    },
+    {
+      "item": "portable_pocket_cabin:sunflower_seeds"
+    }
+  ],
+  "time": 8,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:rugbrod_dough"
+  }
+}

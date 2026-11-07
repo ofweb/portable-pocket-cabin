@@ -26,6 +26,9 @@
     "minecraft:cooked_porkchop",
     "minecraft:cooked_chicken",
     "minecraft:cooked_mutton",
-    "minecraft:cooked_rabbit"
+    "minecraft:cooked_rabbit",
+    "portable_pocket_cabin:kasespatzle",
+    "portable_pocket_cabin:oyster_mushroom",
+    "portable_pocket_cabin:sauerkraut"
   ]
 }

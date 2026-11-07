@@ -37,14 +37,29 @@ final class CookbookScreen extends Screen {
 	/** The recipes the server last said the player can make. */
 	static Set<Identifier> available = Set.of();
 
-	/** A list row: a station header, a recipe, the tastes header (all null), or one of the five tastes. */
-	private record Row(CookingStation header, RecipeHolder<CookingRecipe> recipe, Seasoning.Taste taste) {
+	/**
+	 * A list row: a station header, a recipe, the tastes header (all null), one of the five tastes, the Garden header
+	 * (an empty plant name), or a plant.
+	 */
+	private record Row(CookingStation header, RecipeHolder<CookingRecipe> recipe, Seasoning.Taste taste, String plant) {
 		Row(CookingStation header, RecipeHolder<CookingRecipe> recipe) {
-			this(header, recipe, null);
+			this(header, recipe, null, null);
+		}
+
+		Row(CookingStation header, RecipeHolder<CookingRecipe> recipe, Seasoning.Taste taste) {
+			this(header, recipe, taste, null);
 		}
 
 		boolean tastesHeader() {
-			return header == null && recipe == null && taste == null;
+			return header == null && recipe == null && taste == null && plant == null;
+		}
+
+		boolean gardenHeader() {
+			return plant != null && plant.isEmpty();
+		}
+
+		boolean plantRow() {
+			return plant != null && !plant.isEmpty();
 		}
 	}
 
@@ -59,6 +74,8 @@ final class CookbookScreen extends Screen {
 	private RecipeHolder<CookingRecipe> selected;
 	/** The taste page shown instead of a recipe, or null. */
 	private Seasoning.Taste selectedTaste;
+	/** The Garden page shown instead of a recipe, or null. */
+	private String selectedPlant;
 	private EditBox search;
 	private int scroll;
 	private int left;
@@ -109,6 +126,15 @@ final class CookbookScreen extends Screen {
 			rows.add(new Row(null, null, null));
 			rows.addAll(tastes);
 		}
+		List<Row> garden = new ArrayList<>();
+		for (String plant : CookingPlants.PLANTS.keySet()) {
+			if (query.isEmpty() || plantName(plant).getString().toLowerCase(Locale.ROOT).contains(query)) garden.add(new Row(null, null, null, plant));
+		}
+		garden.sort(Comparator.comparing(row -> plantName(row.plant()).getString()));
+		if (!garden.isEmpty()) {
+			rows.add(new Row(null, null, null, ""));
+			rows.addAll(garden);
+		}
 		CookingStation station = null;
 		for (RecipeHolder<CookingRecipe> holder : recipes) {
 			if (!query.isEmpty() && !matches(holder.value(), query) && !name(holder).getString().toLowerCase(Locale.ROOT).contains(query)) continue;
@@ -144,7 +170,8 @@ final class CookbookScreen extends Screen {
 		super.extractRenderState(graphics, mouseX, mouseY, partialTick);
 		extractList(graphics, mouseX, mouseY);
 		links.clear();
-		if (selectedTaste != null) extractTaste(graphics, mouseX, mouseY);
+		if (selectedPlant != null) extractPlant(graphics, mouseX, mouseY);
+		else if (selectedTaste != null) extractTaste(graphics, mouseX, mouseY);
 		else if (selected != null) extractDetail(graphics, mouseX, mouseY);
 	}
 
@@ -163,9 +190,18 @@ final class CookbookScreen extends Screen {
 		for (int index = scroll; index < rows.size() && index < scroll + visibleRows(); index++) {
 			Row row = rows.get(index);
 			int rowY = y + (index - scroll) * ROW;
-			if (row.header() != null || row.tastesHeader()) {
-				Component header = row.header() != null ? stationName(row.header()) : Component.translatable("screen.portable_pocket_cabin.cookbook.tastes_header");
+			if (row.header() != null || row.tastesHeader() || row.gardenHeader()) {
+				Component header = row.header() != null ? stationName(row.header()) : Component.translatable(row.gardenHeader()
+					? "screen.portable_pocket_cabin.cookbook.garden_header" : "screen.portable_pocket_cabin.cookbook.tastes_header");
 				graphics.text(font, header.copy().withStyle(ChatFormatting.BOLD), x, rowY + 6, TEXT, false);
+				continue;
+			}
+			if (row.plantRow()) {
+				boolean hoveredPlant = mouseX >= x && mouseX < x + LIST_WIDTH - 8 && mouseY >= rowY && mouseY < rowY + ROW;
+				if (row.plant().equals(selectedPlant)) graphics.fill(x, rowY, x + LIST_WIDTH - 8, rowY + ROW, 0x40000000);
+				else if (hoveredPlant) graphics.fill(x, rowY, x + LIST_WIDTH - 8, rowY + ROW, 0x20000000);
+				graphics.item(new ItemStack(CookingPlants.PLANTED_FROM.get(row.plant())), x + 1, rowY + 1);
+				graphics.text(font, fit(plantName(row.plant()).getString(), LIST_WIDTH - 32), x + 20, rowY + 5, TEXT, false);
 				continue;
 			}
 			if (row.taste() != null) {
@@ -321,9 +357,86 @@ final class CookbookScreen extends Screen {
 		}
 	}
 
+	/** A plant's Garden name: its own title when the lang has one, such as "Plum Tree", otherwise its block's name. */
+	static Component plantName(String plant) {
+		String key = "garden.portable_pocket_cabin." + plant + ".name";
+		return Language.getInstance().has(key) ? Component.translatable(key) : CookingPlants.PLANTS.get(plant).getName();
+	}
+
+	/** A plant's Garden page: where it grows wild, what it needs, what it is planted from, and what it gives. */
+	private void extractPlant(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+		int x = left + LIST_WIDTH + 12;
+		int right = left + WIDTH - 8;
+		int y = top + 8;
+		ItemStack planted = new ItemStack(CookingPlants.PLANTED_FROM.get(selectedPlant));
+		graphics.item(planted, x, y);
+		hoverItem(graphics, planted, x, y, mouseX, mouseY);
+		graphics.text(font, plantName(selectedPlant).copy().withStyle(ChatFormatting.BOLD), x + 20, y + 4, TEXT, false);
+		y += 22;
+		Component wild = Component.translatable("screen.portable_pocket_cabin.cookbook.grows_wild", wildBiomes(selectedPlant));
+		graphics.textWithWordWrap(font, wild, x, y, right - x, TEXT, false);
+		y += font.split(wild, right - x).size() * font.lineHeight + 6;
+		var block = CookingPlants.PLANTS.get(selectedPlant);
+		var needs = PlantNeeds.client.getOrDefault(net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(block), PlantNeeds.DEFAULT);
+		Component growing = Component.translatable("screen.portable_pocket_cabin.cookbook.growing", soilNames(needs), needs.light(),
+			Component.translatable("screen.portable_pocket_cabin.cookbook.water." + needs.water().getSerializedName()));
+		if (needs.support() != PlantNeeds.Support.NONE) {
+			growing = growing.copy().append(" ").append(Component.translatable("screen.portable_pocket_cabin.cookbook.support." + needs.support().getSerializedName()));
+		}
+		if (needs.shade()) growing = growing.copy().append(" ").append(Component.translatable("screen.portable_pocket_cabin.cookbook.shade_needed"));
+		graphics.textWithWordWrap(font, growing, x, y, right - x, TEXT, false);
+		y += font.split(growing, right - x).size() * font.lineHeight + 6;
+		graphics.text(font, Component.translatable("screen.portable_pocket_cabin.cookbook.gives"), x, y, TEXT, false);
+		y += 11;
+		for (Item item : CookingPlants.GIVES.getOrDefault(selectedPlant, List.of())) {
+			ItemStack stack = new ItemStack(item);
+			graphics.item(stack, x, y);
+			hoverItem(graphics, stack, x, y, mouseX, mouseY);
+			graphics.text(font, stack.getHoverName(), x + 20, y + 4, TEXT, false);
+			y += 16;
+		}
+		String key = "garden.portable_pocket_cabin." + selectedPlant;
+		if (Language.getInstance().has(key)) graphics.textWithWordWrap(font, Component.translatable(key), x, y + 4, right - x, MUTED, false);
+	}
+
+	/** The biomes in a plant's grows_wild tag, as names, from the client's synced registries. */
+	private Component wildBiomes(String plant) {
+		if (minecraft.level == null) return Component.empty();
+		var tag = net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.BIOME,
+			PortablePocketCabin.id("grows_wild/" + CookingPlants.wildName(plant)));
+		var biomes = minecraft.level.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.BIOME).get(tag);
+		if (biomes.isEmpty()) return Component.translatable("screen.portable_pocket_cabin.cookbook.nowhere");
+		List<String> names = new ArrayList<>();
+		for (var biome : biomes.get()) {
+			biome.unwrapKey().ifPresent(key -> names.add(Component.translatable("biome." + key.identifier().getNamespace() + "." + key.identifier().getPath()).getString()));
+		}
+		names.sort(String::compareTo);
+		return Component.literal(String.join(", ", names));
+	}
+
+	private static Component soilNames(PlantNeeds needs) {
+		List<String> soils = new ArrayList<>();
+		for (String soil : needs.soil()) {
+			if (soil.startsWith("#")) {
+				soils.add(Component.translatable("screen.portable_pocket_cabin.cookbook.soil." + soil.substring(1).replace(':', '.')).getString());
+			} else {
+				var block = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getValue(Identifier.parse(soil));
+				soils.add(block.getName().getString());
+			}
+		}
+		return Component.literal(String.join(", ", soils));
+	}
+
+	/** Shows a plant's Garden page, as the cookbook client GameTest does. */
+	void selectPlant(String plant) {
+		selectedPlant = plant;
+		selectedTaste = null;
+	}
+
 	/** Shows a taste's page, as the cookbook client GameTest does. */
 	void selectTaste(Seasoning.Taste taste) {
 		selectedTaste = taste;
+		selectedPlant = null;
 	}
 
 	/** Draws one ingredient line. An ingredient that another recipe makes is a link to that recipe. */
@@ -381,6 +494,7 @@ final class CookbookScreen extends Screen {
 			if (selected != null && selected != holder) history.push(selected);
 			selected = holder;
 			selectedTaste = null;
+			selectedPlant = null;
 		});
 	}
 
@@ -392,13 +506,13 @@ final class CookbookScreen extends Screen {
 		if (!history.isEmpty()) {
 			Component back = Component.translatable("screen.portable_pocket_cabin.cookbook.back");
 			int backX = left + WIDTH - 8 - font.width(back);
-			if (selectedTaste == null && mouseX >= backX && mouseX < left + WIDTH - 8 && mouseY >= top + 8 && mouseY < top + 17) {
+			if (selectedTaste == null && selectedPlant == null && mouseX >= backX && mouseX < left + WIDTH - 8 && mouseY >= top + 8 && mouseY < top + 17) {
 				selected = history.pop();
 				return true;
 			}
 		}
 		for (Link link : links) {
-			if (selectedTaste != null) break;
+			if (selectedTaste != null || selectedPlant != null) break;
 			if (mouseX >= link.x() && mouseX < link.x() + link.width() && mouseY >= link.y() && mouseY < link.y() + 9) {
 				history.push(selected);
 				selected = link.target();
@@ -408,14 +522,19 @@ final class CookbookScreen extends Screen {
 		int x = left + 8;
 		if (mouseX >= x && mouseX < x + LIST_WIDTH - 8 && mouseY >= listTop() && mouseY < listTop() + visibleRows() * ROW) {
 			int index = scroll + (int) ((mouseY - listTop()) / ROW);
+			if (index < rows.size() && rows.get(index).plantRow()) {
+				selectPlant(rows.get(index).plant());
+				return true;
+			}
 			if (index < rows.size() && rows.get(index).taste() != null) {
-				selectedTaste = rows.get(index).taste();
+				selectTaste(rows.get(index).taste());
 				return true;
 			}
 			if (index < rows.size() && rows.get(index).recipe() != null) {
 				history.clear();
 				selected = rows.get(index).recipe();
 				selectedTaste = null;
+				selectedPlant = null;
 				return true;
 			}
 		}

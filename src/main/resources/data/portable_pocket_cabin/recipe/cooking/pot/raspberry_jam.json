@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "making_jam",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:raspberry",
+      "count": 6
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars",
+      "count": 3
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "heat": "low",
+  "time": 300,
+  "result": {
+    "id": "portable_pocket_cabin:raspberry_jam"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "steeping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:roasted_barley"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "medium",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:mugicha"
+  }
+}

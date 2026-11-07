@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "caramelising",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "result": {
+    "id": "portable_pocket_cabin:caramelised_onion"
+  }
+}

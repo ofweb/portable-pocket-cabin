@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:drying",
+  "technique": "drying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:corn_husk"
+    }
+  ],
+  "time": 12000,
+  "result": {
+    "id": "portable_pocket_cabin:dried_corn_husks"
+  }
+}

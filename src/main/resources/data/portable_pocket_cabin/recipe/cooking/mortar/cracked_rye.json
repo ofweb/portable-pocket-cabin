@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:mortar",
+  "technique": "cracking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:rye"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:cracked_rye"
+  }
+}

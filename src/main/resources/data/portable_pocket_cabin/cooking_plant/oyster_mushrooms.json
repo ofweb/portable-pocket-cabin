@@ -1,0 +1,11 @@
+{
+  "soil": [
+    "#minecraft:logs",
+    "#minecraft:substrate_overworld"
+  ],
+  "light": 0,
+  "water": "none",
+  "support": "log",
+  "growth_chance": 0.15,
+  "shade": false
+}

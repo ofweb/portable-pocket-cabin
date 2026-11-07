@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/asparagus_crown",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 7317578
+      }
+    ]
+  }
+}

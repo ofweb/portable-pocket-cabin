@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "husking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:corn"
+    }
+  ],
+  "remainders": [
+    {
+      "id": "portable_pocket_cabin:corn_kernels"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:corn_husk"
+  }
+}

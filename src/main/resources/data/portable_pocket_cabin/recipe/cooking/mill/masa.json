@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "wet_grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:hominy",
+      "count": 2
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:masa"
+  }
+}

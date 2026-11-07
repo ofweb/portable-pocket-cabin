@@ -167,7 +167,8 @@ final class CabinGreenhouseGrowth extends SavedData {
 		var id = BuiltInRegistries.BLOCK.getKey(block);
 		boolean supported = id.getNamespace().equals("minecraft") && (block instanceof CropBlock || block instanceof StemBlock || block instanceof PitcherCropBlock
 			|| block instanceof SweetBerryBushBlock || block instanceof CocoaBlock || block instanceof NetherWartBlock)
-			|| id.getNamespace().equals("farmersdelight") && FARMERS_DELIGHT_CROPS.contains(id.getPath());
+			|| id.getNamespace().equals("farmersdelight") && FARMERS_DELIGHT_CROPS.contains(id.getPath())
+			|| id.getNamespace().equals(PortablePocketCabin.MOD_ID) && block instanceof CookingPlant;
 		if (state.is(Blocks.BAMBOO_SAPLING)) return true;
 		if (id.getNamespace().equals("minecraft") && (block instanceof SugarCaneBlock || block instanceof CactusBlock)) return true;
 		if (id.getNamespace().equals("minecraft") && block instanceof BambooStalkBlock) return state.getValue(BambooStalkBlock.STAGE) == 0;

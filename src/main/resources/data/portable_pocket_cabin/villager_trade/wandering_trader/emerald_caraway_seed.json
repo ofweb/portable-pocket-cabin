@@ -1,0 +1,12 @@
+{
+  "gives": {
+    "id": "portable_pocket_cabin:caraway_seed",
+    "count": 3
+  },
+  "wants": {
+    "id": "minecraft:emerald",
+    "count": 1
+  },
+  "max_uses": 8.0,
+  "reputation_discount": 0.05
+}
