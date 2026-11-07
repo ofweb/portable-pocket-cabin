@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:drying",
+  "technique": "drying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:wet_salt"
+    }
+  ],
+  "sun": true,
+  "time": 12000,
+  "result": {
+    "id": "portable_pocket_cabin:salt",
+    "count": 2
+  }
+}

@@ -50,6 +50,16 @@ final class CookingItems {
 	static final Item SUNFLOWER_OIL = register("sunflower_oil", properties -> properties.stacksTo(16));
 	static final Item PUMPKIN_SEED_OIL = register("pumpkin_seed_oil", properties -> properties.stacksTo(16));
 	static final Item FRIED_POTATOES = register("fried_potatoes", properties -> properties.food(food(3, 3.6F)));
+	/** Rock salt from the ore, ground in the mill. */
+	static final Item ROCK_SALT = register("rock_salt", UnaryOperator.identity());
+	static final Item SALT = register("salt", UnaryOperator.identity());
+	static final Item COARSE_SALT = register("coarse_salt", UnaryOperator.identity());
+	/** Salt left wet from boiling seawater down; it dries on the rack. */
+	static final Item WET_SALT = register("wet_salt", UnaryOperator.identity());
+	/** A bottle filled from water in an ocean. */
+	static final Item SEAWATER = register("seawater", properties -> properties.stacksTo(16));
+	/** The bitter liquid left from making sea salt. It sets tofu in later features. */
+	static final Item NIGARI = register("nigari", properties -> properties.stacksTo(16));
 	static final Item STIR_FRIED_VEGETABLES = register("stir_fried_vegetables",
 		properties -> properties.stacksTo(16).food(food(8, 9.6F)).usingConvertsTo(Items.BOWL));
 

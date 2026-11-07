@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:rock_salt"
+    }
+  ],
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:salt",
+    "count": 2
+  }
+}

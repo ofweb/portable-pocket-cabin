@@ -89,6 +89,10 @@ final class CookingBlocks {
 		ProcessStationBlock.Config.of(CookingMenu.Kind.CHEESE_PRESS, () -> CookingBlocks.CHEESE_PRESS_ENTITY)),
 		BlockBehaviour.Properties.of().strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
 
+	/** Rock salt ore, in dripstone caves and badlands stone and terracotta. */
+	static final Block ROCK_SALT_ORE = register("rock_salt_ore", Block::new, BlockBehaviour.Properties.of()
+		.strength(3.0F).sound(SoundType.STONE).requiresCorrectToolForDrops());
+
 	static final BlockEntityType<StoveBlockEntity> STOVE_ENTITY = registerEntity("stove",
 		new BlockEntityType<>(StoveBlockEntity::new, Set.of(STOVE)));
 	static final BlockEntityType<OvenBlockEntity> OVEN_ENTITY = registerEntity("oven",
@@ -154,6 +158,7 @@ final class CookingBlocks {
 			entries.accept(AGEING_SHELF);
 			entries.accept(DRYING_RACK);
 		});
+		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.NATURAL_BLOCKS).register(entries -> entries.accept(ROCK_SALT_ORE));
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
 			entries.accept(CookingItems.KITCHEN_KNIFE);
 			entries.accept(CookingItems.COOKBOOK);
@@ -168,7 +173,8 @@ final class CookingBlocks {
 				CookingItems.CARROT_JUICE, CookingItems.APPLE_POMACE, CookingItems.PULP, CookingItems.PRESS_CAKE,
 				CookingItems.SUNFLOWER_SEEDS, CookingItems.TOASTED_PUMPKIN_SEEDS, CookingItems.SUNFLOWER_OIL, CookingItems.PUMPKIN_SEED_OIL,
 				CookingItems.FRIED_POTATOES, CookingItems.STIR_FRIED_VEGETABLES, CookingItems.UNSTRAINED_BERRY_CORDIAL,
-				CookingItems.SWEET_BERRY_CORDIAL, CookingItems.APPLE_SYRUP}) {
+				CookingItems.SWEET_BERRY_CORDIAL, CookingItems.APPLE_SYRUP, CookingItems.ROCK_SALT, CookingItems.SALT,
+				CookingItems.COARSE_SALT, CookingItems.WET_SALT, CookingItems.SEAWATER, CookingItems.NIGARI}) {
 				entries.accept(item);
 			}
 		});
