@@ -97,6 +97,11 @@ Milk settles in the dairy pan into cream and skimmed milk. Cream churns into but
   - Soybeans, azuki beans, celery, and mint grow on land.
   - Tea gives shaded tea leaves for matcha when it ripens under a roof.
   - Sweet cherry, ume, and star anise trees grow there too.
+- **Jungles:**
+  - Beans, roots, chilies, basils, lemongrass, ginger, turmeric, galangal, cardamom, and pineapple grow on land. Long beans, pepper, vanilla, and betel climb trellises.
+  - Lime, mango, papaya, makrut lime, allspice, annatto, clove, nutmeg, coffee, and yerba mate trees grow there too. Coconut palms grow on beaches.
+  - An axe strips bark from a cinnamon tree without felling it, and the bark grows back.
+  - Oil palm and coconut palm trunks fill with sap that a glass bottle taps.
 
 Each plant's growing needs, such as soil, light, and water, are data, and the cookbook's Garden section shows where it grows and what it needs. The plants complete new chains: rye bread, corn tortillas, sauerkraut, gherkins, wine vinegar, mustard and mayonnaise, jams, nori, cassis, redcurrant jelly, rødgrød, salsas, spices, red wine, Käsekuchen, Madeleines, and more.
 

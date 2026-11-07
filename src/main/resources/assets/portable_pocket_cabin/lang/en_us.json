@@ -1380,5 +1380,6 @@
   "technique.portable_pocket_cabin.shaping_rice": "Shaping rice",
   "technique.portable_pocket_cabin.shaping_rice.description": "Press warm rice with wet, salted hands into a firm triangle that holds together.",
   "technique.portable_pocket_cabin.curdling_with_a_coagulant": "Curdling with a coagulant",
-  "technique.portable_pocket_cabin.curdling_with_a_coagulant.description": "Stir nigari or lime juice into hot milk, so the proteins clump into curds at once without rennet."
+  "technique.portable_pocket_cabin.curdling_with_a_coagulant.description": "Stir nigari or lime juice into hot milk, so the proteins clump into curds at once without rennet.",
+  "screen.portable_pocket_cabin.cookbook.soil.minecraft.sand": "sand"
 }

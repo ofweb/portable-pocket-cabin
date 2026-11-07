@@ -268,15 +268,6 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 - Relationships: Uses B-0045. Uses animals from B-0022. The [butchery reference](cooking/butchery.md) lists every part of each carcass.
 - Feature Brief: [Butchery and seafood brief](features/B-0049/brief.md).
 
-## B-0050: Cooking crops and foraging
-
-- Status: In Implementation. Deliveries 1 to 5 of 6 are implemented: plains, meadows, and forests; taigas, cold waters, and coasts; savannas, deserts, and badlands; windswept savannas and hills; and rivers, swamps, cherry groves, and bamboo jungles.
-- Value: Add grains, vegetables, herbs, spices, chilies, fruit, and mushrooms with growing requirements, cultivation methods, and wild sources that reward exploration.
-- Direction: [Cooking and food production](direction.md#cooking-and-food-production).
-- Relationships: Grown in B-0019. Used by B-0045 recipes.
-- Feature Brief: [Cooking crops and foraging brief](features/B-0050/brief.md).
-- Design: [Cooking crops and foraging design](features/B-0050/design.md). Ships region by region in six deliveries.
-
 ## B-0051: Food benefits
 
 - Status: Ready for Shape
