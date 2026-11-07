@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": "minecraft:stone",
+    "G": "minecraft:grindstone",
+    "P": "#minecraft:planks"
+  },
+  "pattern": [
+    "SGS",
+    "PPP"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:mill"
+  }
+}

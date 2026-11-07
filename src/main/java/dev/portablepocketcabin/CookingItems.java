@@ -16,6 +16,10 @@ import java.util.function.UnaryOperator;
 final class CookingItems {
 	static final Item KITCHEN_KNIFE = register("kitchen_knife", properties -> properties.stacksTo(1));
 	static final Item COOKBOOK = register("cookbook", properties -> properties.stacksTo(1), CookbookItem::new);
+	/** Works the mixing bowl: each use mixes, kneads, whisks, or rubs in once. */
+	static final Item SPOON = register("spoon", properties -> properties.stacksTo(1));
+	/** Works the mortar: each use pounds or grinds once. */
+	static final Item PESTLE = register("pestle", properties -> properties.stacksTo(1));
 
 	/** Wooden skewers, cut from a stick on the cutting board. Meat and vegetables are threaded onto them. */
 	static final Item SKEWER = register("skewer", UnaryOperator.identity());

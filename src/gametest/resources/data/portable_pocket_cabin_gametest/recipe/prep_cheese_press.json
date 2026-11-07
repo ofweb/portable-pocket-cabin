@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:cheese_press",
+  "technique": "pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:clay_ball",
+      "count": 2
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "minecraft:brick"
+  }
+}

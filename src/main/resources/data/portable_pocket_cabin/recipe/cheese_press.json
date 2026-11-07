@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "S": "minecraft:stick",
+    "P": "#minecraft:planks"
+  },
+  "pattern": [
+    "III",
+    "PSP",
+    "PPP"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:cheese_press"
+  }
+}

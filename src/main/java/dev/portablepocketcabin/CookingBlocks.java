@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -49,6 +50,27 @@ final class CookingBlocks {
 	static final Block PRESS = register("press", CookingStationBlock.Press::new, BlockBehaviour.Properties.of()
 		.strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
 
+	static final Block MILL = register("mill", properties -> new ProcessStationBlock(properties,
+		ProcessStationBlock.Config.of(CookingMenu.Kind.MILL, () -> CookingBlocks.MILL_ENTITY)),
+		BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.STONE).requiresCorrectToolForDrops());
+	static final Block MIXING_BOWL = register("mixing_bowl", properties -> new ProcessStationBlock.CounterTopStation(properties,
+		ProcessStationBlock.Config.of(CookingMenu.Kind.MIXING_BOWL, () -> CookingBlocks.MIXING_BOWL_ENTITY)
+			.shape(Block.box(3, 0, 3, 13, 6, 13)).tool(() -> CookingItems.SPOON, SoundEvents.WOOD_HIT)),
+		BlockBehaviour.Properties.of().strength(1.0F).sound(SoundType.DECORATED_POT).noOcclusion()
+			.pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY));
+	static final Block MORTAR = register("mortar", properties -> new ProcessStationBlock.CounterTopStation(properties,
+		ProcessStationBlock.Config.of(CookingMenu.Kind.MORTAR, () -> CookingBlocks.MORTAR_ENTITY)
+			.shape(Block.box(4, 0, 4, 12, 6, 12)).tool(() -> CookingItems.PESTLE, SoundEvents.STONE_HIT)),
+		BlockBehaviour.Properties.of().strength(1.5F).sound(SoundType.STONE).noOcclusion()
+			.pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY));
+	static final Block BUTTER_CHURN = register("butter_churn", properties -> new ProcessStationBlock(properties,
+		ProcessStationBlock.Config.of(CookingMenu.Kind.CHURN, () -> CookingBlocks.BUTTER_CHURN_ENTITY)
+			.shape(Block.box(3, 0, 3, 13, 16, 13)).handWork(SoundEvents.WOOD_HIT)),
+		BlockBehaviour.Properties.of().strength(2.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava());
+	static final Block CHEESE_PRESS = register("cheese_press", properties -> new ProcessStationBlock(properties,
+		ProcessStationBlock.Config.of(CookingMenu.Kind.CHEESE_PRESS, () -> CookingBlocks.CHEESE_PRESS_ENTITY)),
+		BlockBehaviour.Properties.of().strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
+
 	static final BlockEntityType<StoveBlockEntity> STOVE_ENTITY = registerEntity("stove",
 		new BlockEntityType<>(StoveBlockEntity::new, Set.of(STOVE)));
 	static final BlockEntityType<OvenBlockEntity> OVEN_ENTITY = registerEntity("oven",
@@ -69,6 +91,11 @@ final class CookingBlocks {
 		new BlockEntityType<>(AebleskivePanBlockEntity::new, Set.of(AEBLESKIVE_PAN)));
 	static final BlockEntityType<ProcessStationBlockEntity> PRESS_ENTITY = registerEntity("press",
 		new BlockEntityType<>(ProcessStationBlockEntity::press, Set.of(PRESS)));
+	static final BlockEntityType<ProcessStationBlockEntity> MILL_ENTITY = process("mill", MILL, CookingMenu.Kind.MILL);
+	static final BlockEntityType<ProcessStationBlockEntity> MIXING_BOWL_ENTITY = process("mixing_bowl", MIXING_BOWL, CookingMenu.Kind.MIXING_BOWL);
+	static final BlockEntityType<ProcessStationBlockEntity> MORTAR_ENTITY = process("mortar", MORTAR, CookingMenu.Kind.MORTAR);
+	static final BlockEntityType<ProcessStationBlockEntity> BUTTER_CHURN_ENTITY = process("butter_churn", BUTTER_CHURN, CookingMenu.Kind.CHURN);
+	static final BlockEntityType<ProcessStationBlockEntity> CHEESE_PRESS_ENTITY = process("cheese_press", CHEESE_PRESS, CookingMenu.Kind.CHEESE_PRESS);
 	static final BlockEntityType<CuttingBoardBlockEntity> CUTTING_BOARD_ENTITY = registerEntity("cutting_board",
 		new BlockEntityType<>(CuttingBoardBlockEntity::new, Set.of(CUTTING_BOARD)));
 
@@ -89,10 +116,17 @@ final class CookingBlocks {
 			entries.accept(WOK);
 			entries.accept(AEBLESKIVE_PAN);
 			entries.accept(PRESS);
+			entries.accept(MILL);
+			entries.accept(MIXING_BOWL);
+			entries.accept(MORTAR);
+			entries.accept(BUTTER_CHURN);
+			entries.accept(CHEESE_PRESS);
 		});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
 			entries.accept(CookingItems.KITCHEN_KNIFE);
 			entries.accept(CookingItems.COOKBOOK);
+			entries.accept(CookingItems.SPOON);
+			entries.accept(CookingItems.PESTLE);
 		});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(entries -> {
 			for (Item item : new Item[] {CookingItems.CHOPPED_CARROT, CookingItems.DICED_POTATO, CookingItems.CHOPPED_BEETROOT,
@@ -106,6 +140,13 @@ final class CookingBlocks {
 				entries.accept(item);
 			}
 		});
+	}
+
+	/** The block entity type of a station whose slots follow its screen layout. */
+	private static BlockEntityType<ProcessStationBlockEntity> process(String name, Block block, CookingMenu.Kind kind) {
+		BlockEntityType<ProcessStationBlockEntity>[] type = new BlockEntityType[1];
+		type[0] = registerEntity(name, new BlockEntityType<>((pos, state) -> new ProcessStationBlockEntity(type[0], pos, state, kind), Set.of(block)));
+		return type[0];
 	}
 
 	private static Block register(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties) {

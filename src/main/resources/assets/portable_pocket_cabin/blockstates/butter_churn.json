@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "portable_pocket_cabin:block/butter_churn"
+    },
+    "facing=east": {
+      "model": "portable_pocket_cabin:block/butter_churn",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "portable_pocket_cabin:block/butter_churn",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "portable_pocket_cabin:block/butter_churn",
+      "y": 270
+    }
+  }
+}

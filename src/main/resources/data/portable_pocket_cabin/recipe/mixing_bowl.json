@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "T": "minecraft:terracotta"
+  },
+  "pattern": [
+    "T T",
+    " T "
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:mixing_bowl"
+  }
+}
