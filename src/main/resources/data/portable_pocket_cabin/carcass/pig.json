@@ -7,5 +7,52 @@
       "id": "portable_pocket_cabin:pig_bristles"
     }
   ],
-  "dressed": "portable_pocket_cabin:dressed_pig"
+  "dressed": "portable_pocket_cabin:dressed_pig",
+  "parts": [
+    {
+      "id": "portable_pocket_cabin:pork_loin",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:pork_shoulder"
+    },
+    {
+      "id": "portable_pocket_cabin:pork_belly"
+    },
+    {
+      "id": "portable_pocket_cabin:pork_leg",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:spare_ribs"
+    },
+    {
+      "id": "portable_pocket_cabin:pig_trotters",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:pork_cheek"
+    },
+    {
+      "id": "portable_pocket_cabin:pork_skin"
+    },
+    {
+      "id": "portable_pocket_cabin:pork_liver"
+    },
+    {
+      "id": "portable_pocket_cabin:pork_heart"
+    },
+    {
+      "id": "portable_pocket_cabin:pork_casing",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:pork_bones",
+      "count": 3
+    },
+    {
+      "id": "portable_pocket_cabin:back_fat",
+      "count": 2
+    }
+  ]
 }

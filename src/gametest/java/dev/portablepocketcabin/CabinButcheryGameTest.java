@@ -122,6 +122,88 @@ public final class CabinButcheryGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void theButcherBlockTakesPartsInOrder(GameTestHelper helper) {
+		var level = helper.getLevel();
+		helper.setBlock(BASE, Butchery.BUTCHER_BLOCK);
+		BlockPos pos = helper.absolutePos(BASE);
+		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+		player.getInventory().setSelectedSlot(8);
+		var hit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(pos), net.minecraft.core.Direction.UP, pos, false);
+		var block = (ButcherBlockBlockEntity) level.getBlockEntity(pos);
+
+		use(level, player, pos, hit, new ItemStack(Butchery.CARCASSES.get("cow")));
+		helper.assertTrue(block.carcass().isEmpty(), "An undressed carcass is refused");
+		use(level, player, pos, hit, new ItemStack(Butchery.DRESSED.get("cow")));
+		helper.assertTrue(block.carcass().is(Butchery.DRESSED.get("cow")), "A dressed cow goes on the block");
+		ItemStack cleaver = new ItemStack(Butchery.CLEAVER);
+		use(level, player, pos, hit, cleaver);
+		helper.assertTrue(player.getInventory().countItem(Butchery.PARTS.get("beef_sirloin")) == 2 && cleaver.getDamageValue() == 1,
+			"The first cleaver use takes the two sirloins");
+		use(level, player, pos, hit, cleaver);
+		helper.assertTrue(player.getInventory().countItem(Butchery.PARTS.get("beef_rib_roast")) == 1, "The next takes the rib roast");
+		level.getBlockState(pos).useWithoutItem(level, player, hit);
+		ItemStack halfDone = ItemStack.EMPTY;
+		for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
+			if (player.getInventory().getItem(slot).is(Butchery.DRESSED.get("cow"))) halfDone = player.getInventory().getItem(slot);
+		}
+		helper.assertTrue(halfDone.getOrDefault(Butchery.BUTCHERED, 0) == 2, "A part-butchered carcass keeps its progress");
+		use(level, player, pos, hit, halfDone.copy());
+		halfDone.shrink(1);
+		player.setShiftKeyDown(true);
+		use(level, player, pos, hit, cleaver);
+		player.setShiftKeyDown(false);
+		helper.assertTrue(block.carcass().isEmpty() && player.getInventory().countItem(Butchery.PARTS.get("beef_bones")) == 4
+			&& player.getInventory().countItem(Butchery.PARTS.get("beef_sirloin")) == 2 && player.getInventory().countItem(Butchery.PARTS.get("suet")) == 2,
+			"Sneaking takes every remaining part, and the sirloins aren't given twice");
+
+		for (int slot = 0; slot < 36; slot++) {
+			if (slot != 8) player.getInventory().setItem(slot, new ItemStack(net.minecraft.world.item.Items.DIRT, 64));
+		}
+		use(level, player, pos, hit, new ItemStack(Butchery.DRESSED.get("rabbit")));
+		use(level, player, pos, hit, new ItemStack(Butchery.CLEAVER));
+		helper.assertTrue(level.getEntitiesOfClass(ItemEntity.class, new AABB(pos).inflate(2)).stream()
+			.anyMatch(entity -> entity.getItem().is(Butchery.PARTS.get("rabbit_legs"))), "Parts that don't fit drop beside the block");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void carcassPartsComeFromData(GameTestHelper helper) {
+		var cow = PortablePocketCabin.id("cow");
+		CarcassData original = CarcassData.all().get(cow);
+		try {
+			CarcassData.override(cow, new CarcassData(original.carcass(), original.dressing(), original.scald(), original.dressingGives(),
+				original.dressed(), List.of(new net.minecraft.world.item.ItemStackTemplate(net.minecraft.world.item.Items.DIAMOND))));
+			var level = helper.getLevel();
+			helper.setBlock(BASE, Butchery.BUTCHER_BLOCK);
+			BlockPos pos = helper.absolutePos(BASE);
+			var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+			player.getInventory().setSelectedSlot(8);
+			var hit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(pos), net.minecraft.core.Direction.UP, pos, false);
+			use(level, player, pos, hit, new ItemStack(Butchery.DRESSED.get("cow")));
+			use(level, player, pos, hit, new ItemStack(Butchery.CLEAVER));
+			helper.assertTrue(player.getInventory().countItem(net.minecraft.world.item.Items.DIAMOND) == 1
+				&& ((ButcherBlockBlockEntity) level.getBlockEntity(pos)).carcass().isEmpty(), "A datapack's parts replace the cow's");
+		} finally {
+			CarcassData.override(cow, original);
+		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void cutsAndVanillaMeatCookTheSame(GameTestHelper helper) {
+		var level = helper.getLevel();
+		for (var meat : new net.minecraft.world.item.Item[] {Butchery.PARTS.get("beef_sirloin"), net.minecraft.world.item.Items.BEEF}) {
+			var recipe = CookingStation.SKILLET.find(level, CookingInput.of(List.of(new ItemStack(meat)))).orElse(null);
+			helper.assertTrue(recipe != null && recipe.value().result().create().is(net.minecraft.world.item.Items.COOKED_BEEF), meat + " sears into cooked beef");
+		}
+		var chevon = CookingStation.SKILLET.find(level, CookingInput.of(List.of(new ItemStack(Butchery.PARTS.get("chevon_chops"))))).orElse(null);
+		helper.assertTrue(chevon != null && chevon.value().result().create().is(Butchery.COOKED_CHEVON), "Chevon chops sear into cooked chevon");
+		var skewer = CookingStation.COUNTER.find(level, CookingInput.of(List.of(new ItemStack(CookingItems.SKEWER), new ItemStack(Butchery.PARTS.get("stew_beef")), new ItemStack(net.minecraft.world.item.Items.CARROT))));
+		helper.assertTrue(skewer.isPresent(), "Stew beef threads onto a skewer");
+		helper.succeed();
+	}
+
 	private static void use(net.minecraft.server.level.ServerLevel level, net.minecraft.world.entity.player.Player player, BlockPos pos,
 		net.minecraft.world.phys.BlockHitResult hit, ItemStack stack) {
 		player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, stack);

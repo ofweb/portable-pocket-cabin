@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "searing",
+  "ingredients": [
+    {
+      "item": "#portable_pocket_cabin:meat/chevon"
+    }
+  ],
+  "heat": "high",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:cooked_chevon"
+  }
+}

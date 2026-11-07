@@ -3,7 +3,7 @@
   "technique": "searing",
   "ingredients": [
     {
-      "item": "minecraft:beef"
+      "item": "#portable_pocket_cabin:meat/beef"
     }
   ],
   "heat": "high",

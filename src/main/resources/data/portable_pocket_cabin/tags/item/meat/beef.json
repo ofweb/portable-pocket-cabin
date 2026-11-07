@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:beef",
+    "portable_pocket_cabin:beef_sirloin",
+    "portable_pocket_cabin:beef_rib_roast",
+    "portable_pocket_cabin:beef_brisket",
+    "portable_pocket_cabin:beef_chuck",
+    "portable_pocket_cabin:beef_round",
+    "portable_pocket_cabin:beef_shank",
+    "portable_pocket_cabin:stew_beef"
+  ]
+}

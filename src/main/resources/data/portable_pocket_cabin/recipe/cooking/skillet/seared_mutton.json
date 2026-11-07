@@ -3,7 +3,7 @@
   "technique": "searing",
   "ingredients": [
     {
-      "item": "minecraft:mutton"
+      "item": "#portable_pocket_cabin:meat/mutton"
     }
   ],
   "heat": "high",

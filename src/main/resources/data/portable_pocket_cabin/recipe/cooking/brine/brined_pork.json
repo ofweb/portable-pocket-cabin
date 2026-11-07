@@ -3,7 +3,7 @@
   "technique": "brining",
   "ingredients": [
     {
-      "item": "minecraft:porkchop",
+      "item": "#portable_pocket_cabin:meat/pork",
       "count": 2
     },
     {

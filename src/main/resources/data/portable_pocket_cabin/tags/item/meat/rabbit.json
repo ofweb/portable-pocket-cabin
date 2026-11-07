@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:rabbit",
+    "portable_pocket_cabin:rabbit_legs",
+    "portable_pocket_cabin:rabbit_saddle",
+    "portable_pocket_cabin:rabbit_stew_meat"
+  ]
+}

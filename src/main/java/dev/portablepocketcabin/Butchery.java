@@ -79,19 +79,73 @@ final class Butchery {
 	static final net.minecraft.world.level.block.entity.BlockEntityType<HangingHookBlockEntity> HANGING_HOOK_ENTITY = CookingBlocks.registerEntity(
 		"hanging_hook", new net.minecraft.world.level.block.entity.BlockEntityType<>(HangingHookBlockEntity::new, java.util.Set.of(HANGING_HOOK)));
 
+	/** How many steps of its data a carcass on the butcher block has given. */
+	static final DataComponentType<Integer> BUTCHERED = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE,
+		PortablePocketCabin.id("butchered"), DataComponentType.<Integer>builder()
+			.persistent(Codec.intRange(0, 256)).networkSynchronized(ByteBufCodecs.VAR_INT).build());
+
+	/** Breaks a dressed carcass down on the butcher block, one part per use. */
+	static final Item CLEAVER = item("cleaver", new Item.Properties().durability(250));
+	static final net.minecraft.world.level.block.Block BUTCHER_BLOCK = CookingBlocks.register("butcher_block", ButcherBlockBlock::new,
+		net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().strength(2.5F).sound(net.minecraft.world.level.block.SoundType.WOOD)
+			.ignitedByLava());
+	static final net.minecraft.world.level.block.entity.BlockEntityType<ButcherBlockBlockEntity> BUTCHER_BLOCK_ENTITY = CookingBlocks.registerEntity(
+		"butcher_block", new net.minecraft.world.level.block.entity.BlockEntityType<>(ButcherBlockBlockEntity::new, java.util.Set.of(BUTCHER_BLOCK)));
+
+	/**
+	 * Every part the butcher block gives, by name. Muscle cuts are edible raw like vanilla meat, raw chicken with the
+	 * same chance of food poisoning. Offal, bones, and fat are not eaten as they are.
+	 */
+	static final Map<String, Item> PARTS = new LinkedHashMap<>();
+	static {
+		String[][] meat = {
+			{"3", "beef_sirloin", "beef_rib_roast", "beef_brisket", "beef_chuck", "beef_round", "beef_shank", "stew_beef", "oxtail"},
+			{"3", "pork_loin", "pork_shoulder", "pork_belly", "pork_leg", "spare_ribs", "pork_cheek"},
+			{"2", "lamb_chops", "leg_of_lamb", "lamb_shoulder", "lamb_stew_meat", "lamb_shanks"},
+			{"2", "chevon_chops", "goat_leg", "goat_shoulder", "goat_stew_meat"},
+			{"3", "rabbit_legs", "rabbit_saddle", "rabbit_stew_meat"}};
+		for (String[] group : meat) {
+			int nutrition = Integer.parseInt(group[0]);
+			for (int i = 1; i < group.length; i++) {
+				PARTS.put(group[i], item(group[i], new Item.Properties().food(new net.minecraft.world.food.FoodProperties(nutrition, nutrition * 0.6F, false))));
+			}
+		}
+		for (String chicken : new String[] {"chicken_breast", "chicken_thighs", "chicken_drumsticks", "chicken_wings"}) {
+			PARTS.put(chicken, item(chicken, new Item.Properties().food(new net.minecraft.world.food.FoodProperties(2, 1.2F, false),
+				net.minecraft.world.item.component.Consumables.CHICKEN)));
+		}
+		String[] other = {"beef_tongue", "beef_liver", "beef_heart", "beef_kidneys", "tripe", "calf_stomach", "beef_bones", "marrow_bones", "suet",
+			"pig_trotters", "pork_skin", "pork_liver", "pork_heart", "pork_casing", "pork_bones", "back_fat",
+			"lamb_liver", "lamb_kidneys", "lamb_heart", "sheep_casing", "lamb_bones", "lamb_fat",
+			"goat_liver", "goat_heart", "goat_casing", "goat_bones", "goat_fat",
+			"chicken_giblets", "chicken_feet", "chicken_bones", "chicken_skin",
+			"rabbit_offal", "rabbit_bones"};
+		for (String part : other) PARTS.put(part, item(part, new Item.Properties()));
+	}
+
+	/** Goat meat seared on the skillet, as mutton is. */
+	static final Item COOKED_CHEVON = item("cooked_chevon", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(6, 9.6F, false)));
+
 	private Butchery() {
 	}
 
 	static void register() {
 		CarcassData.register();
 		net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents.modifyOutputEvent(net.minecraft.world.item.CreativeModeTabs.FUNCTIONAL_BLOCKS)
-			.register(entries -> entries.accept(HANGING_HOOK));
+			.register(entries -> {
+				entries.accept(HANGING_HOOK);
+				entries.accept(BUTCHER_BLOCK);
+			});
+		net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents.modifyOutputEvent(net.minecraft.world.item.CreativeModeTabs.TOOLS_AND_UTILITIES)
+			.register(entries -> entries.accept(CLEAVER));
 		net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents.modifyOutputEvent(net.minecraft.world.item.CreativeModeTabs.FOOD_AND_DRINKS)
 			.register(entries -> {
 				for (Item carcass : CARCASSES.values()) entries.accept(carcass);
 				for (Item dressed : DRESSED.values()) entries.accept(dressed);
 				entries.accept(BLOOD);
 				entries.accept(PIG_BRISTLES);
+				for (Item part : PARTS.values()) entries.accept(part);
+				entries.accept(COOKED_CHEVON);
 			});
 	}
 

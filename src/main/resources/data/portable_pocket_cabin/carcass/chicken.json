@@ -8,5 +8,36 @@
       "count": 2
     }
   ],
-  "dressed": "portable_pocket_cabin:dressed_chicken"
+  "dressed": "portable_pocket_cabin:dressed_chicken",
+  "parts": [
+    {
+      "id": "portable_pocket_cabin:chicken_breast",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:chicken_thighs",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:chicken_drumsticks",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:chicken_wings",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:chicken_giblets"
+    },
+    {
+      "id": "portable_pocket_cabin:chicken_feet",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:chicken_bones"
+    },
+    {
+      "id": "portable_pocket_cabin:chicken_skin"
+    }
+  ]
 }

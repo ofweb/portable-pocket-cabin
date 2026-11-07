@@ -3,7 +3,7 @@
   "technique": "searing",
   "ingredients": [
     {
-      "item": "minecraft:chicken"
+      "item": "#portable_pocket_cabin:meat/chicken"
     }
   ],
   "heat": "high",

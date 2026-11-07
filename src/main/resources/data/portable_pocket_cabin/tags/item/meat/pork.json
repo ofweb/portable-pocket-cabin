@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:porkchop",
+    "portable_pocket_cabin:pork_loin",
+    "portable_pocket_cabin:pork_shoulder",
+    "portable_pocket_cabin:pork_belly",
+    "portable_pocket_cabin:pork_leg",
+    "portable_pocket_cabin:spare_ribs",
+    "portable_pocket_cabin:pork_cheek"
+  ]
+}

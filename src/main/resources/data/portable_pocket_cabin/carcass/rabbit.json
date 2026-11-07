@@ -9,5 +9,23 @@
       "id": "minecraft:rabbit_foot"
     }
   ],
-  "dressed": "portable_pocket_cabin:dressed_rabbit"
+  "dressed": "portable_pocket_cabin:dressed_rabbit",
+  "parts": [
+    {
+      "id": "portable_pocket_cabin:rabbit_legs",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:rabbit_saddle"
+    },
+    {
+      "id": "portable_pocket_cabin:rabbit_stew_meat"
+    },
+    {
+      "id": "portable_pocket_cabin:rabbit_offal"
+    },
+    {
+      "id": "portable_pocket_cabin:rabbit_bones"
+    }
+  ]
 }

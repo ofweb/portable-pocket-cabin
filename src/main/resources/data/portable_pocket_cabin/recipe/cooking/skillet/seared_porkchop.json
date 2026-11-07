@@ -3,7 +3,7 @@
   "technique": "searing",
   "ingredients": [
     {
-      "item": "minecraft:porkchop"
+      "item": "#portable_pocket_cabin:meat/pork"
     }
   ],
   "heat": "high",
