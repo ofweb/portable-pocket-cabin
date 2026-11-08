@@ -155,6 +155,27 @@ final class Butchery {
 			.build(ResourceKey.create(Registries.ENTITY_TYPE, PortablePocketCabin.id("duck"))));
 	static final Item DUCK_SPAWN_EGG = item("duck_spawn_egg", new Item.Properties().spawnEgg(DUCK), net.minecraft.world.item.SpawnEggItem::new);
 
+	// Delivery 4: fish and seafood.
+	static final Item ANCHOVY = item("anchovy", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(1, 0.2F, false)));
+	static final Item BONITO = item("bonito", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(2, 0.4F, false)));
+	static final Item HERRING = item("herring", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(2, 0.4F, false)));
+	/** A whole squid, which squid drop in place of ink sacs. The butcher block cleans it into tentacles and an ink sac. */
+	static final Item SQUID = item("squid", new Item.Properties());
+	static final Item PRAWNS = item("prawns", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(1, 0.6F, false)));
+	static {
+		for (String part : new String[] {"white_fish_fillet", "salmon_fillet", "bonito_loin", "squid_tentacles"}) {
+			PARTS.put(part, item(part, new Item.Properties().food(new net.minecraft.world.food.FoodProperties(2, 0.4F, false))));
+		}
+		for (String part : new String[] {"fish_head", "fish_bones", "cod_roe", "salmon_skin", "salmon_roe", "fish_scales", "fish_guts"}) {
+			PARTS.put(part, item(part, new Item.Properties()));
+		}
+	}
+	static final net.minecraft.world.level.block.Block PRAWN_TRAP = CookingBlocks.register("prawn_trap", PrawnTrapBlock::new,
+		net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().strength(1.0F).sound(net.minecraft.world.level.block.SoundType.WOOD)
+			.noOcclusion().ignitedByLava());
+	static final net.minecraft.world.level.block.entity.BlockEntityType<PrawnTrapBlockEntity> PRAWN_TRAP_ENTITY = CookingBlocks.registerEntity(
+		"prawn_trap", new net.minecraft.world.level.block.entity.BlockEntityType<>(PrawnTrapBlockEntity::new, java.util.Set.of(PRAWN_TRAP)));
+
 	/** Delivery 1 products: stocks, rendered fats, gelatin, cured meats, and the dishes the cuts complete. */
 	static final java.util.List<Item> PRODUCTS = new java.util.ArrayList<>();
 	static {
@@ -208,6 +229,8 @@ final class Butchery {
 
 	static void register() {
 		CarcassData.register();
+		net.fabricmc.fabric.api.registry.CompostableRegistry.INSTANCE.add(PARTS.get("fish_scales"), 0.3F);
+		net.fabricmc.fabric.api.registry.CompostableRegistry.INSTANCE.add(PARTS.get("fish_guts"), 0.65F);
 		// Ducks live in rivers, swamps, and mangrove swamps, in small groups.
 		net.fabricmc.fabric.api.biome.v1.BiomeModifications.addSpawn(net.fabricmc.fabric.api.biome.v1.BiomeSelectors.includeByKey(
 			net.minecraft.world.level.biome.Biomes.RIVER, net.minecraft.world.level.biome.Biomes.SWAMP, net.minecraft.world.level.biome.Biomes.MANGROVE_SWAMP),
@@ -220,6 +243,7 @@ final class Butchery {
 				entries.accept(BUTCHER_BLOCK);
 				entries.accept(MEAT_GRINDER);
 				entries.accept(SAUSAGE_STUFFER);
+				entries.accept(PRAWN_TRAP);
 			});
 		net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents.modifyOutputEvent(net.minecraft.world.item.CreativeModeTabs.TOOLS_AND_UTILITIES)
 			.register(entries -> entries.accept(CLEAVER));
@@ -231,6 +255,7 @@ final class Butchery {
 				entries.accept(PIG_BRISTLES);
 				for (Item part : PARTS.values()) entries.accept(part);
 				entries.accept(COOKED_CHEVON);
+				for (Item seafood : new Item[] {ANCHOVY, BONITO, HERRING, SQUID, PRAWNS}) entries.accept(seafood);
 				for (Item product : PRODUCTS) entries.accept(product);
 			});
 	}

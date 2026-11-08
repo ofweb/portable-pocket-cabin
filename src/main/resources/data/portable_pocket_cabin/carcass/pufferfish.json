@@ -1,0 +1,17 @@
+{
+  "carcass": "minecraft:pufferfish",
+  "dressing": "none",
+  "dressing_gives": [
+    {
+      "id": "portable_pocket_cabin:fish_scales"
+    },
+    {
+      "id": "portable_pocket_cabin:fish_guts"
+    }
+  ],
+  "parts": [
+    {
+      "id": "portable_pocket_cabin:fish_bones"
+    }
+  ]
+}

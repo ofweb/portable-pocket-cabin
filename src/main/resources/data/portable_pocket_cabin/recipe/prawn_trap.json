@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": "minecraft:stick",
+    "T": "minecraft:string"
+  },
+  "pattern": [
+    "STS",
+    "T T",
+    "STS"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:prawn_trap"
+  }
+}

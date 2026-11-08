@@ -3,7 +3,7 @@
   "technique": "salting",
   "ingredients": [
     {
-      "item": "minecraft:cod",
+      "item": "#portable_pocket_cabin:fish/cod",
       "count": 2
     },
     {

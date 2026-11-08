@@ -1,0 +1,24 @@
+{
+  "carcass": "portable_pocket_cabin:bonito",
+  "dressing": "none",
+  "dressing_gives": [
+    {
+      "id": "portable_pocket_cabin:fish_scales"
+    },
+    {
+      "id": "portable_pocket_cabin:fish_guts"
+    }
+  ],
+  "parts": [
+    {
+      "id": "portable_pocket_cabin:bonito_loin",
+      "count": 4
+    },
+    {
+      "id": "portable_pocket_cabin:fish_head"
+    },
+    {
+      "id": "portable_pocket_cabin:fish_bones"
+    }
+  ]
+}

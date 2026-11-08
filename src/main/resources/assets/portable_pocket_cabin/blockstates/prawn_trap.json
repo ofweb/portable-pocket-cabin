@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "waterlogged=false": {
+      "model": "portable_pocket_cabin:block/prawn_trap"
+    },
+    "waterlogged=true": {
+      "model": "portable_pocket_cabin:block/prawn_trap"
+    }
+  }
+}
