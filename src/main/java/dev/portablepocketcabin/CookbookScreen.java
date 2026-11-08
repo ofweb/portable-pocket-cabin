@@ -135,7 +135,7 @@ final class CookbookScreen extends Screen {
 			rows.addAll(tastes);
 		}
 		List<Row> garden = new ArrayList<>();
-		for (String plant : CookingPlants.PLANTS.keySet()) {
+		for (String plant : CookingPlants.garden().keySet()) {
 			if (query.isEmpty() || plantName(plant).getString().toLowerCase(Locale.ROOT).contains(query)) garden.add(new Row(null, null, null, plant));
 		}
 		garden.sort(Comparator.comparing(row -> plantName(row.plant()).getString()));
@@ -384,7 +384,7 @@ final class CookbookScreen extends Screen {
 	/** A plant's Garden name: its own title when the lang has one, such as "Plum Tree", otherwise its block's name. */
 	static Component plantName(String plant) {
 		String key = "garden.portable_pocket_cabin." + plant + ".name";
-		return Language.getInstance().has(key) ? Component.translatable(key) : CookingPlants.PLANTS.get(plant).getName();
+		return Language.getInstance().has(key) ? Component.translatable(key) : CookingPlants.garden().get(plant).getName();
 	}
 
 	/** A plant's Garden page: where it grows wild, what it needs, what it is planted from, and what it gives. */
@@ -399,8 +399,8 @@ final class CookbookScreen extends Screen {
 		y += 22;
 		Component wild = Component.translatable("screen.portable_pocket_cabin.cookbook.grows_wild", wildBiomes(selectedPlant));
 		graphics.textWithWordWrap(font, wild, x, y, right - x, TEXT, false);
-		y += font.split(wild, right - x).size() * font.lineHeight + 6;
-		var block = CookingPlants.PLANTS.get(selectedPlant);
+		y += font.split(wild, right - x).size() * font.lineHeight + 4;
+		var block = CookingPlants.garden().get(selectedPlant);
 		var needs = PlantNeeds.client.getOrDefault(net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(block), PlantNeeds.DEFAULT);
 		Component growing = Component.translatable("screen.portable_pocket_cabin.cookbook.growing", soilNames(needs), needs.light(),
 			Component.translatable("screen.portable_pocket_cabin.cookbook.water." + needs.water().getSerializedName()));
@@ -408,20 +408,23 @@ final class CookbookScreen extends Screen {
 			growing = growing.copy().append(" ").append(Component.translatable("screen.portable_pocket_cabin.cookbook.support." + needs.support().getSerializedName()));
 		}
 		if (needs.shade()) growing = growing.copy().append(" ").append(Component.translatable("screen.portable_pocket_cabin.cookbook.shade_needed"));
+		growing = growing.copy().append(" ").append(pace(needs));
 		graphics.textWithWordWrap(font, growing, x, y, right - x, TEXT, false);
-		y += font.split(growing, right - x).size() * font.lineHeight + 6;
-		Component pace = pace(needs);
-		graphics.textWithWordWrap(font, pace, x, y, right - x, TEXT, false);
-		y += font.split(pace, right - x).size() * font.lineHeight + 6;
-		graphics.text(font, Component.translatable("screen.portable_pocket_cabin.cookbook.gives"), x, y, TEXT, false);
-		y += 11;
+		y += font.split(growing, right - x).size() * font.lineHeight + 4;
+		Component multiplies = multiplies(selectedPlant, needs);
+		graphics.textWithWordWrap(font, multiplies, x, y, right - x, TEXT, false);
+		y += font.split(multiplies, right - x).size() * font.lineHeight + 4;
+		// What the plant gives, as a row of items whose names show on hover.
+		Component gives = Component.translatable("screen.portable_pocket_cabin.cookbook.gives");
+		graphics.text(font, gives, x, y + 4, TEXT, false);
+		int column = x + font.width(gives) + 4;
 		for (Item item : CookingPlants.GIVES.getOrDefault(selectedPlant, List.of())) {
 			ItemStack stack = new ItemStack(item);
-			graphics.item(stack, x, y);
-			hoverItem(graphics, stack, x, y, mouseX, mouseY);
-			graphics.text(font, stack.getHoverName(), x + 20, y + 4, TEXT, false);
-			y += 16;
+			graphics.item(stack, column, y);
+			hoverItem(graphics, stack, column, y, mouseX, mouseY);
+			column += 18;
 		}
+		y += 18;
 		String key = "garden.portable_pocket_cabin." + selectedPlant;
 		if (Language.getInstance().has(key)) graphics.textWithWordWrap(font, Component.translatable(key), x, y + 4, right - x, MUTED, false);
 	}
@@ -439,6 +442,17 @@ final class CookbookScreen extends Screen {
 		}
 		names.sort(String::compareTo);
 		return Component.literal(String.join(", ", names));
+	}
+
+	/** How a plant multiplies: its harvest model, whether it spreads, and whether wandering traders sell its planting item. */
+	static Component multiplies(String plant, PlantNeeds needs) {
+		var text = Component.translatable("screen.portable_pocket_cabin.cookbook.model." + CookingPlants.harvestModel(plant));
+		if (needs.spreadChance() > 0) text.append(" ").append(Component.translatable("screen.portable_pocket_cabin.cookbook.spreads"));
+		var planted = CookingPlants.PLANTED_FROM.get(plant);
+		if (planted != null && PlantNeeds.clientTraded.contains(net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(planted))) {
+			text.append(" ").append(Component.translatable("screen.portable_pocket_cabin.cookbook.traded"));
+		}
+		return text;
 	}
 
 	/** How quickly a plant grows, by its growth chance's tier, and the climate it prefers. */
