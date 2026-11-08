@@ -156,11 +156,11 @@ The sausage stuffer is a hand-worked container station on the prep counter.
 
 ## Fish and seafood
 
-- **New fish:** anchovy, bonito, and herring are raw fish items.
+- **New fish:** anchovy, skipjack tuna, and herring are raw fish items.
   - Fabric loot events add them to the fishing fish table, `minecraft:gameplay/fishing/fish`.
-  - Each one has a `location_check` biome condition: anchovy and bonito in warm and lukewarm oceans, herring in cold and frozen oceans.
+  - Each one has a `location_check` biome condition: anchovy and skipjack tuna in warm and lukewarm oceans, herring in cold and frozen oceans.
   - Each fish keeps a share of fish catches in those biomes, and other catches stay vanilla.
-- **Fish data:** cod, salmon, tropical fish, pufferfish, anchovy, bonito, and herring have carcass data with `dressing: none`. Pufferfish give only fish bones.
+- **Fish data:** cod, salmon, tropical fish, pufferfish, anchovy, skipjack tuna, and herring have carcass data with `dressing: none`. Pufferfish give only fish bones.
 - **Shellfish:**
   - Mussel and oyster blocks are wild forage, like the B-0050 sea plants.
   - They stand underwater on stone or gravel, and using them by hand gives mussels or oysters and removes them.
@@ -203,7 +203,7 @@ Each delivery runs the completion check with its new raw items and ships every i
 | 1 | Carcasses for cow, pig, sheep, chicken, rabbit, and goat, the hook, the block, the cleaver, scalding, blood, and the cookbook's Butchery section | Cuts, offal, stocks, broths, rendered fats, gelatin, calf rennet, bone meal, roast chicken, and the dishes they complete |
 | 2 | Meat grinder and sausage stuffer | Mince, sausages, blood sausage, bacon, ham, chorizo, leverpostej, and the dishes they complete |
 | 3 | The duck | Duck cuts, duck fat, duck confit, roast duck, and duck dishes |
-| 4 | Fish preparation, anchovy, bonito, herring, mussels, oysters, and the prawn trap | Fillets, fish stock, fish sauce, dashi and katsuobushi, shrimp paste, pickled herring, and the seafood dishes |
+| 4 | Fish preparation, anchovy, skipjack tuna, herring, mussels, oysters, and the prawn trap | Fillets, fish stock, fish sauce, dashi and katsuobushi, shrimp paste, pickled herring, and the seafood dishes |
 
 ## Cookbook
 
@@ -320,13 +320,13 @@ Client GameTests capture the hook with a hanging carcass, the block mid-butchery
 
 ## Delivery 4 as built
 
-- **Fish preparation:** cod, salmon, tropical fish, pufferfish, bonito, and squid have carcass data with no dressing, so they go straight on the butcher block.
+- **Fish preparation:** cod, salmon, tropical fish, pufferfish, skipjack tuna, and squid have carcass data with no dressing, so they go straight on the butcher block.
   - The knife's first use scales and guts a fish, giving fish scales and fish guts. Further uses take its parts: fillets, head, bones, roe, and skin.
-  - Pufferfish give only bones. Bonito give four loins.
+  - Pufferfish give only bones. Skipjack tuna give four loins.
   - Using the cleaver on a fish, or the knife on a carcass, says which tool to use instead of taking the carcass back.
 - **Squid:** the squid loot table drops a whole squid in place of the ink sac. On the block it cleans into two tentacles and an ink sac. Glow squid are unchanged.
-- **New fish:** anchovy, bonito, and herring join `minecraft:gameplay/fishing/fish`, overridden as data like the entity tables.
-  - Anchovy and bonito are caught in warm and lukewarm oceans, and herring in cold and frozen oceans, each through a `location_check`.
+- **New fish:** anchovy, skipjack tuna, and herring join `minecraft:gameplay/fishing/fish`, overridden as data like the entity tables.
+  - Anchovy and skipjack tuna are caught in warm and lukewarm oceans, and herring in cold and frozen oceans, each through a `location_check`.
   - Anchovy and herring are used whole, so they have no carcass data.
 - **Fish tags:** `fish/cod` and `fish/salmon` hold the fillets and the vanilla fish. The existing fried, salted, and cured fish recipes take them.
 - **Shellfish:** mussel and oyster beds are sea plants, gathered by hand.

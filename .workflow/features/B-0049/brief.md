@@ -55,7 +55,7 @@ Story: A player catches fish and gathers shellfish, then prepares them.
 
 Acceptance:
 
-- **New fish:** anchovy and bonito join fishing in warm oceans, and herring in cold oceans.
+- **New fish:** anchovy and skipjack tuna join fishing in warm oceans, and herring in cold oceans.
 - **Shellfish:** mussels grow on stony shores and cold-ocean rocks, and oysters in lukewarm oceans and mangrove swamps. Both are blocks gathered by hand.
 - **Prawn trap:** a new block placed in warm water that collects prawns over time.
 - **Fish on the block:** the knife scales and guts a fish, then fillets it. Pufferfish give only bones, for stock.

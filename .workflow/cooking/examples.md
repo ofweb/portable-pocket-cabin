@@ -96,11 +96,11 @@ A light soup built on two of the most complex ingredients in the game: dashi and
 | Step | Station | Inputs | Heat and time | Output |
 |---|---|---|---|---|
 | Dry kelp | Drying rack (time) | Kelp | — 5 min | Kombu |
-| Scale and gut | Butcher block (click) | Bonito | Knife use | Cleaned bonito, fish scales, guts |
-| Fillet | Butcher block (click) | Cleaned bonito | Knife use | 4 bonito loins, bonito head, fish bones |
-| Salt | Brine barrel (time) | Bonito loin, salt | — 1 day | Salted bonito |
-| Smoke | Smoker (container) | Salted bonito | Low, 10 min | Smoked bonito |
-| Dry | Drying rack (time) | Smoked bonito | — 1 day | Katsuobushi |
+| Scale and gut | Butcher block (click) | Skipjack tuna | Knife use | Cleaned skipjack tuna, fish scales, guts |
+| Fillet | Butcher block (click) | Cleaned skipjack tuna | Knife use | 4 skipjack tuna loins, skipjack tuna head, fish bones |
+| Salt | Brine barrel (time) | Skipjack tuna loin, salt | — 1 day | Salted skipjack tuna |
+| Smoke | Smoker (container) | Salted skipjack tuna | Low, 10 min | Smoked skipjack tuna |
+| Dry | Drying rack (time) | Smoked skipjack tuna | — 1 day | Katsuobushi |
 | Shave | Cutting board (click) | Katsuobushi | Knife use | 8 bonito flakes |
 | Steam rice | Cooking pot (container) | Rice, water | Low, 30 s | Steamed rice |
 | Culture koji | Fermentation crock (time) | Steamed rice, koji spores | — 1 day | Koji rice, koji spores |
@@ -111,7 +111,7 @@ A light soup built on two of the most complex ingredients in the game: dashi and
 | Make tofu | Container chain in B-0046 | Soybeans, water, nigari | Low, then press | Tofu |
 | Finish | Cooking pot (container) | Dashi, miso, tofu, spring onion, bowl | Low, 10 s | Miso soup |
 
-- **Raw ingredients:** kelp, bonito, rice, soybeans, salt, spring onion, and koji spores. The bonito head and bones go into fish stock.
+- **Raw ingredients:** kelp, skipjack tuna, rice, soybeans, salt, spring onion, and koji spores. The skipjack tuna head and bones go into fish stock.
 - **It teaches:**
   - Umami comes from extraction and fermentation.
   - Dashi takes minutes once kombu and katsuobushi exist, but each of those takes a day.
@@ -149,7 +149,7 @@ A short chain, for contrast. Pressed apple juice the way Danish farms make it.
 
 - **Salt:** almost every recipe needs it, but no feature owns it yet. Proposal: B-0047 owns salt, from seawater boiled down in a pot at high heat and from rock salt in caves.
 - **Cultures:** sourdough starter and koji need a first source. Proposal: a starter begins from flour and water in a crock. Koji spores come from a villager trade or a rare find, and each batch returns some.
-- **New animals and fish:** bonito needs to exist as a catchable fish. Proposal: B-0049 adds it as fishing loot in warm oceans.
+- **New animals and fish:** skipjack tuna needs to exist as a catchable fish. Proposal: B-0049 adds it as fishing loot in warm oceans.
 - **Smoker:** this assumes the vanilla smoker becomes the smoking station, burning low-heat fuel for cured and smoked foods. Proposal: B-0048 owns this change.
 - **Serving step:** dishes are assembled at the prep counter, as the [station list](stations.md) records.
 - **Durations:** these are first guesses. Real proofing takes hours and miso takes months. Minecraft needs shorter times that still feel like waiting.

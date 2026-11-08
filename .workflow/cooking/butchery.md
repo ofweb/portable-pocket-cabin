@@ -153,7 +153,7 @@ Fish need no hanging hook. On the butcher block, the knife first scales and guts
 |---|---|---|
 | Cod | 2 fillets, head, bones, roe | Frying, salting into klipfisk, fish stock from head and bones, roe for spreads |
 | Salmon | 2 fillets, head, bones, skin, roe | Curing into gravlaks, smoking, crisp skin, stock, roe as ikura |
-| Bonito | 4 loins, head, bones | Salting, smoking, and drying into katsuobushi, fish stock |
+| Skipjack tuna | 4 loins, head, bones | Salting, smoking, and drying into katsuobushi, fish stock |
 | Tropical fish | 1 fillet, bones | Ceviche, stock |
 | Pufferfish | Bones only | Stays poisonous and is not used as food. Its bones still make stock. |
 

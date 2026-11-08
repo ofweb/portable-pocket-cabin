@@ -3,8 +3,8 @@
   "category": "food",
   "experience": 0.35,
   "cookingtime": 400,
-  "ingredient": "portable_pocket_cabin:salted_bonito_loin",
+  "ingredient": "portable_pocket_cabin:salted_tuna_loin",
   "result": {
-    "id": "portable_pocket_cabin:smoked_bonito_loin"
+    "id": "portable_pocket_cabin:smoked_tuna_loin"
   }
 }

@@ -1,11 +1,11 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/bonito",
+    "model": "portable_pocket_cabin:item/tuna_loin",
     "tints": [
       {
         "type": "minecraft:constant",
-        "value": 4872842
+        "value": 9058874
       }
     ]
   }

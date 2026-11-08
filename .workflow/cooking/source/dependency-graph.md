@@ -178,7 +178,7 @@ Fish
      ├─ Fillets → Fry / Roast / Smoke
      └─ Bones + Vegetables → Fish stock
 
-Bonito
+Skipjack tuna
  └─ Process + Smoke + Dry → Bonito flakes
      └─ + Kombu → Awase dashi
 ```
@@ -508,7 +508,7 @@ Anchovies
           ├─ Pizza toppings
           └─ Dressings and sauces
 
-Bonito
+Skipjack tuna
  └─ Cook + Smoke + Dry + Shave
       └─ Bonito flakes
           └─ + Kombu → Awase dashi

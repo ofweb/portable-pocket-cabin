@@ -4,7 +4,7 @@ Sausages and cured meat and fish. Feature: B-0048 for curing and smoking, using 
 
 ## How it is made
 
-Ingredients: [bonito](../ingredients/bonito.md), [salt](../products/salt.md)
+Ingredients: [skipjack tuna](../ingredients/skipjack-tuna.md), [salt](../products/salt.md)
 
 1. [Butcher block](../stations/butcher-block.md): [fillet](../techniques/filleting.md) into loins
 2. [Brine barrel](../stations/brine-barrel.md): salt

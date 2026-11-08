@@ -56,7 +56,7 @@ How players get each item:
 | Raw ingredient | Where | How | Feature |
 |---|---|---|---|
 | anchovy | Warm and lukewarm oceans, in schools | Fish | B-0049 |
-| bonito | Warm oceans | Fish | B-0049 |
+| skipjack tuna | Warm oceans | Fish | B-0049 |
 | herring | Cold oceans, in schools | Fish | B-0049 |
 | mussels | Stony shores and cold ocean rocks | Forage at low water | B-0049 |
 | oyster | Lukewarm oceans, mangrove swamps | Forage | B-0049 |

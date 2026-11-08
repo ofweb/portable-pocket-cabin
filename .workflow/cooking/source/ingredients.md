@@ -140,7 +140,7 @@ I'd also include skin and usable sausage casings, but perhaps simplify these if 
 
 ### Fish and seafood
 
-Cod, salmon, herring, anchovy, bonito, shrimp, mussels, squid and lobster.
+Cod, salmon, herring, anchovy, skipjack tuna, shrimp, mussels, squid and lobster.
 
 For processing:
 
@@ -151,7 +151,7 @@ For processing:
 - Fish roe
 - Squid ink
 
-We can reuse vanilla fish where possible. Bonito is particularly interesting because it enables traditional Japanese dashi.
+We can reuse vanilla fish where possible. Skipjack tuna is particularly interesting because it enables traditional Japanese dashi.
 
 ### Other animal products
 
@@ -290,7 +290,7 @@ Caramelised onions and roasted garlic are more interesting as actual inventory i
 | Salted fish | Salting fish |
 | Smoked fish | Smoking fish |
 | Dried fish | Drying fish |
-| Bonito flakes | Processing, smoking and drying bonito |
+| Bonito flakes | Processing, smoking and drying skipjack tuna |
 | Rendered animal fat | Slowly heating fat |
 
 Meat cubes, steaks and roasting joints should remain distinct. The cooking technique then determines what can be made from them.

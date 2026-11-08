@@ -157,13 +157,13 @@ final class Butchery {
 
 	// Delivery 4: fish and seafood.
 	static final Item ANCHOVY = item("anchovy", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(1, 0.2F, false)));
-	static final Item BONITO = item("bonito", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(2, 0.4F, false)));
+	static final Item SKIPJACK_TUNA = item("skipjack_tuna", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(2, 0.4F, false)));
 	static final Item HERRING = item("herring", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(2, 0.4F, false)));
 	/** A whole squid, which squid drop in place of ink sacs. The butcher block cleans it into tentacles and an ink sac. */
 	static final Item SQUID = item("squid", new Item.Properties());
 	static final Item PRAWNS = item("prawns", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(1, 0.6F, false)));
 	static {
-		for (String part : new String[] {"white_fish_fillet", "salmon_fillet", "bonito_loin", "squid_tentacles"}) {
+		for (String part : new String[] {"white_fish_fillet", "salmon_fillet", "tuna_loin", "squid_tentacles"}) {
 			PARTS.put(part, item(part, new Item.Properties().food(new net.minecraft.world.food.FoodProperties(2, 0.4F, false))));
 		}
 		for (String part : new String[] {"fish_head", "fish_bones", "cod_roe", "salmon_skin", "salmon_roe", "fish_scales", "fish_guts"}) {
@@ -228,7 +228,7 @@ final class Butchery {
 	static {
 		String[] plain = {"peeled_prawns", "prawn_shells", "toasted_prawn_shells", "boiled_prawns", "dried_shrimp", "pounded_shrimp", "fermented_shrimp",
 			"shrimp_paste", "fermenting_anchovies", "salted_anchovies", "salted_salmon_fillet", "grilled_salted_salmon", "salted_salmon",
-			"salted_herring", "pickled_herring", "salted_bonito_loin", "smoked_bonito_loin", "katsuobushi", "bonito_flakes", "worcestershire_mash",
+			"salted_herring", "pickled_herring", "salted_tuna_loin", "smoked_tuna_loin", "katsuobushi", "bonito_flakes", "worcestershire_mash",
 			"ground_peanuts", "green_curry_mix", "green_curry_paste", "red_curry_mix", "red_curry_paste", "peanut_sauce", "miang_sauce", "nam_prik_mix",
 			"fried_nam_prik_mix", "nam_prik_paste", "nam_prik_pao", "liver_mince", "leverpostej_mix", "leverpostej", "unbaked_pissaladiere",
 			"browned_mince", "korokke_mash", "raw_korokke", "fried_korokke", "shredded_papaya", "chili_garlic", "sliced_galangal", "tom_kha_base",
@@ -275,7 +275,7 @@ final class Butchery {
 				entries.accept(PIG_BRISTLES);
 				for (Item part : PARTS.values()) entries.accept(part);
 				entries.accept(COOKED_CHEVON);
-				for (Item seafood : new Item[] {ANCHOVY, BONITO, HERRING, SQUID, PRAWNS}) entries.accept(seafood);
+				for (Item seafood : new Item[] {ANCHOVY, SKIPJACK_TUNA, HERRING, SQUID, PRAWNS}) entries.accept(seafood);
 				for (Item product : PRODUCTS) entries.accept(product);
 			});
 	}

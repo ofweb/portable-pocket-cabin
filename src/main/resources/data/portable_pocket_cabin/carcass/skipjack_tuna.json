@@ -1,5 +1,5 @@
 {
-  "carcass": "portable_pocket_cabin:bonito",
+  "carcass": "portable_pocket_cabin:skipjack_tuna",
   "dressing": "none",
   "dressing_gives": [
     {
@@ -11,7 +11,7 @@
   ],
   "parts": [
     {
-      "id": "portable_pocket_cabin:bonito_loin",
+      "id": "portable_pocket_cabin:tuna_loin",
       "count": 4
     },
     {

@@ -177,7 +177,7 @@ Some interesting new requirements emerge from the recipes.
 | Tamarind and palm sugar | Thai flavour balancing |
 | Coconut and coconut milk | Thai and Brazilian dishes |
 | Soybeans, miso and soy sauce | Japanese and Asian cooking |
-| Kombu, nori and bonito | Japanese dashi, sushi and soups |
+| Kombu, nori and skipjack tuna | Japanese dashi, sushi and soups |
 | Rye and sourdough | Danish and German bread |
 | Cherries, apples, citrus and pineapple | Desserts, sauces and savoury dishes |
 

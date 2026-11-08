@@ -1,11 +1,11 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/salted_bonito_loin",
+    "model": "portable_pocket_cabin:item/skipjack_tuna",
     "tints": [
       {
         "type": "minecraft:constant",
-        "value": 9062986
+        "value": 4872842
       }
     ]
   }

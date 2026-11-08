@@ -182,7 +182,7 @@ Feature: B-0048 for curing and smoking, using cuts and casings from B-0049.
 | pickled herring | herring, *salt*, *wine vinegar*, sugar, onion, *pickling spice* | Brine barrel: salt → Fermentation crock: pickle |
 | dried shrimp | prawns, *salt* | Cooking pot (high): boil in salted water → Drying rack: dry |
 | bonito flakes | *katsuobushi* | Cutting board: shave |
-| katsuobushi | bonito, *salt* | Butcher block: fillet into loins → Brine barrel: salt → Smoker: smoke → Drying rack: dry for a long time |
+| katsuobushi | skipjack tuna, *salt* | Butcher block: fillet into loins → Brine barrel: salt → Smoker: smoke → Drying rack: dry for a long time |
 
 ## Stocks and broths
 
@@ -395,7 +395,7 @@ Following every chain to its end gives 154 raw ingredients. They are what player
 | black olive | New |
 | blackcurrant | New |
 | blue corn | New |
-| bonito | New |
+| skipjack tuna | New |
 | brown mushroom | Yes |
 | cabbage | New |
 | cactus | Yes |

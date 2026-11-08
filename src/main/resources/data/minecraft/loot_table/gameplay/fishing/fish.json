@@ -56,7 +56,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "portable_pocket_cabin:bonito",
+          "name": "portable_pocket_cabin:skipjack_tuna",
           "weight": 20,
           "conditions": [
             {
