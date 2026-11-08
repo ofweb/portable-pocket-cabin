@@ -4,7 +4,10 @@
     "to_place": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "portable_pocket_cabin:laver_plant"
+        "Name": "portable_pocket_cabin:laver_plant",
+        "Properties": {
+          "age": "3"
+        }
       }
     }
   }

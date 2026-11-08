@@ -4,7 +4,10 @@
     "to_place": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "portable_pocket_cabin:wakame_plant"
+        "Name": "portable_pocket_cabin:wakame_plant",
+        "Properties": {
+          "age": "3"
+        }
       }
     }
   }

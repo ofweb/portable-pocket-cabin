@@ -1988,5 +1988,10 @@
   "technique.portable_pocket_cabin.dipping_in_sauce": "Dipping in sauce",
   "technique.portable_pocket_cabin.dipping_in_sauce.description": "Dunk bread briefly in a hot sauce so it coats and soaks in.",
   "technique.portable_pocket_cabin.scoring_the_rind": "Scoring the rind",
-  "technique.portable_pocket_cabin.scoring_the_rind.description": "Cut through the skin in close parallel lines, so it crackles evenly in the oven."
+  "technique.portable_pocket_cabin.scoring_the_rind.description": "Cut through the skin in close parallel lines, so it crackles evenly in the oven.",
+  "block.portable_pocket_cabin.apple_leaves": "Apple Leaves",
+  "block.portable_pocket_cabin.apple_sapling": "Apple Sapling",
+  "garden.portable_pocket_cabin.apple_leaves.name": "Apple Tree",
+  "garden.portable_pocket_cabin.apple_leaves": "Plant the sapling and pick apples from its leaves; they flower and fruit again. Apple saplings also drop, rarely, from oak and dark oak leaves.",
+  "screen.portable_pocket_cabin.cookbook.soil.any_floor": "Any solid floor underwater"
 }

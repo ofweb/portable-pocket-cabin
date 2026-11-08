@@ -39,7 +39,7 @@ public final class CabinPlantGameTest {
 		var original = PlantNeeds.of(CookingPlants.BARLEY_CROP);
 		try {
 			PlantNeeds.override(CookingPlants.BARLEY_CROP, new PlantNeeds(List.of("minecraft:sand"), 9, PlantNeeds.Water.NONE,
-				PlantNeeds.Support.NONE, 1.0F, false));
+				PlantNeeds.Support.NONE, 1.0F, false, 0F));
 			helper.setBlock(BASE, CookingPlants.BARLEY_CROP);
 			tick(helper, BASE, 20);
 			helper.assertTrue(age(helper, BASE) == 0, "Data that moves barley to sand stops it growing on farmland");

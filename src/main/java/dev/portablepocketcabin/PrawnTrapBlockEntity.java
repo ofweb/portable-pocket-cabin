@@ -9,8 +9,9 @@ import net.minecraft.world.level.storage.ValueOutput;
 
 /** The prawns a trap has caught, and the game time it last counted from, so it catches up after being unloaded. */
 final class PrawnTrapBlockEntity extends CookingStationBlockEntity {
-	/** About one prawn every Minecraft hour. */
+	/** About one prawn every Minecraft hour where prawns live wild, and half as fast in other water. */
 	static final int TICKS_PER_PRAWN = 1000;
+	static final int TICKS_PER_PRAWN_ELSEWHERE = 2000;
 	static final int MAX_PRAWNS = 8;
 	private static final long NEVER = Long.MIN_VALUE;
 	private long lastTime = NEVER;
@@ -25,9 +26,10 @@ final class PrawnTrapBlockEntity extends CookingStationBlockEntity {
 			lastTime = now;
 			return;
 		}
-		long caught = (now - lastTime) / TICKS_PER_PRAWN;
+		int rate = level.getBiome(worldPosition).is(PrawnTrapBlock.PRAWN_WATERS) ? TICKS_PER_PRAWN : TICKS_PER_PRAWN_ELSEWHERE;
+		long caught = (now - lastTime) / rate;
 		if (caught <= 0) return;
-		lastTime += caught * TICKS_PER_PRAWN;
+		lastTime += caught * rate;
 		ItemStack prawns = items.get(0);
 		int room = MAX_PRAWNS - prawns.getCount();
 		if (room <= 0) return;

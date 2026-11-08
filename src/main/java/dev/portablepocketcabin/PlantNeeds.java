@@ -27,9 +27,9 @@ import java.util.Map;
 
 /**
  * What a cooking plant needs to grow, loaded from {@code data/<namespace>/cooking_plant/<plant>.json} so datapacks can
- * change it. A plant whose needs are unmet survives but does not grow, as vanilla crops in the dark do.
+ * change it. A plant with a {@code spread_chance} spreads to suitable spots beside it once grown. A plant whose needs are unmet survives but does not grow, as vanilla crops in the dark do.
  */
-record PlantNeeds(List<String> soil, int light, Water water, Support support, float growthChance, boolean shade) {
+record PlantNeeds(List<String> soil, int light, Water water, Support support, float growthChance, boolean shade, float spreadChance) {
 	enum Water implements StringRepresentable {
 		/** No water needed. */
 		NONE,
@@ -59,14 +59,15 @@ record PlantNeeds(List<String> soil, int light, Water water, Support support, fl
 		}
 	}
 
-	static final PlantNeeds DEFAULT = new PlantNeeds(List.of("minecraft:farmland"), 9, Water.NONE, Support.NONE, 0.25F, false);
+	static final PlantNeeds DEFAULT = new PlantNeeds(List.of("minecraft:farmland"), 9, Water.NONE, Support.NONE, 0.25F, false, 0F);
 	static final Codec<PlantNeeds> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 		Codec.STRING.listOf().optionalFieldOf("soil", DEFAULT.soil()).forGetter(PlantNeeds::soil),
 		Codec.intRange(0, 15).optionalFieldOf("light", DEFAULT.light()).forGetter(PlantNeeds::light),
 		Water.CODEC.optionalFieldOf("water", DEFAULT.water()).forGetter(PlantNeeds::water),
 		Support.CODEC.optionalFieldOf("support", DEFAULT.support()).forGetter(PlantNeeds::support),
 		Codec.floatRange(0, 1).optionalFieldOf("growth_chance", DEFAULT.growthChance()).forGetter(PlantNeeds::growthChance),
-		Codec.BOOL.optionalFieldOf("shade", false).forGetter(PlantNeeds::shade)
+		Codec.BOOL.optionalFieldOf("shade", false).forGetter(PlantNeeds::shade),
+		Codec.floatRange(0, 1).optionalFieldOf("spread_chance", 0F).forGetter(PlantNeeds::spreadChance)
 	).apply(instance, PlantNeeds::new));
 
 	private static Map<Identifier, PlantNeeds> current = Map.of();
@@ -156,10 +157,16 @@ record PlantNeeds(List<String> soil, int light, Water water, Support support, fl
 
 	/** Whether a block stands somewhere above the plant, shading it from the open sky. */
 	static boolean roofed(LevelReader level, BlockPos pos) {
-		return level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) > pos.getY() + 1;
+		// Only blocks that stop skylight shade a plant: glass lets the light through, as a greenhouse roof should.
+		int top = level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ());
+		BlockPos.MutableBlockPos above = pos.mutable();
+		for (int y = pos.getY() + 1; y < top; y++) {
+			if (!level.getBlockState(above.setY(y)).propagatesSkylightDown()) return true;
+		}
+		return false;
 	}
 
-		private static boolean waterNearby(LevelReader level, BlockPos pos) {
+	private static boolean waterNearby(LevelReader level, BlockPos pos) {
 		for (BlockPos near : BlockPos.betweenClosed(pos.offset(-4, 0, -4), pos.offset(4, 1, 4))) {
 			if (level.getFluidState(near).is(FluidTags.WATER)) return true;
 		}

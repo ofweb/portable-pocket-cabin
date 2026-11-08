@@ -148,7 +148,7 @@ public final class CabinSeafoodGameTest {
 	}
 
 	@GameTest
-	public void prawnTrapsCatchInTheirWatersAndShellfishAreGathered(GameTestHelper helper) {
+	public void prawnTrapsCatchInWaterAndShellfishAreGathered(GameTestHelper helper) {
 		var level = helper.getLevel();
 		helper.setBlock(BASE, Butchery.PRAWN_TRAP.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, true));
 		BlockPos pos = helper.absolutePos(BASE);
@@ -156,9 +156,7 @@ public final class CabinSeafoodGameTest {
 		trap.tick(level, level.getBlockState(pos));
 		trap.rewind(PrawnTrapBlockEntity.TICKS_PER_PRAWN * 20L);
 		trap.tick(level, level.getBlockState(pos));
-		boolean prawnWaters = level.getBiome(pos).is(PrawnTrapBlock.PRAWN_WATERS);
-		helper.assertTrue(trap.getItem(0).getCount() == (prawnWaters ? PrawnTrapBlockEntity.MAX_PRAWNS : 0),
-			"A trap catches up to eight prawns only in prawn waters, found " + trap.getItem(0) + " in prawn waters " + prawnWaters);
+		helper.assertTrue(trap.getItem(0).getCount() == PrawnTrapBlockEntity.MAX_PRAWNS, "A trap in water catches up to eight prawns, found " + trap.getItem(0));
 		helper.setBlock(BASE.east(2), Butchery.PRAWN_TRAP);
 		var dry = (PrawnTrapBlockEntity) level.getBlockEntity(helper.absolutePos(BASE.east(2)));
 		dry.tick(level, level.getBlockState(helper.absolutePos(BASE.east(2))));
@@ -168,12 +166,12 @@ public final class CabinSeafoodGameTest {
 
 		helper.setBlock(BASE.south(2).below(), Blocks.STONE);
 		helper.setBlock(BASE.south(2), Blocks.WATER);
-		helper.setBlock(BASE.south(2), CookingPlants.MUSSEL_BED);
+		helper.setBlock(BASE.south(2), CookingPlants.MUSSEL_BED.defaultBlockState().setValue(SeaPlantBlock.AGE, SeaPlantBlock.MAX_AGE));
 		BlockPos bed = helper.absolutePos(BASE.south(2));
 		var player = helper.makeMockPlayer(GameType.SURVIVAL);
 		level.getBlockState(bed).useWithoutItem(level, player, new BlockHitResult(Vec3.atCenterOf(bed), net.minecraft.core.Direction.UP, bed, false));
-		helper.assertTrue(level.getBlockState(bed).is(Blocks.WATER) && level.getEntitiesOfClass(ItemEntity.class, new AABB(bed).inflate(2)).stream()
-			.anyMatch(entity -> entity.getItem().is(CookingPlants.item("mussels"))), "Mussels are gathered by hand, leaving water");
+		helper.assertTrue(level.getBlockState(bed).is(CookingPlants.MUSSEL_BED) && level.getEntitiesOfClass(ItemEntity.class, new AABB(bed).inflate(2)).stream()
+			.anyMatch(entity -> entity.getItem().is(CookingPlants.item("mussels"))), "Mussels are gathered by hand, leaving the bed to grow back");
 
 		var squid = helper.spawn(EntityTypes.SQUID, BASE.above(3));
 		var area = new AABB(squid.blockPosition()).inflate(3);

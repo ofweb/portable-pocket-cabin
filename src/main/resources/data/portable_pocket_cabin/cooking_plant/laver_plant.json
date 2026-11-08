@@ -1,0 +1,7 @@
+{
+  "soil": [],
+  "water": "standing",
+  "light": 6,
+  "growth_chance": 0.2,
+  "spread_chance": 0.05
+}

@@ -439,6 +439,7 @@ final class CookbookScreen extends Screen {
 	}
 
 	private static Component soilNames(PlantNeeds needs) {
+		if (needs.soil().isEmpty()) return Component.translatable("screen.portable_pocket_cabin.cookbook.soil.any_floor");
 		List<String> soils = new ArrayList<>();
 		for (String soil : needs.soil()) {
 			if (soil.startsWith("#")) {

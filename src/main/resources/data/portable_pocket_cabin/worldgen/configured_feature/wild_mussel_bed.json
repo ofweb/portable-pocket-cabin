@@ -4,7 +4,10 @@
     "to_place": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "portable_pocket_cabin:mussel_bed"
+        "Name": "portable_pocket_cabin:mussel_bed",
+        "Properties": {
+          "age": "3"
+        }
       }
     }
   }

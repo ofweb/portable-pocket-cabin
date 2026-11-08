@@ -135,11 +135,23 @@ final class CabinGreenhouseGrowth extends SavedData {
 		var random = RandomSource.create(seed);
 		// A block receives randomTickSpeed / 4096 random ticks per server tick on average.
 		int rounds = (int) Math.min(8192, elapsed / 4096 + (random.nextDouble() < (elapsed % 4096) / 4096.0 ? 1 : 0));
+		// Saplings that tried to grow and found no room for their tree wait, rather than trying again every round.
+		Set<BlockPos> noRoom = new java.util.HashSet<>();
 		for (int round = 0; round < rounds; round++) {
 			boolean growing = false;
 			for (var pos : volume) {
 				var state = level.getBlockState(pos);
 				if (!canProgress(level, pos, state) || !state.canSurvive(level, pos) || !state.isRandomlyTicking()) continue;
+				if (state.getBlock() instanceof FruitSaplingBlock sapling) {
+					if (noRoom.contains(pos)) continue;
+					growing = true;
+					if (level.getMaxLocalRawBrightness(pos.above()) >= 9 && random.nextInt(7) == 0) {
+						boolean lastStage = state.getValue(net.minecraft.world.level.block.SaplingBlock.STAGE) == 1;
+						sapling.advanceTree(level, pos, state, random);
+						if (lastStage && level.getBlockState(pos).is(sapling)) noRoom.add(pos.immutable());
+					}
+					continue;
+				}
 				if (state.is(Blocks.SUGAR_CANE) || state.is(Blocks.CACTUS)) {
 					if (level.getBlockState(pos.above()).is(state.getBlock())) continue;
 					int height = 1;
@@ -170,6 +182,9 @@ final class CabinGreenhouseGrowth extends SavedData {
 			|| id.getNamespace().equals("farmersdelight") && FARMERS_DELIGHT_CROPS.contains(id.getPath())
 			|| id.getNamespace().equals(PortablePocketCabin.MOD_ID) && block instanceof CookingPlant;
 		if (state.is(Blocks.BAMBOO_SAPLING)) return true;
+		// Fruit-tree saplings grow into their tree, and cinnamon and palm trunks grow bark back or fill with sap.
+		if (block instanceof FruitSaplingBlock) return true;
+		if (block instanceof HarvestTrunkBlock) return !state.getValue(HarvestTrunkBlock.READY);
 		if (id.getNamespace().equals("minecraft") && (block instanceof SugarCaneBlock || block instanceof CactusBlock)) return true;
 		if (id.getNamespace().equals("minecraft") && block instanceof BambooStalkBlock) return state.getValue(BambooStalkBlock.STAGE) == 0;
 		if (id.getNamespace().equals("minecraft") && block instanceof GrowingPlantHeadBlock head) return !head.isMaxAge(state);
