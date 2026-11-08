@@ -115,7 +115,9 @@ Plants also grow at different speeds:
 - Each plant prefers a cold, temperate, warm, or hot climate, and grows at a quarter of its pace elsewhere. The cabin greenhouse suits every climate.
 - Wasabi, vanilla, coffee, and cardamom need shade.
 
-The cookbook's Garden page shows each plant's pace and climate.
+The cookbook's Garden page shows each plant's pace and climate, how it multiplies, whether it spreads, and whether wandering traders sell it. Every food plant can be grown, and the cardoon has a page too.
+
+**Compost and rich soil.** The composter makes compost instead of bone meal; bone meal still comes from bones. Use compost on farmland for rich farmland, or on dirt or grass for rich soil, which a hoe tills into rich farmland. A plant on rich ground grows about twice as fast. Each ripe harvest from it spends some of its richness, and after about four it turns back into plain farmland or dirt; more compost tops it up. Rich farmland that dries out or is trampled becomes rich soil. Greenhouse beds can be composted like any farmland.
 
 Each plant's growing needs, such as soil, light, and water, are data, and the cookbook's Garden section shows where it grows and what it needs. The plants complete new chains: rye bread, corn tortillas, sauerkraut, gherkins, wine vinegar, mustard and mayonnaise, jams, nori, cassis, redcurrant jelly, rødgrød, salsas, spices, red wine, Käsekuchen, Madeleines, and more.
 
