@@ -205,7 +205,9 @@ public final class CabinGrowEveryFoodGameTest {
 		BlockPos cramped = BASE.east(4);
 		helper.setBlock(open.below(), Blocks.GRASS_BLOCK);
 		helper.setBlock(cramped.below(), Blocks.GRASS_BLOCK);
-		clearAbove(helper, open);
+		for (int dx = -2; dx <= 2; dx++) {
+			for (int dz = -2; dz <= 2; dz++) clearAbove(helper, open.offset(dx, 0, dz));
+		}
 		clearAbove(helper, cramped);
 		helper.setBlock(cramped.above(2), Blocks.GLASS);
 		BlockPos openPos = helper.absolutePos(open);

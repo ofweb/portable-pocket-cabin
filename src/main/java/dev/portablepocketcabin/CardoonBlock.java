@@ -18,8 +18,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
- * Cardoon, a wild thistle of meadows and savannas. It grows through four stages; a mature plant drops its purple
- * flowers, which steep into vegetable rennet, and a cardoon to replant.
+ * Cardoon, a wild thistle of meadows and savannas. It grows through four stages. A perennial crown: using a mature plant
+ * cuts its purple flowers, which steep into vegetable rennet, and sets it back to flower again. Breaking a mature plant
+ * divides it into two cardoons to replant, with its flowers.
  */
 final class CardoonBlock extends VegetationBlock implements BonemealableBlock {
 	static final MapCodec<CardoonBlock> CODEC = simpleCodec(CardoonBlock::new);
@@ -59,6 +60,18 @@ final class CardoonBlock extends VegetationBlock implements BonemealableBlock {
 		if (state.getValue(AGE) < MAX_AGE && random.nextInt(5) == 0 && level.getRawBrightness(pos.above(), 0) >= 9) {
 			level.setBlock(pos, state.setValue(AGE, state.getValue(AGE) + 1), Block.UPDATE_CLIENTS);
 		}
+	}
+
+	@Override
+	protected net.minecraft.world.InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
+		net.minecraft.world.entity.player.Player player, net.minecraft.world.phys.BlockHitResult hit) {
+		if (state.getValue(AGE) < MAX_AGE) return net.minecraft.world.InteractionResult.PASS;
+		if (level instanceof ServerLevel server) {
+			popResource(level, pos, new net.minecraft.world.item.ItemStack(CookingItems.CARDOON_FLOWER, 1 + server.getRandom().nextInt(2)));
+			level.playSound(null, pos, net.minecraft.sounds.SoundEvents.CROP_BREAK, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.setBlock(pos, state.setValue(AGE, MAX_AGE - 1), Block.UPDATE_CLIENTS);
+		}
+		return net.minecraft.world.InteractionResult.SUCCESS;
 	}
 
 	@Override

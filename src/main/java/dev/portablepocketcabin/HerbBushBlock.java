@@ -31,7 +31,7 @@ import java.util.function.Supplier;
  * A perennial plant that regrows after picking, like a sweet berry bush: thyme, strawberries, raspberries, and oyster
  * mushrooms. A two-season bush, the elder, gives one harvest at its flowering stage and another when it fruits.
  * Picking sets it back to its first grown stage. Tea remembers whether it ripened under a roof, and then gives shaded
- * tea leaves.
+ * tea leaves. A bush grown from cuttings gives a cutting to shears once grown, and is set back two stages.
  */
 class HerbBushBlock extends VegetationBlock implements BonemealableBlock, CookingPlant {
 	static final int MAX_AGE = 3;
@@ -41,14 +41,25 @@ class HerbBushBlock extends VegetationBlock implements BonemealableBlock, Cookin
 	/** What a picking gives at the flowering stage (age 2), or null; and at the ripe stage (age 3). */
 	private final Supplier<Item> flowering;
 	private final Supplier<Item> ripe;
+	/** Whether shears take a cutting from the grown bush, which is how it is planted. */
+	private final boolean cuttings;
 	private final MapCodec<HerbBushBlock> codec;
 
-	HerbBushBlock(Properties properties, Supplier<Item> flowering, Supplier<Item> ripe) {
+	HerbBushBlock(Properties properties, Supplier<Item> flowering, Supplier<Item> ripe, boolean cuttings) {
 		super(properties);
 		this.flowering = flowering;
 		this.ripe = ripe;
-		this.codec = simpleCodec(p -> new HerbBushBlock(p, flowering, ripe));
+		this.cuttings = cuttings;
+		this.codec = simpleCodec(p -> new HerbBushBlock(p, flowering, ripe, cuttings));
 		registerDefaultState(stateDefinition.any().setValue(AGE, 0));
+	}
+
+	/** Shears on a grown bush grown from cuttings give one cutting, set it back two stages, and wear the shears. */
+	@Override
+	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+		net.minecraft.world.InteractionHand hand, BlockHitResult hit) {
+		if (!cuttings || !stack.is(net.minecraft.world.item.Items.SHEARS)) return super.useItemOn(stack, state, level, pos, player, hand, hit);
+		return Cuttings.take(state, level, pos, player, stack, hand, AGE, 2);
 	}
 
 	/** The bush's state after growing to {@code age} at {@code pos}. */
@@ -132,7 +143,7 @@ class HerbBushBlock extends VegetationBlock implements BonemealableBlock, Cookin
 		private final MapCodec<Tea> teaCodec;
 
 		Tea(Properties properties, Supplier<Item> leaves, Supplier<Item> shadedLeaves) {
-			super(properties, null, leaves);
+			super(properties, null, leaves, true);
 			this.shadedLeaves = shadedLeaves;
 			this.teaCodec = simpleCodec(p -> new Tea(p, leaves, shadedLeaves));
 			registerDefaultState(defaultBlockState().setValue(SHADED, false));

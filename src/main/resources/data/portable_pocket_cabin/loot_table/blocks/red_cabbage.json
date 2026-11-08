@@ -8,15 +8,6 @@
   "pools": [
     {
       "rolls": 1.0,
-      "conditions": [
-        {
-          "condition": "minecraft:block_state_property",
-          "block": "portable_pocket_cabin:red_cabbage",
-          "properties": {
-            "age": "7"
-          }
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
@@ -32,14 +23,51 @@
             }
           ]
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "portable_pocket_cabin:red_cabbage",
+          "properties": {
+            "age": "7"
+          }
+        }
       ]
     },
     {
       "rolls": 1.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "portable_pocket_cabin:red_cabbage_seeds"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:red_cabbage_seeds",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "portable_pocket_cabin:red_cabbage",
+                  "properties": {
+                    "age": "7"
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "min": 1.0,
+                    "max": 3.0
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:red_cabbage_seeds"
+            }
+          ]
         }
       ]
     }

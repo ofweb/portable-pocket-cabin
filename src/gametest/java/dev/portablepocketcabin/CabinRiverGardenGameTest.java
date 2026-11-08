@@ -104,11 +104,11 @@ public final class CabinRiverGardenGameTest {
 		helper.assertTrue(!rice.defaultBlockState().canSurvive(level, pos), "Rice can't grow under deeper water");
 		helper.setBlock(BASE.above(), Blocks.AIR);
 		helper.setBlock(BASE.east().below(), Blocks.FARMLAND);
-		var seedlings = new ItemStack(CookingPlants.item("rice_seedlings"));
+		var seedlings = new ItemStack(CookingPlants.RICE);
 		player(helper).setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, seedlings);
 		var onDryFarmland = new net.minecraft.world.item.context.BlockPlaceContext(player(helper), net.minecraft.world.InteractionHand.MAIN_HAND, seedlings,
 			new BlockHitResult(Vec3.atCenterOf(pos.east().below()), Direction.UP, pos.east().below(), false));
-		helper.assertTrue(rice.getStateForPlacement(onDryFarmland) == null, "Rice seedlings can't be planted on dry farmland");
+		helper.assertTrue(rice.getStateForPlacement(onDryFarmland) == null, "Rice can't be planted on dry farmland");
 		helper.succeed();
 	}
 

@@ -25,16 +25,28 @@ import java.util.function.Supplier;
 /**
  * A climbing crop on a trellis: cucumber, grapes, hops, tomatoes, and more. It is planted only by using its seeds on
  * a trellis. Picking a ripe vine gives its fruit and sets it back two stages, so it fruits again without replanting.
+ * A vine grown from cuttings gives a cutting to shears once grown, and is set back two stages too.
  */
 final class TrellisCropBlock extends FieldCropBlock {
 	static final int PICKED_BACK = 2;
 	private final Supplier<Item> produce;
+	/** Whether shears take a cutting from the grown vine, which is how it is planted. */
+	private final boolean cuttings;
 	private final MapCodec<TrellisCropBlock> codec;
 
-	TrellisCropBlock(Properties properties, Supplier<? extends ItemLike> seeds, Supplier<Item> produce) {
+	TrellisCropBlock(Properties properties, Supplier<? extends ItemLike> seeds, Supplier<Item> produce, boolean cuttings) {
 		super(properties, seeds);
 		this.produce = produce;
-		this.codec = simpleCodec(p -> new TrellisCropBlock(p, seeds, produce));
+		this.cuttings = cuttings;
+		this.codec = simpleCodec(p -> new TrellisCropBlock(p, seeds, produce, cuttings));
+	}
+
+	/** Shears on a grown vine grown from cuttings give one cutting, set it back two stages, and wear the shears. */
+	@Override
+	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+		net.minecraft.world.InteractionHand hand, BlockHitResult hit) {
+		if (!cuttings || !stack.is(net.minecraft.world.item.Items.SHEARS)) return super.useItemOn(stack, state, level, pos, player, hand, hit);
+		return Cuttings.take(state, level, pos, player, stack, hand, AGE, getMaxAge() - 1);
 	}
 
 	@Override
