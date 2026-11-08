@@ -156,7 +156,13 @@ record PlantNeeds(List<String> soil, int light, Water water, Support support, fl
 
 	/** Whether a block stands somewhere above the plant, shading it from the open sky. */
 	static boolean roofed(LevelReader level, BlockPos pos) {
-		return level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) > pos.getY() + 1;
+		// Only blocks that stop skylight shade a plant: glass lets the light through, as a greenhouse roof should.
+		int top = level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ());
+		BlockPos.MutableBlockPos above = pos.mutable();
+		for (int y = pos.getY() + 1; y < top; y++) {
+			if (!level.getBlockState(above.setY(y)).propagatesSkylightDown()) return true;
+		}
+		return false;
 	}
 
 		private static boolean waterNearby(LevelReader level, BlockPos pos) {

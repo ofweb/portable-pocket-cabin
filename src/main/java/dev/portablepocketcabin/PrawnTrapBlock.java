@@ -32,8 +32,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
- * A prawn trap. Placed in water where prawns live, it catches about one prawn every Minecraft hour, up to eight, and
- * catches up from saved game time while its chunk is unloaded. An empty hand takes the prawns, and hoppers below
+ * A prawn trap. Placed in any water, it catches prawns, up to eight: about one every Minecraft hour where prawns live
+ * wild, and half as fast elsewhere. It catches up from saved game time while its chunk is unloaded. An empty hand takes the prawns, and hoppers below
  * take them too.
  */
 final class PrawnTrapBlock extends CookingStationBlock implements SimpleWaterloggedBlock {
@@ -80,9 +80,9 @@ final class PrawnTrapBlock extends CookingStationBlock implements SimpleWaterlog
 		return state;
 	}
 
-	/** Whether a trap here can catch: under water, in prawn waters. */
+	/** Whether a trap here can catch: under water. Prawn waters only make it faster. */
 	static boolean catches(Level level, BlockPos pos, BlockState state) {
-		return state.getValue(BlockStateProperties.WATERLOGGED) && level.getBiome(pos).is(PRAWN_WATERS);
+		return state.getValue(BlockStateProperties.WATERLOGGED);
 	}
 
 	@Override
