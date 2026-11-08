@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "thickening",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pork_stock"
+    },
+    {
+      "item": "portable_pocket_cabin:salted_butter"
+    },
+    {
+      "item": "portable_pocket_cabin:wheat_flour"
+    }
+  ],
+  "heat": "low",
+  "time": 150,
+  "result": {
+    "id": "portable_pocket_cabin:brun_sovs"
+  }
+}

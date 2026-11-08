@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "roasting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:scored_pork_loin"
+    },
+    {
+      "item": "portable_pocket_cabin:coarse_salt"
+    },
+    {
+      "item": "portable_pocket_cabin:bay_leaf"
+    }
+  ],
+  "heat": "high",
+  "time": 600,
+  "result": {
+    "id": "portable_pocket_cabin:flaeskesteg"
+  }
+}

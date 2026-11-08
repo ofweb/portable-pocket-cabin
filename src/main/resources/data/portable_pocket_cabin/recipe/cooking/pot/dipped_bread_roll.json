@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "dipping_in_sauce",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:bread_roll"
+    },
+    {
+      "item": "portable_pocket_cabin:red_chili_sauce"
+    }
+  ],
+  "heat": "low",
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:dipped_bread_roll"
+  }
+}

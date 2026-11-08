@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "warming_gently",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:corn_tortilla",
+      "count": 3
+    },
+    {
+      "item": "portable_pocket_cabin:salsa_verde"
+    }
+  ],
+  "heat": "low",
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:dipped_tortillas",
+    "count": 3
+  }
+}

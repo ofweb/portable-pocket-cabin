@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:raw_llapingachos"
+    }
+  ],
+  "heat": "medium",
+  "time": 140,
+  "result": {
+    "id": "portable_pocket_cabin:fried_llapingachos"
+  }
+}

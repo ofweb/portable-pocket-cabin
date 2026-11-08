@@ -34,3 +34,13 @@ Each feature's brief lists the products it ships and the ones it leaves to a lat
 ## Size
 
 The program adds about 125 raw ingredients and 20 stations, and roughly 890 recipe steps. B-0050 and B-0049 are the largest. Each needs textures and models, which [B-0034](../backlog.md#b-0034-cabin-presentation) and the [texture audit](texture-audit.md) cover.
+
+## Status
+
+Every phase is built, and all 147 catalogue dishes can be made. The [completion check](tools/completion_check.py) reports nothing left. After the five phases, three gaps closed:
+
+- **Koji:** wandering traders sell the first koji spores, and each batch of koji rice gives spores back. Koji makes miso, soy sauce, sake, mirin, and rice vinegar.
+- **Spirits:** wandering traders sell rum and kirsch, because distilling is out of scope.
+- **Last ingredients:** queso fresco curdles with either rennet, and apricots and plums halve and dry into dried fruit.
+
+[B-0051](../backlog.md#b-0051-food-benefits) food benefits and [B-0033](../backlog.md#b-0033-survival-balance) tuning come next.

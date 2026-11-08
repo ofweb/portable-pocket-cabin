@@ -26,8 +26,13 @@ def parse_ingredients(text):
     text=text.split('. ')[0]
     groups=[]
     for part in re.split(r',\s*', text):
-        alts=[norm(a) for a in re.split(r'\s+or\s+', part) if norm(a)]
-        if alts: groups.append(alts)
+        # "X, or Y" continues the list before it as an alternative, and "a calf stomach from B-0049" names the calf stomach.
+        alternative=part.strip().startswith('or ')
+        part=re.sub(r'^or\s+','',part.strip())
+        alts=[re.sub(r'\s+from\s+b-\d+$','',re.sub(r'^an?\s+','',norm(a))) for a in re.split(r'\s+or\s+', part) if norm(a)]
+        if not alts: continue
+        if alternative and groups: groups[-1].extend(alts)
+        else: groups.append(alts)
     return groups
 def stations(proc):
     names=set()
@@ -57,6 +62,8 @@ for k,v in lang.items():
 mod |= {'bread', 'corn tortillas', 'jam', 'kombu', 'skimmed milk', 'vegetable oil'}
 # Dishes the mod has under another name: the quesadilla, the pretzel, and apple juice.
 mod |= {'quesadillas', 'brezeln', 'æblemost'}
+# The catalogue's rennet is either of the mod's rennets, vegetable or calf rennet.
+mod |= {'pork loin with rind', 'rennet'}
 # The catalogue lists a carcass's parts together in one row. The mod gives each part as its own item.
 mod |= {'beef chuck, beef round, beef sirloin, beef heart, calf stomach, beef bones, suet', 'chicken thighs, chicken drumsticks, chicken bones',
         'pork shoulder, pork belly, pork loin with rind, pig trotters, pork bones, back fat, pork casing'}

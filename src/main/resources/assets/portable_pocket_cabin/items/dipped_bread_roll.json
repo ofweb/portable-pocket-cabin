@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/dipped_bread_roll",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 10498074
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "griddling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:raw_sopes"
+    }
+  ],
+  "heat": "medium",
+  "time": 120,
+  "result": {
+    "id": "portable_pocket_cabin:sope_shells"
+  }
+}

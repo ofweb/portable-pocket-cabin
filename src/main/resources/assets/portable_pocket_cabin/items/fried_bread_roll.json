@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/fried_bread_roll",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 9054736
+      }
+    ]
+  }
+}

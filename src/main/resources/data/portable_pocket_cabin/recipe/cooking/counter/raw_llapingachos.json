@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "stuffing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:achiote_potato_mash"
+    },
+    {
+      "item": "portable_pocket_cabin:queso_fresco"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:raw_llapingachos",
+    "count": 2
+  }
+}

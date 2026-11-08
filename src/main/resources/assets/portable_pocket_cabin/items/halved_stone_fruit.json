@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/halved_stone_fruit",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 15769664
+      }
+    ]
+  }
+}

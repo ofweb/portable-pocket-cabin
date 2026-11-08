@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "topping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:griddled_tlacoyos"
+    },
+    {
+      "item": "portable_pocket_cabin:nopales"
+    },
+    {
+      "item": "portable_pocket_cabin:salsa_verde"
+    },
+    {
+      "item": "portable_pocket_cabin:queso_fresco"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "sour",
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tlacoyos"
+  }
+}

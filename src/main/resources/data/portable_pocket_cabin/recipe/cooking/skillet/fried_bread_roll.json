@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dipped_bread_roll"
+    }
+  ],
+  "heat": "medium",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:fried_bread_roll"
+  }
+}

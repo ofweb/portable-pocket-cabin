@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:ageing",
+  "technique": "resting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:canele_batter"
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "portable_pocket_cabin:rested_canele_batter"
+  }
+}

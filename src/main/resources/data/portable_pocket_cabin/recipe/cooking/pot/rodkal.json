@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "braising",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:red_cabbage"
+    },
+    {
+      "item": "portable_pocket_cabin:wine_vinegar"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:salted_butter"
+    }
+  ],
+  "heat": "low",
+  "time": 600,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:rodkal",
+    "count": 2
+  }
+}

@@ -436,6 +436,23 @@ final class CookingPlants {
 		for (String name : dishes) PRODUCTS.add(ingredient(name, food(8, 9.6F)));
 	}
 
+	/**
+	 * The last catalogue gaps: rum and kirsch from wandering traders, queso fresco from either rennet, dried fruit, and
+	 * the dishes they complete.
+	 */
+	static {
+		String[] plain = {"queso_fresco_curds", "queso_fresco", "halved_stone_fruit", "dried_fruit", "canele_batter", "rested_canele_batter",
+			"split_chocolate_sponge", "dipped_tortillas", "rolled_enchiladas", "raw_sopes", "sope_shells", "raw_tlacoyos", "griddled_tlacoyos",
+			"pambazo_filling", "fried_pambazo_filling", "dipped_bread_roll", "fried_bread_roll", "achiote_potato_mash", "raw_llapingachos",
+			"fried_llapingachos", "scored_pork_loin", "flaeskesteg", "rodkal", "vanilla_milk"};
+		for (String name : plain) PRODUCTS.add(ingredient(name, null));
+		String[] bottles = {"rum", "kirsch", "brun_sovs"};
+		for (String name : bottles) PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16))));
+		String[] dishes = {"caneles", "schwarzwalder_kirschtorte", "enchiladas_verdes", "sopes", "tlacoyos", "pambazos", "mazamorra_morada", "llapingachos",
+			"flaeskesteg_med_rodkal"};
+		for (String name : dishes) PRODUCTS.add(ingredient(name, food(8, 9.6F)));
+	}
+
 	/** Picked from vanilla rose bushes with shears. */
 	static final Item ROSEHIP = ingredient("rosehip", null);
 

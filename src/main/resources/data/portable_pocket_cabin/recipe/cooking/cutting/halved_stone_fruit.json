@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "halving",
+  "ingredients": [
+    {
+      "item": [
+        "portable_pocket_cabin:apricot",
+        "portable_pocket_cabin:plum"
+      ]
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:halved_stone_fruit",
+    "count": 2
+  }
+}
