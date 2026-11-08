@@ -116,7 +116,7 @@ It has 147 dishes, 281 intermediate products, 154 raw ingredients, 28 stations, 
 
 ### Fish and seafood
 
-[anchovy](ingredients/anchovy.md), [bonito](ingredients/bonito.md), [herring](ingredients/herring.md), [mussels](ingredients/mussels.md), [oyster](ingredients/oyster.md), [prawns](ingredients/prawns.md)
+[anchovy](ingredients/anchovy.md), [skipjack tuna](ingredients/skipjack-tuna.md), [herring](ingredients/herring.md), [mussels](ingredients/mussels.md), [oyster](ingredients/oyster.md), [prawns](ingredients/prawns.md)
 
 ### Sea plants and minerals
 

@@ -40,7 +40,7 @@ public final class CabinSeafoodGameTest {
 		"brine/salted_herring",
 		"mixing_bowl/herring_pickling_liquid",
 		"crock/pickled_herring",
-		"brine/salted_bonito_loin",
+		"brine/salted_tuna_loin",
 		"drying/katsuobushi",
 		"cutting/bonito_flakes",
 		"pot/unstrained_dashi",

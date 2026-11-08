@@ -3,7 +3,7 @@
   "technique": "salting",
   "ingredients": [
     {
-      "item": "portable_pocket_cabin:bonito_loin"
+      "item": "portable_pocket_cabin:tuna_loin"
     },
     {
       "item": "portable_pocket_cabin:salt"
@@ -11,6 +11,6 @@
   ],
   "time": 24000,
   "result": {
-    "id": "portable_pocket_cabin:salted_bonito_loin"
+    "id": "portable_pocket_cabin:salted_tuna_loin"
   }
 }
