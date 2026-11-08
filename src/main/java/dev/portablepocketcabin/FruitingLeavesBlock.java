@@ -82,7 +82,8 @@ class FruitingLeavesBlock extends UntintedParticleLeavesBlock implements Cooking
 		super.randomTick(state, level, pos, random);
 		BlockState now = level.getBlockState(pos);
 		if (!now.is(this) || now.getValue(stage()) >= lastStage()) return;
-		if (level.getRawBrightness(pos, 0) >= needs().light() && random.nextFloat() < needs().growthChance()) {
+		if (level.getRawBrightness(pos, 0) >= needs().light() && (!needs().shade() || PlantNeeds.roofed(level, pos))
+			&& random.nextFloat() < needs().growthChance(level, pos)) {
 			level.setBlock(pos, now.setValue(stage(), now.getValue(stage()) + 1), Block.UPDATE_CLIENTS);
 		}
 	}

@@ -410,6 +410,9 @@ final class CookbookScreen extends Screen {
 		if (needs.shade()) growing = growing.copy().append(" ").append(Component.translatable("screen.portable_pocket_cabin.cookbook.shade_needed"));
 		graphics.textWithWordWrap(font, growing, x, y, right - x, TEXT, false);
 		y += font.split(growing, right - x).size() * font.lineHeight + 6;
+		Component pace = pace(needs);
+		graphics.textWithWordWrap(font, pace, x, y, right - x, TEXT, false);
+		y += font.split(pace, right - x).size() * font.lineHeight + 6;
 		graphics.text(font, Component.translatable("screen.portable_pocket_cabin.cookbook.gives"), x, y, TEXT, false);
 		y += 11;
 		for (Item item : CookingPlants.GIVES.getOrDefault(selectedPlant, List.of())) {
@@ -436,6 +439,14 @@ final class CookbookScreen extends Screen {
 		}
 		names.sort(String::compareTo);
 		return Component.literal(String.join(", ", names));
+	}
+
+	/** How quickly a plant grows, by its growth chance's tier, and the climate it prefers. */
+	static Component pace(PlantNeeds needs) {
+		float chance = needs.growthChance();
+		String tier = chance >= 0.3F ? "fast" : chance >= 0.2F ? "average" : chance >= 0.1F ? "slow" : "very_slow";
+		return Component.translatable("screen.portable_pocket_cabin.cookbook.pace." + tier).append(" ")
+			.append(Component.translatable("screen.portable_pocket_cabin.cookbook.climate." + needs.climate().getSerializedName()));
 	}
 
 	private static Component soilNames(PlantNeeds needs) {

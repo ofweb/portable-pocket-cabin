@@ -52,8 +52,12 @@ public final class CabinNorthernGardenGameTest {
 		helper.setBlock(still, CookingPlants.WASABI_CROP);
 		helper.setBlock(still.east(), Blocks.WATER);
 		helper.setBlock(BASE.west(), Blocks.WATER.defaultBlockState().setValue(net.minecraft.world.level.block.LiquidBlock.LEVEL, 2));
+		// Wasabi needs shade.
+		helper.setBlock(BASE.above(2), Blocks.STONE);
+		helper.setBlock(still.above(2), Blocks.STONE);
 		var random = RandomSource.create(3);
-		for (int i = 0; i < 400; i++) {
+		// Wasabi grows very slowly, and at a quarter of that pace outside the cold.
+		for (int i = 0; i < 3000; i++) {
 			for (BlockPos spot : new BlockPos[] {BASE, still}) {
 				var pos = helper.absolutePos(spot);
 				var state = level.getBlockState(pos);

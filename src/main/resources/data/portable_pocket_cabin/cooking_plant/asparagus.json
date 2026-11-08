@@ -5,6 +5,7 @@
   "light": 9,
   "water": "nearby",
   "support": "none",
-  "growth_chance": 0.15,
-  "shade": false
+  "growth_chance": 0.06,
+  "shade": false,
+  "climate": "temperate"
 }

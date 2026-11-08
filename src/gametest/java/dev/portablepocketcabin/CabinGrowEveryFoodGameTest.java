@@ -236,6 +236,30 @@ public final class CabinGrowEveryFoodGameTest {
 		});
 	}
 
+	@GameTest
+	public void plantsGrowAQuarterAsFastOutsideTheirClimate(GameTestHelper helper) {
+		var level = helper.getLevel();
+		BlockPos pos = helper.absolutePos(BASE);
+		float temperature = level.getBiome(pos).value().getBaseTemperature();
+		PlantNeeds.Climate here = null;
+		PlantNeeds.Climate elsewhere = null;
+		for (PlantNeeds.Climate climate : PlantNeeds.Climate.values()) {
+			if (climate == PlantNeeds.Climate.ANY) continue;
+			if (climate.suits(temperature)) here = climate;
+			else elsewhere = climate;
+		}
+		var suited = new PlantNeeds(java.util.List.of(), 0, PlantNeeds.Water.NONE, PlantNeeds.Support.NONE, 0.24F, false, 0F, here);
+		var unsuited = new PlantNeeds(java.util.List.of(), 0, PlantNeeds.Water.NONE, PlantNeeds.Support.NONE, 0.24F, false, 0F, elsewhere);
+		helper.assertTrue(suited.growthChance(level, pos) == 0.24F, "A plant in its climate grows at its full pace");
+		helper.assertTrue(unsuited.growthChance(level, pos) == 0.06F, "A plant outside its climate grows at a quarter of the pace");
+		helper.assertTrue(PlantNeeds.suitsEveryClimate(PocketDimension.LEVEL_KEY) && !PlantNeeds.suitsEveryClimate(level.dimension()),
+			"The cabin greenhouse suits every climate");
+		helper.assertTrue(PlantNeeds.of(CookingPlants.WASABI_CROP).climate() == PlantNeeds.Climate.COLD && PlantNeeds.of(CookingPlants.WASABI_CROP).shade(),
+			"Wasabi needs cold and shade");
+		helper.assertTrue(PlantNeeds.of(CookingPlants.PLANTS.get("coffee_leaves")).shade(), "Coffee needs shade");
+		helper.succeed();
+	}
+
 	private static int count(java.util.List<ItemStack> drops, net.minecraft.world.item.Item item) {
 		return drops.stream().filter(stack -> stack.is(item)).mapToInt(ItemStack::getCount).sum();
 	}

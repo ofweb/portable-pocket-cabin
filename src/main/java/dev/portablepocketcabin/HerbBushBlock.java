@@ -96,7 +96,7 @@ class HerbBushBlock extends VegetationBlock implements BonemealableBlock, Cookin
 	@Override
 	protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		int age = state.getValue(AGE);
-		if (age < MAX_AGE && needs().canGrow(level, pos) && random.nextFloat() < needs().growthChance()) {
+		if (age < MAX_AGE && needs().canGrow(level, pos) && random.nextFloat() < needs().growthChance(level, pos)) {
 			level.setBlock(pos, grown(state, level, pos, age + 1), Block.UPDATE_CLIENTS);
 		}
 	}
