@@ -43,6 +43,8 @@ vines, bushes, fruiting leaves, sea plants, and shellfish beds advance their
 doesn't; cinnamon trunks grow bark back and palm trunks fill with sap. Sea
 plants and beds spread only on live random ticks, so catch-up never places new
 plants. Glass and other blocks that let skylight through don't shade plants.
+The pocket dimension suits every plant climate (B-0054), so plants grow at their
+full pace in the greenhouse wherever they come from.
 
 ## Optional mods
 

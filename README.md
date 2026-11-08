@@ -103,6 +103,20 @@ Milk settles in the dairy pan into cream and skimmed milk. Cream churns into but
   - An axe strips bark from a cinnamon tree without felling it, and the bark grows back.
   - Oil palm and coconut palm trunks fill with sap that a glass bottle taps.
 
+**Growing.** Each plant gives its food and its next planting in its own way:
+- **Grains and tubers** plant from their own harvest: barley, rye, corn, rice, beans, onions, garlic, ginger, and more. Vanilla wheat plants from wheat too, and a ripe crop gives two to four wheat without seeds. Wheat seeds still plant it.
+- **Fruiting crops** such as peppers, chilies, aubergines, cabbages, tomatoes, and cucumbers give their produce and one to three seeds.
+- **Leafy crops** such as lettuce, radish, the basils, dill, parsley, celery, and spring onion give their leaves or root one stage before they ripen. Left a stage longer, they flower and give seeds instead, as cilantro gives coriander.
+- **Bushes and vines** grown from cuttings, such as currants, raspberries, herbs, tea, grapes, and hops, are picked for their fruit or leaves. Shears on a grown plant take a cutting, and a strawberry gives a runner. Their fruit doesn't plant them.
+- **Perennial crowns:** asparagus, rhubarb, and cardoon are cut again and again from one planting, and digging up a grown one divides it in two.
+
+Plants also grow at different speeds:
+- Leafy greens grow quickly. Roots and rhizomes grow slowly. Asparagus, rhubarb, pineapple, vanilla, wasabi, and fruit trees grow very slowly.
+- Each plant prefers a cold, temperate, warm, or hot climate, and grows at a quarter of its pace elsewhere. The cabin greenhouse suits every climate.
+- Wasabi, vanilla, coffee, and cardamom need shade.
+
+The cookbook's Garden page shows each plant's pace and climate.
+
 Each plant's growing needs, such as soil, light, and water, are data, and the cookbook's Garden section shows where it grows and what it needs. The plants complete new chains: rye bread, corn tortillas, sauerkraut, gherkins, wine vinegar, mustard and mayonnaise, jams, nori, cassis, redcurrant jelly, rødgrød, salsas, spices, red wine, Käsekuchen, Madeleines, and more.
 
 **Butchery.** Cows, pigs, sheep, chickens, rabbits, goats, and ducks drop a whole carcass instead of meat, hide, feathers, or wool:
