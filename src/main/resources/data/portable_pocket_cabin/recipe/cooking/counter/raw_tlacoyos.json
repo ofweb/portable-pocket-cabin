@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "filling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:blue_corn_masa",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:refried_beans"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:raw_tlacoyos",
+    "count": 2
+  }
+}

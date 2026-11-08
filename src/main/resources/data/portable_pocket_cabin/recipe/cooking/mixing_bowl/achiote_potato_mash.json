@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mashing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:boiled_potatoes",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:achiote_oil"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:achiote_potato_mash",
+    "count": 2
+  }
+}

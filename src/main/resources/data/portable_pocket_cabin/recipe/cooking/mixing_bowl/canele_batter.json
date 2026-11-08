@@ -1,0 +1,34 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:vanilla_milk"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "minecraft:egg",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:wheat_flour"
+    },
+    {
+      "item": "portable_pocket_cabin:rum"
+    }
+  ],
+  "time": 6,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    },
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:canele_batter"
+  }
+}

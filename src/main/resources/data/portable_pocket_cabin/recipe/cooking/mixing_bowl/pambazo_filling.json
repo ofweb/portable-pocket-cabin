@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chorizo"
+    },
+    {
+      "item": "portable_pocket_cabin:diced_potato",
+      "count": 2
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:pambazo_filling"
+  }
+}

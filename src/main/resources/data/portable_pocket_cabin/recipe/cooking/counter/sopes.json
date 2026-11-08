@@ -1,0 +1,32 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "topping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sope_shells"
+    },
+    {
+      "item": "portable_pocket_cabin:refried_beans"
+    },
+    {
+      "item": "portable_pocket_cabin:chorizo"
+    },
+    {
+      "item": "portable_pocket_cabin:salsa_roja"
+    },
+    {
+      "item": "portable_pocket_cabin:crema"
+    },
+    {
+      "item": "portable_pocket_cabin:queso_fresco"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:sopes"
+  }
+}

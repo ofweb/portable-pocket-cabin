@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "infusing",
+  "ingredients": [
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "portable_pocket_cabin:vanilla"
+    },
+    {
+      "item": "portable_pocket_cabin:raw_butter"
+    }
+  ],
+  "heat": "low",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:vanilla_milk"
+  }
+}

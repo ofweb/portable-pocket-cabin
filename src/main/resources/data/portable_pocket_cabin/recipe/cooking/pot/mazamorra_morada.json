@@ -1,0 +1,35 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "thickening",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:strained_chicha_morada"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:sweet_potato_starch"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_fruit"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "sweet",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:mazamorra_morada"
+  }
+}

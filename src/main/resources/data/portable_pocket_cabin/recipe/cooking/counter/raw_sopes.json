@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "shaping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:masa",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:lard"
+    }
+  ],
+  "time": 40,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:raw_sopes",
+    "count": 3
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "filling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fried_bread_roll"
+    },
+    {
+      "item": "portable_pocket_cabin:fried_pambazo_filling"
+    },
+    {
+      "item": "portable_pocket_cabin:lettuce"
+    },
+    {
+      "item": "portable_pocket_cabin:crema"
+    },
+    {
+      "item": "portable_pocket_cabin:queso_fresco"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:pambazos"
+  }
+}

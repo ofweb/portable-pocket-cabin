@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fried_llapingachos",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:peanut_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:fried_egg"
+    },
+    {
+      "item": "portable_pocket_cabin:chorizo"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:llapingachos"
+  }
+}

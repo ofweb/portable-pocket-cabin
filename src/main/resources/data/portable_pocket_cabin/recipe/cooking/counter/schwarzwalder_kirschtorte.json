@@ -1,0 +1,35 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "layering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:split_chocolate_sponge"
+    },
+    {
+      "item": "portable_pocket_cabin:cherry_compote"
+    },
+    {
+      "item": "portable_pocket_cabin:whipped_cream"
+    },
+    {
+      "item": "portable_pocket_cabin:kirsch"
+    },
+    {
+      "item": "portable_pocket_cabin:chocolate"
+    }
+  ],
+  "time": 60,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "tastes": [
+    "sweet",
+    "sour"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:schwarzwalder_kirschtorte"
+  }
+}

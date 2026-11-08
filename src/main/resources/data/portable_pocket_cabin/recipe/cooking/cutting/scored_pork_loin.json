@@ -1,0 +1,12 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "scoring_the_rind",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pork_loin"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:scored_pork_loin"
+  }
+}

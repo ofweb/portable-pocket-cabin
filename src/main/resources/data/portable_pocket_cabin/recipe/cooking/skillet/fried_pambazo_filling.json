@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pambazo_filling"
+    }
+  ],
+  "heat": "medium",
+  "time": 120,
+  "result": {
+    "id": "portable_pocket_cabin:fried_pambazo_filling"
+  }
+}

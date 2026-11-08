@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:rested_canele_batter"
+    }
+  ],
+  "heat": "high",
+  "time": 300,
+  "tastes": [
+    "sweet",
+    "bitter"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:caneles",
+    "count": 6
+  }
+}

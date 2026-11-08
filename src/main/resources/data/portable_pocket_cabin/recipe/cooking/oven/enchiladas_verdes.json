@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:rolled_enchiladas"
+    },
+    {
+      "item": "portable_pocket_cabin:crema"
+    },
+    {
+      "item": "portable_pocket_cabin:queso_fresco"
+    }
+  ],
+  "heat": "low",
+  "time": 150,
+  "tastes": [
+    "sour",
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:enchiladas_verdes"
+  }
+}

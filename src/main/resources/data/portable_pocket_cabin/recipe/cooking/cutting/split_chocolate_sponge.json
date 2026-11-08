@@ -1,0 +1,12 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "splitting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chocolate_sponge"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:split_chocolate_sponge"
+  }
+}

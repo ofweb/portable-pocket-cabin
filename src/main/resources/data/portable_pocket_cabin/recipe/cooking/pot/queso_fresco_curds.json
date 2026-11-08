@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "curdling",
+  "ingredients": [
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "#portable_pocket_cabin:rennets"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "heat": "low",
+  "time": 150,
+  "remainders": [
+    {
+      "id": "minecraft:bucket"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:queso_fresco_curds",
+    "count": 2
+  }
+}
