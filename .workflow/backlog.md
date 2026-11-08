@@ -262,11 +262,12 @@ Implemented items leave the backlog. Their briefs and designs stay in [features]
 
 ## B-0054: Grow every food
 
-- Status: Ready for Design
+- Status: Ready for Implementation
 - Value: Let players grow every plant food and shellfish they find, so that planting it gives more back. This covers apples from an apple tree, sea plants and shellfish beds that grow and spread, prawn traps in any water, and every kind growing in the greenhouse.
 - Direction: [Cooking and food production](direction.md#cooking-and-food-production).
 - Relationships: Extends B-0050 plants and B-0049 shellfish, and the greenhouse in B-0019. Animals and fish stay with B-0022 and B-0021.
 - Feature Brief: [Grow every food brief](features/B-0054/brief.md).
+- Design: [Grow every food design](features/B-0054/design.md).
 
 ## B-0051: Food benefits
 
