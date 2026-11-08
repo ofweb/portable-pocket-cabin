@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/duck_confit",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 12615760
+      }
+    ]
+  }
+}

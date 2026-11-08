@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/cassoulet_beans",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 15259824
+      }
+    ]
+  }
+}

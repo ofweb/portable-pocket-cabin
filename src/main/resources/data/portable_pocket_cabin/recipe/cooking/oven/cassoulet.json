@@ -1,0 +1,32 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cassoulet_beans",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:toulouse_sausage"
+    },
+    {
+      "item": "portable_pocket_cabin:duck_confit"
+    },
+    {
+      "item": "portable_pocket_cabin:pork_belly"
+    },
+    {
+      "item": "portable_pocket_cabin:breadcrumbs"
+    }
+  ],
+  "heat": "low",
+  "time": 800,
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:cassoulet",
+    "count": 2
+  }
+}

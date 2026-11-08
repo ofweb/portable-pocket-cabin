@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:brine",
+  "technique": "salting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:duck_legs",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:coarse_salt"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    },
+    {
+      "item": "portable_pocket_cabin:thyme"
+    }
+  ],
+  "time": 12000,
+  "result": {
+    "id": "portable_pocket_cabin:salted_duck_legs",
+    "count": 2
+  }
+}

@@ -54,8 +54,8 @@ final class Butchery {
 		PortablePocketCabin.id("carcass"), DataComponentType.<CarcassState>builder()
 			.persistent(CarcassState.CODEC).networkSynchronized(CarcassState.STREAM_CODEC).build());
 
-	/** The butcherable animals, in the order the cookbook lists them. Ducks join in delivery 3. */
-	static final String[] ANIMALS = {"cow", "pig", "sheep", "chicken", "rabbit", "goat"};
+	/** The butcherable animals, in the order the cookbook lists them. */
+	static final String[] ANIMALS = {"cow", "pig", "sheep", "chicken", "rabbit", "goat", "duck"};
 	/** Each animal's carcass, as animals drop them. */
 	static final Map<String, Item> CARCASSES = new LinkedHashMap<>();
 	/** Each animal's dressed carcass, skinned, plucked, or scraped, ready for the butcher block. */
@@ -110,7 +110,7 @@ final class Butchery {
 				PARTS.put(group[i], item(group[i], new Item.Properties().food(new net.minecraft.world.food.FoodProperties(nutrition, nutrition * 0.6F, false))));
 			}
 		}
-		for (String chicken : new String[] {"chicken_breast", "chicken_thighs", "chicken_drumsticks", "chicken_wings"}) {
+		for (String chicken : new String[] {"chicken_breast", "chicken_thighs", "chicken_drumsticks", "chicken_wings", "duck_breasts", "duck_legs", "duck_wings"}) {
 			PARTS.put(chicken, item(chicken, new Item.Properties().food(new net.minecraft.world.food.FoodProperties(2, 1.2F, false),
 				net.minecraft.world.item.component.Consumables.CHICKEN)));
 		}
@@ -119,7 +119,7 @@ final class Butchery {
 			"lamb_liver", "lamb_kidneys", "lamb_heart", "sheep_casing", "lamb_bones", "lamb_fat",
 			"goat_liver", "goat_heart", "goat_casing", "goat_bones", "goat_fat",
 			"chicken_giblets", "chicken_feet", "chicken_bones", "chicken_skin",
-			"rabbit_offal", "rabbit_bones"};
+			"rabbit_offal", "rabbit_bones", "duck_liver", "duck_heart_and_gizzard", "duck_bones", "duck_fat"};
 		for (String part : other) PARTS.put(part, item(part, new Item.Properties()));
 	}
 
@@ -144,6 +144,16 @@ final class Butchery {
 		CookingBlocks.process("meat_grinder", MEAT_GRINDER, CookingMenu.Kind.MEAT_GRINDER);
 	static final net.minecraft.world.level.block.entity.BlockEntityType<ProcessStationBlockEntity> SAUSAGE_STUFFER_ENTITY =
 		CookingBlocks.process("sausage_stuffer", SAUSAGE_STUFFER, CookingMenu.Kind.SAUSAGE_STUFFER);
+
+	/** The duck: a chicken-like bird of rivers and swamps, with its own carcass. */
+	static final net.minecraft.world.entity.EntityType<Duck> DUCK = net.minecraft.core.Registry.register(BuiltInRegistries.ENTITY_TYPE,
+		PortablePocketCabin.id("duck"), net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityType.Builder.createMob(Duck::new,
+			net.minecraft.world.entity.MobCategory.CREATURE, mob -> mob.defaultAttributes(net.minecraft.world.entity.animal.chicken.Chicken::createAttributes)
+				.spawnPlacement(net.minecraft.world.entity.SpawnPlacementTypes.ON_GROUND, net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+					net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules))
+			.sized(0.4F, 0.7F).eyeHeight(0.644F).clientTrackingRange(10)
+			.build(ResourceKey.create(Registries.ENTITY_TYPE, PortablePocketCabin.id("duck"))));
+	static final Item DUCK_SPAWN_EGG = item("duck_spawn_egg", new Item.Properties().spawnEgg(DUCK), net.minecraft.world.item.SpawnEggItem::new);
 
 	/** Delivery 1 products: stocks, rendered fats, gelatin, cured meats, and the dishes the cuts complete. */
 	static final java.util.List<Item> PRODUCTS = new java.util.ArrayList<>();
@@ -184,11 +194,26 @@ final class Butchery {
 		for (String name : dishes) PRODUCTS.add(item(name, new Item.Properties().food(new net.minecraft.world.food.FoodProperties(9, 10.8F, false))));
 	}
 
+	/** Delivery 3 products: rendered duck fat, duck confit, roast duck, and cassoulet. */
+	static {
+		for (String name : new String[] {"salted_duck_legs", "cassoulet_beans"}) PRODUCTS.add(item(name, new Item.Properties()));
+		for (String name : new String[] {"unstrained_duck_fat", "rendered_duck_fat"}) PRODUCTS.add(item(name, new Item.Properties().stacksTo(16)));
+		for (String name : new String[] {"duck_confit", "roast_duck", "cassoulet"}) {
+			PRODUCTS.add(item(name, new Item.Properties().food(new net.minecraft.world.food.FoodProperties(9, 10.8F, false))));
+		}
+	}
+
 	private Butchery() {
 	}
 
 	static void register() {
 		CarcassData.register();
+		// Ducks live in rivers, swamps, and mangrove swamps, in small groups.
+		net.fabricmc.fabric.api.biome.v1.BiomeModifications.addSpawn(net.fabricmc.fabric.api.biome.v1.BiomeSelectors.includeByKey(
+			net.minecraft.world.level.biome.Biomes.RIVER, net.minecraft.world.level.biome.Biomes.SWAMP, net.minecraft.world.level.biome.Biomes.MANGROVE_SWAMP),
+			net.minecraft.world.entity.MobCategory.CREATURE, DUCK, 8, 2, 4);
+		net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents.modifyOutputEvent(net.minecraft.world.item.CreativeModeTabs.SPAWN_EGGS)
+			.register(entries -> entries.accept(DUCK_SPAWN_EGG));
 		net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents.modifyOutputEvent(net.minecraft.world.item.CreativeModeTabs.FUNCTIONAL_BLOCKS)
 			.register(entries -> {
 				entries.accept(HANGING_HOOK);
@@ -222,5 +247,10 @@ final class Butchery {
 	static Item item(String name, Item.Properties properties) {
 		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, PortablePocketCabin.id(name));
 		return Registry.register(BuiltInRegistries.ITEM, key, new Item(properties.setId(key)));
+	}
+
+	static Item item(String name, Item.Properties properties, java.util.function.Function<Item.Properties, Item> factory) {
+		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, PortablePocketCabin.id(name));
+		return Registry.register(BuiltInRegistries.ITEM, key, factory.apply(properties.setId(key)));
 	}
 }
