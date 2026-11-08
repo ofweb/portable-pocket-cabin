@@ -9,6 +9,11 @@ Every plant food a player can find, they can also grow. Once they hold a seed, c
 
 Finding the first seed can still take a long trip, a lucky drop, or a wandering trader's visit. This feature doesn't promise an easy source. It promises that no food is forage-only.
 
+Growing should also feel like real gardening:
+- **Harvests:** plants harvest in different ways.
+- **Difficulty:** some plants are harder or slower to grow.
+- **Rich soil:** compost from the composter makes soil rich, so plants grow faster.
+
 It follows the [cooking program](../../cooking/program.md). [B-0050](../B-0050/design.md) added the plants and [B-0049](../B-0049/design.md) the shellfish. An audit of both found these gaps:
 
 - **Apples** only drop at random from oak and dark oak leaves. There is no tree to tend for them.
@@ -79,7 +84,55 @@ Acceptance:
 - **Room for trees:** a fruit tree grows only where it fits. A sapling with too little headroom waits, and the cookbook's Garden page says how much room each tree needs.
 - **Tea under glass:** glass and other blocks that let light through don't count as shade. Tea under the greenhouse glass gives tea leaves. Under an opaque roof it gives shaded tea leaves.
 
-### S5: Know how to grow it
+### S5: Plants harvest in their own ways
+
+Story: A player learns that each plant gives its food and its next generation in its own way.
+
+Acceptance:
+
+- **Grain and tubers:** the harvest is also what you plant. This covers grains, beans, rice, potatoes, onions, garlic, and roots such as ginger and cassava. Vanilla wheat joins them: wheat plants from wheat, and a ripe wheat crop gives wheat without separate seeds.
+- **Fruit with seeds:** a ripe plant gives its fruit or vegetable and its seeds. This covers peppers, chilies, aubergines, tomatoes, cabbages, and beetroot, which keeps its vanilla seeds.
+- **Leaf, then seed:** a plant gives its leaves or root at one stage. Left a stage longer, it flowers and gives seeds instead, as cilantro gives coriander. This covers lettuce, radish, the basils, dill, parsley, celery, and spring onion.
+- **Cuttings, not seeds:** bushes and vines are picked for their fruit or leaves and never give seeds.
+  - Shears on a grown plant take a cutting to plant elsewhere. This covers currants, raspberries, strawberries (as runners), the herbs, tea, grapes, hops, and the other vines.
+  - What they give no longer plants them.
+- **Perennial crowns:** asparagus, rhubarb, and cardoon are harvested again and again from one planting. Digging up a grown one divides it into more crowns.
+- **Fruit trees:** they are picked again and again, and their saplings come from their leaves, as today.
+
+### S6: Some plants are harder or slower to grow
+
+Story: A player finds that some plants need care and patience.
+
+Acceptance:
+
+- **Growth speed:** plants grow at different speeds.
+  - Fast: leafy greens and radish.
+  - Average: most crops.
+  - Slow: roots and rhizomes.
+  - Very slow: asparagus, rhubarb, pineapple, vanilla, wasabi, and fruit trees.
+- **Climate:** each plant has a climate it prefers: cold, temperate, warm, or hot. Outside it, a plant grows at a quarter of its speed. The greenhouse suits every climate.
+- **Demanding plants:** some need more than climate.
+  - Wasabi needs cold, running water over gravel, and shade.
+  - Vanilla needs warmth, a trellis, and shade.
+  - Coffee and cardamom need shade.
+  - Rice and water chestnut stand in water.
+- **The cookbook:** each plant's Garden page shows its speed, climate, and needs.
+
+### S7: Compost and rich soil
+
+Story: A player composts scraps and spreads compost on their fields to grow crops faster.
+
+Acceptance:
+
+- **Compost:** the composter makes compost instead of bone meal. Bone meal still comes from bones, and still works as in vanilla.
+- **Rich soil:** using compost on farmland makes rich farmland, and on dirt or grass makes rich soil.
+  - Rich soil tills into rich farmland.
+  - Rich farmland that dries out or is trampled becomes rich soil.
+- **Faster, not instant:** plants on rich ground grow about twice as fast as on plain ground. This covers vanilla crops, cooking plants, bushes, and saplings.
+- **It wears out:** rich ground feeds about four harvests, then turns back to plain farmland or dirt. More compost tops it up.
+- **Greenhouse:** greenhouse beds can be composted like any farmland.
+
+### S8: Know how to grow it
 
 Story: A player checks the cookbook to learn how to grow what they've found.
 
@@ -95,7 +148,12 @@ Acceptance:
 - **Growing needs as data:** new growth rules follow [B-0050](../B-0050/design.md). Needs and spread rates are data, so datapacks can change them.
 - **Check against the sources:** a check lists every plant food in the sources and fails if one can't be planted from what it gives, or doesn't multiply. A future plant can't arrive forage-only unnoticed.
 - **Getting the first item isn't guaranteed:** some planting items stay rare, far away, or trade-only.
-- **No change to vanilla:** vanilla crops and vanilla apple drops behave as they do today.
+- **Vanilla changes:** only three.
+  - Wheat replants from wheat.
+  - The composter makes compost.
+  - Oak and dark oak leaves rarely drop apple saplings.
+
+  Other vanilla crops, apple drops, and bone meal behave as they do today.
 
 ## Scope
 
@@ -103,6 +161,9 @@ Acceptance:
 - **Growth:** sea plant growth and spreading, and shellfish bed growth and spreading.
 - **Prawn traps:** catching in any water, faster in warm waters.
 - **Greenhouse:** catch-up for saplings, trunks, sea plants, and shellfish, and tea under glass.
+- **Harvest models:** a model for every plant, with cuttings taken by shears.
+- **Growing difficulty:** growth speeds and climates.
+- **Compost and rich soil:** compost from the composter, and rich soil and farmland.
 - **Cookbook:** Garden pages for every growable food.
 - **The check:** a check that every plant food in the sources can be grown.
 
@@ -111,7 +172,8 @@ Acceptance:
 - **Animals and fish:** breeding animals and farming finned fish belong to the [livestock room](../B-0022/brief.md) and [aquatic berth](../B-0021/brief.md). Ducks already breed.
 - **Easier first items:** making every planting item easy to obtain is out of scope. Exploring, rare drops, and trades stay as they are.
 - **Arboretum trees:** they belong to [B-0023](../B-0023/brief.md).
-- **Balance:** growth speeds and yields are first guesses for [B-0033](../../backlog.md#b-0033-survival-balance).
+- **Balance:** growth speeds, yields, and compost strength are first guesses for [B-0033](../../backlog.md#b-0033-survival-balance).
+- **Farmer's Delight-style soil:** organic compost that slowly rots into rich soil is not the model. Compost makes ground rich at once, and it wears out with use.
 
 ## Related records
 
