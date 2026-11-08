@@ -258,6 +258,9 @@ final class CookingPlants {
 		GIVES.put("cinnamon_log", List.of(CINNAMON_BARK));
 	}
 
+	/** B-0054: an apple tree, so apples can be grown and picked rather than only found in oak leaves. */
+	static final Block APPLE_LEAVES = fruitTree("apple", () -> net.minecraft.world.item.Items.APPLE);
+
 	// B-0049 seafood: mussels on stony shores and cold-ocean rocks, and oysters in lukewarm oceans and mangrove swamps.
 	static final Block MUSSEL_BED = shellfish("mussel_bed", "mussels");
 	static final Block OYSTER_BED = shellfish("oyster_bed", "oyster");

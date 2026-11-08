@@ -55,6 +55,54 @@ public final class CabinGrowEveryFoodGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void appleTreesGrowAndBearVanillaApples(GameTestHelper helper) {
+		var level = helper.getLevel();
+		helper.setBlock(BASE.below(), Blocks.GRASS_BLOCK);
+		clearAbove(helper, BASE);
+		var sapling = (net.minecraft.world.level.block.SaplingBlock) ((net.minecraft.world.item.BlockItem) CookingPlants.item("apple_sapling")).getBlock();
+		BlockPos pos = helper.absolutePos(BASE);
+		level.setBlockAndUpdate(pos, sapling.defaultBlockState());
+		for (int i = 0; i < 10 && level.getBlockState(pos).is(sapling); i++) {
+			sapling.advanceTree(level, pos, level.getBlockState(pos), net.minecraft.util.RandomSource.create(i));
+		}
+		helper.assertTrue(level.getBlockState(pos).is(Blocks.OAK_LOG), "An apple sapling grows an oak-wood trunk");
+		BlockPos leaves = null;
+		for (BlockPos near : BlockPos.betweenClosed(pos.offset(-3, 1, -3), pos.offset(3, 7, 3))) {
+			if (level.getBlockState(near).is(CookingPlants.APPLE_LEAVES)) {
+				leaves = near.immutable();
+				break;
+			}
+		}
+		helper.assertTrue(leaves != null, "The tree has apple leaves");
+		level.setBlockAndUpdate(leaves, level.getBlockState(leaves).setValue(FruitingLeavesBlock.AGE, FruitingLeavesBlock.FRUITING));
+		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+		level.getBlockState(leaves).useWithoutItem(level, player,
+			new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(leaves), net.minecraft.core.Direction.UP, leaves, false));
+		helper.assertTrue(level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(leaves).inflate(2)).stream()
+			.anyMatch(entity -> entity.getItem().is(net.minecraft.world.item.Items.APPLE)), "Picking apple leaves gives vanilla apples");
+		helper.assertTrue(level.getBlockState(leaves).getValue(FruitingLeavesBlock.AGE) == 0, "The leaves fruit again after picking");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void oakLeavesRarelyDropAnAppleSapling(GameTestHelper helper) {
+		var level = helper.getLevel();
+		BlockPos pos = helper.absolutePos(BASE);
+		var oak = Blocks.OAK_LEAVES.defaultBlockState();
+		int saplings = 0;
+		int apples = 0;
+		for (int i = 0; i < 6000; i++) {
+			for (ItemStack drop : Block.getDrops(oak, level, pos, null)) {
+				if (drop.is(CookingPlants.item("apple_sapling"))) saplings++;
+				if (drop.is(net.minecraft.world.item.Items.APPLE)) apples++;
+			}
+		}
+		helper.assertTrue(saplings > 0 && saplings < 120, "About 1 in 200 oak leaves drops an apple sapling, found " + saplings + " in 6000");
+		helper.assertTrue(apples > 0, "Oak leaves still drop vanilla apples");
+		helper.succeed();
+	}
+
 	/** Clears the GameTest structure's barrier ceiling above a position, so the sky is open above it. */
 	static void clearAbove(GameTestHelper helper, BlockPos pos) {
 		var level = helper.getLevel();
