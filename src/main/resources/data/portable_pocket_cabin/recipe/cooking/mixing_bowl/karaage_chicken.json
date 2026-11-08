@@ -1,0 +1,36 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "marinating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chicken_thighs",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:soy_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:sake"
+    },
+    {
+      "item": "portable_pocket_cabin:ginger"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    },
+    {
+      "item": "portable_pocket_cabin:potato_starch"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:karaage_chicken",
+    "count": 2
+  }
+}

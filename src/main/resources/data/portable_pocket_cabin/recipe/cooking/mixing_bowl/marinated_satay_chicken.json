@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "marinating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chicken_thighs",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:satay_marinade"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:marinated_satay_chicken",
+    "count": 2
+  }
+}

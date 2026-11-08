@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fried_tod_mun",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:cucumber_relish"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "sour",
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tod_mun_pla"
+  }
+}

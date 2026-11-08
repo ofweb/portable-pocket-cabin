@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "seasoning_rice",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:steamed_rice",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:rice_vinegar"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:sushi_rice",
+    "count": 2
+  }
+}

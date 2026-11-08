@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cooked_soybeans",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:roasted_wheat"
+    },
+    {
+      "item": "portable_pocket_cabin:koji_spores"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:shoyu_koji",
+    "count": 2
+  }
+}

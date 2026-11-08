@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "frying_and_steaming",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:raw_gyoza"
+    }
+  ],
+  "heat": "medium",
+  "time": 120,
+  "result": {
+    "id": "portable_pocket_cabin:gyoza"
+  }
+}

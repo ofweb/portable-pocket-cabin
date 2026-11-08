@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/fried_tod_mun",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 11563066
+      }
+    ]
+  }
+}

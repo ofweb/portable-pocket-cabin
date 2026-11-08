@@ -1,0 +1,33 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "braising",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:rolled_pork_belly"
+    },
+    {
+      "item": "portable_pocket_cabin:soy_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:mirin"
+    },
+    {
+      "item": "portable_pocket_cabin:sake"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "heat": "low",
+  "time": 1200,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 3
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:chashu_pork",
+    "count": 4
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "holding_warm",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:steamed_rice",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:koji_rice"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 2400,
+  "result": {
+    "id": "portable_pocket_cabin:koji_amazake"
+  }
+}

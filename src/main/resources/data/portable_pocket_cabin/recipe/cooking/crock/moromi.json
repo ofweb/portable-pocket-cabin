@@ -1,0 +1,34 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "brewing_soy_sauce",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:shoyu_koji",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    },
+    {
+      "item": {
+        "fabric:type": "fabric:components",
+        "base": "minecraft:potion",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:water"
+          }
+        }
+      }
+    }
+  ],
+  "time": 168000,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:moromi",
+    "count": 2
+  }
+}

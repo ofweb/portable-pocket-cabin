@@ -1,0 +1,25 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "ageing_mirin",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:steamed_glutinous_rice",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:koji_rice"
+    },
+    {
+      "item": "portable_pocket_cabin:sake"
+    }
+  ],
+  "time": 168000,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:mirin_mash"
+  }
+}

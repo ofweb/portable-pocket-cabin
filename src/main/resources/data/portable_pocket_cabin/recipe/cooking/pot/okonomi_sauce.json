@@ -1,0 +1,28 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:worcestershire_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:tomato"
+    },
+    {
+      "item": "portable_pocket_cabin:soy_sauce"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:okonomi_sauce"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mortar",
+  "technique": "mashing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:cooked_soybeans",
+      "count": 2
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:soybean_paste"
+  }
+}

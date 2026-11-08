@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "boiling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:ramen_noodles"
+    }
+  ],
+  "water": 1,
+  "heat": "high",
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:boiled_ramen_noodles"
+  }
+}

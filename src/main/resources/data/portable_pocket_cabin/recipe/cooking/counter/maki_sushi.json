@@ -1,0 +1,34 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "rolling_sushi",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sushi_rice"
+    },
+    {
+      "item": "portable_pocket_cabin:nori"
+    },
+    {
+      "item": "portable_pocket_cabin:salmon_fillet"
+    },
+    {
+      "item": "portable_pocket_cabin:cucumber"
+    },
+    {
+      "item": "portable_pocket_cabin:pickled_ginger"
+    },
+    {
+      "item": "portable_pocket_cabin:wasabi"
+    }
+  ],
+  "time": 40,
+  "tastes": [
+    "salty",
+    "sour",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:maki_sushi",
+    "count": 4
+  }
+}

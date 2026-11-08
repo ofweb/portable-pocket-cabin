@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "culturing_koji",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:steamed_rice",
+      "count": 4
+    },
+    {
+      "item": "portable_pocket_cabin:koji_spores"
+    }
+  ],
+  "time": 24000,
+  "remainders": [
+    {
+      "id": "portable_pocket_cabin:koji_spores",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:koji_rice",
+    "count": 4
+  }
+}

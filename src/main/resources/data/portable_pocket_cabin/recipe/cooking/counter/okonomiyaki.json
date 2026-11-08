@@ -1,0 +1,36 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "topping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fried_okonomiyaki"
+    },
+    {
+      "item": "portable_pocket_cabin:okonomi_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:japanese_mayonnaise"
+    },
+    {
+      "item": "portable_pocket_cabin:bonito_flakes"
+    },
+    {
+      "item": "portable_pocket_cabin:aonori"
+    }
+  ],
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "tastes": [
+    "salty",
+    "sweet",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:okonomiyaki"
+  }
+}

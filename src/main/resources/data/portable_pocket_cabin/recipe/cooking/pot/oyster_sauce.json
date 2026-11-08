@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "reducing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:oyster",
+      "count": 4
+    },
+    {
+      "item": "portable_pocket_cabin:soy_sauce"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "heat": "low",
+  "time": 300,
+  "result": {
+    "id": "portable_pocket_cabin:oyster_sauce"
+  }
+}

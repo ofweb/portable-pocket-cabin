@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "rolling_and_tying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pork_belly"
+    },
+    {
+      "item": "minecraft:string"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:rolled_pork_belly"
+  }
+}

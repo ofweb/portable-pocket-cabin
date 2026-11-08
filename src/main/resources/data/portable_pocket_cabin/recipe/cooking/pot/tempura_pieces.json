@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "deep_frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tempura_batter"
+    },
+    {
+      "item": "portable_pocket_cabin:peeled_prawns",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:sweet_potato"
+    }
+  ],
+  "oil": 1,
+  "heat": "high",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:tempura_pieces"
+  }
+}

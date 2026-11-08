@@ -1,0 +1,35 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:minced_pork"
+    },
+    {
+      "item": "portable_pocket_cabin:shredded_cabbage"
+    },
+    {
+      "item": "portable_pocket_cabin:ginger"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    },
+    {
+      "item": "portable_pocket_cabin:soy_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:sesame_oil"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:gyoza_filling",
+    "count": 2
+  }
+}

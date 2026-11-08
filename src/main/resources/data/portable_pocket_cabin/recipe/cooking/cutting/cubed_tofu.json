@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "cubing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tofu"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:cubed_tofu",
+    "count": 2
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "topping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:takoyaki_balls",
+      "count": 3
+    },
+    {
+      "item": "portable_pocket_cabin:okonomi_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:japanese_mayonnaise"
+    },
+    {
+      "item": "portable_pocket_cabin:bonito_flakes"
+    }
+  ],
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:takoyaki"
+  }
+}
