@@ -485,8 +485,11 @@ final class CookbookScreen extends Screen {
 		if (data.scald()) dressing = dressing.copy().append(" ").append(Component.translatable("screen.portable_pocket_cabin.cookbook.scald_first"));
 		graphics.textWithWordWrap(font, dressing, x, y, right - x, TEXT, false);
 		y += font.split(dressing, right - x).size() * font.lineHeight + 4;
-		y = itemRow(graphics, data.dressingGives(), "screen.portable_pocket_cabin.cookbook.dressing_gives", x, y, right, mouseX, mouseY);
-		y = itemRow(graphics, data.parts(), "screen.portable_pocket_cabin.cookbook.parts_in_order", x, y, right, mouseX, mouseY);
+		boolean fish = data.dressing() == CarcassData.Dressing.NONE;
+		y = itemRow(graphics, data.dressingGives(), fish ? "screen.portable_pocket_cabin.cookbook.knife_first_gives"
+			: "screen.portable_pocket_cabin.cookbook.dressing_gives", x, y, right, mouseX, mouseY);
+		y = itemRow(graphics, data.parts(), fish ? "screen.portable_pocket_cabin.cookbook.parts_in_order_knife"
+			: "screen.portable_pocket_cabin.cookbook.parts_in_order", x, y, right, mouseX, mouseY);
 		String note = "butchery." + animal.getNamespace() + "." + animal.getPath() + ".note";
 		if (Language.getInstance().has(note)) graphics.textWithWordWrap(font, Component.translatable(note), x, y + 2, right - x, MUTED, false);
 	}

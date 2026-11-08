@@ -3,7 +3,7 @@
   "technique": "frying",
   "ingredients": [
     {
-      "item": "minecraft:cod"
+      "item": "#portable_pocket_cabin:fish/cod"
     }
   ],
   "heat": "medium",

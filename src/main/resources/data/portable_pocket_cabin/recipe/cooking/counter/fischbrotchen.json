@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "assembling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:bread_roll"
+    },
+    {
+      "item": "portable_pocket_cabin:pickled_herring"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:gherkins"
+    },
+    {
+      "item": "portable_pocket_cabin:remoulade"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "sour",
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:fischbrotchen"
+  }
+}

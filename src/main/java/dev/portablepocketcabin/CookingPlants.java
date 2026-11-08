@@ -258,6 +258,10 @@ final class CookingPlants {
 		GIVES.put("cinnamon_log", List.of(CINNAMON_BARK));
 	}
 
+	// B-0049 seafood: mussels on stony shores and cold-ocean rocks, and oysters in lukewarm oceans and mangrove swamps.
+	static final Block MUSSEL_BED = shellfish("mussel_bed", "mussels");
+	static final Block OYSTER_BED = shellfish("oyster_bed", "oyster");
+
 	/** Delivery 1 products: what the plains, meadow, and forest plants complete in the recipe catalogue. */
 	static final List<Item> PRODUCTS = new ArrayList<>();
 	static {
@@ -540,7 +544,16 @@ final class CookingPlants {
 
 	/** A seaweed that grows wild underwater. What it gives also plants it again in water. */
 	private static Block seaPlant(String plant, String produce) {
-		Block block = registerBlock(plant, SeaPlantBlock::new, BlockBehaviour.Properties.of().replaceable().noCollision().instabreak()
+		return seaPlant(plant, produce, SeaPlantBlock::new);
+	}
+
+	/** A shellfish bed underwater, gathered by hand, and planted again from its shellfish. */
+	private static Block shellfish(String plant, String produce) {
+		return seaPlant(plant, produce, SeaPlantBlock::shellfish);
+	}
+
+	private static Block seaPlant(String plant, String produce, Function<BlockBehaviour.Properties, Block> factory) {
+		Block block = registerBlock(plant, factory, BlockBehaviour.Properties.of().replaceable().noCollision().instabreak()
 			.sound(SoundType.WET_GRASS).pushReaction(PushReaction.DESTROY));
 		Item item = registerItem(produce, properties -> new BlockItem(block, properties.useItemDescriptionPrefix()));
 		PLANTS.put(plant, block);

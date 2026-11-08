@@ -1,0 +1,37 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "infusing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chicken_thighs"
+    },
+    {
+      "item": "portable_pocket_cabin:coconut_milk"
+    },
+    {
+      "item": "portable_pocket_cabin:bruised_lemongrass"
+    },
+    {
+      "item": "portable_pocket_cabin:sliced_galangal"
+    },
+    {
+      "item": "portable_pocket_cabin:makrut_lime_leaf"
+    },
+    {
+      "item": "portable_pocket_cabin:oyster_mushroom"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 300,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tom_kha_base"
+  }
+}

@@ -155,6 +155,27 @@ final class Butchery {
 			.build(ResourceKey.create(Registries.ENTITY_TYPE, PortablePocketCabin.id("duck"))));
 	static final Item DUCK_SPAWN_EGG = item("duck_spawn_egg", new Item.Properties().spawnEgg(DUCK), net.minecraft.world.item.SpawnEggItem::new);
 
+	// Delivery 4: fish and seafood.
+	static final Item ANCHOVY = item("anchovy", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(1, 0.2F, false)));
+	static final Item BONITO = item("bonito", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(2, 0.4F, false)));
+	static final Item HERRING = item("herring", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(2, 0.4F, false)));
+	/** A whole squid, which squid drop in place of ink sacs. The butcher block cleans it into tentacles and an ink sac. */
+	static final Item SQUID = item("squid", new Item.Properties());
+	static final Item PRAWNS = item("prawns", new Item.Properties().food(new net.minecraft.world.food.FoodProperties(1, 0.6F, false)));
+	static {
+		for (String part : new String[] {"white_fish_fillet", "salmon_fillet", "bonito_loin", "squid_tentacles"}) {
+			PARTS.put(part, item(part, new Item.Properties().food(new net.minecraft.world.food.FoodProperties(2, 0.4F, false))));
+		}
+		for (String part : new String[] {"fish_head", "fish_bones", "cod_roe", "salmon_skin", "salmon_roe", "fish_scales", "fish_guts"}) {
+			PARTS.put(part, item(part, new Item.Properties()));
+		}
+	}
+	static final net.minecraft.world.level.block.Block PRAWN_TRAP = CookingBlocks.register("prawn_trap", PrawnTrapBlock::new,
+		net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().strength(1.0F).sound(net.minecraft.world.level.block.SoundType.WOOD)
+			.noOcclusion().ignitedByLava());
+	static final net.minecraft.world.level.block.entity.BlockEntityType<PrawnTrapBlockEntity> PRAWN_TRAP_ENTITY = CookingBlocks.registerEntity(
+		"prawn_trap", new net.minecraft.world.level.block.entity.BlockEntityType<>(PrawnTrapBlockEntity::new, java.util.Set.of(PRAWN_TRAP)));
+
 	/** Delivery 1 products: stocks, rendered fats, gelatin, cured meats, and the dishes the cuts complete. */
 	static final java.util.List<Item> PRODUCTS = new java.util.ArrayList<>();
 	static {
@@ -203,11 +224,33 @@ final class Butchery {
 		}
 	}
 
+	/** Delivery 4 products: stocks, fish sauce, cured and dried fish, curry pastes, and the seafood dishes. */
+	static {
+		String[] plain = {"peeled_prawns", "prawn_shells", "toasted_prawn_shells", "boiled_prawns", "dried_shrimp", "pounded_shrimp", "fermented_shrimp",
+			"shrimp_paste", "fermenting_anchovies", "salted_anchovies", "salted_salmon_fillet", "grilled_salted_salmon", "salted_salmon",
+			"salted_herring", "pickled_herring", "salted_bonito_loin", "smoked_bonito_loin", "katsuobushi", "bonito_flakes", "worcestershire_mash",
+			"ground_peanuts", "green_curry_mix", "green_curry_paste", "red_curry_mix", "red_curry_paste", "peanut_sauce", "miang_sauce", "nam_prik_mix",
+			"fried_nam_prik_mix", "nam_prik_paste", "nam_prik_pao", "liver_mince", "leverpostej_mix", "leverpostej", "unbaked_pissaladiere",
+			"browned_mince", "korokke_mash", "raw_korokke", "fried_korokke", "shredded_papaya", "chili_garlic", "sliced_galangal", "tom_kha_base",
+			"tom_yum_broth", "soaked_rice_noodles", "stir_fried_rice_noodles", "green_curry_sauce", "miang_filling", "diced_white_fish",
+			"lime_cured_fish", "boiled_sweet_potato", "lime_marinated_fish", "moqueca_vegetables", "sliced_rugbrod", "minced_fish",
+			"fiskefrikadeller_fars", "fried_fiskefrikadeller"};
+		for (String name : plain) PRODUCTS.add(item(name, new Item.Properties()));
+		String[] bottles = {"unstrained_prawn_stock", "prawn_stock", "unstrained_fish_stock", "fish_stock", "fish_sauce", "herring_pickling_liquid", "unstrained_dashi",
+			"dashi", "unstrained_worcestershire_sauce", "worcestershire_sauce", "tonkatsu_sauce", "som_tam_dressing", "pad_thai_sauce"};
+		for (String name : bottles) PRODUCTS.add(item(name, new Item.Properties().stacksTo(16)));
+		String[] dishes = {"moules_marinieres", "pissaladiere", "fischbrotchen", "korokke", "som_tam", "tom_kha_gai", "tom_yum_goong", "pad_thai", "green_curry",
+			"miang_kham", "ceviche", "moqueca_baiana", "sildemad_med_karrysalat", "smorrebrod_med_leverpostej", "fiskefrikadeller"};
+		for (String name : dishes) PRODUCTS.add(item(name, new Item.Properties().food(new net.minecraft.world.food.FoodProperties(8, 9.6F, false))));
+	}
+
 	private Butchery() {
 	}
 
 	static void register() {
 		CarcassData.register();
+		net.fabricmc.fabric.api.registry.CompostableRegistry.INSTANCE.add(PARTS.get("fish_scales"), 0.3F);
+		net.fabricmc.fabric.api.registry.CompostableRegistry.INSTANCE.add(PARTS.get("fish_guts"), 0.65F);
 		// Ducks live in rivers, swamps, and mangrove swamps, in small groups.
 		net.fabricmc.fabric.api.biome.v1.BiomeModifications.addSpawn(net.fabricmc.fabric.api.biome.v1.BiomeSelectors.includeByKey(
 			net.minecraft.world.level.biome.Biomes.RIVER, net.minecraft.world.level.biome.Biomes.SWAMP, net.minecraft.world.level.biome.Biomes.MANGROVE_SWAMP),
@@ -220,6 +263,7 @@ final class Butchery {
 				entries.accept(BUTCHER_BLOCK);
 				entries.accept(MEAT_GRINDER);
 				entries.accept(SAUSAGE_STUFFER);
+				entries.accept(PRAWN_TRAP);
 			});
 		net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents.modifyOutputEvent(net.minecraft.world.item.CreativeModeTabs.TOOLS_AND_UTILITIES)
 			.register(entries -> entries.accept(CLEAVER));
@@ -231,6 +275,7 @@ final class Butchery {
 				entries.accept(PIG_BRISTLES);
 				for (Item part : PARTS.values()) entries.accept(part);
 				entries.accept(COOKED_CHEVON);
+				for (Item seafood : new Item[] {ANCHOVY, BONITO, HERRING, SQUID, PRAWNS}) entries.accept(seafood);
 				for (Item product : PRODUCTS) entries.accept(product);
 			});
 	}

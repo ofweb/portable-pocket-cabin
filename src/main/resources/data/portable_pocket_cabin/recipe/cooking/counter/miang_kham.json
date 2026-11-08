@@ -1,0 +1,28 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "wrapping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:betel_leaf",
+      "count": 4
+    },
+    {
+      "item": "portable_pocket_cabin:miang_filling"
+    },
+    {
+      "item": "portable_pocket_cabin:birds_eye_chili"
+    },
+    {
+      "item": "portable_pocket_cabin:miang_sauce"
+    }
+  ],
+  "time": 40,
+  "tastes": [
+    "sweet",
+    "sour",
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:miang_kham"
+  }
+}

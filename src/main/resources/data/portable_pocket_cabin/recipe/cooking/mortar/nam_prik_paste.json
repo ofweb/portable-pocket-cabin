@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:mortar",
+  "technique": "pounding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fried_nam_prik_mix"
+    },
+    {
+      "item": "portable_pocket_cabin:palm_sugar"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:nam_prik_paste"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "peeling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:prawns"
+    }
+  ],
+  "remainders": [
+    {
+      "id": "portable_pocket_cabin:prawn_shells"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:peeled_prawns"
+  }
+}

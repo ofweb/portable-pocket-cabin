@@ -1,0 +1,43 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:green_curry_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:chicken_thighs"
+    },
+    {
+      "item": "portable_pocket_cabin:thai_aubergine"
+    },
+    {
+      "item": "portable_pocket_cabin:thai_basil"
+    },
+    {
+      "item": "portable_pocket_cabin:fish_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:palm_sugar"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 300,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "tastes": [
+    "salty",
+    "sweet",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:green_curry"
+  }
+}

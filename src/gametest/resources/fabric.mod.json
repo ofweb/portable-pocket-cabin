@@ -37,7 +37,8 @@
       "dev.portablepocketcabin.CabinButcheryGameTest",
       "dev.portablepocketcabin.CabinButcheryRecipeGameTest",
       "dev.portablepocketcabin.CabinSausageGameTest",
-      "dev.portablepocketcabin.CabinDuckGameTest"
+      "dev.portablepocketcabin.CabinDuckGameTest",
+      "dev.portablepocketcabin.CabinSeafoodGameTest"
     ],
     "fabric-client-gametest": [
       "dev.portablepocketcabin.PortablePocketCabinClientGameTest"

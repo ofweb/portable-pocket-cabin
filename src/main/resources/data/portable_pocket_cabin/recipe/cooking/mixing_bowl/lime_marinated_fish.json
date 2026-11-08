@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "marinating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:white_fish_fillet",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:lime_juice"
+    }
+  ],
+  "time": 2,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:lime_marinated_fish"
+  }
+}

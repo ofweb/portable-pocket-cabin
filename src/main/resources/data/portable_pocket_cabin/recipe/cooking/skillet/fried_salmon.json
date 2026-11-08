@@ -3,7 +3,7 @@
   "technique": "frying",
   "ingredients": [
     {
-      "item": "minecraft:salmon"
+      "item": "#portable_pocket_cabin:fish/salmon"
     }
   ],
   "heat": "medium",

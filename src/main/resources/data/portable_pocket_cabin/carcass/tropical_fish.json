@@ -1,0 +1,20 @@
+{
+  "carcass": "minecraft:tropical_fish",
+  "dressing": "none",
+  "dressing_gives": [
+    {
+      "id": "portable_pocket_cabin:fish_scales"
+    },
+    {
+      "id": "portable_pocket_cabin:fish_guts"
+    }
+  ],
+  "parts": [
+    {
+      "id": "portable_pocket_cabin:white_fish_fillet"
+    },
+    {
+      "id": "portable_pocket_cabin:fish_bones"
+    }
+  ]
+}

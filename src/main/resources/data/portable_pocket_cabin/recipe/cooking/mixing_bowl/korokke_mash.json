@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mashing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:boiled_potatoes",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:browned_mince"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:korokke_mash",
+    "count": 2
+  }
+}

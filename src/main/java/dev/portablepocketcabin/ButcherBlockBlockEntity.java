@@ -101,6 +101,12 @@ final class ButcherBlockBlockEntity extends DisplayStationBlockEntity {
 		if (!part.isEmpty()) Block.popResource(level, worldPosition.above(), part);
 	}
 
+	/** Says which tool works what is on the block: the knife for fish, the cleaver for carcasses. */
+	void wrongTool(Player player) {
+		CarcassData data = CarcassData.forBlock(carcass()).orElse(null);
+		if (data != null) tell(player, data.dressing() == CarcassData.Dressing.NONE ? "use_knife" : "use_cleaver");
+	}
+
 	private static void tell(Player player, String message) {
 		if (player instanceof ServerPlayer serverPlayer) {
 			serverPlayer.sendSystemMessage(Component.translatable("message.portable_pocket_cabin.butcher_block." + message), true);

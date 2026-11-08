@@ -36,6 +36,10 @@ final class ButcherBlockBlock extends CookingStationBlock {
 		if (block.isTool(stack)) {
 			return block.cut(server, player, stack, hand, player.isShiftKeyDown()) ? InteractionResult.SUCCESS_SERVER : InteractionResult.PASS;
 		}
+		if (!block.carcass().isEmpty() && (stack.is(Butchery.CLEAVER) || stack.is(CookingItems.KITCHEN_KNIFE))) {
+			block.wrongTool(player);
+			return InteractionResult.SUCCESS_SERVER;
+		}
 		ItemStack held = player.getAbilities().instabuild ? stack.copy() : stack;
 		return block.place(server, player, held) ? InteractionResult.SUCCESS_SERVER : InteractionResult.TRY_WITH_EMPTY_HAND;
 	}

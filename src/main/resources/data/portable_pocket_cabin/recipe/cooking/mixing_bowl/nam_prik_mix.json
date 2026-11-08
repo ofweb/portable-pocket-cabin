@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_chilies"
+    },
+    {
+      "item": "portable_pocket_cabin:shallot"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_shrimp"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:nam_prik_mix"
+  }
+}

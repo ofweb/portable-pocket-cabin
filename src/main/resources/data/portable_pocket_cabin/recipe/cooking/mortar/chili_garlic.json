@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:mortar",
+  "technique": "pounding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:birds_eye_chili"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    }
+  ],
+  "time": 3,
+  "result": {
+    "id": "portable_pocket_cabin:chili_garlic"
+  }
+}

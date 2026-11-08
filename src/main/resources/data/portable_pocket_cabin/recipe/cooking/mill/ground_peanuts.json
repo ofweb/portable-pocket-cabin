@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:mill",
+  "technique": "grinding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:roasted_peanuts",
+      "count": 2
+    }
+  ],
+  "time": 60,
+  "result": {
+    "id": "portable_pocket_cabin:ground_peanuts"
+  }
+}

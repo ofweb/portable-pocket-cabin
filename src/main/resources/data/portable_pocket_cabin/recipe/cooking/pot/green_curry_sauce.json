@@ -1,0 +1,17 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "frying_paste",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:green_curry_paste"
+    },
+    {
+      "item": "portable_pocket_cabin:coconut_milk"
+    }
+  ],
+  "heat": "medium",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:green_curry_sauce"
+  }
+}

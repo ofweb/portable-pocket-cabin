@@ -1,0 +1,41 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:lime_marinated_fish"
+    },
+    {
+      "item": "portable_pocket_cabin:peeled_prawns",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:coconut_milk"
+    },
+    {
+      "item": "portable_pocket_cabin:dende_oil"
+    },
+    {
+      "item": "portable_pocket_cabin:moqueca_vegetables"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 300,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:moqueca_baiana",
+    "count": 2
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:grill",
+  "technique": "grilling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:salted_salmon_fillet"
+    }
+  ],
+  "heat": "high",
+  "time": 100,
+  "result": {
+    "id": "portable_pocket_cabin:grilled_salted_salmon"
+  }
+}

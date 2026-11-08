@@ -1,0 +1,30 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "seasoning",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tom_kha_base"
+    },
+    {
+      "item": "portable_pocket_cabin:fish_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:lime_juice"
+    }
+  ],
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "tastes": [
+    "sour",
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tom_kha_gai"
+  }
+}

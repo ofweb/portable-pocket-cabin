@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/squid_tentacles",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 14725312
+      }
+    ]
+  }
+}

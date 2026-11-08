@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "pickling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:salted_herring",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:herring_pickling_liquid"
+    }
+  ],
+  "time": 48000,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:pickled_herring",
+    "count": 2
+  }
+}

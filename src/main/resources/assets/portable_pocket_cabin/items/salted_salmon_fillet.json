@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/salted_salmon_fillet",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 14717056
+      }
+    ]
+  }
+}

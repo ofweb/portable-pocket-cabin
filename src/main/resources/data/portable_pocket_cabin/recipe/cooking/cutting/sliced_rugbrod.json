@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "slicing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:rugbrod"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:sliced_rugbrod",
+    "count": 4
+  }
+}

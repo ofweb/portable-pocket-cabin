@@ -1,0 +1,33 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "topping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:bread_dough"
+    },
+    {
+      "item": "portable_pocket_cabin:caramelised_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:salted_anchovies"
+    },
+    {
+      "item": "portable_pocket_cabin:black_olive"
+    },
+    {
+      "item": "portable_pocket_cabin:olive_oil"
+    },
+    {
+      "item": "portable_pocket_cabin:thyme"
+    }
+  ],
+  "time": 40,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:unbaked_pissaladiere"
+  }
+}

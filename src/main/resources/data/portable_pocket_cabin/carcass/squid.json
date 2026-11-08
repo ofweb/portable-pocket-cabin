@@ -1,0 +1,13 @@
+{
+  "carcass": "portable_pocket_cabin:squid",
+  "dressing": "none",
+  "parts": [
+    {
+      "id": "portable_pocket_cabin:squid_tentacles",
+      "count": 2
+    },
+    {
+      "id": "minecraft:ink_sac"
+    }
+  ]
+}

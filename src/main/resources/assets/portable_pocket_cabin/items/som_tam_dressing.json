@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/som_tam_dressing",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 12623952
+      }
+    ]
+  }
+}

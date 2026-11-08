@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "assembling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sliced_rugbrod"
+    },
+    {
+      "item": "portable_pocket_cabin:leverpostej"
+    },
+    {
+      "item": "portable_pocket_cabin:sauteed_mushrooms"
+    },
+    {
+      "item": "portable_pocket_cabin:crisp_bacon"
+    },
+    {
+      "item": "portable_pocket_cabin:pickled_beetroot"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:smorrebrod_med_leverpostej"
+  }
+}
