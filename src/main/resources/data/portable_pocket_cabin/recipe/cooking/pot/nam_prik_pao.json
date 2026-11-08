@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "cooking_into_jam",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:nam_prik_paste"
+    },
+    {
+      "item": "portable_pocket_cabin:tamarind_paste"
+    },
+    {
+      "item": "#portable_pocket_cabin:cooking_oils"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:nam_prik_pao",
+    "count": 2
+  }
+}

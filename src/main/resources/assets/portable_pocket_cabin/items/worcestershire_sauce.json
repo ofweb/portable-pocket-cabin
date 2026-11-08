@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/worcestershire_sauce",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 3807752
+      }
+    ]
+  }
+}

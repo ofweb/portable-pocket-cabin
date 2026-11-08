@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:drying",
+  "technique": "drying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fermented_shrimp"
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "portable_pocket_cabin:shrimp_paste"
+  }
+}

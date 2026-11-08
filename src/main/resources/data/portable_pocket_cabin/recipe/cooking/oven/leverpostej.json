@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking_in_a_water_bath",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:leverpostej_mix"
+    }
+  ],
+  "heat": "low",
+  "time": 400,
+  "result": {
+    "id": "portable_pocket_cabin:leverpostej",
+    "count": 2
+  }
+}

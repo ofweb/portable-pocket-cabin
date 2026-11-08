@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:toasted_coconut"
+    },
+    {
+      "item": "portable_pocket_cabin:roasted_peanuts"
+    },
+    {
+      "item": "portable_pocket_cabin:lime"
+    },
+    {
+      "item": "portable_pocket_cabin:shallot"
+    },
+    {
+      "item": "portable_pocket_cabin:ginger"
+    },
+    {
+      "item": "portable_pocket_cabin:dried_shrimp"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:miang_filling",
+    "count": 2
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "dicing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:white_fish_fillet"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:diced_white_fish",
+    "count": 2
+  }
+}

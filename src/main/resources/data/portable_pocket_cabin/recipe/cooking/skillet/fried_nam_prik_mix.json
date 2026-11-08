@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:skillet",
+  "technique": "frying",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:nam_prik_mix"
+    }
+  ],
+  "heat": "medium",
+  "time": 80,
+  "result": {
+    "id": "portable_pocket_cabin:fried_nam_prik_mix"
+  }
+}

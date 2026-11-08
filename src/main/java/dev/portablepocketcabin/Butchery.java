@@ -224,6 +224,26 @@ final class Butchery {
 		}
 	}
 
+	/** Delivery 4 products: stocks, fish sauce, cured and dried fish, curry pastes, and the seafood dishes. */
+	static {
+		String[] plain = {"peeled_prawns", "prawn_shells", "toasted_prawn_shells", "boiled_prawns", "dried_shrimp", "pounded_shrimp", "fermented_shrimp",
+			"shrimp_paste", "fermenting_anchovies", "salted_anchovies", "salted_salmon_fillet", "grilled_salted_salmon", "salted_salmon",
+			"salted_herring", "pickled_herring", "salted_bonito_loin", "smoked_bonito_loin", "katsuobushi", "bonito_flakes", "worcestershire_mash",
+			"ground_peanuts", "green_curry_mix", "green_curry_paste", "red_curry_mix", "red_curry_paste", "peanut_sauce", "miang_sauce", "nam_prik_mix",
+			"fried_nam_prik_mix", "nam_prik_paste", "nam_prik_pao", "liver_mince", "leverpostej_mix", "leverpostej", "unbaked_pissaladiere",
+			"browned_mince", "korokke_mash", "raw_korokke", "fried_korokke", "shredded_papaya", "chili_garlic", "sliced_galangal", "tom_kha_base",
+			"tom_yum_broth", "soaked_rice_noodles", "stir_fried_rice_noodles", "green_curry_sauce", "miang_filling", "diced_white_fish",
+			"lime_cured_fish", "boiled_sweet_potato", "lime_marinated_fish", "moqueca_vegetables", "sliced_rugbrod", "minced_fish",
+			"fiskefrikadeller_fars", "fried_fiskefrikadeller"};
+		for (String name : plain) PRODUCTS.add(item(name, new Item.Properties()));
+		String[] bottles = {"unstrained_prawn_stock", "prawn_stock", "unstrained_fish_stock", "fish_stock", "fish_sauce", "herring_pickling_liquid", "unstrained_dashi",
+			"dashi", "unstrained_worcestershire_sauce", "worcestershire_sauce", "tonkatsu_sauce", "som_tam_dressing", "pad_thai_sauce"};
+		for (String name : bottles) PRODUCTS.add(item(name, new Item.Properties().stacksTo(16)));
+		String[] dishes = {"moules_marinieres", "pissaladiere", "fischbrotchen", "korokke", "som_tam", "tom_kha_gai", "tom_yum_goong", "pad_thai", "green_curry",
+			"miang_kham", "ceviche", "moqueca_baiana", "sildemad_med_karrysalat", "smorrebrod_med_leverpostej", "fiskefrikadeller"};
+		for (String name : dishes) PRODUCTS.add(item(name, new Item.Properties().food(new net.minecraft.world.food.FoodProperties(8, 9.6F, false))));
+	}
+
 	private Butchery() {
 	}
 

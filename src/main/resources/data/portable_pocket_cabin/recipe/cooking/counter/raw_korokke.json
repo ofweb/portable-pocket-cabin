@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "coating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:korokke_mash"
+    },
+    {
+      "item": "portable_pocket_cabin:panko"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "portable_pocket_cabin:wheat_flour"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:raw_korokke",
+    "count": 4
+  }
+}

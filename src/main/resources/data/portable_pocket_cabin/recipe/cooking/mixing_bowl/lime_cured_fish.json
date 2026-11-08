@@ -1,0 +1,34 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "curing_in_lime",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:diced_white_fish",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:lime_juice"
+    },
+    {
+      "item": "portable_pocket_cabin:red_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:aji_amarillo"
+    },
+    {
+      "item": "portable_pocket_cabin:cilantro"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:lime_cured_fish"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "fermenting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pounded_shrimp",
+      "count": 4
+    }
+  ],
+  "time": 168000,
+  "result": {
+    "id": "portable_pocket_cabin:fermented_shrimp",
+    "count": 4
+  }
+}

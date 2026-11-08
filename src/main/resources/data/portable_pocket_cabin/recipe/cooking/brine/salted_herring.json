@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:brine",
+  "technique": "salting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:herring",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 24000,
+  "result": {
+    "id": "portable_pocket_cabin:salted_herring",
+    "count": 2
+  }
+}

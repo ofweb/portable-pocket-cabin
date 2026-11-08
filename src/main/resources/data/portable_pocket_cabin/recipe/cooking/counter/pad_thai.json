@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:stir_fried_rice_noodles"
+    },
+    {
+      "item": "portable_pocket_cabin:bean_sprouts"
+    },
+    {
+      "item": "portable_pocket_cabin:roasted_peanuts"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "sour",
+    "sweet",
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:pad_thai"
+  }
+}

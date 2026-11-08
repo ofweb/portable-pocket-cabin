@@ -1,0 +1,36 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "bruising",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:shredded_papaya",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:chili_garlic"
+    },
+    {
+      "item": "portable_pocket_cabin:som_tam_dressing"
+    },
+    {
+      "item": "portable_pocket_cabin:roasted_peanuts"
+    },
+    {
+      "item": "portable_pocket_cabin:tomato"
+    }
+  ],
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "sour",
+    "salty",
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:som_tam"
+  }
+}

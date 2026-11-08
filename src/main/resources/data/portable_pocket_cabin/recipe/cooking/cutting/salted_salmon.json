@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "flaking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:grilled_salted_salmon"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:salted_salmon",
+    "count": 2
+  }
+}

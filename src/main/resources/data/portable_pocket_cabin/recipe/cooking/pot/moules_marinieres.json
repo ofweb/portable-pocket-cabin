@@ -1,0 +1,43 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "steaming",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:mussels",
+      "count": 4
+    },
+    {
+      "item": "portable_pocket_cabin:shallot"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    },
+    {
+      "item": "portable_pocket_cabin:white_wine"
+    },
+    {
+      "item": "portable_pocket_cabin:salted_butter"
+    },
+    {
+      "item": "portable_pocket_cabin:parsley"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "medium",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:moules_marinieres",
+    "count": 2
+  }
+}

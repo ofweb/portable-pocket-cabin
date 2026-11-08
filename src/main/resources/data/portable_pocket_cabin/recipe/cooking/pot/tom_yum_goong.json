@@ -1,0 +1,41 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "seasoning",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tom_yum_broth"
+    },
+    {
+      "item": "portable_pocket_cabin:peeled_prawns",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:nam_prik_pao"
+    },
+    {
+      "item": "portable_pocket_cabin:fish_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:lime_juice"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 100,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 3
+    }
+  ],
+  "tastes": [
+    "sour",
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:tom_yum_goong"
+  }
+}

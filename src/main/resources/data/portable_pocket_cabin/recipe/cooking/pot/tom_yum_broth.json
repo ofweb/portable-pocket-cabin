@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "boiling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:prawn_stock"
+    },
+    {
+      "item": "portable_pocket_cabin:bruised_lemongrass"
+    },
+    {
+      "item": "portable_pocket_cabin:sliced_galangal"
+    },
+    {
+      "item": "portable_pocket_cabin:makrut_lime_leaf"
+    }
+  ],
+  "heat": "high",
+  "time": 150,
+  "result": {
+    "id": "portable_pocket_cabin:tom_yum_broth"
+  }
+}

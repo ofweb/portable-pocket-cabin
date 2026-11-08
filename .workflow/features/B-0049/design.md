@@ -318,6 +318,37 @@ Client GameTests capture the hook with a hanging carcass, the block mid-butchery
   - The completion check found duck confit and Cassoulet, and both shipped. Cassoulet bakes white beans simmered in chicken stock with Toulouse sausage, duck confit, pork belly, and breadcrumbs.
 - **Naming:** the raw part is duck fat, and the rendered frying fat is rendered duck fat.
 
+## Delivery 4 as built
+
+- **Fish preparation:** cod, salmon, tropical fish, pufferfish, bonito, and squid have carcass data with no dressing, so they go straight on the butcher block.
+  - The knife's first use scales and guts a fish, giving fish scales and fish guts. Further uses take its parts: fillets, head, bones, roe, and skin.
+  - Pufferfish give only bones. Bonito give four loins.
+  - Using the cleaver on a fish, or the knife on a carcass, says which tool to use instead of taking the carcass back.
+- **Squid:** the squid loot table drops a whole squid in place of the ink sac. On the block it cleans into two tentacles and an ink sac. Glow squid are unchanged.
+- **New fish:** anchovy, bonito, and herring join `minecraft:gameplay/fishing/fish`, overridden as data like the entity tables.
+  - Anchovy and bonito are caught in warm and lukewarm oceans, and herring in cold and frozen oceans, each through a `location_check`.
+  - Anchovy and herring are used whole, so they have no carcass data.
+- **Fish tags:** `fish/cod` and `fish/salmon` hold the fillets and the vanilla fish. The existing fried, salted, and cured fish recipes take them.
+- **Shellfish:** mussel and oyster beds are sea plants, gathered by hand.
+  - Using a bed gives one or two mussels or oysters and leaves water.
+  - Placing the shellfish on a solid floor underwater starts a new bed.
+  - They grow wild through `grows_wild/<bed>` like the B-0050 sea plants, and appear in the Garden section.
+- **Prawn trap:**
+  - It is a waterloggable block. In water, in `portable_pocket_cabin:prawn_waters` (warm and lukewarm oceans and mangrove swamps), it catches a prawn every 1000 ticks, up to eight.
+  - It counts from saved game time, so it catches up after being unloaded.
+  - An empty hand takes the prawns, and hoppers below take them too.
+- **By-products:**
+  - Fish scales and guts compost.
+  - Fish guts also ferment into fish sauce, as anchovies do.
+  - Fish heads and bones simmer into fish stock, and fish bones grind into bone meal.
+- **Completed chains:** the completion check found 19 intermediates and 16 dishes, and all of them shipped.
+  - Intermediates: salted anchovies, salted salmon, pickled herring, dried shrimp, shrimp paste, fish sauce, prawn shells and prawn stock, katsuobushi, bonito flakes, dashi, Worcestershire sauce, tonkatsu sauce, peanut sauce, miang sauce, green and red curry paste, nam prik pao, squid tentacles, and leverpostej.
+  - Dishes: Moules marinières, Pissaladière, Fischbrötchen, Korokke, Som tam, Tom kha gai, Tom yum goong, Pad Thai, Green curry, Miang kham, Ceviche, Moqueca baiana, Sildemad med karrysalat, Smørrebrød med leverpostej, and Fiskefrikadeller.
+- **Adaptations:**
+  - Where a station takes fewer ingredients than the catalogue lists, the ingredients are first gathered in the mixing bowl. This covers curry pastes, nam prik pao, the herring pickling liquid, Worcestershire mash, the pad Thai sauce, the som tam dressing, the moqueca vegetables, and the miang filling.
+  - Pad Thai stir-fries noodles, sauce, egg, and tofu in the wok, and the counter adds bean sprouts and peanuts. The wok takes four ingredients.
+  - Fiskefrikadeller fars leaves out salt, because the mixing bowl takes six ingredients.
+
 ## Assumptions
 
 - **Crafting:**

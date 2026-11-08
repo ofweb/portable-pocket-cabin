@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:cutting",
+  "technique": "shredding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:green_papaya"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:shredded_papaya",
+    "count": 2
+  }
+}

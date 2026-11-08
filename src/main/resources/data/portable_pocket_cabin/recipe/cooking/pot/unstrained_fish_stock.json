@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering_stock",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fish_head"
+    },
+    {
+      "item": "portable_pocket_cabin:fish_bones"
+    },
+    {
+      "item": "portable_pocket_cabin:onion"
+    }
+  ],
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "water": 1,
+  "heat": "low",
+  "time": 400,
+  "result": {
+    "id": "portable_pocket_cabin:unstrained_fish_stock"
+  }
+}

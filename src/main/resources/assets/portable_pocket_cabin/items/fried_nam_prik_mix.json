@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/fried_nam_prik_mix",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 6957594
+      }
+    ]
+  }
+}

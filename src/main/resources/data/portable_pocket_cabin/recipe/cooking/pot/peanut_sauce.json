@@ -1,0 +1,33 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:ground_peanuts"
+    },
+    {
+      "item": "portable_pocket_cabin:coconut_milk"
+    },
+    {
+      "item": "portable_pocket_cabin:red_curry_paste"
+    },
+    {
+      "item": "portable_pocket_cabin:palm_sugar"
+    },
+    {
+      "item": "portable_pocket_cabin:tamarind_paste"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:peanut_sauce",
+    "count": 2
+  }
+}

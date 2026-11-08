@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "assembling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:lime_cured_fish"
+    },
+    {
+      "item": "portable_pocket_cabin:boiled_sweet_potato"
+    },
+    {
+      "item": "portable_pocket_cabin:toasted_corn"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "sour",
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:ceviche"
+  }
+}

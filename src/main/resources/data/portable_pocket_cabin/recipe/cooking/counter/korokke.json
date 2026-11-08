@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fried_korokke",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:tonkatsu_sauce"
+    }
+  ],
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "salty",
+    "sweet"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:korokke",
+    "count": 2
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "assembling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sliced_rugbrod"
+    },
+    {
+      "item": "portable_pocket_cabin:pickled_herring"
+    },
+    {
+      "item": "portable_pocket_cabin:karrysalat"
+    },
+    {
+      "item": "portable_pocket_cabin:hard_boiled_egg"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "sour",
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:sildemad_med_karrysalat"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tomato"
+    },
+    {
+      "item": "portable_pocket_cabin:bell_pepper"
+    },
+    {
+      "item": "portable_pocket_cabin:chopped_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:cilantro"
+    }
+  ],
+  "time": 2,
+  "result": {
+    "id": "portable_pocket_cabin:moqueca_vegetables"
+  }
+}

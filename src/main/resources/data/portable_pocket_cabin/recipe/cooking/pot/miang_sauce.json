@@ -1,0 +1,32 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "thickening",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:palm_sugar"
+    },
+    {
+      "item": "portable_pocket_cabin:fish_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:shrimp_paste"
+    },
+    {
+      "item": "portable_pocket_cabin:toasted_coconut"
+    },
+    {
+      "item": "portable_pocket_cabin:roasted_peanuts"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:miang_sauce",
+    "count": 2
+  }
+}

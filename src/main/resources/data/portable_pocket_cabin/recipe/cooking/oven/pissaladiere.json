@@ -1,0 +1,18 @@
+{
+  "type": "portable_pocket_cabin:oven",
+  "technique": "baking",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:unbaked_pissaladiere"
+    }
+  ],
+  "heat": "medium",
+  "time": 300,
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:pissaladiere"
+  }
+}
