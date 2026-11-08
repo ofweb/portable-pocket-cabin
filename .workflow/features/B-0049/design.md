@@ -301,6 +301,23 @@ Client GameTests capture the hook with a hanging carcass, the block mid-butchery
   - Frikadeller fry on the skillet without the catalogue's butter, because the skillet takes one ingredient.
 - **Completion check:** it now knows the four butchery stations, and the catalogue rows that list a carcass's parts together.
 
+## Delivery 3 as built
+
+- **Duck:** `Duck` extends the vanilla chicken.
+  - It floats, breeds with seeds, lays eggs, and its babies are ducks.
+  - It spawns in groups of two to four in rivers, swamps, and mangrove swamps.
+  - It uses the chicken renderer, and spawning sets the cold chicken variant as its placeholder look.
+  - A duck spawn egg is added to the spawn egg tab.
+- **Carcass:**
+  - Ducks drop a duck carcass, which is scalded in the pot and plucked by hand for three feathers.
+  - The dressed duck gives breasts, legs, wings, liver, heart and gizzard, bones, and fat, and roasts whole.
+  - Duck cuts are in `portable_pocket_cabin:meat/duck`.
+- **Chains:**
+  - Duck fat renders into rendered duck fat, a frying oil, leaving cracklings.
+  - Duck legs are salted, then confit in the rendered fat.
+  - The completion check found duck confit and Cassoulet, and both shipped. Cassoulet bakes white beans simmered in chicken stock with Toulouse sausage, duck confit, pork belly, and breadcrumbs.
+- **Naming:** the raw part is duck fat, and the rendered frying fat is rendered duck fat.
+
 ## Assumptions
 
 - **Crafting:**

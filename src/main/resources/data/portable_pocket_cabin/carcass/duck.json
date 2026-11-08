@@ -1,0 +1,39 @@
+{
+  "carcass": "portable_pocket_cabin:duck_carcass",
+  "dressing": "pluck",
+  "scald": true,
+  "dressing_gives": [
+    {
+      "id": "minecraft:feather",
+      "count": 3
+    }
+  ],
+  "dressed": "portable_pocket_cabin:dressed_duck",
+  "parts": [
+    {
+      "id": "portable_pocket_cabin:duck_breasts",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:duck_legs",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:duck_wings",
+      "count": 2
+    },
+    {
+      "id": "portable_pocket_cabin:duck_liver"
+    },
+    {
+      "id": "portable_pocket_cabin:duck_heart_and_gizzard"
+    },
+    {
+      "id": "portable_pocket_cabin:duck_bones"
+    },
+    {
+      "id": "portable_pocket_cabin:duck_fat",
+      "count": 2
+    }
+  ]
+}

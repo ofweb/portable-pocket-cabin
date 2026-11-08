@@ -1,0 +1,28 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:dried_white_beans",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:chicken_stock"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    }
+  ],
+  "water": 1,
+  "heat": "low",
+  "time": 600,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:cassoulet_beans",
+    "count": 2
+  }
+}

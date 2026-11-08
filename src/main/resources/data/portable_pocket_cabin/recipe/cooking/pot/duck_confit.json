@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "confiting",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:salted_duck_legs",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:rendered_duck_fat"
+    }
+  ],
+  "heat": "low",
+  "time": 1200,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:duck_confit",
+    "count": 2
+  }
+}
