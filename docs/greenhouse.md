@@ -37,6 +37,13 @@ and growing vine or kelp heads. Normal light, soil, water, and support checks ap
 Stems stop at maturity before producing fruit. Spreading mushrooms and unknown
 mod plants have no catch-up profile; their normal deployed behavior still applies.
 
+Cooking plants (B-0050, B-0054) catch up too: field and paddy crops, trellis
+vines, bushes, fruiting leaves, sea plants, and shellfish beds advance their
+`age`; fruit-tree saplings grow into their tree when it fits, and wait when it
+doesn't; cinnamon trunks grow bark back and palm trunks fill with sap. Sea
+plants and beds spread only on live random ticks, so catch-up never places new
+plants. Glass and other blocks that let skylight through don't shade plants.
+
 ## Optional mods
 
 Botanical costs select registered Biomes O' Plenty ingredients, with shared 1:1

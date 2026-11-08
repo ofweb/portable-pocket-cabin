@@ -16,7 +16,7 @@ How players get each item:
 
 | Raw ingredient | Where | How | Feature |
 |---|---|---|---|
-| apple | Oak and dark oak leaves | Vanilla | Vanilla |
+| apple | Oak and dark oak leaves; apple trees in forests, flower forests, and plains | Vanilla drops; grow apple trees from saplings | Vanilla, B-0054 |
 | beetroot | Villages | Vanilla | Vanilla |
 | brown mushroom | Dark places, mushroom fields | Vanilla | Vanilla |
 | cactus | Deserts, badlands | Vanilla | Vanilla |
@@ -58,17 +58,17 @@ How players get each item:
 | anchovy | Warm and lukewarm oceans, in schools | Fish | B-0049 |
 | skipjack tuna | Warm oceans | Fish | B-0049 |
 | herring | Cold oceans, in schools | Fish | B-0049 |
-| mussels | Stony shores and cold ocean rocks | Forage at low water | B-0049 |
-| oyster | Lukewarm oceans, mangrove swamps | Forage | B-0049 |
-| prawns | Warm and lukewarm oceans, mangrove swamps | Trap | B-0049 |
+| mussels | Stony shores and cold ocean rocks | Gather beds by hand; set beds in any water, where they grow and spread | B-0049, B-0054 |
+| oyster | Lukewarm oceans, mangrove swamps | Gather beds by hand; set beds in any water, where they grow and spread | B-0049, B-0054 |
+| prawns | Any water; faster in warm and lukewarm oceans and mangrove swamps | Trap | B-0049, B-0054 |
 
 ## Sea plants and minerals
 
 | Raw ingredient | Where | How | Feature |
 |---|---|---|---|
-| laver | Stony shores | Forage | B-0050 |
-| sea lettuce | Beaches | Forage | B-0050 |
-| wakame | Cold oceans | Forage | B-0050 |
+| laver | Stony shores | Forage; plant in any water, where it grows and spreads | B-0050, B-0054 |
+| sea lettuce | Beaches | Forage; plant in any water, where it grows and spreads | B-0050, B-0054 |
+| wakame | Cold oceans | Forage; plant in any water, where it grows and spreads | B-0050, B-0054 |
 | water bottle of seawater | Any ocean | Fill a glass bottle in the ocean | B-0047 |
 | rock salt | Dripstone caves and badlands, as an ore | Mine | B-0047 |
 
@@ -106,7 +106,7 @@ How players get each item:
 | bell pepper | Savannas | Farm | B-0050 |
 | paprika pepper | Savannas | Farm | B-0050 |
 | cabbage | Plains, villages | Farm | B-0050 |
-| cardoon | Meadows and savannas, as a wild thistle | Forage, replant | B-0046 |
+| cardoon | Meadows and savannas, as a wild thistle | Forage, replant; a grown one gives back two | B-0046, B-0054 |
 | red cabbage | Taigas | Farm | B-0050 |
 | cassava | Jungles, savannas | Farm | B-0050 |
 | celery | Swamps | Farm | B-0050 |
