@@ -6,6 +6,7 @@
   "light": 7,
   "water": "running",
   "support": "none",
-  "growth_chance": 0.1,
-  "shade": false
+  "growth_chance": 0.06,
+  "shade": true,
+  "climate": "cold"
 }

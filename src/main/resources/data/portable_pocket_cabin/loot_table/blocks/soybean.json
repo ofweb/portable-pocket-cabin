@@ -10,35 +10,34 @@
       "rolls": 1.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "portable_pocket_cabin:soybean"
-        }
-      ]
-    },
-    {
-      "rolls": 1.0,
-      "conditions": [
-        {
-          "condition": "minecraft:block_state_property",
-          "block": "portable_pocket_cabin:soybean",
-          "properties": {
-            "age": "7"
-          }
-        }
-      ],
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "portable_pocket_cabin:soybean",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "function": "minecraft:apply_bonus",
-              "enchantment": "minecraft:fortune",
-              "formula": "minecraft:binomial_with_bonus_count",
-              "parameters": {
-                "extra": 3,
-                "probability": 0.5714286
-              }
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:soybean",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "portable_pocket_cabin:soybean",
+                  "properties": {
+                    "age": "7"
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "min": 2.0,
+                    "max": 4.0
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:soybean"
             }
           ]
         }

@@ -235,3 +235,16 @@ GameTests:
   - spread chances and the half rate for traps
   - compost charges and the rich-soil speed
 - **Art:** sea plant and bed stages reuse the single texture they have now until B-0034. Apple leaves reuse the fruit-tree leaf stages with a red fruit tint.
+
+## Implementation notes
+
+Choices made while building pull requests 1 and 2, where the design left room:
+
+- **Greenhouse climate:** the cabin's pocket dimension suits every climate, since the greenhouse is the only garden there.
+- **Tree room in catch-up:** a tree's height is random. Catch-up tries a sapling's tree up to eight times, then decides it has no room and leaves it a sapling.
+- **Cuttings:**
+  - Shears take a cutting from a bush at its flowering or ripe stage, and from a vine one stage before ripe or ripe.
+  - Breaking a bush gives one cutting, so it can be moved.
+- **Cardoon:** using a grown cardoon cuts one or two flowers and sets it back one stage, to flower again.
+- **Data scripts:** `.workflow/cooking/tools/harvest_models.py` writes the crop and vine loot tables, and `growing_difficulty.py` writes each plant's tier and climate. Climate comes from the median temperature of the biomes a plant grows wild in. A few plants override it: wasabi, the highland Andean crops, and the coconut palm.
+- **Shade:** shade-needing plants check it at every stage. Fruiting leaves check it too, so coffee fruits on leaves under the canopy.

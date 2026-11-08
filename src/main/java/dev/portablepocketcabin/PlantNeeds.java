@@ -29,7 +29,42 @@ import java.util.Map;
  * What a cooking plant needs to grow, loaded from {@code data/<namespace>/cooking_plant/<plant>.json} so datapacks can
  * change it. A plant with a {@code spread_chance} spreads to suitable spots beside it once grown. A plant whose needs are unmet survives but does not grow, as vanilla crops in the dark do.
  */
-record PlantNeeds(List<String> soil, int light, Water water, Support support, float growthChance, boolean shade, float spreadChance) {
+record PlantNeeds(List<String> soil, int light, Water water, Support support, float growthChance, boolean shade, float spreadChance,
+	Climate climate) {
+	/** Outside its climate, a plant grows at this fraction of its speed. */
+	static final float OUT_OF_CLIMATE = 0.25F;
+
+	PlantNeeds(List<String> soil, int light, Water water, Support support, float growthChance, boolean shade, float spreadChance) {
+		this(soil, light, water, support, growthChance, shade, spreadChance, Climate.ANY);
+	}
+
+	/** The climate a plant prefers, by the biome's base temperature. The cabin greenhouse suits every climate. */
+	enum Climate implements StringRepresentable {
+		ANY(Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY),
+		COLD(Float.NEGATIVE_INFINITY, 0.3F),
+		TEMPERATE(0.3F, 0.9F),
+		WARM(0.9F, 1.5F),
+		HOT(1.5F, Float.POSITIVE_INFINITY);
+
+		static final Codec<Climate> CODEC = StringRepresentable.fromEnum(Climate::values);
+		private final float from;
+		private final float below;
+
+		Climate(float from, float below) {
+			this.from = from;
+			this.below = below;
+		}
+
+		boolean suits(float temperature) {
+			return temperature >= from && temperature < below;
+		}
+
+		@Override
+		public String getSerializedName() {
+			return name().toLowerCase(Locale.ROOT);
+		}
+	}
+
 	enum Water implements StringRepresentable {
 		/** No water needed. */
 		NONE,
@@ -67,7 +102,8 @@ record PlantNeeds(List<String> soil, int light, Water water, Support support, fl
 		Support.CODEC.optionalFieldOf("support", DEFAULT.support()).forGetter(PlantNeeds::support),
 		Codec.floatRange(0, 1).optionalFieldOf("growth_chance", DEFAULT.growthChance()).forGetter(PlantNeeds::growthChance),
 		Codec.BOOL.optionalFieldOf("shade", false).forGetter(PlantNeeds::shade),
-		Codec.floatRange(0, 1).optionalFieldOf("spread_chance", 0F).forGetter(PlantNeeds::spreadChance)
+		Codec.floatRange(0, 1).optionalFieldOf("spread_chance", 0F).forGetter(PlantNeeds::spreadChance),
+		Climate.CODEC.optionalFieldOf("climate", Climate.ANY).forGetter(PlantNeeds::climate)
 	).apply(instance, PlantNeeds::new));
 
 	private static Map<Identifier, PlantNeeds> current = Map.of();
@@ -140,6 +176,23 @@ record PlantNeeds(List<String> soil, int light, Water water, Support support, fl
 			}
 		}
 		return false;
+	}
+
+	/** Whether the plant at {@code pos} is in its climate: a biome of the right temperature, or the cabin greenhouse. */
+	boolean inClimate(LevelReader level, BlockPos pos) {
+		if (climate == Climate.ANY) return true;
+		if (level instanceof net.minecraft.world.level.Level world && suitsEveryClimate(world.dimension())) return true;
+		return climate.suits(level.getBiome(pos).value().getBaseTemperature());
+	}
+
+	/** Whether a dimension suits every climate: the cabin's pocket, whose only garden is the greenhouse. */
+	static boolean suitsEveryClimate(net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) {
+		return dimension == PocketDimension.LEVEL_KEY;
+	}
+
+	/** The chance a random tick grows the plant here: its growth chance, quartered outside its climate. */
+	float growthChance(LevelReader level, BlockPos pos) {
+		return inClimate(level, pos) ? growthChance : growthChance * OUT_OF_CLIMATE;
 	}
 
 	/** Whether the plant at {@code pos} can grow now: soil, light, water, and shade. Support is checked by the block. */

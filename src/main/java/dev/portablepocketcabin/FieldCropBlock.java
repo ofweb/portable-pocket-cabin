@@ -51,6 +51,6 @@ class FieldCropBlock extends CropBlock implements CookingPlant {
 	@Override
 	protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (isMaxAge(state) || !needs().canGrow(level, pos)) return;
-		if (random.nextFloat() < needs().growthChance()) level.setBlock(pos, getStateForAge(getAge(state) + 1), Block.UPDATE_CLIENTS);
+		if (random.nextFloat() < needs().growthChance(level, pos)) level.setBlock(pos, getStateForAge(getAge(state) + 1), Block.UPDATE_CLIENTS);
 	}
 }

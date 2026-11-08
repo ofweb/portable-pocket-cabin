@@ -79,7 +79,7 @@ final class SeaPlantBlock extends SeagrassBlock implements CookingPlant {
 		if (!canGrow(level, pos)) return;
 		int age = state.getValue(AGE);
 		if (age < MAX_AGE) {
-			if (random.nextFloat() < needs().growthChance()) level.setBlock(pos, state.setValue(AGE, age + 1), Block.UPDATE_CLIENTS);
+			if (random.nextFloat() < needs().growthChance(level, pos)) level.setBlock(pos, state.setValue(AGE, age + 1), Block.UPDATE_CLIENTS);
 		} else if (random.nextFloat() < needs().spreadChance()) {
 			spread(level, pos, random);
 		}

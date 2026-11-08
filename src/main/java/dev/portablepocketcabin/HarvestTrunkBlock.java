@@ -79,7 +79,7 @@ final class HarvestTrunkBlock extends RotatedPillarBlock implements CookingPlant
 
 	@Override
 	protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (!state.getValue(READY) && random.nextFloat() < needs().growthChance()) {
+		if (!state.getValue(READY) && random.nextFloat() < needs().growthChance(level, pos)) {
 			level.setBlock(pos, state.setValue(READY, true), Block.UPDATE_CLIENTS);
 		}
 	}

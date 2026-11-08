@@ -224,7 +224,7 @@ public final class CabinPlantGameTest {
 		helper.assertTrue(trades.get(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.VILLAGER_TRADE,
 			PortablePocketCabin.id("wandering_trader/emerald_plum_sapling"))).isPresent(), "Wandering traders can sell plum saplings");
 		helper.assertTrue(trades.get(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.VILLAGER_TRADE,
-			PortablePocketCabin.id("farmer/3/emerald_barley_seeds"))).isPresent(), "Journeyman farmers can sell barley seeds");
+			PortablePocketCabin.id("farmer/3/emerald_barley"))).isPresent(), "Journeyman farmers can sell barley to sow");
 		helper.succeed();
 	}
 

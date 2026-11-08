@@ -3,5 +3,6 @@
   "water": "standing",
   "light": 6,
   "growth_chance": 0.2,
-  "spread_chance": 0.05
+  "spread_chance": 0.05,
+  "climate": "any"
 }

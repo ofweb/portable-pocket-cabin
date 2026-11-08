@@ -38,9 +38,6 @@ final class CookingPlants {
 	static final List<Item> ITEMS = new ArrayList<>();
 
 	// Delivery 1: field crops of the plains, meadows, and forests.
-	static final Item BARLEY = ingredient("barley", null);
-	static final Item RYE = ingredient("rye", null);
-	static final Item CORN = ingredient("corn", null);
 	static final Item ASPARAGUS = ingredient("asparagus", food(2, 1.2F));
 	static final Item CABBAGE = ingredient("cabbage", food(2, 1.2F));
 	static final Item COURGETTE = ingredient("courgette", food(1, 0.6F));
@@ -51,10 +48,14 @@ final class CookingPlants {
 	static final Item DILL = ingredient("dill", null);
 	static final Item PARSLEY = ingredient("parsley", null);
 
-	static final Block BARLEY_CROP = fieldCrop("barley", "barley_seeds");
-	static final Block RYE_CROP = fieldCrop("rye", "rye_seeds");
-	static final Block CORN_CROP = fieldCrop("corn", "corn_seeds");
-	static final Block ASPARAGUS_CROP = fieldCrop("asparagus", "asparagus_crown");
+	// Grains plant from the grain itself, as wheat does.
+	static final Block BARLEY_CROP = fieldCrop("barley", "barley");
+	static final Item BARLEY = PLANTED_FROM.get("barley");
+	static final Block RYE_CROP = fieldCrop("rye", "rye");
+	static final Item RYE = PLANTED_FROM.get("rye");
+	static final Block CORN_CROP = fieldCrop("corn", "corn");
+	static final Item CORN = PLANTED_FROM.get("corn");
+	static final Block ASPARAGUS_CROP = perennialCrop("asparagus", "asparagus_crown", () -> ASPARAGUS);
 	static final Block CABBAGE_CROP = fieldCrop("cabbage", "cabbage_seeds");
 	static final Block COURGETTE_CROP = fieldCrop("courgette", "courgette_seeds");
 	static final Block LETTUCE_CROP = fieldCrop("lettuce", "lettuce_seeds");
@@ -84,11 +85,11 @@ final class CookingPlants {
 	static final Block WHITE_GRAPE_VINE = trellisCrop("white_grape_vine", "white_grape_cutting", () -> WHITE_GRAPE);
 	static final Block HOP_VINE = trellisCrop("hop_vine", "hop_rhizome", () -> HOPS);
 
-	// Delivery 1: perennial bushes that regrow after picking. Each is planted from what it gives, like sweet berries.
-	static final Block THYME_BUSH = selfBush("thyme_bush", "thyme", null);
-	static final Block MARJORAM_BUSH = selfBush("marjoram_bush", "marjoram", null);
-	static final Block STRAWBERRY_BUSH = selfBush("strawberry_bush", "strawberry", food(2, 1.2F));
-	static final Block RASPBERRY_BUSH = selfBush("raspberry_bush", "raspberry", food(2, 1.2F));
+	// Delivery 1: perennial bushes that regrow after picking. Each is planted from a cutting that shears take from a grown bush.
+	static final Block THYME_BUSH = cuttingBush("thyme_bush", "thyme", "thyme_cutting", null);
+	static final Block MARJORAM_BUSH = cuttingBush("marjoram_bush", "marjoram", "marjoram_cutting", null);
+	static final Block STRAWBERRY_BUSH = cuttingBush("strawberry_bush", "strawberry", "strawberry_runner", food(2, 1.2F));
+	static final Block RASPBERRY_BUSH = cuttingBush("raspberry_bush", "raspberry", "raspberry_cutting", food(2, 1.2F));
 	static final Block OYSTER_MUSHROOM = selfBush("oyster_mushrooms", "oyster_mushroom", null);
 	/** The elder flowers, then fruits: elderflower at its flowering stage, elderberries when ripe. */
 	static final Item ELDERFLOWER = ingredient("elderflower", null);
@@ -102,17 +103,18 @@ final class CookingPlants {
 	static final Item RED_CABBAGE = ingredient("red_cabbage", food(2, 1.2F));
 	static final Item RHUBARB = ingredient("rhubarb", null);
 	static final Block RED_CABBAGE_CROP = fieldCrop("red_cabbage", "red_cabbage_seeds");
-	static final Block RHUBARB_CROP = fieldCrop("rhubarb", "rhubarb_crown");
+	static final Block RHUBARB_CROP = perennialCrop("rhubarb", "rhubarb_crown", () -> RHUBARB);
 	/** Wasabi grows in cold, running water on gravel, and replants from its root. */
 	static final Block WASABI_CROP = fieldCrop("wasabi", "wasabi_root");
-	static final Block BLACKCURRANT_BUSH = selfBush("blackcurrant_bush", "blackcurrant", food(2, 1.2F));
-	static final Block REDCURRANT_BUSH = selfBush("redcurrant_bush", "redcurrant", food(2, 1.2F));
+	static final Block BLACKCURRANT_BUSH = cuttingBush("blackcurrant_bush", "blackcurrant", "blackcurrant_cutting", food(2, 1.2F));
+	static final Block REDCURRANT_BUSH = cuttingBush("redcurrant_bush", "redcurrant", "redcurrant_cutting", food(2, 1.2F));
 	static final Block WAKAME = seaPlant("wakame_plant", "wakame");
 	static final Block LAVER = seaPlant("laver_plant", "laver");
 	static final Block SEA_LETTUCE = seaPlant("sea_lettuce_plant", "sea_lettuce");
 
 	// Delivery 3: savannas, deserts, and badlands.
-	static final Item BLUE_CORN = ingredient("blue_corn", null);
+	static final Block BLUE_CORN_CROP = fieldCrop("blue_corn", "blue_corn");
+	static final Item BLUE_CORN = PLANTED_FROM.get("blue_corn");
 	static final Item AUBERGINE = ingredient("aubergine", food(1, 0.6F));
 	static final Item BELL_PEPPER = ingredient("bell_pepper", food(2, 1.2F));
 	static final Item PAPRIKA_PEPPER = ingredient("paprika_pepper", null);
@@ -132,7 +134,7 @@ final class CookingPlants {
 	static final Item TAMARIND_POD = ingredient("tamarind_pod", null);
 	static final Item ALMOND = ingredient("almond", food(2, 1.2F));
 	static {
-		String[][] crops = {{"blue_corn", "blue_corn_seeds"}, {"aubergine", "aubergine_seeds"}, {"bell_pepper", "bell_pepper_seeds"},
+		String[][] crops = {{"aubergine", "aubergine_seeds"}, {"bell_pepper", "bell_pepper_seeds"},
 			{"paprika_pepper", "paprika_pepper_seeds"}, {"tomatillo", "tomatillo_seeds"}, {"green_chili", "green_chili_seeds"},
 			{"poblano_chili", "poblano_chili_seeds"}, {"red_chili", "red_chili_seeds"}, {"basil", "basil_seeds"}, {"roselle", "roselle_seeds"},
 			{"sesame", "sesame_seed"}, {"peanut", "peanut"}, {"chickpea", "chickpea"}, {"anise", "anise_seed"}, {"cumin", "cumin_seed"}};
@@ -149,7 +151,8 @@ final class CookingPlants {
 	}
 
 	// Delivery 4: windswept savannas and hills.
-	static final Item PURPLE_CORN = ingredient("purple_corn", null);
+	static final Block PURPLE_CORN_CROP = fieldCrop("purple_corn", "purple_corn");
+	static final Item PURPLE_CORN = PLANTED_FROM.get("purple_corn");
 	static final Item AJI_AMARILLO = ingredient("aji_amarillo", null);
 	static final Item GREEN_OLIVE = ingredient("green_olive", null);
 	static final Item BLACK_OLIVE = ingredient("black_olive", null);
@@ -157,23 +160,22 @@ final class CookingPlants {
 	static final Block OLIVE_LEAVES = fruitTree("olive",
 		properties -> new FruitingLeavesBlock.TwoStageFruit(properties, () -> GREEN_OLIVE, () -> BLACK_OLIVE), List.of(GREEN_OLIVE, BLACK_OLIVE), false);
 	static {
-		for (String herb : new String[] {"rosemary", "oregano", "savory"}) selfBush(herb + "_bush", herb, null);
-		fieldCrop("purple_corn", "purple_corn_seeds");
+		for (String herb : new String[] {"rosemary", "oregano", "savory"}) cuttingBush(herb + "_bush", herb, herb + "_cutting", null);
 		fieldCrop("aji_amarillo", "aji_amarillo_seeds");
 	}
 
 	// Delivery 5: rivers, swamps, cherry groves, and bamboo jungles.
-	static final Item RICE = ingredient("rice", null);
-	static final Item GLUTINOUS_RICE = ingredient("glutinous_rice", null);
+	/** Rice, glutinous rice, and water chestnut grow standing in water one block deep, and plant from their grain. */
+	static final Block RICE_CROP = paddyCrop("rice", "rice");
+	static final Item RICE = PLANTED_FROM.get("rice");
+	static final Block GLUTINOUS_RICE_CROP = paddyCrop("glutinous_rice", "glutinous_rice");
+	static final Item GLUTINOUS_RICE = PLANTED_FROM.get("glutinous_rice");
 	static final Item CELERY = ingredient("celery", food(1, 0.6F));
 	static final Item CHERRY = ingredient("cherry", food(2, 1.2F));
 	static final Item UME_PLUM = ingredient("ume_plum", null);
 	static final Item STAR_ANISE_POD = ingredient("star_anise_pod", null);
 	static final Item TEA_LEAF = ingredient("tea_leaf", null);
 	static final Item SHADED_TEA_LEAF = ingredient("shaded_tea_leaf", null);
-	/** Rice, glutinous rice, and water chestnut grow standing in water one block deep. */
-	static final Block RICE_CROP = paddyCrop("rice", "rice_seedlings");
-	static final Block GLUTINOUS_RICE_CROP = paddyCrop("glutinous_rice", "glutinous_rice_seedlings");
 	static final Block WATER_CHESTNUT_CROP = paddyCrop("water_chestnut", "water_chestnut");
 	/** Tea gives tea leaves, or shaded tea leaves when it ripens under a roof. */
 	static final Block TEA_BUSH;
@@ -185,7 +187,7 @@ final class CookingPlants {
 		fieldCrop("soybean", "soybean");
 		fieldCrop("azuki_bean", "azuki_bean");
 		fieldCrop("celery", "celery_seeds");
-		selfBush("mint_bush", "mint", null);
+		cuttingBush("mint_bush", "mint", "mint_cutting", null);
 		fruitTree("sweet_cherry", () -> CHERRY);
 		fruitTree("ume", () -> UME_PLUM);
 		fruitTree("star_anise", () -> STAR_ANISE_POD);
@@ -233,7 +235,7 @@ final class CookingPlants {
 		trellisCrop("peppercorn_vine", "peppercorn_cutting", () -> PEPPERCORN);
 		trellisCrop("vanilla_vine", "vanilla_cutting", () -> VANILLA_POD);
 		trellisCrop("betel_vine", "betel_cutting", () -> BETEL_LEAF);
-		selfBush("pandan_bush", "pandan_leaf", null);
+		cuttingBush("pandan_bush", "pandan_leaf", "pandan_cutting", null);
 		fruitTree("papaya", () -> GREEN_PAPAYA);
 		fruitTree("makrut_lime", () -> MAKRUT_LIME_LEAF);
 		fruitTree("allspice", () -> ALLSPICE);
@@ -477,6 +479,23 @@ final class CookingPlants {
 				net.minecraft.world.level.levelgen.GenerationStep.Decoration.VEGETAL_DECORATION,
 				ResourceKey.create(Registries.PLACED_FEATURE, PortablePocketCabin.id("wild_" + name)));
 		}
+		// Wheat plants from wheat on farmland, as it does from seeds, since a ripe crop gives wheat without seeds.
+		net.fabricmc.fabric.api.event.player.UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
+			var stack = player.getItemInHand(hand);
+			if (!stack.is(net.minecraft.world.item.Items.WHEAT) || hit.getDirection() != net.minecraft.core.Direction.UP
+				|| !level.getBlockState(hit.getBlockPos()).is(net.minecraft.world.level.block.Blocks.FARMLAND)) {
+				return net.minecraft.world.InteractionResult.PASS;
+			}
+			var above = hit.getBlockPos().above();
+			var wheat = net.minecraft.world.level.block.Blocks.WHEAT.defaultBlockState();
+			if (!level.getBlockState(above).isAir() || !wheat.canSurvive(level, above)) return net.minecraft.world.InteractionResult.PASS;
+			if (!level.isClientSide()) {
+				level.setBlock(above, wheat, Block.UPDATE_ALL);
+				level.playSound(null, above, net.minecraft.sounds.SoundEvents.CROP_PLANTED, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F);
+				stack.consume(1, player);
+			}
+			return net.minecraft.world.InteractionResult.SUCCESS;
+		});
 		// Shears on a vanilla rose bush pick its hips, about one time in three, and wear the shears.
 		net.fabricmc.fabric.api.event.player.UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
 			var stack = player.getItemInHand(hand);
@@ -519,10 +538,20 @@ final class CookingPlants {
 		return crop(plant, seed, true);
 	}
 
+	/** A perennial crown, harvested again and again from one planting, planted from {@code crown}. */
+	private static Block perennialCrop(String plant, String crown, java.util.function.Supplier<Item> harvest) {
+		return crop(plant, crown, seeds -> properties -> new PerennialCropBlock(properties, seeds, harvest));
+	}
+
 	private static Block crop(String plant, String seed, boolean paddy) {
+		return crop(plant, seed, seeds -> properties -> paddy ? new PaddyCropBlock(properties, seeds) : new FieldCropBlock(properties, seeds));
+	}
+
+	private static Block crop(String plant, String seed,
+		Function<java.util.function.Supplier<Item>, Function<BlockBehaviour.Properties, Block>> factory) {
 		Block[] block = new Block[1];
 		Item[] seeds = new Item[1];
-		block[0] = registerBlock(plant, properties -> paddy ? new PaddyCropBlock(properties, () -> seeds[0]) : new FieldCropBlock(properties, () -> seeds[0]),
+		block[0] = registerBlock(plant, factory.apply(() -> seeds[0]),
 			BlockBehaviour.Properties.of()
 			.noCollision().randomTicks().instabreak().sound(SoundType.CROP).pushReaction(PushReaction.DESTROY));
 		seeds[0] = registerItem(seed, properties -> new BlockItem(block[0], properties.useItemDescriptionPrefix()));
@@ -536,7 +565,9 @@ final class CookingPlants {
 	private static Block trellisCrop(String plant, String seed, java.util.function.Supplier<Item> produce) {
 		Block[] block = new Block[1];
 		Item[] seeds = new Item[1];
-		block[0] = registerBlock(plant, properties -> new TrellisCropBlock(properties, () -> seeds[0], produce), BlockBehaviour.Properties.of()
+		// Vines with seeds are planted from them; every other vine from a cutting that shears take from it.
+		boolean cuttings = !seed.endsWith("_seeds");
+		block[0] = registerBlock(plant, properties -> new TrellisCropBlock(properties, () -> seeds[0], produce, cuttings), BlockBehaviour.Properties.of()
 			.randomTicks().strength(0.3F).sound(SoundType.CROP).noOcclusion().pushReaction(PushReaction.DESTROY));
 		seeds[0] = registerItem(seed, properties -> new BlockItem(block[0], properties.useItemDescriptionPrefix()));
 		PLANTS.put(plant, block[0]);
@@ -547,17 +578,27 @@ final class CookingPlants {
 
 	/** A bush planted from a cutting, giving {@code flowering} at its flowering stage when not null, and {@code ripe} when ripe. */
 	private static Block bush(String plant, String cutting, java.util.function.Supplier<Item> flowering, java.util.function.Supplier<Item> ripe) {
-		Block block = registerBlock(plant, properties -> new HerbBushBlock(properties, flowering, ripe), bushProperties());
+		Block block = registerBlock(plant, properties -> new HerbBushBlock(properties, flowering, ripe, true), bushProperties());
 		PLANTED_FROM.put(plant, registerItem(cutting, properties -> new BlockItem(block, properties.useItemDescriptionPrefix())));
 		PLANTS.put(plant, block);
 		GIVES.put(plant, flowering == null ? List.of(ripe.get()) : List.of(flowering.get(), ripe.get()));
 		return block;
 	}
 
-	/** A bush planted from what it gives, as sweet berries are. */
+	/** A bush that gives {@code produce} when picked, and is planted from a {@code cutting} that shears take from it. */
+	private static Block cuttingBush(String plant, String produce, String cutting, FoodProperties food) {
+		Item item = ingredient(produce, food);
+		Block block = registerBlock(plant, properties -> new HerbBushBlock(properties, null, () -> item, true), bushProperties());
+		PLANTED_FROM.put(plant, registerItem(cutting, properties -> new BlockItem(block, properties.useItemDescriptionPrefix())));
+		PLANTS.put(plant, block);
+		GIVES.put(plant, List.of(item));
+		return block;
+	}
+
+	/** A bush planted from what it gives, as oyster mushrooms are. */
 	private static Block selfBush(String plant, String produce, FoodProperties food) {
 		Item[] item = new Item[1];
-		Block block = registerBlock(plant, properties -> new HerbBushBlock(properties, null, () -> item[0]), bushProperties());
+		Block block = registerBlock(plant, properties -> new HerbBushBlock(properties, null, () -> item[0], false), bushProperties());
 		item[0] = registerItem(produce, properties -> new BlockItem(block, (food == null ? properties : properties.food(food)).useItemDescriptionPrefix()));
 		PLANTS.put(plant, block);
 		PLANTED_FROM.put(plant, item[0]);

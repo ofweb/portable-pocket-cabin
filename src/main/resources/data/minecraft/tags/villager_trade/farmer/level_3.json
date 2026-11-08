@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "portable_pocket_cabin:farmer/3/emerald_barley_seeds",
-    "portable_pocket_cabin:farmer/3/emerald_rye_seeds",
-    "portable_pocket_cabin:farmer/3/emerald_corn_seeds",
+    "portable_pocket_cabin:farmer/3/emerald_barley",
+    "portable_pocket_cabin:farmer/3/emerald_rye",
+    "portable_pocket_cabin:farmer/3/emerald_corn",
     "portable_pocket_cabin:farmer/3/emerald_cabbage_seeds",
     "portable_pocket_cabin:farmer/3/emerald_lettuce_seeds",
     "portable_pocket_cabin:farmer/3/emerald_radish_seeds",
@@ -13,8 +13,8 @@
     "portable_pocket_cabin:farmer/3/emerald_tomato_seeds",
     "portable_pocket_cabin:farmer/3/emerald_bell_pepper_seeds",
     "portable_pocket_cabin:farmer/3/emerald_aubergine_seeds",
-    "portable_pocket_cabin:farmer/3/emerald_purple_corn_seeds",
-    "portable_pocket_cabin:farmer/3/emerald_rice_seedlings",
+    "portable_pocket_cabin:farmer/3/emerald_purple_corn",
+    "portable_pocket_cabin:farmer/3/emerald_rice",
     "portable_pocket_cabin:farmer/3/emerald_soybean",
     "portable_pocket_cabin:farmer/3/emerald_sweet_potato",
     "portable_pocket_cabin:farmer/3/emerald_ginger",

@@ -131,24 +131,27 @@ final class CabinGreenhouseGrowth extends SavedData {
 		}
 	}
 
+	/** How many times catch-up tries to grow a sapling's tree before deciding it has no room. */
+	static final int TREE_ATTEMPTS = 8;
+
 	static void catchUp(ServerLevel level, Set<BlockPos> volume, long elapsed, long seed) {
 		var random = RandomSource.create(seed);
 		// A block receives randomTickSpeed / 4096 random ticks per server tick on average.
 		int rounds = (int) Math.min(8192, elapsed / 4096 + (random.nextDouble() < (elapsed % 4096) / 4096.0 ? 1 : 0));
-		// Saplings that tried to grow and found no room for their tree wait, rather than trying again every round.
-		Set<BlockPos> noRoom = new java.util.HashSet<>();
+		// A tree's height is random, so a sapling tries a few times; after that it waits rather than trying every round.
+		java.util.Map<BlockPos, Integer> failedTrees = new java.util.HashMap<>();
 		for (int round = 0; round < rounds; round++) {
 			boolean growing = false;
 			for (var pos : volume) {
 				var state = level.getBlockState(pos);
 				if (!canProgress(level, pos, state) || !state.canSurvive(level, pos) || !state.isRandomlyTicking()) continue;
 				if (state.getBlock() instanceof FruitSaplingBlock sapling) {
-					if (noRoom.contains(pos)) continue;
+					if (failedTrees.getOrDefault(pos, 0) >= TREE_ATTEMPTS) continue;
 					growing = true;
 					if (level.getMaxLocalRawBrightness(pos.above()) >= 9 && random.nextInt(7) == 0) {
 						boolean lastStage = state.getValue(net.minecraft.world.level.block.SaplingBlock.STAGE) == 1;
 						sapling.advanceTree(level, pos, state, random);
-						if (lastStage && level.getBlockState(pos).is(sapling)) noRoom.add(pos.immutable());
+						if (lastStage && level.getBlockState(pos).is(sapling)) failedTrees.merge(pos.immutable(), 1, Integer::sum);
 					}
 					continue;
 				}

@@ -1,5 +1,10 @@
 {
   "type": "minecraft:block",
+  "functions": [
+    {
+      "function": "minecraft:explosion_decay"
+    }
+  ],
   "pools": [
     {
       "rolls": 1.0,
@@ -15,24 +20,6 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "portable_pocket_cabin:cucumber_seeds"
-        }
-      ]
-    },
-    {
-      "rolls": 1.0,
-      "conditions": [
-        {
-          "condition": "minecraft:block_state_property",
-          "block": "portable_pocket_cabin:cucumber_vine",
-          "properties": {
-            "age": "7"
-          }
-        }
-      ],
-      "entries": [
-        {
-          "type": "minecraft:item",
           "name": "portable_pocket_cabin:cucumber",
           "functions": [
             {
@@ -42,6 +29,52 @@
                 "min": 1.0,
                 "max": 2.0
               }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "portable_pocket_cabin:cucumber_vine",
+          "properties": {
+            "age": "7"
+          }
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:cucumber_seeds",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "portable_pocket_cabin:cucumber_vine",
+                  "properties": {
+                    "age": "7"
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "min": 1.0,
+                    "max": 3.0
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:cucumber_seeds"
             }
           ]
         }
