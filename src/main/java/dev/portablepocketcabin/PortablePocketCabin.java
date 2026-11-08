@@ -24,6 +24,7 @@ public final class PortablePocketCabin implements ModInitializer {
 		CookingWorld.register();
 		PlantNeeds.register();
 		CookingPlants.register();
+		RichSoil.register();
 		CookbookAvailability.register();
 		CookingFill.register();
 		CabinMaterialProfiles.register();

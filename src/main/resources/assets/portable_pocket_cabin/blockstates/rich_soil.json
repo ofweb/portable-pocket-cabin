@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "charge=1": {
+      "model": "portable_pocket_cabin:block/rich_soil"
+    },
+    "charge=2": {
+      "model": "portable_pocket_cabin:block/rich_soil"
+    },
+    "charge=3": {
+      "model": "portable_pocket_cabin:block/rich_soil"
+    },
+    "charge=4": {
+      "model": "portable_pocket_cabin:block/rich_soil"
+    }
+  }
+}

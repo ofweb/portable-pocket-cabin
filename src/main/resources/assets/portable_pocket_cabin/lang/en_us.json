@@ -2026,5 +2026,8 @@
   "garden.portable_pocket_cabin.peppercorn_vine": "Plant the cutting on a trellis. Pick it when ripe and it fruits again. Shears on a grown vine take another pepper cutting.",
   "garden.portable_pocket_cabin.vanilla_vine": "Plant the cutting on a trellis. Pick it when ripe and it fruits again. Shears on a grown vine take another vanilla cutting.",
   "garden.portable_pocket_cabin.betel_vine": "Plant the cutting on a trellis. Pick it when ripe and it fruits again. Shears on a grown vine take another betel cutting.",
-  "garden.portable_pocket_cabin.hop_vine": "Plant the rhizome on a trellis. Pick the cones when ripe and it grows more. Shears on a grown vine take another rhizome."
+  "garden.portable_pocket_cabin.hop_vine": "Plant the rhizome on a trellis. Pick the cones when ripe and it grows more. Shears on a grown vine take another rhizome.",
+  "block.portable_pocket_cabin.rich_soil": "Rich Soil",
+  "block.portable_pocket_cabin.rich_farmland": "Rich Farmland",
+  "item.portable_pocket_cabin.compost": "Compost"
 }

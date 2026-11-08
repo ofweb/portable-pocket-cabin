@@ -10,6 +10,8 @@
     "DoorBlockMixin",
     "FireBlockMixin",
     "FarmlandBlockMixin",
+    "ComposterBlockMixin",
+    "ComposterOutputMixin",
     "GuestItemDropMixin",
     "GuestItemPickupMixin",
     "PistonStructureResolverMixin",

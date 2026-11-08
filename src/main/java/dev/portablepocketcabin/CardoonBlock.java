@@ -70,6 +70,7 @@ final class CardoonBlock extends VegetationBlock implements BonemealableBlock {
 			popResource(level, pos, new net.minecraft.world.item.ItemStack(CookingItems.CARDOON_FLOWER, 1 + server.getRandom().nextInt(2)));
 			level.playSound(null, pos, net.minecraft.sounds.SoundEvents.CROP_BREAK, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F);
 			level.setBlock(pos, state.setValue(AGE, MAX_AGE - 1), Block.UPDATE_CLIENTS);
+			RichSoil.spend(level, pos.below());
 		}
 		return net.minecraft.world.InteractionResult.SUCCESS;
 	}

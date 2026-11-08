@@ -168,6 +168,11 @@ record PlantNeeds(List<String> soil, int light, Water water, Support support, fl
 
 	/** Whether the block a plant stands on is one of its soils. */
 	boolean soilMatches(BlockState below) {
+		// Rich ground counts as the farmland or dirt it was made from.
+		return soilMatchesExactly(below) || RichSoil.isRich(below) && soilMatchesExactly(RichSoil.plain(below));
+	}
+
+	private boolean soilMatchesExactly(BlockState below) {
 		for (String entry : soil) {
 			if (entry.startsWith("#")) {
 				if (below.is(TagKey.create(Registries.BLOCK, Identifier.parse(entry.substring(1))))) return true;

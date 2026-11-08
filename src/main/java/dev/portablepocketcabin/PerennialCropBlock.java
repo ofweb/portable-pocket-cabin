@@ -46,6 +46,7 @@ final class PerennialCropBlock extends FieldCropBlock {
 			popResource(level, pos, new ItemStack(harvest.get(), 1 + server.getRandom().nextInt(2)));
 			level.playSound(null, pos, SoundEvents.CROP_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
 			level.setBlock(pos, getStateForAge(CUT_BACK), Block.UPDATE_CLIENTS);
+			RichSoil.spend(level, pos.below());
 		}
 		return InteractionResult.SUCCESS;
 	}

@@ -117,6 +117,7 @@ class HerbBushBlock extends VegetationBlock implements BonemealableBlock, Cookin
 			popResource(level, pos, new ItemStack(harvest, 1 + server.getRandom().nextInt(2)));
 			level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.9F + server.getRandom().nextFloat() * 0.2F);
 			level.setBlock(pos, state.setValue(AGE, 1), Block.UPDATE_CLIENTS);
+			RichSoil.spend(level, pos.below());
 		}
 		return InteractionResult.SUCCESS;
 	}

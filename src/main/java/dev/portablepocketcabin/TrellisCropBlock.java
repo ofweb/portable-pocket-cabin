@@ -73,6 +73,7 @@ final class TrellisCropBlock extends FieldCropBlock {
 			popResource(level, pos, new ItemStack(produce.get(), count));
 			level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 1.0F);
 			level.setBlock(pos, getStateForAge(getMaxAge() - PICKED_BACK), Block.UPDATE_CLIENTS);
+			RichSoil.spend(level, pos.below());
 		}
 		return InteractionResult.SUCCESS;
 	}
