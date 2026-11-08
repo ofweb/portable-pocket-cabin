@@ -111,4 +111,93 @@ public final class CabinGrowEveryFoodGameTest {
 			if (level.getBlockState(above).is(Blocks.BARRIER)) level.setBlockAndUpdate(above, Blocks.AIR.defaultBlockState());
 		}
 	}
+
+	@GameTest
+	public void seaPlantsGrowAndGiveMoreWhenGrown(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var original = PlantNeeds.of(CookingPlants.WAKAME);
+		try {
+			PlantNeeds.override(CookingPlants.WAKAME, new PlantNeeds(java.util.List.of(), 0, PlantNeeds.Water.STANDING,
+				PlantNeeds.Support.NONE, 1.0F, false, 0F));
+			helper.setBlock(BASE.below(), Blocks.SAND);
+			helper.setBlock(BASE, Blocks.WATER);
+			helper.setBlock(BASE, CookingPlants.WAKAME);
+			BlockPos pos = helper.absolutePos(BASE);
+			int before = level.getBlockState(pos).getValue(SeaPlantBlock.AGE);
+			helper.assertTrue(before == 0, "Planted wakame starts young");
+			var young = Block.getDrops(level.getBlockState(pos), level, pos, null);
+			helper.assertTrue(count(young, CookingPlants.item("wakame")) == 1, "Young wakame gives back one, found " + young);
+			for (int i = 0; i < 3; i++) level.getBlockState(pos).randomTick(level, pos, level.getRandom());
+			helper.assertTrue(level.getBlockState(pos).getValue(SeaPlantBlock.AGE) == SeaPlantBlock.MAX_AGE, "Wakame grows in water");
+			var grown = Block.getDrops(level.getBlockState(pos), level, pos, null);
+			int wakame = count(grown, CookingPlants.item("wakame"));
+			helper.assertTrue(wakame >= 2 && wakame <= 3, "Grown wakame gives two or three, found " + grown);
+
+			helper.setBlock(BASE, Blocks.WATER);
+			helper.setBlock(BASE, CookingPlants.LAVER);
+			var laver = (SeaPlantBlock) CookingPlants.LAVER;
+			helper.assertTrue(laver.isValidBonemealTarget(level, pos, level.getBlockState(pos)), "Bone meal helps laver");
+			laver.performBonemeal(level, level.getRandom(), pos, level.getBlockState(pos));
+			helper.assertTrue(level.getBlockState(pos).getValue(SeaPlantBlock.AGE) == 1, "Bone meal ages laver one stage");
+		} finally {
+			PlantNeeds.override(CookingPlants.WAKAME, original);
+		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void shellfishBedsAreGatheredWhenGrownAndSpread(GameTestHelper helper) {
+		var level = helper.getLevel();
+		for (int dx = -1; dx <= 1; dx++) {
+			for (int dz = -1; dz <= 1; dz++) {
+				helper.setBlock(BASE.offset(dx, -1, dz), Blocks.STONE);
+				helper.setBlock(BASE.offset(dx, 0, dz), Blocks.WATER);
+			}
+		}
+		BlockPos pos = helper.absolutePos(BASE);
+		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+		var hit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(pos), net.minecraft.core.Direction.UP, pos, false);
+		helper.setBlock(BASE, CookingPlants.MUSSEL_BED);
+		helper.assertTrue(level.getBlockState(pos).useWithoutItem(level, player, hit) == net.minecraft.world.InteractionResult.PASS,
+			"A young bed has nothing to gather yet");
+		helper.setBlock(BASE, CookingPlants.MUSSEL_BED.defaultBlockState().setValue(SeaPlantBlock.AGE, SeaPlantBlock.MAX_AGE));
+		level.getBlockState(pos).useWithoutItem(level, player, hit);
+		int mussels = level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(2)).stream()
+			.filter(entity -> entity.getItem().is(CookingPlants.item("mussels"))).mapToInt(entity -> entity.getItem().getCount()).sum();
+		helper.assertTrue(mussels >= 2 && mussels <= 3, "A grown bed gives two or three mussels, found " + mussels);
+		helper.assertTrue(level.getBlockState(pos).is(CookingPlants.MUSSEL_BED) && level.getBlockState(pos).getValue(SeaPlantBlock.AGE) == 1,
+			"Gathering sets the bed back to its second stage");
+		var drops = Block.getDrops(level.getBlockState(pos), level, pos, null);
+		helper.assertTrue(count(drops, CookingPlants.item("mussels")) == 1, "Breaking a bed gives one, to move it");
+
+		var bed = (SeaPlantBlock) CookingPlants.MUSSEL_BED;
+		var random = net.minecraft.util.RandomSource.create(7);
+		for (int i = 0; i < 64; i++) bed.spread(level, pos, random);
+		int spread = 0;
+		for (int dx = -1; dx <= 1; dx++) {
+			for (int dz = -1; dz <= 1; dz++) {
+				if ((dx != 0 || dz != 0) && level.getBlockState(pos.offset(dx, 0, dz)).is(CookingPlants.MUSSEL_BED)) {
+					spread++;
+					helper.assertTrue(level.getBlockState(pos.offset(dx, 0, dz)).getValue(SeaPlantBlock.AGE) == 0, "A bed spreads as a young bed");
+				}
+			}
+		}
+		helper.assertTrue(spread == 8, "A bed spreads to the water floor around it, found " + spread);
+
+		BlockPos dry = helper.absolutePos(BASE.east(4));
+		helper.setBlock(BASE.east(4).below(), Blocks.STONE);
+		helper.setBlock(BASE.east(4), Blocks.WATER);
+		helper.setBlock(BASE.east(4), CookingPlants.OYSTER_BED.defaultBlockState().setValue(SeaPlantBlock.AGE, SeaPlantBlock.MAX_AGE));
+		for (int i = 0; i < 64; i++) ((SeaPlantBlock) CookingPlants.OYSTER_BED).spread(level, dry, random);
+		int oysters = 0;
+		for (BlockPos near : BlockPos.betweenClosed(dry.offset(-1, -1, -1), dry.offset(1, 0, 1))) {
+			if (level.getBlockState(near).is(CookingPlants.OYSTER_BED)) oysters++;
+		}
+		helper.assertTrue(oysters == 1, "A bed with no water beside it doesn't spread");
+		helper.succeed();
+	}
+
+	private static int count(java.util.List<ItemStack> drops, net.minecraft.world.item.Item item) {
+		return drops.stream().filter(stack -> stack.is(item)).mapToInt(ItemStack::getCount).sum();
+	}
 }

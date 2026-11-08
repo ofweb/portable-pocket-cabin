@@ -166,12 +166,12 @@ public final class CabinSeafoodGameTest {
 
 		helper.setBlock(BASE.south(2).below(), Blocks.STONE);
 		helper.setBlock(BASE.south(2), Blocks.WATER);
-		helper.setBlock(BASE.south(2), CookingPlants.MUSSEL_BED);
+		helper.setBlock(BASE.south(2), CookingPlants.MUSSEL_BED.defaultBlockState().setValue(SeaPlantBlock.AGE, SeaPlantBlock.MAX_AGE));
 		BlockPos bed = helper.absolutePos(BASE.south(2));
 		var player = helper.makeMockPlayer(GameType.SURVIVAL);
 		level.getBlockState(bed).useWithoutItem(level, player, new BlockHitResult(Vec3.atCenterOf(bed), net.minecraft.core.Direction.UP, bed, false));
-		helper.assertTrue(level.getBlockState(bed).is(Blocks.WATER) && level.getEntitiesOfClass(ItemEntity.class, new AABB(bed).inflate(2)).stream()
-			.anyMatch(entity -> entity.getItem().is(CookingPlants.item("mussels"))), "Mussels are gathered by hand, leaving water");
+		helper.assertTrue(level.getBlockState(bed).is(CookingPlants.MUSSEL_BED) && level.getEntitiesOfClass(ItemEntity.class, new AABB(bed).inflate(2)).stream()
+			.anyMatch(entity -> entity.getItem().is(CookingPlants.item("mussels"))), "Mussels are gathered by hand, leaving the bed to grow back");
 
 		var squid = helper.spawn(EntityTypes.SQUID, BASE.above(3));
 		var area = new AABB(squid.blockPosition()).inflate(3);

@@ -5,16 +5,34 @@
       "rolls": 1.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "portable_pocket_cabin:sea_lettuce",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
-              }
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sea_lettuce",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "portable_pocket_cabin:sea_lettuce_plant",
+                  "properties": {
+                    "age": "3"
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "min": 2.0,
+                    "max": 3.0
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:sea_lettuce"
             }
           ]
         }
