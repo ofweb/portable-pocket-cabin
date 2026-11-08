@@ -1,0 +1,23 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:kra_pao_pork"
+    },
+    {
+      "item": "portable_pocket_cabin:steamed_rice"
+    },
+    {
+      "item": "portable_pocket_cabin:fried_egg"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:pad_kra_pao"
+  }
+}

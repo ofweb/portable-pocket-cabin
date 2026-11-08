@@ -1,0 +1,24 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:lomo_saltado_beef"
+    },
+    {
+      "item": "portable_pocket_cabin:fried_potatoes"
+    },
+    {
+      "item": "portable_pocket_cabin:steamed_rice"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "sour",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:lomo_saltado"
+  }
+}

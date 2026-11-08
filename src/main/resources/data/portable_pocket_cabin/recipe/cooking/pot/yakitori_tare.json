@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "reducing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:soy_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:mirin"
+    },
+    {
+      "item": "portable_pocket_cabin:sake"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    }
+  ],
+  "heat": "low",
+  "time": 200,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:yakitori_tare"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/sweet_chili_sauce",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 13647914
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "skewering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:skewer"
+    },
+    {
+      "item": "portable_pocket_cabin:chicken_thighs"
+    },
+    {
+      "item": "portable_pocket_cabin:spring_onion"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:raw_yakitori"
+  }
+}

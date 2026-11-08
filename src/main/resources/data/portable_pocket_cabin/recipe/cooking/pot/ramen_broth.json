@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "combining_broths",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:pork_bone_broth"
+    },
+    {
+      "item": "portable_pocket_cabin:dashi"
+    },
+    {
+      "item": "portable_pocket_cabin:shoyu_tare"
+    }
+  ],
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "heat": "low",
+  "time": 100,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 3
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:ramen_broth"
+  }
+}

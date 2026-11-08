@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "skewering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:skewer"
+    },
+    {
+      "item": "portable_pocket_cabin:marinated_satay_chicken"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:raw_satay_skewer"
+  }
+}

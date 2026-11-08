@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:soy_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:mirin"
+    },
+    {
+      "item": "portable_pocket_cabin:sake"
+    }
+  ],
+  "heat": "low",
+  "time": 100,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:shoyu_tare"
+  }
+}

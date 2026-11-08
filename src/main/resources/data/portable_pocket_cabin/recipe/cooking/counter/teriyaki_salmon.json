@@ -1,0 +1,26 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "glazing",
+  "ingredients": [
+    {
+      "item": "minecraft:cooked_salmon"
+    },
+    {
+      "item": "portable_pocket_cabin:yakitori_tare"
+    }
+  ],
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "salty",
+    "sweet",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:teriyaki_salmon"
+  }
+}

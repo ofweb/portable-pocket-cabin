@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/japanese_mayonnaise",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 16314568
+      }
+    ]
+  }
+}

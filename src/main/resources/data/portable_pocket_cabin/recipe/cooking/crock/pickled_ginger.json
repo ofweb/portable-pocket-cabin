@@ -1,0 +1,29 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "pickling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:sliced_ginger",
+      "count": 4
+    },
+    {
+      "item": "portable_pocket_cabin:rice_vinegar"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 48000,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:pickled_ginger",
+    "count": 4
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "rolling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:spring_roll_wrappers"
+    },
+    {
+      "item": "portable_pocket_cabin:spring_roll_filling"
+    },
+    {
+      "item": "portable_pocket_cabin:garlic"
+    }
+  ],
+  "time": 40,
+  "result": {
+    "id": "portable_pocket_cabin:raw_spring_rolls",
+    "count": 4
+  }
+}

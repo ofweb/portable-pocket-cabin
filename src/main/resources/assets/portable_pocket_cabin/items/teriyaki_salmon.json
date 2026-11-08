@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "portable_pocket_cabin:item/teriyaki_salmon",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 11561514
+      }
+    ]
+  }
+}

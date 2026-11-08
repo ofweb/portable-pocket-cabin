@@ -412,6 +412,30 @@ final class CookingPlants {
 		for (String name : dishes) PRODUCTS.add(ingredient(name, food(6, 7.2F)));
 	}
 
+	/**
+	 * Koji: the first spores come from wandering traders, and every batch of koji rice gives spores back. Koji makes
+	 * miso, soy sauce, sake, mirin, and rice vinegar, and the dishes that need them.
+	 */
+	static {
+		String[] plain = {"koji_spores", "koji_rice", "cooked_soybeans", "soybean_paste", "miso", "roasted_wheat", "shoyu_koji", "moromi", "sake_mash", "mirin_mash",
+			"sushi_rice", "marinating_eggs", "ajitsuke_tamago", "rolled_pork_belly", "chashu_pork", "sliced_ginger", "pickled_ginger",
+			"cucumber_relish", "cubed_tofu", "okonomiyaki_batter", "fried_okonomiyaki", "tempura_batter", "tempura_pieces", "gyoza_filling",
+			"raw_gyoza", "boiled_ramen_noodles", "ramen_broth", "dango_dough", "boiled_dango", "raw_dango_skewer", "charred_dango_skewer",
+			"takoyaki_batter", "takoyaki_balls", "karaage_chicken", "raw_yakitori", "grilled_yakitori", "kra_pao_pork", "curried_fish_paste",
+			"tod_mun_mix", "raw_tod_mun", "fried_tod_mun", "marinated_satay_chicken", "raw_satay_skewer", "grilled_satay_skewer", "spring_roll_filling",
+			"raw_spring_rolls", "fried_spring_rolls", "lomo_saltado_beef"};
+		for (String name : plain) PRODUCTS.add(ingredient(name, null));
+		String[] bottles = {"soy_sauce", "sake", "rice_vinegar", "mirin", "oyster_sauce", "japanese_mayonnaise", "okonomi_sauce", "tentsuyu", "shoyu_tare",
+			"yakitori_tare", "mitarashi_glaze", "sweet_chili_sauce", "kra_pao_sauce", "lomo_saltado_sauce"};
+		for (String name : bottles) PRODUCTS.add(registerItem(name, properties -> new Item(properties.stacksTo(16))));
+		PRODUCTS.add(registerItem("koji_amazake", properties -> new Item(properties.stacksTo(16)
+			.food(new FoodProperties(4, 2.4F, true), net.minecraft.world.item.component.Consumables.DEFAULT_DRINK)
+			.usingConvertsTo(net.minecraft.world.item.Items.GLASS_BOTTLE))));
+		String[] dishes = {"miso_soup", "okonomiyaki", "teriyaki_salmon", "tempura", "gyoza", "maki_sushi", "shoyu_ramen", "mitarashi_dango", "takoyaki", "karaage",
+			"yakitori", "pad_kra_pao", "tod_mun_pla", "gai_satay", "poh_pia_tod", "lomo_saltado"};
+		for (String name : dishes) PRODUCTS.add(ingredient(name, food(8, 9.6F)));
+	}
+
 	/** Picked from vanilla rose bushes with shears. */
 	static final Item ROSEHIP = ingredient("rosehip", null);
 

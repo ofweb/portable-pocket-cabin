@@ -1,0 +1,33 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:wheat_flour"
+    },
+    {
+      "item": "portable_pocket_cabin:dashi"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "portable_pocket_cabin:squid_tentacles"
+    },
+    {
+      "item": "portable_pocket_cabin:pickled_ginger"
+    },
+    {
+      "item": "portable_pocket_cabin:tenkasu"
+    }
+  ],
+  "time": 4,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:takoyaki_batter"
+  }
+}

@@ -196,6 +196,11 @@ Each delivery runs the completion check with its new raw items and ships every i
 - **Check tool update:** the catalogue lists a carcass's parts together in one row, so the check gains the reference's parts as aliases. Each part then counts on its own.
 - **Not part of this feature:**
   - Chains that also need koji spores, such as miso and soy sauce, stay blocked. Koji's first spores need a trade or a rare find, which is a separate gap.
+
+    The koji gap closed after B-0049:
+    - Wandering traders sell koji spores, and each batch of koji rice in the crock gives two spores back.
+    - Koji completes miso, soy sauce, sake, mirin, rice vinegar, sushi rice, oyster sauce, and the sauces built on them.
+    - It also completes 17 dishes, from miso soup and shoyu ramen to pad kra pao and lomo saltado.
   - Anything still missing another ingredient waits.
 
 | Delivery | Brings | Completes |

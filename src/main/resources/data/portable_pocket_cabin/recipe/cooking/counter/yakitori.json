@@ -1,0 +1,28 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "glazing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:grilled_yakitori",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:yakitori_tare"
+    }
+  ],
+  "time": 20,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "tastes": [
+    "salty",
+    "sweet",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:yakitori",
+    "count": 2
+  }
+}

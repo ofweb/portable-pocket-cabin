@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:crock",
+  "technique": "ageing_miso",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:soybean_paste",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:koji_rice"
+    },
+    {
+      "item": "portable_pocket_cabin:salt"
+    }
+  ],
+  "time": 120000,
+  "result": {
+    "id": "portable_pocket_cabin:miso",
+    "count": 4
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "mixing",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:curried_fish_paste"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "portable_pocket_cabin:long_bean"
+    },
+    {
+      "item": "portable_pocket_cabin:makrut_lime_leaf"
+    }
+  ],
+  "time": 4,
+  "result": {
+    "id": "portable_pocket_cabin:tod_mun_mix"
+  }
+}

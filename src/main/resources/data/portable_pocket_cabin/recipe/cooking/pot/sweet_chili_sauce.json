@@ -1,0 +1,20 @@
+{
+  "type": "portable_pocket_cabin:pot",
+  "technique": "simmering",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:chili_garlic"
+    },
+    {
+      "item": "#portable_pocket_cabin:sugars"
+    },
+    {
+      "item": "portable_pocket_cabin:rice_vinegar"
+    }
+  ],
+  "heat": "low",
+  "time": 150,
+  "result": {
+    "id": "portable_pocket_cabin:sweet_chili_sauce"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "assembling",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:ramen_broth"
+    },
+    {
+      "item": "portable_pocket_cabin:boiled_ramen_noodles"
+    },
+    {
+      "item": "portable_pocket_cabin:chashu_pork"
+    },
+    {
+      "item": "portable_pocket_cabin:ajitsuke_tamago"
+    },
+    {
+      "item": "portable_pocket_cabin:spring_onion"
+    },
+    {
+      "item": "portable_pocket_cabin:nori"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:shoyu_ramen"
+  }
+}

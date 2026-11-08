@@ -1,0 +1,27 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "marinating",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:hard_boiled_egg",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:soy_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:mirin"
+    }
+  ],
+  "time": 2,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle",
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:marinating_eggs",
+    "count": 2
+  }
+}

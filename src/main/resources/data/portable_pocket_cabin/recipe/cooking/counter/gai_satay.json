@@ -1,0 +1,25 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:grilled_satay_skewer",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:peanut_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:cucumber_relish"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "sweet",
+    "salty",
+    "umami"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:gai_satay"
+  }
+}

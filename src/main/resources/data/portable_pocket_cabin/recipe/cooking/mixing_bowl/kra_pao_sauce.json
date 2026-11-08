@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:mixing_bowl",
+  "technique": "blending",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:oyster_sauce"
+    },
+    {
+      "item": "portable_pocket_cabin:fish_sauce"
+    }
+  ],
+  "time": 2,
+  "remainders": [
+    {
+      "id": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:kra_pao_sauce"
+  }
+}

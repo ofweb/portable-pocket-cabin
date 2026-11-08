@@ -1,0 +1,14 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "shaping",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:tod_mun_mix"
+    }
+  ],
+  "time": 20,
+  "result": {
+    "id": "portable_pocket_cabin:raw_tod_mun",
+    "count": 4
+  }
+}

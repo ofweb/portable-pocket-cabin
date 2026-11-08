@@ -1,0 +1,21 @@
+{
+  "type": "portable_pocket_cabin:counter",
+  "technique": "serving",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:fried_spring_rolls",
+      "count": 2
+    },
+    {
+      "item": "portable_pocket_cabin:sweet_chili_sauce"
+    }
+  ],
+  "time": 20,
+  "tastes": [
+    "sweet",
+    "salty"
+  ],
+  "result": {
+    "id": "portable_pocket_cabin:poh_pia_tod"
+  }
+}

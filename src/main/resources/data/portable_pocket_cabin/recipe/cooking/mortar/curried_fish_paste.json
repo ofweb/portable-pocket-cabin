@@ -1,0 +1,16 @@
+{
+  "type": "portable_pocket_cabin:mortar",
+  "technique": "pounding",
+  "ingredients": [
+    {
+      "item": "portable_pocket_cabin:white_fish_fillet"
+    },
+    {
+      "item": "portable_pocket_cabin:red_curry_paste"
+    }
+  ],
+  "time": 6,
+  "result": {
+    "id": "portable_pocket_cabin:curried_fish_paste"
+  }
+}
