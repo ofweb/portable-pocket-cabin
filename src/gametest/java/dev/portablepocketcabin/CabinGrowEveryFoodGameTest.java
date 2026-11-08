@@ -197,6 +197,43 @@ public final class CabinGrowEveryFoodGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void greenhouseCatchUpGrowsSaplingsTrunksAndSeaPlants(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var sapling = (net.minecraft.world.level.block.SaplingBlock) ((net.minecraft.world.item.BlockItem) CookingPlants.item("apple_sapling")).getBlock();
+		BlockPos open = BASE;
+		BlockPos cramped = BASE.east(4);
+		helper.setBlock(open.below(), Blocks.GRASS_BLOCK);
+		helper.setBlock(cramped.below(), Blocks.GRASS_BLOCK);
+		clearAbove(helper, open);
+		clearAbove(helper, cramped);
+		helper.setBlock(cramped.above(2), Blocks.GLASS);
+		BlockPos openPos = helper.absolutePos(open);
+		BlockPos crampedPos = helper.absolutePos(cramped);
+		helper.startSequence().thenIdle(20).thenWaitUntil(() -> helper.assertTrue(level.getMaxLocalRawBrightness(openPos.above()) >= 9
+			&& level.getMaxLocalRawBrightness(crampedPos.above()) >= 9, "The saplings have light")).thenExecute(() -> {
+			level.setBlockAndUpdate(openPos, sapling.defaultBlockState());
+			level.setBlockAndUpdate(crampedPos, sapling.defaultBlockState());
+			helper.assertTrue(CabinGreenhouseGrowth.canProgress(sapling.defaultBlockState()), "Saplings grow in greenhouse catch-up");
+			CabinGreenhouseGrowth.catchUp(level, java.util.Set.of(openPos, crampedPos), 4096L * 8192, 42);
+			helper.assertTrue(level.getBlockState(openPos).is(Blocks.OAK_LOG), "A sapling with room grows into its tree while away");
+			helper.assertTrue(level.getBlockState(crampedPos).is(sapling), "A sapling with too little headroom waits");
+
+			var cinnamon = CookingPlants.CINNAMON_LOG;
+			BlockPos trunk = helper.absolutePos(BASE.south(4));
+			level.setBlockAndUpdate(trunk, cinnamon.defaultBlockState().setValue(HarvestTrunkBlock.READY, false));
+			helper.assertTrue(CabinGreenhouseGrowth.canProgress(level.getBlockState(trunk)), "A stripped trunk grows back in catch-up");
+			CabinGreenhouseGrowth.catchUp(level, java.util.Set.of(trunk), 4096L * 8192, 42);
+			helper.assertTrue(level.getBlockState(trunk).getValue(HarvestTrunkBlock.READY), "Cinnamon bark grows back while away");
+			helper.assertTrue(!CabinGreenhouseGrowth.canProgress(level.getBlockState(trunk)), "A ready trunk doesn't progress");
+
+			helper.assertTrue(CabinGreenhouseGrowth.canProgress(CookingPlants.MUSSEL_BED.defaultBlockState())
+				&& !CabinGreenhouseGrowth.canProgress(CookingPlants.MUSSEL_BED.defaultBlockState().setValue(SeaPlantBlock.AGE, SeaPlantBlock.MAX_AGE)),
+				"Shellfish beds grow in catch-up until grown");
+			helper.succeed();
+		});
+	}
+
 	private static int count(java.util.List<ItemStack> drops, net.minecraft.world.item.Item item) {
 		return drops.stream().filter(stack -> stack.is(item)).mapToInt(ItemStack::getCount).sum();
 	}
