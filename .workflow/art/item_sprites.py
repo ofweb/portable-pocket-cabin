@@ -37,7 +37,9 @@ def ramp(base, spread=1.0):
     for step, (dl, dh, ds) in enumerate([(-0.30, 0.04, 0.05), (-0.14, 0.02, 0.03), (0, 0, 0), (0.12, -0.02, -0.02), (0.24, -0.04, -0.08)]):
         # Shadows lean toward blue (hue 0.66), highlights toward yellow (hue 0.16).
         target = 0.66 if dl < 0 else 0.16
-        hh = h + (target - h) * abs(dh) * 2 if dl else h
+        # Take the short way round the colour wheel, so red shadows lean crimson rather than through orange.
+        turn = (target - h + 0.5) % 1.0 - 0.5
+        hh = h + turn * abs(dh) * 2 if dl else h
         ll = min(0.95, max(0.04, l + dl * spread))
         ss = min(1, max(0, s + ds))
         tones.append(tuple(round(c * 255) for c in colorsys.hls_to_rgb(hh % 1, ll, ss)))
@@ -930,7 +932,8 @@ def strawberry_hand():
         if not 3.6 <= y <= 15.4:
             return False
         t = (y - 3.6) / 11.8
-        half = 6.2 * (1 - t ** 1.7) * (0.82 + 0.18 * math.sin(math.pi * min(1, t * 2.2)))
+        # A full, rounded heart: it stays broad through the middle and rounds off at the tip.
+        half = 6.4 * (1 - t ** 2.6) ** 0.6
         return abs(x - 7.6) <= max(0.6, half)
     s.shape(inside, red, (7.2, 8.6), (5.6, 6.0))
     seed, pit = ramp("#ecc22a")[BASE], red[SHADOW]
@@ -976,21 +979,22 @@ def raspberry_hand():
 
 def redcurrant_hand():
     s = Sprite()
-    red = ramp("#bc1a22")
-    stem = ramp("#6a7a2a")
-    # A strig arching down from the top left, berries getting smaller toward the tip.
-    path = [(3, 0), (4, 1), (5, 2), (6, 3), (7, 4), (8, 5), (9, 6), (10, 7), (10, 8), (11, 9), (11, 10), (12, 11)]
-    s.pixels_at(stem[SHADOW], path)
-    for cx, cy, r in [(5.2, 6.0, 2.4), (9.6, 4.0, 2.0), (8.0, 9.6, 2.4), (12.6, 8.0, 1.9), (5.0, 11.6, 2.2), (10.6, 12.6, 2.0),
-                      (13.4, 13.6, 1.5), (7.6, 14.2, 1.6)]:
-        # Translucent berries: no outline, lit from within, with a darker rim below and the dry flower tip.
-        mask = s.ellipse(red, cx, cy, r, r, light=(-0.7, -0.7), outline=False)
-        for x, y in mask:
-            if (x, y + 1) not in mask or (x + 1, y) not in mask and (x, y + 1) not in mask:
-                s.put(x, y, red[SHADOW])
-        s.put(int(cx) - 1, int(cy) - 1, red[HIGHLIGHT])
-        s.put(int(cx), int(cy + r - 0.5), red[OUTLINE])
-    s.pixels_at(LEAF[BASE], [(1, 0), (2, 0), (1, 1)])
+    red = ramp("#e23a24", spread=0.8)
+    stem = ramp("#a8a032")
+    # A yellow-green stem sweeping in from the bottom left, with short stalks up into the cluster.
+    s.pixels_at(stem[BASE], [(0, 15), (1, 15), (2, 14), (3, 14), (4, 13), (5, 12), (6, 12), (7, 11), (8, 10), (9, 9)])
+    s.pixels_at(stem[SHADOW], [(0, 14), (6, 11), (10, 9), (11, 8)])
+    s.pixels_at(ramp("#6b4226")[SHADOW], [(0, 15)])
+    # Glossy berries in two overlapping rows, back row first. Each has a white shine and some show their dark tip.
+    berries = [(4.6, 4.8, 2.8, (2, 4)), (8.6, 4.0, 3.1, (9, 1)), (12.4, 5.2, 2.7, (13, 4)), (14.0, 8.8, 2.2, (14, 7)),
+               (5.4, 9.4, 2.6, None), (8.8, 9.6, 2.9, (11, 10)), (12.6, 11.2, 2.6, (13, 13))]
+    shine = ramp("#fff2dc")[BASE]
+    for cx, cy, r, tip in berries:
+        s.ellipse(red, cx, cy, r, r, light=(-0.6, -0.8))
+        s.put(int(cx) - 1, int(cy), shine)
+        s.put(int(cx) - 1, int(cy) - 2, red[HIGHLIGHT])
+        if tip:
+            s.put(*tip, ramp("#5a2a1a")[BASE])
     return s
 
 
