@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/snowball"
+    "layer0": "portable_pocket_cabin:item/ume_plum"
   }
 }

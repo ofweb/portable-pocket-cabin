@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/parsley",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 4098606
-      }
-    ]
+    "model": "portable_pocket_cabin:item/parsley"
   }
 }

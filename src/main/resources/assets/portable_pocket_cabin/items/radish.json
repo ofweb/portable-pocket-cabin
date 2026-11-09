@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/radish",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 14172250
-      }
-    ]
+    "model": "portable_pocket_cabin:item/radish"
   }
 }
