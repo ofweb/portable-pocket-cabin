@@ -1098,8 +1098,85 @@ def paprika_hand():
     s.pixels_at(green[LIGHT], [(4, 1), (3, 0), (2, 0)])
     return s
 
+def poblano_hand():
+    s = Sprite()
+    green = ramp("#173c18", spread=0.6)
+    # Wide shoulders tapering to a point, very dark and glossy.
+    s.capsule(green, [(6.0, 5.2), (8.6, 9.4), (10.6, 13.6)], (3.9, 0.7))
+    shine = ramp("#b8d8b0")[BASE]
+    s.pixels_at(shine, [(4, 5), (4, 6), (5, 8), (6, 10)])
+    s.pixels_at(green[HIGHLIGHT], [(5, 4), (5, 7), (7, 11), (8, 12)])
+    stem = ramp("#4f8a2a")
+    s.pixels_at(stem[SHADOW], [(5, 2), (6, 2), (7, 2), (4, 3), (8, 3)])
+    s.pixels_at(stem[BASE], [(5, 1), (4, 0), (3, 0)])
+    return s
+
+
+def birds_eye_hand():
+    s = Sprite()
+    red = ramp("#e8261c", spread=0.55)
+    stem = ramp("#4f9a2a")
+    # Three small, slender chilies on long green stems, pointing every which way.
+    pods = [([(4.6, 7.0), (3.0, 11.0), (1.8, 13.6)], [(5, 6), (6, 4), (7, 2), (8, 1)]),
+            ([(8.0, 7.4), (8.2, 11.4), (7.6, 14.4)], [(8, 6), (8, 5), (8, 4), (8, 3), (8, 2)]),
+            ([(11.0, 6.6), (12.8, 10.4), (14.2, 12.8)], [(10, 5), (10, 4), (9, 3), (9, 2), (9, 1)])]
+    for points, stalk in pods:
+        s.pixels_at(stem[BASE], stalk)
+        s.capsule(red, points, (1.9, 0.8))
+        s.pixels_at(stem[SHADOW], [stalk[0]])
+        x0, y0 = points[0]
+        s.put(int(x0) - 1 if x0 > 1 else int(x0), int(y0) + 1, red[HIGHLIGHT])
+    return s
+
+
+def aji_amarillo_hand():
+    s = Sprite()
+    orange = ramp("#f08a1c", spread=0.8)
+    stem = ramp("#5a9a2a")
+    # A pair of long, blunt-tipped golden pods on thin green stems.
+    s.pixels_at(stem[BASE], [(5, 4), (5, 3), (6, 2), (6, 1), (7, 0), (10, 3), (10, 2), (9, 1), (9, 0)])
+    s.capsule(orange, [(10.4, 4.6), (11.8, 9.0), (12.4, 13.6)], (2.2, 1.6))
+    s.capsule(orange, [(5.0, 5.4), (5.6, 10.0), (6.8, 14.0)], (2.4, 1.7))
+    s.pixels_at(orange[HIGHLIGHT], [(4, 7), (4, 8), (4, 9), (10, 6), (11, 8)])
+    s.pixels_at(stem[SHADOW], [(5, 4), (10, 3)])
+    return s
+
+
+def cabbage_head(heart, outer, vein):
+    """A cabbage: a round heart cupped below by darker outer leaves, with pale veins fanning up from the base."""
+    s = Sprite()
+    leaves = ramp(outer)
+    s.ellipse(leaves, 3.2, 11.8, 3.0, 3.8, angle=40)
+    s.ellipse(leaves, 12.8, 11.8, 3.0, 3.8, angle=-40)
+    s.ellipse(leaves, 8.0, 13.2, 4.6, 2.4)
+    head = ramp(heart)
+    s.ellipse(head, 8.0, 7.6, 5.7, 5.6)
+    pale = ramp(vein)
+    # The midrib up the middle, side veins curving out from it, and the edge of the top leaf.
+    s.line(pale[LIGHT], 8, 12, 8, 5)
+    for points in ([(8, 10), (6, 8), (5, 6), (4, 5)], [(8, 10), (10, 8), (11, 6), (12, 5)], [(7, 12), (5, 11), (3, 10)],
+                   [(9, 12), (11, 11), (13, 10)]):
+        s.pixels_at(pale[BASE], points)
+    s.pixels_at(head[LIGHT], [(5, 3), (6, 3), (7, 2), (8, 2)])
+    s.pixels_at(leaves[LIGHT], [(1, 11), (2, 10), (14, 10)])
+    s.pixels_at(head[HIGHLIGHT], [(4, 5), (5, 4)])
+    return s
+
+
+def cabbage_hand():
+    return cabbage_head("#a6d474", "#5a9a3a", "#e8f2c8")
+
+
+def red_cabbage_hand():
+    s = cabbage_head("#7c2c74", "#5a1f5e", "#d8b0d8")
+    bloom = ramp("#8a8ac8", spread=0.5)[LIGHT]
+    s.pixels_at(bloom, [(4, 7), (12, 7), (7, 4)])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"poblano_chili": poblano_hand, "birds_eye_chili": birds_eye_hand, "aji_amarillo": aji_amarillo_hand,
+             "cabbage": cabbage_hand, "red_cabbage": red_cabbage_hand})
 HAND.update({"elderberry": elderberry_hand, "bell_pepper": bell_pepper_hand, "paprika_pepper": paprika_hand,
              "green_chili": green_chili_hand, "red_chili": red_chili_hand})
 HAND.update({"white_grape": white_grape_hand, "red_grape": red_grape_hand, "strawberry": strawberry_hand, "raspberry": raspberry_hand,
