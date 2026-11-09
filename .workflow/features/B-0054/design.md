@@ -168,7 +168,7 @@ Growing needs gain two fields, and growth chances follow tiers.
   - a cooking plant is picked, which its harvest code reports to `RichSoil.spend`
 
   At charge 0, rich farmland becomes farmland and rich soil becomes dirt.
-- **Greenhouse catch-up:** it runs plant ticks directly, so rich soil's extra tick doesn't apply there. Catch-up stays at the plant's own speed.
+- **Greenhouse catch-up:** a plant on rich ground gets two catch-up ticks per round, so it grows twice as fast while the cabin is packed too. Catch-up never harvests, so it spends no charge.
 
 ## Verification
 

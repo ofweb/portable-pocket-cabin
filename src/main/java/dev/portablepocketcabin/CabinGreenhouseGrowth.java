@@ -143,29 +143,36 @@ final class CabinGreenhouseGrowth extends SavedData {
 		for (int round = 0; round < rounds; round++) {
 			boolean growing = false;
 			for (var pos : volume) {
-				var state = level.getBlockState(pos);
-				if (!canProgress(level, pos, state) || !state.canSurvive(level, pos) || !state.isRandomlyTicking()) continue;
-				if (state.getBlock() instanceof FruitSaplingBlock sapling) {
-					if (failedTrees.getOrDefault(pos, 0) >= TREE_ATTEMPTS) continue;
-					growing = true;
-					if (level.getMaxLocalRawBrightness(pos.above()) >= 9 && random.nextInt(7) == 0) {
-						boolean lastStage = state.getValue(net.minecraft.world.level.block.SaplingBlock.STAGE) == 1;
-						sapling.advanceTree(level, pos, state, random);
-						if (lastStage && level.getBlockState(pos).is(sapling)) failedTrees.merge(pos.immutable(), 1, Integer::sum);
-					}
-					continue;
-				}
-				if (state.is(Blocks.SUGAR_CANE) || state.is(Blocks.CACTUS)) {
-					if (level.getBlockState(pos.above()).is(state.getBlock())) continue;
-					int height = 1;
-					while (height < 3 && level.getBlockState(pos.below(height)).is(state.getBlock())) height++;
-					if (height >= 3) continue;
-				}
+				if (!tick(level, pos, random, failedTrees)) continue;
 				growing = true;
-				state.randomTick(level, pos, random);
+				// Rich ground gives the plant on it an extra tick, as it does while the cabin is deployed (B-0054).
+				if (RichSoil.isRich(level.getBlockState(pos.below()))) tick(level, pos, random, failedTrees);
 			}
 			if (!growing) break;
 		}
+	}
+
+	/** Gives one plant one catch-up random tick. Returns whether it could still grow, and so was ticked. */
+	private static boolean tick(ServerLevel level, BlockPos pos, RandomSource random, java.util.Map<BlockPos, Integer> failedTrees) {
+		var state = level.getBlockState(pos);
+		if (!canProgress(level, pos, state) || !state.canSurvive(level, pos) || !state.isRandomlyTicking()) return false;
+		if (state.getBlock() instanceof FruitSaplingBlock sapling) {
+			if (failedTrees.getOrDefault(pos, 0) >= TREE_ATTEMPTS) return false;
+			if (level.getMaxLocalRawBrightness(pos.above()) >= 9 && random.nextInt(7) == 0) {
+				boolean lastStage = state.getValue(net.minecraft.world.level.block.SaplingBlock.STAGE) == 1;
+				sapling.advanceTree(level, pos, state, random);
+				if (lastStage && level.getBlockState(pos).is(sapling)) failedTrees.merge(pos.immutable(), 1, Integer::sum);
+			}
+			return true;
+		}
+		if (state.is(Blocks.SUGAR_CANE) || state.is(Blocks.CACTUS)) {
+			if (level.getBlockState(pos.above()).is(state.getBlock())) return false;
+			int height = 1;
+			while (height < 3 && level.getBlockState(pos.below(height)).is(state.getBlock())) height++;
+			if (height >= 3) return false;
+		}
+		state.randomTick(level, pos, random);
+		return true;
 	}
 
 	static boolean canProgress(ServerLevel level, BlockPos pos, BlockState state) {

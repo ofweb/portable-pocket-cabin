@@ -23,7 +23,9 @@ An empty packed cabin records the clock when its greenhouse suspends.
 Redeployment applies plant random ticks at the expected vanilla selection rate.
 Each return uses at most 8,192 rounds and stops ticking mature plants.
 Only plants receive catch-up ticks; soil, compost, and machines do not.
-Catch-up supplies no harvesting, replanting, hydration, or yield bonus.
+Catch-up supplies no harvesting, replanting, hydration, or yield bonus. A plant on
+rich soil or rich farmland (B-0054) gets two catch-up ticks per round, as it
+grows twice as fast while deployed; catch-up never harvests, so it spends no charge.
 
 A recovery journal saves original block states, elapsed selections, and a random
 seed before catch-up changes the world. Recovery restores that starting point

@@ -107,6 +107,31 @@ public final class CabinRichSoilGameTest {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void richGroundDoublesGreenhouseCatchUp(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var original = PlantNeeds.of(CookingPlants.BARLEY_CROP);
+		try {
+			PlantNeeds.override(CookingPlants.BARLEY_CROP, new PlantNeeds(List.of("minecraft:farmland"), 0, PlantNeeds.Water.NONE,
+				PlantNeeds.Support.NONE, 1.0F, false, 0F));
+			helper.setBlock(BASE, Blocks.FARMLAND.defaultBlockState().setValue(FarmlandBlock.MOISTURE, 7));
+			helper.setBlock(BASE.east(2), RichSoil.RICH_FARMLAND.defaultBlockState().setValue(FarmlandBlock.MOISTURE, 7));
+			helper.setBlock(BASE.above(), CookingPlants.BARLEY_CROP);
+			helper.setBlock(BASE.east(2).above(), CookingPlants.BARLEY_CROP);
+			BlockPos plain = helper.absolutePos(BASE.above());
+			BlockPos rich = helper.absolutePos(BASE.east(2).above());
+			CabinGreenhouseGrowth.catchUp(level, java.util.Set.of(plain, rich), 4096L * 4, 42);
+			helper.assertTrue(level.getBlockState(plain).getValue(CropBlock.AGE) == 4, "Four rounds of catch-up grow plain-ground barley four stages, found "
+				+ level.getBlockState(plain).getValue(CropBlock.AGE));
+			helper.assertTrue(level.getBlockState(rich).getValue(CropBlock.AGE) == 7, "Rich ground doubles catch-up, so the same rounds ripen it, found "
+				+ level.getBlockState(rich).getValue(CropBlock.AGE));
+			helper.assertTrue(level.getBlockState(rich.below()).getValue(RichSoil.CHARGE) == RichSoil.MAX_CHARGE, "Catch-up harvests nothing, so spends no charge");
+		} finally {
+			PlantNeeds.override(CookingPlants.BARLEY_CROP, original);
+		}
+		helper.succeed();
+	}
+
 	private static void compost(GameTestHelper helper, Player player, BlockPos relative) {
 		BlockPos pos = helper.absolutePos(relative);
 		var stack = new ItemStack(RichSoil.COMPOST, 4);
