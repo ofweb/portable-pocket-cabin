@@ -893,8 +893,110 @@ def grape_hand():
     s.pixels_at(LEAF[LIGHT], [(5, 0), (4, 0), (3, 1), (4, 2)])
     return s
 
+def natural_bunch(colour, berries, bloom=None, spread=1.0):
+    """A grape bunch from hand-placed berries of varied size, back rows first, with a stem, leaf, and tendril."""
+    s = Sprite()
+    berry = ramp(colour, spread=spread)
+    for i, (cx, cy, r) in enumerate(berries):
+        s.ellipse(berry, cx, cy, r, r, light=(-0.7, -0.7))
+        if r > 2.0:
+            s.put(int(cx) - 1, int(cy) - 1, berry[HIGHLIGHT])
+        if bloom and i % 3 == 0:
+            s.put(int(cx), int(cy), ramp(bloom, spread=0.5)[BASE])
+    s.pixels_at(ramp("#6b5a2a")[SHADOW], [(8, 0), (7, 1)])
+    s.pixels_at(LEAF[BASE], [(9, 0), (10, 0), (10, 1), (11, 1)])
+    s.pixels_at(LEAF[LIGHT], [(5, 0), (4, 0), (3, 1), (4, 2)])
+    return s
+
+
+def white_grape_hand():
+    return natural_bunch("#cfdc74", [(4.4, 3.8, 2.2), (8.2, 3.6, 2.2), (11.8, 4.2, 2.0), (2.8, 7.4, 1.8), (6.4, 7.2, 2.3),
+                                    (10.2, 7.4, 2.3), (13.2, 7.8, 1.6), (4.6, 10.8, 2.2), (8.4, 10.6, 2.3), (11.6, 10.6, 1.9),
+                                    (6.6, 13.8, 2.0), (9.6, 13.6, 1.7)])
+
+
+def red_grape_hand():
+    return natural_bunch("#9c2c62", [(5.6, 3.6, 2.3), (9.4, 3.8, 2.2), (12.6, 5.0, 1.8), (3.4, 6.6, 2.0), (7.4, 7.2, 2.3),
+                                    (11.0, 7.8, 2.2), (4.2, 10.2, 2.1), (8.0, 10.8, 2.3), (11.4, 11.2, 1.8), (5.8, 13.6, 1.9),
+                                    (9.0, 14.0, 1.8)], bloom="#b08ac0", spread=0.75)
+
+
+def strawberry_hand():
+    s = Sprite()
+    red = ramp("#e0303a")
+
+    def inside(x, y):
+        # Broad shoulders under the leaves, tapering to a rounded point.
+        if not 3.6 <= y <= 15.4:
+            return False
+        t = (y - 3.6) / 11.8
+        half = 6.2 * (1 - t ** 1.7) * (0.82 + 0.18 * math.sin(math.pi * min(1, t * 2.2)))
+        return abs(x - 7.6) <= max(0.6, half)
+    s.shape(inside, red, (7.2, 8.6), (5.6, 6.0))
+    seed, pit = ramp("#ecc22a")[BASE], red[SHADOW]
+    for x, y in [(4, 6), (7, 6), (10, 6), (5, 8), (8, 8), (11, 8), (3, 9), (6, 10), (9, 10), (4, 12), (7, 12), (10, 11), (6, 14), (8, 13)]:
+        if s.pixels[y][x] not in (None, red[OUTLINE]):
+            s.put(x, y, seed)
+            if s.pixels[y + 1][x] not in (None, red[OUTLINE]):
+                s.put(x, y + 1, pit)
+    s.pixels_at(red[HIGHLIGHT], [(3, 6), (4, 5)])
+    leaf = ramp("#3f9a3a")
+    s.pixels_at(leaf[BASE], [(3, 3), (4, 4), (5, 3), (6, 4), (7, 3), (9, 3), (10, 4), (11, 3), (12, 4), (6, 2), (9, 2)])
+    s.pixels_at(leaf[SHADOW], [(5, 4), (8, 4), (11, 4), (2, 4), (13, 4)])
+    s.pixels_at(leaf[LIGHT], [(4, 3), (10, 3), (7, 2)])
+    s.pixels_at(ramp("#5a7a2a")[SHADOW], [(8, 1), (8, 2), (9, 0)])
+    return s
+
+
+def raspberry_hand():
+    s = Sprite()
+    red = ramp("#c42a4c")
+
+    def inside(x, y):
+        # A rounded cone, a little wider at the top.
+        if not 4.0 <= y <= 15.2:
+            return False
+        t = (y - 4.0) / 11.2
+        return abs(x - 7.5) <= 5.2 * math.sqrt(max(0, 1 - (t - 0.3) ** 2 / 0.7 ** 2)) * (1.05 - 0.25 * t)
+    mask = s.shape(inside, red, (7.0, 9.0), (5.2, 5.6))
+    # Drupelets: a lattice of little beads, each lit on top and shaded below.
+    for y in range(5, 15):
+        for x in range(2, 14):
+            if (x + (y // 2) % 2 * 1) % 2 == 0 and y % 2 == 1 and (x, y) in mask and s.pixels[y][x] != red[OUTLINE]:
+                s.put(x, y, red[LIGHT if x < 8 else BASE])
+                if (x, y + 1) in mask and s.pixels[y + 1][x] != red[OUTLINE]:
+                    s.put(x, y + 1, red[SHADOW])
+    s.pixels_at(red[HIGHLIGHT], [(4, 7), (5, 6)])
+    leaf = ramp("#4f8a3a")
+    s.pixels_at(leaf[BASE], [(5, 3), (6, 3), (7, 2), (8, 3), (9, 3), (10, 3), (4, 4), (11, 4)])
+    s.pixels_at(leaf[SHADOW], [(7, 3), (6, 4), (9, 4)])
+    s.pixels_at(ramp("#5a7a2a")[SHADOW], [(7, 1), (7, 0)])
+    return s
+
+
+def redcurrant_hand():
+    s = Sprite()
+    red = ramp("#bc1a22")
+    stem = ramp("#6a7a2a")
+    # A strig arching down from the top left, berries getting smaller toward the tip.
+    path = [(3, 0), (4, 1), (5, 2), (6, 3), (7, 4), (8, 5), (9, 6), (10, 7), (10, 8), (11, 9), (11, 10), (12, 11)]
+    s.pixels_at(stem[SHADOW], path)
+    for cx, cy, r in [(5.2, 6.0, 2.4), (9.6, 4.0, 2.0), (8.0, 9.6, 2.4), (12.6, 8.0, 1.9), (5.0, 11.6, 2.2), (10.6, 12.6, 2.0),
+                      (13.4, 13.6, 1.5), (7.6, 14.2, 1.6)]:
+        # Translucent berries: no outline, lit from within, with a darker rim below and the dry flower tip.
+        mask = s.ellipse(red, cx, cy, r, r, light=(-0.7, -0.7), outline=False)
+        for x, y in mask:
+            if (x, y + 1) not in mask or (x + 1, y) not in mask and (x, y + 1) not in mask:
+                s.put(x, y, red[SHADOW])
+        s.put(int(cx) - 1, int(cy) - 1, red[HIGHLIGHT])
+        s.put(int(cx), int(cy + r - 0.5), red[OUTLINE])
+    s.pixels_at(LEAF[BASE], [(1, 0), (2, 0), (1, 1)])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"white_grape": white_grape_hand, "red_grape": red_grape_hand, "strawberry": strawberry_hand, "raspberry": raspberry_hand,
+             "redcurrant": redcurrant_hand})
 HAND.update({"cherry": cherry_hand, "almond": almond_hand, "green_papaya": green_papaya_hand, "ume_plum": ume_plum_hand, "grape": grape_hand})
 SPRITES.update(HAND)
 
