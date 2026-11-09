@@ -516,6 +516,45 @@ final class CookingPlants {
 		});
 	}
 
+	/** Crops whose harvest is also what plants them (B-0054). */
+	static final java.util.Set<String> GRAIN = java.util.Set.of("barley", "rye", "corn", "blue_corn", "purple_corn", "rice",
+		"glutinous_rice", "white_bean", "black_bean", "chickpea", "soybean", "azuki_bean", "peanut", "sesame", "cumin", "anise",
+		"caraway", "mustard", "rapeseed", "garlic", "onion", "red_onion", "shallot", "sweet_potato", "cassava", "ginger", "galangal",
+		"turmeric", "lemongrass", "water_chestnut", "wasabi");
+	/** Crops that give their leaves or root one stage before ripe, and seeds when ripe (B-0054). */
+	static final java.util.Set<String> LEAF_THEN_SEED = java.util.Set.of("lettuce", "radish", "basil", "holy_basil", "thai_basil",
+		"dill", "parsley", "celery", "spring_onion", "cilantro");
+
+	/** Plants with Garden pages that B-0050 doesn't place wild: the cardoon of B-0046, which has its own placement. */
+	static final Map<String, Block> GARDEN_ONLY = new LinkedHashMap<>();
+	static {
+		GARDEN_ONLY.put("cardoon", CookingBlocks.CARDOON);
+		PLANTED_FROM.put("cardoon", item("cardoon"));
+		GIVES.put("cardoon", List.of(CookingItems.CARDOON_FLOWER, item("cardoon")));
+		// A grain or tuber gives only itself, even where an item named after the plant is something made from it.
+		for (String plant : GRAIN) GIVES.put(plant, List.of(PLANTED_FROM.get(plant)));
+	}
+
+	/** How a plant gives its food and its next planting, as a key for its Garden page. */
+	static String harvestModel(String plant) {
+		Block block = garden().get(plant);
+		if (block instanceof SeaPlantBlock sea) return sea.gatheredByHand() ? "bed" : "sea_plant";
+		if (block instanceof PerennialCropBlock || block instanceof CardoonBlock) return "crown";
+		if (block instanceof TrellisCropBlock) return Cuttings.of(block).builtInRegistryHolder().key().identifier().getPath().endsWith("_seeds") ? "fruit" : "cutting";
+		if (block instanceof HerbBushBlock) return plant.equals("oyster_mushrooms") ? "mushroom" : "cutting";
+		if (block instanceof FruitingLeavesBlock) return "tree";
+		if (block instanceof HarvestTrunkBlock) return "trunk";
+		if (GRAIN.contains(plant)) return "grain";
+		return LEAF_THEN_SEED.contains(plant) ? "leaf_seed" : "fruit";
+	}
+
+	/** Every plant with a Garden page: B-0050's plants and the garden-only ones. */
+	static Map<String, Block> garden() {
+		Map<String, Block> all = new LinkedHashMap<>(PLANTS);
+		all.putAll(GARDEN_ONLY);
+		return all;
+	}
+
 	static Item item(String name) {
 		return BuiltInRegistries.ITEM.getValue(PortablePocketCabin.id(name));
 	}

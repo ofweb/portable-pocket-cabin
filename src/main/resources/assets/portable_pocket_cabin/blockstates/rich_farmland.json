@@ -1,0 +1,100 @@
+{
+  "variants": {
+    "charge=1,moisture=0": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=1,moisture=1": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=1,moisture=2": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=1,moisture=3": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=1,moisture=4": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=1,moisture=5": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=1,moisture=6": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=1,moisture=7": {
+      "model": "portable_pocket_cabin:block/rich_farmland_moist"
+    },
+    "charge=2,moisture=0": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=2,moisture=1": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=2,moisture=2": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=2,moisture=3": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=2,moisture=4": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=2,moisture=5": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=2,moisture=6": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=2,moisture=7": {
+      "model": "portable_pocket_cabin:block/rich_farmland_moist"
+    },
+    "charge=3,moisture=0": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=3,moisture=1": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=3,moisture=2": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=3,moisture=3": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=3,moisture=4": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=3,moisture=5": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=3,moisture=6": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=3,moisture=7": {
+      "model": "portable_pocket_cabin:block/rich_farmland_moist"
+    },
+    "charge=4,moisture=0": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=4,moisture=1": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=4,moisture=2": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=4,moisture=3": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=4,moisture=4": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=4,moisture=5": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=4,moisture=6": {
+      "model": "portable_pocket_cabin:block/rich_farmland"
+    },
+    "charge=4,moisture=7": {
+      "model": "portable_pocket_cabin:block/rich_farmland_moist"
+    }
+  }
+}

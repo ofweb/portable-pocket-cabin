@@ -20,4 +20,10 @@ abstract class FarmlandBlockMixin {
 		if (entity instanceof Player player && level instanceof ServerLevel serverLevel
 			&& !CabinCorridors.mayChange(serverLevel, player.getUUID(), pos)) callback.cancel();
 	}
+
+	/** B-0054: rich farmland that dries out or is trampled becomes rich soil, keeping its charge. */
+	@Inject(method = "turnToDirt", at = @At("HEAD"), cancellable = true)
+	private static void portablePocketCabin$keepRichSoil(Entity entity, BlockState state, Level level, BlockPos pos, CallbackInfo callback) {
+		if (dev.portablepocketcabin.RichSoilAccess.toRichSoil(state, level, pos)) callback.cancel();
+	}
 }

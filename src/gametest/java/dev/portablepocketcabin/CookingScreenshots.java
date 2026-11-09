@@ -122,7 +122,9 @@ final class CookingScreenshots {
 			String[] crops = {"barley", "corn", "cabbage", "onion", "lettuce", "radish", "cilantro", "garlic"};
 			for (int i = 0; i < crops.length; i++) {
 				var pos = base.offset(-4 + i + (i >= 4 ? 1 : 0), 0, 4);
-				level.setBlockAndUpdate(pos.below(), Blocks.FARMLAND.defaultBlockState());
+				// B-0054: the first four crops grow on rich farmland made with compost.
+				level.setBlockAndUpdate(pos.below(), i < 4 ? RichSoil.RICH_FARMLAND.defaultBlockState()
+					.setValue(net.minecraft.world.level.block.FarmlandBlock.MOISTURE, 7) : Blocks.FARMLAND.defaultBlockState());
 				var crop = (net.minecraft.world.level.block.CropBlock) CookingPlants.PLANTS.get(crops[i]);
 				level.setBlockAndUpdate(pos, crop.getStateForAge(crops[i].equals("cilantro") ? 6 : crops[i].equals("onion") ? 5 : 7));
 			}
@@ -187,6 +189,11 @@ final class CookingScreenshots {
 		shot(context, "cookbook-garden-cinnamon");
 		context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectPlant("coconut_leaves"));
 		shot(context, "cookbook-garden-coconut");
+		// B-0054: a spreading shellfish bed, a leafy crop that goes to seed, a perennial crown, and the cardoon.
+		for (String plant : new String[] {"mussel_bed", "lettuce", "asparagus", "cardoon"}) {
+			context.runOnClient(client -> ((CookbookScreen) client.gui.screen()).selectPlant(plant));
+			shot(context, "cookbook-garden-" + plant.replace('_', '-'));
+		}
 		context.runOnClient(client -> client.gui.setScreen(null));
 	}
 

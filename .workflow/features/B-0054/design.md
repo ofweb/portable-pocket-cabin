@@ -168,7 +168,7 @@ Growing needs gain two fields, and growth chances follow tiers.
   - a cooking plant is picked, which its harvest code reports to `RichSoil.spend`
 
   At charge 0, rich farmland becomes farmland and rich soil becomes dirt.
-- **Greenhouse catch-up:** it runs plant ticks directly, so rich soil's extra tick doesn't apply there. Catch-up stays at the plant's own speed.
+- **Greenhouse catch-up:** a plant on rich ground gets two catch-up ticks per round, so it grows twice as fast while the cabin is packed too. Catch-up never harvests, so it spends no charge.
 
 ## Verification
 
@@ -248,3 +248,15 @@ Choices made while building pull requests 1 and 2, where the design left room:
 - **Cardoon:** using a grown cardoon cuts one or two flowers and sets it back one stage, to flower again.
 - **Data scripts:** `.workflow/cooking/tools/harvest_models.py` writes the crop and vine loot tables, and `growing_difficulty.py` writes each plant's tier and climate. Climate comes from the median temperature of the biomes a plant grows wild in. A few plants override it: wasabi, the highland Andean crops, and the coconut palm.
 - **Shade:** shade-needing plants check it at every stage. Fruiting leaves check it too, so coffee fruits on leaves under the canopy.
+
+Pull request 3:
+
+- **Rich ground texture:** rich soil and rich farmland use the rooted dirt texture until B-0034.
+- **Soil checks:** a plant whose growing needs name farmland or dirt also accepts the rich kind.
+- **Spending:** besides a player breaking a ripe crop, picking a ripe bush, vine, perennial crown, or cardoon spends a charge.
+- **Cardoon:** it reads its growing needs from data, so it gets a speed tier and climate and grows in greenhouse catch-up.
+- **Gives:** a grain lists only itself, even where an item named after the plant is something made from it, such as wasabi paste.
+- **Garden page:**
+  - The pace joins the needs paragraph, and Gives is a row of items with names on hover, so every page fits.
+  - The model line replaces the per-plant cutting notes.
+- **`--growable`:** it reads what plants give from their registrations in `CookingPlants.java`, and fish from the fishing loot table.

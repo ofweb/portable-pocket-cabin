@@ -22,7 +22,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * cuts its purple flowers, which steep into vegetable rennet, and sets it back to flower again. Breaking a mature plant
  * divides it into two cardoons to replant, with its flowers.
  */
-final class CardoonBlock extends VegetationBlock implements BonemealableBlock {
+final class CardoonBlock extends VegetationBlock implements BonemealableBlock, CookingPlant {
 	static final MapCodec<CardoonBlock> CODEC = simpleCodec(CardoonBlock::new);
 	static final int MAX_AGE = 3;
 	static final IntegerProperty AGE = BlockStateProperties.AGE_3;
@@ -57,7 +57,8 @@ final class CardoonBlock extends VegetationBlock implements BonemealableBlock {
 
 	@Override
 	protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (state.getValue(AGE) < MAX_AGE && random.nextInt(5) == 0 && level.getRawBrightness(pos.above(), 0) >= 9) {
+		if (state.getValue(AGE) < MAX_AGE && random.nextFloat() < needs().growthChance(level, pos)
+			&& level.getRawBrightness(pos.above(), 0) >= needs().light()) {
 			level.setBlock(pos, state.setValue(AGE, state.getValue(AGE) + 1), Block.UPDATE_CLIENTS);
 		}
 	}
@@ -70,6 +71,7 @@ final class CardoonBlock extends VegetationBlock implements BonemealableBlock {
 			popResource(level, pos, new net.minecraft.world.item.ItemStack(CookingItems.CARDOON_FLOWER, 1 + server.getRandom().nextInt(2)));
 			level.playSound(null, pos, net.minecraft.sounds.SoundEvents.CROP_BREAK, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F);
 			level.setBlock(pos, state.setValue(AGE, MAX_AGE - 1), Block.UPDATE_CLIENTS);
+			RichSoil.spend(level, pos.below());
 		}
 		return net.minecraft.world.InteractionResult.SUCCESS;
 	}
