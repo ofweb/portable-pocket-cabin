@@ -981,13 +981,14 @@ def redcurrant_hand():
     s = Sprite()
     red = ramp("#e23a24", spread=0.8)
     stem = ramp("#a8a032")
-    # A yellow-green stem sweeping in from the bottom left, with short stalks up into the cluster.
-    s.pixels_at(stem[BASE], [(0, 15), (1, 15), (2, 14), (3, 14), (4, 13), (5, 12), (6, 12), (7, 11), (8, 10), (9, 9)])
-    s.pixels_at(stem[SHADOW], [(0, 14), (6, 11), (10, 9), (11, 8)])
+    # The stem sweeps in from the bottom left and runs on up through the cluster, so the berries lie along it.
+    s.pixels_at(stem[BASE], [(0, 15), (1, 14), (2, 14), (3, 13), (4, 12), (5, 11), (6, 10), (7, 9), (8, 8), (9, 7), (10, 6),
+                             (11, 5), (12, 4)])
+    s.pixels_at(stem[SHADOW], [(1, 15), (3, 14)])
     s.pixels_at(ramp("#6b4226")[SHADOW], [(0, 15)])
-    # Glossy berries in two overlapping rows, back row first. Each has a white shine and some show their dark tip.
-    berries = [(4.6, 4.8, 2.8, (2, 4)), (8.6, 4.0, 3.1, (9, 1)), (12.4, 5.2, 2.7, (13, 4)), (14.0, 8.8, 2.2, (14, 7)),
-               (5.4, 9.4, 2.6, None), (8.8, 9.6, 2.9, (11, 10)), (12.6, 11.2, 2.6, (13, 13))]
+    # Glossy berries in two rows either side of the stem, the upper row behind. Each has a white shine, some a dark tip.
+    berries = [(6.0, 7.0, 2.6, (4, 6)), (9.6, 4.6, 2.9, (9, 2)), (13.2, 3.0, 2.4, (14, 2)),
+               (7.6, 11.2, 2.7, (8, 13)), (11.2, 8.6, 2.9, (13, 9)), (14.0, 6.6, 2.0, None)]
     shine = ramp("#fff2dc")[BASE]
     for cx, cy, r, tip in berries:
         s.ellipse(red, cx, cy, r, r, light=(-0.6, -0.8))
