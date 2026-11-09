@@ -782,7 +782,106 @@ def mango_hand():
     return s
 
 
+def cherry_hand():
+    s = Sprite()
+    red = ramp("#a80e26", spread=0.9)
+    stem = ramp("#6a7a2a")
+    # Two stems from one twig, curving down to the fruit.
+    s.pixels_at(stem[SHADOW], [(9, 1), (8, 2), (7, 3), (6, 4), (6, 5), (5, 6), (9, 2), (10, 3), (10, 4), (11, 5), (11, 6)])
+    s.ellipse(red, 11.0, 10.4, 3.5, 3.4)
+    s.ellipse(red, 5.0, 11.2, 3.6, 3.5)
+    for x, y in [(3, 9), (4, 9), (9, 8), (10, 8)]:
+        s.put(x, y, red[HIGHLIGHT])
+    s.pixels_at(red[LIGHT], [(3, 10), (9, 9)])
+    leaf = ramp("#4f9a3a")
+    s.pixels_at(leaf[BASE], [(10, 1), (11, 1), (12, 1), (11, 0), (12, 2), (13, 2)])
+    s.pixels_at(leaf[LIGHT], [(10, 0), (11, 2)])
+    s.pixels_at(leaf[SHADOW], [(13, 1), (14, 2)])
+    return s
+
+
+def almond_hand():
+    s = Sprite()
+    shell = ramp("#b88a5a")
+    angle = -45
+    cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+    base, tip, radius = -1.6, 7.6, 4.1
+
+    def half_width(u):
+        # A teardrop: a round base that tapers to a point.
+        if u <= base:
+            return radius * math.sqrt(max(0, 1 - ((u - base) / radius) ** 2))
+        return radius * max(0, 1 - ((u - base) / (tip - base)) ** 1.4)
+
+    def inside(x, y):
+        u, v = (x - 7.0) * cos + (y - 9.0) * sin, -(x - 7.0) * sin + (y - 9.0) * cos
+        return abs(v) <= half_width(u)
+
+    def pits(x, y):
+        return -1 if (x * 2 + y * 3) % 5 == 0 else 0
+    s.shape(inside, shell, (6.0, 10.0), (4.6, 4.6), texture=pits)
+    s.pixels_at(shell[HIGHLIGHT], [(4, 10), (5, 9), (6, 8)])
+    return s
+
+
+def green_papaya_hand():
+    s = Sprite()
+    skin = ramp("#6a9e36")
+    angle = 20
+    cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+
+    def inside(x, y):
+        # A long pear: full at the bottom, narrowing toward the stem.
+        u, v = (x - 7.5) * sin + (y - 8.5) * cos, (x - 7.5) * cos - (y - 8.5) * sin
+        if not -6.8 <= u <= 6.2:
+            return False
+        return abs(v) <= 2.6 + 1.8 * (u + 6.8) / 13.0 - 1.6 * max(0, (u - 3.5) / 2.7) ** 2
+
+    def ribs(x, y):
+        v = (x + 0.5 - 7.5) * cos - (y + 0.5 - 8.5) * sin
+        return -1 if abs(v - 1.6) < 0.5 else 0
+    s.shape(inside, skin, (6.8, 9.0), (5.0, 6.4), texture=ribs)
+    s.pixels_at(ramp("#c8d050")[LIGHT], [(9, 11), (6, 12), (8, 13), (10, 9)])
+    s.pixels_at(skin[HIGHLIGHT], [(5, 7), (5, 8), (6, 6)])
+    s.pixels_at(ramp("#6b4a2a")[SHADOW], [(6, 1), (5, 0)])
+    return s
+
+
+def ume_plum_hand():
+    s = Sprite()
+    skin, blush = ramp("#b8bc40"), ramp("#d86a3a")
+
+    def colour(x, y):
+        return blush if math.dist((x + 0.5, y + 0.5), (4.4, 8.4)) < 2.1 else skin
+    # Two small ume, one behind the other.
+    s.ellipse(skin, 10.6, 6.6, 3.8, 3.7, texture=speckle(41, 0.12, up=0))
+    s.pixels_at(skin[SHADOW], [(11, 3), (11, 4), (12, 5)])
+    s.ellipse(colour, 6.0, 10.2, 4.6, 4.5, texture=speckle(43, 0.12, up=0))
+    s.pixels_at(skin[SHADOW], [(7, 6), (7, 7), (8, 8), (8, 9)])
+    s.pixels_at(skin[HIGHLIGHT], [(9, 4)])
+    s.pixels_at(blush[HIGHLIGHT], [(3, 8)])
+    s.pixels_at(ramp("#6b4a2a")[SHADOW], [(11, 2), (12, 1)])
+    s.pixels_at(LEAF[BASE], [(13, 1), (14, 1), (13, 2)])
+    return s
+
+
+def grape_hand():
+    s = Sprite()
+    berry = ramp("#86c044")
+    # Four, three, two, then one berry: a neat bunch, drawn from the top so lower berries overlap.
+    rows = [(4.4, [2.6, 6.2, 9.8, 13.4]), (7.6, [4.4, 8.0, 11.6]), (10.8, [6.2, 9.8]), (13.8, [8.0])]
+    for cy, xs in rows:
+        for cx in xs:
+            s.ellipse(berry, cx, cy, 2.0, 2.0, light=(-0.7, -0.7))
+            s.put(int(cx) - 1, int(cy) - 1, berry[HIGHLIGHT])
+    s.pixels_at(ramp("#6b5a2a")[SHADOW], [(8, 0), (8, 1), (7, 1)])
+    s.pixels_at(LEAF[BASE], [(9, 0), (10, 0), (11, 1), (10, 1)])
+    s.pixels_at(LEAF[SHADOW], [(12, 1)])
+    return s
+
+
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"cherry": cherry_hand, "almond": almond_hand, "green_papaya": green_papaya_hand, "ume_plum": ume_plum_hand, "grape": grape_hand})
 SPRITES.update(HAND)
 
 
