@@ -998,8 +998,110 @@ def redcurrant_hand():
             s.put(*tip, ramp("#5a2a1a")[BASE])
     return s
 
+def elderberry_hand():
+    s = Sprite()
+    stem = ramp("#8a2a4a")
+    # One red-purple stalk that forks into thin stems under a broad, dense head of berries.
+    s.line(stem[SHADOW], 8, 15, 8, 11)
+    for x1, y1 in [(3, 8), (6, 7), (10, 7), (13, 8)]:
+        s.line(stem[BASE], 8, 11, x1, y1)
+    berry, shine, deep = ramp("#241c34", spread=0.5), ramp("#6a78a0")[BASE], ramp("#100a16")[BASE]
+    rng = random.Random(9)
+
+    def head(x, y):
+        return ((x - 8.0) / 7.2) ** 2 + ((y - 5.6) / 4.6) ** 2 <= 1 and y <= 9.0
+    for y in range(SIZE):
+        for x in range(SIZE):
+            if not head(x + 0.5, y + 0.5):
+                continue
+            edge = not all(head(x + 0.5 + dx, y + 0.5 + dy) for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+            if edge and rng.random() < 0.4:
+                continue  # A bumpy outline where berries stick out or leave gaps.
+            # Tiny black berries, each two pixels across: a glint on some, deep shade in the gaps between.
+            cell = (x // 2 + (y // 2) % 2) % 2
+            if x % 2 == 0 and y % 2 == 0 and rng.random() < 0.55:
+                s.put(x, y, shine)
+            elif (x % 2 == 1 and y % 2 == 1) or cell:
+                s.put(x, y, deep if rng.random() < 0.5 else berry[SHADOW])
+            else:
+                s.put(x, y, berry[BASE])
+    leaf = ramp("#4f8a3a")
+    s.pixels_at(leaf[BASE], [(1, 12), (2, 12), (2, 13), (3, 13), (3, 14), (4, 14), (2, 11)])
+    s.pixels_at(leaf[LIGHT], [(1, 11), (3, 12)])
+    s.pixels_at(leaf[SHADOW], [(4, 13), (5, 14)])
+    return s
+
+
+def bell_pepper_hand():
+    s = Sprite()
+    red = ramp("#d8241e")
+    lobes = [(4.8, 9.8, 3.0, 5.4), (7.8, 10.4, 2.8, 5.4), (10.6, 9.8, 3.0, 5.4)]
+
+    def inside(x, y):
+        return any(((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1 for cx, cy, rx, ry in lobes)
+    s.shape(inside, red, (7.6, 9.4), (6.2, 5.6))
+    # Creases between the lobes, and glossy streaks down the front.
+    s.pixels_at(red[SHADOW], [(6, 6), (6, 7), (6, 8), (6, 9), (6, 10), (6, 11), (9, 6), (9, 7), (9, 8), (9, 9), (9, 10), (9, 11)])
+    s.pixels_at(red[OUTLINE], [(6, 14), (9, 14)])
+    s.pixels_at(red[HIGHLIGHT], [(3, 7), (3, 8), (3, 9), (7, 7), (7, 8)])
+    s.pixels_at(red[LIGHT], [(4, 6), (11, 7), (11, 8)])
+    green = ramp("#3f8a2a")
+    s.pixels_at(green[SHADOW], [(5, 4), (6, 4), (7, 4), (8, 4), (9, 4), (10, 4)])
+    s.pixels_at(green[BASE], [(7, 3), (8, 3), (8, 2), (9, 1), (10, 1)])
+    s.pixels_at(green[LIGHT], [(7, 2), (9, 0)])
+    return s
+
+
+def chili(colour, points, radii, calyx, stem_points):
+    """A long, glossy chili along a curve, with a green cap at the thick end and a curving stem."""
+    s = Sprite()
+    # A softer ramp, so the thin tip doesn't turn to solid outline.
+    tones = ramp(colour, spread=0.7)
+    s.capsule(tones, points, radii)
+    # A shine running down one side of the pod.
+    for (x0, y0), (x1, y1) in zip(points, points[1:]):
+        nx, ny = -(y1 - y0), x1 - x0
+        length = math.hypot(nx, ny)
+        for t in (0.3, 0.7):
+            x, y = x0 + (x1 - x0) * t - nx / length * 0.8, y0 + (y1 - y0) * t - ny / length * 0.8
+            if s.pixels[int(y)][int(x)] not in (None, tones[OUTLINE]):
+                s.put(int(x), int(y), tones[HIGHLIGHT])
+    green = ramp("#3f8a2a")
+    s.pixels_at(green[BASE], calyx)
+    s.pixels_at(green[SHADOW], calyx[::3])
+    s.pixels_at(green[LIGHT], stem_points)
+    return s
+
+
+def red_chili_hand():
+    return chili("#d4221a", [(11.6, 3.4), (9.6, 6.8), (7.0, 10.4), (4.4, 13.0), (2.6, 13.4)], (2.2, 0.8),
+                 [(11, 2), (12, 2), (13, 3), (12, 3)], [(13, 1), (14, 0)])
+
+
+def green_chili_hand():
+    return chili("#3c8c26", [(2.0, 12.4), (5.6, 12.0), (9.2, 10.6), (12.0, 8.4)], (1.1, 2.1),
+                 [(12, 7), (13, 7), (13, 8), (12, 6)], [(14, 6), (14, 5), (15, 4)])
+
+
+def paprika_hand():
+    s = Sprite()
+    red = ramp("#d0301c")
+    points = [(5.0, 4.6), (8.2, 9.0), (10.6, 13.0)]
+    s.capsule(red, points, (3.0, 2.3))
+    # Folds down its length and a glossy shine; the tip stays blunt and rounded.
+    s.pixels_at(red[SHADOW], [(6, 7), (7, 8), (8, 10), (9, 11), (10, 12)])
+    s.pixels_at(red[HIGHLIGHT], [(4, 6), (5, 7), (6, 9)])
+    s.pixels_at(red[LIGHT], [(5, 6), (7, 10), (8, 12)])
+    green = ramp("#3f8a2a")
+    s.pixels_at(green[BASE], [(3, 3), (4, 3), (5, 2), (6, 3), (4, 2)])
+    s.pixels_at(green[SHADOW], [(5, 3), (3, 2)])
+    s.pixels_at(green[LIGHT], [(4, 1), (3, 0), (2, 0)])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"elderberry": elderberry_hand, "bell_pepper": bell_pepper_hand, "paprika_pepper": paprika_hand,
+             "green_chili": green_chili_hand, "red_chili": red_chili_hand})
 HAND.update({"white_grape": white_grape_hand, "red_grape": red_grape_hand, "strawberry": strawberry_hand, "raspberry": raspberry_hand,
              "redcurrant": redcurrant_hand})
 HAND.update({"cherry": cherry_hand, "almond": almond_hand, "green_papaya": green_papaya_hand, "ume_plum": ume_plum_hand, "grape": grape_hand})
