@@ -800,50 +800,63 @@ def cherry_hand():
     return s
 
 
+ALMOND = [  # One almond, pixel by pixel: o outline, s shadow, b base, l light, h highlight, r a ridge.
+    "...o..",
+    "..olo.",
+    "..lbbo",
+    ".olrbo",
+    "olhrso",
+    "olbrso",
+    "olbrso",
+    ".obso.",
+    "..oo..",
+]
+
+
+def stamp(s, art, tones, x0, y0, mirror=False):
+    """Draws a hand-placed pixel pattern with a ramp, at a position, optionally mirrored left to right."""
+    key = {"o": OUTLINE, "s": SHADOW, "b": BASE, "l": LIGHT, "h": HIGHLIGHT, "r": SHADOW}
+    width = max(len(row) for row in art)
+    for y, row in enumerate(art):
+        for x, ch in enumerate(row):
+            if ch in key:
+                s.put(x0 + (width - 1 - x if mirror else x), y0 + y, tones[key[ch]])
+
+
 def almond_hand():
     s = Sprite()
     shell = ramp("#b88a5a")
-    angle = -45
-    cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
-    base, tip, radius = -1.6, 7.6, 4.1
-
-    def half_width(u):
-        # A teardrop: a round base that tapers to a point.
-        if u <= base:
-            return radius * math.sqrt(max(0, 1 - ((u - base) / radius) ** 2))
-        return radius * max(0, 1 - ((u - base) / (tip - base)) ** 1.4)
-
-    def inside(x, y):
-        u, v = (x - 7.0) * cos + (y - 9.0) * sin, -(x - 7.0) * sin + (y - 9.0) * cos
-        return abs(v) <= half_width(u)
-
-    def pits(x, y):
-        return -1 if (x * 2 + y * 3) % 5 == 0 else 0
-    s.shape(inside, shell, (6.0, 10.0), (4.6, 4.6), texture=pits)
-    s.pixels_at(shell[HIGHLIGHT], [(4, 10), (5, 9), (6, 8)])
+    # Three almonds in a little pile, the front one drawn last.
+    stamp(s, ALMOND, shell, 1, 1)
+    stamp(s, ALMOND, shell, 9, 2, mirror=True)
+    stamp(s, ALMOND, shell, 5, 6)
     return s
 
 
 def green_papaya_hand():
     s = Sprite()
     skin = ramp("#6a9e36")
-    angle = 20
+    angle = 25
     cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
 
     def inside(x, y):
-        # A long pear: full at the bottom, narrowing toward the stem.
-        u, v = (x - 7.5) * sin + (y - 8.5) * cos, (x - 7.5) * cos - (y - 8.5) * sin
-        if not -6.8 <= u <= 6.2:
+        # An egg: rounder and fuller at the bottom, gently narrower at the stem.
+        u, v = -(x - 7.8) * sin + (y - 8.6) * cos, (x - 7.8) * cos + (y - 8.6) * sin
+        length = 7.3
+        if abs(u) > length:
             return False
-        return abs(v) <= 2.6 + 1.8 * (u + 6.8) / 13.0 - 1.6 * max(0, (u - 3.5) / 2.7) ** 2
+        width = 3.8 * math.sqrt(1 - (u / length) ** 2) * (1 + 0.22 * u / length)
+        return abs(v) <= width
 
     def ribs(x, y):
-        v = (x + 0.5 - 7.5) * cos - (y + 0.5 - 8.5) * sin
-        return -1 if abs(v - 1.6) < 0.5 else 0
-    s.shape(inside, skin, (6.8, 9.0), (5.0, 6.4), texture=ribs)
-    s.pixels_at(ramp("#c8d050")[LIGHT], [(9, 11), (6, 12), (8, 13), (10, 9)])
-    s.pixels_at(skin[HIGHLIGHT], [(5, 7), (5, 8), (6, 6)])
-    s.pixels_at(ramp("#6b4a2a")[SHADOW], [(6, 1), (5, 0)])
+        v = (x + 0.5 - 7.8) * cos + (y + 0.5 - 8.6) * sin
+        return -1 if abs(abs(v) - 2.2) < 0.45 else 0
+    s.shape(inside, skin, (7.0, 8.0), (4.4, 6.9), texture=ribs)
+    s.pixels_at(skin[HIGHLIGHT], [(6, 5), (6, 6), (5, 7)])
+    s.pixels_at(ramp("#c8d050")[BASE], [(8, 11), (6, 9), (9, 8)])
+    # The stem sits on the fruit's axis, at the narrow top.
+    tip = (7.8 + 7.4 * sin, 8.6 - 7.4 * cos)
+    s.pixels_at(ramp("#6b4a2a")[SHADOW], [(round(tip[0] - 0.5), round(tip[1] - 0.5)), (round(tip[0] + sin - 0.5), round(tip[1] - cos - 0.5))])
     return s
 
 
@@ -853,30 +866,31 @@ def ume_plum_hand():
 
     def colour(x, y):
         return blush if math.dist((x + 0.5, y + 0.5), (4.4, 8.4)) < 2.1 else skin
-    # Two small ume, one behind the other.
-    s.ellipse(skin, 10.6, 6.6, 3.8, 3.7, texture=speckle(41, 0.12, up=0))
-    s.pixels_at(skin[SHADOW], [(11, 3), (11, 4), (12, 5)])
-    s.ellipse(colour, 6.0, 10.2, 4.6, 4.5, texture=speckle(43, 0.12, up=0))
+    # Two small ume, one behind the other, both round.
+    s.ellipse(skin, 10.4, 6.4, 4.2, 4.2, texture=speckle(41, 0.12, up=0))
+    s.ellipse(colour, 6.0, 10.4, 4.7, 4.6, texture=speckle(43, 0.12, up=0))
     s.pixels_at(skin[SHADOW], [(7, 6), (7, 7), (8, 8), (8, 9)])
-    s.pixels_at(skin[HIGHLIGHT], [(9, 4)])
+    s.pixels_at(skin[HIGHLIGHT], [(8, 4), (9, 3)])
     s.pixels_at(blush[HIGHLIGHT], [(3, 8)])
-    s.pixels_at(ramp("#6b4a2a")[SHADOW], [(11, 2), (12, 1)])
-    s.pixels_at(LEAF[BASE], [(13, 1), (14, 1), (13, 2)])
+    s.pixels_at(ramp("#6b4a2a")[SHADOW], [(11, 1), (12, 0)])
+    s.pixels_at(LEAF[BASE], [(13, 0), (14, 0), (13, 1)])
     return s
 
 
 def grape_hand():
     s = Sprite()
     berry = ramp("#86c044")
-    # Four, three, two, then one berry: a neat bunch, drawn from the top so lower berries overlap.
-    rows = [(4.4, [2.6, 6.2, 9.8, 13.4]), (7.6, [4.4, 8.0, 11.6]), (10.8, [6.2, 9.8]), (13.8, [8.0])]
-    for cy, xs in rows:
-        for cx in xs:
-            s.ellipse(berry, cx, cy, 2.0, 2.0, light=(-0.7, -0.7))
+    # Berries of different sizes placed by hand, the bunch leaning and tapering off to one side, back rows first.
+    berries = [(5.0, 3.8, 2.1), (8.6, 3.4, 2.3), (12.0, 4.6, 1.9), (3.0, 7.0, 1.9), (6.6, 6.9, 2.3), (10.3, 7.6, 2.2),
+               (13.4, 8.6, 1.7), (4.8, 10.4, 2.1), (8.4, 10.8, 2.3), (11.8, 11.4, 1.8), (6.9, 13.9, 1.9), (10.0, 14.4, 1.6)]
+    for cx, cy, r in berries:
+        s.ellipse(berry, cx, cy, r, r, light=(-0.7, -0.7))
+        if r > 2.0:
             s.put(int(cx) - 1, int(cy) - 1, berry[HIGHLIGHT])
-    s.pixels_at(ramp("#6b5a2a")[SHADOW], [(8, 0), (8, 1), (7, 1)])
-    s.pixels_at(LEAF[BASE], [(9, 0), (10, 0), (11, 1), (10, 1)])
-    s.pixels_at(LEAF[SHADOW], [(12, 1)])
+    s.pixels_at(ramp("#6b5a2a")[SHADOW], [(8, 0), (7, 1)])
+    s.pixels_at(LEAF[BASE], [(9, 0), (10, 0), (10, 1), (11, 1)])
+    # A curling tendril.
+    s.pixels_at(LEAF[LIGHT], [(5, 0), (4, 0), (3, 1), (4, 2)])
     return s
 
 
