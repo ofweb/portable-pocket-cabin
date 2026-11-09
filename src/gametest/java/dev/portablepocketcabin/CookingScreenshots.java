@@ -105,6 +105,7 @@ final class CookingScreenshots {
 			capturePress(context, world, origin[0]);
 			capturePhase3(context, world, origin[0]);
 			captureGarden(context, world, origin[0]);
+			captureArtPilot(context, world);
 			captureButchery(context, world, origin[0]);
 		}
 	}
@@ -422,6 +423,22 @@ final class CookingScreenshots {
 		});
 		world.getConnection().waitForClientboundPackets();
 		context.waitForScreen(CookingScreen.class);
+	}
+
+	/** The code-drawn item textures, in the hotbar and the inventory screen. */
+	private static void captureArtPilot(ClientGameTestContext context, TestSingleplayerContext world) {
+		String[] items = {"pineapple", "coconut", "rosemary", "blackcurrant", "tomato", "aubergine", "lemon", "garlic", "mussels", "compost"};
+		world.getServer().runOnServer(server -> {
+			var inventory = world.getConnection().getServerPlayer().getInventory();
+			inventory.clearContent();
+			for (int i = 0; i < items.length; i++) inventory.setItem(i, new ItemStack(net.minecraft.core.registries.BuiltInRegistries.ITEM
+				.getValue(PortablePocketCabin.id(items[i])), 1 + i % 4));
+		});
+		world.getConnection().waitForClientboundPackets();
+		context.runOnClient(client -> client.gui.setScreen(new net.minecraft.client.gui.screens.inventory.InventoryScreen(client.player)));
+		context.waitTicks(5);
+		shot(context, "art-pilot-inventory");
+		context.runOnClient(client -> client.gui.setScreen(null));
 	}
 
 	private static void shot(ClientGameTestContext context, String name) {
