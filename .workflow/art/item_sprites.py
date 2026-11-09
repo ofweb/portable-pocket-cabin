@@ -66,7 +66,8 @@ class Sprite:
                 tone = HIGHLIGHT if facing > 0.62 else LIGHT if facing > 0.2 else BASE if facing > -0.35 else SHADOW
                 if texture:
                     tone = max(SHADOW, min(HIGHLIGHT, tone + texture(x, y)))
-            self.put(x, y, tones[tone])
+            # Tones may depend on the pixel, for fruit that changes colour across its skin.
+            self.put(x, y, (tones(x, y) if callable(tones) else tones)[tone])
         return mask
 
     def ellipse(self, tones, cx, cy, rx, ry, angle=0.0, **kw):
@@ -689,6 +690,100 @@ COLOURS = {"plum": "#6a2a6a", "apricot": "#f0a040", "orange": "#f09020", "lime":
 SPRITES = {"pineapple": pineapple, "coconut": coconut, "rosemary": rosemary, "blackcurrant": blackcurrant, "tomato": tomato,
            "aubergine": aubergine, "lemon": lemon, "garlic": garlic, "mussels": mussels, "compost": compost}
 SPRITES.update({name: (lambda draw, colour: lambda: draw(colour))(draw, COLOURS[name]) for name, draw in TEMPLATED.items()})
+def blend(value, edge, x, y, width=0.14):
+    """Whether a pixel falls past an edge, dithered in a checkerboard across a narrow band so colours mix softly."""
+    if abs(value - edge) < width:
+        return (x + y) % 2 == 0
+    return value > edge
+
+
+# Hand-drawn produce, reviewed five at a time. Each is drawn on its own, as the first ten were.
+
+def plum_hand():
+    s = Sprite()
+    skin = ramp("#4a2468", spread=0.9)
+    s.ellipse(skin, 7.5, 9.2, 5.8, 6.0, angle=12)
+    # The seam down the front, and the dusty bloom where the light falls.
+    s.pixels_at(skin[SHADOW], [(9, 4), (10, 5), (10, 6), (11, 7), (11, 8), (11, 9)])
+    bloom = ramp("#9a88c0", spread=0.5)
+    s.pixels_at(bloom[BASE], [(4, 7), (5, 6), (6, 5), (4, 9), (6, 7)])
+    s.pixels_at(bloom[LIGHT], [(5, 7), (5, 5)])
+    s.pixels_at(ramp("#6b4a2a")[SHADOW], [(8, 2), (8, 3), (9, 1)])
+    s.pixels_at(LEAF[BASE], [(10, 1), (11, 1), (10, 2), (12, 2)])
+    s.pixels_at(LEAF[LIGHT], [(11, 0)])
+    return s
+
+
+def apricot_hand():
+    s = Sprite()
+    orange, blush = ramp("#f2a43c"), ramp("#e2582a")
+
+    def skin(x, y):
+        # A blush on the sunny shoulder, fading into the orange through a dithered edge.
+        return blush if blend(-math.dist((x + 0.5, y + 0.5), (10.8, 6.6)) / 2.9, -1.0, x, y, width=0.25) else orange
+    s.ellipse(skin, 7.5, 9.3, 6.0, 5.7, texture=speckle(17, 0.12, up=0))
+    s.pixels_at(orange[SHADOW], [(7, 5), (7, 6), (6, 7), (6, 8), (6, 9)])
+    s.pixels_at(orange[HIGHLIGHT], [(4, 7), (5, 6)])
+    s.pixels_at(ramp("#6b4a2a")[SHADOW], [(8, 3), (8, 2)])
+    s.pixels_at(LEAF[BASE], [(9, 2), (10, 2), (10, 1), (11, 1)])
+    s.pixels_at(LEAF[LIGHT], [(9, 1)])
+    return s
+
+
+def orange_hand():
+    s = Sprite()
+    peel = ramp("#f0861a")
+
+    def dimples(x, y):
+        return -1 if (x * 3 + y * 5) % 7 == 0 else 0
+    s.ellipse(peel, 7.5, 9.0, 6.4, 6.2, texture=dimples)
+    s.pixels_at(peel[HIGHLIGHT], [(4, 6), (5, 5), (4, 7)])
+    s.pixels_at(peel[LIGHT], [(5, 6), (6, 5), (3, 8)])
+    s.pixels_at(peel[OUTLINE], [(8, 3)])
+    s.pixels_at(ramp("#6b4a2a")[SHADOW], [(8, 2)])
+    s.pixels_at(LEAF[BASE], [(9, 1), (10, 1), (11, 2), (10, 2)])
+    s.pixels_at(LEAF[SHADOW], [(12, 2), (11, 3)])
+    s.pixels_at(LEAF[LIGHT], [(9, 2)])
+    return s
+
+
+def lime_hand():
+    s = Sprite()
+    rind = ramp("#4fa02a")
+    angle = -25
+    mask = s.ellipse(rind, 7.5, 8.8, 5.8, 4.9, angle=angle, texture=speckle(23, 0.14, up=0))
+    # A nub at each end, touching the fruit.
+    ax, ay = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+    for sign in (1, -1):
+        for reach in (6.4, 6.0, 5.6):
+            nub = (round(7.5 + sign * reach * ax - 0.5), round(8.8 + sign * reach * ay - 0.5))
+            if nub not in mask and any((nub[0] + dx, nub[1] + dy) in mask for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                s.put(*nub, rind[OUTLINE])
+                break
+    s.pixels_at(rind[HIGHLIGHT], [(4, 8), (5, 7), (6, 6), (7, 6)])
+    s.pixels_at(rind[LIGHT], [(4, 9), (5, 8), (8, 5)])
+    return s
+
+
+def mango_hand():
+    s = Sprite()
+    red, orange, green = ramp("#c83a2a"), ramp("#e8962a"), ramp("#a8b832")
+    angle = -35
+    cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+
+    def skin(x, y):
+        # Red at the shoulder by the stem, orange across the middle, and green-gold at the tip, blended where they meet.
+        u = ((x + 0.5 - 7.5) * cos + (y + 0.5 - 8.8) * sin) / 6.4
+        return red if blend(u, 0.4, x, y) else orange if blend(u, -0.4, x, y) else green
+    s.ellipse(skin, 7.5, 8.8, 6.4, 4.7, angle=angle)
+    s.pixels_at(orange[HIGHLIGHT], [(5, 7), (6, 6), (7, 6)])
+    s.pixels_at(ramp("#6b4a2a")[SHADOW], [(13, 3), (14, 2)])
+    s.pixels_at(LEAF[BASE], [(12, 2), (12, 1), (11, 1)])
+    return s
+
+
+HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+SPRITES.update(HAND)
 
 
 def write():
