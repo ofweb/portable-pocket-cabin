@@ -1173,8 +1173,99 @@ def red_cabbage_hand():
     s.pixels_at(bloom, [(4, 7), (12, 7), (7, 4)])
     return s
 
+def lettuce_hand():
+    s = Sprite()
+    leaf = ramp("#6cc23a")
+
+    def inside(x, y):
+        # A bushy head whose edge ruffles in and out.
+        angle = math.atan2(y - 9.0, x - 8.0)
+        reach = 6.6 + 0.8 * math.sin(angle * 7 + 0.6)
+        return ((x - 8.0) / reach) ** 2 + ((y - 9.0) / (reach * 0.95)) ** 2 <= 1 and y <= 15.4
+
+    def ruffles(x, y):
+        # Wavy folds: light crests and shaded troughs that curl around the head.
+        angle, radius = math.atan2(y + 0.5 - 9.0, x + 0.5 - 8.0), math.dist((x + 0.5, y + 0.5), (8.0, 9.0))
+        ridge = math.sin(angle * 5 + radius * 1.3)
+        return 1 if ridge > 0.55 else -1 if ridge < -0.6 else 0
+    s.shape(inside, leaf, (7.6, 8.4), (6.6, 6.4), texture=ruffles)
+    s.pixels_at(ramp("#e2f0b8")[BASE], [(7, 14), (8, 14), (8, 13)])
+    return s
+
+
+def courgette_hand():
+    s = Sprite()
+    skin = ramp("#2f6c26", spread=0.8)
+    points = [(2.6, 11.2), (8.0, 9.0), (12.8, 6.4)]
+    s.capsule(skin, points, (3.0, 2.9))
+    # Pale speckled stripes running the length of it.
+    speck = ramp("#8ab86a")[BASE]
+    for x, y in [(3, 10), (4, 10), (6, 9), (7, 9), (9, 8), (10, 7), (12, 6), (4, 12), (5, 12), (7, 11), (8, 11), (10, 10), (11, 9)]:
+        if s.pixels[y][x] not in (None, skin[OUTLINE]):
+            s.put(x, y, speck)
+    s.pixels_at(skin[HIGHLIGHT], [(4, 9), (6, 8), (8, 7)])
+    tan = ramp("#c8b070")
+    s.pixels_at(tan[BASE], [(14, 5), (15, 4)])
+    s.pixels_at(tan[SHADOW], [(14, 6)])
+    s.pixels_at(skin[OUTLINE], [(0, 12)])
+    return s
+
+
+def cucumber_hand():
+    s = Sprite()
+    skin = ramp("#2c6222", spread=0.8)
+    points = [(2.2, 12.0), (7.6, 10.4), (13.2, 5.8)]
+    s.capsule(skin, points, (2.2, 2.4))
+    # Little pale bumps all over.
+    bump = ramp("#9ac070")[BASE]
+    for x, y in [(3, 12), (5, 11), (7, 10), (9, 9), (11, 7), (12, 6), (4, 13), (6, 12), (8, 11), (10, 10), (6, 10), (10, 8)]:
+        if s.pixels[y][x] not in (None, skin[OUTLINE]):
+            s.put(x, y, bump)
+    s.pixels_at(skin[HIGHLIGHT], [(4, 10), (6, 9), (9, 7)])
+    s.pixels_at(ramp("#6a7a2a")[SHADOW], [(14, 4), (15, 3)])
+    return s
+
+
+def tomatillo_hand():
+    s = Sprite()
+    husk = ramp("#d2d8a8", spread=0.6)
+    vein = ramp("#a4ac72")[BASE]
+    # Papery husk flaps behind and beside the fruit, peeled back so the green fruit shows at the front.
+    for cx, cy, angle in [(3.6, 8.0, 60), (12.4, 8.0, -60), (8.0, 4.4, 0)]:
+        mask = s.ellipse(husk, cx, cy, 4.2, 2.6, angle=angle)
+        for x, y in mask:
+            if (x + y) % 3 == 0 and s.pixels[y][x] != husk[OUTLINE]:
+                s.put(x, y, vein)
+    fruit = ramp("#7cb44a")
+    s.ellipse(fruit, 8.0, 10.0, 5.0, 4.8)
+    s.pixels_at(fruit[HIGHLIGHT], [(5, 8), (6, 7)])
+    s.pixels_at(fruit[LIGHT], [(5, 9), (7, 7)])
+    s.pixels_at(ramp("#5a7a2a")[SHADOW], [(8, 1), (8, 0)])
+    return s
+
+
+def thai_aubergine_hand():
+    s = Sprite()
+    pale, stripe = ramp("#b8d4a0"), ramp("#4f8a3a")
+    cx, cy, r = 8.0, 9.8, 5.4
+
+    def skin(x, y):
+        # Green stripes running from the cap to the base, around the curve of the fruit.
+        span = math.sqrt(max(0.01, r * r - (y + 0.5 - cy) ** 2))
+        longitude = math.asin(max(-1, min(1, (x + 0.5 - cx) / span)))
+        return stripe if (longitude * 2.2) % 1.0 < 0.42 else pale
+    s.ellipse(skin, cx, cy, r, r * 0.96)
+    s.pixels_at(pale[HIGHLIGHT], [(5, 7), (5, 8)])
+    cap = ramp("#3f7a2a")
+    s.pixels_at(cap[BASE], [(5, 4), (6, 4), (7, 4), (8, 4), (9, 4), (10, 4), (11, 5), (4, 5), (6, 5), (9, 5)])
+    s.pixels_at(cap[SHADOW], [(7, 5), (8, 5), (10, 5)])
+    s.pixels_at(cap[LIGHT], [(8, 3), (8, 2), (9, 1), (10, 0)])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"lettuce": lettuce_hand, "courgette": courgette_hand, "cucumber": cucumber_hand, "tomatillo": tomatillo_hand,
+             "thai_aubergine": thai_aubergine_hand})
 HAND.update({"poblano_chili": poblano_hand, "birds_eye_chili": birds_eye_hand, "aji_amarillo": aji_amarillo_hand,
              "cabbage": cabbage_hand, "red_cabbage": red_cabbage_hand})
 HAND.update({"elderberry": elderberry_hand, "bell_pepper": bell_pepper_hand, "paprika_pepper": paprika_hand,
