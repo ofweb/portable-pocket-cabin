@@ -122,6 +122,12 @@ class Sprite:
         return img
 
 
+def stable_hash(text):
+    """A hash that is the same on every run, unlike Python's hash(), so sprites come out identical each time."""
+    import zlib
+    return zlib.crc32(text.encode())
+
+
 def speckle(seed, chance, up=1, down=-1):
     """A texture that nudges some pixels a tone up or down, the same way every run."""
     rng = random.Random(seed)
@@ -292,7 +298,7 @@ def compost():
 def round_fruit(colour, r=5.4, cy=9.0, crease=False, pores=False, leaf=True, stem=True, blush=None, nub=False):
     s = Sprite()
     tones = ramp(colour)
-    s.ellipse(tones, 7.5, cy, r, r * 0.95, texture=speckle(hash(colour) % 97, 0.18, up=0) if pores else None)
+    s.ellipse(tones, 7.5, cy, r, r * 0.95, texture=speckle(stable_hash(colour) % 97, 0.18, up=0) if pores else None)
     top = round(cy - r)
     if crease:
         s.pixels_at(tones[SHADOW], [(8, top + 1), (8, top + 2), (9, top + 3), (9, top + 4)])
@@ -419,7 +425,7 @@ def pepper(colour, kind):
 def leafy_head(colour, frilly=False):
     s = Sprite()
     tones = ramp(colour)
-    s.ellipse(tones, 7.5, 9.0, 6.6, 6.0, texture=speckle(hash(colour) % 89, 0.25) if frilly else None)
+    s.ellipse(tones, 7.5, 9.0, 6.6, 6.0, texture=speckle(stable_hash(colour) % 89, 0.25) if frilly else None)
     # Overlapping leaves: curved seams, and a paler heart.
     s.pixels_at(tones[SHADOW], [(4, 6), (3, 8), (3, 10), (4, 12), (11, 6), (12, 8), (12, 10), (11, 12), (6, 4), (9, 4)])
     s.pixels_at(tones[HIGHLIGHT], [(7, 7), (8, 7), (7, 8), (8, 9), (7, 10)])
@@ -496,7 +502,7 @@ def root(colour, kind):
     s = Sprite()
     tones = ramp(colour)
     if kind == "tuber":
-        s.capsule(tones, [(3, 11), (8, 8), (12, 6)], (2.6, 1.6), texture=speckle(hash(colour) % 83, 0.2, up=0))
+        s.capsule(tones, [(3, 11), (8, 8), (12, 6)], (2.6, 1.6), texture=speckle(stable_hash(colour) % 83, 0.2, up=0))
         s.pixels_at(tones[OUTLINE], [(13, 5), (14, 4), (2, 12)])
     elif kind == "cassava":
         def rings(x, y):
