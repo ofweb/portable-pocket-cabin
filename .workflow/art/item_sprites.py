@@ -1193,35 +1193,74 @@ def lettuce_hand():
     return s
 
 
+def tube_bands(s, tones, start, end, radius):
+    """Paints light and shade in bands along a straight tube, so it reads as a cylinder: a shine near the lit side,
+    a light band beside it, and shade along the far side."""
+    (x0, y0), (x1, y1) = start, end
+    length = math.dist(start, end)
+    ux, uy = (x1 - x0) / length, (y1 - y0) / length
+    nx, ny = uy, -ux  # Points toward the top left, where the light comes from.
+    for y in range(SIZE):
+        for x in range(SIZE):
+            if s.pixels[y][x] in (None, tones[OUTLINE]):
+                continue
+            px, py = x + 0.5 - x0, y + 0.5 - y0
+            along, across = px * ux + py * uy, px * nx + py * ny
+            if not 0.6 <= along <= length - 0.6:
+                continue
+            side = across / radius
+            tone = HIGHLIGHT if 0.25 < side <= 0.6 else LIGHT if 0.6 < side else SHADOW if side < -0.45 else BASE
+            s.put(x, y, tones[tone])
+
+
 def courgette_hand():
     s = Sprite()
-    skin = ramp("#2f6c26", spread=0.8)
-    points = [(2.6, 11.2), (8.0, 9.0), (12.8, 6.4)]
-    s.capsule(skin, points, (3.0, 2.9))
-    # Pale speckled stripes running the length of it.
-    speck = ramp("#8ab86a")[BASE]
-    for x, y in [(3, 10), (4, 10), (6, 9), (7, 9), (9, 8), (10, 7), (12, 6), (4, 12), (5, 12), (7, 11), (8, 11), (10, 10), (11, 9)]:
-        if s.pixels[y][x] not in (None, skin[OUTLINE]):
-            s.put(x, y, speck)
-    s.pixels_at(skin[HIGHLIGHT], [(4, 9), (6, 8), (8, 7)])
+    skin = ramp("#2f6c26", spread=0.85)
+    start, end, radius = (2.6, 12.4), (12.6, 5.6), 2.7
+    # Straight and evenly thick, with flat, blunt ends.
+    cos = (end[0] - start[0]) / math.dist(start, end)
+    sin = (end[1] - start[1]) / math.dist(start, end)
+
+    def inside(x, y):
+        along = (x - start[0]) * cos + (y - start[1]) * sin
+        across = -(x - start[0]) * sin + (y - start[1]) * cos
+        length = math.dist(start, end)
+        return -1.2 <= along <= length + 0.8 and abs(across) <= radius
+    s.shape(inside, skin, ((start[0] + end[0]) / 2, (start[1] + end[1]) / 2), (6, 6))
+    tube_bands(s, skin, start, end, radius)
+    # Fine pale flecks.
+    for x, y in [(4, 12), (6, 11), (9, 9), (11, 8), (5, 13), (8, 11)]:
+        if s.pixels[y][x] == skin[BASE]:
+            s.put(x, y, ramp("#7aa85a")[BASE])
+    # The tan, five-sided stem cap on the end, and the dry blossom scar on the other.
     tan = ramp("#c8b070")
-    s.pixels_at(tan[BASE], [(14, 5), (15, 4)])
-    s.pixels_at(tan[SHADOW], [(14, 6)])
-    s.pixels_at(skin[OUTLINE], [(0, 12)])
+    s.pixels_at(tan[BASE], [(14, 4), (14, 5), (15, 4)])
+    s.pixels_at(tan[SHADOW], [(13, 5), (14, 6)])
+    s.pixels_at(ramp("#8a7a3a")[BASE], [(1, 13)])
     return s
 
 
 def cucumber_hand():
     s = Sprite()
-    skin = ramp("#2c6222", spread=0.8)
-    points = [(2.2, 12.0), (7.6, 10.4), (13.2, 5.8)]
-    s.capsule(skin, points, (2.2, 2.4))
-    # Little pale bumps all over.
-    bump = ramp("#9ac070")[BASE]
-    for x, y in [(3, 12), (5, 11), (7, 10), (9, 9), (11, 7), (12, 6), (4, 13), (6, 12), (8, 11), (10, 10), (6, 10), (10, 8)]:
-        if s.pixels[y][x] not in (None, skin[OUTLINE]):
-            s.put(x, y, bump)
-    s.pixels_at(skin[HIGHLIGHT], [(4, 10), (6, 9), (9, 7)])
+    skin = ramp("#2c6424", spread=0.85)
+    # A gentle curve, plump in the middle and tapering at both ends.
+    a, b, c = (1.6, 10.8), (7.8, 13.2), (14.0, 5.4)
+    samples = [((1 - t) ** 2 * a[0] + 2 * (1 - t) * t * b[0] + t * t * c[0],
+                (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * b[1] + t * t * c[1], t) for t in [i / 40 for i in range(41)]]
+
+    def inside(x, y):
+        return any(math.dist((x, y), (px, py)) <= 0.7 + 2.4 * math.sin(math.pi * t) ** 0.6 for px, py, t in samples)
+    mask = s.shape(inside, skin, (7.6, 10.2), (6.2, 4.0))
+    # Warts: bumps that break the outline, and pale spine dots across the skin.
+    for x, y in [(4, 8), (7, 9), (10, 7), (12, 4)]:
+        if (x, y) not in mask and any((x + dx, y + 1) in mask for dx in (-1, 0, 1)):
+            s.put(x, y, skin[OUTLINE])
+    for x, y in [(4, 11), (6, 11), (8, 12), (10, 10), (12, 8), (7, 13), (9, 11), (11, 9), (5, 12)]:
+        if (x, y) in mask and s.pixels[y][x] != skin[OUTLINE]:
+            s.put(x, y, ramp("#a8c87a")[LIGHT])
+    s.pixels_at(skin[HIGHLIGHT], [(5, 10), (7, 11)])
+    # A yellowish blossom tip and a short stem.
+    s.pixels_at(ramp("#d8c860")[BASE], [(1, 10)])
     s.pixels_at(ramp("#6a7a2a")[SHADOW], [(14, 4), (15, 3)])
     return s
 
