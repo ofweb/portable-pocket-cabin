@@ -1242,25 +1242,15 @@ def courgette_hand():
 
 def cucumber_hand():
     s = Sprite()
-    skin = ramp("#2c6424", spread=0.85)
-    # A gentle curve, plump in the middle and tapering at both ends.
-    a, b, c = (1.6, 10.8), (7.8, 13.2), (14.0, 5.4)
-    samples = [((1 - t) ** 2 * a[0] + 2 * (1 - t) * t * b[0] + t * t * c[0],
-                (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * b[1] + t * t * c[1], t) for t in [i / 40 for i in range(41)]]
-
-    def inside(x, y):
-        return any(math.dist((x, y), (px, py)) <= 0.7 + 2.4 * math.sin(math.pi * t) ** 0.6 for px, py, t in samples)
-    mask = s.shape(inside, skin, (7.6, 10.2), (6.2, 4.0))
-    # Warts: bumps that break the outline, and pale spine dots across the skin.
-    for x, y in [(4, 8), (7, 9), (10, 7), (12, 4)]:
-        if (x, y) not in mask and any((x + dx, y + 1) in mask for dx in (-1, 0, 1)):
-            s.put(x, y, skin[OUTLINE])
-    for x, y in [(4, 11), (6, 11), (8, 12), (10, 10), (12, 8), (7, 13), (9, 11), (11, 9), (5, 12)]:
-        if (x, y) in mask and s.pixels[y][x] != skin[OUTLINE]:
-            s.put(x, y, ramp("#a8c87a")[LIGHT])
-    s.pixels_at(skin[HIGHLIGHT], [(5, 10), (7, 11)])
-    # A yellowish blossom tip and a short stem.
-    s.pixels_at(ramp("#d8c860")[BASE], [(1, 10)])
+    skin = ramp("#2c6222", spread=0.8)
+    points = [(2.2, 12.0), (7.6, 10.4), (13.2, 5.8)]
+    s.capsule(skin, points, (2.2, 2.4))
+    # Little pale bumps all over.
+    bump = ramp("#9ac070")[BASE]
+    for x, y in [(3, 12), (5, 11), (7, 10), (9, 9), (11, 7), (12, 6), (4, 13), (6, 12), (8, 11), (10, 10), (6, 10), (10, 8)]:
+        if s.pixels[y][x] not in (None, skin[OUTLINE]):
+            s.put(x, y, bump)
+    s.pixels_at(skin[HIGHLIGHT], [(4, 10), (6, 9), (9, 7)])
     s.pixels_at(ramp("#6a7a2a")[SHADOW], [(14, 4), (15, 3)])
     return s
 
