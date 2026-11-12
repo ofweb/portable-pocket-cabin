@@ -1591,98 +1591,93 @@ def parsley_hand():
 
 def dill_hand():
     s = Sprite()
-    stem = ramp("#6a9a4a")
-    frond = ramp("#7ab85a")
-    # A main stem with branches, each covered in fine, thread-like fronds: feathery and airy, not leafy.
-    s.line(stem[SHADOW], 8, 15, 7, 3)
+    stem = ramp("#5a8a3a")
+    frond = ramp("#3f7a38")
+    # A dense bunch of fine, needle-like fronds; the stems gather at the bottom right.
     rng = random.Random(13)
-    for x0, y0, x1, y1 in [(8, 12, 3, 8), (8, 11, 13, 7), (7, 8, 2, 3), (7, 7, 12, 2), (7, 5, 5, 0), (7, 4, 10, 0)]:
-        for i, (x, y) in enumerate(s.line(stem[BASE], x0, y0, x1, y1)[1:]):
-            # Threads sprouting either side of each branch.
-            for dx, dy in ((0, -1), (1, -1), (-1, 0), (0, 1)):
-                if rng.random() < 0.45:
-                    s.put(x + dx, y + dy, frond[LIGHT if rng.random() < 0.5 else BASE])
+    branches = [(14, 15, 1, 4), (14, 15, 4, 1), (14, 15, 8, 0), (14, 15, 1, 9), (13, 14, 5, 6), (14, 14, 11, 2), (13, 15, 3, 12)]
+    for x0, y0, x1, y1 in branches:
+        points = s.line(stem[SHADOW], x0, y0, x1, y1)
+        for i, (x, y) in enumerate(points[2:], start=2):
+            # Threads either side of each branch, thicker toward the tips.
+            for dx, dy in ((0, -1), (-1, 0), (1, -1), (-1, 1), (0, -2)):
+                if rng.random() < 0.5:
+                    s.put(x + dx, y + dy, frond[[BASE, LIGHT, SHADOW][rng.randrange(3)]])
     return s
 
 
 def bay_hand():
     s = Sprite()
-    leaf = ramp("#5a9a44")
-    back = ramp("#4c8a3a")
+    stem = ramp("#7a5a2a")
+    s.line(stem[BASE], 2, 15, 12, 3)
 
     def pointed(tones, cx, cy, angle, length, width):
         cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
 
         def inside(x, y):
-            # A glossy oval, pointed at both ends.
+            # A glossy lance-shaped leaf, pointed at both ends.
             u, v = (x - cx) * cos + (y - cy) * sin, -(x - cx) * sin + (y - cy) * cos
             return abs(u) <= length and abs(v) <= width * (1 - (u / length) ** 2)
         s.shape(inside, tones, (cx, cy), (length, length))
-        s.line(tones[HIGHLIGHT], round(cx - (length - 1.2) * cos), round(cy - (length - 1.2) * sin),
-               round(cx + (length - 1.2) * cos), round(cy + (length - 1.2) * sin))
-    # Two leaves fanning apart from the stem, the darker one behind.
-    pointed(back, 9.8, 7.8, -10, 5.4, 2.4)
-    pointed(leaf, 6.2, 8.2, -65, 6.4, 2.8)
-    s.pixels_at(ramp("#6b4a2a")[SHADOW], [(2, 14), (3, 13)])
+        s.put(round(cx - 0.5), round(cy - 0.5), tones[HIGHLIGHT])
+    # Dark, glossy leaves set alternately up the sprig, pointing out to either side.
+    for i, (cx, cy, angle) in enumerate([(3.6, 10.4, -150), (8.0, 11.4, 30), (6.4, 5.8, -120), (11.4, 7.2, 10), (12.0, 2.4, -40)]):
+        pointed(ramp("#3e8a38" if i % 2 else "#4a9842", spread=0.7), cx, cy, angle, 3.6, 1.6)
+    s.pixels_at(ramp("#e0c040")[LIGHT], [(9, 4), (5, 9), (10, 9)])
     return s
 
 
 def barley_hand():
     s = Sprite()
-    straw = ramp("#d0b862")
-    awn = ramp("#dccc88")
-    stalk = ramp("#8aa050")
-    # The stalk rises from the bottom left into an ear on a diagonal.
-    s.line(stalk[BASE], 2, 15, 5, 11)
-    # Long whiskers fanning out from the tip of the ear, and short ones from its sides.
-    tip = (10, 5)
-    for end in ((11, 0), (14, 1), (15, 4), (8, 0)):
-        s.line(awn[LIGHT], tip[0], tip[1], end[0], end[1])
-    s.line(awn[BASE], 7, 8, 5, 4)
-    s.line(awn[BASE], 9, 9, 13, 8)
-    # Plump kernels in two staggered rows along the ear.
-    for i, (x, y) in enumerate([(6, 10), (7, 9), (8, 8), (9, 7), (10, 6)]):
-        s.put(x, y, straw[LIGHT])
-        s.put(x - 1, y - 1, straw[BASE])
-        s.put(x + 1, y + 1, straw[SHADOW])
-        s.put(x, y + 1, straw[BASE])
-    s.put(*tip, straw[LIGHT])
+    grain = ramp("#c8a868", spread=0.8)
+    awn = ramp("#d8c49a")
+    stalk = ramp("#a89a60")
+    # A stalk rising from the bottom left into a beige-gold ear on a diagonal.
+    s.line(stalk[BASE], 1, 15, 5, 11)
+    ear = [(5, 10), (6, 9), (7, 8), (8, 7), (9, 6), (10, 5), (11, 4)]
+    # Long whiskers running along the ear and past its tip, as on ripe barley.
+    for i, (x, y) in enumerate(ear):
+        if i % 2 == 0:
+            s.line(awn[LIGHT], x - 1, y - 1, min(15, x + 3), max(0, y - 6))
+            s.line(awn[BASE], x + 1, y + 1, min(15, x + 6), max(0, y - 3))
+    # Plump kernels in two staggered rows.
+    for i, (x, y) in enumerate(ear):
+        s.put(x, y, grain[LIGHT])
+        s.put(x - 1, y, grain[BASE])
+        s.put(x, y + 1, grain[SHADOW])
     return s
 
 
 def corn_hand():
     s = Sprite()
-    kernel = ramp("#f0d44a")
+    husk = ramp("#a8cc78", spread=0.7)
+    kernel = ramp("#f0c838")
 
     def kernels(x, y):
-        # Rows of kernels: a lit top on each, a shadow line between rows.
-        return 1 if (x + y) % 2 == 0 and y % 2 == 0 else -1 if y % 2 == 1 else 0
-    husk = ramp("#78b048")
-    # Husk leaves peeled back behind the cob, then the cob on a diagonal.
-    for points in ([(2, 14), (1, 9), (2, 5)], [(4, 15), (7, 15), (11, 14)], [(3, 13), (3, 11), (5, 8)]):
-        s.capsule(husk, points, (1.2, 0.5))
-    s.capsule(kernel, [(4.2, 11.8), (12.4, 3.6)], (2.9, 2.4), texture=kernels)
-    s.pixels_at(ramp("#c8b878")[BASE], [(13, 2), (14, 1), (14, 2)])
-    s.pixels_at(husk[LIGHT], [(2, 8), (6, 14)])
+        return 1 if (x + y) % 2 == 0 else -1 if y % 2 == 1 else 0
+    # An upright cob wrapped in pale husk leaves, the kernels showing down the middle, silk at the top.
+    s.capsule(husk, [(7.5, 3.2), (7.5, 14.0)], (4.2, 2.4))
+    s.capsule(kernel, [(7.5, 3.6), (7.5, 11.6)], (1.8, 1.4), texture=kernels)
+    s.pixels_at(husk[SHADOW], [(5, 6), (5, 8), (5, 10), (10, 6), (10, 8), (10, 10)])
+    s.pixels_at(husk[HIGHLIGHT], [(4, 7), (4, 9)])
+    silk = ramp("#a8682a")
+    s.pixels_at(silk[BASE], [(6, 1), (7, 0), (8, 1), (9, 0), (7, 1), (8, 2)])
+    s.pixels_at(silk[LIGHT], [(6, 0), (9, 1)])
+    s.pixels_at(husk[BASE], [(11, 3), (12, 2), (3, 4)])
     return s
 
 
 def rice_hand():
     s = Sprite()
-    grain = ramp("#ece6d4", spread=0.6)
-
-    def heap(x, y):
-        return y >= 5.6 and ((x - 7.5) / 7.0) ** 2 + ((y - 15.6) / 10.0) ** 2 <= 1
-    s.shape(heap, grain, (7.0, 10.0), (7.0, 5.0))
-    # Individual grains: short slanted dashes, lit on top.
-    for y in range(7, 15):
-        for x in range(2, 14):
-            if (x + 2 * y) % 5 == 0 and s.pixels[y][x] not in (None, grain[OUTLINE]):
-                s.put(x, y, grain[HIGHLIGHT])
-                if s.pixels[y][x + 1] not in (None, grain[OUTLINE]):
-                    s.put(x + 1, y, grain[SHADOW])
-    # A few grains spilled beside the heap.
-    s.pixels_at(grain[LIGHT], [(0, 15), (14, 15), (15, 14)])
+    burlap = ramp("#b89a6a", spread=0.7)
+    grain = ramp("#efe9d8", spread=0.5)
+    # A burlap sack with a woven texture, its rolled top open on a heap of white grains, and a few spilled.
+    def sack(x, y):
+        return 5.0 <= y <= 15.4 and abs(x - 7.5) <= 6.0 - max(0, (y - 12.5)) * 0.6 + (0.6 if y < 7 else 0)
+    s.shape(sack, burlap, (7.0, 10.0), (6.0, 6.0), texture=lambda x, y: -1 if (x + y) % 2 == 0 and y % 2 == 0 else 0)
+    s.pixels_at(burlap[LIGHT], [(x, 5) for x in range(2, 14)])
+    s.ellipse(grain, 7.5, 4.6, 5.0, 2.6, texture=lambda x, y: 1 if (x + 2 * y) % 3 == 0 else 0)
+    s.pixels_at(grain[LIGHT], [(0, 15), (1, 14), (14, 15), (15, 14)])
     return s
 
 
