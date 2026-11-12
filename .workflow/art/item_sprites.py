@@ -1371,7 +1371,7 @@ def asparagus_hand():
         s.pixels_at(ramp("#d2e0a8")[BASE], [(x, 15), (x + 1, 15)])
     return s
 
-def rings(s, tones, start, end, spacing, reach, tone=SHADOW):
+def rings(s, tones, start, end, spacing, reach, tone=SHADOW, colour=None):
     """Ring scars across a root: short lines at right angles to its length, kept to pixels the root already covers."""
     (x0, y0), (x1, y1) = start, end
     length = math.dist(start, end)
@@ -1382,7 +1382,7 @@ def rings(s, tones, start, end, spacing, reach, tone=SHADOW):
         for k in [i / 2 for i in range(-int(reach * 2), int(reach * 2) + 1)]:
             x, y = int(cx - uy * k), int(cy + ux * k)
             if 0 <= x < SIZE and 0 <= y < SIZE and s.pixels[y][x] not in (None, tones[OUTLINE]):
-                s.put(x, y, tones[tone])
+                s.put(x, y, colour or tones[tone])
         t += spacing
 
 
@@ -1502,8 +1502,89 @@ def turmeric_hand():
     s.pixels_at(skin[HIGHLIGHT], [(3, 11), (4, 10), (7, 7)])
     return s
 
+def galangal_hand():
+    s = Sprite()
+    skin = ramp("#ead8aa", spread=0.6)
+    band = ramp("#a8784a")[BASE]
+    # A pale rhizome: a body, a finger reaching up and left with a cut end, and a knob on the right with a cut face.
+    parts = [((3.4, 11.6), (11.2, 9.0), 2.5), ((5.0, 10.6), (2.6, 4.4), 1.8), ((11.0, 9.4), (13.0, 6.0), 2.1)]
+    for start, end, r in parts:
+        s.capsule(skin, [start, end], (r, r * 0.9))
+    # Thin brown ring bands, well spaced, so the cream skin shows between them.
+    for start, end, r in parts:
+        rings(s, skin, start, end, 3.0, r * 0.7, colour=band)
+    cut = ramp("#f4e8c4", spread=0.4)
+    s.ellipse(cut, 2.6, 4.0, 1.4, 1.2, outline=False)
+    s.ellipse(cut, 13.2, 5.8, 1.6, 1.4, outline=False)
+    s.pixels_at(ramp("#e07a8a")[BASE], [(2, 13), (3, 13), (2, 12)])
+    s.pixels_at(skin[HIGHLIGHT], [(5, 9), (8, 8)])
+    return s
+
+
+def thyme_hand():
+    s = Sprite()
+    stem = ramp("#8a7a4a")
+    leaf = ramp("#5e9a40")
+    # Three thin sprigs gathered at the bottom right, with tiny paired leaves spaced along each.
+    for x1, y1 in ((1, 6), (4, 1), (9, 0)):
+        points = s.line(stem[SHADOW], 14, 15, x1, y1)
+        for i, (x, y) in enumerate(points[2:], start=2):
+            if i % 3 == 0:
+                s.pixels_at(leaf[BASE], [(x, y - 1), (x + 1, y + 1)])
+                s.put(x - 1, y, leaf[LIGHT])
+        s.pixels_at(leaf[LIGHT], [points[-1], (points[-1][0] + 1, points[-1][1])])
+    return s
+
+
+def mint_hand():
+    s = Sprite()
+    stem = ramp("#8a3a3a")
+    # Reddish stems gathered and tied at the bottom right.
+    for x1, y1 in ((4, 4), (9, 3), (6, 9)):
+        s.line(stem[BASE], 13, 15, x1, y1)
+    # Fewer, bigger oval leaves with serrated edges and a darker vein, layered from the back.
+    for i, (cx, cy, angle) in enumerate([(4.0, 3.8, 30), (9.6, 3.0, -15), (12.4, 7.2, -50), (5.0, 8.6, 15), (9.0, 8.4, -20)]):
+        tones = ramp("#4aac46" if i % 2 else "#3e9e3c", spread=0.75)
+        mask = s.ellipse(tones, cx, cy, 3.0, 1.9, angle=angle)
+        for x, y in mask:
+            if (x + y) % 2 == 0 and s.pixels[y][x] == tones[OUTLINE]:
+                s.put(x, y, tones[SHADOW])  # A toothed edge.
+        s.line(tones[SHADOW], int(cx - 1), int(cy), int(cx + 1), int(cy))
+        s.put(int(cx) - 1, int(cy) - 1, tones[HIGHLIGHT])
+    s.pixels_at(ramp("#c8a86a")[BASE], [(11, 13), (12, 13), (12, 12)])
+    return s
+
+
+def basil_hand():
+    s = Sprite()
+    leaf = ramp("#38a02c")
+    s.line(ramp("#5a8a2a")[BASE], 8, 15, 8, 4)
+    # Big, smooth, cupped leaves in pairs up the stem, glossy, each with a pale midrib.
+    for cx, cy, angle in [(4.4, 11.4, 25), (11.6, 11.4, -25), (4.8, 6.6, 35), (11.2, 6.6, -35), (8.0, 3.0, 90)]:
+        mask = s.ellipse(leaf, cx, cy, 3.4, 2.3, angle=angle)
+        s.put(int(cx), int(cy), leaf[LIGHT])
+        s.put(int(cx) - 1, int(cy) - 1, leaf[HIGHLIGHT])
+    return s
+
+
+def parsley_hand():
+    s = Sprite()
+    stem = ramp("#62aa40")
+    # Long stems gathered at the bottom right, fanning up to flat, toothed leaves.
+    clusters = [(3.4, 4.0), (8.4, 2.6), (12.4, 5.4), (4.0, 9.4)]
+    for cx, cy in clusters:
+        s.line(stem[BASE], 13, 15, int(cx), int(cy) + 1)
+    for i, (cx, cy) in enumerate(clusters):
+        tones = ramp("#3a8c30" if i % 2 else "#44983a", spread=0.75)
+        # Three-lobed leaves with toothed edges and a lighter centre.
+        for dx, dy in ((-1.3, 0.5), (1.3, 0.5), (0.0, -1.1)):
+            s.ellipse(tones, cx + dx, cy + dy, 1.7, 1.4, texture=speckle(i * 7 + 3, 0.25, up=1, down=0))
+        s.put(int(cx), int(cy), tones[HIGHLIGHT])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"galangal": galangal_hand, "thyme": thyme_hand, "mint": mint_hand, "basil": basil_hand, "parsley": parsley_hand})
 HAND.update({"rhubarb": rhubarb_hand, "sweet_potato": sweet_potato_hand, "cassava": cassava_hand, "ginger": ginger_hand,
              "turmeric": turmeric_hand})
 HAND.update({"radish": radish_hand, "shallot": shallot_hand,
