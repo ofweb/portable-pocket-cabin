@@ -1397,19 +1397,22 @@ def shallot_hand():
 def asparagus_hand():
     s = Sprite()
     green = ramp("#5c9a3a")
-    tip = ramp("#6a4a7a")
-    # A loose bunch of slim spears fanning slightly, each lit on one side, with scaly purple-tinged tips.
-    for bottom, top in [((4, 15), (3, 4)), ((6, 15), (6, 2)), ((8, 15), (9, 3)), ((10, 15), (12, 4)), ((12, 15), (14, 6))]:
-        spear = s.line(green[BASE], bottom[0], bottom[1], top[0], top[1])
-        for i, (x, y) in enumerate(spear):
-            s.put(x - 1, y, green[LIGHT] if i % 4 else green[SHADOW])
-            if i % 4 == 2 and i < len(spear) - 3:
-                s.put(x, y, tip[BASE])
-        tx, ty = spear[-1]
-        s.pixels_at(tip[BASE], [(tx, ty), (tx - 1, ty + 1)])
-        s.pixels_at(tip[LIGHT], [(tx - 1, ty)])
-        s.pixels_at(tip[SHADOW], [(tx, ty + 1)])
-        s.pixels_at(ramp("#d2e0a8")[BASE], [(bottom[0], 15), (bottom[0] - 1, 15)])
+    # Straight, upright spears side by side, two pixels wide, lit on the left, tops at slightly different heights.
+    for x, top in ((1, 4), (4, 2), (7, 3), (10, 2), (13, 5)):
+        for y in range(top + 1, 15):
+            s.put(x, y, green[LIGHT])
+            s.put(x + 1, y, green[BASE])
+            # Small scales up the stem, a darker green on the shaded side.
+            if (y - top) % 4 == 2:
+                s.put(x + 1, y, green[SHADOW])
+                s.put(x, y, green[BASE])
+        # A pointed, scaly tip with only a faint purple touch.
+        s.put(x, top, green[BASE])
+        s.put(x + 1, top, ramp("#7a6a8a")[BASE])
+        s.put(x, top - 1, green[SHADOW])
+        s.put(x + 1, top + 1, green[SHADOW])
+        # Pale cut ends.
+        s.pixels_at(ramp("#d2e0a8")[BASE], [(x, 15), (x + 1, 15)])
     return s
 
 
