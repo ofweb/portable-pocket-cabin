@@ -823,7 +823,7 @@ ALMOND = [  # One almond, pixel by pixel: o outline, s shadow, b base, l light, 
 
 def stamp(s, art, tones, x0, y0, mirror=False):
     """Draws a hand-placed pixel pattern with a ramp, at a position, optionally mirrored left to right."""
-    key = {"o": OUTLINE, "s": SHADOW, "b": BASE, "l": LIGHT, "h": HIGHLIGHT, "r": SHADOW}
+    key = {"o": OUTLINE, "s": SHADOW, "b": BASE, "l": LIGHT, "h": HIGHLIGHT, "r": SHADOW, "d": SHADOW}
     width = max(len(row) for row in art)
     for y, row in enumerate(art):
         for x, ch in enumerate(row):
@@ -1297,8 +1297,125 @@ def thai_aubergine_hand():
     s.pixels_at(cap[LIGHT], [(8, 3), (8, 2), (9, 1), (10, 0)])
     return s
 
+def radish_hand():
+    s = Sprite()
+    leaf = ramp("#62b840")
+    stalk = ramp("#a0d070")
+    # Tall leafy greens on pale stalks, fanning up from a small round root.
+    for x1, y1 in [(4, 4), (8, 3), (12, 4)]:
+        s.line(stalk[BASE], 8, 9, x1, y1)
+    for cx, cy, rx, ry, angle in [(3.8, 3.6, 2.9, 2.0, 55), (12.2, 3.6, 2.9, 2.0, -55), (8.0, 2.6, 2.0, 2.6, 0)]:
+        s.ellipse(leaf, cx, cy, rx, ry, angle=angle, texture=lambda x, y: -1 if (x + y) % 3 == 0 else 0)
+    root = ramp("#c8204a")
+    s.ellipse(root, 8.0, 11.2, 3.4, 3.2)
+    s.pixels_at(root[HIGHLIGHT], [(6, 10), (6, 9)])
+    tail = ramp("#ead0d6")
+    s.pixels_at(tail[BASE], [(8, 14), (9, 15)])
+    s.pixels_at(tail[SHADOW], [(8, 15)])
+    return s
+
+
+def onion_bulb(colour, neck, angle=0.0, stripe=-1, flare=False):
+    """A dry onion bulb: round with a papery neck, fine stripes from top to bottom, and root hairs."""
+    s = Sprite()
+    skin = ramp(colour)
+    cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+    cx, cy = 8.0, 9.4
+
+    def local(x, y):
+        return (x - cx) * cos + (y - cy) * sin, -(x - cx) * sin + (y - cy) * cos
+
+    def inside(x, y):
+        u, v = local(x, y)
+        body = (u / 5.9) ** 2 + (v / 5.5) ** 2 <= 1
+        neck_part = -8.0 <= v <= -4.2 and abs(u) <= 0.9 + (v + 8.0) * 0.55
+        return body or neck_part
+
+    def stripes(x, y):
+        u, v = local(x + 0.5, y + 0.5)
+        span = math.sqrt(max(0.01, 5.9 ** 2 - min(5.5, abs(v)) ** 2))
+        longitude = math.asin(max(-1, min(1, u / span)))
+        return stripe if (longitude * 2.6) % 1.0 < 0.22 else 0
+    s.shape(inside, skin, (cx - 0.6, cy - 0.6), (5.9, 5.9), texture=stripes)
+    paper = ramp(neck)
+    top = (round(cx + 7.8 * sin - 0.5), round(cy - 7.8 * cos - 0.5))
+    s.pixels_at(paper[BASE], [top, (top[0], top[1] + 1)])
+    if flare:
+        s.pixels_at(paper[LIGHT], [(top[0] - 1, top[1] - 1), (top[0] + 1, top[1] - 1)])
+    else:
+        s.pixels_at(paper[SHADOW], [(top[0] + 1, top[1] - 1)])
+    s.pixels_at(skin[HIGHLIGHT], [(4, 8), (5, 7)])
+    roots = ramp("#c8b48a")
+    bottom = (round(cx - 5.6 * sin), round(cy + 5.6 * cos))
+    s.pixels_at(roots[BASE], [(bottom[0] - 1, min(15, bottom[1])), (bottom[0] + 1, min(15, bottom[1])), (bottom[0], min(15, bottom[1]))])
+    return s
+
+
+def onion_hand():
+    return onion_bulb("#c8893a", "#8a5a2a")
+
+
+def red_onion_hand():
+    return onion_bulb("#962a5c", "#7a3a4a", angle=18, stripe=1, flare=True)
+
+
+SHALLOT = [  # One shallot, pixel by pixel: plump low down, tapering to a dry tip, with root hairs below.
+    "...t...",
+    "...o...",
+    "..olo..",
+    "..olbo.",
+    ".olbbo.",
+    ".olhbso",
+    "olhbdso",
+    "olhbdso",
+    "olbbdso",
+    "olbbsso",
+    ".obbso.",
+    "..ooo..",
+    "..r.r..",
+]
+
+
+def shallot_hand():
+    s = Sprite()
+    skin = ramp("#c47e62")
+    dry, roots = ramp("#8a5a3a")[BASE], ramp("#c8b48a")[BASE]
+    # Two shallots leaning together, the front one drawn last.
+    for x0, y0, mirror in ((8, 1, True), (1, 3, False)):
+        stamp(s, SHALLOT, skin, x0, y0, mirror=mirror)
+        width = len(SHALLOT[0])
+        for y, row in enumerate(SHALLOT):
+            for x, ch in enumerate(row):
+                px = x0 + (width - 1 - x if mirror else x)
+                if ch == "t":
+                    s.put(px, y0 + y, dry)
+                elif ch == "r":
+                    s.put(px, y0 + y, roots)
+    return s
+
+
+def asparagus_hand():
+    s = Sprite()
+    green = ramp("#5c9a3a")
+    tip = ramp("#6a4a7a")
+    # A loose bunch of slim spears fanning slightly, each lit on one side, with scaly purple-tinged tips.
+    for bottom, top in [((4, 15), (3, 4)), ((6, 15), (6, 2)), ((8, 15), (9, 3)), ((10, 15), (12, 4)), ((12, 15), (14, 6))]:
+        spear = s.line(green[BASE], bottom[0], bottom[1], top[0], top[1])
+        for i, (x, y) in enumerate(spear):
+            s.put(x - 1, y, green[LIGHT] if i % 4 else green[SHADOW])
+            if i % 4 == 2 and i < len(spear) - 3:
+                s.put(x, y, tip[BASE])
+        tx, ty = spear[-1]
+        s.pixels_at(tip[BASE], [(tx, ty), (tx - 1, ty + 1)])
+        s.pixels_at(tip[LIGHT], [(tx - 1, ty)])
+        s.pixels_at(tip[SHADOW], [(tx, ty + 1)])
+        s.pixels_at(ramp("#d2e0a8")[BASE], [(bottom[0], 15), (bottom[0] - 1, 15)])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"radish": radish_hand, "onion": onion_hand, "red_onion": red_onion_hand, "shallot": shallot_hand,
+             "asparagus": asparagus_hand})
 HAND.update({"lettuce": lettuce_hand, "courgette": courgette_hand, "cucumber": cucumber_hand, "tomatillo": tomatillo_hand,
              "thai_aubergine": thai_aubergine_hand})
 HAND.update({"poblano_chili": poblano_hand, "birds_eye_chili": birds_eye_hand, "aji_amarillo": aji_amarillo_hand,
