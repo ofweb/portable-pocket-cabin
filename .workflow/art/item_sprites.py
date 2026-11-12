@@ -1315,50 +1315,6 @@ def radish_hand():
     return s
 
 
-def onion_bulb(colour, neck, angle=0.0, stripe=-1, flare=False):
-    """A dry onion bulb: round with a papery neck, fine stripes from top to bottom, and root hairs."""
-    s = Sprite()
-    skin = ramp(colour)
-    cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
-    cx, cy = 8.0, 9.4
-
-    def local(x, y):
-        return (x - cx) * cos + (y - cy) * sin, -(x - cx) * sin + (y - cy) * cos
-
-    def inside(x, y):
-        u, v = local(x, y)
-        body = (u / 5.9) ** 2 + (v / 5.5) ** 2 <= 1
-        neck_part = -8.0 <= v <= -4.2 and abs(u) <= 0.9 + (v + 8.0) * 0.55
-        return body or neck_part
-
-    def stripes(x, y):
-        u, v = local(x + 0.5, y + 0.5)
-        span = math.sqrt(max(0.01, 5.9 ** 2 - min(5.5, abs(v)) ** 2))
-        longitude = math.asin(max(-1, min(1, u / span)))
-        return stripe if (longitude * 2.6) % 1.0 < 0.22 else 0
-    s.shape(inside, skin, (cx - 0.6, cy - 0.6), (5.9, 5.9), texture=stripes)
-    paper = ramp(neck)
-    top = (round(cx + 7.8 * sin - 0.5), round(cy - 7.8 * cos - 0.5))
-    s.pixels_at(paper[BASE], [top, (top[0], top[1] + 1)])
-    if flare:
-        s.pixels_at(paper[LIGHT], [(top[0] - 1, top[1] - 1), (top[0] + 1, top[1] - 1)])
-    else:
-        s.pixels_at(paper[SHADOW], [(top[0] + 1, top[1] - 1)])
-    s.pixels_at(skin[HIGHLIGHT], [(4, 8), (5, 7)])
-    roots = ramp("#c8b48a")
-    bottom = (round(cx - 5.6 * sin), round(cy + 5.6 * cos))
-    s.pixels_at(roots[BASE], [(bottom[0] - 1, min(15, bottom[1])), (bottom[0] + 1, min(15, bottom[1])), (bottom[0], min(15, bottom[1]))])
-    return s
-
-
-def onion_hand():
-    return onion_bulb("#c8893a", "#8a5a2a")
-
-
-def red_onion_hand():
-    return onion_bulb("#962a5c", "#7a3a4a", angle=18, stripe=1, flare=True)
-
-
 SHALLOT = [  # One shallot, pixel by pixel: plump low down, tapering to a dry tip, with root hairs below.
     "...t...",
     "...o...",
@@ -1417,7 +1373,7 @@ def asparagus_hand():
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
-HAND.update({"radish": radish_hand, "onion": onion_hand, "red_onion": red_onion_hand, "shallot": shallot_hand,
+HAND.update({"radish": radish_hand, "shallot": shallot_hand,
              "asparagus": asparagus_hand})
 HAND.update({"lettuce": lettuce_hand, "courgette": courgette_hand, "cucumber": cucumber_hand, "tomatillo": tomatillo_hand,
              "thai_aubergine": thai_aubergine_hand})
