@@ -1682,8 +1682,84 @@ def rice_hand():
     s.pixels_at(grain[LIGHT], [(0, 15), (1, 14), (14, 15), (15, 14)])
     return s
 
+def bean_pile(colour, beans, hilum=None, shine=None, spread=1.0):
+    """A small heap of oval beans or berries, back ones first, each with a glint and an optional pale eye."""
+    s = Sprite()
+    tones = ramp(colour, spread=spread)
+    for cx, cy, rx, ry, angle in beans:
+        s.ellipse(tones, cx, cy, rx, ry, angle=angle)
+        s.put(int(cx) - 1, int(cy) - 1, shine or tones[HIGHLIGHT])
+        if hilum:
+            s.pixels_at(hilum, [(int(cx) + 1, int(cy)), (int(cx) + 2, int(cy))])
+    return s
+
+
+# Fewer, bigger beans, so each reads as a bean rather than a speck.
+PILE = [(5.0, 6.4, 3.0, 2.1, -20), (10.6, 6.8, 3.0, 2.1, 25), (3.8, 11.0, 3.0, 2.1, 30), (8.4, 10.4, 3.1, 2.2, -10),
+        (12.0, 12.4, 2.8, 2.0, -35), (7.4, 13.8, 2.9, 2.0, 15)]
+
+
+def azuki_bean_hand():
+    return bean_pile("#8c1e24", PILE, hilum=ramp("#ece6d8")[BASE])
+
+
+def black_bean_hand():
+    return bean_pile("#1e1a24", PILE, hilum=ramp("#ece6d8")[BASE], shine=ramp("#6a7290")[LIGHT], spread=0.6)
+
+
+def allspice_hand():
+    # Dried round berries, matte and rough, each with the little crown left by its flower.
+    berries = [(4.8, 5.6, 2.8), (10.6, 5.4, 2.7), (3.8, 11.0, 2.8), (8.6, 9.8, 3.0), (12.4, 11.6, 2.6), (7.6, 13.6, 2.4)]
+    s = bean_pile("#6c3a24", [(cx, cy, r, r, 0) for cx, cy, r in berries])
+    crown = ramp("#3a2016")[BASE]
+    for cx, cy, r in berries:
+        s.pixels_at(crown, [(int(cx), int(cy - r + 1)), (int(cx) + 1, int(cy - r + 1))])
+    return s
+
+
+def betel_leaf_hand():
+    s = Sprite()
+    leaf = ramp("#3e8c2a")
+    angle = math.radians(35)
+    cos, sin = math.cos(angle), math.sin(angle)
+
+    def local(x, y):
+        # The leaf's own frame: tilted, stem at the top left, tip toward the bottom right.
+        dx, dy = x - 7.5, y - 8.0
+        return dx * cos + dy * sin, -dx * sin + dy * cos
+
+    def heart(x, y):
+        u, v = local(x, y)
+        # Two rounded lobes at the stem end, narrowing to a pointed tip.
+        lobes = ((u + 2.6) / 3.6) ** 2 + ((v + 2.4) / 3.4) ** 2 <= 1 or ((u - 2.6) / 3.6) ** 2 + ((v + 2.4) / 3.4) ** 2 <= 1
+        point = -2.4 <= v <= 7.0 and abs(u) <= 6.0 * (1 - (v + 2.4) / 9.4) ** 1.1
+        return (lobes or point) and v >= -5.2
+    s.shape(heart, leaf, (7.0, 7.0), (6.0, 6.0))
+    vein = leaf[LIGHT]
+    for t in range(-4, 7):
+        x, y = 7.5 - t * sin, 8.0 + t * cos
+        if s.pixels[int(y)][int(x)] not in (None, leaf[OUTLINE]):
+            s.put(int(x), int(y), vein)
+    s.pixels_at(leaf[HIGHLIGHT], [(6, 4), (7, 3)])
+    s.pixels_at(ramp("#5a7a2a")[SHADOW], [(10, 2), (11, 1), (12, 0)])
+    return s
+
+
+def black_olive_hand():
+    s = Sprite()
+    olive = ramp("#2c1e30", spread=0.6)
+    shine = ramp("#8a7aa0")[LIGHT]
+    # Three glossy olives, back ones first, one with its stem.
+    for cx, cy, angle in [(5.0, 5.8, -30), (11.0, 7.2, 25), (7.4, 11.6, -10)]:
+        s.ellipse(olive, cx, cy, 3.6, 2.7, angle=angle)
+        s.pixels_at(shine, [(int(cx) - 2, int(cy) - 1), (int(cx) - 1, int(cy) - 2), (int(cx), int(cy) - 2)])
+    s.pixels_at(ramp("#6a5a2a")[SHADOW], [(8, 9), (9, 8)])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"allspice": allspice_hand, "azuki_bean": azuki_bean_hand, "betel_leaf": betel_leaf_hand,
+             "black_bean": black_bean_hand, "black_olive": black_olive_hand})
 HAND.update({"dill": dill_hand, "bay_laurel_leaf": bay_hand, "barley": barley_hand, "corn": corn_hand, "rice": rice_hand})
 HAND.update({"galangal": galangal_hand, "thyme": thyme_hand, "mint": mint_hand, "basil": basil_hand, "parsley": parsley_hand})
 HAND.update({"rhubarb": rhubarb_hand, "sweet_potato": sweet_potato_hand, "cassava": cassava_hand, "ginger": ginger_hand,

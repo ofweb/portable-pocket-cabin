@@ -5,11 +5,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 
 ## Raw harvests
 
-- [ ] allspice
-- [ ] azuki_bean
-- [ ] betel_leaf
-- [ ] black_bean
-- [ ] black_olive
+- [x] allspice
+- [x] azuki_bean
+- [x] betel_leaf
+- [x] black_bean
+- [x] black_olive
 - [ ] blue_corn
 - [ ] cardamom_pod
 - [ ] celery
