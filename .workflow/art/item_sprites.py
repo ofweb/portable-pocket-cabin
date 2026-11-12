@@ -1648,10 +1648,11 @@ def barley_hand():
     return s
 
 
-def corn_hand():
+def corn_cob(kernel_colour, speckle_colour=None):
+    """A straight cob of kernels with husk leaves peeling back at its sides and base, and silk on top."""
     s = Sprite()
     husk = ramp("#a8cc78", spread=0.7)
-    kernel = ramp("#f0c838")
+    kernel = ramp(kernel_colour)
 
     def kernels(x, y):
         return 1 if (x + y) % 2 == 0 else -1 if y % 2 == 1 else 0
@@ -1662,11 +1663,22 @@ def corn_hand():
     # A straight cob, the same width from base to tip.
     s.capsule(kernel, [(7.5, 3.2), (7.5, 11.6)], (2.9, 2.9), texture=kernels)
     s.pixels_at(kernel[HIGHLIGHT], [(6, 4), (5, 7), (5, 9)])
+    if speckle_colour:
+        # Kernels of a second colour scattered through, as on heirloom corn.
+        s.pixels_at(ramp(speckle_colour)[LIGHT], [(7, 5), (9, 7), (6, 9), (8, 11), (9, 4)])
     # Silk at the top.
     silk = ramp("#a8682a")
     s.pixels_at(silk[BASE], [(6, 0), (7, 1), (8, 0), (9, 1), (7, 0)])
     s.pixels_at(silk[LIGHT], [(8, 1), (6, 1)])
     return s
+
+
+def corn_hand():
+    return corn_cob("#f0c838")
+
+
+def blue_corn_hand():
+    return corn_cob("#3c3c8c", speckle_colour="#7a4a9a")
 
 
 def rice_hand():
@@ -1756,8 +1768,82 @@ def black_olive_hand():
     s.pixels_at(ramp("#6a5a2a")[SHADOW], [(8, 9), (9, 8)])
     return s
 
+def cardamom_pod_hand():
+    s = Sprite()
+    pod = ramp("#9cba5c", spread=0.8)
+
+    def spindle(start, end, width):
+        (x0, y0), (x1, y1) = start, end
+        length = math.dist(start, end)
+        ux, uy = (x1 - x0) / length, (y1 - y0) / length
+
+        def inside(x, y):
+            # Plump in the middle and pointed at both ends.
+            t = ((x - x0) * ux + (y - y0) * uy) / length
+            across = abs(-(x - x0) * uy + (y - y0) * ux)
+            return 0 <= t <= 1 and across <= width * math.sin(math.pi * t) ** 0.8
+
+        def ridges(x, y):
+            across = -(x + 0.5 - x0) * uy + (y + 0.5 - y0) * ux
+            return -1 if abs(across) < 0.45 else 0
+        s.shape(inside, pod, ((x0 + x1) / 2, (y0 + y1) / 2), (width + 1, width + 1), texture=ridges)
+    # Three plump pods with a ridge down each.
+    spindle((1.6, 7.2), (9.4, 1.6), 2.5)
+    spindle((6.6, 10.0), (14.6, 4.8), 2.5)
+    spindle((2.4, 14.6), (11.4, 10.0), 2.6)
+    return s
+
+
+def celery_hand():
+    s = Sprite()
+    stalk = ramp("#a8cc76", spread=0.75)
+    # A bunch of ribbed stalks, slightly fanning, under leafy tops.
+    for x0, x1 in ((4, 3), (7, 6), (10, 10), (12, 13)):
+        for y in range(5, 16):
+            x = round(x0 + (x1 - x0) * (15 - y) / 10)
+            s.put(x, y, stalk[LIGHT])
+            s.put(x + 1, y, stalk[BASE])
+            s.put(x + 2, y, stalk[SHADOW] if y % 3 else stalk[BASE])
+    # Small, lighter leafy tufts at the top of each stalk, with gaps between them.
+    for i, (cx, cy) in enumerate(((3.4, 3.2), (7.0, 2.0), (10.8, 2.6), (13.8, 3.6))):
+        tones = ramp("#62b048" if i % 2 else "#58a440", spread=0.7)
+        s.ellipse(tones, cx, cy, 1.8, 1.6, texture=speckle(int(cx * 3), 0.35, up=1, down=0))
+    s.pixels_at(ramp("#d8e8b0")[BASE], [(4, 15), (7, 15), (10, 15), (12, 15)])
+    return s
+
+
+def chickpea_hand():
+    # Round, knobbly beige peas, each with the little beak where it grew.
+    peas = [(4.8, 6.0, 2.7), (10.4, 6.2, 2.6), (3.8, 11.2, 2.7), (8.6, 10.2, 2.9), (12.6, 11.8, 2.5), (7.6, 14.0, 2.2)]
+    s = bean_pile("#d8b47a", [(cx, cy, r, r * 0.95, 0) for cx, cy, r in peas], spread=0.8)
+    beak = ramp("#a07a4a")[BASE]
+    for cx, cy, r in peas:
+        s.put(int(cx + r * 0.6), int(cy - r * 0.6), beak)
+        s.put(int(cx) + 1, int(cy) + 1, ramp("#d8b47a")[SHADOW])
+    return s
+
+
+def cilantro_hand():
+    s = Sprite()
+    # Thin stems gathered at the bottom right; round, scalloped leaves fill the rest.
+    stem = ramp("#7ab84a")
+    for x0, y0 in ((9, 10), (11, 9), (12, 11), (8, 12)):
+        s.line(stem[BASE], 14, 15, x0, y0)
+    for i, (cx, cy) in enumerate([(3.6, 3.4), (8.2, 2.6), (12.4, 4.0), (2.8, 8.0), (7.4, 7.0), (11.6, 8.4), (4.8, 12.0), (8.8, 11.6)]):
+        tones = ramp(["#5ab84a", "#4aa83e", "#66c254"][i % 3], spread=0.6)
+        # Each leaf is a fan of three round, scalloped lobes.
+        for dx, dy in ((-1.2, 0.4), (1.2, 0.4), (0.0, -0.9)):
+            mask = s.ellipse(tones, cx + dx, cy + dy, 1.5, 1.4)
+            for x, y in mask:
+                if (x + y) % 2 == 0 and s.pixels[y][x] == tones[OUTLINE]:
+                    s.put(x, y, tones[SHADOW])
+        s.put(int(cx), int(cy), tones[HIGHLIGHT])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"blue_corn": blue_corn_hand, "cardamom_pod": cardamom_pod_hand, "celery": celery_hand, "chickpea": chickpea_hand,
+             "cilantro": cilantro_hand})
 HAND.update({"allspice": allspice_hand, "azuki_bean": azuki_bean_hand, "betel_leaf": betel_leaf_hand,
              "black_bean": black_bean_hand, "black_olive": black_olive_hand})
 HAND.update({"dill": dill_hand, "bay_laurel_leaf": bay_hand, "barley": barley_hand, "corn": corn_hand, "rice": rice_hand})

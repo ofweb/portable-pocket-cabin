@@ -10,11 +10,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] betel_leaf
 - [x] black_bean
 - [x] black_olive
-- [ ] blue_corn
-- [ ] cardamom_pod
-- [ ] celery
-- [ ] chickpea
-- [ ] cilantro
+- [x] blue_corn
+- [x] cardamom_pod
+- [x] celery
+- [x] chickpea
+- [x] cilantro
 - [ ] cinnamon_bark
 - [ ] clove_bud
 - [ ] coffee_cherry
