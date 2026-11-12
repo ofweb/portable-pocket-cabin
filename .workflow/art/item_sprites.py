@@ -1538,20 +1538,23 @@ def thyme_hand():
 
 def mint_hand():
     s = Sprite()
+    # Short reddish stems gathered and tied at the bottom right; the rest is a bushy mass of leaves.
     stem = ramp("#8a3a3a")
-    # Reddish stems gathered and tied at the bottom right.
-    for x1, y1 in ((4, 4), (9, 3), (6, 9)):
-        s.line(stem[BASE], 13, 15, x1, y1)
-    # Fewer, bigger oval leaves with serrated edges and a darker vein, layered from the back.
-    for i, (cx, cy, angle) in enumerate([(4.0, 3.8, 30), (9.6, 3.0, -15), (12.4, 7.2, -50), (5.0, 8.6, 15), (9.0, 8.4, -20)]):
-        tones = ramp("#4aac46" if i % 2 else "#3e9e3c", spread=0.75)
-        mask = s.ellipse(tones, cx, cy, 3.0, 1.9, angle=angle)
+    for x0, y0 in ((8, 10), (10, 9), (12, 10), (9, 12)):
+        s.line(stem[BASE], 13, 15, x0, y0)
+    shades = ["#3a963a", "#46a842", "#3e9e3c", "#52b04a"]
+    # Oval leaves layered from the back of the bunch to the front, filling most of the icon.
+    leaves = [(4.0, 3.0, 25), (8.4, 2.2, -10), (12.2, 3.6, -40), (2.6, 7.0, 50), (6.4, 6.0, 10), (10.6, 6.6, -30),
+              (13.2, 8.4, -60), (4.0, 10.4, 30), (7.8, 9.6, -5), (11.0, 11.6, -40)]
+    for i, (cx, cy, angle) in enumerate(leaves):
+        tones = ramp(shades[i % len(shades)], spread=0.75)
+        mask = s.ellipse(tones, cx, cy, 2.7, 1.8, angle=angle)
         for x, y in mask:
             if (x + y) % 2 == 0 and s.pixels[y][x] == tones[OUTLINE]:
                 s.put(x, y, tones[SHADOW])  # A toothed edge.
-        s.line(tones[SHADOW], int(cx - 1), int(cy), int(cx + 1), int(cy))
+        s.put(int(cx), int(cy), tones[SHADOW])  # The vein.
         s.put(int(cx) - 1, int(cy) - 1, tones[HIGHLIGHT])
-    s.pixels_at(ramp("#c8a86a")[BASE], [(11, 13), (12, 13), (12, 12)])
+    s.pixels_at(ramp("#c8a86a")[BASE], [(12, 14), (13, 14), (13, 13)])
     return s
 
 
@@ -1569,16 +1572,20 @@ def basil_hand():
 
 def parsley_hand():
     s = Sprite()
+    # Short stems gathered at the bottom right; the rest is a dense mass of flat, toothed, three-lobed leaves.
     stem = ramp("#62aa40")
-    # Long stems gathered at the bottom right, fanning up to flat, toothed leaves.
-    clusters = [(3.4, 4.0), (8.4, 2.6), (12.4, 5.4), (4.0, 9.4)]
-    for cx, cy in clusters:
-        s.line(stem[BASE], 13, 15, int(cx), int(cy) + 1)
+    for x0, y0 in ((9, 10), (11, 10), (12, 12), (8, 12)):
+        s.line(stem[BASE], 14, 15, x0, y0)
+    clusters = [(3.2, 3.4), (8.0, 2.4), (12.4, 4.0), (3.0, 8.4), (7.6, 7.2), (11.8, 8.6), (5.4, 11.8)]
     for i, (cx, cy) in enumerate(clusters):
-        tones = ramp("#3a8c30" if i % 2 else "#44983a", spread=0.75)
-        # Three-lobed leaves with toothed edges and a lighter centre.
-        for dx, dy in ((-1.3, 0.5), (1.3, 0.5), (0.0, -1.1)):
-            s.ellipse(tones, cx + dx, cy + dy, 1.7, 1.4, texture=speckle(i * 7 + 3, 0.25, up=1, down=0))
+        tones = ramp(["#46a03a", "#52ac44", "#3e9434"][i % 3], spread=0.6)
+        # Three toothed lobes per leaf, each with a light centre so the leaves stay distinct.
+        for dx, dy in ((-1.4, 0.6), (1.4, 0.6), (0.0, -1.1)):
+            mask = s.ellipse(tones, cx + dx, cy + dy, 1.7, 1.4)
+            for x, y in mask:
+                if (x * 3 + y) % 4 == 0 and s.pixels[y][x] == tones[OUTLINE]:
+                    s.put(x, y, tones[SHADOW])
+            s.put(int(cx + dx), int(cy + dy), tones[LIGHT])
         s.put(int(cx), int(cy), tones[HIGHLIGHT])
     return s
 
