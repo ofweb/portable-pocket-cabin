@@ -1655,15 +1655,16 @@ def corn_hand():
 
     def kernels(x, y):
         return 1 if (x + y) % 2 == 0 else -1 if y % 2 == 1 else 0
-    # An upright cob wrapped in pale husk leaves, the kernels showing down the middle, silk at the top.
-    s.capsule(husk, [(7.5, 3.2), (7.5, 14.0)], (4.2, 2.4))
-    s.capsule(kernel, [(7.5, 3.6), (7.5, 11.6)], (1.8, 1.4), texture=kernels)
-    s.pixels_at(husk[SHADOW], [(5, 6), (5, 8), (5, 10), (10, 6), (10, 8), (10, 10)])
-    s.pixels_at(husk[HIGHLIGHT], [(4, 7), (4, 9)])
+    # Husk leaves peeled back from the base and hugging the sides, behind a broad yellow cob.
+    s.capsule(husk, [(3.4, 14.6), (2.6, 8.4)], (1.4, 0.6))
+    s.capsule(husk, [(11.6, 14.6), (12.4, 8.4)], (1.4, 0.6))
+    s.capsule(husk, [(7.5, 15.0), (7.5, 12.0)], (2.2, 1.6))
+    s.capsule(kernel, [(7.5, 3.4), (7.5, 11.8)], (3.3, 2.7), texture=kernels)
+    s.pixels_at(kernel[HIGHLIGHT], [(5, 5), (5, 7), (5, 9)])
+    # Silk at the top.
     silk = ramp("#a8682a")
-    s.pixels_at(silk[BASE], [(6, 1), (7, 0), (8, 1), (9, 0), (7, 1), (8, 2)])
-    s.pixels_at(silk[LIGHT], [(6, 0), (9, 1)])
-    s.pixels_at(husk[BASE], [(11, 3), (12, 2), (3, 4)])
+    s.pixels_at(silk[BASE], [(6, 0), (7, 1), (8, 0), (9, 1), (7, 0)])
+    s.pixels_at(silk[LIGHT], [(8, 1), (6, 1)])
     return s
 
 
