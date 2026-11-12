@@ -1399,16 +1399,17 @@ def rhubarb_hand():
     def stalk_colour(x, y):
         # Deep red at the base, pink through the middle, green-tinged just under the leaf.
         return red if y >= 11 else pink if y >= 7 else green
-    # Three separate stalks, leaning a little, with a gap between each.
-    for start, end in (((2.4, 15.0), (5.4, 5.6)), ((6.6, 15.0), (8.2, 5.2)), ((10.8, 15.0), (11.4, 6.0))):
+    # Three stalks fanning out from the base, each ending in its own small crinkled leaf.
+    stalks = [((5.2, 15.0), (2.6, 6.4), (2.4, 3.6, 30)), ((7.6, 15.0), (7.8, 5.2), (7.8, 2.6, 0)), ((10.0, 15.0), (12.8, 6.6), (13.0, 3.8, -30))]
+    for start, end, _ in stalks:
         s.capsule(stalk_colour, [start, end], (1.2, 1.0))
-    for x, y in [(2, 13), (6, 12), (10, 13), (3, 9), (7, 9), (10, 9)]:
+    for x, y in [(5, 13), (8, 12), (10, 13), (4, 10), (8, 9), (11, 10)]:
         if s.pixels[y][x] is not None:
             s.put(x, y, (red if y >= 11 else pink)[LIGHT])
-    # A big crinkled leaf over the tops, with a pale midrib.
-    leaf = ramp("#4f9a34")
-    s.ellipse(leaf, 8.6, 3.2, 6.2, 2.9, angle=-8, texture=lambda x, y: -1 if (x * 2 + y) % 4 == 0 else 0)
-    s.line(ramp("#c8d888")[BASE], 4, 4, 13, 2)
+    for i, (_, _, (cx, cy, angle)) in enumerate(stalks):
+        leaf = ramp(["#4a9432", "#58a43a", "#468c30"][i])
+        s.ellipse(leaf, cx, cy, 2.6, 2.0, angle=angle, texture=lambda x, y: -1 if (x * 2 + y) % 4 == 0 else 0)
+        s.put(round(cx - 0.5), round(cy - 0.5), ramp("#c8d888")[BASE])
     return s
 
 
