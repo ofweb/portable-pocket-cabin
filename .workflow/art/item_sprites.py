@@ -1840,8 +1840,92 @@ def cilantro_hand():
         s.put(int(cx), int(cy), tones[HIGHLIGHT])
     return s
 
+def cinnamon_bark_hand():
+    s = Sprite()
+    bark = ramp("#a05c30", spread=0.85)
+    curl = ramp("#d09058")
+    # Two rolled quills, parallel and apart, each showing the spiral of rolled bark at its near end.
+    for start, end in (((2.2, 9.0), (13.0, 2.4)), ((3.0, 14.0), (13.8, 7.4))):
+        s.capsule(bark, [start, end], (2.1, 2.1))
+        s.line(bark[SHADOW], int(start[0]) + 2, int(start[1]) - 1, int(end[0]) - 1, int(end[1]) + 1)
+        x, y = round(start[0]), round(start[1])
+        s.pixels_at(curl[BASE], [(x - 1, y - 1), (x, y - 1), (x - 1, y)])
+        s.pixels_at(bark[OUTLINE], [(x, y)])
+        s.pixels_at(curl[LIGHT], [(x - 1, y + 1)])
+    return s
+
+
+def clove_bud_hand():
+    s = Sprite()
+    clove = ramp("#6a3a22", spread=0.85)
+    head = ramp("#a06a40")
+    # Three nail-shaped buds: a tapering stem with a round head held in four pointed sepals.
+    for (hx, hy), (tx, ty) in (((4.0, 3.6), (7.6, 12.4)), ((11.4, 3.4), (9.0, 13.0)), ((12.6, 9.6), (3.6, 14.4))):
+        s.capsule(clove, [(hx, hy), (tx, ty)], (1.3, 0.6))
+        s.ellipse(head, hx, hy, 1.6, 1.6)
+        x, y = int(hx), int(hy)
+        s.pixels_at(clove[OUTLINE], [(x - 2, y + 1), (x + 2, y + 1), (x - 1, y + 2), (x + 1, y + 2)])
+        s.put(x - 1, y - 1, head[HIGHLIGHT])
+    return s
+
+
+def coffee_cherry_hand():
+    s = Sprite()
+    s.line(ramp("#6b5a3a")[BASE], 0, 12, 15, 4)
+    leaf = ramp("#3a8a34")
+    s.ellipse(leaf, 11.6, 11.8, 3.8, 2.0, angle=25)
+    s.line(leaf[LIGHT], 9, 11, 14, 13)
+    # A few plump, glossy cherries along the twig: three ripe red, one still orange.
+    for cx, cy, colour in ((3.8, 8.6, "#d42628"), (7.6, 7.4, "#e0302a"), (5.8, 12.0, "#c82028"), (11.0, 5.2, "#e8822e")):
+        cherry = ramp(colour, spread=0.85)
+        s.ellipse(cherry, cx, cy, 2.5, 2.3)
+        s.pixels_at(cherry[HIGHLIGHT], [(int(cx) - 1, int(cy) - 1), (int(cx), int(cy) - 1)])
+        s.put(int(cx) + 1, int(cy) + 1, cherry[SHADOW])
+    return s
+
+
+def elderflower_hand():
+    s = Sprite()
+    stem = ramp("#6a9a3a")
+    # Green stems forking up into a broad, flat head of tiny cream flowers.
+    s.line(stem[SHADOW], 8, 15, 8, 11)
+    for x1, y1 in [(3, 8), (6, 7), (10, 7), (13, 8)]:
+        s.line(stem[BASE], 8, 11, x1, y1)
+    petal, centre, shade = ramp("#f2ecca")[BASE], ramp("#e8d878")[BASE], ramp("#c8c4a0")[BASE]
+    rng = random.Random(21)
+
+    def head(x, y):
+        return ((x - 8.0) / 7.2) ** 2 + ((y - 5.4) / 4.4) ** 2 <= 1 and y <= 8.6
+    for y in range(SIZE):
+        for x in range(SIZE):
+            if not head(x + 0.5, y + 0.5):
+                continue
+            edge = not all(head(x + 0.5 + dx, y + 0.5 + dy) for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+            if edge and rng.random() < 0.4:
+                continue
+            # Tiny flowers: cream petals, a yellow eye here and there, soft shade between them.
+            roll = rng.random()
+            s.put(x, y, centre if roll < 0.18 else shade if roll < 0.32 else petal)
+    return s
+
+
+def glutinous_rice_hand():
+    s = Sprite()
+    basket = ramp("#b89458", spread=0.8)
+    grain = ramp("#f6f4ee", spread=0.45)
+
+    def weave(x, y):
+        return -1 if (x // 2 + y // 2) % 2 == 0 else 0
+    # A woven bamboo basket, as sticky rice is served, heaped with chalky white short grains.
+    s.shape(lambda x, y: 8.0 <= y <= 15.2 and abs(x - 7.5) <= 6.6 - (y - 8.0) * 0.32, basket, (7.0, 11.0), (6.6, 4.0), texture=weave)
+    s.pixels_at(basket[LIGHT], [(x, 8) for x in range(1, 15)])
+    s.ellipse(grain, 7.5, 7.0, 6.0, 3.6, texture=lambda x, y: -1 if (x + 2 * y) % 4 == 0 else 0)
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"cinnamon_bark": cinnamon_bark_hand, "clove_bud": clove_bud_hand, "coffee_cherry": coffee_cherry_hand,
+             "elderflower": elderflower_hand, "glutinous_rice": glutinous_rice_hand})
 HAND.update({"blue_corn": blue_corn_hand, "cardamom_pod": cardamom_pod_hand, "celery": celery_hand, "chickpea": chickpea_hand,
              "cilantro": cilantro_hand})
 HAND.update({"allspice": allspice_hand, "azuki_bean": azuki_bean_hand, "betel_leaf": betel_leaf_hand,

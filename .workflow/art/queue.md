@@ -15,11 +15,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] celery
 - [x] chickpea
 - [x] cilantro
-- [ ] cinnamon_bark
-- [ ] clove_bud
-- [ ] coffee_cherry
-- [ ] elderflower
-- [ ] glutinous_rice
+- [x] cinnamon_bark
+- [x] clove_bud
+- [x] coffee_cherry
+- [x] elderflower
+- [x] glutinous_rice
 - [ ] green_olive
 - [ ] holy_basil
 - [ ] hops
