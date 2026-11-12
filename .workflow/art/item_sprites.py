@@ -1424,18 +1424,23 @@ def rhubarb_trimmed():
     def colour(x, y):
         # Red low down, pink up most of the stalk, and a short green-tinged top where the leaf was cut away.
         return red if y >= 10 else pink if y >= 4 else green
-    for start, end in (((2.6, 15.0), (4.4, 2.6)), ((7.0, 15.0), (7.6, 2.0)), ((11.4, 15.0), (10.8, 3.0))):
-        s.capsule(colour, [start, end], (1.4, 1.2))
-    for x, y in [(2, 13), (6, 13), (10, 13), (3, 8), (7, 8), (10, 8), (4, 5), (7, 5), (10, 6)]:
-        if s.pixels[y][x] is not None:
-            s.put(x, y, (red if y >= 10 else pink)[LIGHT])
+    # Three parallel stalks, all leaning the same way to the right.
+    stalks = [((1.8, 15.0), (5.2, 2.6)), ((5.8, 15.0), (9.2, 2.6)), ((9.8, 15.0), (13.2, 2.6))]
+    for start, end in stalks:
+        s.capsule(colour, [start, end], (1.4, 1.3))
+    # A light streak down the left side of each stalk, and the pale cut at the top.
     cut = ramp("#d8e0a0")[BASE]
-    s.pixels_at(cut, [(4, 2), (7, 1), (8, 1), (10, 2)])
+    for (x0, y0), (x1, y1) in stalks:
+        for y in (13, 11, 8, 6):
+            x = int(x0 + (x1 - x0) * (y0 - y) / (y0 - y1) - 0.6)
+            if s.pixels[y][x] is not None:
+                s.put(x, y, (red if y >= 10 else pink)[LIGHT])
+        s.pixels_at(cut, [(int(x1) - 1, int(y1) - 1), (int(x1), int(y1) - 1)])
     return s
 
 
 def rhubarb_hand():
-    return rhubarb_single()
+    return rhubarb_trimmed()
 
 
 def sweet_potato_hand():
