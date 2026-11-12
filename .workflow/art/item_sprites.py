@@ -1371,8 +1371,110 @@ def asparagus_hand():
         s.pixels_at(ramp("#d2e0a8")[BASE], [(x, 15), (x + 1, 15)])
     return s
 
+def rings(s, tones, start, end, spacing, reach, tone=SHADOW):
+    """Ring scars across a root: short lines at right angles to its length, kept to pixels the root already covers."""
+    (x0, y0), (x1, y1) = start, end
+    length = math.dist(start, end)
+    ux, uy = (x1 - x0) / length, (y1 - y0) / length
+    t = spacing / 2
+    while t < length:
+        cx, cy = x0 + ux * t, y0 + uy * t
+        for k in [i / 2 for i in range(-int(reach * 2), int(reach * 2) + 1)]:
+            x, y = int(cx - uy * k), int(cy + ux * k)
+            if 0 <= x < SIZE and 0 <= y < SIZE and s.pixels[y][x] not in (None, tones[OUTLINE]):
+                s.put(x, y, tones[tone])
+        t += spacing
+
+
+def curve(a, b, c, steps=40):
+    """Points along a quadratic curve from a to c, bending toward b, with how far along each point is."""
+    return [((1 - t) ** 2 * a[0] + 2 * (1 - t) * t * b[0] + t * t * c[0], (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * b[1] + t * t * c[1], t)
+            for t in [i / steps for i in range(steps + 1)]]
+
+
+def rhubarb_hand():
+    s = Sprite()
+    red, pink, green = ramp("#b8243a"), ramp("#d4566a"), ramp("#9aaa4a")
+
+    def stalk_colour(x, y):
+        # Deep red at the base, pink through the middle, green-tinged just under the leaf.
+        return red if y >= 11 else pink if y >= 7 else green
+    # Three separate stalks, leaning a little, with a gap between each.
+    for start, end in (((2.4, 15.0), (5.4, 5.6)), ((6.6, 15.0), (8.2, 5.2)), ((10.8, 15.0), (11.4, 6.0))):
+        s.capsule(stalk_colour, [start, end], (1.2, 1.0))
+    for x, y in [(2, 13), (6, 12), (10, 13), (3, 9), (7, 9), (10, 9)]:
+        if s.pixels[y][x] is not None:
+            s.put(x, y, (red if y >= 11 else pink)[LIGHT])
+    # A big crinkled leaf over the tops, with a pale midrib.
+    leaf = ramp("#4f9a34")
+    s.ellipse(leaf, 8.6, 3.2, 6.2, 2.9, angle=-8, texture=lambda x, y: -1 if (x * 2 + y) % 4 == 0 else 0)
+    s.line(ramp("#c8d888")[BASE], 4, 4, 13, 2)
+    return s
+
+
+def sweet_potato_hand():
+    s = Sprite()
+    skin = ramp("#b65a42")
+    points = curve((1.6, 12.6), (6.0, 8.6), (14.2, 4.4))
+
+    def inside(x, y):
+        return any(math.dist((x, y), (px, py)) <= 0.6 + 2.9 * math.sin(math.pi * t) ** 0.75 for px, py, t in points)
+    mask = s.shape(inside, skin, (7.4, 7.8), (6.0, 5.0))
+    # Shallow creases along its length, and a few dark eyes.
+    for px, py, t in points[8:34:3]:
+        x, y = int(px + 1.2), int(py + 1.0)
+        if (x, y) in mask and s.pixels[y][x] != skin[OUTLINE]:
+            s.put(x, y, skin[SHADOW])
+    s.pixels_at(ramp("#5a2a1e")[BASE], [(6, 9), (10, 6), (8, 10)])
+    s.pixels_at(skin[HIGHLIGHT], [(5, 8), (6, 7), (8, 6)])
+    return s
+
+
+def cassava_hand():
+    s = Sprite()
+    bark = ramp("#7c4e30", spread=0.9)
+    # Two long roots tapering away, rough-barked with ring scars; the front one is cut to show its white flesh.
+    s.capsule(bark, [(4.6, 15.0), (14.4, 9.0)], (1.9, 0.6), texture=speckle(61, 0.4))
+    rings(s, bark, (4.6, 15.0), (14.4, 9.0), 2.6, 1.6)
+    s.capsule(bark, [(2.6, 12.0), (13.6, 2.6)], (2.6, 0.7), texture=speckle(67, 0.4))
+    rings(s, bark, (2.6, 12.0), (13.6, 2.6), 2.8, 2.2)
+    s.ellipse(ramp("#efe6cf", spread=0.5), 2.4, 12.2, 1.8, 1.8, outline=False)
+    s.pixels_at(ramp("#d8a8a0")[BASE], [(1, 11), (1, 13), (3, 14)])
+    return s
+
+
+def ginger_hand():
+    s = Sprite()
+    skin = ramp("#d6b278")
+    # A knobbly hand: a body with fingers branching up and a knob at one end, each with ring lines across it.
+    parts = [((2.4, 11.0), (11.6, 10.0), 2.5), ((5.0, 10.0), (4.2, 4.4), 1.8), ((8.8, 9.6), (11.2, 4.2), 1.7),
+             ((11.6, 10.4), (14.0, 12.6), 1.7)]
+    for start, end, r in parts:
+        s.capsule(skin, [start, end], (r, r * 0.85))
+    for start, end, r in parts:
+        rings(s, skin, start, end, 2.4, r * 0.8)
+    s.pixels_at(skin[HIGHLIGHT], [(3, 9), (4, 9), (4, 4), (10, 4)])
+    s.pixels_at(ramp("#f0dca8")[BASE], [(4, 3), (11, 3)])
+    return s
+
+
+def turmeric_hand():
+    s = Sprite()
+    skin = ramp("#c47c34")
+    # Plump little fingers with fine rings; one is snapped to show the bright orange inside.
+    fingers = [((1.8, 12.8), (8.8, 8.4), 2.1), ((6.0, 14.4), (13.6, 11.0), 1.9), ((6.4, 9.2), (10.6, 3.4), 1.8)]
+    for start, end, r in fingers:
+        s.capsule(skin, [start, end], (r, r * 0.85))
+        rings(s, skin, start, end, 2.2, r * 0.75)
+    s.ellipse(ramp("#f4941a"), 10.8, 3.2, 1.8, 1.8, outline=False)
+    s.pixels_at(ramp("#ffc04a")[BASE], [(10, 2), (11, 3)])
+    s.pixels_at(skin[HIGHLIGHT], [(3, 11), (4, 10), (7, 7)])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"rhubarb": rhubarb_hand, "sweet_potato": sweet_potato_hand, "cassava": cassava_hand, "ginger": ginger_hand,
+             "turmeric": turmeric_hand})
 HAND.update({"radish": radish_hand, "shallot": shallot_hand,
              "asparagus": asparagus_hand})
 HAND.update({"lettuce": lettuce_hand, "courgette": courgette_hand, "cucumber": cucumber_hand, "tomatillo": tomatillo_hand,
