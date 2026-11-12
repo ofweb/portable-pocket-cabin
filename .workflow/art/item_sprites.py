@@ -1659,8 +1659,9 @@ def corn_hand():
     s.capsule(husk, [(3.4, 14.6), (2.6, 8.4)], (1.4, 0.6))
     s.capsule(husk, [(11.6, 14.6), (12.4, 8.4)], (1.4, 0.6))
     s.capsule(husk, [(7.5, 15.0), (7.5, 12.0)], (2.2, 1.6))
-    s.capsule(kernel, [(7.5, 3.4), (7.5, 11.8)], (3.3, 2.7), texture=kernels)
-    s.pixels_at(kernel[HIGHLIGHT], [(5, 5), (5, 7), (5, 9)])
+    # The cob is broad at the base and narrows toward the tip.
+    s.capsule(kernel, [(7.5, 3.0), (7.5, 11.6)], (2.0, 3.4), texture=kernels)
+    s.pixels_at(kernel[HIGHLIGHT], [(6, 4), (5, 7), (5, 9)])
     # Silk at the top.
     silk = ramp("#a8682a")
     s.pixels_at(silk[BASE], [(6, 0), (7, 1), (8, 0), (9, 1), (7, 0)])
