@@ -1392,25 +1392,50 @@ def curve(a, b, c, steps=40):
             for t in [i / steps for i in range(steps + 1)]]
 
 
-def rhubarb_hand():
-    s = Sprite()
+def rhubarb_colours():
     red, pink, green = ramp("#b8243a"), ramp("#d4566a"), ramp("#9aaa4a")
 
-    def stalk_colour(x, y):
-        # Deep red at the base, pink through the middle, green-tinged just under the leaf.
+    def colour(x, y):
+        # Deep red at the base, pink through the middle, green-tinged toward the top.
         return red if y >= 11 else pink if y >= 7 else green
-    # Three stalks fanning out from the base, each ending in its own small crinkled leaf.
-    stalks = [((5.2, 15.0), (2.6, 6.4), (2.4, 3.6, 30)), ((7.6, 15.0), (7.8, 5.2), (7.8, 2.6, 0)), ((10.0, 15.0), (12.8, 6.6), (13.0, 3.8, -30))]
-    for start, end, _ in stalks:
-        s.capsule(stalk_colour, [start, end], (1.2, 1.0))
-    for x, y in [(5, 13), (8, 12), (10, 13), (4, 10), (8, 9), (11, 10)]:
-        if s.pixels[y][x] is not None:
-            s.put(x, y, (red if y >= 11 else pink)[LIGHT])
-    for i, (_, _, (cx, cy, angle)) in enumerate(stalks):
-        leaf = ramp(["#4a9432", "#58a43a", "#468c30"][i])
-        s.ellipse(leaf, cx, cy, 2.6, 2.0, angle=angle, texture=lambda x, y: -1 if (x * 2 + y) % 4 == 0 else 0)
-        s.put(round(cx - 0.5), round(cy - 0.5), ramp("#c8d888")[BASE])
+    return red, pink, colour
+
+
+def rhubarb_single():
+    """One stalk on a diagonal, ending in a broad crinkled leaf."""
+    s = Sprite()
+    red, pink, colour = rhubarb_colours()
+    s.capsule(colour, [(2.4, 15.0), (9.0, 6.4)], (1.6, 1.3))
+    s.pixels_at(red[LIGHT], [(3, 13), (4, 12)])
+    s.pixels_at(pink[LIGHT], [(6, 9), (7, 8)])
+    leaf = ramp("#4f9a34")
+    s.ellipse(leaf, 10.6, 4.4, 4.8, 3.6, angle=-30, texture=lambda x, y: -1 if (x * 2 + y) % 4 == 0 else 0)
+    vein = ramp("#c8d888")[BASE]
+    s.line(vein, 9, 6, 13, 2)
+    s.pixels_at(vein, [(10, 3), (12, 5)])
     return s
+
+
+def rhubarb_trimmed():
+    """Three trimmed stalks side by side, leaves cut off, the cut tops pale green."""
+    s = Sprite()
+    red, pink, green = ramp("#b8243a"), ramp("#d4566a"), ramp("#a8b858")
+
+    def colour(x, y):
+        # Red low down, pink up most of the stalk, and a short green-tinged top where the leaf was cut away.
+        return red if y >= 10 else pink if y >= 4 else green
+    for start, end in (((2.6, 15.0), (4.4, 2.6)), ((7.0, 15.0), (7.6, 2.0)), ((11.4, 15.0), (10.8, 3.0))):
+        s.capsule(colour, [start, end], (1.4, 1.2))
+    for x, y in [(2, 13), (6, 13), (10, 13), (3, 8), (7, 8), (10, 8), (4, 5), (7, 5), (10, 6)]:
+        if s.pixels[y][x] is not None:
+            s.put(x, y, (red if y >= 10 else pink)[LIGHT])
+    cut = ramp("#d8e0a0")[BASE]
+    s.pixels_at(cut, [(4, 2), (7, 1), (8, 1), (10, 2)])
+    return s
+
+
+def rhubarb_hand():
+    return rhubarb_single()
 
 
 def sweet_potato_hand():
