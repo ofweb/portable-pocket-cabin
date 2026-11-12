@@ -1589,8 +1589,105 @@ def parsley_hand():
         s.put(int(cx), int(cy), tones[HIGHLIGHT])
     return s
 
+def dill_hand():
+    s = Sprite()
+    stem = ramp("#6a9a4a")
+    frond = ramp("#7ab85a")
+    # A main stem with branches, each covered in fine, thread-like fronds: feathery and airy, not leafy.
+    s.line(stem[SHADOW], 8, 15, 7, 3)
+    rng = random.Random(13)
+    for x0, y0, x1, y1 in [(8, 12, 3, 8), (8, 11, 13, 7), (7, 8, 2, 3), (7, 7, 12, 2), (7, 5, 5, 0), (7, 4, 10, 0)]:
+        for i, (x, y) in enumerate(s.line(stem[BASE], x0, y0, x1, y1)[1:]):
+            # Threads sprouting either side of each branch.
+            for dx, dy in ((0, -1), (1, -1), (-1, 0), (0, 1)):
+                if rng.random() < 0.45:
+                    s.put(x + dx, y + dy, frond[LIGHT if rng.random() < 0.5 else BASE])
+    return s
+
+
+def bay_hand():
+    s = Sprite()
+    leaf = ramp("#5a9a44")
+    back = ramp("#4c8a3a")
+
+    def pointed(tones, cx, cy, angle, length, width):
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+
+        def inside(x, y):
+            # A glossy oval, pointed at both ends.
+            u, v = (x - cx) * cos + (y - cy) * sin, -(x - cx) * sin + (y - cy) * cos
+            return abs(u) <= length and abs(v) <= width * (1 - (u / length) ** 2)
+        s.shape(inside, tones, (cx, cy), (length, length))
+        s.line(tones[HIGHLIGHT], round(cx - (length - 1.2) * cos), round(cy - (length - 1.2) * sin),
+               round(cx + (length - 1.2) * cos), round(cy + (length - 1.2) * sin))
+    # Two leaves fanning apart from the stem, the darker one behind.
+    pointed(back, 9.8, 7.8, -10, 5.4, 2.4)
+    pointed(leaf, 6.2, 8.2, -65, 6.4, 2.8)
+    s.pixels_at(ramp("#6b4a2a")[SHADOW], [(2, 14), (3, 13)])
+    return s
+
+
+def barley_hand():
+    s = Sprite()
+    straw = ramp("#d0b862")
+    awn = ramp("#dccc88")
+    stalk = ramp("#8aa050")
+    # The stalk rises from the bottom left into an ear on a diagonal.
+    s.line(stalk[BASE], 2, 15, 5, 11)
+    # Long whiskers fanning out from the tip of the ear, and short ones from its sides.
+    tip = (10, 5)
+    for end in ((11, 0), (14, 1), (15, 4), (8, 0)):
+        s.line(awn[LIGHT], tip[0], tip[1], end[0], end[1])
+    s.line(awn[BASE], 7, 8, 5, 4)
+    s.line(awn[BASE], 9, 9, 13, 8)
+    # Plump kernels in two staggered rows along the ear.
+    for i, (x, y) in enumerate([(6, 10), (7, 9), (8, 8), (9, 7), (10, 6)]):
+        s.put(x, y, straw[LIGHT])
+        s.put(x - 1, y - 1, straw[BASE])
+        s.put(x + 1, y + 1, straw[SHADOW])
+        s.put(x, y + 1, straw[BASE])
+    s.put(*tip, straw[LIGHT])
+    return s
+
+
+def corn_hand():
+    s = Sprite()
+    kernel = ramp("#f0d44a")
+
+    def kernels(x, y):
+        # Rows of kernels: a lit top on each, a shadow line between rows.
+        return 1 if (x + y) % 2 == 0 and y % 2 == 0 else -1 if y % 2 == 1 else 0
+    husk = ramp("#78b048")
+    # Husk leaves peeled back behind the cob, then the cob on a diagonal.
+    for points in ([(2, 14), (1, 9), (2, 5)], [(4, 15), (7, 15), (11, 14)], [(3, 13), (3, 11), (5, 8)]):
+        s.capsule(husk, points, (1.2, 0.5))
+    s.capsule(kernel, [(4.2, 11.8), (12.4, 3.6)], (2.9, 2.4), texture=kernels)
+    s.pixels_at(ramp("#c8b878")[BASE], [(13, 2), (14, 1), (14, 2)])
+    s.pixels_at(husk[LIGHT], [(2, 8), (6, 14)])
+    return s
+
+
+def rice_hand():
+    s = Sprite()
+    grain = ramp("#ece6d4", spread=0.6)
+
+    def heap(x, y):
+        return y >= 5.6 and ((x - 7.5) / 7.0) ** 2 + ((y - 15.6) / 10.0) ** 2 <= 1
+    s.shape(heap, grain, (7.0, 10.0), (7.0, 5.0))
+    # Individual grains: short slanted dashes, lit on top.
+    for y in range(7, 15):
+        for x in range(2, 14):
+            if (x + 2 * y) % 5 == 0 and s.pixels[y][x] not in (None, grain[OUTLINE]):
+                s.put(x, y, grain[HIGHLIGHT])
+                if s.pixels[y][x + 1] not in (None, grain[OUTLINE]):
+                    s.put(x + 1, y, grain[SHADOW])
+    # A few grains spilled beside the heap.
+    s.pixels_at(grain[LIGHT], [(0, 15), (14, 15), (15, 14)])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"dill": dill_hand, "bay_laurel_leaf": bay_hand, "barley": barley_hand, "corn": corn_hand, "rice": rice_hand})
 HAND.update({"galangal": galangal_hand, "thyme": thyme_hand, "mint": mint_hand, "basil": basil_hand, "parsley": parsley_hand})
 HAND.update({"rhubarb": rhubarb_hand, "sweet_potato": sweet_potato_hand, "cassava": cassava_hand, "ginger": ginger_hand,
              "turmeric": turmeric_hand})
