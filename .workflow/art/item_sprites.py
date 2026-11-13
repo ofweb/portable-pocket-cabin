@@ -2283,8 +2283,76 @@ def star_anise_pod_hand():
     s.pixels_at(pod[SHADOW], [(8, 7), (7, 8)])
     return s
 
+def tamarind_pod_hand():
+    s = Sprite()
+    shell = ramp("#a8643a", spread=0.8)
+    # Two plump, gently curved pods that swell over each seed and narrow between them, each with a dried stalk.
+    for a, b, c in (((1.4, 5.6), (8.0, 1.6), (14.6, 5.0)), ((1.2, 12.2), (8.0, 8.0), (14.8, 12.8))):
+        points = curve(a, b, c, steps=30)
+
+        def inside(x, y, points=points):
+            return any(math.dist((x, y), (px, py)) <= 1.8 + 0.45 * math.cos(t * math.pi * 8) for px, py, t in points)
+        s.shape(inside, shell, ((a[0] + c[0]) / 2, b[1]), (7.0, 3.0), texture=speckle(int(a[1] * 7), 0.15, up=0))
+        s.put(int(a[0]), int(a[1]), ramp("#6b4226")[SHADOW])
+    return s
+
+
+def tea_leaf_hand():
+    # Tea grown in the open: a glossy, lighter green than shaded tea.
+    return tea_shoot("#4aa83c")
+
+
+def thai_basil_hand():
+    s = Sprite()
+    stem = ramp("#7a2a5a")
+    # Purple stems gathered at the bottom right.
+    for x0, y0 in ((8, 9), (11, 8), (9, 12)):
+        s.line(stem[BASE], 13, 15, x0, y0)
+    # Smooth, pointed leaves in pairs, mostly green with a few young ones flushed purple.
+    for i, (cx, cy, angle) in enumerate([(3.6, 4.8, 30), (8.0, 4.0, -15), (12.4, 6.0, -45), (3.0, 9.6, 45), (7.6, 8.8, 0),
+                                         (11.6, 10.8, -35), (5.2, 12.6, 25)]):
+        tones = ramp("#7a4a6a", spread=0.6) if i == 2 else ramp(["#5a9a42", "#6aa84e", "#4e8e3a"][i % 3], spread=0.7)
+        s.ellipse(tones, cx, cy, 3.2, 1.8, angle=angle)
+        s.put(int(cx), int(cy), tones[SHADOW])
+        s.put(int(cx) - 1, int(cy) - 1, tones[HIGHLIGHT])
+    # A purple flower bud rising from the middle.
+    flower = ramp("#6a2a6a")
+    s.pixels_at(flower[BASE], [(8, 0), (8, 1), (7, 1), (9, 2)])
+    s.pixels_at(flower[LIGHT], [(9, 1)])
+    return s
+
+
+def vanilla_pod_hand():
+    s = Sprite()
+    pod = ramp("#4a2c22", spread=0.7)
+    # Long, thin, wrinkled pods, slightly curved, one with its tip curled over.
+    for a, b, c in (((1.4, 13.4), (6.0, 4.0), (13.6, 1.4)), ((3.6, 14.8), (9.0, 7.0), (14.8, 3.4))):
+        points = [(x, y) for x, y, t in curve(a, b, c, steps=8)]
+        s.capsule(pod, points, (1.6, 1.0), texture=lambda x, y: -1 if (x + y) % 3 == 0 else 0)
+        for x, y, t in curve(a, b, c, steps=12)[1:-2:2]:
+            s.put(int(x) - 1, int(y), pod[HIGHLIGHT])
+    s.pixels_at(pod[SHADOW], [(14, 0), (15, 1)])
+    return s
+
+
+def wakame_hand():
+    s = Sprite()
+    frond = ramp("#4a5e2c", spread=0.8)
+    # A fresh frond: a firm midrib with broad, wavy, lobed blades spreading to either side.
+    for cx, cy, angle in [(4.2, 4.2, -150), (10.8, 4.6, -30), (3.6, 8.8, 170), (12.2, 9.0, 10), (4.6, 13.0, 150), (11.4, 13.2, 30)]:
+        mask = s.ellipse(frond, cx, cy, 4.0, 2.3, angle=angle, texture=lambda x, y: 1 if (x * 2 + y) % 5 == 0 else 0)
+        for x, y in mask:
+            if (x * 3 + y) % 7 == 0 and s.pixels[y][x] == frond[OUTLINE]:
+                s.put(x, y, None)  # A wavy edge.
+    rib = ramp("#7a8a48")
+    s.line(rib[BASE], 8, 15, 7, 1)
+    s.line(rib[LIGHT], 7, 14, 7, 2)
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"tamarind_pod": tamarind_pod_hand, "tea_leaf": tea_leaf_hand, "thai_basil": thai_basil_hand,
+             "vanilla_pod": vanilla_pod_hand, "wakame": wakame_hand})
 HAND.update({"sea_lettuce": sea_lettuce_hand, "shaded_tea_leaf": shaded_tea_leaf_hand, "soybean": soybean_hand,
              "spring_onion": spring_onion_hand, "star_anise_pod": star_anise_pod_hand})
 HAND.update({"purple_corn": purple_corn_hand, "rapeseed": rapeseed_hand, "rosehip": rosehip_hand, "roselle": roselle_hand,

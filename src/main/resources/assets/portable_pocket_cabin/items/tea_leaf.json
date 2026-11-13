@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/tea_leaf",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 4885050
-      }
-    ]
+    "model": "portable_pocket_cabin:item/tea_leaf"
   }
 }
