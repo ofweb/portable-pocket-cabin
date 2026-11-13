@@ -82,11 +82,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] hop_rhizome
 - [x] lettuce_seeds
 - [x] long_bean_seeds
-- [ ] marjoram_cutting
-- [ ] mint_cutting
-- [ ] mustard_seed
-- [ ] nutmeg_seed
-- [ ] oregano_cutting
+- [x] marjoram_seeds
+- [x] mint_seeds
+- [x] mustard_seed
+- [x] nutmeg_seed
+- [x] oregano_seeds
 - [ ] pandan_cutting
 - [ ] paprika_pepper_seeds
 - [ ] parsley_seeds
@@ -630,7 +630,7 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] onigiri
 - [ ] onion_soup
 - [ ] orange_sapling
-- [ ] oregano
+- [x] oregano
 - [ ] oxidised_tea_leaves
 - [ ] oxtail
 - [ ] packed_cabin

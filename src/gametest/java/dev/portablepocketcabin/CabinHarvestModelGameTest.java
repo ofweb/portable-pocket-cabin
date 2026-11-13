@@ -118,6 +118,25 @@ public final class CabinHarvestModelGameTest {
 	}
 
 	@GameTest
+	public void herbsFromSeedGiveSeedsWhenBroken(GameTestHelper helper) {
+		var level = helper.getLevel();
+		Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+		Block mintBush = CookingPlants.PLANTS.get("mint_bush");
+		helper.assertTrue(CookingPlants.item("mint_seeds") instanceof BlockItem item && item.getBlock() == mintBush, "Mint seeds plant a mint bush");
+		helper.assertTrue(CookingPlants.harvestModel("mint_bush").equals("seed_bush"), "The Garden page says mint grows from seeds");
+		helper.setBlock(BASE.below(), Blocks.GRASS_BLOCK);
+		helper.setBlock(BASE, mintBush.defaultBlockState().setValue(HerbBushBlock.AGE, HerbBushBlock.MAX_AGE));
+		BlockPos bush = helper.absolutePos(BASE);
+		use(level, player, bush, new ItemStack(Items.SHEARS));
+		helper.assertTrue(level.getBlockState(bush).getValue(HerbBushBlock.AGE) == HerbBushBlock.MAX_AGE, "Shears take no cutting from mint");
+		int seeds = CabinPlantGameTest.count(drops(helper, BASE), CookingPlants.item("mint_seeds"));
+		helper.assertTrue(seeds >= 2 && seeds <= 3, "Breaking a grown mint bush gives two or three seeds");
+		helper.assertTrue(CabinPlantGameTest.count(drops(helper, mintBush.defaultBlockState()), CookingPlants.item("mint_seeds")) == 1,
+			"A young mint bush gives its one seed back");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void perennialCrownsAreCutAgainAndDivide(GameTestHelper helper) {
 		var level = helper.getLevel();
 		Player player = helper.makeMockPlayer(GameType.SURVIVAL);

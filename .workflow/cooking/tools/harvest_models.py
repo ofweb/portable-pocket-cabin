@@ -43,9 +43,10 @@ CUTTING_VINES = ["grape_vine", "red_grape_vine", "white_grape_vine", "hop_vine",
 # Bushes grown from cuttings: plant -> cutting. What they give no longer plants them.
 CUTTING_BUSHES = {"blackcurrant_bush": "blackcurrant_cutting", "redcurrant_bush": "redcurrant_cutting",
                   "raspberry_bush": "raspberry_cutting", "strawberry_bush": "strawberry_runner",
-                  "thyme_bush": "thyme_cutting", "marjoram_bush": "marjoram_cutting", "rosemary_bush": "rosemary_cutting",
-                  "oregano_bush": "oregano_cutting", "savory_bush": "savory_cutting", "mint_bush": "mint_cutting",
+                  "thyme_bush": "thyme_cutting", "rosemary_bush": "rosemary_cutting", "savory_bush": "savory_cutting",
                   "pandan_bush": "pandan_cutting", "elder_bush": "elder_cutting", "tea_bush": "tea_cutting"}
+# Bushes grown from seeds: plant -> seeds. A grown bush broken gives two or three; a younger one gives one back.
+SEED_BUSHES = {"marjoram_bush": "marjoram_seeds", "oregano_bush": "oregano_seeds", "mint_bush": "mint_seeds"}
 REMOVED_SEEDS = ["barley_seeds", "rye_seeds", "corn_seeds", "blue_corn_seeds", "purple_corn_seeds", "rice_seedlings",
                  "glutinous_rice_seedlings"]
 
@@ -125,6 +126,8 @@ def main():
         table(plant, [trellis], decay=False)
     for plant, cutting in CUTTING_BUSHES.items():
         table(plant, [pool(item(cutting))], decay=False)
+    for plant, seeds in SEED_BUSHES.items():
+        table(plant, [pool(pick(item(seeds, 2, 3, [age(plant, 3)]), item(seeds)))])
     # Vanilla wheat plants from wheat: a ripe crop gives two to four, a young one gives one back, with no seeds.
     w(f"{R}/data/minecraft/loot_table/blocks/wheat.json", {"type": "minecraft:block", "functions": [{"function": "minecraft:explosion_decay"}],
       "pools": [pool(pick(item("minecraft:wheat", 2, 4, [{"condition": "minecraft:block_state_property", "block": "minecraft:wheat",

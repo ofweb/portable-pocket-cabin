@@ -1,12 +1,45 @@
 {
   "type": "minecraft:block",
+  "functions": [
+    {
+      "function": "minecraft:explosion_decay"
+    }
+  ],
   "pools": [
     {
       "rolls": 1.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "portable_pocket_cabin:mint_cutting"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:mint_seeds",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "portable_pocket_cabin:mint_bush",
+                  "properties": {
+                    "age": "3"
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "min": 2.0,
+                    "max": 3.0
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "portable_pocket_cabin:mint_seeds"
+            }
+          ]
         }
       ]
     }

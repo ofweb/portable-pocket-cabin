@@ -101,7 +101,8 @@ Every plant follows one model. Each model is one way of giving the harvest and t
 | **Grain and tuber** | Breaking a ripe plant drops 2 to 4 of its harvest | From the harvest itself | Barley, rye, corn, blue corn, purple corn, rice, glutinous rice, white bean, black bean, chickpea, soybean, azuki bean, peanut, sesame, cumin, anise, caraway, mustard, rapeseed, garlic, onion, red onion, shallot, sweet potato, cassava, ginger, galangal, turmeric, lemongrass, water chestnut, wasabi, and vanilla wheat, carrot, and potato |
 | **Fruit with seeds** | Breaking a ripe plant drops its produce and 1 to 3 seeds | From seeds | Cabbage, red cabbage, bell pepper, paprika pepper, green chili, poblano, red chili, bird's eye chili, ají amarillo, aubergine, Thai aubergine, courgette, tomatillo, roselle, cardamom, pineapple (its crown), vanilla beetroot, and the tomato, cucumber, and long bean vines |
 | **Leaf, then seed** | At its leaf stage it drops leaves or a root. One stage later it flowers and drops 2 to 3 seeds instead | From seeds | Lettuce, radish, basil, holy basil, Thai basil, dill, parsley, celery, spring onion, and cilantro, which keeps coriander seed as its seed |
-| **Cuttings** | Picking a grown plant gives its fruit or leaves and sets it back, as now. Shears on a grown plant give a cutting and set it back too | From a cutting. The fruit no longer plants it | Blackcurrant, redcurrant, raspberry, strawberry (a runner), thyme, marjoram, rosemary, oregano, savory, mint, pandan, tea, elder, and the grape, red grape, white grape, hop, peppercorn, vanilla, and betel vines |
+| **Cuttings** | Picking a grown plant gives its fruit or leaves and sets it back, as now. Shears on a grown plant give a cutting and set it back too | From a cutting. The fruit no longer plants it | Blackcurrant, redcurrant, raspberry, strawberry (a runner), thyme, rosemary, savory, pandan, tea, elder, and the grape, red grape, white grape, hop, peppercorn, vanilla, and betel vines |
+| **Herb from seed** | Picking a grown plant gives its leaves and sets it back, as a cutting plant does. Breaking a grown plant drops 2 to 3 seeds | From seeds | Marjoram, oregano, mint |
 | **Perennial crown** | Using a grown plant cuts its harvest and sets it back to its first grown stage. Breaking a grown plant drops 2 crowns | From a crown | Asparagus, rhubarb, cardoon |
 | **Fruit tree** | Picking the leaves, as now | From a sapling, from breaking leaves | Every fruit tree, and the apple |
 | **Trunk** | An axe or a glass bottle, as now | From a sapling | Cinnamon, oil palm, coconut palm |
@@ -111,7 +112,8 @@ Every plant follows one model. Each model is one way of giving the harvest and t
 How the models change today's plants:
 
 - **New planting items:** each cutting plant that today plants from its fruit gets a cutting item:
-  - blackcurrant, redcurrant, raspberry, thyme, marjoram, rosemary, oregano, savory, mint, and pandan cuttings
+  - blackcurrant, redcurrant, raspberry, thyme, rosemary, savory, and pandan cuttings
+  - marjoram, oregano, and mint seeds, which a grown plant drops when broken
   - strawberry runner
 - **Removed seed items:** barley, rye, corn, blue corn, and purple corn seeds go, and so do rice and glutinous rice seedlings. Their grain plants them. Recipes, trades, and loot that name them change to the grain.
 - **Wheat:**

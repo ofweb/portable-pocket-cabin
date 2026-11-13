@@ -85,9 +85,10 @@ final class CookingPlants {
 	static final Block WHITE_GRAPE_VINE = trellisCrop("white_grape_vine", "white_grape_cutting", () -> WHITE_GRAPE);
 	static final Block HOP_VINE = trellisCrop("hop_vine", "hop_rhizome", () -> HOPS);
 
-	// Delivery 1: perennial bushes that regrow after picking. Each is planted from a cutting that shears take from a grown bush.
+	// Delivery 1: perennial bushes that regrow after picking. Most are planted from a cutting that shears take from a grown
+	// bush; marjoram, oregano, and mint from seeds that a grown bush gives when broken.
 	static final Block THYME_BUSH = cuttingBush("thyme_bush", "thyme", "thyme_cutting", null);
-	static final Block MARJORAM_BUSH = cuttingBush("marjoram_bush", "marjoram", "marjoram_cutting", null);
+	static final Block MARJORAM_BUSH = seedBush("marjoram_bush", "marjoram", "marjoram_seeds");
 	static final Block STRAWBERRY_BUSH = cuttingBush("strawberry_bush", "strawberry", "strawberry_runner", food(2, 1.2F));
 	static final Block RASPBERRY_BUSH = cuttingBush("raspberry_bush", "raspberry", "raspberry_cutting", food(2, 1.2F));
 	static final Block OYSTER_MUSHROOM = selfBush("oyster_mushrooms", "oyster_mushroom", null);
@@ -160,7 +161,8 @@ final class CookingPlants {
 	static final Block OLIVE_LEAVES = fruitTree("olive",
 		properties -> new FruitingLeavesBlock.TwoStageFruit(properties, () -> GREEN_OLIVE, () -> BLACK_OLIVE), List.of(GREEN_OLIVE, BLACK_OLIVE), false);
 	static {
-		for (String herb : new String[] {"rosemary", "oregano", "savory"}) cuttingBush(herb + "_bush", herb, herb + "_cutting", null);
+		for (String herb : new String[] {"rosemary", "savory"}) cuttingBush(herb + "_bush", herb, herb + "_cutting", null);
+		seedBush("oregano_bush", "oregano", "oregano_seeds");
 		fieldCrop("aji_amarillo", "aji_amarillo_seeds");
 	}
 
@@ -187,7 +189,7 @@ final class CookingPlants {
 		fieldCrop("soybean", "soybean");
 		fieldCrop("azuki_bean", "azuki_bean");
 		fieldCrop("celery", "celery_seeds");
-		cuttingBush("mint_bush", "mint", "mint_cutting", null);
+		seedBush("mint_bush", "mint", "mint_seeds");
 		fruitTree("sweet_cherry", () -> CHERRY);
 		fruitTree("ume", () -> UME_PLUM);
 		fruitTree("star_anise", () -> STAR_ANISE_POD);
@@ -541,7 +543,10 @@ final class CookingPlants {
 		if (block instanceof SeaPlantBlock sea) return sea.gatheredByHand() ? "bed" : "sea_plant";
 		if (block instanceof PerennialCropBlock || block instanceof CardoonBlock) return "crown";
 		if (block instanceof TrellisCropBlock) return Cuttings.of(block).builtInRegistryHolder().key().identifier().getPath().endsWith("_seeds") ? "fruit" : "cutting";
-		if (block instanceof HerbBushBlock) return plant.equals("oyster_mushrooms") ? "mushroom" : "cutting";
+		if (block instanceof HerbBushBlock) {
+			if (plant.equals("oyster_mushrooms")) return "mushroom";
+			return PLANTED_FROM.get(plant).builtInRegistryHolder().key().identifier().getPath().endsWith("_seeds") ? "seed_bush" : "cutting";
+		}
 		if (block instanceof FruitingLeavesBlock) return "tree";
 		if (block instanceof HarvestTrunkBlock) return "trunk";
 		if (GRAIN.contains(plant)) return "grain";
@@ -629,6 +634,19 @@ final class CookingPlants {
 		Item item = ingredient(produce, food);
 		Block block = registerBlock(plant, properties -> new HerbBushBlock(properties, null, () -> item, true), bushProperties());
 		PLANTED_FROM.put(plant, registerItem(cutting, properties -> new BlockItem(block, properties.useItemDescriptionPrefix())));
+		PLANTS.put(plant, block);
+		GIVES.put(plant, List.of(item));
+		return block;
+	}
+
+	/**
+	 * A bush that gives {@code produce} when picked, and is planted from {@code seeds}: breaking a grown bush gives two or
+	 * three, and a younger one gives one back.
+	 */
+	private static Block seedBush(String plant, String produce, String seeds) {
+		Item item = ingredient(produce, null);
+		Block block = registerBlock(plant, properties -> new HerbBushBlock(properties, null, () -> item, false), bushProperties());
+		PLANTED_FROM.put(plant, registerItem(seeds, properties -> new BlockItem(block, properties.useItemDescriptionPrefix())));
 		PLANTS.put(plant, block);
 		GIVES.put(plant, List.of(item));
 		return block;

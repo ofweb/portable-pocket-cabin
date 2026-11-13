@@ -2701,17 +2701,84 @@ def long_bean_seeds_hand():
         s.put(round(cx - cos * 1.5 + sin * 0.2 - 0.5), round(cy - sin * 1.5 - cos * 0.2 - 0.5), bean[HIGHLIGHT])
     return s
 
+def oregano_hand():
+    s = Sprite()
+    stem = ramp("#7a4a3a")
+    leaf = ramp("#5e9e46", spread=0.55)
+    # Three reddish sprigs gathered at the bottom right, with small, darker, oval leaves in pairs and pink flower tips.
+    for (x1, y1), pairs in (((2, 3), [(4, 6), (7, 9)]), ((8, 1), [(8, 4), (9, 8)]), ((14, 4), [(12, 6), (11, 10)])):
+        s.line(stem[BASE], 13, 15, x1, y1)
+        for x, y in pairs:
+            s.ellipse(leaf, x - 0.8, y + 0.5, 2.0, 1.4, angle=-20)
+            s.ellipse(leaf, x + 1.8, y + 0.5, 2.0, 1.4, angle=20)
+            s.put(x - 1, y, leaf[HIGHLIGHT])
+        flower = ramp("#c870a0")
+        s.pixels_at(flower[BASE], [(x1, y1), (x1 - 1, y1 + 1), (x1 + 1, y1 + 1)])
+        s.put(x1, y1 - 1, flower[LIGHT])
+    return s
+
+
+def tiny_round_seeds(colour, glint):
+    """Many tiny round seeds kept clear of the top right corner, for herbs whose seeds carry a plant picture."""
+    s = Sprite()
+    seed = ramp(colour, spread=0.55)
+    for cx, cy, _ in SMALL_SEED_SPOTS_LOW:
+        s.ellipse(seed, cx, cy, 1.2, 1.1)
+        s.put(int(cx) - 1, int(cy) - 1, ramp(glint)[BASE])
+    return s
+
+
+def marjoram_seeds_hand():
+    # Tiny round light-brown seeds, the same as oregano's.
+    return tiny_round_seeds("#8e5c36", "#c49a70")
+
+
+def mint_seeds_hand():
+    # Tiny round seeds, a very dark brown.
+    return tiny_round_seeds("#3a2418", "#7a5a48")
+
+
+def mustard_seed_hand():
+    # Many small round seeds, yellow-tan, with the odd dark one among them.
+    s = Sprite()
+    seed, dark = ramp("#d8a650", spread=0.6), ramp("#4a2c2a", spread=0.5)
+    for i, (cx, cy, _) in enumerate(SMALL_SEED_SPOTS):
+        tones = dark if i in (4, 11) else seed
+        s.ellipse(tones, cx, cy, 1.4, 1.4)
+        s.put(int(cx) - 1, int(cy) - 1, tones[HIGHLIGHT])
+    return s
+
+
+def nutmeg_seed_hand():
+    # Two whole nutmegs: brown ovals with pale wrinkles, the back one still wrapped in its lacy red mace.
+    s = Sprite()
+    nut, mace = ramp("#7a4a2c", spread=0.7), ramp("#d0302a")
+    s.ellipse(nut, 10.0, 6.0, 4.4, 3.4, angle=-30)
+    for x, y in [(7, 4), (9, 3), (11, 4), (8, 6), (10, 6), (12, 5), (9, 8), (11, 8), (13, 7), (7, 8)]:
+        s.put(x, y, mace[BASE])
+    s.pixels_at(mace[LIGHT], [(10, 3), (8, 5), (12, 7)])
+    s.ellipse(nut, 6.0, 10.6, 4.6, 3.6, angle=-20)
+    wrinkle = ramp("#b08a64")[BASE]
+    s.pixels_at(wrinkle, [(3, 10), (4, 9), (6, 9), (7, 10), (5, 12), (8, 12), (9, 11), (4, 12)])
+    s.pixels_at(nut[HIGHLIGHT], [(4, 8)])
+    return s
+
+
+def oregano_seeds_hand():
+    return marjoram_seeds_hand()
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
-# courgette and cucumber. The picture is the plant's own sprite, shrunk.
+# courgette and cucumber, marjoram and oregano, and mint. The picture is the plant's own sprite, shrunk.
 SEED_PLANTS = {
     "aji_amarillo_seeds": "aji_amarillo", "bell_pepper_seeds": "bell_pepper", "birds_eye_chili_seeds": "birds_eye_chili",
     "green_chili_seeds": "green_chili", "paprika_pepper_seeds": "paprika_pepper", "poblano_chili_seeds": "poblano_chili",
     "red_chili_seeds": "red_chili", "cabbage_seeds": "cabbage", "red_cabbage_seeds": "red_cabbage", "radish_seeds": "radish",
     "basil_seeds": "basil", "holy_basil_seeds": "holy_basil", "thai_basil_seeds": "thai_basil", "aubergine_seeds": "aubergine",
     "thai_aubergine_seeds": "thai_aubergine", "tomato_seeds": "tomato", "tomatillo_seeds": "tomatillo",
-    "courgette_seeds": "courgette", "cucumber_seeds": "cucumber",
+    "courgette_seeds": "courgette", "cucumber_seeds": "cucumber", "marjoram_seeds": "marjoram", "oregano_seeds": "oregano",
+    "mint_seeds": "mint",
 }
 BADGE = 8
 
@@ -2744,6 +2811,8 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"marjoram_seeds": marjoram_seeds_hand, "mint_seeds": mint_seeds_hand, "mustard_seed": mustard_seed_hand,
+             "nutmeg_seed": nutmeg_seed_hand, "oregano_seeds": oregano_seeds_hand, "oregano": oregano_hand})
 HAND.update({"dried_cumin_seed": cumin_seed_hand, "elder_cutting": elder_cutting_hand, "grape_cutting": grape_cutting_hand,
              "hop_rhizome": hop_rhizome_hand, "long_bean_seeds": long_bean_seeds_hand})
 HAND.update({"cumin_seed": cumin_seed_hand, "dill_seeds": dill_seeds_hand, "green_chili_seeds": green_chili_seeds_hand,
