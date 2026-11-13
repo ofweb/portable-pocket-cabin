@@ -2198,8 +2198,95 @@ def rye_hand():
         s.pixels_at(grain[OUTLINE], [(x0, top + 7)])
     return s
 
+def sea_lettuce_hand():
+    s = Sprite()
+    # A bushy clump of broad, ruffled, translucent fronds fanning up and out from a darker heart.
+    fronds = [(-170, 6.6, 2.8), (-140, 7.2, 3.0), (-112, 7.6, 3.0), (-90, 7.6, 3.0), (-68, 7.6, 3.0), (-40, 7.2, 3.0), (-10, 6.6, 2.8)]
+    for i, (angle, length, width) in enumerate(fronds):
+        frond = ramp(["#86c43a", "#9ad048", "#7ab834", "#a8d856"][i % 4], spread=0.65)
+        cx = 8.0 + math.cos(math.radians(angle)) * length * 0.5
+        cy = 13.4 + math.sin(math.radians(angle)) * length * 0.5
+        mask = s.ellipse(frond, cx, cy, length * 0.6, width, angle=angle, texture=lambda x, y: 1 if (x * 2 + y) % 5 == 0 else 0)
+        for x, y in mask:
+            if (x * 3 + y) % 4 == 0 and s.pixels[y][x] == frond[OUTLINE] and y < 12:
+                s.put(x, y, None)  # A rippled, uneven edge.
+    s.ellipse(ramp("#4f8e2e", spread=0.7), 8.0, 13.8, 2.6, 1.4)
+    return s
+
+
+def tea_shoot(colour):
+    """Two pointed leaves and a bud, as tea is plucked."""
+    s = Sprite()
+    leaf = ramp(colour, spread=0.8)
+    s.line(ramp("#7a9a4a")[BASE], 8, 15, 8, 5)
+    for cx, cy, angle in ((4.4, 10.8, 35), (11.6, 8.6, -40)):
+        s.ellipse(leaf, cx, cy, 4.4, 2.3, angle=angle)
+        s.line(leaf[LIGHT], round(cx - 2.6 * math.cos(math.radians(angle))), round(cy - 2.6 * math.sin(math.radians(angle))),
+               round(cx + 2.6 * math.cos(math.radians(angle))), round(cy + 2.6 * math.sin(math.radians(angle))))
+    bud = ramp("#a8d070", spread=0.7)
+    s.ellipse(bud, 8.0, 3.6, 1.7, 2.8)
+    s.pixels_at(bud[HIGHLIGHT], [(7, 3), (7, 2)])
+    return s
+
+
+def shaded_tea_leaf_hand():
+    # Shade-grown tea: a deeper, darker green than tea grown in the open.
+    return tea_shoot("#2a6e30")
+
+
+def soybean_hand():
+    s = Sprite()
+    stalk = ramp("#6a8a3a")
+    s.line(stalk[BASE], 8, 0, 8, 4)
+    pod = ramp("#86b050", spread=0.75)
+    fuzz = ramp("#d8e8b0")[BASE]
+    # Fuzzy pods hanging from one stalk, each with two or three beans bulging inside.
+    for (x0, y0), (x1, y1) in (((7.4, 4.6), (3.0, 12.6)), ((8.6, 4.8), (9.4, 14.4)), ((9.6, 4.4), (13.4, 11.4))):
+        mask = s.capsule(pod, [(x0, y0), (x1, y1)], (1.6, 1.6))
+        for t in (0.35, 0.65, 0.9):
+            s.put(int(x0 + (x1 - x0) * t), int(y0 + (y1 - y0) * t), pod[HIGHLIGHT])
+        for x, y in mask:
+            if s.pixels[y][x] == pod[OUTLINE] and (x * 2 + y) % 5 == 0:
+                s.put(x, y, fuzz)  # A few fine hairs along the edge.
+    return s
+
+
+def spring_onion_hand():
+    s = Sprite()
+    white, pale, green = ramp("#f0f0e4", spread=0.5), ramp("#c8e0a0", spread=0.6), ramp("#4a9a34", spread=0.8)
+    # A bunch lying on a diagonal: white bulbs at the bottom right, long green hollow leaves to the top left.
+    for k, (x0, y0) in enumerate(((13.0, 13.4), (11.4, 14.6), (14.4, 11.4))):
+        for i in range(12):
+            x, y = x0 - i * 1.0, y0 - i * 1.0 - (k - 1) * 0.0
+            tones = white if i < 2 else pale if i < 4 else green
+            s.put(int(x), int(y), tones[LIGHT])
+            s.put(int(x) + 1, int(y), tones[BASE])
+            s.put(int(x), int(y) + 1, tones[SHADOW])
+        s.ellipse(white, x0 + 0.6, y0 + 0.4, 1.4, 1.3)
+    s.pixels_at(ramp("#c8b48a")[BASE], [(15, 15), (13, 15), (15, 13)])
+    return s
+
+
+def star_anise_pod_hand():
+    s = Sprite()
+    pod = ramp("#9c5628", spread=0.75)
+    seed = ramp("#d0923e")
+    # Eight boat-shaped pods radiating from the centre in a star, some split open to show a glossy seed.
+    for k in range(8):
+        angle = k * 45 + 22.5
+        cx = 8.0 + math.cos(math.radians(angle)) * 3.6
+        cy = 8.0 + math.sin(math.radians(angle)) * 3.6
+        s.ellipse(pod, cx, cy, 3.4, 1.4, angle=angle)
+        if k % 2 == 0:
+            s.put(int(cx), int(cy), seed[LIGHT])
+    s.pixels_at(pod[OUTLINE], [(7, 7), (8, 8)])
+    s.pixels_at(pod[SHADOW], [(8, 7), (7, 8)])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"sea_lettuce": sea_lettuce_hand, "shaded_tea_leaf": shaded_tea_leaf_hand, "soybean": soybean_hand,
+             "spring_onion": spring_onion_hand, "star_anise_pod": star_anise_pod_hand})
 HAND.update({"purple_corn": purple_corn_hand, "rapeseed": rapeseed_hand, "rosehip": rosehip_hand, "roselle": roselle_hand,
              "rye": rye_hand})
 HAND.update({"oyster_mushroom": oyster_mushroom_hand, "pandan_leaf": pandan_leaf_hand,

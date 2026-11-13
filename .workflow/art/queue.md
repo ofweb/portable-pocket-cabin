@@ -39,11 +39,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] rosehip
 - [x] roselle
 - [x] rye
-- [ ] sea_lettuce
-- [ ] shaded_tea_leaf
-- [ ] soybean
-- [ ] spring_onion
-- [ ] star_anise_pod
+- [x] sea_lettuce
+- [x] shaded_tea_leaf
+- [x] soybean
+- [x] spring_onion
+- [x] star_anise_pod
 - [ ] tamarind_pod
 - [ ] tea_leaf
 - [ ] thai_basil
