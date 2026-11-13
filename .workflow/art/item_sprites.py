@@ -2004,8 +2004,80 @@ def lemongrass_hand():
     s.pixels_at(ramp("#c8a8a0")[BASE], [(4, 15), (7, 15), (10, 15)])
     return s
 
+def long_bean_hand():
+    s = Sprite()
+    pod = ramp("#5aa03a", spread=0.85)
+    # Three long pods lying apart on a diagonal, gently curving, with a bean bump every few pixels.
+    for a, b, c in (((0.6, 9.0), (5.0, 3.0), (12.0, 0.8)), ((1.6, 14.4), (8.0, 7.4), (15.0, 2.0)), ((6.4, 15.4), (11.0, 11.4), (15.4, 7.6))):
+        points = [(x, y) for x, y, t in curve(a, b, c, steps=6)]
+        s.capsule(pod, points, (1.1, 0.9))
+        for x, y, t in curve(a, b, c, steps=10)[1:-1:2]:
+            s.put(int(x), int(y), pod[HIGHLIGHT])
+    return s
+
+
+def makrut_lime_leaf_hand():
+    s = Sprite()
+    leaf = ramp("#2f7a2e", spread=0.85)
+    angle = -40
+    cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+    # The double leaf: a lower leaflet on a winged stalk and an upper leaflet, end to end with a pinched waist.
+    for offset, length, width in ((-3.6, 3.4, 2.4), (3.2, 4.4, 2.9)):
+        s.ellipse(leaf, 7.5 + offset * cos, 8.0 + offset * sin, length, width, angle=angle)
+    s.line(leaf[LIGHT], 3, 13, 12, 3)
+    s.pixels_at(leaf[HIGHLIGHT], [(10, 4), (5, 10)])
+    s.pixels_at(ramp("#5a7a2a")[SHADOW], [(2, 14), (1, 15)])
+    return s
+
+
+def marjoram_hand():
+    s = Sprite()
+    stem = ramp("#7a8a4a")
+    leaf = ramp("#94b080", spread=0.7)
+    # Three sprigs gathered at the bottom right, each with small, soft, rounded grey-green leaves in pairs.
+    for (x1, y1), pairs in (((2, 2), [(4, 5), (7, 8)]), ((8, 1), [(8, 3), (9, 7)]), ((14, 3), [(12, 5), (11, 9)])):
+        s.line(stem[BASE], 13, 15, x1, y1)
+        for x, y in pairs + [(x1, y1)]:
+            s.ellipse(leaf, x - 0.8, y + 0.5, 1.6, 1.2)
+            s.ellipse(leaf, x + 1.8, y + 0.5, 1.6, 1.2)
+            s.put(x - 1, y, leaf[HIGHLIGHT])
+    # Tiny white flower knots at the tips.
+    s.pixels_at(ramp("#f0e8e0")[BASE], [(2, 1), (8, 0), (14, 2)])
+    return s
+
+
+def oil_palm_fruit_hand():
+    s = Sprite()
+    # A packed cluster of oval fruits, orange-red below and ripening to black at the tips, between spiky stalks.
+    spike = ramp("#8a6a3a")[BASE]
+    s.pixels_at(spike, [(1, 4), (14, 3), (2, 13), (14, 12), (8, 0)])
+    fruits = [(5.0, 4.4), (9.4, 3.8), (12.4, 6.6), (3.4, 8.0), (7.4, 7.8), (11.0, 10.0), (4.8, 11.8), (8.6, 12.0)]
+    red, black = ramp("#d8481e"), ramp("#2a1612", spread=0.6)
+    for cx, cy in fruits:
+        def colour(x, y, cy=cy):
+            return black if y + 0.5 < cy - 0.6 else red
+        s.ellipse(colour, cx, cy, 2.3, 2.0)
+        s.put(int(cx) - 1, int(cy), red[HIGHLIGHT])
+    return s
+
+
+def oyster_hand():
+    s = Sprite()
+    rim = ramp("#7a7062", spread=0.8)
+    pearl = ramp("#e8e4dc", spread=0.4)
+    meat = ramp("#a8a08c", spread=0.6)
+    # An open half shell: a rough, layered rim around a pearly cup, the oyster lying in it.
+    s.ellipse(rim, 7.6, 8.2, 7.0, 5.6, angle=-20, texture=lambda x, y: -1 if (x + 2 * y) % 4 == 0 else 1 if (x * 3 + y) % 7 == 0 else 0)
+    s.ellipse(pearl, 7.6, 8.0, 5.2, 3.8, angle=-20, outline=False)
+    s.ellipse(meat, 7.8, 8.2, 3.6, 2.6, angle=-20)
+    s.pixels_at(meat[LIGHT], [(6, 7), (7, 7)])
+    s.pixels_at(pearl[HIGHLIGHT], [(4, 6), (11, 10)])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"long_bean": long_bean_hand, "makrut_lime_leaf": makrut_lime_leaf_hand, "marjoram": marjoram_hand,
+             "oil_palm_fruit": oil_palm_fruit_hand, "oyster": oyster_hand})
 HAND.update({"green_olive": green_olive_hand, "holy_basil": holy_basil_hand, "hops": hops_hand, "laver": laver_hand,
              "lemongrass": lemongrass_hand})
 HAND.update({"cinnamon_bark": cinnamon_bark_hand, "clove_bud": clove_bud_hand, "coffee_cherry": coffee_cherry_hand,
