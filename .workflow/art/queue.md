@@ -57,11 +57,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 
 - [x] aji_amarillo_seeds
 - [x] anise_seed
-- [ ] annatto_seed
-- [ ] asparagus_crown
-- [ ] aubergine_seeds
-- [ ] basil_seeds
-- [ ] bell_pepper_seeds
+- [x] annatto_seed
+- [x] asparagus_crown
+- [x] aubergine_seeds
+- [x] basil_seeds
+- [x] bell_pepper_seeds
 - [ ] betel_cutting
 - [ ] birds_eye_chili_seeds
 - [ ] blackcurrant_cutting

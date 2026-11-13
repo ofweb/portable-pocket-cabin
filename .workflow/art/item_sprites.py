@@ -2417,10 +2417,10 @@ SEED_SPOTS = [(4.0, 4.2, -20), (9.6, 3.4, 30), (13.0, 7.0, -50), (3.2, 9.4, 40),
               (5.0, 13.4, -35), (9.0, 13.4, 50)]
 
 
-def seed_scatter(colour, length=2.2, width=1.4, ridge=False, stalk=None, spots=SEED_SPOTS):
+def seed_scatter(colour, length=2.2, width=1.4, ridge=False, stalk=None, spots=SEED_SPOTS, spread=0.8):
     """A scatter of individual seeds, each a small outlined oval big enough to show its shape."""
     s = Sprite()
-    tones = ramp(colour, spread=0.8)
+    tones = ramp(colour, spread=spread)
     for cx, cy, angle in spots:
         s.ellipse(tones, cx, cy, length, width, angle=angle)
         s.put(int(cx) - 1, int(cy) - 1 if width > 1.2 else int(cy), tones[HIGHLIGHT])
@@ -2451,8 +2451,69 @@ def anise_seed_hand():
             s.put(round(cx - cos * k - 0.5), round(cy - sin * k - 0.5), stalk)
     return s
 
+# Many small seeds, for the tiniest kinds such as basil.
+SMALL_SEED_SPOTS = [(3.0, 3.6, -20), (7.0, 2.6, 30), (11.0, 3.4, -40), (13.4, 7.0, 10), (2.4, 7.6, 50), (6.0, 6.8, -10), (9.6, 7.4, 40),
+                    (4.0, 11.2, 20), (8.0, 11.0, -30), (12.0, 11.6, 60), (2.6, 14.2, -40), (6.4, 14.4, 10), (10.0, 14.6, -20), (14.0, 14.0, 30)]
+
+
+def annatto_seed_hand():
+    s = Sprite()
+    seed = ramp("#9c2c24", spread=0.7)
+    # Small, angular, brick-red seeds: little three-sided pyramids, one lit face each.
+    for cx, cy, _ in SMALL_SEED_SPOTS:
+        x, y = int(cx), int(cy)
+        s.pixels_at(seed[BASE], [(x, y - 1), (x - 1, y), (x, y), (x + 1, y), (x - 1, y + 1), (x, y + 1), (x + 1, y + 1)])
+        s.pixels_at(seed[LIGHT], [(x, y - 1), (x - 1, y)])
+        s.pixels_at(seed[SHADOW], [(x + 1, y + 1)])
+    return s
+
+
+def asparagus_crown_hand():
+    s = Sprite()
+    root = ramp("#c8a868", spread=0.7)
+    # Long, thin tan roots hanging down from the crown, spread apart with gaps between them, gently wavy.
+    for end_x in (1, 4, 7, 10, 13, 15):
+        start = (7 if end_x < 8 else 9, 5)
+        for i, (x, y) in enumerate(s.line(root[BASE], start[0], start[1], end_x, 15)):
+            if i % 4 == 2:
+                s.put(x, y, root[LIGHT])
+    # A small, knobby crown at the top, with pale buds pointing up.
+    crown = ramp("#9a7a44", spread=0.8)
+    s.ellipse(crown, 8.0, 3.8, 2.6, 1.8)
+    s.pixels_at(ramp("#c8b860")[LIGHT], [(7, 1), (8, 0), (9, 1)])
+    return s
+
+
+def aubergine_seeds_hand():
+    s = seed_scatter("#d2a46a", length=1.9, width=1.7)
+    # Flat, round seeds with a lighter rim.
+    for cx, cy, _ in SEED_SPOTS:
+        s.put(int(cx) + 1, int(cy) + 1, ramp("#d2a46a")[SHADOW])
+    return s
+
+
+def basil_seeds_hand():
+    # Many tiny black teardrop seeds with a dull glint.
+    s = Sprite()
+    seed = ramp("#26222a", spread=0.5)
+    for cx, cy, angle in SMALL_SEED_SPOTS:
+        s.ellipse(seed, cx, cy, 1.5, 1.0, angle=angle)
+        s.put(int(cx) - 1, int(cy) - 1, ramp("#6a6870")[BASE])
+    return s
+
+
+def bell_pepper_seeds_hand():
+    s = seed_scatter("#ecda8e", length=1.9, width=1.6, spread=0.45)
+    # Flat, pale, comma-shaped seeds: a small notch at one edge of each.
+    for cx, cy, angle in SEED_SPOTS:
+        s.put(round(cx + math.cos(math.radians(angle)) * 1.6 - 0.5), round(cy + math.sin(math.radians(angle)) * 1.6 - 0.5),
+              ramp("#ecda8e", spread=0.45)[SHADOW])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"annatto_seed": annatto_seed_hand, "asparagus_crown": asparagus_crown_hand, "aubergine_seeds": aubergine_seeds_hand,
+             "basil_seeds": basil_seeds_hand, "bell_pepper_seeds": bell_pepper_seeds_hand})
 HAND.update({"water_chestnut": water_chestnut_hand, "white_bean": white_bean_hand, "yerba_mate_leaf": yerba_mate_leaf_hand,
              "aji_amarillo_seeds": aji_amarillo_seeds_hand, "anise_seed": anise_seed_hand})
 HAND.update({"tamarind_pod": tamarind_pod_hand, "tea_leaf": tea_leaf_hand, "thai_basil": thai_basil_hand,

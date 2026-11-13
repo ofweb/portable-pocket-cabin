@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/aubergine_seeds",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 4860506
-      }
-    ]
+    "model": "portable_pocket_cabin:item/aubergine_seeds"
   }
 }
