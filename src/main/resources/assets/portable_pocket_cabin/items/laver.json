@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/laver",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 4860474
-      }
-    ]
+    "model": "portable_pocket_cabin:item/laver"
   }
 }

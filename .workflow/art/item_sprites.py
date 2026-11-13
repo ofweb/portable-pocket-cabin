@@ -1922,8 +1922,92 @@ def glutinous_rice_hand():
     s.ellipse(grain, 7.5, 7.0, 6.0, 3.6, texture=lambda x, y: -1 if (x + 2 * y) % 4 == 0 else 0)
     return s
 
+def green_olive_hand():
+    s = Sprite()
+    leaf = ramp("#7a9a7a", spread=0.7)
+    # A narrow, silvery olive leaf behind three glossy green olives.
+    s.ellipse(leaf, 9.6, 4.6, 5.8, 1.5, angle=-25)
+    s.line(leaf[LIGHT], 6, 6, 13, 3)
+    olive = ramp("#8aa232", spread=0.8)
+    for cx, cy, angle in [(4.6, 7.4, -30), (10.6, 9.2, 25), (6.8, 12.4, -10)]:
+        s.ellipse(olive, cx, cy, 3.4, 2.6, angle=angle)
+        s.pixels_at(olive[HIGHLIGHT], [(int(cx) - 2, int(cy) - 1), (int(cx) - 1, int(cy) - 2)])
+    return s
+
+
+def holy_basil_hand():
+    s = Sprite()
+    stem = ramp("#7a3a5a")
+    # Purple-tinged stems gathered at the bottom right.
+    for x0, y0 in ((9, 10), (11, 9), (8, 12)):
+        s.line(stem[BASE], 13, 15, x0, y0)
+    # Oval leaves with finely toothed green edges, layered to fill the bunch.
+    for i, (cx, cy, angle) in enumerate([(4.0, 5.0, 30), (8.4, 4.2, -10), (12.2, 6.4, -40), (3.4, 9.6, 40), (7.6, 9.0, 0),
+                                         (11.4, 11.0, -30), (5.4, 12.8, 20)]):
+        tones = ramp(["#4a9a3a", "#5aa648", "#468e38"][i % 3], spread=0.7)
+        mask = s.ellipse(tones, cx, cy, 2.7, 1.8, angle=angle)
+        for x, y in mask:
+            if (x + y) % 2 == 0 and s.pixels[y][x] == tones[OUTLINE]:
+                s.put(x, y, tones[SHADOW])
+        s.put(int(cx), int(cy), tones[SHADOW])
+        s.put(int(cx) - 1, int(cy) - 1, tones[HIGHLIGHT])
+    # A slender purple flower spike rising from the top.
+    flower = ramp("#9a5aa0")
+    s.pixels_at(flower[BASE], [(8, 0), (8, 1), (9, 1)])
+    s.pixels_at(flower[LIGHT], [(7, 1), (9, 0)])
+    return s
+
+
+def hops_hand():
+    s = Sprite()
+    leaf = ramp("#4a8a34")
+    s.ellipse(leaf, 4.0, 4.2, 3.2, 2.4, angle=30, texture=lambda x, y: -1 if (x + y) % 3 == 0 else 0)
+    s.line(ramp("#6a8a3a")[BASE], 6, 4, 12, 1)
+    cone = ramp("#a8d070", spread=0.8)
+
+    def bracts(x, y):
+        # Overlapping papery scales: a light lip on each, shade beneath.
+        return 1 if y % 2 == 0 and (x + y // 2) % 2 == 0 else -1 if y % 2 == 1 else 0
+    # Two papery cones of overlapping scales hanging from the bine.
+    s.ellipse(cone, 10.6, 6.4, 2.8, 3.8, texture=bracts)
+    s.ellipse(cone, 6.6, 11.0, 3.2, 4.2, texture=bracts)
+    s.pixels_at(ramp("#6a8a3a")[BASE], [(11, 2), (7, 6)])
+    return s
+
+
+def laver_hand():
+    s = Sprite()
+    frond = ramp("#4a3048", spread=0.8)
+    # Thin, ruffled fronds of seaweed, dark purple with a green sheen, their edges rippling.
+    for cx, cy, angle in [(6.0, 6.0, -30), (10.0, 9.4, 20), (5.4, 11.6, 40)]:
+        mask = s.ellipse(frond, cx, cy, 5.0, 2.8, angle=angle, texture=lambda x, y: 1 if (x * 2 + y) % 5 == 0 else 0)
+        for x, y in mask:
+            if (x + y) % 3 == 0 and s.pixels[y][x] == frond[OUTLINE]:
+                s.put(x, y, None)  # A rippled, uneven edge.
+    s.pixels_at(ramp("#4a6a4a")[LIGHT], [(5, 5), (9, 9), (6, 11), (7, 6)])
+    return s
+
+
+def lemongrass_hand():
+    s = Sprite()
+    blade = ramp("#7aaa48")
+    base = ramp("#d8d49a", spread=0.6)
+    # Three stalks: pale, swollen bulbs at the bottom and long green blades rising and leaning apart.
+    for x0, x1 in ((4, 2), (7, 7), (10, 12)):
+        for y in range(1, 16):
+            x = round(x0 + (x1 - x0) * (15 - y) / 14)
+            tones = base if y >= 10 else blade
+            s.put(x, y, tones[LIGHT])
+            s.put(x + 1, y, tones[BASE] if y >= 10 else tones[SHADOW])
+            if y >= 11:
+                s.put(x + 2, y, base[SHADOW])
+    s.pixels_at(ramp("#c8a8a0")[BASE], [(4, 15), (7, 15), (10, 15)])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"green_olive": green_olive_hand, "holy_basil": holy_basil_hand, "hops": hops_hand, "laver": laver_hand,
+             "lemongrass": lemongrass_hand})
 HAND.update({"cinnamon_bark": cinnamon_bark_hand, "clove_bud": clove_bud_hand, "coffee_cherry": coffee_cherry_hand,
              "elderflower": elderflower_hand, "glutinous_rice": glutinous_rice_hand})
 HAND.update({"blue_corn": blue_corn_hand, "cardamom_pod": cardamom_pod_hand, "celery": celery_hand, "chickpea": chickpea_hand,

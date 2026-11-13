@@ -20,11 +20,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] coffee_cherry
 - [x] elderflower
 - [x] glutinous_rice
-- [ ] green_olive
-- [ ] holy_basil
-- [ ] hops
-- [ ] laver
-- [ ] lemongrass
+- [x] green_olive
+- [x] holy_basil
+- [x] hops
+- [x] laver
+- [x] lemongrass
 - [ ] long_bean
 - [ ] makrut_lime_leaf
 - [ ] marjoram
