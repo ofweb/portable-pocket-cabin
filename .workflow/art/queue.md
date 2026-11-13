@@ -30,11 +30,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] marjoram
 - [x] oil_palm_fruit
 - [x] oyster
-- [ ] oyster_mushroom
-- [ ] palm_sap
-- [ ] pandan_leaf
-- [ ] peanut
-- [ ] peppercorn
+- [x] oyster_mushroom
+- [x] palm_sap
+- [x] pandan_leaf
+- [x] peanut
+- [x] peppercorn
 - [ ] purple_corn
 - [ ] rapeseed
 - [ ] rosehip

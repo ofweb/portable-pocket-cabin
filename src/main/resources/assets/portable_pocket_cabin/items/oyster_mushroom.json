@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/oyster_mushroom",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 14209216
-      }
-    ]
+    "model": "portable_pocket_cabin:item/oyster_mushroom"
   }
 }

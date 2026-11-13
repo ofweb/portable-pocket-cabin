@@ -2074,8 +2074,106 @@ def oyster_hand():
     s.pixels_at(pearl[HIGHLIGHT], [(4, 6), (11, 10)])
     return s
 
+def bottle(liquid, level=8, cloudy=None, glints=()):
+    """A round glass flask with a cork, the liquid filling it from row `level` down, under a glass highlight.
+    Used for every drink, juice, syrup, and oil in a bottle."""
+    s = Sprite()
+    glass_edge, glass = ramp("#8aa2b4")[SHADOW], ramp("#dce8f0")[BASE]
+    fluid = ramp(liquid, spread=0.8)
+
+    def inside(x, y):
+        return math.dist((x, y), (7.5, 10.6)) <= 4.9 or (abs(x - 7.5) <= 1.6 and 3.0 <= y <= 7.0)
+    mask = {(x, y) for y in range(SIZE) for x in range(SIZE) if inside(x + 0.5, y + 0.5)}
+    for x, y in mask:
+        edge = any((x + dx, y + dy) not in mask for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+        if edge:
+            s.put(x, y, glass_edge)
+        elif y >= level:
+            # Liquid, lit on the left, with its surface a shade lighter.
+            tone = LIGHT if y == level else SHADOW if x >= 9 else BASE
+            s.put(x, y, fluid[tone])
+        else:
+            s.put(x, y, glass)
+    if cloudy:
+        rng = random.Random(level)
+        for x, y in mask:
+            if y > level and rng.random() < 0.18 and s.pixels[y][x] != glass_edge:
+                s.put(x, y, ramp(cloudy)[LIGHT])
+    s.pixels_at(fluid[HIGHLIGHT], list(glints))
+    # A highlight down the glass, and a cork in the neck.
+    s.pixels_at(ramp("#ffffff")[BASE], [(5, 9), (5, 10), (5, 11)])
+    cork = ramp("#a87a4a")
+    s.pixels_at(cork[BASE], [(7, 1), (8, 1), (7, 2), (8, 2)])
+    s.pixels_at(cork[SHADOW], [(8, 2)])
+    s.pixels_at(cork[LIGHT], [(7, 1)])
+    return s
+
+
+def palm_sap_hand():
+    # Freshly tapped palm sap: cloudy and pale, with tiny bubbles.
+    return bottle("#e6dcb8", cloudy="#ffffff")
+
+
+def oyster_mushroom_hand():
+    s = Sprite()
+    # Fan-shaped caps growing in overlapping shelves, each with fine gill lines toward its base.
+    for cx, cy, r, colour in ((9.6, 5.0, 4.6, "#a8a094"), (5.4, 9.0, 4.8, "#b8b0a2"), (10.4, 12.0, 4.0, "#c4bcae")):
+        cap = ramp(colour, spread=0.7)
+
+        def fan(x, y, cx=cx, cy=cy, r=r):
+            return math.dist((x, y), (cx, cy)) <= r and y <= cy + 0.8
+        mask = s.shape(fan, cap, (cx - 1, cy - 1), (r, r))
+        for x, y in mask:
+            if s.pixels[y][x] != cap[OUTLINE] and (x - int(cx)) % 2 == 0 and y > cy - r * 0.5:
+                s.put(x, y, cap[SHADOW])
+    s.pixels_at(ramp("#d8d0c0")[BASE], [(7, 14), (8, 15)])
+    return s
+
+
+def pandan_leaf_hand():
+    s = Sprite()
+    # Broad, glossy strap-like blades fanning up from the base, each with a pale rib and a pointed tip.
+    for i, (base, tip) in enumerate((((4.6, 15.0), (1.2, 1.2)), ((7.6, 15.0), (8.2, 0.4)), ((10.4, 15.0), (14.4, 1.6)))):
+        leaf = ramp("#46a038" if i % 2 else "#3c9232", spread=0.7)
+        s.capsule(leaf, [base, ((base[0] + tip[0]) / 2, (base[1] + tip[1]) / 2), tip], (2.0, 0.7))
+        s.line(leaf[HIGHLIGHT], round(base[0]), round(base[1]) - 1, round((base[0] + tip[0] * 2) / 3), round((base[1] + tip[1] * 2) / 3))
+    return s
+
+
+def peanut_hand():
+    s = Sprite()
+    shell = ramp("#d2b07a", spread=0.8)
+
+    def net(x, y):
+        return -1 if (x + y) % 3 == 0 or (x - y) % 3 == 0 else 0
+    # Pods pinched at the waist: two lobes close together, the waist a shade darker at its edges.
+    for (cx, cy), angle in (((5.4, 4.6), -30), ((11.0, 7.0), 20), ((6.8, 11.6), -10)):
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+
+        def pod(x, y, cx=cx, cy=cy, cos=cos, sin=sin):
+            u, v = (x - cx) * cos + (y - cy) * sin, -(x - cx) * sin + (y - cy) * cos
+            # Two overlapping rounded lobes along the pod's length.
+            return ((u + 1.7) / 2.2) ** 2 + (v / 2.0) ** 2 <= 1 or ((u - 1.7) / 2.3) ** 2 + (v / 2.1) ** 2 <= 1
+        s.shape(pod, shell, (cx, cy), (4.0, 2.4), texture=net)
+    return s
+
+
+def peppercorn_hand():
+    s = Sprite()
+    stem = ramp("#6a8a3a")
+    berry = ramp("#5a9a32", spread=0.85)
+    # A hanging spike of small green peppercorns, packed along a stem that droops from the top left.
+    s.line(stem[SHADOW], 2, 0, 5, 3)
+    for i, (cx, cy) in enumerate([(5.6, 4.2), (7.0, 5.6), (6.0, 7.0), (8.2, 7.4), (7.2, 8.8), (9.2, 9.4), (8.4, 10.8), (10.4, 11.4),
+                                  (9.6, 12.8), (11.2, 13.6)]):
+        s.ellipse(berry, cx, cy, 1.4, 1.4, light=(-0.7, -0.7))
+        s.put(int(cx) - 1, int(cy) - 1, berry[HIGHLIGHT])
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"oyster_mushroom": oyster_mushroom_hand, "palm_sap": palm_sap_hand, "pandan_leaf": pandan_leaf_hand,
+             "peanut": peanut_hand, "peppercorn": peppercorn_hand})
 HAND.update({"long_bean": long_bean_hand, "makrut_lime_leaf": makrut_lime_leaf_hand, "marjoram": marjoram_hand,
              "oil_palm_fruit": oil_palm_fruit_hand, "oyster": oyster_hand})
 HAND.update({"green_olive": green_olive_hand, "holy_basil": holy_basil_hand, "hops": hops_hand, "laver": laver_hand,
