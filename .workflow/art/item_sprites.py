@@ -2434,7 +2434,7 @@ def seed_scatter(colour, length=2.2, width=1.4, ridge=False, stalk=None, spots=S
 
 def aji_amarillo_seeds_hand():
     # Small, flat, rounded chili seeds, pale cream-yellow, with an orange-yellow pod.
-    return pepper_seeds("#e8d68e", "#f0a020", "chili")
+    return pepper_seeds("#e8d68e")
 
 
 def anise_seed_hand():
@@ -2454,6 +2454,8 @@ def anise_seed_hand():
 # Many small seeds, for the tiniest kinds such as basil.
 SMALL_SEED_SPOTS = [(3.0, 3.6, -20), (7.0, 2.6, 30), (11.0, 3.4, -40), (13.4, 7.0, 10), (2.4, 7.6, 50), (6.0, 6.8, -10), (9.6, 7.4, 40),
                     (4.0, 11.2, 20), (8.0, 11.0, -30), (12.0, 11.6, 60), (2.6, 14.2, -40), (6.4, 14.4, 10), (10.0, 14.6, -20), (14.0, 14.0, 30)]
+# The same, kept clear of the top right corner for seeds that carry a plant picture.
+SMALL_SEED_SPOTS_LOW = [spot for spot in SMALL_SEED_SPOTS if spot[0] < 8 or spot[1] > 9]
 
 
 def annatto_seed_hand():
@@ -2485,9 +2487,9 @@ def asparagus_crown_hand():
 
 
 def aubergine_seeds_hand():
-    s = seed_scatter("#d2a46a", length=1.9, width=1.7)
+    s = seed_scatter("#d2a46a", length=1.9, width=1.7, spots=SEED_SPOTS_LOW)
     # Flat, round seeds with a lighter rim.
-    for cx, cy, _ in SEED_SPOTS:
+    for cx, cy, _ in SEED_SPOTS_LOW:
         s.put(int(cx) + 1, int(cy) + 1, ramp("#d2a46a")[SHADOW])
     return s
 
@@ -2496,7 +2498,7 @@ def basil_seeds_hand():
     # Many tiny black teardrop seeds with a dull glint.
     s = Sprite()
     seed = ramp("#26222a", spread=0.5)
-    for cx, cy, angle in SMALL_SEED_SPOTS:
+    for cx, cy, angle in SMALL_SEED_SPOTS_LOW:
         s.ellipse(seed, cx, cy, 1.5, 1.0, angle=angle)
         s.put(int(cx) - 1, int(cy) - 1, ramp("#6a6870")[BASE])
     return s
@@ -2504,39 +2506,18 @@ def basil_seeds_hand():
 
 def bell_pepper_seeds_hand():
     # Flat, pale seeds, with a red bell pepper.
-    return pepper_seeds("#ecda8e", "#d8241e", "bell")
+    return pepper_seeds("#ecda8e")
 
-# Pepper and chili seeds look alike, so each carries a small picture of its pod in the top right corner.
-PEPPER_BADGES = {
-    # A stubby bell pepper.
-    "bell": ["..g..", ".ggg.", "rrrrr", "rrrrr", "rrrrr", ".r.r."],
-    # A long, thin chili.
-    "chili": ["...g.", "..gg.", "..rr.", ".rr..", ".r...", "r...."],
-    # A short, slim chili.
-    "small": ["...g", "..r.", ".rr.", ".r..", "r..."],
-    # A broad, tapering pod.
-    "pod": ["..g..", ".ggg.", "rrrr.", "rrrr.", ".rr..", ".r..."],
-}
 SEED_SPOTS_LOW = [(3.2, 6.4, -20), (3.4, 11.0, 40), (7.6, 9.4, -10), (11.6, 11.4, 20), (5.6, 14.0, -35), (9.8, 14.4, 50), (13.2, 14.6, 10)]
 
 
-def pepper_seeds(seed_colour, pod_colour, badge):
-    """Pale chili or pepper seeds, with a small picture of the pod they came from in the top right."""
-    s = seed_scatter(seed_colour, length=1.9, width=1.6, spots=SEED_SPOTS_LOW, spread=0.45)
-    pod, stem = ramp(pod_colour, spread=0.8), ramp("#3f8a2a")
-    art = PEPPER_BADGES[badge]
-    x0 = 15 - len(art[0])
-    for y, row in enumerate(art):
-        for x, ch in enumerate(row):
-            if ch == "r":
-                s.put(x0 + x, y, pod[LIGHT if x <= 1 and y < 4 else BASE])
-            elif ch == "g":
-                s.put(x0 + x, y, stem[BASE])
-    return s
+def pepper_seeds(seed_colour):
+    """Pale chili or pepper seeds, kept to the lower left so the plant picture fits in the corner."""
+    return seed_scatter(seed_colour, length=1.9, width=1.6, spots=SEED_SPOTS_LOW, spread=0.45)
 
 
 def birds_eye_chili_seeds_hand():
-    return pepper_seeds("#e2c47a", "#e01e16", "small")
+    return pepper_seeds("#e2c47a")
 
 
 def cutting(stem_colour, start, end, leaves=(), buds=(), bud_colour=None):
@@ -2570,7 +2551,7 @@ def cabbage_seeds_hand():
     # Tiny round seeds, dark reddish-brown, with a dull sheen.
     s = Sprite()
     seed = ramp("#4a2c26", spread=0.6)
-    for cx, cy, _ in SMALL_SEED_SPOTS:
+    for cx, cy, _ in SMALL_SEED_SPOTS_LOW:
         s.ellipse(seed, cx, cy, 1.3, 1.3)
         s.put(int(cx) - 1, int(cy) - 1, ramp("#9a6a5a")[BASE])
     return s
@@ -2588,8 +2569,83 @@ def caraway_seed_hand():
             s.put(round(cx + cos * t - 0.5), round(cy + sin * t - 0.5), stripe)
     return s
 
+def cardamom_seeds_hand():
+    # Small, dark, sticky, angular seeds.
+    return seed_scatter("#3c2c24", length=1.6, width=1.3, spread=0.6)
+
+
+def celery_seeds_hand():
+    # Tiny ridged brown seeds.
+    s = Sprite()
+    seed = ramp("#7a6646", spread=0.6)
+    for cx, cy, angle in SMALL_SEED_SPOTS:
+        s.ellipse(seed, cx, cy, 1.4, 1.0, angle=angle)
+        s.put(int(cx), int(cy), ramp("#b8a07a")[BASE])
+    return s
+
+
+def coriander_seed_hand():
+    # Round, ribbed, tan seeds.
+    s = seed_scatter("#c8a46a", length=1.8, width=1.8, spread=0.6)
+    for cx, cy, _ in SEED_SPOTS:
+        s.put(int(cx), int(cy) + 1, ramp("#c8a46a", spread=0.6)[SHADOW])
+    return s
+
+
+def courgette_seeds_hand():
+    # Flat, cream ovals.
+    return seed_scatter("#ece2bc", length=2.2, width=1.5, spots=SEED_SPOTS_LOW, spread=0.45)
+
+
+def cucumber_seeds_hand():
+    # Slimmer, pointed, pale seeds.
+    return seed_scatter("#eee8c8", length=2.4, width=1.1, spots=SEED_SPOTS_LOW, spread=0.45)
+
+
+# Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
+# apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
+# courgette and cucumber. The picture is the plant's own sprite, shrunk.
+SEED_PLANTS = {
+    "aji_amarillo_seeds": "aji_amarillo", "bell_pepper_seeds": "bell_pepper", "birds_eye_chili_seeds": "birds_eye_chili",
+    "green_chili_seeds": "green_chili", "paprika_pepper_seeds": "paprika_pepper", "poblano_chili_seeds": "poblano_chili",
+    "red_chili_seeds": "red_chili", "cabbage_seeds": "cabbage", "red_cabbage_seeds": "red_cabbage", "radish_seeds": "radish",
+    "basil_seeds": "basil", "holy_basil_seeds": "holy_basil", "thai_basil_seeds": "thai_basil", "aubergine_seeds": "aubergine",
+    "thai_aubergine_seeds": "thai_aubergine", "tomato_seeds": "tomato", "tomatillo_seeds": "tomatillo",
+    "courgette_seeds": "courgette", "cucumber_seeds": "cucumber",
+}
+BADGE = 8
+
+
+def plant_badge(source):
+    small = SPRITES[source]().image().resize((BADGE, BADGE), Image.BOX)
+    pixels = small.load()
+    for y in range(BADGE):
+        for x in range(BADGE):
+            r, g, b, a = pixels[x, y]
+            pixels[x, y] = (r, g, b, 255 if a > 100 else 0)
+    return small
+
+
+def with_plant(draw, source):
+    def drawn():
+        s = draw()
+        # Clear the corner, then put the plant picture there.
+        for y in range(BADGE):
+            for x in range(SIZE - BADGE, SIZE):
+                s.pixels[y][x] = None
+        badge = plant_badge(source).load()
+        for y in range(BADGE):
+            for x in range(BADGE):
+                r, g, b, a = badge[x, y]
+                if a:
+                    s.put(SIZE - BADGE + x, y, (r, g, b))
+        return s
+    return drawn
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"cardamom_seeds": cardamom_seeds_hand, "celery_seeds": celery_seeds_hand, "coriander_seed": coriander_seed_hand,
+             "courgette_seeds": courgette_seeds_hand, "cucumber_seeds": cucumber_seeds_hand})
 HAND.update({"betel_cutting": betel_cutting_hand, "birds_eye_chili_seeds": birds_eye_chili_seeds_hand,
              "blackcurrant_cutting": blackcurrant_cutting_hand, "cabbage_seeds": cabbage_seeds_hand, "caraway_seed": caraway_seed_hand})
 HAND.update({"annatto_seed": annatto_seed_hand, "asparagus_crown": asparagus_crown_hand, "aubergine_seeds": aubergine_seeds_hand,
@@ -2630,6 +2686,7 @@ HAND.update({"white_grape": white_grape_hand, "red_grape": red_grape_hand, "stra
              "redcurrant": redcurrant_hand})
 HAND.update({"cherry": cherry_hand, "almond": almond_hand, "green_papaya": green_papaya_hand, "ume_plum": ume_plum_hand, "grape": grape_hand})
 SPRITES.update(HAND)
+SPRITES.update({name: with_plant(SPRITES[name], source) for name, source in SEED_PLANTS.items() if name in SPRITES})
 
 
 def write():
