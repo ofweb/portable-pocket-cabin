@@ -62,11 +62,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] aubergine_seeds
 - [x] basil_seeds
 - [x] bell_pepper_seeds
-- [ ] betel_cutting
-- [ ] birds_eye_chili_seeds
-- [ ] blackcurrant_cutting
-- [ ] cabbage_seeds
-- [ ] caraway_seed
+- [x] betel_cutting
+- [x] birds_eye_chili_seeds
+- [x] blackcurrant_cutting
+- [x] cabbage_seeds
+- [x] caraway_seed
 - [ ] cardamom_seeds
 - [ ] celery_seeds
 - [ ] coriander_seed

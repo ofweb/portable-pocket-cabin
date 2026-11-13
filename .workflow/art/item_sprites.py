@@ -2433,8 +2433,8 @@ def seed_scatter(colour, length=2.2, width=1.4, ridge=False, stalk=None, spots=S
 
 
 def aji_amarillo_seeds_hand():
-    # Small, flat, rounded chili seeds, pale cream-yellow.
-    return seed_scatter("#e8d68e", length=1.9, width=1.6)
+    # Small, flat, rounded chili seeds, pale cream-yellow, with an orange-yellow pod.
+    return pepper_seeds("#e8d68e", "#f0a020", "chili")
 
 
 def anise_seed_hand():
@@ -2503,15 +2503,95 @@ def basil_seeds_hand():
 
 
 def bell_pepper_seeds_hand():
-    s = seed_scatter("#ecda8e", length=1.9, width=1.6, spread=0.45)
-    # Flat, pale, comma-shaped seeds: a small notch at one edge of each.
+    # Flat, pale seeds, with a red bell pepper.
+    return pepper_seeds("#ecda8e", "#d8241e", "bell")
+
+# Pepper and chili seeds look alike, so each carries a small picture of its pod in the top right corner.
+PEPPER_BADGES = {
+    # A stubby bell pepper.
+    "bell": ["..g..", ".ggg.", "rrrrr", "rrrrr", "rrrrr", ".r.r."],
+    # A long, thin chili.
+    "chili": ["...g.", "..gg.", "..rr.", ".rr..", ".r...", "r...."],
+    # A short, slim chili.
+    "small": ["...g", "..r.", ".rr.", ".r..", "r..."],
+    # A broad, tapering pod.
+    "pod": ["..g..", ".ggg.", "rrrr.", "rrrr.", ".rr..", ".r..."],
+}
+SEED_SPOTS_LOW = [(3.2, 6.4, -20), (3.4, 11.0, 40), (7.6, 9.4, -10), (11.6, 11.4, 20), (5.6, 14.0, -35), (9.8, 14.4, 50), (13.2, 14.6, 10)]
+
+
+def pepper_seeds(seed_colour, pod_colour, badge):
+    """Pale chili or pepper seeds, with a small picture of the pod they came from in the top right."""
+    s = seed_scatter(seed_colour, length=1.9, width=1.6, spots=SEED_SPOTS_LOW, spread=0.45)
+    pod, stem = ramp(pod_colour, spread=0.8), ramp("#3f8a2a")
+    art = PEPPER_BADGES[badge]
+    x0 = 15 - len(art[0])
+    for y, row in enumerate(art):
+        for x, ch in enumerate(row):
+            if ch == "r":
+                s.put(x0 + x, y, pod[LIGHT if x <= 1 and y < 4 else BASE])
+            elif ch == "g":
+                s.put(x0 + x, y, stem[BASE])
+    return s
+
+
+def birds_eye_chili_seeds_hand():
+    return pepper_seeds("#e2c47a", "#e01e16", "small")
+
+
+def cutting(stem_colour, start, end, leaves=(), buds=(), bud_colour=None):
+    """A cutting: a length of stem, cut at an angle at the bottom, with leaves or buds along it."""
+    s = Sprite()
+    stem = ramp(stem_colour, spread=0.8)
+    s.capsule(stem, [start, end], (1.0, 0.8))
+    s.put(int(start[0]), int(start[1]), stem[LIGHT])  # The fresh, angled cut.
+    for cx, cy, angle, colour in leaves:
+        leaf = ramp(colour, spread=0.75)
+        s.ellipse(leaf, cx, cy, 3.0, 2.2, angle=angle)
+        s.put(int(cx) - 1, int(cy) - 1, leaf[HIGHLIGHT])
+    for x, y in buds:
+        bud = ramp(bud_colour)
+        s.pixels_at(bud[BASE], [(x, y)])
+        s.pixels_at(bud[LIGHT], [(x, y - 1)])
+    return s
+
+
+def betel_cutting_hand():
+    # A short length of green vine with two heart-shaped leaves at its nodes.
+    return cutting("#7a8a3a", (3.0, 14.0), (12.0, 2.0), leaves=[(10.6, 7.0, -20, "#4a9a34"), (5.6, 6.2, -150, "#58a83e")])
+
+
+def blackcurrant_cutting_hand():
+    # A bare woody stick with small reddish buds set alternately along it.
+    return cutting("#8a7058", (3.0, 15.0), (12.6, 0.6), buds=[(5, 11), (8, 8), (9, 5), (11, 3)], bud_colour="#b8443a")
+
+
+def cabbage_seeds_hand():
+    # Tiny round seeds, dark reddish-brown, with a dull sheen.
+    s = Sprite()
+    seed = ramp("#4a2c26", spread=0.6)
+    for cx, cy, _ in SMALL_SEED_SPOTS:
+        s.ellipse(seed, cx, cy, 1.3, 1.3)
+        s.put(int(cx) - 1, int(cy) - 1, ramp("#9a6a5a")[BASE])
+    return s
+
+
+def caraway_seed_hand():
+    s = Sprite()
+    seed = ramp("#7a5a3a", spread=0.55)
+    stripe = ramp("#c8aa7a")[BASE]
+    # Slim, dark-brown seeds, each with a pale stripe running along its length.
     for cx, cy, angle in SEED_SPOTS:
-        s.put(round(cx + math.cos(math.radians(angle)) * 1.6 - 0.5), round(cy + math.sin(math.radians(angle)) * 1.6 - 0.5),
-              ramp("#ecda8e", spread=0.45)[SHADOW])
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        s.ellipse(seed, cx, cy, 2.7, 1.1, angle=angle)
+        for t in (-1, 0, 1):
+            s.put(round(cx + cos * t - 0.5), round(cy + sin * t - 0.5), stripe)
     return s
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"betel_cutting": betel_cutting_hand, "birds_eye_chili_seeds": birds_eye_chili_seeds_hand,
+             "blackcurrant_cutting": blackcurrant_cutting_hand, "cabbage_seeds": cabbage_seeds_hand, "caraway_seed": caraway_seed_hand})
 HAND.update({"annatto_seed": annatto_seed_hand, "asparagus_crown": asparagus_crown_hand, "aubergine_seeds": aubergine_seeds_hand,
              "basil_seeds": basil_seeds_hand, "bell_pepper_seeds": bell_pepper_seeds_hand})
 HAND.update({"water_chestnut": water_chestnut_hand, "white_bean": white_bean_hand, "yerba_mate_leaf": yerba_mate_leaf_hand,
