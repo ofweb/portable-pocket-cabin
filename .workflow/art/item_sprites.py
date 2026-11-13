@@ -2601,6 +2601,53 @@ def cucumber_seeds_hand():
     # Slimmer, pointed, pale seeds.
     return seed_scatter("#eee8c8", length=2.4, width=1.1, spots=SEED_SPOTS_LOW, spread=0.45)
 
+def striped_seeds(colour, stripe_colour, length, width, spread=0.5):
+    """Slim seeds with a ridge along their length in another colour, such as cumin and lettuce."""
+    s = Sprite()
+    seed, stripe = ramp(colour, spread=spread), ramp(stripe_colour)[BASE]
+    for cx, cy, angle in SEED_SPOTS:
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        s.ellipse(seed, cx, cy, length, width, angle=angle)
+        for t in (-1, 0, 1):
+            s.put(round(cx + cos * t - 0.5), round(cy + sin * t - 0.5), stripe)
+    return s
+
+
+def cumin_seed_hand():
+    # Slim, olive-grey seeds with pale ridges, tapering at both ends.
+    return striped_seeds("#76763e", "#bebc7e", 2.5, 1.15)
+
+
+def dill_seeds_hand():
+    # Flat, oval seeds: brown in the middle with a broad pale rim.
+    s = Sprite()
+    rim, middle = ramp("#ab9c7e", spread=0.55), ramp("#5e4c3c")
+    for cx, cy, angle in SEED_SPOTS:
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        s.ellipse(rim, cx, cy, 2.4, 1.7, angle=angle)
+        for t in (-1, 0, 1):
+            s.put(round(cx + cos * t - 0.5), round(cy + sin * t - 0.5), middle[BASE])
+    return s
+
+
+def green_chili_seeds_hand():
+    return pepper_seeds("#e6d088")
+
+
+def holy_basil_seeds_hand():
+    # Tiny round seeds, dark brown rather than basil's black.
+    s = Sprite()
+    seed = ramp("#4e3626", spread=0.55)
+    for cx, cy, _ in SMALL_SEED_SPOTS_LOW:
+        s.ellipse(seed, cx, cy, 1.2, 1.2)
+        s.put(int(cx) - 1, int(cy) - 1, ramp("#8c6a50")[BASE])
+    return s
+
+
+def lettuce_seeds_hand():
+    # Slim, pointed, pale grey seeds with fine ridges.
+    return striped_seeds("#cbc4b0", "#8a8272", 2.6, 1.3, spread=0.8)
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -2644,6 +2691,8 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"cumin_seed": cumin_seed_hand, "dill_seeds": dill_seeds_hand, "green_chili_seeds": green_chili_seeds_hand,
+             "holy_basil_seeds": holy_basil_seeds_hand, "lettuce_seeds": lettuce_seeds_hand})
 HAND.update({"cardamom_seeds": cardamom_seeds_hand, "celery_seeds": celery_seeds_hand, "coriander_seed": coriander_seed_hand,
              "courgette_seeds": courgette_seeds_hand, "cucumber_seeds": cucumber_seeds_hand})
 HAND.update({"betel_cutting": betel_cutting_hand, "birds_eye_chili_seeds": birds_eye_chili_seeds_hand,
