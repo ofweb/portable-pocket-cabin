@@ -2337,16 +2337,20 @@ def vanilla_pod_hand():
 
 def wakame_hand():
     s = Sprite()
-    frond = ramp("#4a5e2c", spread=0.8)
-    # A fresh frond: a firm midrib with broad, wavy, lobed blades spreading to either side.
-    for cx, cy, angle in [(4.2, 4.2, -150), (10.8, 4.6, -30), (3.6, 8.8, 170), (12.2, 9.0, 10), (4.6, 13.0, 150), (11.4, 13.2, 30)]:
-        mask = s.ellipse(frond, cx, cy, 4.0, 2.3, angle=angle, texture=lambda x, y: 1 if (x * 2 + y) % 5 == 0 else 0)
-        for x, y in mask:
-            if (x * 3 + y) % 7 == 0 and s.pixels[y][x] == frond[OUTLINE]:
-                s.put(x, y, None)  # A wavy edge.
-    rib = ramp("#7a8a48")
-    s.line(rib[BASE], 8, 15, 7, 1)
-    s.line(rib[LIGHT], 7, 14, 7, 2)
+    stem = ramp("#6a8a3a")
+    # A tall, swaying stem with long, wavy ribbon blades rising from it in turns, translucent yellow-green.
+    stem_points = [(int(8 + 1.4 * math.sin(y * 0.45)), y) for y in range(15, 0, -1)]
+    blades = [(13, -1, 4.6), (11, 1, 5.0), (9, -1, 5.2), (7, 1, 5.0), (5, -1, 4.4), (3, 1, 3.8)]
+    for k, (y0, side, length) in enumerate(blades):
+        blade = ramp(["#7cb03c", "#8cbc48", "#6ea434"][k % 3], spread=0.65)
+        x0 = stem_points[15 - y0][0]
+        # Each ribbon rises and curls away from the stem, with a wavy edge.
+        points = [(x0 + side * t * 0.95, y0 - t * 0.85 - 0.6 * math.sin(t * 1.6)) for t in [i * length / 6 for i in range(7)]]
+        s.capsule(blade, points, (1.6, 0.9))
+        s.put(int(points[3][0]), int(points[3][1]), blade[HIGHLIGHT])
+    for x, y in stem_points:
+        s.put(x, y, stem[BASE])
+    s.pixels_at(ramp("#9ac85a")[LIGHT], [(8, 0), (9, 1)])
     return s
 
 
