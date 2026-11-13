@@ -74,14 +74,14 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] cucumber_seeds
 - [x] cumin_seed
 - [x] dill_seeds
-- [ ] dried_cumin_seed
-- [ ] elder_cutting
-- [ ] grape_cutting
+- [x] dried_cumin_seed
+- [x] elder_cutting
+- [x] grape_cutting
 - [x] green_chili_seeds
 - [x] holy_basil_seeds
-- [ ] hop_rhizome
+- [x] hop_rhizome
 - [x] lettuce_seeds
-- [ ] long_bean_seeds
+- [x] long_bean_seeds
 - [ ] marjoram_cutting
 - [ ] mint_cutting
 - [ ] mustard_seed

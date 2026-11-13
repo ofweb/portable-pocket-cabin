@@ -2648,6 +2648,59 @@ def lettuce_seeds_hand():
     # Slim, pointed, pale grey seeds with fine ridges.
     return striped_seeds("#cbc4b0", "#8a8272", 2.6, 1.3, spread=0.8)
 
+def elder_cutting_hand():
+    # Two straight grey-brown sticks, bound together, with knobbly paired buds at the nodes and pale corky specks.
+    s = Sprite()
+    bark = ramp("#94785e", spread=0.6)
+    for start, end in [((1.8, 12.4), (12.4, 1.8)), ((4.2, 15.0), (14.6, 4.6))]:
+        s.capsule(bark, [start, end], (1.5, 1.3))
+        s.put(int(start[0]), int(start[1]), bark[HIGHLIGHT])
+    # A pale band across each stick at its nodes.
+    s.pixels_at(ramp("#c8aa8a")[BASE], [(4, 9), (5, 10), (8, 5), (9, 6), (8, 10), (9, 11), (12, 6), (13, 7)])
+    return s
+
+
+def grape_cutting_hand():
+    # A length of golden-tan cane, cut on a slant at the top, swollen at each node with a dark bud.
+    s = Sprite()
+    cane = ramp("#b88a4c", spread=0.7)
+    s.capsule(cane, [(3.4, 15.0), (12.6, 1.4)], (1.8, 1.5))
+    s.pixels_at(cane[HIGHLIGHT], [(12, 1), (13, 1), (13, 2)])  # The fresh, slanted cut.
+    bud = ramp("#8a5232")
+    for x, y in [(5, 11), (8, 7), (10, 4)]:
+        # A swollen node: a ring across the cane, with a bud sitting on its right.
+        s.pixels_at(cane[SHADOW], [(x - 2, y), (x - 1, y), (x, y), (x + 1, y)])
+        s.pixels_at(bud[BASE], [(x + 2, y - 1)])
+        s.pixels_at(bud[LIGHT], [(x + 2, y)])
+    return s
+
+
+def hop_rhizome_hand():
+    # A thick, knobbly, light-brown underground stem with a few wiry rootlets, pink buds, and a white shoot.
+    s = Sprite()
+    root = ramp("#a87c56", spread=0.75)
+    s.capsule(root, [(1.4, 11.4), (7.0, 9.0), (14.6, 5.6)], (2.3, 1.8))
+    rootlet = ramp("#6a4a34")[BASE]
+    # A tuft of rootlets at the old end, curling out every way.
+    s.pixels_at(rootlet, [(0, 9), (0, 8), (1, 14), (0, 15), (3, 14), (3, 15), (2, 8), (1, 7)])
+    s.pixels_at(ramp("#d89a8a")[BASE], [(6, 9), (12, 6)])
+    s.pixels_at(ramp("#f0ece0")[BASE], [(9, 6), (9, 5), (10, 4)])
+    s.pixels_at(root[HIGHLIGHT], [(3, 10), (8, 8), (13, 5)])
+    return s
+
+
+def long_bean_seeds_hand():
+    # Slim, kidney-shaped, red-brown beans, each with a white eye in the dip on its inner curve.
+    s = Sprite()
+    bean, eye = ramp("#94362c", spread=0.7), ramp("#ece6d8")[BASE]
+    for cx, cy, angle in [(4.6, 4.2, -15), (11.4, 4.6, 25), (4.0, 10.4, 50), (9.6, 9.6, -20), (6.8, 14.2, 10), (12.6, 13.6, -45)]:
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        s.ellipse(bean, cx, cy, 3.0, 1.7, angle=angle)
+        # The dip: the middle of the upper edge turns to the eye.
+        s.put(round(cx + sin * 1.2 - 0.5), round(cy - cos * 1.2 - 0.5), eye)
+        s.put(round(cx - cos * 1.5 + sin * 0.2 - 0.5), round(cy - sin * 1.5 - cos * 0.2 - 0.5), bean[HIGHLIGHT])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -2691,6 +2744,8 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"dried_cumin_seed": cumin_seed_hand, "elder_cutting": elder_cutting_hand, "grape_cutting": grape_cutting_hand,
+             "hop_rhizome": hop_rhizome_hand, "long_bean_seeds": long_bean_seeds_hand})
 HAND.update({"cumin_seed": cumin_seed_hand, "dill_seeds": dill_seeds_hand, "green_chili_seeds": green_chili_seeds_hand,
              "holy_basil_seeds": holy_basil_seeds_hand, "lettuce_seeds": lettuce_seeds_hand})
 HAND.update({"cardamom_seeds": cardamom_seeds_hand, "celery_seeds": celery_seeds_hand, "coriander_seed": coriander_seed_hand,
