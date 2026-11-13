@@ -2170,8 +2170,77 @@ def peppercorn_hand():
         s.put(int(cx) - 1, int(cy) - 1, berry[HIGHLIGHT])
     return s
 
+def purple_corn_hand():
+    return corn_cob("#4c1c4e", speckle_colour="#8a3a7a")
+
+
+def rapeseed_hand():
+    s = Sprite()
+    pod = ramp("#a8b850", spread=0.8)
+    # Two slim seed pods lying behind a heap of tiny round dark seeds.
+    s.capsule(pod, [(1.4, 5.0), (7.0, 2.6), (12.4, 3.4)], (1.0, 0.6))
+    s.capsule(pod, [(4.0, 7.0), (10.0, 5.6), (15.0, 6.6)], (1.0, 0.6))
+    seed = ramp("#3a2a26", spread=0.6)
+    s.shape(lambda x, y: y >= 8.0 and ((x - 7.5) / 7.0) ** 2 + ((y - 15.6) / 7.6) ** 2 <= 1, seed, (7.0, 11.5), (7.0, 4.0))
+    rng = random.Random(41)
+    for y in range(9, 16):
+        for x in range(1, 15):
+            if s.pixels[y][x] not in (None, seed[OUTLINE]) and rng.random() < 0.2:
+                s.put(x, y, ramp("#8a7a80")[LIGHT])
+    return s
+
+
+def rosehip_hand():
+    s = Sprite()
+    s.line(ramp("#6b5a3a")[BASE], 2, 2, 9, 6)
+    # Glossy oval hips, each crowned at its tip by dark, dried sepals.
+    for cx, cy, angle in ((4.6, 7.6, 20), (10.4, 9.0, -20), (6.8, 12.4, 10)):
+        hip = ramp("#e0441c", spread=0.85)
+        s.ellipse(hip, cx, cy, 2.2, 3.0, angle=angle)
+        s.pixels_at(hip[HIGHLIGHT], [(int(cx) - 1, int(cy) - 1), (int(cx) - 1, int(cy))])
+        tip = (int(cx - math.sin(math.radians(angle)) * -3.2), int(cy + 3.2))
+        s.pixels_at(ramp("#3a2016")[BASE], [tip, (tip[0] - 1, min(15, tip[1] + 1)), (tip[0] + 1, min(15, tip[1] + 1))])
+    return s
+
+
+def roselle_hand():
+    s = Sprite()
+    red = ramp("#b8142e", spread=0.85)
+    # Fleshy red calyces: a plump bulb with pointed lobes closing to a star at the tip.
+    for cx, cy in ((5.4, 6.8), (10.6, 10.4)):
+        s.ellipse(red, cx, cy + 0.8, 3.2, 3.4)
+        x, y = int(cx), int(cy)
+        s.pixels_at(red[BASE], [(x, y - 3), (x - 2, y - 2), (x + 2, y - 2)])
+        s.pixels_at(red[OUTLINE], [(x, y - 4), (x - 3, y - 3), (x + 3, y - 3)])
+        s.pixels_at(red[SHADOW], [(x - 1, y), (x + 1, y), (x, y + 1)])
+        s.pixels_at(red[HIGHLIGHT], [(x - 2, y + 1), (x - 1, y + 2)])
+    s.pixels_at(ramp("#5a7a2a")[SHADOW], [(5, 14), (10, 15), (11, 14)])
+    return s
+
+
+def rye_hand():
+    s = Sprite()
+    grain = ramp("#b8a678", spread=0.8)
+    awn = ramp("#cfc4a4")
+    stalk = ramp("#a09a68")
+    # A slender stalk into a long, narrow ear on a diagonal; short whiskers angle off both sides of the ear.
+    s.line(stalk[BASE], 0, 15, 4, 11)
+    ear = [(4, 10), (5, 9), (6, 8), (7, 7), (8, 6), (9, 5), (10, 4), (11, 3), (12, 2)]
+    for i, (x, y) in enumerate(ear):
+        if i % 2 == 0:
+            s.line(awn[LIGHT], x - 1, y - 1, max(0, x - 2), max(0, y - 5))
+            s.line(awn[BASE], x + 1, y + 1, min(15, x + 5), min(15, y + 2))
+    for x, y in ear:
+        s.put(x, y, grain[LIGHT])
+        s.put(x - 1, y, grain[BASE])
+        s.put(x, y + 1, grain[SHADOW])
+    s.line(awn[LIGHT], 12, 2, 15, 0)
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"purple_corn": purple_corn_hand, "rapeseed": rapeseed_hand, "rosehip": rosehip_hand, "roselle": roselle_hand,
+             "rye": rye_hand})
 HAND.update({"oyster_mushroom": oyster_mushroom_hand, "palm_sap": palm_sap_hand, "pandan_leaf": pandan_leaf_hand,
              "peanut": peanut_hand, "peppercorn": peppercorn_hand})
 HAND.update({"long_bean": long_bean_hand, "makrut_lime_leaf": makrut_lime_leaf_hand, "marjoram": marjoram_hand,
