@@ -2353,8 +2353,108 @@ def wakame_hand():
     s.pixels_at(ramp("#9ac85a")[LIGHT], [(8, 0), (9, 1)])
     return s
 
+def water_chestnut_hand():
+    s = Sprite()
+    corm = ramp("#5e1a24", spread=0.75)
+    sprout = ramp("#c8904a")
+    # A whole corm behind: round and a little flattened, with ring lines and a tan sprout tuft on top.
+    s.ellipse(corm, 10.0, 6.8, 5.0, 4.0)
+    s.pixels_at(corm[LIGHT], [(7, 5), (8, 4), (12, 4), (13, 6)])
+    s.line(corm[SHADOW], 6, 8, 14, 8)
+    s.pixels_at(sprout[BASE], [(10, 2), (10, 1), (11, 1)])
+    s.pixels_at(sprout[LIGHT], [(9, 2)])
+    # A cut half in front, showing its white flesh within a dark rim.
+    s.ellipse(corm, 5.6, 11.6, 4.8, 3.6)
+    s.ellipse(ramp("#f2ece0", spread=0.4), 5.6, 11.4, 3.6, 2.6, outline=False)
+    s.pixels_at(sprout[BASE], [(5, 7), (6, 7)])
+    return s
+
+
+def white_bean_hand():
+    # Large, creamy white kidney beans in a heap.
+    return bean_pile("#ece4d0", PILE, spread=0.5)
+
+
+def yerba_mate_leaf_hand():
+    s = Sprite()
+    s.line(ramp("#5a3a2a")[BASE], 3, 15, 12, 1)
+    # Glossy oval leaves set alternately up the stem, with small clusters of red berries.
+    for i, (cx, cy, angle) in enumerate([(2.6, 10.0, -150), (8.6, 11.6, 30), (4.4, 5.4, -130), (10.8, 6.6, 20), (8.4, 1.6, -60), (13.6, 2.8, 30)]):
+        leaf = ramp("#3a8a34" if i % 2 else "#4a9a3e", spread=0.75)
+        s.ellipse(leaf, cx, cy, 3.2, 1.8, angle=angle)
+        s.put(int(cx) - 1, int(cy), leaf[HIGHLIGHT])
+    berry = ramp("#d42a24")
+    for x, y in [(6, 9), (7, 8), (6, 8), (10, 4), (9, 4)]:
+        s.put(x, y, berry[BASE])
+    s.pixels_at(berry[LIGHT], [(7, 8), (10, 4)])
+    return s
+
+
+def seed_heap(colour, fleck=None, ridge=False, seed=51):
+    """A small heap of tiny seeds: individual seeds as short dashes, lit on top, with a few loose ones around."""
+    s = Sprite()
+    tones = ramp(colour, spread=0.7)
+    s.shape(lambda x, y: y >= 6.0 and ((x - 7.5) / 7.0) ** 2 + ((y - 15.6) / 9.6) ** 2 <= 1, tones, (7.0, 11.0), (7.0, 5.0))
+    rng = random.Random(seed)
+    for y in range(7, 16):
+        for x in range(1, 15):
+            if s.pixels[y][x] in (None, tones[OUTLINE]):
+                continue
+            roll = rng.random()
+            if roll < 0.22:
+                s.put(x, y, tones[HIGHLIGHT])
+            elif roll < 0.4:
+                s.put(x, y, tones[SHADOW])
+            elif fleck and roll < 0.48:
+                s.put(x, y, ramp(fleck)[BASE])
+            if ridge and (x + y) % 3 == 0:
+                s.put(x, y, tones[SHADOW])
+    s.pixels_at(tones[LIGHT], [(1, 15), (14, 15), (13, 14)])
+    return s
+
+
+SEED_SPOTS = [(4.0, 4.2, -20), (9.6, 3.4, 30), (13.0, 7.0, -50), (3.2, 9.4, 40), (8.0, 8.4, -10), (12.0, 12.2, 20),
+              (5.0, 13.4, -35), (9.0, 13.4, 50)]
+
+
+def seed_scatter(colour, length=2.2, width=1.4, ridge=False, stalk=None, spots=SEED_SPOTS):
+    """A scatter of individual seeds, each a small outlined oval big enough to show its shape."""
+    s = Sprite()
+    tones = ramp(colour, spread=0.8)
+    for cx, cy, angle in spots:
+        s.ellipse(tones, cx, cy, length, width, angle=angle)
+        s.put(int(cx) - 1, int(cy) - 1 if width > 1.2 else int(cy), tones[HIGHLIGHT])
+        if ridge:
+            s.put(int(cx), int(cy), tones[SHADOW])
+        if stalk:
+            tip = (round(cx + math.cos(math.radians(angle)) * (length + 0.6) - 0.5), round(cy + math.sin(math.radians(angle)) * (length + 0.6) - 0.5))
+            s.put(*tip, ramp(stalk)[BASE])
+    return s
+
+
+def aji_amarillo_seeds_hand():
+    # Small, flat, rounded chili seeds, pale cream-yellow.
+    return seed_scatter("#e8d68e", length=1.9, width=1.6)
+
+
+def anise_seed_hand():
+    s = Sprite()
+    seed = ramp("#94845e", spread=0.5)
+    stripe, stalk = ramp("#cbbd94")[BASE], ramp("#d8cca8")[BASE]
+    # Aniseed: plump grey-brown teardrops with pale stripes along their length, many trailing a thin pale stalk.
+    for cx, cy, angle in SEED_SPOTS:
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        s.ellipse(seed, cx, cy, 2.5, 1.6, angle=angle)
+        for t in (-1, 0, 1):
+            s.put(round(cx + cos * t - 0.5), round(cy + sin * t - 0.5), stripe)
+        for k in (3, 4):
+            s.put(round(cx - cos * k - 0.5), round(cy - sin * k - 0.5), stalk)
+    return s
+
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"water_chestnut": water_chestnut_hand, "white_bean": white_bean_hand, "yerba_mate_leaf": yerba_mate_leaf_hand,
+             "aji_amarillo_seeds": aji_amarillo_seeds_hand, "anise_seed": anise_seed_hand})
 HAND.update({"tamarind_pod": tamarind_pod_hand, "tea_leaf": tea_leaf_hand, "thai_basil": thai_basil_hand,
              "vanilla_pod": vanilla_pod_hand, "wakame": wakame_hand})
 HAND.update({"sea_lettuce": sea_lettuce_hand, "shaded_tea_leaf": shaded_tea_leaf_hand, "soybean": soybean_hand,

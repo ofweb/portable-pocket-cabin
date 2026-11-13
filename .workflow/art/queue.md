@@ -49,14 +49,14 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] thai_basil
 - [x] vanilla_pod
 - [x] wakame
-- [ ] water_chestnut
-- [ ] white_bean
-- [ ] yerba_mate_leaf
+- [x] water_chestnut
+- [x] white_bean
+- [x] yerba_mate_leaf
 
 ## Seeds, cuttings, and crowns
 
-- [ ] aji_amarillo_seeds
-- [ ] anise_seed
+- [x] aji_amarillo_seeds
+- [x] anise_seed
 - [ ] annatto_seed
 - [ ] asparagus_crown
 - [ ] aubergine_seeds
