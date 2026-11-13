@@ -31,7 +31,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] oil_palm_fruit
 - [x] oyster
 - [x] oyster_mushroom
-- [x] palm_sap
 - [x] pandan_leaf
 - [x] peanut
 - [x] peppercorn
@@ -127,19 +126,12 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] cumin
 - [ ] cardamom
 - [ ] wasabi
-- [ ] olive_oil
-- [ ] unsettled_olive_oil
-- [ ] achiote_oil
 - [ ] achiote_potato_mash
 - [ ] aebleskiver
 - [ ] aebleskiver_batter
 - [ ] aged_hard_cheese
 - [ ] aged_soft_cheese
 - [ ] aged_yerba_mate
-- [ ] agua_de_jamaica
-- [ ] agua_de_tamarindo
-- [ ] aguapanela
-- [ ] aguapanela_con_limon
 - [ ] ajitsuke_tamago
 - [ ] al_pastor_adobo
 - [ ] al_pastor_meat
@@ -158,10 +150,8 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] aonori
 - [ ] apfelstrudel
 - [ ] apple_compote
-- [ ] apple_juice
 - [ ] apple_pomace
 - [ ] apple_sapling
-- [ ] apple_syrup
 - [ ] apricot_sapling
 - [ ] arepa_dough
 - [ ] arepas
@@ -187,20 +177,16 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] beef_round
 - [ ] beef_shank
 - [ ] beef_sirloin
-- [ ] beef_stock
 - [ ] beef_strips
 - [ ] beef_tongue
-- [ ] beer
 - [ ] berliner
 - [ ] bienenstich
 - [ ] black_bean_mash
 - [ ] black_pepper
 - [ ] black_tea
-- [ ] blackcurrant_juice
 - [ ] blanched_almonds
 - [ ] blanched_vanilla_pods
 - [ ] blind_baked_shell
-- [ ] blood
 - [ ] blood_sausage
 - [ ] blood_sausage_filling
 - [ ] blue_corn_masa
@@ -225,7 +211,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] bread_dough
 - [ ] bread_roll
 - [ ] breadcrumbs
-- [ ] brewed_black_tea
 - [ ] brigadeiro_mixture
 - [ ] brigadeiros
 - [ ] brined_cheese
@@ -236,39 +221,27 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] browned_mince
 - [ ] bruised_lemongrass
 - [ ] bruised_tea_leaves
-- [ ] brun_sovs
 - [ ] brunsviger
 - [ ] bua_loy
 - [ ] bua_loy_balls
 - [ ] bua_loy_dough
 - [ ] buttered_crumbs
-- [ ] buttermilk
-- [ ] cafe_de_olla
 - [ ] cake_batter
 - [ ] caldillo_base
-- [ ] calf_rennet
 - [ ] calf_stomach
-- [ ] cane_juice
 - [ ] cane_sugar_paste
 - [ ] canele_batter
 - [ ] caneles
 - [ ] caramel
-- [ ] caramel_sauce
 - [ ] caramelised_onion
 - [ ] cardoon
 - [ ] cardoon_flower
 - [ ] carne_seca
 - [ ] carnitas_pork
 - [ ] carnitas_tacos
-- [ ] carrot_juice
-- [ ] cassis_syrup
 - [ ] cassoulet
 - [ ] cassoulet_beans
 - [ ] ceviche
-- [ ] cha_manao
-- [ ] cha_yen
-- [ ] champurrado
-- [ ] chancaca_syrup
 - [ ] charred_corn
 - [ ] charred_dango_skewer
 - [ ] charred_poblano
@@ -278,7 +251,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] cherry_compote
 - [ ] cherry_sauce
 - [ ] chevon_chops
-- [ ] chicha_morada
 - [ ] chicken_bones
 - [ ] chicken_breast
 - [ ] chicken_carcass
@@ -286,7 +258,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] chicken_feet
 - [ ] chicken_giblets
 - [ ] chicken_skin
-- [ ] chicken_stock
 - [ ] chicken_thighs
 - [ ] chicken_wings
 - [ ] chickpea_flour
@@ -294,10 +265,7 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] chili_garlic
 - [ ] chili_pork
 - [ ] chili_powder
-- [ ] chilled_koldskal
-- [ ] chocolat_chaud
 - [ ] chocolate
-- [ ] chocolate_sauce
 - [ ] chocolate_sponge
 - [ ] chopped_almonds
 - [ ] chopped_apple
@@ -314,31 +282,23 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] choux_pastry
 - [ ] churro_dough
 - [ ] churros
-- [ ] cider
-- [ ] cider_vinegar
 - [ ] cinnamon
 - [ ] cinnamon_sapling
-- [ ] citron_presse
-- [ ] citronnade_maison
 - [ ] clove_sapling
 - [ ] cloves
 - [ ] coarse_salt
 - [ ] coated_water_chestnut
 - [ ] cocktail_sausage_filling
 - [ ] cocktail_sausages
-- [ ] cocoa_butter
 - [ ] cocoa_mass
 - [ ] cocoa_powder
 - [ ] cocoa_press_cake
-- [ ] coconut_cream
-- [ ] coconut_milk
 - [ ] coconut_sapling
 - [ ] coconut_sticky_rice
 - [ ] cod_roe
 - [ ] coffee_sapling
 - [ ] concha_topping
 - [ ] conchas
-- [ ] condensed_milk
 - [ ] cookbook
 - [ ] cooked_black_beans
 - [ ] cooked_chevon
@@ -358,7 +318,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] coxinhas
 - [ ] cracked_rye
 - [ ] cracklings
-- [ ] cream
 - [ ] cream_cheese
 - [ ] creamed_chicken_sauce
 - [ ] crema
@@ -389,8 +348,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] currywurst
 - [ ] daifuku_mochi
 - [ ] dango_dough
-- [ ] dashi
-- [ ] dende_oil
 - [ ] desiccated_coconut
 - [ ] diced_aubergine
 - [ ] diced_beef
@@ -460,12 +417,10 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] duck_liver
 - [ ] duck_spawn_egg
 - [ ] duck_wings
-- [ ] dulce_de_leche
 - [ ] elote
 - [ ] empanada_dough
 - [ ] empanadas_de_carne
 - [ ] enchiladas_verdes
-- [ ] evaporated_milk
 - [ ] feijoada
 - [ ] feijoada_beans
 - [ ] fermented_cocoa_beans
@@ -478,9 +433,7 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] fish_bones
 - [ ] fish_guts
 - [ ] fish_head
-- [ ] fish_sauce
 - [ ] fish_scales
-- [ ] fish_stock
 - [ ] fiskefrikadeller
 - [ ] fiskefrikadeller_fars
 - [ ] flaeskesteg
@@ -514,7 +467,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] fried_tod_mun
 - [ ] frikadeller
 - [ ] frikadeller_fars
-- [ ] fruchtetee
 - [ ] fruchtetee_blend
 - [ ] gai_satay
 - [ ] gammeldags_aeblekage
@@ -569,23 +521,14 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] hard_cheese_wedge
 - [ ] herbes_de_provence
 - [ ] herring
-- [ ] herring_pickling_liquid
-- [ ] hojicha
 - [ ] hojicha_leaves
 - [ ] hollowed_pumpkin
 - [ ] hominy
 - [ ] hons_i_asparges
 - [ ] horchata_base
-- [ ] horchata_de_arroz
-- [ ] hot_hibiscus
-- [ ] hyldeblomstsaft
-- [ ] infused_elderflower
-- [ ] japanese_mayonnaise
 - [ ] jerky
-- [ ] kalter_kakao
 - [ ] kammerjunkere
 - [ ] kammerjunkere_dough
-- [ ] kansui
 - [ ] karaage
 - [ ] karaage_chicken
 - [ ] karrysalat
@@ -595,18 +538,13 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] katsuobushi
 - [ ] khanom_krok
 - [ ] khanom_krok_batter
-- [ ] kinderpunsch
-- [ ] kirsch
 - [ ] kitchen_knife
-- [ ] koji_amazake
 - [ ] koji_rice
 - [ ] koji_spores
-- [ ] koldskal
 - [ ] koldskal_med_kammerjunkere
 - [ ] korokke
 - [ ] korokke_mash
 - [ ] kra_pao_pork
-- [ ] kra_pao_sauce
 - [ ] lamb_bones
 - [ ] lamb_chops
 - [ ] lamb_fat
@@ -617,32 +555,22 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] lamb_shoulder
 - [ ] lamb_stew_meat
 - [ ] laminated_dough
-- [ ] lard
 - [ ] leg_of_lamb
-- [ ] lemon_juice
 - [ ] lemon_sapling
 - [ ] leverpostej
 - [ ] leverpostej_mix
 - [ ] lime_cured_fish
-- [ ] lime_juice
 - [ ] lime_marinated_fish
 - [ ] lime_sapling
-- [ ] limonada_de_coco
-- [ ] limonada_de_coco_mix
-- [ ] limonada_suica
-- [ ] limonada_suica_mix
 - [ ] liver_mince
 - [ ] llapingachos
 - [ ] lomo_saltado
 - [ ] lomo_saltado_beef
-- [ ] lomo_saltado_sauce
-- [ ] lye_solution
 - [ ] madeleine_batter
 - [ ] madeleines
 - [ ] maki_sushi
 - [ ] makrut_lime_sapling
 - [ ] malted_barley
-- [ ] malzkaffee
 - [ ] mango_sapling
 - [ ] mango_sticky_rice
 - [ ] marinated_al_pastor
@@ -658,12 +586,8 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] massaman_curry_paste
 - [ ] massaman_sauce
 - [ ] massaman_spices
-- [ ] matcha
 - [ ] matcha_powder
-- [ ] mayonnaise
 - [ ] mazamorra_morada
-- [ ] melon_juice
-- [ ] menthe_a_leau
 - [ ] mexican_chocolate
 - [ ] mexican_chocolate_mix
 - [ ] mexican_chocolate_paste
@@ -674,13 +598,10 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] minced_beef
 - [ ] minced_fish
 - [ ] minced_pork
-- [ ] mint_syrup
-- [ ] mirin
 - [ ] mirin_mash
 - [ ] miso
 - [ ] miso_soup
 - [ ] mitarashi_dango
-- [ ] mitarashi_glaze
 - [ ] mochi
 - [ ] mole_base
 - [ ] mole_chicken
@@ -691,14 +612,9 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] moqueca_vegetables
 - [ ] moromi
 - [ ] moules_marinieres
-- [ ] mugicha
-- [ ] nam_krajeab
-- [ ] nam_manao
 - [ ] nam_prik_mix
 - [ ] nam_prik_pao
 - [ ] nam_prik_paste
-- [ ] nam_takrai
-- [ ] nigari
 - [ ] nopales
 - [ ] nori
 - [ ] nutmeg
@@ -707,7 +623,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] obatzda_with_bread
 - [ ] oil_palm_mash
 - [ ] oil_palm_sapling
-- [ ] okonomi_sauce
 - [ ] okonomiyaki
 - [ ] okonomiyaki_batter
 - [ ] olive_paste
@@ -718,11 +633,9 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] oregano
 - [ ] oxidised_tea_leaves
 - [ ] oxtail
-- [ ] oyster_sauce
 - [ ] packed_cabin
 - [ ] pad_kra_pao
 - [ ] pad_thai
-- [ ] pad_thai_sauce
 - [ ] palm_sugar
 - [ ] pambazo_filling
 - [ ] pambazos
@@ -739,7 +652,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] peeled_prawns
 - [ ] persillesovs
 - [ ] pestle
-- [ ] pfefferminztee
 - [ ] picarones
 - [ ] picarones_dough
 - [ ] pickled_beetroot
@@ -762,7 +674,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] poh_pia_tod
 - [ ] polsehorn
 - [ ] pork_belly
-- [ ] pork_bone_broth
 - [ ] pork_bones
 - [ ] pork_casing
 - [ ] pork_cheek
@@ -772,16 +683,13 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] pork_loin
 - [ ] pork_shoulder
 - [ ] pork_skin
-- [ ] pork_stock
 - [ ] potato_batter
 - [ ] potato_starch
 - [ ] pounded_shrimp
 - [ ] pozole_base
 - [ ] pozole_rojo
 - [ ] prawn_shells
-- [ ] prawn_stock
 - [ ] prawns
-- [ ] prepared_mustard
 - [ ] press_cake
 - [ ] pressed_cheese
 - [ ] pretzel
@@ -795,7 +703,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] puff_dough
 - [ ] puff_pastry
 - [ ] pulp
-- [ ] pumpkin_seed_oil
 - [ ] quark
 - [ ] quesadilla
 - [ ] queso_blanco
@@ -805,7 +712,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] queso_oaxaca
 - [ ] quiche_custard
 - [ ] quiche_lorraine
-- [ ] rabarbersaft
 - [ ] rabbit_bones
 - [ ] rabbit_carcass
 - [ ] rabbit_legs
@@ -816,7 +722,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] ramen_broth
 - [ ] ramen_dough
 - [ ] ramen_noodles
-- [ ] raspberry_jam
 - [ ] ratatouille
 - [ ] raw_anticucho_skewer
 - [ ] raw_beef_skewer
@@ -851,12 +756,9 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] red_chili_sauce
 - [ ] red_curry_mix
 - [ ] red_curry_paste
-- [ ] red_wine
-- [ ] redcurrant_jelly
 - [ ] refried_beans
 - [ ] relleno_batter
 - [ ] remoulade
-- [ ] rendered_duck_fat
 - [ ] rested_canele_batter
 - [ ] rested_gingerbread_dough
 - [ ] rested_picarones_dough
@@ -865,7 +767,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] rice_noodles
 - [ ] rice_pudding
 - [ ] rice_sheets
-- [ ] rice_vinegar
 - [ ] rinderrouladen
 - [ ] risalamande
 - [ ] risalamande_med_kirsebaersauce
@@ -893,9 +794,7 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] roux
 - [ ] rugbrod
 - [ ] rugbrod_dough
-- [ ] rum
 - [ ] rye_flour
-- [ ] sake
 - [ ] sake_mash
 - [ ] salmon_fillet
 - [ ] salmon_roe
@@ -919,24 +818,18 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] satay_marinade
 - [ ] satay_spices
 - [ ] sauerbraten
-- [ ] sauerbraten_marinade
 - [ ] sauerkraut
 - [ ] sauteed_mushrooms
 - [ ] sauteed_vegetables
 - [ ] savory
 - [ ] scalded_starch
-- [ ] schmaltz
 - [ ] schwarzwalder_kirschtorte
 - [ ] scored_pork_loin
 - [ ] seared_marinated_beef
 - [ ] seared_rinderrouladen
 - [ ] seared_yerba_mate_leaves
-- [ ] seawater
-- [ ] sencha
 - [ ] sencha_leaves
-- [ ] sesame_oil
 - [ ] sesame_paste
-- [ ] settled_coconut_milk
 - [ ] shaped_arepas
 - [ ] shaped_kammerjunkere
 - [ ] shaped_pretzels
@@ -947,14 +840,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] shortcrust_pastry
 - [ ] shoyu_koji
 - [ ] shoyu_ramen
-- [ ] shoyu_tare
 - [ ] shredded_cabbage
 - [ ] shredded_papaya
 - [ ] shrimp_paste
 - [ ] sildemad_med_karrysalat
 - [ ] simmered_azuki_beans
-- [ ] simple_syrup
-- [ ] sirop_de_cassis
 - [ ] skimmed_milk_bucket
 - [ ] skipjack_tuna
 - [ ] sliced_almonds
@@ -980,21 +870,16 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] soaked_horchata_rice
 - [ ] soaked_rice_noodles
 - [ ] soaked_soybeans
-- [ ] soaked_tamarind
 - [ ] socca
 - [ ] socca_batter
 - [ ] soft_cheese_curds
-- [ ] solbaersaft
 - [ ] som_tam
-- [ ] som_tam_dressing
 - [ ] sope_shells
 - [ ] sopes
 - [ ] sour_cassava_starch
 - [ ] sourdough_starter
 - [ ] soured_milk_bucket
 - [ ] soy_curds
-- [ ] soy_milk
-- [ ] soy_sauce
 - [ ] soybean_mash
 - [ ] soybean_paste
 - [ ] spare_ribs
@@ -1020,26 +905,13 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] stew_beef
 - [ ] stir_fried_rice_noodles
 - [ ] stir_fried_vegetables
-- [ ] strained_chicha_morada
-- [ ] strained_hibiscus
-- [ ] strained_horchata
-- [ ] strained_redcurrant_jelly
-- [ ] strained_thai_tea
-- [ ] strawberry_jam
 - [ ] stretched_curds
-- [ ] strong_thai_tea
 - [ ] strudel_dough
 - [ ] stuffed_poblano
 - [ ] suet
-- [ ] sunflower_oil
 - [ ] sushi_rice
 - [ ] sweated_vanilla_pods
-- [ ] sweet_berry_cordial
-- [ ] sweet_berry_jam
-- [ ] sweet_berry_juice
 - [ ] sweet_cherry_sapling
-- [ ] sweet_chili_sauce
-- [ ] sweet_coconut_sauce
 - [ ] sweet_potato_starch
 - [ ] sweet_yeast_dough
 - [ ] tacos_al_pastor
@@ -1048,13 +920,10 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] takoyaki
 - [ ] takoyaki_balls
 - [ ] takoyaki_batter
-- [ ] tallow
 - [ ] tamal_masa
 - [ ] tamales
-- [ ] tamarind_paste
 - [ ] tamarind_pulp
 - [ ] tamarind_sapling
-- [ ] tamarind_water
 - [ ] tapioca_starch
 - [ ] tarte_tatin
 - [ ] tarteletter_med_hons_i_asparges
@@ -1067,9 +936,7 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] tencha
 - [ ] tenkasu
 - [ ] tenkasu_batter
-- [ ] tentsuyu
 - [ ] tequenos
-- [ ] terere
 - [ ] teriyaki_salmon
 - [ ] thai_tea_leaves
 - [ ] thick_palm_syrup
@@ -1090,7 +957,6 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] tom_yum_broth
 - [ ] tom_yum_goong
 - [ ] tomato_caldillo
-- [ ] tonkatsu_sauce
 - [ ] toulouse_filling
 - [ ] toulouse_sausage
 - [ ] tripe
@@ -1108,38 +974,10 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] unbaked_pissaladiere
 - [ ] unbaked_pumpkin_pie
 - [ ] unbaked_quesadilla
-- [ ] unstrained_achiote_oil
-- [ ] unstrained_beef_stock
-- [ ] unstrained_berry_cordial
-- [ ] unstrained_cafe_de_olla
-- [ ] unstrained_chancaca_syrup
-- [ ] unstrained_chicha_morada
-- [ ] unstrained_chicken_stock
-- [ ] unstrained_dashi
-- [ ] unstrained_duck_fat
-- [ ] unstrained_fish_stock
-- [ ] unstrained_hyldebaersaft
-- [ ] unstrained_lard
-- [ ] unstrained_mint_syrup
-- [ ] unstrained_nam_takrai
-- [ ] unstrained_pork_bone_broth
-- [ ] unstrained_pork_stock
-- [ ] unstrained_prawn_stock
-- [ ] unstrained_rabarbersaft
-- [ ] unstrained_redcurrant_jelly
-- [ ] unstrained_schmaltz
-- [ ] unstrained_solbaersaft
-- [ ] unstrained_soy_milk
-- [ ] unstrained_tallow
-- [ ] unstrained_worcestershire_sauce
 - [ ] vanilla
 - [ ] vanilla_custard
-- [ ] vanilla_infused_cream
 - [ ] vanilla_milk
-- [ ] varm_hyldebaersaft
-- [ ] vegetable_rennet
 - [ ] vegetable_soup
-- [ ] warm_cocoa
 - [ ] warm_milk_bucket
 - [ ] warm_rice_pudding
 - [ ] warm_sauerkraut
@@ -1151,23 +989,189 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] wet_sweet_potato_starch
 - [ ] wet_tapioca_starch
 - [ ] wheat_flour
-- [ ] whey
 - [ ] whipped_cream
 - [ ] white_fish_fillet
-- [ ] white_grape_must
-- [ ] white_wine
-- [ ] wine_vinegar
 - [ ] withered_tea_leaves
 - [ ] wood_ash
 - [ ] worcestershire_mash
-- [ ] worcestershire_sauce
-- [ ] wort
 - [ ] yakitori
-- [ ] yakitori_tare
 - [ ] yeast
-- [ ] yeast_culture
 - [ ] yerba_mate
 - [ ] yerba_mate_sapling
 - [ ] yogurt
-- [ ] young_red_wine
 
+## Kept on the vanilla flask
+
+Bottled drinks, juices, syrups, and oils keep the vanilla Minecraft flask, tinted to their colour.
+
+- achiote_oil
+- agua_de_jamaica
+- agua_de_tamarindo
+- aguapanela
+- aguapanela_con_limon
+- apple_juice
+- apple_syrup
+- beef_stock
+- beer
+- blackcurrant_juice
+- blood
+- brewed_black_tea
+- brun_sovs
+- buttermilk
+- cafe_de_olla
+- calf_rennet
+- cane_juice
+- caramel_sauce
+- carrot_juice
+- cassis_syrup
+- cha_manao
+- cha_yen
+- champurrado
+- chancaca_syrup
+- chicha_morada
+- chicken_stock
+- chilled_koldskal
+- chocolat_chaud
+- chocolate_sauce
+- cider
+- cider_vinegar
+- citron_presse
+- citronnade_maison
+- cocoa_butter
+- coconut_cream
+- coconut_milk
+- condensed_milk
+- cream
+- dashi
+- dende_oil
+- dulce_de_leche
+- evaporated_milk
+- fish_sauce
+- fish_stock
+- fruchtetee
+- herring_pickling_liquid
+- hojicha
+- horchata_de_arroz
+- hot_hibiscus
+- hyldeblomstsaft
+- infused_elderflower
+- japanese_mayonnaise
+- kalter_kakao
+- kansui
+- kinderpunsch
+- kirsch
+- koji_amazake
+- koldskal
+- kra_pao_sauce
+- lard
+- lemon_juice
+- lime_juice
+- limonada_de_coco
+- limonada_de_coco_mix
+- limonada_suica
+- limonada_suica_mix
+- lomo_saltado_sauce
+- lye_solution
+- malzkaffee
+- matcha
+- mayonnaise
+- melon_juice
+- menthe_a_leau
+- mint_syrup
+- mirin
+- mitarashi_glaze
+- mugicha
+- nam_krajeab
+- nam_manao
+- nam_takrai
+- nigari
+- okonomi_sauce
+- olive_oil
+- oyster_sauce
+- pad_thai_sauce
+- palm_sap
+- pfefferminztee
+- pork_bone_broth
+- pork_stock
+- prawn_stock
+- prepared_mustard
+- pumpkin_seed_oil
+- rabarbersaft
+- raspberry_jam
+- red_wine
+- redcurrant_jelly
+- rendered_duck_fat
+- rice_vinegar
+- rum
+- sake
+- sauerbraten_marinade
+- schmaltz
+- seawater
+- sencha
+- sesame_oil
+- settled_coconut_milk
+- shoyu_tare
+- simple_syrup
+- sirop_de_cassis
+- soaked_tamarind
+- solbaersaft
+- som_tam_dressing
+- soy_milk
+- soy_sauce
+- strained_chicha_morada
+- strained_hibiscus
+- strained_horchata
+- strained_redcurrant_jelly
+- strained_thai_tea
+- strawberry_jam
+- strong_thai_tea
+- sunflower_oil
+- sweet_berry_cordial
+- sweet_berry_jam
+- sweet_berry_juice
+- sweet_chili_sauce
+- sweet_coconut_sauce
+- tallow
+- tamarind_paste
+- tamarind_water
+- tentsuyu
+- terere
+- tonkatsu_sauce
+- unsettled_olive_oil
+- unstrained_achiote_oil
+- unstrained_beef_stock
+- unstrained_berry_cordial
+- unstrained_cafe_de_olla
+- unstrained_chancaca_syrup
+- unstrained_chicha_morada
+- unstrained_chicken_stock
+- unstrained_dashi
+- unstrained_duck_fat
+- unstrained_fish_stock
+- unstrained_hyldebaersaft
+- unstrained_lard
+- unstrained_mint_syrup
+- unstrained_nam_takrai
+- unstrained_pork_bone_broth
+- unstrained_pork_stock
+- unstrained_prawn_stock
+- unstrained_rabarbersaft
+- unstrained_redcurrant_jelly
+- unstrained_schmaltz
+- unstrained_solbaersaft
+- unstrained_soy_milk
+- unstrained_tallow
+- unstrained_worcestershire_sauce
+- vanilla_infused_cream
+- varm_hyldebaersaft
+- vegetable_rennet
+- warm_cocoa
+- whey
+- white_grape_must
+- white_wine
+- wine_vinegar
+- worcestershire_sauce
+- wort
+- yakitori_tare
+- yeast_culture
+- young_red_wine
