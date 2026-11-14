@@ -2767,6 +2767,65 @@ def nutmeg_seed_hand():
 def oregano_seeds_hand():
     return marjoram_seeds_hand()
 
+def pandan_cutting_hand():
+    # A young offshoot pulled from the base of a plant: a short, pale, rooted stub with a tight fan of strap leaves.
+    s = Sprite()
+    stub = ramp("#c4aa76", spread=0.7)
+    # Four soft blades that rise and then arch over, drooping at their tips, unlike a pineapple's stiff spikes.
+    for i, (mid, tip) in enumerate([((4.0, 4.0), (0.8, 7.6)), ((6.6, 1.6), (3.0, 1.0)), ((9.6, 1.4), (13.0, 1.0)), ((12.0, 4.0), (15.0, 7.8))]):
+        leaf = ramp("#4aa83a" if i % 2 else "#3e9a34", spread=0.7)
+        s.capsule(leaf, [(8.0, 12.6), mid, tip], (1.6, 0.6))
+    s.pixels_at(ramp("#8ad070")[BASE], [(7, 6), (7, 7), (8, 8), (9, 6)])
+    s.ellipse(stub, 8.0, 13.4, 2.6, 1.6)
+    s.pixels_at(stub[HIGHLIGHT], [(7, 13)])
+    s.pixels_at(ramp("#6a4a34")[BASE], [(6, 15), (9, 15), (10, 15)])  # Root stubs.
+    return s
+
+
+def paprika_pepper_seeds_hand():
+    return pepper_seeds("#e8cc84")
+
+
+def parsley_seeds_hand():
+    # Small, grey-brown, ribbed seeds, a little curved, each with a paler rib down its middle.
+    s = Sprite()
+    seed, rib = ramp("#7c705c", spread=0.55), ramp("#b8ae96")[BASE]
+    for cx, cy, angle in SEED_SPOTS:
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        s.ellipse(seed, cx, cy, 1.9, 1.3, angle=angle)
+        s.put(round(cx - 0.5), round(cy - 0.5), rib)
+    return s
+
+
+def peppercorn_cutting_hand():
+    # A length of jointed green vine with two glossy, pointed leaves, short aerial roots at a node, and a young spike
+    # of green peppercorns, to tell it from the betel vine.
+    s = cutting("#5e7a34", (3.0, 15.0), (11.0, 2.0), leaves=[(9.0, 5.0, -30, "#3a8a30"), (4.6, 7.0, -140, "#40902e")])
+    s.pixels_at(ramp("#8a6a4a")[BASE], [(4, 12), (3, 11), (6, 13)])  # Aerial roots at the lower node.
+    berry = ramp("#8cc048", spread=0.7)
+    s.put(12, 7, ramp("#6a8a3a")[SHADOW])
+    for x, y in [(12, 8), (13, 9), (12, 10), (13, 11), (12, 12), (13, 13)]:
+        s.put(x, y, berry[BASE])
+    s.pixels_at(berry[HIGHLIGHT], [(12, 8), (12, 10), (12, 12)])
+    s.pixels_at(berry[OUTLINE], [(14, 9), (14, 11), (14, 13), (11, 9), (11, 11)])
+    return s
+
+
+def pineapple_crown_hand():
+    # The leafy top twisted from a pineapple: stiff, spiky blue-green leaves fanning up from a short golden stub of fruit.
+    s = Sprite()
+    gold = ramp("#d49a32", spread=0.8)
+    s.ellipse(gold, 8.0, 13.4, 3.6, 2.0)
+    s.pixels_at(gold[SHADOW], [(6, 13), (8, 14), (10, 13)])
+    for i, tip in enumerate([(1.4, 6.0), (3.6, 2.0), (7.0, 0.6), (9.4, 0.6), (12.6, 2.6), (14.6, 6.4)]):
+        leaf = ramp("#5a8a78" if i % 2 else "#4c7c6a", spread=0.75)
+        s.capsule(leaf, [(8.0, 11.6), tip], (1.3, 0.5))
+    for i, tip in enumerate([(5.0, 4.0), (11.0, 4.0)]):
+        leaf = ramp("#6a9c86", spread=0.7)
+        s.capsule(leaf, [(8.0, 11.4), tip], (1.2, 0.5))
+    s.pixels_at(ramp("#9ac0ac")[BASE], [(8, 6), (8, 7), (8, 8)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -2811,6 +2870,8 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"pandan_cutting": pandan_cutting_hand, "paprika_pepper_seeds": paprika_pepper_seeds_hand, "parsley_seeds": parsley_seeds_hand,
+             "peppercorn_cutting": peppercorn_cutting_hand, "pineapple_crown": pineapple_crown_hand})
 HAND.update({"marjoram_seeds": marjoram_seeds_hand, "mint_seeds": mint_seeds_hand, "mustard_seed": mustard_seed_hand,
              "nutmeg_seed": nutmeg_seed_hand, "oregano_seeds": oregano_seeds_hand, "oregano": oregano_hand})
 HAND.update({"dried_cumin_seed": cumin_seed_hand, "elder_cutting": elder_cutting_hand, "grape_cutting": grape_cutting_hand,
