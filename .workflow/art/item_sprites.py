@@ -2544,7 +2544,13 @@ def betel_cutting_hand():
 
 def blackcurrant_cutting_hand():
     # A bare woody stick with small reddish buds set alternately along it.
-    return cutting("#8a7058", (3.0, 15.0), (12.6, 0.6), buds=[(5, 11), (8, 8), (9, 5), (11, 3)], bud_colour="#b8443a")
+    return currant_cutting("#8a7058", "#b8443a")
+
+
+def currant_cutting(stem_colour, bud_colour):
+    """A bare woody currant stick with buds set alternately along it, standing steeply on the left, clear of the top right
+    corner, where the picture of its berries tells the blackcurrant and redcurrant cuttings apart."""
+    return cutting(stem_colour, (3.6, 15.0), (6.6, 0.6), buds=[(3, 12), (6, 9), (4, 6), (7, 3)], bud_colour=bud_colour)
 
 
 def cabbage_seeds_hand():
@@ -2660,19 +2666,32 @@ def elder_cutting_hand():
     return s
 
 
-def grape_cutting_hand():
-    # A length of golden-tan cane, cut on a slant at the top, swollen at each node with a dark bud.
+def grape_cane(colour, bud_colour):
+    """A length of grape cane, cut on a slant at the top, swollen at each node with a bud. It stands steeply on the left,
+    clear of the top right corner, where the picture of its grape tells the three grape cuttings apart."""
     s = Sprite()
-    cane = ramp("#b88a4c", spread=0.7)
-    s.capsule(cane, [(3.4, 15.0), (12.6, 1.4)], (1.8, 1.5))
-    s.pixels_at(cane[HIGHLIGHT], [(12, 1), (13, 1), (13, 2)])  # The fresh, slanted cut.
-    bud = ramp("#8a5232")
-    for x, y in [(5, 11), (8, 7), (10, 4)]:
+    cane = ramp(colour, spread=0.7)
+    s.capsule(cane, [(3.6, 15.0), (6.4, 1.2)], (1.8, 1.5))
+    s.pixels_at(cane[HIGHLIGHT], [(6, 0), (7, 0), (7, 1)])  # The fresh, slanted cut.
+    bud = ramp(bud_colour)
+    for x, y in [(4, 12), (5, 8), (6, 4)]:
         # A swollen node: a ring across the cane, with a bud sitting on its right.
         s.pixels_at(cane[SHADOW], [(x - 2, y), (x - 1, y), (x, y), (x + 1, y)])
         s.pixels_at(bud[BASE], [(x + 2, y - 1)])
         s.pixels_at(bud[LIGHT], [(x + 2, y)])
     return s
+
+
+def grape_cutting_hand():
+    return grape_cane("#b88a4c", "#8a5232")
+
+
+def red_grape_cutting_hand():
+    return grape_cane("#9a6446", "#7a3a3a")
+
+
+def white_grape_cutting_hand():
+    return grape_cane("#c8a86c", "#8a6a3a")
 
 
 def hop_rhizome_hand():
@@ -2858,10 +2877,65 @@ def raspberry_cutting_hand():
 def red_chili_seeds_hand():
     return pepper_seeds("#e4c67c")
 
+def redcurrant_cutting_hand():
+    # Paler, greyer bark than blackcurrant, with pinkish buds.
+    return currant_cutting("#9a8670", "#c8786a")
+
+
+def rhubarb_crown_hand():
+    # A lumpy brown root crown dug from the ground, with fat, pointed red buds pushing up through it, crinkled leaf
+    # breaking green at their tips, and short broken root ends along its underside.
+    s = Sprite()
+    root = ramp("#86603e", spread=0.75)
+    rootlet = root[SHADOW]
+    s.pixels_at(rootlet, [(2, 13), (1, 14), (5, 14), (4, 15), (9, 14), (10, 15), (13, 13), (14, 14), (7, 14)])
+    s.shape(lambda x, y: ((x - 8.0) / 6.6) ** 2 + ((y - 10.4) / 3.0) ** 2 <= 1 or ((x - 11.6) / 2.6) ** 2 + ((y - 9.0) / 2.4) ** 2 <= 1,
+            root, (8.0, 10.4), (6.6, 3.0), texture=speckle(5, 0.3))
+    s.pixels_at(root[HIGHLIGHT], [(4, 9), (12, 8)])
+    bud = ramp("#c8304a", spread=0.75)
+    leaf = ramp("#8ab43a")
+    for cx, cy, ry in [(4.6, 6.6, 2.2), (8.4, 5.4, 3.0), (12.0, 5.8, 2.0)]:
+        s.ellipse(bud, cx, cy, 1.6, ry)
+        s.put(int(cx) - 1, int(cy), bud[HIGHLIGHT])
+        top = int(cy - ry)
+        s.pixels_at(leaf[BASE], [(int(cx), top), (int(cx) - 1, top + 1)])
+        s.put(int(cx) + 1, top, leaf[LIGHT])
+    return s
+
+
+def roselle_seeds_hand():
+    # Kidney-shaped, dark brown seeds with a faint paler speckle.
+    s = Sprite()
+    seed = ramp("#5a3a28", spread=0.6)
+    for cx, cy, angle in SEED_SPOTS_LOW:
+        s.ellipse(seed, cx, cy, 1.9, 1.5, angle=angle)
+        s.put(int(cx), int(cy), ramp("#8a6a50")[BASE])
+        s.put(round(cx + math.sin(math.radians(angle)) * 1.2 - 0.5), round(cy - math.cos(math.radians(angle)) * 1.2 - 0.5), seed[SHADOW])  # The notch.
+    return s
+
+
+def rosemary_cutting_hand():
+    # A rosemary sprig with its lower needles stripped: bare woody stem below, cut on a slant, and needles above.
+    s = Sprite()
+    needle, wood = ramp("#3f7048"), ramp("#7a6040", spread=0.7)
+    stem = s.line(wood[SHADOW], 4, 15, 11, 1)
+    s.pixels_at(wood[HIGHLIGHT], [(4, 15)])
+    for i, (x, y) in enumerate(stem[:-1]):
+        if y > 8:
+            continue
+        right = [(x + 1 + k, y - k // 2) for k in range(2)]
+        left = [(x - 1 - k // 2, y - 1 - k) for k in range(2)]
+        s.pixels_at(needle[LIGHT if i % 2 else BASE], right)
+        s.pixels_at(needle[SHADOW if i % 2 else BASE], left)
+    s.pixels_at(needle[HIGHLIGHT], [(11, 0), (10, 2), (9, 5)])
+    s.pixels_at(wood[LIGHT], [(5, 12), (6, 10)])  # Scars where needles were stripped.
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
-# courgette and cucumber, marjoram and oregano, and mint. The picture is the plant's own sprite, shrunk.
+# courgette and cucumber, marjoram and oregano, and mint. The three grape cuttings and the two currant cuttings carry
+# one too. The picture is the plant's own sprite, shrunk.
 SEED_PLANTS = {
     "aji_amarillo_seeds": "aji_amarillo", "bell_pepper_seeds": "bell_pepper", "birds_eye_chili_seeds": "birds_eye_chili",
     "green_chili_seeds": "green_chili", "paprika_pepper_seeds": "paprika_pepper", "poblano_chili_seeds": "poblano_chili",
@@ -2869,7 +2943,8 @@ SEED_PLANTS = {
     "basil_seeds": "basil", "holy_basil_seeds": "holy_basil", "thai_basil_seeds": "thai_basil", "aubergine_seeds": "aubergine",
     "thai_aubergine_seeds": "thai_aubergine", "tomato_seeds": "tomato", "tomatillo_seeds": "tomatillo",
     "courgette_seeds": "courgette", "cucumber_seeds": "cucumber", "marjoram_seeds": "marjoram", "oregano_seeds": "oregano",
-    "mint_seeds": "mint",
+    "mint_seeds": "mint", "grape_cutting": "grape", "red_grape_cutting": "red_grape", "white_grape_cutting": "white_grape",
+    "blackcurrant_cutting": "blackcurrant", "redcurrant_cutting": "redcurrant",
 }
 BADGE = 8
 
@@ -2902,6 +2977,8 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"red_grape_cutting": red_grape_cutting_hand, "white_grape_cutting": white_grape_cutting_hand, "redcurrant_cutting": redcurrant_cutting_hand,
+             "rhubarb_crown": rhubarb_crown_hand, "roselle_seeds": roselle_seeds_hand, "rosemary_cutting": rosemary_cutting_hand})
 HAND.update({"poblano_chili_seeds": poblano_chili_seeds_hand, "radish_seeds": radish_seeds_hand, "raspberry_cutting": raspberry_cutting_hand,
              "red_cabbage_seeds": cabbage_seeds_hand, "red_chili_seeds": red_chili_seeds_hand})
 HAND.update({"pandan_cutting": pandan_cutting_hand, "paprika_pepper_seeds": paprika_pepper_seeds_hand, "parsley_seeds": parsley_seeds_hand,

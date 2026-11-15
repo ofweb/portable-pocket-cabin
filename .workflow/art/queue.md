@@ -97,11 +97,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] raspberry_cutting
 - [x] red_cabbage_seeds
 - [x] red_chili_seeds
-- [ ] red_grape_cutting
-- [ ] redcurrant_cutting
-- [ ] rhubarb_crown
-- [ ] roselle_seeds
-- [ ] rosemary_cutting
+- [x] red_grape_cutting
+- [x] redcurrant_cutting
+- [x] rhubarb_crown
+- [x] roselle_seeds
+- [x] rosemary_cutting
 - [ ] savory_cutting
 - [ ] sesame_seed
 - [ ] spring_onion_seeds
@@ -118,7 +118,7 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] tomato_seeds
 - [ ] vanilla_cutting
 - [ ] wasabi_root
-- [ ] white_grape_cutting
+- [x] white_grape_cutting
 
 ## Made foods and other items
 
