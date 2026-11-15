@@ -2826,6 +2826,38 @@ def pineapple_crown_hand():
     s.pixels_at(ramp("#9ac0ac")[BASE], [(8, 6), (8, 7), (8, 8)])
     return s
 
+def poblano_chili_seeds_hand():
+    return pepper_seeds("#e6d290")
+
+
+def radish_seeds_hand():
+    # Small, slightly irregular seeds, a lighter reddish-brown than cabbage seeds and a little larger.
+    s = Sprite()
+    seed = ramp("#7e4a30", spread=0.6)
+    for cx, cy, angle in SMALL_SEED_SPOTS_LOW:
+        s.ellipse(seed, cx, cy, 1.5, 1.2, angle=angle)
+        s.put(int(cx) - 1, int(cy) - 1, ramp("#b88a6a")[BASE])
+    return s
+
+
+def raspberry_cutting_hand():
+    # A length of reddish-brown cane covered in fine pale prickles, with a pair of fresh toothed leaves at the top.
+    s = cutting("#8a4a3a", (3.0, 15.0), (11.6, 3.0), leaves=[(12.0, 3.0, -50, "#4a9a3a"), (8.4, 2.6, -120, "#56a640")])
+    # Prickles stand out from both edges of the cane, alternating sides along it.
+    (x0, y0), (x1, y1) = (3.0, 15.0), (11.6, 3.0)
+    length = math.dist((x0, y0), (x1, y1))
+    nx, ny = (y1 - y0) / length, -(x1 - x0) / length
+    for i, t in enumerate((0.15, 0.3, 0.45, 0.6, 0.72)):
+        side = 1.6 if i % 2 else -1.6
+        s.put(round(x0 + (x1 - x0) * t + nx * side - 0.5), round(y0 + (y1 - y0) * t + ny * side - 0.5), ramp("#d8c0a0")[BASE])
+    for cx, cy in [(12.0, 3.0), (8.4, 2.6)]:
+        s.put(int(cx) + 1, int(cy) + 1, ramp("#2e7a2a")[BASE])  # The toothed edge.
+    return s
+
+
+def red_chili_seeds_hand():
+    return pepper_seeds("#e4c67c")
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -2870,6 +2902,8 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"poblano_chili_seeds": poblano_chili_seeds_hand, "radish_seeds": radish_seeds_hand, "raspberry_cutting": raspberry_cutting_hand,
+             "red_cabbage_seeds": cabbage_seeds_hand, "red_chili_seeds": red_chili_seeds_hand})
 HAND.update({"pandan_cutting": pandan_cutting_hand, "paprika_pepper_seeds": paprika_pepper_seeds_hand, "parsley_seeds": parsley_seeds_hand,
              "peppercorn_cutting": peppercorn_cutting_hand, "pineapple_crown": pineapple_crown_hand})
 HAND.update({"marjoram_seeds": marjoram_seeds_hand, "mint_seeds": mint_seeds_hand, "mustard_seed": mustard_seed_hand,

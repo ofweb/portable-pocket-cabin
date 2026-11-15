@@ -92,11 +92,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] parsley_seeds
 - [x] peppercorn_cutting
 - [x] pineapple_crown
-- [ ] poblano_chili_seeds
-- [ ] radish_seeds
-- [ ] raspberry_cutting
-- [ ] red_cabbage_seeds
-- [ ] red_chili_seeds
+- [x] poblano_chili_seeds
+- [x] radish_seeds
+- [x] raspberry_cutting
+- [x] red_cabbage_seeds
+- [x] red_chili_seeds
 - [ ] red_grape_cutting
 - [ ] redcurrant_cutting
 - [ ] rhubarb_crown
