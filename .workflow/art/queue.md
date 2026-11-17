@@ -216,21 +216,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] brined_cheese
 - [x] brined_pork
 - [x] brown_butter
-- [ ] brown_sugar
-- [ ] browned_beef
-- [ ] browned_mince
-- [ ] bruised_lemongrass
-- [ ] bruised_tea_leaves
-- [ ] brunsviger
-- [ ] bua_loy
-- [ ] bua_loy_balls
-- [ ] bua_loy_dough
-- [ ] buttered_crumbs
-- [ ] cake_batter
-- [ ] caldillo_base
-- [ ] calf_stomach
-- [ ] cane_sugar_paste
-- [ ] canele_batter
+- [x] brown_sugar
+- [x] browned_beef
+- [x] browned_mince
+- [x] bruised_lemongrass
+- [x] bruised_tea_leaves
+- [x] brunsviger
+- [x] bua_loy
+- [x] bua_loy_balls
+- [x] bua_loy_dough
+- [x] buttered_crumbs
+- [x] cake_batter
+- [x] caldillo_base
+- [x] calf_stomach
+- [x] cane_sugar_paste
+- [x] canele_batter
 - [ ] caneles
 - [ ] caramel
 - [ ] caramelised_onion

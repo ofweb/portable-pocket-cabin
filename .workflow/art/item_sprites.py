@@ -4026,10 +4026,10 @@ def boiled_beetroot_hand():
     return s
 
 
-def boiled_bua_loy_hand():
-    # Bua loy: little boiled rice-flour balls in pale pastel colours, floating in a bowl of coconut milk.
+def bua_loy_hand():
+    # Bua loy: little pumpkin rice-flour balls floating in a bowl of warm, sweetened coconut milk.
     s = bowl("#f6f2e6", plain=True, bowl_colour=CLAY)
-    for (x, y), colour in [((4, 7), "#f0a0b8"), ((7, 7), "#a0d090"), ((10, 7), "#f0e080"), ((6, 8), "#f6f6f2"), ((9, 8), "#f0a0b8")]:
+    for (x, y), colour in [((4, 7), "#f0a040"), ((7, 7), "#f6c860"), ((10, 7), "#f0a040"), ((6, 8), "#f6c860"), ((9, 8), "#f0a040")]:
         s.pixels_at(plain_ramp(colour)[BASE], [(x, y), (x + 1, y)])
     return s
 
@@ -4270,6 +4270,113 @@ def brown_butter_hand():
     s.pixels_at(ramp("#c8862a")[HIGHLIGHT], [(4, 7), (5, 7)])
     return s
 
+def boiled_bua_loy_hand():
+    # Boiled bua loy: little glossy balls of pumpkin rice-flour dough, cooked and soft.
+    return balls("#f0b050", [(4.0, 11.4), (8.0, 11.6), (12.0, 11.0), (6.0, 7.4), (10.2, 7.2), (8.0, 3.6)], radius=2.2, plain=False)
+
+
+def bua_loy_balls_hand():
+    # Raw bua loy balls: little matte balls of orange pumpkin dough, rolled and dusted with flour.
+    s = balls("#eeb060", [(4.0, 11.4), (8.0, 11.6), (12.0, 11.0), (6.0, 7.4), (10.2, 7.2), (8.0, 3.6)], radius=2.2)
+    s.pixels_at(plain_ramp("#faf6ee")[BASE], [(4, 12), (8, 12), (11, 11), (10, 7)])
+    return s
+
+
+def bua_loy_dough_hand():
+    # Bua loy dough: a soft ball of glutinous rice flour kneaded with pumpkin, a warm orange.
+    return dough_ball("#f0b462")
+
+
+def brown_sugar_hand():
+    # Brown sugar: soft, moist, clumpy, golden-brown sugar.
+    return spice_bowl("#a8682a", fleck="#d8a050", seed=33)
+
+
+def browned_beef_hand():
+    # Browned beef: cubes of beef seared dark brown and crusty on the outside.
+    s = Sprite()
+    meat = ramp("#7a3a24", spread=0.6)
+    for cx, cy in [(4.6, 5.0), (10.6, 5.4), (4.0, 11.2), (9.6, 10.6), (13.0, 12.4)]:
+        s.shape(lambda x, y, cx=cx, cy=cy: abs(x - cx) <= 2.4 and abs(y - cy) <= 2.2, meat, (cx, cy), (2.4, 2.2))
+        s.pixels_at(ramp("#3a1e14")[BASE], [(round(cx), round(cy)), (round(cx) + 1, round(cy) + 1)])
+        s.put(round(cx) - 1, round(cy) - 1, meat[HIGHLIGHT])
+    return s
+
+
+def browned_mince_hand():
+    # Browned mince: crumbled minced beef fried brown, in a heap.
+    return seed_heap("#7a4a2e", fleck="#4a2a1a", seed=37)
+
+
+def bruised_lemongrass_hand():
+    # Bruised lemongrass: the stalks crushed with the back of a knife, split and pale where they were struck.
+    s = SPRITES["lemongrass"]()
+    crushed = plain_ramp("#f4f0c8")[BASE]
+    for x in range(16):
+        for y in range(16):
+            if s.pixels[y][x] is not None and (x * 3 + y * 5) % 11 == 0:
+                s.put(x, y, crushed)
+    return s
+
+
+def bruised_tea_leaves_hand():
+    # Bruised tea leaves: rolled and twisted green leaves, darkening to copper where they were bruised.
+    return seed_heap("#4a7a34", fleck="#9a5a2a", seed=41)
+
+
+def brunsviger_hand():
+    # Brunsviger: a slab of soft yeast cake under a sticky glaze of brown sugar and butter, pooled in dark dimples.
+    s = Sprite()
+    cake = plain_ramp("#e8c078")
+    s.shape(lambda x, y: 1 <= x <= 14 and 5 <= y <= 13, cake, (7.5, 9.0), (7.0, 4.0))
+    glaze = ramp("#8a4a1e", spread=0.6)
+    for y in range(6, 10):
+        for x in range(2, 14):
+            s.put(x, y, glaze[BASE] if (x + y) % 4 else glaze[SHADOW])
+    s.pixels_at(glaze[HIGHLIGHT], [(4, 6), (8, 7), (11, 6)])
+    return s
+
+
+def buttered_crumbs_hand():
+    # Buttered crumbs: breadcrumbs toasted in butter and sugar, a richer, deeper gold.
+    return spice_bowl("#c88a3a", fleck="#f0c870", seed=43)
+
+
+def cake_batter_hand():
+    # Cake batter: a bowl of thick, smooth, butter-yellow batter.
+    s = bowl("#f2d070", plain=True)
+    s.pixels_at(plain_ramp("#fae6a0")[BASE], [(4, 7), (5, 7), (6, 8)])
+    return s
+
+
+def caldillo_base_hand():
+    # Caldillo base: a bowl of blended tomato, onion and garlic, a bright red purée.
+    return bowl("#d03a26", flecks=[("#f0d8b0", 0.06)])
+
+
+def calf_stomach_hand():
+    # A calf's stomach, for rennet: a pale, pinkish-cream pouch with folds across it.
+    s = Sprite()
+    tones = plain_ramp("#e8c8b8")
+    s.ellipse(tones, 7.5, 8.6, 6.4, 5.0, angle=-20)
+    for x0, y0, x1, y1 in [(4, 7, 8, 5), (4, 10, 10, 7), (6, 12, 11, 10)]:
+        s.line(tones[SHADOW], x0, y0, x1, y1)
+    s.pixels_at(tones[HIGHLIGHT], [(5, 5), (6, 4)])
+    s.pixels_at(plain_ramp("#d8a898")[BASE], [(13, 4), (14, 3)])  # The neck of the pouch.
+    return s
+
+
+def cane_sugar_paste_hand():
+    # Cane sugar paste: cane juice boiled down to a thick, glossy, dark amber paste.
+    s = bowl("#8a4a1a", mound=1.0)
+    s.pixels_at(ramp("#8a4a1a")[HIGHLIGHT], [(5, 6), (6, 6)])
+    return s
+
+
+def canele_batter_hand():
+    # Canelé batter: a thin, pale, creamy batter speckled with vanilla seeds.
+    return bowl("#f4e6c0", plain=True, flecks=[("#2a2018", 0.08)])
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -4320,6 +4427,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"brown_sugar": brown_sugar_hand, "browned_beef": browned_beef_hand, "browned_mince": browned_mince_hand,
+             "bruised_lemongrass": bruised_lemongrass_hand, "bruised_tea_leaves": bruised_tea_leaves_hand, "brunsviger": brunsviger_hand,
+             "bua_loy": bua_loy_hand, "bua_loy_balls": bua_loy_balls_hand, "bua_loy_dough": bua_loy_dough_hand,
+             "buttered_crumbs": buttered_crumbs_hand, "cake_batter": cake_batter_hand, "caldillo_base": caldillo_base_hand,
+             "calf_stomach": calf_stomach_hand, "cane_sugar_paste": cane_sugar_paste_hand, "canele_batter": canele_batter_hand})
 HAND.update({"boiled_tub_tim": boiled_tub_tim_hand, "boller_i_karry": boller_i_karry_hand, "boller_i_karry_stew": boller_i_karry_stew_hand,
              "bonito_flakes": bonito_flakes_hand, "bouquet_garni": bouquet_garni_hand, "bratwurst_filling": bratwurst_filling_hand,
              "bratwurst_mit_sauerkraut": bratwurst_mit_sauerkraut_hand, "bread_dough": bread_dough_hand, "bread_roll": bread_roll_hand,
