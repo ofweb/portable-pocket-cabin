@@ -4120,6 +4120,156 @@ def boiled_sweet_potato_hand():
         s.put(int(cx) - 1, int(cy) - 1, flesh[HIGHLIGHT])
     return s
 
+def boiled_tub_tim_hand():
+    # Tub tim krob: little ruby-red jewels of water chestnut in white coconut milk, in a bowl.
+    s = bowl("#f6f2e6", plain=True, bowl_colour=CLAY)
+    ruby = ramp("#d0283a", spread=0.6)
+    for x, y in [(4, 7), (7, 7), (10, 7), (5, 8), (9, 8), (12, 8)]:
+        s.put(x, y, ruby[BASE])
+    s.pixels_at(ruby[HIGHLIGHT], [(7, 7), (10, 7)])
+    return s
+
+
+def curry_with_meatballs(s, cx=7.5, cy=8.0):
+    """Yellow curry sauce with three small pork meatballs sitting in it."""
+    meat = ramp("#c8a088", spread=0.6)
+    for x, y in [(cx - 3, cy), (cx + 1, cy - 1), (cx + 3.4, cy + 0.6)]:
+        s.ellipse(meat, x, y, 1.4, 1.2)
+        s.put(round(x - 1), round(y - 1), meat[HIGHLIGHT])
+    return s
+
+
+def boller_i_karry_stew_hand():
+    # Boller i karry: small pork meatballs in a thick, bright yellow curry sauce, in a bowl.
+    return curry_with_meatballs(bowl("#e8c030", flecks=[("#f0d870", 0.08)]))
+
+
+def boller_i_karry_hand():
+    # Served: the curry with its meatballs beside a heap of white rice, on a plate.
+    s = plate()
+    rice = plain_ramp("#f6f4ec")
+    s.ellipse(rice, 4.6, 10.0, 3.6, 2.4, texture=lambda x, y: -1 if (x * 3 + y) % 5 == 0 else 0)
+    curry = ramp("#e8c030", spread=0.6)
+    s.ellipse(curry, 10.4, 11.0, 4.0, 2.2)
+    meat = ramp("#c8a088", spread=0.6)
+    for x, y in [(9.0, 10.0), (11.8, 10.4), (10.4, 12.0)]:
+        s.ellipse(meat, x, y, 1.3, 1.1)
+    s.pixels_at(ramp("#4a9a34")[BASE], [(4, 8), (5, 9)])  # A sprig of parsley.
+    return s
+
+
+def bonito_flakes_hand():
+    # Katsuobushi shavings: a heap of tissue-thin, curled, pinkish-tan flakes.
+    s = Sprite()
+    flake = plain_ramp("#d8a88a")
+    for cx, cy, angle in [(4.4, 5.0, -20), (10.4, 4.6, 25), (3.6, 10.4, 40), (8.4, 8.6, -10), (12.4, 10.6, -40), (7.2, 13.0, 15)]:
+        s.ellipse(flake, cx, cy, 3.4, 2.0, angle=angle)
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        for t in (-1, 0, 1):
+            s.put(round(cx + cos * t - 0.5), round(cy + sin * t + 0.3), flake[SHADOW])  # The curl.
+        s.put(round(cx - cos * 1.8 - 0.5), round(cy - sin * 1.8 - 1.0), flake[HIGHLIGHT])
+    return s
+
+
+def bouquet_garni_hand():
+    # A bouquet garni: sprigs of thyme and parsley wrapped in a bay leaf, tied in a bundle with white string.
+    s = Sprite()
+    bay = ramp("#4a7a3a", spread=0.6)
+    s.ellipse(bay, 7.0, 9.0, 6.4, 2.6, angle=-50)
+    thyme = ramp("#6a9a48")
+    for x0, y0, x1, y1 in [(6, 9, 11, 1), (7, 9, 13, 3), (6, 10, 9, 0)]:
+        for x, y in s.line(thyme[SHADOW], x0, y0, x1, y1)[2::2]:
+            s.put(x + 1, y, thyme[BASE])
+    s.pixels_at(ramp("#4aa83a")[LIGHT], [(12, 1), (13, 2), (10, 0), (11, 0)])  # Parsley leaves at the top.
+    string = plain_ramp("#f4f2ea")[BASE]
+    s.pixels_at(string, [(5, 9), (6, 8), (7, 9), (6, 10), (8, 8), (4, 10)])
+    s.pixels_at(string, [(3, 12), (2, 13)])  # The loose end.
+    return s
+
+
+def bratwurst_filling_hand():
+    # Bratwurst filling: finely minced, pale pink pork flecked with pepper and marjoram, in a bowl.
+    return bowl("#e0a8a0", mound=1.8, texture=bumpy, flecks=[("#3a3a3a", 0.06), ("#6a8a4a", 0.06)])
+
+
+def bratwurst_mit_sauerkraut_hand():
+    # A browned bratwurst on a heap of pale sauerkraut, with a dab of mustard and a bread roll, on a plate.
+    s = plate()
+    kraut = plain_ramp("#e8e0a8")
+    s.ellipse(kraut, 6.0, 10.8, 4.6, 2.2, texture=lambda x, y: -1 if (x + y * 2) % 3 == 0 else 0)
+    roll = ramp("#c88a3a", spread=0.6)
+    s.ellipse(roll, 12.0, 9.6, 2.8, 2.2)
+    s.put(12, 9, plain_ramp("#f0d8a0")[BASE])
+    sausage("#a8642e", (2.0, 9.6), (10.0, 6.4), radius=1.6, s=s)
+    s.ellipse(ramp("#e0b030", spread=0.5), 9.0, 12.4, 1.4, 0.9)
+    return s
+
+
+def bread_dough_hand():
+    # Bread dough: a smooth, risen, pale ball dusted with flour.
+    return dough_ball("#ecdcb8")
+
+
+def bread_roll_hand():
+    # A bread roll: round, golden-brown, with a pale score across the top and a glossy crust.
+    s = Sprite()
+    crust = ramp("#c8822e", spread=0.7)
+    s.ellipse(crust, 7.5, 9.0, 6.4, 5.0)
+    s.line(plain_ramp("#f0d8a0")[BASE], 4, 9, 11, 6)
+    s.pixels_at(crust[HIGHLIGHT], [(4, 6), (5, 5), (6, 5)])
+    return s
+
+
+def breadcrumbs_hand():
+    # Breadcrumbs: dry, golden crumbs, in a small bowl.
+    return spice_bowl("#d8aa5a", fleck="#a8742a", seed=27)
+
+
+def brigadeiro_mixture_hand():
+    # Brigadeiro mixture: thick, glossy chocolate fudge, cooked down in a bowl.
+    s = bowl("#4a2a1e", mound=1.4)
+    s.pixels_at(ramp("#4a2a1e")[HIGHLIGHT], [(5, 6), (6, 6), (9, 7)])
+    return s
+
+
+def brigadeiros_hand():
+    # Brigadeiros: round chocolate truffles rolled in chocolate sprinkles, each sitting in a little paper case.
+    s = Sprite()
+    case = plain_ramp("#d8c0a8")
+    for cx, cy in [(4.4, 11.4), (11.0, 11.4), (7.6, 5.6)]:
+        s.shape(lambda x, y, cx=cx, cy=cy: cy - 0.4 <= y <= cy + 2.6 and abs(x - cx) <= 3.2 - (y - cy) * 0.3, case, (cx, cy + 1), (3.2, 1.6))
+        tones = ramp("#4a2a1e", spread=0.6)
+        s.ellipse(tones, cx, cy - 0.8, 2.8, 2.6)
+        s.pixels_at(ramp("#2a1610")[BASE], [(round(cx) - 1, round(cy) - 2), (round(cx) + 1, round(cy) - 1), (round(cx), round(cy))])
+        s.put(round(cx) - 2, round(cy) - 3, tones[HIGHLIGHT])
+    return s
+
+
+def brined_cheese_hand():
+    # Brined cheese: a block of white cheese, moist and crumbly at the edges, glistening with brine.
+    s = Sprite()
+    cheese = plain_ramp("#f2f0e8")
+    s.shape(lambda x, y: 2 <= x <= 13 and 4 <= y <= 12, cheese, (7.5, 8.0), (6.0, 4.0))
+    for x in range(3, 13):
+        s.put(x, 5, cheese[HIGHLIGHT])  # The top face.
+    s.pixels_at(cheese[SHADOW], [(5, 8), (9, 10), (11, 7), (7, 11), (12, 12), (2, 6)])  # Crumbly holes.
+    s.pixels_at(plain_ramp("#d0e4ec")[BASE], [(4, 6), (10, 6), (13, 9)])  # Brine glints.
+    return s
+
+
+def brined_pork_hand():
+    # Brined pork: a pale pink slab with a band of white fat, glistening from the brine.
+    s = slab("#d88a84", fat="#f2ece2", rx=6.6, ry=4.8, angle=-10, fat_side=1.6, seed=61)
+    s.pixels_at(plain_ramp("#e8f0f4")[BASE], [(5, 6), (9, 5), (7, 9)])
+    return s
+
+
+def brown_butter_hand():
+    # Brown butter: melted butter cooked to a nutty golden brown, with toasted brown flecks, in a small dish.
+    s = bowl("#c8862a", flecks=[("#6a3a1a", 0.14)])
+    s.pixels_at(ramp("#c8862a")[HIGHLIGHT], [(4, 7), (5, 7)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -4170,6 +4320,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"boiled_tub_tim": boiled_tub_tim_hand, "boller_i_karry": boller_i_karry_hand, "boller_i_karry_stew": boller_i_karry_stew_hand,
+             "bonito_flakes": bonito_flakes_hand, "bouquet_garni": bouquet_garni_hand, "bratwurst_filling": bratwurst_filling_hand,
+             "bratwurst_mit_sauerkraut": bratwurst_mit_sauerkraut_hand, "bread_dough": bread_dough_hand, "bread_roll": bread_roll_hand,
+             "breadcrumbs": breadcrumbs_hand, "brigadeiro_mixture": brigadeiro_mixture_hand, "brigadeiros": brigadeiros_hand,
+             "brined_cheese": brined_cheese_hand, "brined_pork": brined_pork_hand, "brown_butter": brown_butter_hand})
 HAND.update({"blind_baked_shell": blind_baked_shell_hand, "blood_sausage": blood_sausage_hand, "blood_sausage_filling": blood_sausage_filling_hand,
              "blue_corn_masa": blue_corn_masa_hand, "blue_hominy": blue_hominy_hand, "boeuf_bourguignon": boeuf_bourguignon_hand,
              "boiled_beetroot": boiled_beetroot_hand, "boiled_bua_loy": boiled_bua_loy_hand, "boiled_dango": boiled_dango_hand,

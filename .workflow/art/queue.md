@@ -201,21 +201,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] boiled_prawns
 - [x] boiled_ramen_noodles
 - [x] boiled_sweet_potato
-- [ ] boiled_tub_tim
-- [ ] boller_i_karry
-- [ ] boller_i_karry_stew
-- [ ] bonito_flakes
-- [ ] bouquet_garni
-- [ ] bratwurst_filling
-- [ ] bratwurst_mit_sauerkraut
-- [ ] bread_dough
-- [ ] bread_roll
-- [ ] breadcrumbs
-- [ ] brigadeiro_mixture
-- [ ] brigadeiros
-- [ ] brined_cheese
-- [ ] brined_pork
-- [ ] brown_butter
+- [x] boiled_tub_tim
+- [x] boller_i_karry
+- [x] boller_i_karry_stew
+- [x] bonito_flakes
+- [x] bouquet_garni
+- [x] bratwurst_filling
+- [x] bratwurst_mit_sauerkraut
+- [x] bread_dough
+- [x] bread_roll
+- [x] breadcrumbs
+- [x] brigadeiro_mixture
+- [x] brigadeiros
+- [x] brined_cheese
+- [x] brined_pork
+- [x] brown_butter
 - [ ] brown_sugar
 - [ ] browned_beef
 - [ ] browned_mince
