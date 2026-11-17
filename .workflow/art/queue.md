@@ -186,21 +186,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] black_tea
 - [x] blanched_almonds
 - [x] blanched_vanilla_pods
-- [ ] blind_baked_shell
-- [ ] blood_sausage
-- [ ] blood_sausage_filling
-- [ ] blue_corn_masa
-- [ ] blue_hominy
-- [ ] boeuf_bourguignon
-- [ ] boiled_beetroot
-- [ ] boiled_bua_loy
-- [ ] boiled_dango
-- [ ] boiled_oil_palm_fruit
-- [ ] boiled_picarones_vegetables
-- [ ] boiled_potatoes
-- [ ] boiled_prawns
-- [ ] boiled_ramen_noodles
-- [ ] boiled_sweet_potato
+- [x] blind_baked_shell
+- [x] blood_sausage
+- [x] blood_sausage_filling
+- [x] blue_corn_masa
+- [x] blue_hominy
+- [x] boeuf_bourguignon
+- [x] boiled_beetroot
+- [x] boiled_bua_loy
+- [x] boiled_dango
+- [x] boiled_oil_palm_fruit
+- [x] boiled_picarones_vegetables
+- [x] boiled_potatoes
+- [x] boiled_prawns
+- [x] boiled_ramen_noodles
+- [x] boiled_sweet_potato
 - [ ] boiled_tub_tim
 - [ ] boller_i_karry
 - [ ] boller_i_karry_stew

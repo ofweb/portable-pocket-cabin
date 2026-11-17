@@ -3946,6 +3946,180 @@ def blanched_vanilla_pods_hand():
     # Fresh vanilla pods scalded to stop them growing: no longer green, a soft olive brown, not yet cured dark.
     return vanilla_pods("#7a6a32", shine=False)
 
+def tart_shell(pastry="#e0a85a", filling=None, s=None):
+    """A round tart seen a little from above: a golden pastry shell with a fluted rim, empty or holding a filling."""
+    s = s or Sprite()
+    crust = ramp(pastry, spread=0.6)
+    s.ellipse(crust, 7.5, 9.6, 7.2, 4.8)
+    inside = plain_ramp(filling) if filling else ramp(pastry, spread=0.4)
+    s.ellipse(inside, 7.5, 9.0, 5.4, 3.0, outline=False, light=(0.6, 0.8) if not filling else (-0.6, -0.8))
+    for x in range(1, 15, 2):  # The fluted rim.
+        top = round(9.6 - 4.8 * math.sqrt(max(0.0, 1 - ((x + 0.5 - 7.5) / 7.2) ** 2)))
+        s.put(x, top + 1, crust[HIGHLIGHT])
+    return s
+
+
+def blind_baked_shell_hand():
+    # A blind-baked tart shell: empty, crisp, and golden, its base pricked with a fork.
+    s = tart_shell()
+    s.pixels_at(ramp("#e0a85a", spread=0.4)[SHADOW], [(5, 9), (8, 8), (10, 10), (7, 11)])
+    return s
+
+
+def sausage(colour, start, end, radius=1.8, s=None, cut=None):
+    """A plump sausage link from {start} to {end}, tied at both ends, with a glossy skin and an optional cut face."""
+    s = s or Sprite()
+    tones = ramp(colour, spread=0.6)
+    s.capsule(tones, [start, end], (radius, radius))
+    length = math.dist(start, end)
+    dx, dy = (end[0] - start[0]) / length, (end[1] - start[1]) / length
+    for t in range(2, int(length) - 1, 3):
+        s.put(round(start[0] + dx * t - dy * radius * 0.5 - 0.5), round(start[1] + dy * t + dx * radius * 0.5 - 1.0), tones[HIGHLIGHT])
+    for x, y in (start, end):
+        s.put(round(x - dx * (radius + 0.4) - 0.5) if (x, y) == start else round(x + dx * (radius + 0.4) - 0.5),
+              round(y - dy * (radius + 0.4) - 0.5) if (x, y) == start else round(y + dy * (radius + 0.4) - 0.5), plain_ramp("#d8c8a8")[SHADOW])
+    return s
+
+
+def blood_sausage_hand():
+    # Blood sausage: a plump, near-black link, and a slice cut from it showing white flecks of fat and barley.
+    s = sausage("#3a1a1e", (2.4, 11.0), (11.6, 2.4), radius=2.2)
+    slice_ = ramp("#3a1a1e", spread=0.5)
+    s.ellipse(slice_, 11.4, 11.6, 3.0, 3.0)
+    s.ellipse(ramp("#5a2028", spread=0.4), 11.4, 11.6, 2.0, 2.0, outline=False)
+    s.pixels_at(plain_ramp("#eee6d4")[BASE], [(10, 11), (12, 12), (11, 10), (12, 10)])
+    return s
+
+
+def blood_sausage_filling_hand():
+    # The raw filling: dark red blood mixed with white cubes of back fat and pale barley, in a bowl.
+    return bowl("#5a1a20", mound=1.4, flecks=[("#f2ece2", 0.14), ("#d8c890", 0.08)])
+
+
+def blue_corn_masa_hand():
+    # Blue corn masa: a soft ball of dough, a dusky blue-grey.
+    return dough_ball("#8a92b0", flour=False)
+
+
+def blue_hominy_hand():
+    # Blue hominy: a bowl of big, puffed, pale grey-blue kernels.
+    s = bowl("#9aa0bc", mound=1.6, texture=bumpy)
+    s.pixels_at(plain_ramp("#c4c8dc")[BASE], [(4, 6), (7, 6), (10, 6), (6, 7), (9, 7)])
+    return s
+
+
+def boeuf_bourguignon_hand():
+    # Boeuf bourguignon: a deep, wine-dark stew of beef chunks with carrots, mushrooms and little onions, in a bowl.
+    return bowl("#5a2a24", mound=0.8, flecks=[("#7a3a2a", 0.18), ("#e07a2a", 0.08), ("#c8b48a", 0.06), ("#f0e8dc", 0.04)])
+
+
+def boiled_beetroot_hand():
+    # Cooked beetroot: one whole, smooth, deep purple-red root and a half showing its darker rings.
+    s = Sprite()
+    beet = ramp("#7a1a3a", spread=0.6)
+    s.ellipse(beet, 5.6, 7.0, 4.6, 4.4)
+    s.line(ramp("#5a3a2a")[BASE], 5, 11, 4, 14)  # The root tail.
+    s.pixels_at(beet[HIGHLIGHT], [(3, 5), (4, 4)])
+    s.ellipse(beet, 11.0, 11.2, 3.8, 3.6)
+    s.ellipse(ramp("#a02a50", spread=0.5), 11.0, 11.2, 2.6, 2.4, outline=False)
+    s.ellipse(ramp("#6a1430", spread=0.5), 11.0, 11.2, 1.2, 1.1, outline=False)
+    return s
+
+
+def boiled_bua_loy_hand():
+    # Bua loy: little boiled rice-flour balls in pale pastel colours, floating in a bowl of coconut milk.
+    s = bowl("#f6f2e6", plain=True, bowl_colour=CLAY)
+    for (x, y), colour in [((4, 7), "#f0a0b8"), ((7, 7), "#a0d090"), ((10, 7), "#f0e080"), ((6, 8), "#f6f6f2"), ((9, 8), "#f0a0b8")]:
+        s.pixels_at(plain_ramp(colour)[BASE], [(x, y), (x + 1, y)])
+    return s
+
+
+def balls(colour, spots, radius=2.4, s=None, plain=True):
+    """Round balls, such as dumplings or rice balls, each with a highlight."""
+    s = s or Sprite()
+    tones = plain_ramp(colour) if plain else ramp(colour, spread=0.6)
+    for cx, cy in spots:
+        s.ellipse(tones, cx, cy, radius, radius)
+        s.put(round(cx - radius * 0.5 - 0.5), round(cy - radius * 0.5 - 0.5), tones[HIGHLIGHT])
+    return s
+
+
+def boiled_dango_hand():
+    # Boiled dango: soft, smooth, glossy white rice-flour dumplings, before they are skewered.
+    return balls("#f2f0ea", [(4.6, 10.6), (10.8, 10.6), (7.6, 5.4)], radius=3.4)
+
+
+def boiled_oil_palm_fruit_hand():
+    # Boiled oil palm fruit: softened, glossy, a deep orange-red, oily at the skin.
+    s = balls("#d84a1e", [(4.4, 10.8), (11.0, 10.8), (7.6, 5.0)], radius=3.3, plain=False)
+    return s
+
+
+def boiled_picarones_vegetables_hand():
+    # Boiled sweet potato and pumpkin for picarones: soft orange chunks in a bowl.
+    s = bowl("#e88a2a", mound=1.8, texture=bumpy, flecks=[("#f0b040", 0.12)])
+    return s
+
+
+def boiled_potatoes_hand():
+    # Boiled potatoes: peeled, pale yellow, smooth and glossy.
+    return balls("#ecd890", [(4.4, 10.8), (11.0, 10.6), (7.6, 5.0)], radius=3.4)
+
+
+def prawn(colour):
+    """A cooked prawn curled into a C, head at the top: a thick segmented body tapering to a fan tail, with pale bands
+    between the shell segments and a few legs inside the curl."""
+    s = Sprite()
+    tones = ramp(colour, spread=0.6)
+    arc = [(8.0 + 5.0 * math.cos(math.radians(a)), 8.0 + 5.0 * math.sin(math.radians(a))) for a in range(-150, 100, 25)]
+    s.capsule(tones, arc, (2.6, 1.0))
+    band = plain_ramp("#f8e0d0")[BASE]
+    for x, y in arc[2:-2:2]:
+        s.put(round(x - 0.5), round(y - 0.5), band)
+    tx, ty = arc[-1]
+    s.pixels_at(tones[SHADOW], [(round(tx) - 2, round(ty)), (round(tx) - 1, round(ty) + 1), (round(tx), round(ty))])  # The tail fan.
+    hx, hy = arc[0]
+    s.put(round(hx - 0.5), round(hy - 0.5), (30, 20, 20))  # The eye.
+    s.line(tones[OUTLINE], round(hx), round(hy) - 1, round(hx) + 5, round(hy) - 3)  # A feeler.
+    for x, y in [(7, 7), (8, 9), (7, 11)]:
+        s.put(x, y, tones[LIGHT])  # Legs.
+    return s
+
+
+def boiled_prawns_hand():
+    # A boiled prawn: curled, pink-orange, with pale bands between the shell segments.
+    return prawn("#f0784a")
+
+
+def noodles(colour, cx=7.5, cy=9.0, rx=6.8, ry=4.6, s=None):
+    """A loose nest of wavy noodles: rows of strands with dark gaps between them, inside a rounded heap."""
+    s = s or Sprite()
+    tones = plain_ramp(colour)
+    s.ellipse(tones, cx, cy, rx, ry)
+    for y in range(16):
+        for x in range(16):
+            if s.pixels[y][x] in (None, tones[OUTLINE]):
+                continue
+            wave = (y + round(math.sin(x * 0.9) * 1.0)) % 3
+            s.put(x, y, tones[SHADOW] if wave == 0 else tones[HIGHLIGHT] if wave == 1 and x % 4 == 1 else tones[BASE])
+    return s
+
+
+def boiled_ramen_noodles_hand():
+    # Boiled ramen noodles: a nest of wavy, springy, pale yellow strands.
+    return noodles("#f0d888")
+
+
+def boiled_sweet_potato_hand():
+    # Boiled sweet potato: thick rounds with purple-red skin and soft, bright orange flesh.
+    s = Sprite()
+    skin, flesh = ramp("#8a3a4a", spread=0.6), ramp("#f08a30", spread=0.5)
+    for cx, cy in [(5.0, 5.4), (10.6, 7.6), (6.0, 11.6)]:
+        s.ellipse(skin, cx, cy, 3.6, 3.0)
+        s.ellipse(flesh, cx, cy - 0.3, 2.6, 2.0, outline=False)
+        s.put(int(cx) - 1, int(cy) - 1, flesh[HIGHLIGHT])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -3996,6 +4170,12 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"blind_baked_shell": blind_baked_shell_hand, "blood_sausage": blood_sausage_hand, "blood_sausage_filling": blood_sausage_filling_hand,
+             "blue_corn_masa": blue_corn_masa_hand, "blue_hominy": blue_hominy_hand, "boeuf_bourguignon": boeuf_bourguignon_hand,
+             "boiled_beetroot": boiled_beetroot_hand, "boiled_bua_loy": boiled_bua_loy_hand, "boiled_dango": boiled_dango_hand,
+             "boiled_oil_palm_fruit": boiled_oil_palm_fruit_hand, "boiled_picarones_vegetables": boiled_picarones_vegetables_hand,
+             "boiled_potatoes": boiled_potatoes_hand, "boiled_prawns": boiled_prawns_hand, "boiled_ramen_noodles": boiled_ramen_noodles_hand,
+             "boiled_sweet_potato": boiled_sweet_potato_hand})
 HAND.update({"beef_kidneys": beef_kidneys_hand, "beef_liver": beef_liver_hand, "beef_rib_roast": beef_rib_roast_hand, "beef_round": beef_round_hand,
              "beef_shank": beef_shank_hand, "beef_sirloin": beef_sirloin_hand, "beef_strips": beef_strips_hand, "beef_tongue": beef_tongue_hand,
              "berliner": berliner_hand, "bienenstich": bienenstich_hand, "black_bean_mash": black_bean_mash_hand, "black_pepper": black_pepper_hand,

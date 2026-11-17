@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/boiled_oil_palm_fruit",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 12599322
-      }
-    ]
+    "model": "portable_pocket_cabin:item/boiled_oil_palm_fruit"
   }
 }

@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/blood_sausage",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 3803658
-      }
-    ]
+    "model": "portable_pocket_cabin:item/blood_sausage"
   }
 }
