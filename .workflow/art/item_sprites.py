@@ -51,7 +51,7 @@ def plain_ramp(base):
     """Five tones made by darkening and lightening a colour without shifting its hue. For pale seeds and shells, which
     are mostly outline, ramp's warm outline turns them orange."""
     r, g, b = hex_rgb(base)
-    return [tuple(min(255, round(c * k + (255 - c) * max(0, k - 1))) for c in (r, g, b)) for k in (0.62, 0.82, 1.0, 1.1, 1.22)]
+    return [tuple(min(255, round(c * k + (255 - c) * max(0, k - 1))) for c in (r, g, b)) for k in (0.52, 0.8, 1.0, 1.1, 1.22)]
 
 
 class Sprite:
@@ -4523,6 +4523,171 @@ def charred_dango_skewer_hand():
         s.put(round(cx) - 1, round(cy) - 1, ball[HIGHLIGHT])
     return s
 
+def chashu_pork_hand():
+    # Chashu: rounds of rolled, braised pork belly, a spiral of pale fat and meat inside a dark, glossy soy-glazed edge.
+    s = Sprite()
+    glaze = ramp("#7a3a1e", spread=0.6)
+    for cx, cy in [(5.2, 5.6), (10.4, 10.4)]:
+        s.ellipse(glaze, cx, cy, 4.4, 4.0)
+        s.ellipse(plain_ramp("#e8c8a8"), cx, cy, 3.2, 2.9, outline=False)
+        s.ellipse(ramp("#b8705a", spread=0.5), cx, cy, 2.0, 1.8, outline=False)
+        s.ellipse(plain_ramp("#f0dcc4"), cx, cy, 0.9, 0.8, outline=False)
+        s.put(round(cx) - 3, round(cy) - 2, glaze[HIGHLIGHT])
+    return s
+
+
+def cheesecake_filling_hand():
+    # Cheesecake filling: a smooth, thick, pale cream mixture with a zest of lemon, in a clay bowl.
+    return bowl("#f6eed4", plain=True, bowl_colour=CLAY, flecks=[("#f0d040", 0.05)])
+
+
+def cherry_compote_hand():
+    # Cherry compote: whole dark red cherries softened in their syrup, in a bowl.
+    s = bowl("#7a1426", mound=1.0)
+    cherry = ramp("#a81e30", spread=0.6)
+    for x, y in [(4, 7), (7, 6), (10, 7), (6, 8), (9, 8)]:
+        s.put(x, y, cherry[LIGHT])
+    return s
+
+
+def cherry_sauce_hand():
+    # Cherry sauce: the compote pressed smooth, a glossy deep red sauce with no lumps.
+    s = bowl("#8a1a2a")
+    s.pixels_at(ramp("#d04a5a")[BASE], [(4, 7), (5, 7), (6, 7)])
+    return s
+
+
+def chop(lean, fat, s=None, cx=8.4, cy=7.0, bone_end=(2.0, 14.4)):
+    """A chop: a round eye of lean meat edged with fat, and the bone running out of it as a handle."""
+    s = s or Sprite()
+    bone = plain_ramp("#ece2cc")
+    s.capsule(bone, [(cx - 2.0, cy + 2.0), bone_end], (1.2, 1.0))
+    meat = ramp(lean, spread=0.6)
+    s.ellipse(plain_ramp(fat), cx, cy, 5.6, 5.0)
+    s.ellipse(meat, cx + 0.3, cy - 0.3, 4.2, 3.6, outline=False)
+    s.put(round(cx) - 1, round(cy) - 2, meat[HIGHLIGHT])
+    return s
+
+
+def chevon_chops_hand():
+    # Goat chops: dark red, lean meat with only a thin edge of fat, on a short bone.
+    s = chop("#9a3a30", "#efe2d0", cx=5.6, cy=5.4, bone_end=(1.0, 12.4))
+    return chop("#9a3a30", "#efe2d0", s=s, cx=10.8, cy=9.6, bone_end=(5.4, 15.0))
+
+
+def chicken_bones_hand():
+    # Chicken bones: two small leg bones and a wishbone, creamy white, from a stripped bird.
+    s = Sprite()
+    bone = plain_ramp("#ece2c8")
+    for start, end in [((2.6, 13.0), (8.4, 5.0)), ((7.0, 14.4), (13.6, 8.4))]:
+        s.capsule(bone, [start, end], (1.4, 1.4))
+        for x, y in (start, end):
+            s.ellipse(bone, x, y, 1.8, 1.7)
+        s.put(round((start[0] + end[0]) / 2), round((start[1] + end[1]) / 2 - 1), bone[HIGHLIGHT])
+    # The wishbone: a V at the top right.
+    s.capsule(bone, [(9.0, 1.4), (11.6, 5.6), (14.4, 1.4)], (0.9, 0.9))
+    return s
+
+
+def chicken_breast_hand():
+    # A chicken breast fillet: smooth, plump, pale pink, a rounded teardrop.
+    s = Sprite()
+    meat = plain_ramp("#f0b8b0")
+    s.shape(lambda x, y: ((x - 6.6) / 5.0) ** 2 + ((y - 9.4) / 4.6) ** 2 <= 1 or (x >= 6 and abs(y - 9.0 + (x - 6) * 0.5) <= 3.4 - (x - 6) * 0.4),
+            meat, (8.0, 8.4), (6.0, 5.0))
+    s.pixels_at(meat[HIGHLIGHT], [(4, 7), (5, 6), (6, 6)])
+    s.line(meat[SHADOW], 5, 11, 11, 7)  # The tenderloin seam.
+    return s
+
+
+def chicken_carcass_hand():
+    # A whole plucked chicken: plump, pale golden-pink skin, legs tucked up, ready to be scalded and dressed.
+    s = Sprite()
+    skin = plain_ramp("#f0d0a8")
+    s.ellipse(skin, 7.0, 9.6, 6.2, 4.6)
+    for start, end in [((10.0, 7.0), (14.0, 3.0)), ((11.0, 10.0), (14.6, 7.0))]:
+        s.capsule(skin, [start, end], (1.8, 1.0))
+        s.ellipse(plain_ramp("#f4ece0"), end[0], end[1], 1.0, 1.0)  # The knuckle.
+    s.pixels_at(skin[HIGHLIGHT], [(4, 7), (5, 6), (6, 6)])
+    s.pixels_at(skin[SHADOW], [(3, 11), (5, 13), (8, 13)])
+    return s
+
+
+def drumstick(skin, cx, cy, angle, s):
+    """A drumstick: a plump rounded thigh end tapering to a knuckle of bone."""
+    tones = plain_ramp(skin)
+    cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+    s.capsule(tones, [(cx, cy), (cx + cos * 5.0, cy + sin * 5.0)], (3.4, 1.3))
+    bone = plain_ramp("#eee4cc")
+    s.ellipse(bone, cx + cos * 6.0, cy + sin * 6.0, 1.2, 1.2)
+    s.put(round(cx - 1), round(cy - 1), tones[HIGHLIGHT])
+    return s
+
+
+def chicken_drumsticks_hand():
+    # Raw chicken drumsticks: plump, pale pink skin over the meat, tapering to the knuckle.
+    s = drumstick("#eab49a", 4.6, 4.6, 35, Sprite())
+    return drumstick("#eab49a", 8.4, 9.6, 15, s)
+
+
+def chicken_feet_hand():
+    # Chicken feet: pale yellow, scaly, with three long toes spread forward and one behind.
+    s = Sprite()
+    foot = plain_ramp("#e8c870")
+    for cx, cy in [(5.0, 9.6), (11.0, 7.0)]:
+        s.capsule(foot, [(cx, cy + 5.0), (cx, cy)], (1.2, 1.2))
+        for dx, dy in [(-3.4, -3.4), (0.0, -4.6), (3.4, -3.4)]:
+            s.capsule(foot, [(cx, cy), (cx + dx, cy + dy)], (0.9, 0.6))
+        s.put(round(cx) - 1, round(cy) + 2, foot[SHADOW])
+    return s
+
+
+def chicken_giblets_hand():
+    # Chicken giblets: a small dark heart, a glossy liver and a gizzard.
+    s = heart("#8a2a30", cx=4.6, cy=5.4, size=0.55)
+    liver("#6a2028", cx=10.6, cy=5.2, rx=4.0, ry=2.8, s=s)
+    gizzard = ramp("#9a4a40", spread=0.6)
+    s.ellipse(gizzard, 7.6, 11.6, 3.6, 2.8)
+    s.pixels_at(plain_ramp("#e8d8c0")[BASE], [(6, 11), (7, 11), (8, 12)])  # Its silver skin.
+    return s
+
+
+def chicken_skin_hand():
+    # Chicken skin: a loose, pale yellow sheet, pimpled with feather follicles.
+    s = Sprite()
+    skin = plain_ramp("#f0d8a0")
+    s.shape(lambda x, y: ((x - 7.5) / 6.6) ** 2 + ((y - 8.0) / 5.4) ** 2 + 0.15 * math.sin(x * 1.3 + y) <= 1, skin, (7.5, 8.0), (6.6, 5.4))
+    for x, y in [(4, 6), (7, 5), (10, 6), (5, 9), (8, 8), (11, 9), (6, 11), (9, 11)]:
+        s.put(x, y, skin[SHADOW])
+    return s
+
+
+def chicken_thighs_hand():
+    # Raw chicken thighs: rounded pieces of pinkish meat, partly covered with pale, puckered skin.
+    s = Sprite()
+    for cx, cy in [(5.0, 5.6), (10.4, 10.4)]:
+        s.ellipse(plain_ramp("#e8a898"), cx, cy, 4.4, 3.6)
+        s.ellipse(plain_ramp("#f2d4b0"), cx - 0.6, cy - 0.6, 3.4, 2.6, outline=False)
+        s.pixels_at(plain_ramp("#d8b890")[BASE], [(round(cx) - 2, round(cy) - 1), (round(cx), round(cy) - 2)])
+    return s
+
+
+def chicken_wings_hand():
+    # Raw chicken wings: the jointed wing in its pale, bumpy skin, with a pointed tip.
+    s = Sprite()
+    skin = plain_ramp("#f2d0b0")
+    for (ax, ay), (bx, by), (tx, ty) in [((2.0, 6.0), (6.6, 4.0), (10.0, 1.4)), ((5.0, 13.0), (10.0, 10.6), (14.4, 7.0))]:
+        s.capsule(skin, [(ax, ay), (bx, by)], (2.6, 2.2))
+        s.capsule(skin, [(bx, by), (tx, ty)], (2.0, 0.8))
+        s.put(round(bx - 0.5), round(by - 0.5), skin[SHADOW])  # The joint.
+        s.put(round(ax), round(ay - 1), skin[HIGHLIGHT])
+    return s
+
+
+def chickpea_flour_hand():
+    # Chickpea flour: a fine, pale yellow flour.
+    return spice_bowl("#e8d48a", fleck="#c8b060", seed=47)
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -4573,6 +4738,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"chashu_pork": chashu_pork_hand, "cheesecake_filling": cheesecake_filling_hand, "cherry_compote": cherry_compote_hand,
+             "cherry_sauce": cherry_sauce_hand, "chevon_chops": chevon_chops_hand, "chicken_bones": chicken_bones_hand,
+             "chicken_breast": chicken_breast_hand, "chicken_carcass": chicken_carcass_hand, "chicken_drumsticks": chicken_drumsticks_hand,
+             "chicken_feet": chicken_feet_hand, "chicken_giblets": chicken_giblets_hand, "chicken_skin": chicken_skin_hand,
+             "chicken_thighs": chicken_thighs_hand, "chicken_wings": chicken_wings_hand, "chickpea_flour": chickpea_flour_hand})
 HAND.update({"caneles": caneles_hand, "caramel": caramel_hand, "caramelised_onion": caramelised_onion_hand, "cardoon": cardoon_hand,
              "cardoon_flower": cardoon_flower_hand, "carne_seca": carne_seca_hand, "carnitas_pork": carnitas_pork_hand,
              "carnitas_tacos": carnitas_tacos_hand, "cassoulet": cassoulet_hand, "cassoulet_beans": cassoulet_beans_hand,

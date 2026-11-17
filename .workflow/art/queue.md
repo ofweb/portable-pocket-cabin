@@ -246,21 +246,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] charred_dango_skewer
 - [x] charred_poblano
 - [x] charred_tomato
-- [ ] chashu_pork
-- [ ] cheesecake_filling
-- [ ] cherry_compote
-- [ ] cherry_sauce
-- [ ] chevon_chops
-- [ ] chicken_bones
-- [ ] chicken_breast
-- [ ] chicken_carcass
-- [ ] chicken_drumsticks
-- [ ] chicken_feet
-- [ ] chicken_giblets
-- [ ] chicken_skin
-- [ ] chicken_thighs
-- [ ] chicken_wings
-- [ ] chickpea_flour
+- [x] chashu_pork
+- [x] cheesecake_filling
+- [x] cherry_compote
+- [x] cherry_sauce
+- [x] chevon_chops
+- [x] chicken_bones
+- [x] chicken_breast
+- [x] chicken_carcass
+- [x] chicken_drumsticks
+- [x] chicken_feet
+- [x] chicken_giblets
+- [x] chicken_skin
+- [x] chicken_thighs
+- [x] chicken_wings
+- [x] chickpea_flour
 - [ ] chiles_rellenos
 - [ ] chili_garlic
 - [ ] chili_pork
