@@ -46,6 +46,14 @@ def ramp(base, spread=1.0):
     return tones
 
 
+
+def plain_ramp(base):
+    """Five tones made by darkening and lightening a colour without shifting its hue. For pale seeds and shells, which
+    are mostly outline, ramp's warm outline turns them orange."""
+    r, g, b = hex_rgb(base)
+    return [tuple(min(255, round(c * k + (255 - c) * max(0, k - 1))) for c in (r, g, b)) for k in (0.62, 0.82, 1.0, 1.1, 1.22)]
+
+
 class Sprite:
     def __init__(self):
         self.pixels = [[None] * SIZE for _ in range(SIZE)]
@@ -3061,6 +3069,65 @@ def toasted_cumin_seed_hand():
     # Cumin seeds toasted to a warm brown, their ridges darkened.
     return striped_seeds("#6e5030", "#a8865a", 2.5, 1.15)
 
+def toasted_pumpkin_seeds_hand():
+    # Flat, cream pumpkin seeds in their shells, each with a raised rim, toasted golden in patches.
+    s = Sprite()
+    shell = plain_ramp("#e2d4ae")
+    toast = ramp("#c89a4a")[BASE]
+    for i, (cx, cy, angle) in enumerate(PILE_SPOTS):
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        s.ellipse(shell, cx, cy, 2.9, 2.0, angle=angle)
+        s.put(round(cx - 0.5), round(cy - 0.5), shell[SHADOW])
+        s.put(round(cx + cos * (1.0 if i % 2 else -1.0) - 0.5), round(cy + sin * (1.0 if i % 2 else -1.0) - 0.5), toast)
+        s.put(round(cx + cos * 2.3 - 0.5), round(cy + sin * 2.3 - 0.5), shell[SHADOW])  # The pointed end.
+    return s
+
+
+def toasted_sesame_seeds_hand():
+    # Sesame toasted to a golden brown.
+    s = Sprite()
+    seed = [(112, 72, 34), (160, 110, 56), (196, 146, 80), (218, 176, 112), (236, 208, 150)]
+    for cx, cy, angle in SMALL_SEED_SPOTS:
+        s.ellipse(seed, cx, cy, 1.6, 1.1, angle=angle)
+        s.put(round(cx + math.cos(math.radians(angle)) * 1.2 - 0.5), round(cy + math.sin(math.radians(angle)) * 1.2 - 0.5), seed[SHADOW])
+    return s
+
+
+def tomatillo_seeds_hand():
+    # Tiny, flat, round tan seeds.
+    s = Sprite()
+    seed = plain_ramp("#c8ac7a")
+    for cx, cy, _ in SMALL_SEED_SPOTS_LOW:
+        s.ellipse(seed, cx, cy, 1.3, 1.2)
+        s.put(int(cx) - 1, int(cy) - 1, seed[HIGHLIGHT])
+    return s
+
+
+def tomato_seeds_hand():
+    # Flat, fuzzy, pale buff seeds, rounded with a little point.
+    s = Sprite()
+    seed = plain_ramp("#e0cc9c")
+    for cx, cy, angle in SEED_SPOTS_LOW:
+        s.ellipse(seed, cx, cy, 1.8, 1.5, angle=angle)
+        s.put(int(cx) - 1, int(cy) - 1, seed[HIGHLIGHT])
+        s.put(round(cx + math.cos(math.radians(angle)) * 1.6 - 0.5), round(cy + math.sin(math.radians(angle)) * 1.6 - 0.5), seed[SHADOW])
+    return s
+
+
+def vanilla_cutting_hand():
+    # A length of thick, bright green, fleshy vanilla vine with a flat oblong leaf and a pale aerial root at a node.
+    s = Sprite()
+    vine = ramp("#4aa83c", spread=0.6)
+    s.capsule(vine, [(3.0, 15.0), (12.6, 1.0)], (1.3, 1.1))
+    s.put(3, 15, vine[HIGHLIGHT])  # The fresh cut.
+    leaf = ramp("#3e9a38", spread=0.6)
+    s.ellipse(leaf, 11.4, 9.2, 3.6, 1.8, angle=-60)
+    s.line(leaf[LIGHT], 10, 11, 12, 7)
+    s.pixels_at(vine[SHADOW], [(6, 10), (7, 10), (9, 6), (10, 6)])  # Nodes.
+    root = ramp("#c8c4b0")
+    s.pixels_at(root[BASE], [(5, 11), (4, 12), (3, 12), (2, 13)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -3107,6 +3174,8 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"toasted_pumpkin_seeds": toasted_pumpkin_seeds_hand, "toasted_sesame_seeds": toasted_sesame_seeds_hand,
+             "tomatillo_seeds": tomatillo_seeds_hand, "tomato_seeds": tomato_seeds_hand, "vanilla_cutting": vanilla_cutting_hand})
 HAND.update({"tea_cutting": tea_cutting_hand, "thai_aubergine_seeds": thai_aubergine_seeds_hand, "thai_basil_seeds": thai_basil_seeds_hand,
              "thyme_cutting": thyme_cutting_hand, "toasted_cumin_seed": toasted_cumin_seed_hand})
 HAND.update({"savory": savory_hand, "savory_seeds": savory_seeds_hand, "sesame_seed": sesame_seed_hand,

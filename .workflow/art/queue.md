@@ -112,11 +112,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] thai_basil_seeds
 - [x] thyme_cutting
 - [x] toasted_cumin_seed
-- [ ] toasted_pumpkin_seeds
-- [ ] toasted_sesame_seeds
-- [ ] tomatillo_seeds
-- [ ] tomato_seeds
-- [ ] vanilla_cutting
+- [x] toasted_pumpkin_seeds
+- [x] toasted_sesame_seeds
+- [x] tomatillo_seeds
+- [x] tomato_seeds
+- [x] vanilla_cutting
 - [ ] wasabi_root
 - [x] white_grape_cutting
 
