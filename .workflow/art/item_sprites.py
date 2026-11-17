@@ -2331,13 +2331,17 @@ def thai_basil_hand():
 
 
 def vanilla_pod_hand():
+    return vanilla_pods("#4a2c22")
+
+
+def vanilla_pods(colour, shine=True):
     s = Sprite()
-    pod = ramp("#4a2c22", spread=0.7)
+    pod = ramp(colour, spread=0.7)
     # Long, thin, wrinkled pods, slightly curved, one with its tip curled over.
     for a, b, c in (((1.4, 13.4), (6.0, 4.0), (13.6, 1.4)), ((3.6, 14.8), (9.0, 7.0), (14.8, 3.4))):
         points = [(x, y) for x, y, t in curve(a, b, c, steps=8)]
-        s.capsule(pod, points, (1.6, 1.0), texture=lambda x, y: -1 if (x + y) % 3 == 0 else 0)
-        for x, y, t in curve(a, b, c, steps=12)[1:-2:2]:
+        s.capsule(pod, points, (1.6, 1.0), texture=(lambda x, y: -1 if (x + y) % 3 == 0 else 0) if shine else None)
+        for x, y, t in curve(a, b, c, steps=12)[1:-2:2] if shine else []:
             s.put(int(x) - 1, int(y), pod[HIGHLIGHT])
     s.pixels_at(pod[SHADOW], [(14, 0), (15, 1)])
     return s
@@ -3637,10 +3641,10 @@ def slab(lean, fat=None, marbling=0.0, rind=None, cx=7.5, cy=8.5, rx=6.6, ry=4.6
             if s.pixels[y][x] in (None, meat[OUTLINE]):
                 continue
             u, v = (x + 0.5 - cx) * cos + (y + 0.5 - cy) * sin, -(x + 0.5 - cx) * sin + (y + 0.5 - cy) * cos
-            if fat and v > ry - fat_side - 0.6:
-                s.put(x, y, (plain_ramp(rind) if rind and v > ry - 1.2 else plain_ramp(fat))[BASE if v < ry - 1.0 else SHADOW])
+            if fat and v > ry - fat_side - 1.2:
+                s.put(x, y, (plain_ramp(rind) if rind and v > ry - 1.6 else plain_ramp(fat))[BASE if v < ry - 1.4 else SHADOW])
             elif marbling and rng.random() < marbling:
-                s.put(x, y, plain_ramp(fat or "#f2e8e0")[LIGHT])
+                s.put(x, y, plain_ramp("#e6a49c")[BASE])  # Marbling: soft pink streaks, not white glints.
     return s
 
 
@@ -3670,19 +3674,31 @@ def bacon_hand():
     return s
 
 
-def baked_bienenstich_hand():
-    # A slice of bee sting cake seen from the side: a golden yeast-cake base, a thick layer of vanilla cream, and a top
-    # of sticky, caramelised flaked almonds, all one outlined block.
+def bienenstich_slice(cream):
+    """A slice of bee sting cake seen from the side: a golden yeast-cake base and a top of sticky, caramelised flaked
+    almonds, with a thick layer of vanilla cream between them once it is filled."""
     s = Sprite()
-    cake, cream, top = plain_ramp("#e2b868"), plain_ramp("#f6eccc"), ramp("#c88a32", spread=0.6)
-    s.shape(lambda x, y: 1 <= x <= 14 and 3 <= y <= 14, cake, (7.5, 8.5), (7.0, 6.0))
-    for y in range(4, 14):
+    cake, filling, top = plain_ramp("#e2b868"), plain_ramp("#f6eccc"), ramp("#c88a32", spread=0.6)
+    bottom = 3 if cream else 6
+    s.shape(lambda x, y: 1 <= x <= 14 and bottom <= y <= 14, cake, (7.5, 8.5), (7.0, 6.0))
+    for y in range(bottom + 1, 14):
         for x in range(2, 14):
-            s.put(x, y, top[BASE] if y <= 6 else cream[BASE] if y <= 10 else cake[BASE])
-    s.pixels_at(plain_ramp("#f0d8a0")[BASE], [(3, 4), (6, 4), (9, 5), (12, 4), (4, 5), (11, 6)])  # Almond flakes.
-    s.pixels_at(cream[SHADOW], [(x, 10) for x in range(2, 14)])
+            s.put(x, y, top[BASE] if y <= bottom + 3 else filling[BASE] if cream and y <= 10 else cake[BASE])
+    s.pixels_at(plain_ramp("#f0d8a0")[BASE], [(3, bottom + 1), (6, bottom + 1), (9, bottom + 2), (12, bottom + 1), (4, bottom + 2), (11, bottom + 3)])
+    if cream:
+        s.pixels_at(filling[SHADOW], [(x, 10) for x in range(2, 14)])
     s.pixels_at(cake[SHADOW], [(4, 13), (9, 12), (12, 13)])
     return s
+
+
+def baked_bienenstich_hand():
+    # The baked cake before filling: yeast cake under its caramelised almond top.
+    return bienenstich_slice(cream=False)
+
+
+def bienenstich_hand():
+    # Filled with vanilla cream.
+    return bienenstich_slice(cream=True)
 
 
 def baked_creme_brulee_hand():
@@ -3808,6 +3824,128 @@ def beef_heart_hand():
     # A whole beef heart: big, dark red, with a cap of white fat and the vessels at the top.
     return heart("#8a2a2a", fat="#f0e6d6")
 
+def kidney(colour, cx, cy, size, s):
+    """A kidney made of many small rounded lobes clustered together."""
+    tones = ramp(colour, spread=0.6)
+    for dx, dy in [(-2, -1), (0, -2), (2, -1), (-2, 1), (0, 0), (2, 1), (-1, 2), (1, 2)]:
+        s.ellipse(tones, cx + dx * size, cy + dy * size, 1.6 * size, 1.4 * size)
+    for dx, dy in [(-2, -1), (0, -2), (2, -1), (0, 0)]:
+        s.put(round(cx + dx * size - 0.8), round(cy + dy * size - 0.8), tones[HIGHLIGHT])
+    return s
+
+
+def beef_kidneys_hand():
+    # Two beef kidneys: dark red-brown, made of many small rounded lobes.
+    s = kidney("#8a3a30", 5.0, 5.4, 1.0, Sprite())
+    return kidney("#8a3a30", 10.6, 10.6, 1.0, s)
+
+
+def liver(colour, cx=7.5, cy=8.0, rx=6.8, ry=4.6, angle=-15, s=None):
+    """A smooth, glossy lobe of liver: rounded, with one lobe overlapping another and a bright sheen."""
+    s = s or Sprite()
+    tones = ramp(colour, spread=0.6)
+    s.ellipse(tones, cx - rx * 0.25, cy + ry * 0.15, rx * 0.8, ry * 0.85, angle=angle)
+    s.ellipse(tones, cx + rx * 0.2, cy - ry * 0.1, rx * 0.75, ry * 0.8, angle=angle)
+    s.pixels_at(tones[HIGHLIGHT], [(round(cx - 1), round(cy - ry * 0.5)), (round(cx), round(cy - ry * 0.5)), (round(cx - 3), round(cy))])
+    s.put(round(cx - 1), round(cy + 1), tones[SHADOW])
+    return s
+
+
+def beef_liver_hand():
+    return liver("#6a2a26")
+
+
+def beef_rib_roast_hand():
+    # A standing rib roast: a thick, red, marbled joint with a cap of fat, and the ends of the white rib bones standing
+    # up out of its top.
+    s = Sprite()
+    bone = plain_ramp("#ece2cc")
+    for x in (4.0, 7.6, 11.2):
+        s.capsule(bone, [(x, 9.0), (x + 0.6, 1.6)], (1.1, 1.1))
+    return slab("#b03a34", fat="#f0e6d6", marbling=0.08, cx=7.5, cy=10.4, rx=6.6, ry=4.4, angle=0, fat_side=1.4, seed=31, s=s)
+
+
+def beef_round_hand():
+    # Beef round: a lean, deep red roasting joint with very little fat.
+    return slab("#a83430", fat="#f0e6d6", rx=6.2, ry=5.2, angle=10, fat_side=0.6, seed=41)
+
+
+def beef_shank_hand():
+    # A cross-cut slice of beef shank: dark red meat round a white bone with pink marrow in its middle.
+    s = slab("#a03030", fat="#f0e6d6", rx=6.6, ry=5.6, angle=0, fat_side=0.6, marbling=0.06, seed=9)
+    bone = plain_ramp("#ece2cc")
+    s.ellipse(bone, 7.5, 7.6, 2.4, 2.2)
+    s.ellipse(ramp("#d07a6a", spread=0.5), 7.5, 7.6, 1.2, 1.1, outline=False)
+    return s
+
+
+def beef_sirloin_hand():
+    # A sirloin steak: deep red, finely marbled, with a strip of white fat down one edge.
+    return slab("#b03a34", fat="#f0e6d6", marbling=0.06, rx=6.8, ry=4.6, angle=-15, fat_side=1.6, seed=55)
+
+
+def beef_strips_hand():
+    # Thin strips of sliced beef, lean and red, lying at angles.
+    s = Sprite()
+    meat = ramp("#c24a40", spread=0.55)
+    for start, end in [((1.6, 3.4), (10.0, 1.6)), ((2.4, 8.4), (14.0, 4.8)), ((1.6, 13.6), (11.0, 10.4)), ((8.0, 14.6), (14.6, 11.4))]:
+        s.capsule(meat, [start, end], (1.5, 1.3))
+        s.put(round((start[0] + end[0]) / 2 - 0.5), round((start[1] + end[1]) / 2 - 1.0), meat[HIGHLIGHT])
+    return s
+
+
+def beef_tongue_hand():
+    # A whole beef tongue: long, thick, a dull greyish pink, rough and bumpy on top, narrowing to a rounded tip.
+    s = Sprite()
+    tongue = ramp("#b88078", spread=0.6)
+    s.capsule(tongue, [(2.4, 12.6), (8.0, 8.0), (13.4, 3.0)], (3.2, 1.8),
+              texture=lambda x, y: -1 if (x * 2 + y) % 4 == 0 else 1 if (x + y * 3) % 5 == 0 else 0)
+    s.pixels_at(ramp("#8a4a44")[BASE], [(1, 14), (2, 14), (1, 13)])  # The cut root.
+    return s
+
+
+def berliner_hand():
+    # A Berliner: a round, golden-brown doughnut with a pale band round its middle, dusted with sugar, red jam peeping out.
+    s = Sprite()
+    dough = ramp("#d0903a", spread=0.7)
+    s.ellipse(dough, 7.5, 8.4, 6.6, 5.6)
+    s.pixels_at(plain_ramp("#f0d8a0")[BASE], [(x, 10) for x in range(2, 14)])  # The pale band where it floated.
+    sugar = plain_ramp("#fafaf6")[BASE]
+    s.pixels_at(sugar, [(5, 4), (7, 4), (9, 5), (6, 6), (10, 4), (8, 6), (4, 6)])
+    jam = ramp("#c02a3a", spread=0.6)
+    s.ellipse(jam, 13.0, 9.6, 1.6, 1.4)
+    return s
+
+
+def black_bean_mash_hand():
+    # Refried black beans: a dark, glossy, purple-black mash heaped in a bowl, with bits of onion.
+    return bowl("#2e2632", mound=2.4, texture=bumpy, flecks=[("#e8e0d0", 0.05)])
+
+
+def black_pepper_hand():
+    # Ground black pepper: a coarse grey-black powder.
+    return spice_bowl("#4a4644", fleck="#8a8680", seed=19)
+
+
+def black_tea_hand():
+    # Black tea: a heap of tightly twisted, dry, near-black leaves with a few golden tips.
+    return seed_heap("#3a2a22", fleck="#b88a40", seed=23)
+
+
+def blanched_almonds_hand():
+    # Blanched almonds: skinned, smooth and creamy white.
+    s = Sprite()
+    shell = plain_ramp("#f0e4c8")
+    stamp(s, ALMOND, shell, 1, 1)
+    stamp(s, ALMOND, shell, 9, 2, mirror=True)
+    stamp(s, ALMOND, shell, 5, 6)
+    return s
+
+
+def blanched_vanilla_pods_hand():
+    # Fresh vanilla pods scalded to stop them growing: no longer green, a soft olive brown, not yet cured dark.
+    return vanilla_pods("#7a6a32", shine=False)
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -3858,6 +3996,10 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"beef_kidneys": beef_kidneys_hand, "beef_liver": beef_liver_hand, "beef_rib_roast": beef_rib_roast_hand, "beef_round": beef_round_hand,
+             "beef_shank": beef_shank_hand, "beef_sirloin": beef_sirloin_hand, "beef_strips": beef_strips_hand, "beef_tongue": beef_tongue_hand,
+             "berliner": berliner_hand, "bienenstich": bienenstich_hand, "black_bean_mash": black_bean_mash_hand, "black_pepper": black_pepper_hand,
+             "black_tea": black_tea_hand, "blanched_almonds": blanched_almonds_hand, "blanched_vanilla_pods": blanched_vanilla_pods_hand})
 HAND.update({"arroz_con_leche": arroz_con_leche_hand, "azuki_mash": azuki_mash_hand, "back_fat": back_fat_hand, "bacon": bacon_hand,
              "baked_bienenstich": baked_bienenstich_hand, "baked_creme_brulee": baked_creme_brulee_hand,
              "baked_kammerjunkere": baked_kammerjunkere_hand, "bay_laurel_sapling": bay_laurel_sapling_hand, "bay_leaf": bay_leaf_hand,

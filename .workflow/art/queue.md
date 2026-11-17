@@ -171,21 +171,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] beef_brisket
 - [x] beef_chuck
 - [x] beef_heart
-- [ ] beef_kidneys
-- [ ] beef_liver
-- [ ] beef_rib_roast
-- [ ] beef_round
-- [ ] beef_shank
-- [ ] beef_sirloin
-- [ ] beef_strips
-- [ ] beef_tongue
-- [ ] berliner
-- [ ] bienenstich
-- [ ] black_bean_mash
-- [ ] black_pepper
-- [ ] black_tea
-- [ ] blanched_almonds
-- [ ] blanched_vanilla_pods
+- [x] beef_kidneys
+- [x] beef_liver
+- [x] beef_rib_roast
+- [x] beef_round
+- [x] beef_shank
+- [x] beef_sirloin
+- [x] beef_strips
+- [x] beef_tongue
+- [x] berliner
+- [x] bienenstich
+- [x] black_bean_mash
+- [x] black_pepper
+- [x] black_tea
+- [x] blanched_almonds
+- [x] blanched_vanilla_pods
 - [ ] blind_baked_shell
 - [ ] blood_sausage
 - [ ] blood_sausage_filling
