@@ -4663,12 +4663,32 @@ def chicken_skin_hand():
 
 
 def chicken_thighs_hand():
-    # Raw chicken thighs: rounded pieces of pinkish meat, partly covered with pale, puckered skin.
+    # Raw skin-on chicken thighs: broad, lumpy, irregular pieces wrapped in loose, pale pinkish-white skin, pimpled with
+    # follicles, with pink meat showing where the skin falls short at the ends.
     s = Sprite()
-    for cx, cy in [(5.0, 5.6), (10.4, 10.4)]:
-        s.ellipse(plain_ramp("#e8a898"), cx, cy, 4.4, 3.6)
-        s.ellipse(plain_ramp("#f2d4b0"), cx - 0.6, cy - 0.6, 3.4, 2.6, outline=False)
-        s.pixels_at(plain_ramp("#d8b890")[BASE], [(round(cx) - 2, round(cy) - 1), (round(cx), round(cy) - 2)])
+    skin, meat = plain_ramp("#eccaca"), plain_ramp("#e89a8a")
+    for cx, cy, angle, seed in [(5.2, 5.4, -15, 3), (10.4, 10.8, 20, 8)]:
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        rng = random.Random(seed)
+
+        def lump(x, y, cx=cx, cy=cy, cos=cos, sin=sin):
+            u, v = (x - cx) * cos + (y - cy) * sin, -(x - cx) * sin + (y - cy) * cos
+            # A squarish, lumpy shape: wider than tall, its outline wobbling.
+            wobble = 0.35 * math.sin(u * 1.7) + 0.25 * math.cos(v * 2.1)
+            return (abs(u) / 5.0) ** 3 + (abs(v) / 3.8) ** 3 <= 1 + wobble * 0.3
+        s.shape(lump, skin, (cx, cy), (5.0, 3.8))
+        # Pink meat at one end, where the skin stops short.
+        for t in (-1, 0, 1):
+            x, y = cx - cos * 4.0 - sin * t, cy - sin * 4.0 + cos * t
+            s.put(round(x - 0.5), round(y - 0.5), meat[BASE])
+        s.put(round(cx - cos * 4.0 - 0.5), round(cy - sin * 4.0 + 1.5), meat[SHADOW])
+        # Follicles and folds in the skin.
+        for _ in range(6):
+            x, y = round(cx + rng.uniform(-3, 3)), round(cy + rng.uniform(-2, 2))
+            if s.pixels[y][x] in skin[1:]:
+                s.put(x, y, skin[SHADOW])
+        s.put(round(cx - 1), round(cy - 2), skin[HIGHLIGHT])
+        s.put(round(cx), round(cy - 2), skin[HIGHLIGHT])
     return s
 
 
