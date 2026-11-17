@@ -2931,10 +2931,93 @@ def rosemary_cutting_hand():
     s.pixels_at(wood[LIGHT], [(5, 12), (6, 10)])  # Scars where needles were stripped.
     return s
 
+def savory_hand():
+    s = Sprite()
+    stem = ramp("#6a7a44")
+    leaf = ramp("#5a9248", spread=0.6)
+    # Three upright sprigs gathered at the bottom, with narrow, pointed leaves in pairs and tiny pale lilac flowers.
+    for (x1, y1), nodes in (((3, 2), [(5, 9), (4, 5)]), ((8, 0), [(8, 8), (8, 4)]), ((13, 2), [(11, 9), (12, 5)])):
+        s.line(stem[BASE], 8, 15, x1, y1)
+        for x, y in nodes:
+            s.ellipse(leaf, x - 1.6, y + 0.5, 2.0, 1.1, angle=-35)
+            s.ellipse(leaf, x + 2.6, y + 0.5, 2.0, 1.1, angle=35)
+        s.pixels_at(ramp("#d8c4e8")[BASE], [(x1, y1), (x1 - 1, y1 + 1)])
+    return s
+
+
+def savory_seeds_hand():
+    # Small oval seeds, dark grey-black with a dull sheen.
+    s = Sprite()
+    seed = ramp("#3a3a3c", spread=0.5)
+    for cx, cy, angle in SMALL_SEED_SPOTS_LOW:
+        s.ellipse(seed, cx, cy, 1.5, 1.1, angle=angle)
+        s.put(int(cx) - 1, int(cy) - 1, ramp("#8a8a86")[BASE])
+    return s
+
+
+def sesame_seed_hand():
+    # Many small, flat, pale tan teardrops.
+    s = Sprite()
+    # Set by hand: the ramp turns such a pale tan peach at its outline, and these seeds are mostly outline.
+    seed = [(150, 128, 90), (196, 174, 130), (222, 206, 166), (236, 224, 192), (246, 240, 222)]
+    for cx, cy, angle in SMALL_SEED_SPOTS:
+        s.ellipse(seed, cx, cy, 1.6, 1.1, angle=angle)
+        s.put(round(cx + math.cos(math.radians(angle)) * 1.2 - 0.5), round(cy + math.sin(math.radians(angle)) * 1.2 - 0.5), seed[SHADOW])
+    return s
+
+
+def spring_onion_seeds_hand():
+    # Flat, pale grey-green teardrop seeds, each with a darker middle.
+    s = Sprite()
+    seed = ramp("#a8ad86", spread=0.5)
+    for cx, cy, angle in SEED_SPOTS:
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        s.ellipse(seed, cx, cy, 2.2, 1.4, angle=angle)
+        s.put(round(cx - 0.5), round(cy - 0.5), seed[SHADOW])
+        s.put(round(cx - cos * 1.2 - 0.5), round(cy - sin * 1.2 - 0.5), seed[HIGHLIGHT])
+    return s
+
+
+def strawberry_runner_hand():
+    # A pinkish-red runner stem with a small new plant on it: three toothed leaflets and a brown root bud at its base.
+    s = Sprite()
+    runner = ramp("#c06a5a", spread=0.6)
+    s.capsule(runner, [(0.4, 14.6), (4.0, 12.6), (7.4, 12.6)], (0.7, 0.7))
+    s.capsule(runner, [(7.4, 12.6), (11.4, 12.4), (15.4, 9.0)], (0.7, 0.6))
+    stalk = ramp("#8ab05a")
+    s.line(stalk[BASE], 8, 12, 7, 7)
+    leaf = ramp("#5aa83a", spread=0.7)
+    for cx, cy, angle in [(4.0, 5.6, -30), (7.6, 2.8, -90), (11.2, 5.6, -150)]:
+        mask = s.ellipse(leaf, cx, cy, 2.3, 1.7, angle=angle)
+        for x, y in mask:
+            if (x + y) % 2 == 0 and s.pixels[y][x] == leaf[OUTLINE]:
+                s.put(x, y, leaf[SHADOW])  # A toothed edge.
+        s.put(int(cx), int(cy), leaf[HIGHLIGHT])
+    root = ramp("#7a4a2a")
+    s.ellipse(root, 7.8, 13.6, 1.4, 1.2)
+    s.pixels_at(root[SHADOW], [(7, 15), (9, 15)])
+    return s
+
+
+def sunflower_seeds_hand():
+    # Pointed oval seeds, black with grey-white stripes running along their length.
+    s = Sprite()
+    seed = ramp("#4a4844", spread=0.6)
+    stripe = ramp("#d4d0c6")[BASE]
+    for cx, cy, angle in PILE_SPOTS:
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        s.ellipse(seed, cx, cy, 2.8, 1.6, angle=angle)
+        for t in (-1, 0, 1):
+            s.put(round(cx + cos * t - 0.5), round(cy + sin * t - 0.5), stripe)
+    return s
+
+
+PILE_SPOTS = [(4.4, 4.2, -30), (11.0, 4.0, 30), (3.8, 10.4, 60), (8.6, 8.4, -10), (12.4, 11.6, -60), (7.0, 13.4, 20)]
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
-# courgette and cucumber, marjoram and oregano, and mint. The three grape cuttings and the two currant cuttings carry
+# courgette and cucumber, marjoram and oregano, mint, and savory. The three grape cuttings and the two currant cuttings carry
 # one too. The picture is the plant's own sprite, shrunk.
 SEED_PLANTS = {
     "aji_amarillo_seeds": "aji_amarillo", "bell_pepper_seeds": "bell_pepper", "birds_eye_chili_seeds": "birds_eye_chili",
@@ -2944,7 +3027,7 @@ SEED_PLANTS = {
     "thai_aubergine_seeds": "thai_aubergine", "tomato_seeds": "tomato", "tomatillo_seeds": "tomatillo",
     "courgette_seeds": "courgette", "cucumber_seeds": "cucumber", "marjoram_seeds": "marjoram", "oregano_seeds": "oregano",
     "mint_seeds": "mint", "grape_cutting": "grape", "red_grape_cutting": "red_grape", "white_grape_cutting": "white_grape",
-    "blackcurrant_cutting": "blackcurrant", "redcurrant_cutting": "redcurrant",
+    "blackcurrant_cutting": "blackcurrant", "redcurrant_cutting": "redcurrant", "savory_seeds": "savory",
 }
 BADGE = 8
 
@@ -2977,6 +3060,8 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"savory": savory_hand, "savory_seeds": savory_seeds_hand, "sesame_seed": sesame_seed_hand,
+             "spring_onion_seeds": spring_onion_seeds_hand, "strawberry_runner": strawberry_runner_hand, "sunflower_seeds": sunflower_seeds_hand})
 HAND.update({"red_grape_cutting": red_grape_cutting_hand, "white_grape_cutting": white_grape_cutting_hand, "redcurrant_cutting": redcurrant_cutting_hand,
              "rhubarb_crown": rhubarb_crown_hand, "roselle_seeds": roselle_seeds_hand, "rosemary_cutting": rosemary_cutting_hand})
 HAND.update({"poblano_chili_seeds": poblano_chili_seeds_hand, "radish_seeds": radish_seeds_hand, "raspberry_cutting": raspberry_cutting_hand,

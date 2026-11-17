@@ -86,7 +86,7 @@ final class CookingPlants {
 	static final Block HOP_VINE = trellisCrop("hop_vine", "hop_rhizome", () -> HOPS);
 
 	// Delivery 1: perennial bushes that regrow after picking. Most are planted from a cutting that shears take from a grown
-	// bush; marjoram, oregano, and mint from seeds that a grown bush gives when broken.
+	// bush; marjoram, oregano, savory, and mint from seeds that a grown bush gives when broken.
 	static final Block THYME_BUSH = cuttingBush("thyme_bush", "thyme", "thyme_cutting", null);
 	static final Block MARJORAM_BUSH = seedBush("marjoram_bush", "marjoram", "marjoram_seeds");
 	static final Block STRAWBERRY_BUSH = cuttingBush("strawberry_bush", "strawberry", "strawberry_runner", food(2, 1.2F));
@@ -161,8 +161,9 @@ final class CookingPlants {
 	static final Block OLIVE_LEAVES = fruitTree("olive",
 		properties -> new FruitingLeavesBlock.TwoStageFruit(properties, () -> GREEN_OLIVE, () -> BLACK_OLIVE), List.of(GREEN_OLIVE, BLACK_OLIVE), false);
 	static {
-		for (String herb : new String[] {"rosemary", "savory"}) cuttingBush(herb + "_bush", herb, herb + "_cutting", null);
+		cuttingBush("rosemary_bush", "rosemary", "rosemary_cutting", null);
 		seedBush("oregano_bush", "oregano", "oregano_seeds");
+		seedBush("savory_bush", "savory", "savory_seeds");
 		fieldCrop("aji_amarillo", "aji_amarillo_seeds");
 	}
 

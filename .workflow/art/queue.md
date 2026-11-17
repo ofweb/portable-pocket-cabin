@@ -102,11 +102,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] rhubarb_crown
 - [x] roselle_seeds
 - [x] rosemary_cutting
-- [ ] savory_cutting
-- [ ] sesame_seed
-- [ ] spring_onion_seeds
-- [ ] strawberry_runner
-- [ ] sunflower_seeds
+- [x] savory_seeds
+- [x] sesame_seed
+- [x] spring_onion_seeds
+- [x] strawberry_runner
+- [x] sunflower_seeds
 - [ ] tea_cutting
 - [ ] thai_aubergine_seeds
 - [ ] thai_basil_seeds
@@ -821,7 +821,7 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] sauerkraut
 - [ ] sauteed_mushrooms
 - [ ] sauteed_vegetables
-- [ ] savory
+- [x] savory
 - [ ] scalded_starch
 - [ ] schwarzwalder_kirschtorte
 - [ ] scored_pork_loin

@@ -43,10 +43,11 @@ CUTTING_VINES = ["grape_vine", "red_grape_vine", "white_grape_vine", "hop_vine",
 # Bushes grown from cuttings: plant -> cutting. What they give no longer plants them.
 CUTTING_BUSHES = {"blackcurrant_bush": "blackcurrant_cutting", "redcurrant_bush": "redcurrant_cutting",
                   "raspberry_bush": "raspberry_cutting", "strawberry_bush": "strawberry_runner",
-                  "thyme_bush": "thyme_cutting", "rosemary_bush": "rosemary_cutting", "savory_bush": "savory_cutting",
+                  "thyme_bush": "thyme_cutting", "rosemary_bush": "rosemary_cutting",
                   "pandan_bush": "pandan_cutting", "elder_bush": "elder_cutting", "tea_bush": "tea_cutting"}
 # Bushes grown from seeds: plant -> seeds. A grown bush broken gives two or three; a younger one gives one back.
-SEED_BUSHES = {"marjoram_bush": "marjoram_seeds", "oregano_bush": "oregano_seeds", "mint_bush": "mint_seeds"}
+SEED_BUSHES = {"marjoram_bush": "marjoram_seeds", "oregano_bush": "oregano_seeds", "savory_bush": "savory_seeds",
+               "mint_bush": "mint_seeds"}
 REMOVED_SEEDS = ["barley_seeds", "rye_seeds", "corn_seeds", "blue_corn_seeds", "purple_corn_seeds", "rice_seedlings",
                  "glutinous_rice_seedlings"]
 
