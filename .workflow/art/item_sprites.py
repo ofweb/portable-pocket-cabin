@@ -3295,6 +3295,59 @@ def aged_soft_cheese_hand():
     return cheese_wedge("#f0dc8e", "#f2f0e8", ooze=True, plain=True)
 
 
+def aged_yerba_mate_hand():
+    # Aged yerba mate: a heap of chopped dried leaf, a dusty olive-khaki, with pale bits of stem.
+    return seed_heap("#8a9058", fleck="#d8d0a8", seed=29)
+
+
+def ajitsuke_tamago_hand():
+    # A marinated egg cut in half: the white stained amber-brown from the soy marinade, the yolk soft and deep orange.
+    s = Sprite()
+    white = ramp("#c8904a", spread=0.6)
+    yolk = ramp("#f0a020", spread=0.6)
+    for cx, cy, angle in [(5.0, 6.4, -20), (10.6, 10.0, 20)]:
+        s.ellipse(white, cx, cy, 4.4, 3.4, angle=angle)
+        s.ellipse(ramp("#f2e8d0", spread=0.4), cx, cy, 3.2, 2.4, angle=angle, outline=False)  # The cut white, paler inside.
+        s.ellipse(yolk, cx + 0.3, cy + 0.2, 1.9, 1.6, outline=False)
+        s.put(int(cx), int(cy), yolk[HIGHLIGHT])
+    return s
+
+
+def al_pastor_adobo_hand():
+    # A bowl of thick, smooth, brick-red chili and achiote paste.
+    s = bowl("#b8381e", flecks=[("#e06a2a", 0.08)])
+    s.pixels_at(ramp("#b8381e")[HIGHLIGHT], [(4, 7), (5, 7)])
+    return s
+
+
+def al_pastor_meat_hand():
+    # A pile of thin pork slices shaved from the spit: red-orange from the adobo, charred dark at the edges, with a
+    # couple of bits of golden pineapple.
+    s = Sprite()
+    meat = ramp("#d8662e", spread=0.6)
+    char = ramp("#5a2a1a")[BASE]
+    for cx, cy, angle in [(5.0, 6.0, -25), (10.8, 6.6, 20), (4.4, 11.2, 15), (9.6, 11.0, -15), (7.4, 8.6, 5)]:
+        mask = s.ellipse(meat, cx, cy, 3.8, 1.9, angle=angle)
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        s.put(round(cx + cos * 3.0 - 0.5), round(cy + sin * 3.0 - 0.5), char)
+        s.put(round(cx - cos * 2.6 - 0.5), round(cy - sin * 2.6 - 0.5), char)
+        s.put(round(cx - 0.5), round(cy - 1.0), meat[HIGHLIGHT])
+    pineapple = plain_ramp("#f2d460")
+    for cx, cy in [(12.6, 12.4), (2.6, 14.0)]:
+        s.ellipse(pineapple, cx, cy, 1.4, 1.2)
+    return s
+
+
+def alfajor_biscuits_hand():
+    # Three plain, pale, crumbly round biscuits, the halves of alfajores before filling, stacked a little apart.
+    s = Sprite()
+    dough = plain_ramp("#e6c88c")
+    for cx, cy in [(4.8, 4.6), (11.0, 7.0), (6.0, 11.8)]:
+        s.ellipse(dough, cx, cy, 3.8, 2.8)
+        s.pixels_at(dough[SHADOW], [(int(cx) - 1, int(cy) + 1), (int(cx) + 1, int(cy)), (int(cx) + 2, int(cy) + 1)])  # Crumb.
+        s.put(int(cx) - 2, int(cy) - 1, dough[HIGHLIGHT])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -3341,6 +3394,8 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"aged_yerba_mate": aged_yerba_mate_hand, "ajitsuke_tamago": ajitsuke_tamago_hand, "al_pastor_adobo": al_pastor_adobo_hand,
+             "al_pastor_meat": al_pastor_meat_hand, "alfajor_biscuits": alfajor_biscuits_hand})
 HAND.update({"achiote_potato_mash": achiote_potato_mash_hand, "aebleskiver": aebleskiver_hand, "aebleskiver_batter": aebleskiver_batter_hand,
              "aged_hard_cheese": aged_hard_cheese_hand, "aged_soft_cheese": aged_soft_cheese_hand})
 HAND.update({"wasabi_root": wasabi_root_hand, "anise": anise_seed_hand, "cumin": cumin_hand, "cardamom": cardamom_hand,

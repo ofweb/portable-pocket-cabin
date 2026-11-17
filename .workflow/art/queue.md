@@ -131,11 +131,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] aebleskiver_batter
 - [x] aged_hard_cheese
 - [x] aged_soft_cheese
-- [ ] aged_yerba_mate
-- [ ] ajitsuke_tamago
-- [ ] al_pastor_adobo
-- [ ] al_pastor_meat
-- [ ] alfajor_biscuits
+- [x] aged_yerba_mate
+- [x] ajitsuke_tamago
+- [x] al_pastor_adobo
+- [x] al_pastor_meat
+- [x] alfajor_biscuits
 - [ ] alfajor_dough
 - [ ] alfajor_rounds
 - [ ] alfajores_de_maicena
