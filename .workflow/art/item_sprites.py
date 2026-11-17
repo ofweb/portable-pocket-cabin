@@ -3196,6 +3196,105 @@ def wasabi_hand():
     s.pixels_at(paste[SHADOW], [(9, 9), (10, 10), (8, 10)])
     return s
 
+BOWL = "#d6d8dc"
+
+
+def bowl(contents, mound=0.0, texture=None, flecks=(), seed=3, bowl_colour=BOWL, plain=False):
+    """A pale ceramic bowl seen from the side and a little above, filled with {contents}: a flat surface for batters and
+    soups, or heaped {mound} pixels above the rim for mashes. Flecks are (colour, chance) pairs scattered over the top."""
+    s = Sprite()
+    ceramic = plain_ramp(bowl_colour)
+    s.shape(lambda x, y: y >= 8.0 and ((x - 7.5) / 7.2) ** 2 + ((y - 8.0) / 7.0) ** 2 <= 1, ceramic, (7.5, 11.0), (7.2, 5.0))
+    s.pixels_at(ceramic[SHADOW], [(x, 14) for x in range(5, 11)])
+    s.pixels_at(ceramic[HIGHLIGHT], [(2, 10), (3, 11)])
+    food = plain_ramp(contents) if plain else ramp(contents, spread=0.6)
+    top = 8.0 - mound
+    s.shape(lambda x, y: (((x - 7.5) / 6.4) ** 2 + ((y - 8.0) / 1.8) ** 2 <= 1) or
+            (mound and y <= 8.0 and ((x - 7.5) / 6.0) ** 2 + ((y - 8.0) / (mound + 0.6)) ** 2 <= 1),
+            food, (7.5, 8.0 - mound / 2), (6.4, 1.8 + mound / 2), texture=texture)
+    rng = random.Random(seed)
+    for y in range(int(top) - 1, 10):
+        for x in range(1, 15):
+            if s.pixels[y][x] in (None, food[OUTLINE]) or s.pixels[y][x] in ceramic:
+                continue
+            for colour, chance in flecks:
+                if rng.random() < chance:
+                    s.put(x, y, ramp(colour)[BASE])
+                    break
+    return s
+
+
+def bumpy(x, y):
+    """A lumpy surface for mashes."""
+    return 1 if (x * 3 + y * 5) % 7 == 0 else -1 if (x * 5 + y * 3) % 7 == 0 else 0
+
+
+def achiote_potato_mash_hand():
+    # Mashed potato coloured a warm orange by achiote oil, heaped in a bowl, with a glossy streak of the oil.
+    s = bowl("#e8a040", mound=3.0, texture=bumpy)
+    s.pixels_at(ramp("#d0601e")[BASE], [(9, 6), (10, 6), (11, 7)])
+    return s
+
+
+def aebleskiver_hand():
+    # Three round, golden-brown æbleskiver on a plate, dusted with sugar, with a dab of red jam.
+    s = Sprite()
+    plate = plain_ramp("#e2e4e8")
+    s.ellipse(plate, 7.5, 12.6, 7.4, 2.6)
+    ball = ramp("#c8843a", spread=0.75)
+    for cx, cy in [(4.6, 9.4), (10.6, 9.4), (7.6, 6.2)]:
+        s.ellipse(ball, cx, cy, 3.4, 3.2, light=(-0.6, -0.8))
+        s.pixels_at(ramp("#f4f0ea")[BASE], [(int(cx) - 1, int(cy) - 2), (int(cx), int(cy) - 3), (int(cx) + 1, int(cy) - 2)])
+    jam = ramp("#c02a3a", spread=0.6)
+    s.ellipse(jam, 13.2, 12.6, 1.6, 1.0)
+    s.put(13, 12, jam[HIGHLIGHT])
+    return s
+
+
+def aebleskiver_batter_hand():
+    # A bowl of smooth, pale yellow batter, flecked with cardamom, with a glossy ripple.
+    s = bowl("#eedc9c", flecks=[("#6a6a4a", 0.06)], plain=True)
+    s.pixels_at(plain_ramp("#eedc9c")[HIGHLIGHT], [(4, 7), (5, 7), (6, 8)])
+    return s
+
+
+def cheese_wedge(inside, rind, holes=(), ooze=False, plain=False):
+    """A wedge of cheese, tip to the left: the cut face toward us, a lit top edge along its slope, and the rind down the
+    curved back on the right. Holes are pixels on the cut face; ooze lets a soft cheese run out at the foot."""
+    s = Sprite()
+    face = plain_ramp(inside) if plain else ramp(inside, spread=0.6)
+    skin = plain_ramp(rind) if plain else ramp(rind, spread=0.7)
+
+    def slope(x):
+        return 13.4 - (x - 0.6) * 0.78  # The top edge of the cut face.
+    # The wedge and its rind are one shape, so they share an outline; the rind is then painted over the back.
+    s.shape(lambda x, y: 0.6 <= x <= 14.6 and slope(x) <= y <= 13.6, face, (6.0, 10.0), (7.0, 5.0))
+    for x in range(12, 15):
+        for y in range(16):
+            if s.pixels[y][x] not in (None, face[OUTLINE]):
+                s.put(x, y, skin[BASE] if x < 14 else skin[SHADOW])
+    s.pixels_at(skin[HIGHLIGHT], [(12, 6), (12, 7)])
+    # The lit top edge of the cut face.
+    for x in range(2, 12):
+        y = math.ceil(slope(x))
+        if s.pixels[y][x] not in (None, face[OUTLINE]):
+            s.put(x, y, face[HIGHLIGHT])
+    s.pixels_at(face[SHADOW], list(holes))
+    if ooze:
+        s.pixels_at(face[LIGHT], [(5, 14), (6, 14), (7, 14), (8, 14)])
+    return s
+
+
+def aged_hard_cheese_hand():
+    # A wedge of aged hard cheese: deep golden inside with a few small holes, and a hard, waxy brown rind.
+    return cheese_wedge("#e6b44a", "#8a5a28", holes=[(6, 11), (9, 9), (10, 12), (4, 12), (8, 12)])
+
+
+def aged_soft_cheese_hand():
+    # A wedge of ripened soft cheese: a white, downy rind and a creamy, pale yellow inside running out at the foot.
+    return cheese_wedge("#f0dc8e", "#f2f0e8", ooze=True, plain=True)
+
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -3242,6 +3341,8 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"achiote_potato_mash": achiote_potato_mash_hand, "aebleskiver": aebleskiver_hand, "aebleskiver_batter": aebleskiver_batter_hand,
+             "aged_hard_cheese": aged_hard_cheese_hand, "aged_soft_cheese": aged_soft_cheese_hand})
 HAND.update({"wasabi_root": wasabi_root_hand, "anise": anise_seed_hand, "cumin": cumin_hand, "cardamom": cardamom_hand,
              "wasabi": wasabi_hand})
 HAND.update({"toasted_pumpkin_seeds": toasted_pumpkin_seeds_hand, "toasted_sesame_seeds": toasted_sesame_seeds_hand,

@@ -126,11 +126,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] cumin
 - [x] cardamom
 - [x] wasabi
-- [ ] achiote_potato_mash
-- [ ] aebleskiver
-- [ ] aebleskiver_batter
-- [ ] aged_hard_cheese
-- [ ] aged_soft_cheese
+- [x] achiote_potato_mash
+- [x] aebleskiver
+- [x] aebleskiver_batter
+- [x] aged_hard_cheese
+- [x] aged_soft_cheese
 - [ ] aged_yerba_mate
 - [ ] ajitsuke_tamago
 - [ ] al_pastor_adobo
