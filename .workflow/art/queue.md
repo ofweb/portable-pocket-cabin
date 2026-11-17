@@ -156,21 +156,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] arepa_dough
 - [x] arepas
 - [x] arepas_con_queso
-- [ ] arroz_con_leche
-- [ ] azuki_mash
-- [ ] back_fat
-- [ ] bacon
-- [ ] baked_bienenstich
-- [ ] baked_creme_brulee
-- [ ] baked_kammerjunkere
-- [ ] bay_laurel_sapling
-- [ ] bay_leaf
-- [ ] bean_sprouts
-- [ ] bechamel
-- [ ] beef_bones
-- [ ] beef_brisket
-- [ ] beef_chuck
-- [ ] beef_heart
+- [x] arroz_con_leche
+- [x] azuki_mash
+- [x] back_fat
+- [x] bacon
+- [x] baked_bienenstich
+- [x] baked_creme_brulee
+- [x] baked_kammerjunkere
+- [x] bay_laurel_sapling
+- [x] bay_leaf
+- [x] bean_sprouts
+- [x] bechamel
+- [x] beef_bones
+- [x] beef_brisket
+- [x] beef_chuck
+- [x] beef_heart
 - [ ] beef_kidneys
 - [ ] beef_liver
 - [ ] beef_rib_roast

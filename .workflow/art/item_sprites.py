@@ -3197,6 +3197,8 @@ def wasabi_hand():
     return s
 
 BOWL = "#d6d8dc"
+# A glazed clay bowl, for white and cream foods that would vanish in the pale one.
+CLAY = "#b8744a"
 
 
 def bowl(contents, mound=0.0, texture=None, flecks=(), seed=3, bowl_colour=BOWL, plain=False):
@@ -3609,6 +3611,203 @@ def arepas_con_queso_hand():
     s.ellipse(ramp("#f4d860", spread=0.5), 8.6, 4.4, 1.6, 0.9)
     return s
 
+def arroz_con_leche_hand():
+    # A bowl of creamy rice pudding dusted with cinnamon, with a few raisins.
+    s = bowl("#f2ead2", mound=1.2, texture=bumpy, plain=True, flecks=[("#a8642a", 0.12)], bowl_colour=CLAY)
+    s.pixels_at(ramp("#4a2228")[BASE], [(5, 7), (9, 6), (11, 8)])
+    return s
+
+
+def azuki_mash_hand():
+    # Mashed azuki beans: a coarse, dull red-brown mash with bits of skin, heaped in a bowl.
+    s = bowl("#7a3a32", mound=2.4, texture=bumpy, flecks=[("#4a1e1e", 0.1)])
+    return s
+
+
+def slab(lean, fat=None, marbling=0.0, rind=None, cx=7.5, cy=8.5, rx=6.6, ry=4.6, angle=-12, fat_side=1.4, seed=13, s=None):
+    """A raw cut of meat seen from above: a rounded slab of lean with a band of fat along one edge, optional streaks of
+    marbling, and an optional rind outside the fat."""
+    s = s or Sprite()
+    meat = ramp(lean, spread=0.65)
+    s.ellipse(meat, cx, cy, rx, ry, angle=angle)
+    cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+    rng = random.Random(seed)
+    for y in range(16):
+        for x in range(16):
+            if s.pixels[y][x] in (None, meat[OUTLINE]):
+                continue
+            u, v = (x + 0.5 - cx) * cos + (y + 0.5 - cy) * sin, -(x + 0.5 - cx) * sin + (y + 0.5 - cy) * cos
+            if fat and v > ry - fat_side - 0.6:
+                s.put(x, y, (plain_ramp(rind) if rind and v > ry - 1.2 else plain_ramp(fat))[BASE if v < ry - 1.0 else SHADOW])
+            elif marbling and rng.random() < marbling:
+                s.put(x, y, plain_ramp(fat or "#f2e8e0")[LIGHT])
+    return s
+
+
+def back_fat_hand():
+    # A thick slab of pork back fat: firm, creamy white, with the pale skin still on one edge.
+    s = Sprite()
+    fat = plain_ramp("#f2ece2")
+    s.shape(lambda x, y: 1 <= x <= 14 and 4 <= y <= 12 + (x % 3 == 0), fat, (7.5, 8.0), (7.0, 4.0))
+    s.pixels_at(plain_ramp("#e6c8a8")[BASE], [(x, 12) for x in range(2, 14)])  # The rind.
+    s.pixels_at(fat[HIGHLIGHT], [(3, 5), (4, 5), (5, 6)])
+    s.pixels_at(plain_ramp("#e8b8b0")[BASE], [(9, 7), (10, 8)])  # A thread of pink meat.
+    return s
+
+
+def bacon_hand():
+    # Three rashers of smoked streaky bacon, gently rippled: layers of deep pink meat and white fat, browned at the ends.
+    s = Sprite()
+    meat, fat = ramp("#c85a52", spread=0.6), plain_ramp("#f2e4d8")
+    for i, y0 in enumerate((2.0, 7.0, 12.0)):
+        for x in range(1, 15):
+            top = round(y0 + math.sin(x * 0.55 + i * 1.3) * 0.6)
+            column = [meat[LIGHT], fat[BASE], meat[BASE], meat[SHADOW]]
+            for k, colour in enumerate(column):
+                s.put(x, top + k, colour)
+            if x in (1, 14):
+                s.pixels_at(ramp("#7a3a2a")[BASE], [(x, top + k) for k in range(4)])
+    return s
+
+
+def baked_bienenstich_hand():
+    # A slice of bee sting cake seen from the side: a golden yeast-cake base, a thick layer of vanilla cream, and a top
+    # of sticky, caramelised flaked almonds, all one outlined block.
+    s = Sprite()
+    cake, cream, top = plain_ramp("#e2b868"), plain_ramp("#f6eccc"), ramp("#c88a32", spread=0.6)
+    s.shape(lambda x, y: 1 <= x <= 14 and 3 <= y <= 14, cake, (7.5, 8.5), (7.0, 6.0))
+    for y in range(4, 14):
+        for x in range(2, 14):
+            s.put(x, y, top[BASE] if y <= 6 else cream[BASE] if y <= 10 else cake[BASE])
+    s.pixels_at(plain_ramp("#f0d8a0")[BASE], [(3, 4), (6, 4), (9, 5), (12, 4), (4, 5), (11, 6)])  # Almond flakes.
+    s.pixels_at(cream[SHADOW], [(x, 10) for x in range(2, 14)])
+    s.pixels_at(cake[SHADOW], [(4, 13), (9, 12), (12, 13)])
+    return s
+
+
+def baked_creme_brulee_hand():
+    # Crème brûlée: a white ramekin of custard under a crackled, glassy caramel top.
+    s = Sprite()
+    dish = plain_ramp("#eceef2")
+    s.shape(lambda x, y: 1 <= x <= 14 and 7 <= y <= 14, dish, (7.5, 10.5), (7.0, 4.0))
+    s.pixels_at(dish[SHADOW], [(x, 13) for x in range(2, 14)])
+    for y in (9, 11):
+        s.pixels_at(dish[LIGHT], [(x, y) for x in range(2, 14, 2)])  # The fluted side.
+    top = ramp("#c07a2a", spread=0.6)
+    s.ellipse(top, 7.5, 6.6, 6.4, 2.4)
+    s.pixels_at(top[HIGHLIGHT], [(4, 6), (5, 5), (9, 6)])
+    s.pixels_at(top[SHADOW], [(7, 6), (8, 7), (11, 6)])  # Cracks.
+    return s
+
+
+def baked_kammerjunkere_hand():
+    # Kammerjunkere: small, crisp, twice-baked Danish biscuits, golden and split, with a rough sugary crumb.
+    s = Sprite()
+    biscuit = plain_ramp("#dca860")
+    for cx, cy, angle in [(4.6, 4.6, -15), (11.0, 5.8, 20), (5.4, 11.0, 10), (11.4, 11.6, -20)]:
+        s.ellipse(biscuit, cx, cy, 3.4, 2.4, angle=angle)
+        s.ellipse(plain_ramp("#f0d8a0"), cx, cy - 0.3, 2.2, 1.3, angle=angle, outline=False)  # The split, crumbly face.
+        s.put(int(cx), int(cy), biscuit[SHADOW])
+    return s
+
+
+def bay_laurel_sapling_hand():
+    # Bay laurel: narrow, pointed, glossy dark leaves.
+    return sapling("#3a7a3a", trunk_colour="#6a5a3a", leaf=(2.8, 1.1))
+
+
+def bay_leaf_hand():
+    # Two dried bay leaves: long, pointed, a dull olive-grey green, with a paler middle vein.
+    s = Sprite()
+    for (cx, cy, angle), colour in (((6.4, 7.0, -50), "#6e7e48"), ((9.8, 9.0, -35), "#7e8c56")):
+        tones = ramp(colour, spread=0.6)
+        s.ellipse(tones, cx, cy, 6.0, 2.2, angle=angle)  # noqa
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        for t in range(-4, 5):
+            s.put(round(cx + cos * t - 0.5), round(cy + sin * t - 0.5), tones[LIGHT])
+    return s
+
+
+def bean_sprouts_hand():
+    # A few bean sprouts: crisp, creamy-white curved stems, each with a small yellow bean head and a wispy root tail.
+    s = Sprite()
+    stem, head = plain_ramp("#f2eed4"), ramp("#d8cc50", spread=0.6)
+    for points in [[(2.0, 14.0), (3.4, 8.0), (2.6, 3.0)], [(6.0, 15.0), (6.6, 9.0), (8.4, 3.6)], [(10.4, 15.0), (11.0, 10.0), (13.4, 5.6)],
+                   [(14.6, 14.6), (9.0, 12.6), (5.0, 12.0)]]:
+        s.capsule(stem, points, (0.8, 1.1))
+        x, y = points[-1]
+        s.ellipse(head, x, y, 1.5, 1.3)
+        s.put(round(points[0][0] - 0.5), round(points[0][1] - 0.5), plain_ramp("#c8c0a0")[BASE])  # The root tail.
+    return s
+
+
+def bechamel_hand():
+    # Béchamel: a bowl of smooth, glossy white sauce with a grating of nutmeg.
+    s = bowl("#f4f0e4", plain=True, flecks=[("#a87a4a", 0.05)], bowl_colour=CLAY)
+    s.pixels_at(plain_ramp("#ffffff")[BASE], [(4, 7), (5, 7)])
+    return s
+
+
+def bones(colour, layout, s=None):
+    """Bones with knobbed ends. Each is (start, end, radius): a shaft between two rounded knuckles."""
+    s = s or Sprite()
+    tones = plain_ramp(colour)
+    for start, end, r in layout:
+        s.capsule(tones, [start, end], (r * 0.55, r * 0.55))
+        for (x, y), dx, dy in [(start, -1, 1), (end, 1, -1)]:
+            length = math.dist(start, end)
+            nx, ny = -(end[1] - start[1]) / length, (end[0] - start[0]) / length
+            for k in (-1, 1):
+                s.ellipse(tones, x + nx * k * r * 0.5, y + ny * k * r * 0.5, r * 0.62, r * 0.62)
+        s.put(round((start[0] + end[0]) / 2 - 0.5), round((start[1] + end[1]) / 2 - 1.0), tones[HIGHLIGHT])
+    return s
+
+
+def beef_bones_hand():
+    # A big beef bone, creamy white, knobbed at both ends, with a scrap of red meat still on it.
+    s = Sprite()
+    bone = plain_ramp("#ece2cc")
+    s.capsule(bone, [(3.6, 12.4), (12.4, 3.6)], (1.5, 1.5))
+    for x, y in [(2.0, 11.4), (4.6, 14.0), (11.4, 2.0), (14.0, 4.6)]:
+        s.ellipse(bone, x, y, 2.0, 2.0)
+    s.pixels_at(bone[HIGHLIGHT], [(7, 7), (8, 6), (11, 2)])
+    s.pixels_at(ramp("#a83a32")[BASE], [(8, 9), (9, 8), (9, 9)])
+    return s
+
+
+def beef_brisket_hand():
+    # Beef brisket: a long, flat, dark red slab with a thick cap of white fat along one side, coarse grain across it.
+    s = slab("#a83430", fat="#f0e6d6", rx=7.0, ry=4.4, angle=-10, fat_side=1.8)
+    for x in range(3, 13, 3):
+        s.line(ramp("#a83430")[SHADOW], x, 6, x + 1, 9)
+    return s
+
+
+def beef_chuck_hand():
+    # Beef chuck: a thick, deep red roasting joint, well marbled with fat.
+    return slab("#a83430", fat="#f0e6d6", marbling=0.12, rx=6.0, ry=5.4, angle=0, fat_side=1.0, seed=21)
+
+
+def heart(colour, cx=7.5, cy=8.4, size=1.0, fat=None, s=None):
+    """A whole heart: a rounded, pointed shape, darker toward the tip, with vessels at the top and an optional cap of fat."""
+    s = s or Sprite()
+    tones = ramp(colour, spread=0.6)
+    s.shape(lambda x, y: ((x - cx) / (5.2 * size)) ** 2 + ((y - cy + 1.4 * size) / (3.8 * size)) ** 2 <= 1 or
+            (y >= cy - 1.4 * size and abs(x - cx) <= (cy + 5.6 * size - y) * 0.8), tones, (cx, cy), (5.2 * size, 5.6 * size))
+    s.pixels_at(tones[HIGHLIGHT], [(round(cx - 3 * size), round(cy - 3 * size)), (round(cx - 2 * size), round(cy - 3.6 * size))])
+    vessel = ramp("#c8706a", spread=0.6)
+    s.pixels_at(vessel[BASE], [(round(cx - 1), round(cy - 5.4 * size)), (round(cx - 1), round(cy - 6.2 * size)),
+                               (round(cx + 1), round(cy - 5.4 * size)), (round(cx + 2), round(cy - 6.0 * size))])
+    if fat:
+        s.pixels_at(plain_ramp(fat)[BASE], [(round(cx - 3 * size), round(cy - 1.6 * size)), (round(cx + 2 * size), round(cy - 2.2 * size)),
+                                            (round(cx + 3 * size), round(cy - 1.4 * size))])
+    return s
+
+
+def beef_heart_hand():
+    # A whole beef heart: big, dark red, with a cap of white fat and the vessels at the top.
+    return heart("#8a2a2a", fat="#f0e6d6")
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -3624,7 +3823,7 @@ SEED_PLANTS = {
     "mint_seeds": "mint", "grape_cutting": "grape", "red_grape_cutting": "red_grape", "white_grape_cutting": "white_grape",
     "blackcurrant_cutting": "blackcurrant", "redcurrant_cutting": "redcurrant", "savory_seeds": "savory",
     "allspice_sapling": "allspice", "almond_sapling": "almond", "annatto_sapling": "annatto", "apple_sapling": "apple",
-    "apricot_sapling": "apricot",
+    "apricot_sapling": "apricot", "bay_laurel_sapling": "bay_laurel_leaf",
 }
 # Pictures for plants whose fruit is a vanilla item, which this script does not draw.
 BADGE_ONLY = {"apple": apple_badge, "annatto": annatto_badge}
@@ -3659,6 +3858,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"arroz_con_leche": arroz_con_leche_hand, "azuki_mash": azuki_mash_hand, "back_fat": back_fat_hand, "bacon": bacon_hand,
+             "baked_bienenstich": baked_bienenstich_hand, "baked_creme_brulee": baked_creme_brulee_hand,
+             "baked_kammerjunkere": baked_kammerjunkere_hand, "bay_laurel_sapling": bay_laurel_sapling_hand, "bay_leaf": bay_leaf_hand,
+             "bean_sprouts": bean_sprouts_hand, "bechamel": bechamel_hand, "beef_bones": beef_bones_hand, "beef_brisket": beef_brisket_hand,
+             "beef_chuck": beef_chuck_hand, "beef_heart": beef_heart_hand})
 HAND.update({"anchovy": anchovy_hand, "anko": anko_hand, "annatto_sapling": annatto_sapling_hand, "anticucho_marinade": anticucho_marinade_hand,
              "anticucho_skewer": anticucho_skewer_hand, "anticuchos": anticuchos_hand, "aonori": aonori_hand, "apfelstrudel": apfelstrudel_hand,
              "apple_compote": apple_compote_hand, "apple_pomace": apple_pomace_hand, "apple_sapling": apple_sapling_hand,
