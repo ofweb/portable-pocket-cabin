@@ -136,11 +136,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] al_pastor_adobo
 - [x] al_pastor_meat
 - [x] alfajor_biscuits
-- [ ] alfajor_dough
-- [ ] alfajor_rounds
-- [ ] alfajores_de_maicena
-- [ ] allspice_sapling
-- [ ] almond_sapling
+- [x] alfajor_dough
+- [x] alfajor_rounds
+- [x] alfajores_de_maicena
+- [x] allspice_sapling
+- [x] almond_sapling
 - [ ] anchovy
 - [ ] anko
 - [ ] annatto_sapling

@@ -3348,11 +3348,85 @@ def alfajor_biscuits_hand():
         s.put(int(cx) - 2, int(cy) - 1, dough[HIGHLIGHT])
     return s
 
+def dough_ball(colour, flour=True):
+    """A soft ball of dough, a little flattened where it sits, dusted with flour."""
+    s = Sprite()
+    dough = plain_ramp(colour)
+    s.shape(lambda x, y: ((x - 7.5) / 6.4) ** 2 + ((y - 9.4) / 5.0) ** 2 <= 1 and y <= 14.0, dough, (7.5, 9.4), (6.4, 5.0))
+    s.pixels_at(dough[HIGHLIGHT], [(5, 6), (6, 5), (7, 5)])
+    s.pixels_at(dough[SHADOW], [(10, 12), (11, 11), (9, 13)])
+    if flour:
+        s.pixels_at(plain_ramp("#f6f4ee")[BASE], [(4, 8), (9, 7), (11, 9), (6, 11)])
+    return s
+
+
+def alfajor_dough_hand():
+    # A soft, pale, buttery dough of cornstarch and flour.
+    return dough_ball("#f0e2b8")
+
+
+def alfajor_rounds_hand():
+    # Raw rounds cut from the dough: thick, pale, smooth discs dusted with flour, before baking.
+    s = Sprite()
+    dough = plain_ramp("#f2e6c4")
+    for cx, cy in [(4.8, 4.6), (11.0, 7.0), (6.0, 11.8)]:
+        s.ellipse(dough, cx, cy, 3.8, 2.8)
+        s.put(int(cx) - 2, int(cy) - 1, dough[HIGHLIGHT])
+        s.put(int(cx) + 1, int(cy), plain_ramp("#fbfaf6")[BASE])
+    return s
+
+
+def alfajores_de_maicena_hand():
+    # One big alfajor, seen a little from above: a pale biscuit on top, a thick band of dulce de leche showing round the
+    # side, its edge rolled in white coconut, and the bottom biscuit beneath.
+    s = Sprite()
+    biscuit = plain_ramp("#e8cc94")
+    caramel = ramp("#b8682a", spread=0.6)
+    s.ellipse(biscuit, 7.5, 11.4, 7.0, 2.8)
+    s.ellipse(caramel, 7.5, 9.6, 7.0, 2.8)
+    s.ellipse(biscuit, 7.5, 7.0, 7.0, 3.6)
+    s.ellipse(plain_ramp("#f0dcae"), 7.5, 6.6, 5.2, 2.4, outline=False)  # The flat top, lighter.
+    coconut = plain_ramp("#faf8f2")[BASE]
+    s.pixels_at(coconut, [(1, 10), (3, 11), (5, 12), (8, 12), (10, 12), (12, 11), (14, 10), (2, 9), (13, 9)])
+    s.pixels_at(biscuit[HIGHLIGHT], [(4, 5), (5, 4)])
+    s.pixels_at(biscuit[SHADOW], [(7, 7), (10, 6)])  # Fine crumb on the top.
+    return s
+
+
+def sapling(leaf_colour, trunk_colour="#7a5a3a", leaf=(2.4, 1.3), palm=False):
+    """A young fruit or spice tree: a thin stem with a few leaves along it and a tuft at the top, kept to the left so the
+    picture of what it grows fits in the top right corner. Palms get long arching fronds instead."""
+    s = Sprite()
+    trunk = ramp(trunk_colour, spread=0.6)
+    s.capsule(trunk, [(5.0, 15.0), (5.4, 5.0)], (1.0, 0.7))
+    tones = ramp(leaf_colour, spread=0.7)
+    if palm:
+        for tip in [(0.6, 7.0), (1.6, 2.0), (6.0, 0.6), (9.8, 3.4), (10.4, 8.4)]:
+            mid = ((5.4 + tip[0]) / 2, (5.0 + tip[1]) / 2 - 1.4)
+            s.capsule(tones, [(5.4, 5.0), mid, tip], (1.2, 0.5))
+        s.pixels_at(tones[HIGHLIGHT], [(4, 3), (6, 3)])
+        return s
+    length, width = leaf
+    for cx, cy, angle in [(2.6, 11.0, 30), (8.0, 9.4, -30), (2.4, 6.8, 35), (8.4, 5.4, -35), (5.2, 2.6, -90)]:
+        s.ellipse(tones, cx, cy, length, width, angle=angle)
+        s.put(round(cx - 0.5), round(cy - 0.5), tones[LIGHT])
+    return s
+
+
+def allspice_sapling_hand():
+    # Allspice: glossy, leathery, oval dark-green leaves.
+    return sapling("#3a7a34", leaf=(2.6, 1.5))
+
+
+def almond_sapling_hand():
+    # Almond: slender, pointed, bright green leaves on a reddish-grey stem.
+    return sapling("#5a9a44", trunk_colour="#7a5a52", leaf=(2.8, 1.0))
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
 # courgette and cucumber, marjoram and oregano, mint, and savory. The three grape cuttings and the two currant cuttings carry
-# one too. The picture is the plant's own sprite, shrunk.
+# one too, and so does every sapling, since young trees look alike. The picture is the plant's own sprite, shrunk.
 SEED_PLANTS = {
     "aji_amarillo_seeds": "aji_amarillo", "bell_pepper_seeds": "bell_pepper", "birds_eye_chili_seeds": "birds_eye_chili",
     "green_chili_seeds": "green_chili", "paprika_pepper_seeds": "paprika_pepper", "poblano_chili_seeds": "poblano_chili",
@@ -3362,6 +3436,7 @@ SEED_PLANTS = {
     "courgette_seeds": "courgette", "cucumber_seeds": "cucumber", "marjoram_seeds": "marjoram", "oregano_seeds": "oregano",
     "mint_seeds": "mint", "grape_cutting": "grape", "red_grape_cutting": "red_grape", "white_grape_cutting": "white_grape",
     "blackcurrant_cutting": "blackcurrant", "redcurrant_cutting": "redcurrant", "savory_seeds": "savory",
+    "allspice_sapling": "allspice", "almond_sapling": "almond",
 }
 BADGE = 8
 
@@ -3394,6 +3469,8 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"alfajor_dough": alfajor_dough_hand, "alfajor_rounds": alfajor_rounds_hand, "alfajores_de_maicena": alfajores_de_maicena_hand,
+             "allspice_sapling": allspice_sapling_hand, "almond_sapling": almond_sapling_hand})
 HAND.update({"aged_yerba_mate": aged_yerba_mate_hand, "ajitsuke_tamago": ajitsuke_tamago_hand, "al_pastor_adobo": al_pastor_adobo_hand,
              "al_pastor_meat": al_pastor_meat_hand, "alfajor_biscuits": alfajor_biscuits_hand})
 HAND.update({"achiote_potato_mash": achiote_potato_mash_hand, "aebleskiver": aebleskiver_hand, "aebleskiver_batter": aebleskiver_batter_hand,
