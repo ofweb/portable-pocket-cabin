@@ -3128,6 +3128,74 @@ def vanilla_cutting_hand():
     s.pixels_at(root[BASE], [(5, 11), (4, 12), (3, 12), (2, 13)])
     return s
 
+def wasabi_root_hand():
+    # A knobbly green rhizome, broad at the top where the leaf stalks were cut and tapering to a rough brown tip, its
+    # surface bumpy with old leaf scars.
+    s = Sprite()
+    stalk = ramp("#6aa84a", spread=0.6)
+    for end in [(5.0, 1.0), (8.4, 0.4), (11.6, 1.6)]:
+        s.capsule(stalk, [(8.0, 5.0), end], (0.9, 0.7))
+        s.put(round(end[0] - 0.5), round(end[1] - 0.5), stalk[HIGHLIGHT])  # The cut.
+    root = ramp("#6a8a48", spread=0.6)
+    s.capsule(root, [(8.0, 6.0), (7.4, 11.0), (7.0, 15.0)], (3.6, 1.4))
+    # Bumps and scars in rings around the root.
+    for x, y in [(5, 7), (8, 7), (10, 8), (6, 9), (9, 10), (5, 11), (8, 12), (6, 13)]:
+        s.put(x, y, root[SHADOW])
+    for x, y in [(6, 7), (9, 8), (7, 10), (6, 12)]:
+        s.put(x, y, root[HIGHLIGHT])
+    s.pixels_at(ramp("#7a6a4a")[BASE], [(7, 15), (6, 14)])
+    for x, y in [(4, 8), (11, 7), (4, 11), (10, 11)]:
+        s.put(x, y, root[BASE])  # Knobs breaking the outline.
+    return s
+
+
+def spice_bowl(powder, fleck=None, seed=7):
+    """A ground spice: a small pale ceramic bowl heaped with fine powder, flecked and lit on top. The bowl is pale so
+    that brown and red spices stand out against it."""
+    s = Sprite()
+    wood = plain_ramp("#d6d8dc")
+    s.shape(lambda x, y: y >= 9.0 and ((x - 7.5) / 7.0) ** 2 + ((y - 9.0) / 6.0) ** 2 <= 1, wood, (7.5, 11.0), (7.0, 5.0))
+    s.pixels_at(wood[SHADOW], [(x, 14) for x in range(5, 11)])
+    tones = ramp(powder, spread=0.6)
+    s.shape(lambda x, y: y <= 9.5 and ((x - 7.5) / 6.2) ** 2 + ((y - 9.5) / 5.4) ** 2 <= 1, tones, (7.5, 7.0), (6.2, 3.0))
+    rng = random.Random(seed)
+    for y in range(4, 10):
+        for x in range(2, 14):
+            if s.pixels[y][x] in (None, tones[OUTLINE]):
+                continue
+            roll = rng.random()
+            if roll < 0.18:
+                s.put(x, y, tones[LIGHT if y < 7 else SHADOW])
+            elif fleck and roll < 0.26:
+                s.put(x, y, ramp(fleck)[BASE])
+    s.pixels_at(tones[HIGHLIGHT], [(6, 5), (7, 5), (5, 6)])
+    return s
+
+
+def cumin_hand():
+    # Ground cumin: a warm brown powder.
+    return spice_bowl("#9a6a3a", fleck="#6a4a2a")
+
+
+def cardamom_hand():
+    # Ground cardamom: a grey-green powder flecked with the dark seeds.
+    return spice_bowl("#9a9a76", fleck="#3c2c24", seed=11)
+
+
+def wasabi_hand():
+    # Freshly grated wasabi: a soft, pale green mound with a peaked tip, on a small dark grater.
+    s = Sprite()
+    grater = ramp("#4a4440", spread=0.6)
+    s.shape(lambda x, y: 10.0 <= y <= 14.0 and 1.0 <= x <= 14.0, grater, (7.5, 12.0), (6.5, 2.0))
+    for x in range(3, 13, 2):
+        s.pixels_at(grater[LIGHT], [(x, 12)])
+    paste = ramp("#8ac05a", spread=0.6)
+    s.shape(lambda x, y: y <= 11.0 and ((x - 7.5) / 4.6) ** 2 + ((y - 11.0) / 6.4) ** 2 <= 1 and abs(x - 7.5) <= 4.6 - (11.0 - y) * 0.5,
+            paste, (7.5, 8.0), (4.6, 4.0))
+    s.pixels_at(paste[HIGHLIGHT], [(6, 6), (7, 5), (6, 8)])
+    s.pixels_at(paste[SHADOW], [(9, 9), (10, 10), (8, 10)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -3174,6 +3242,8 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"wasabi_root": wasabi_root_hand, "anise": anise_seed_hand, "cumin": cumin_hand, "cardamom": cardamom_hand,
+             "wasabi": wasabi_hand})
 HAND.update({"toasted_pumpkin_seeds": toasted_pumpkin_seeds_hand, "toasted_sesame_seeds": toasted_sesame_seeds_hand,
              "tomatillo_seeds": tomatillo_seeds_hand, "tomato_seeds": tomato_seeds_hand, "vanilla_cutting": vanilla_cutting_hand})
 HAND.update({"tea_cutting": tea_cutting_hand, "thai_aubergine_seeds": thai_aubergine_seeds_hand, "thai_basil_seeds": thai_basil_seeds_hand,

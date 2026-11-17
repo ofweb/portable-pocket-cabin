@@ -117,15 +117,15 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] tomatillo_seeds
 - [x] tomato_seeds
 - [x] vanilla_cutting
-- [ ] wasabi_root
+- [x] wasabi_root
 - [x] white_grape_cutting
 
 ## Made foods and other items
 
-- [ ] anise
-- [ ] cumin
-- [ ] cardamom
-- [ ] wasabi
+- [x] anise
+- [x] cumin
+- [x] cardamom
+- [x] wasabi
 - [ ] achiote_potato_mash
 - [ ] aebleskiver
 - [ ] aebleskiver_batter
