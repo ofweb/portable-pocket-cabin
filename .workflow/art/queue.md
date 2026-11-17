@@ -231,21 +231,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] calf_stomach
 - [x] cane_sugar_paste
 - [x] canele_batter
-- [ ] caneles
-- [ ] caramel
-- [ ] caramelised_onion
-- [ ] cardoon
-- [ ] cardoon_flower
-- [ ] carne_seca
-- [ ] carnitas_pork
-- [ ] carnitas_tacos
-- [ ] cassoulet
-- [ ] cassoulet_beans
-- [ ] ceviche
-- [ ] charred_corn
-- [ ] charred_dango_skewer
-- [ ] charred_poblano
-- [ ] charred_tomato
+- [x] caneles
+- [x] caramel
+- [x] caramelised_onion
+- [x] cardoon
+- [x] cardoon_flower
+- [x] carne_seca
+- [x] carnitas_pork
+- [x] carnitas_tacos
+- [x] cassoulet
+- [x] cassoulet_beans
+- [x] ceviche
+- [x] charred_corn
+- [x] charred_dango_skewer
+- [x] charred_poblano
+- [x] charred_tomato
 - [ ] chashu_pork
 - [ ] cheesecake_filling
 - [ ] cherry_compote

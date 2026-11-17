@@ -4377,6 +4377,152 @@ def canele_batter_hand():
     # Canelé batter: a thin, pale, creamy batter speckled with vanilla seeds.
     return bowl("#f4e6c0", plain=True, flecks=[("#2a2018", 0.08)])
 
+def charred(name, chance=0.22, seed=5):
+    """Another item's sprite blistered and blackened in patches, as from a hot grill or a dry pan."""
+    def drawn():
+        s = SPRITES[name]()
+        rng = random.Random(seed)
+        burnt = [(34, 26, 22), (62, 44, 34)]
+        for y in range(16):
+            for x in range(16):
+                colour = s.pixels[y][x]
+                if colour is None or sum(colour) < 120:
+                    continue
+                if rng.random() < chance:
+                    s.put(x, y, burnt[rng.random() < 0.5])
+        return s
+    return drawn
+
+
+def caneles_hand():
+    # Canelés: small, tall, fluted cakes with a deep mahogany, caramelised crust and a pale top.
+    s = Sprite()
+    crust = ramp("#7a3a1a", spread=0.6)
+    for cx, cy in [(4.6, 9.4), (11.0, 9.4)]:
+        s.shape(lambda x, y, cx=cx: abs(x - cx) <= 3.2 - (y - 4) * 0.08 and 4 <= y <= 14, crust, (cx, 9.0), (3.2, 5.0))
+        for x in range(round(cx) - 2, round(cx) + 3, 2):
+            s.pixels_at(crust[SHADOW], [(x, y) for y in range(6, 14)])  # The flutes.
+        s.pixels_at(ramp("#c8823a")[BASE], [(x, 4) for x in range(round(cx) - 2, round(cx) + 3)])  # The top.
+    return s
+
+
+def caramel_hand():
+    # Caramel: melted sugar cooked to a clear, glossy amber, in a bowl.
+    s = bowl("#e09028", plain=True)
+    s.pixels_at(plain_ramp("#f8d070")[BASE], [(3, 7), (4, 7), (5, 7), (9, 8), (10, 8)])
+    s.pixels_at(plain_ramp("#e09028")[BASE], [(13, 9), (13, 10), (13, 11)])  # A drip down the side.
+    return s
+
+
+def caramelised_onion_hand():
+    # Caramelised onion: soft, sticky strands of onion cooked down to a deep golden brown, in a bowl.
+    return bowl("#9a5a24", mound=1.6, texture=lambda x, y: -1 if (x + y * 2) % 3 == 0 else 1 if (x * 2 + y) % 5 == 0 else 0)
+
+
+def cardoon_hand():
+    # Cardoon: a bunch of long, ribbed, silvery grey-green stalks, trimmed of their leaves.
+    s = Sprite()
+    stalk = ramp("#9aaa8a", spread=0.6)
+    for x0, x1 in [(3.4, 6.0), (6.6, 8.6), (9.8, 11.0), (12.4, 13.2)]:
+        s.capsule(stalk, [(x0, 15.0), (x1, 1.0)], (1.5, 1.1))
+        s.line(stalk[LIGHT], round(x0), 13, round(x1), 3)
+    return s
+
+
+def cardoon_flower_hand():
+    # A cardoon flower: a big, spiky, thistle-like head, a scaly green-grey bud topped with a tuft of violet.
+    s = Sprite()
+    bud = ramp("#7a9a6a", spread=0.6)
+    s.ellipse(bud, 7.5, 10.4, 4.8, 4.0, texture=lambda x, y: -1 if (x + y) % 2 == 0 else 0)
+    violet = ramp("#8a4ab8", spread=0.6)
+    for x in range(3, 13):
+        top = 6 - (2 if 5 <= x <= 10 else 0) - (x % 2)
+        s.pixels_at(violet[BASE if x % 3 else LIGHT], [(x, y) for y in range(top, 7)])
+    s.line(ramp("#6a8a4a")[BASE], 7, 14, 7, 15)
+    return s
+
+
+def carne_seca_hand():
+    # Carne seca: thin, dark, leathery strips of salted, sun-dried beef.
+    s = Sprite()
+    meat = ramp("#6a2a20", spread=0.6)
+    for start, end in [((1.6, 4.0), (12.0, 1.8)), ((2.4, 9.0), (14.0, 5.4)), ((1.6, 14.0), (13.0, 10.4))]:
+        s.capsule(meat, [start, end], (1.6, 1.2), texture=lambda x, y: -1 if (x * 2 + y) % 5 == 0 else 0)
+        s.put(round((start[0] + end[0]) / 2), round((start[1] + end[1]) / 2 - 1), plain_ramp("#e8e0d8")[BASE])  # Salt.
+    return s
+
+
+def carnitas_pork_hand():
+    # Carnitas: chunks of pork slow-cooked in lard until tender and golden brown.
+    s = Sprite()
+    meat = ramp("#c8823e", spread=0.6)
+    for cx, cy in [(4.6, 5.0), (10.6, 5.6), (4.4, 11.0), (9.8, 10.6), (13.0, 12.6)]:
+        s.ellipse(meat, cx, cy, 2.8, 2.4, texture=lambda x, y: -1 if (x + y) % 3 == 0 else 0)
+        s.put(round(cx) - 1, round(cy) - 1, meat[HIGHLIGHT])
+    return s
+
+
+def carnitas_tacos_hand():
+    # Carnitas tacos: two soft corn tortillas folded round crisp pork, with white onion, green cilantro and red salsa.
+    s = Sprite()
+    tortilla = plain_ramp("#e8d090")
+    for cx, cy in [(5.0, 6.2), (10.4, 10.6)]:
+        s.ellipse(tortilla, cx, cy, 4.8, 3.8)
+        filling = [(cx - 2, cy - 1), (cx - 1, cy - 2), (cx, cy - 1), (cx + 1, cy - 2), (cx + 2, cy - 1)]
+        s.pixels_at(ramp("#b8742e")[BASE], [(round(x), round(y)) for x, y in filling])
+        s.pixels_at(plain_ramp("#f6f4ee")[BASE], [(round(cx) - 1, round(cy) - 3)])
+        s.pixels_at(ramp("#3a9a34")[BASE], [(round(cx) + 1, round(cy) - 3), (round(cx) - 2, round(cy) - 2)])
+        s.pixels_at(ramp("#c8302a")[BASE], [(round(cx), round(cy) - 2)])
+        s.put(round(cx) - 2, round(cy) + 1, tortilla[SHADOW])
+    return s
+
+
+def cassoulet_hand():
+    # Cassoulet: a deep earthenware dish of white beans, sausage and duck under a golden breadcrumb crust.
+    s = Sprite()
+    dish = ramp("#a85a32", spread=0.6)
+    s.shape(lambda x, y: y >= 7 and ((x - 7.5) / 7.2) ** 2 + ((y - 7.0) / 7.4) ** 2 <= 1, dish, (7.5, 10.5), (7.2, 5.0))
+    crust = ramp("#d0963e", spread=0.6)
+    s.ellipse(crust, 7.5, 7.0, 6.6, 2.6, texture=lambda x, y: -1 if (x * 3 + y) % 4 == 0 else 0)
+    s.pixels_at(ramp("#8a3a2a")[BASE], [(5, 7), (10, 6)])  # Sausage breaking through.
+    s.pixels_at(plain_ramp("#f2ead8")[BASE], [(8, 8), (3, 7)])  # Beans.
+    return s
+
+
+def cassoulet_beans_hand():
+    # Cassoulet beans: plump white beans simmered in garlicky stock, in a bowl.
+    s = bowl("#c8a46a", flecks=[("#f2ead8", 0.35)])
+    return s
+
+
+def ceviche_hand():
+    # Ceviche: cubes of white fish cured in lime, with red onion, on a plate with a round of sweet potato, corn, and lime.
+    s = plate()
+    fish_ = plain_ramp("#f2f0ea")
+    for x, y in [(4, 10), (6, 9), (5, 11), (7, 11), (8, 10)]:
+        s.pixels_at(fish_[BASE], [(x, y)])
+    s.pixels_at(ramp("#a83a6a")[BASE], [(5, 9), (7, 10), (6, 11)])  # Red onion.
+    sweet = ramp("#f08a30", spread=0.5)
+    s.ellipse(sweet, 11.2, 11.4, 2.2, 1.4)
+    s.pixels_at(ramp("#f0c840")[BASE], [(9, 12), (10, 13)])  # Corn.
+    lime = ramp("#7ac040", spread=0.6)
+    s.ellipse(lime, 12.0, 8.4, 1.8, 1.6)
+    s.put(12, 8, plain_ramp("#e8f4c8")[BASE])
+    s.pixels_at(ramp("#3a9a34")[BASE], [(6, 8), (8, 9)])  # Cilantro.
+    return s
+
+
+def charred_dango_skewer_hand():
+    # A dango skewer charred on the grill: three white rice dumplings on a stick, scorched in brown patches.
+    s = Sprite()
+    s.line(ramp("#c8a070")[BASE], 3, 15, 13, 1)
+    ball = plain_ramp("#f2ece0")
+    for cx, cy in [(5.2, 11.6), (7.8, 7.8), (10.4, 4.2)]:
+        s.ellipse(ball, cx, cy, 2.6, 2.4)
+        s.pixels_at(ramp("#9a5a2a")[BASE], [(round(cx), round(cy)), (round(cx) - 1, round(cy) + 1)])
+        s.put(round(cx) - 1, round(cy) - 1, ball[HIGHLIGHT])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -4427,6 +4573,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"caneles": caneles_hand, "caramel": caramel_hand, "caramelised_onion": caramelised_onion_hand, "cardoon": cardoon_hand,
+             "cardoon_flower": cardoon_flower_hand, "carne_seca": carne_seca_hand, "carnitas_pork": carnitas_pork_hand,
+             "carnitas_tacos": carnitas_tacos_hand, "cassoulet": cassoulet_hand, "cassoulet_beans": cassoulet_beans_hand,
+             "ceviche": ceviche_hand, "charred_corn": charred("corn", 0.18, 3), "charred_dango_skewer": charred_dango_skewer_hand,
+             "charred_poblano": charred("poblano_chili", 0.2, 7), "charred_tomato": charred("tomato", 0.2, 9)})
 HAND.update({"brown_sugar": brown_sugar_hand, "browned_beef": browned_beef_hand, "browned_mince": browned_mince_hand,
              "bruised_lemongrass": bruised_lemongrass_hand, "bruised_tea_leaves": bruised_tea_leaves_hand, "brunsviger": brunsviger_hand,
              "bua_loy": bua_loy_hand, "bua_loy_balls": bua_loy_balls_hand, "bua_loy_dough": bua_loy_dough_hand,
