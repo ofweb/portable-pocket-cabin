@@ -107,11 +107,11 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] spring_onion_seeds
 - [x] strawberry_runner
 - [x] sunflower_seeds
-- [ ] tea_cutting
-- [ ] thai_aubergine_seeds
-- [ ] thai_basil_seeds
-- [ ] thyme_cutting
-- [ ] toasted_cumin_seed
+- [x] tea_cutting
+- [x] thai_aubergine_seeds
+- [x] thai_basil_seeds
+- [x] thyme_cutting
+- [x] toasted_cumin_seed
 - [ ] toasted_pumpkin_seeds
 - [ ] toasted_sesame_seeds
 - [ ] tomatillo_seeds

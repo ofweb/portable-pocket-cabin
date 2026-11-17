@@ -3014,6 +3014,53 @@ def sunflower_seeds_hand():
 
 PILE_SPOTS = [(4.4, 4.2, -30), (11.0, 4.0, 30), (3.8, 10.4, 60), (8.6, 8.4, -10), (12.4, 11.6, -60), (7.0, 13.4, 20)]
 
+def tea_cutting_hand():
+    # A single-leaf tea cutting: a short length of green-brown stem cut on a slant, one glossy, toothed leaf, and a
+    # small bud where the leaf meets the stem.
+    s = Sprite()
+    stem = ramp("#8e8a4c", spread=0.5)
+    s.capsule(stem, [(5.0, 15.0), (7.4, 6.0)], (1.5, 1.2))
+    s.put(5, 15, stem[HIGHLIGHT])  # The fresh, slanted cut.
+    leaf = ramp("#2e8a34", spread=0.75)
+    mask = s.ellipse(leaf, 10.4, 5.4, 5.0, 2.6, angle=-35)
+    for x, y in mask:
+        if (x + 2 * y) % 3 == 0 and s.pixels[y][x] == leaf[OUTLINE]:
+            s.put(x, y, leaf[SHADOW])  # The toothed edge.
+    s.line(leaf[LIGHT], 7, 8, 13, 3)
+    s.pixels_at(leaf[HIGHLIGHT], [(9, 4), (11, 3)])
+    bud = ramp("#a8d070", spread=0.7)
+    s.ellipse(bud, 6.4, 5.0, 1.0, 1.6)
+    return s
+
+
+def thai_aubergine_seeds_hand():
+    return aubergine_seeds_hand()
+
+
+def thai_basil_seeds_hand():
+    return basil_seeds_hand()
+
+
+def thyme_cutting_hand():
+    # A single woody thyme sprig, its lower leaves stripped and the stem cut on a slant, tiny paired leaves above.
+    s = Sprite()
+    wood, leaf = ramp("#8a7a4a"), ramp("#5e9a40")
+    points = s.line(wood[SHADOW], 5, 15, 11, 1)
+    s.put(5, 15, wood[HIGHLIGHT])
+    for i, (x, y) in enumerate(points):
+        if y <= 8 and i % 2 == 0:
+            s.pixels_at(leaf[BASE], [(x - 1, y), (x + 1, y)])
+            s.put(x - 2, y - 1 if i % 4 else y, leaf[LIGHT])
+            s.put(x + 2, y - 1 if i % 4 == 0 else y, leaf[SHADOW])
+    s.pixels_at(leaf[LIGHT], [(11, 0), (12, 0), (10, 1)])
+    s.pixels_at(wood[LIGHT], [(6, 12), (7, 10)])  # Scars where leaves were stripped.
+    return s
+
+
+def toasted_cumin_seed_hand():
+    # Cumin seeds toasted to a warm brown, their ridges darkened.
+    return striped_seeds("#6e5030", "#a8865a", 2.5, 1.15)
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -3060,6 +3107,8 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"tea_cutting": tea_cutting_hand, "thai_aubergine_seeds": thai_aubergine_seeds_hand, "thai_basil_seeds": thai_basil_seeds_hand,
+             "thyme_cutting": thyme_cutting_hand, "toasted_cumin_seed": toasted_cumin_seed_hand})
 HAND.update({"savory": savory_hand, "savory_seeds": savory_seeds_hand, "sesame_seed": sesame_seed_hand,
              "spring_onion_seeds": spring_onion_seeds_hand, "strawberry_runner": strawberry_runner_hand, "sunflower_seeds": sunflower_seeds_hand})
 HAND.update({"red_grape_cutting": red_grape_cutting_hand, "white_grape_cutting": white_grape_cutting_hand, "redcurrant_cutting": redcurrant_cutting_hand,
