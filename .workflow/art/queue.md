@@ -291,21 +291,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] cocktail_sausage_filling
 - [x] cocktail_sausages
 - [x] cocoa_mass
-- [ ] cocoa_powder
-- [ ] cocoa_press_cake
-- [ ] coconut_sapling
-- [ ] coconut_sticky_rice
-- [ ] cod_roe
-- [ ] coffee_sapling
-- [ ] concha_topping
-- [ ] conchas
-- [ ] cookbook
-- [ ] cooked_black_beans
-- [ ] cooked_chevon
-- [ ] cooked_corn
-- [ ] cooked_soybeans
-- [ ] cookie_dough
-- [ ] cooled_brigadeiro_mixture
+- [x] cocoa_powder
+- [x] cocoa_press_cake
+- [x] coconut_sapling
+- [x] coconut_sticky_rice
+- [x] cod_roe
+- [x] coffee_sapling
+- [x] concha_topping
+- [x] conchas
+- [x] cookbook
+- [x] cooked_black_beans
+- [x] cooked_chevon
+- [x] cooked_corn
+- [x] cooked_soybeans
+- [x] cookie_dough
+- [x] cooled_brigadeiro_mixture
 - [ ] coq_au_vin
 - [ ] corn_husk
 - [ ] corn_kernels

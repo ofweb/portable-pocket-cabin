@@ -3417,7 +3417,7 @@ def sapling(leaf_colour, trunk_colour="#7a5a3a", leaf=(2.4, 1.3), palm=False):
     s.capsule(trunk, [(5.0, 15.0), (5.4, 5.0)], (1.0, 0.7))
     tones = ramp(leaf_colour, spread=0.7)
     if palm:
-        for tip in [(0.6, 7.0), (1.6, 2.0), (6.0, 0.6), (9.8, 3.4), (10.4, 8.4)]:
+        for tip in [(0.4, 8.4), (1.0, 3.0), (4.6, 0.4), (7.4, 1.6), (10.6, 10.0)]:
             mid = ((5.4 + tip[0]) / 2, (5.0 + tip[1]) / 2 - 1.4)
             s.capsule(tones, [(5.4, 5.0), mid, tip], (1.2, 0.5))
         s.pixels_at(tones[HIGHLIGHT], [(4, 3), (6, 3)])
@@ -4976,6 +4976,147 @@ def cocoa_mass_hand():
     s.pixels_at(ramp("#6a4030")[BASE], [(4, 7), (5, 7), (9, 7)])
     return s
 
+def cocoa_powder_hand():
+    # Cocoa powder: a fine, dry, warm brown powder.
+    return spice_bowl("#7a4a32", fleck="#a8705a", seed=53)
+
+
+def cocoa_press_cake_hand():
+    # Cocoa press cake: the hard, dense disc of cocoa solids left in the press once the butter is squeezed out.
+    s = Sprite()
+    cake = ramp("#5a3424", spread=0.6)
+    s.ellipse(cake, 7.5, 10.4, 7.0, 3.4)
+    s.shape(lambda x, y: 1 <= x <= 14 and 7 <= y <= 10, cake, (7.5, 8.5), (7.0, 2.0))
+    s.ellipse(ramp("#6e4430", spread=0.5), 7.5, 7.0, 7.0, 2.8)
+    s.pixels_at(cake[SHADOW], [(5, 7), (9, 6), (11, 8), (4, 9)])  # The marks of the press cloth.
+    s.pixels_at(plain_ramp("#d8c098")[BASE], [(7, 6), (10, 7)])  # A bloom of cocoa butter.
+    return s
+
+
+def coconut_sapling_hand():
+    # A coconut palm seedling: fronds rising from the base.
+    return sapling("#4a9a3a", trunk_colour="#8a6a3a", palm=True)
+
+
+def coconut_sticky_rice_hand():
+    # Coconut sticky rice: a mound of glossy white glutinous rice soaked in sweet coconut sauce, on a banana leaf.
+    s = Sprite()
+    leaf = ramp("#3a8a34", spread=0.6)
+    s.ellipse(leaf, 7.5, 11.6, 7.4, 3.4)
+    s.line(leaf[LIGHT], 1, 12, 14, 11)
+    rice = plain_ramp("#f4f0e2")
+    s.ellipse(rice, 7.0, 8.4, 5.0, 3.6, texture=lambda x, y: -1 if (x * 3 + y) % 5 == 0 else 0)
+    s.pixels_at(plain_ramp("#f6eccc")[LIGHT], [(5, 6), (6, 6), (7, 6), (8, 7)])  # The coconut sauce.
+    s.pixels_at(ramp("#d8a858")[BASE], [(6, 5), (9, 6)])  # Toasted mung beans on top.
+    return s
+
+
+def cod_roe_hand():
+    # Cod roe: a pair of plump sacs, pale pinkish orange, finely grained with tiny eggs under a thin membrane.
+    s = Sprite()
+    roe = plain_ramp("#eca88a")
+    for cx, cy, angle in [(5.4, 7.2, -30), (10.4, 9.4, -30)]:
+        s.ellipse(roe, cx, cy, 4.8, 2.8, angle=angle, texture=lambda x, y: -1 if (x + y * 2) % 4 == 0 else 0)
+        s.put(round(cx) - 2, round(cy) - 2, roe[HIGHLIGHT])
+    s.pixels_at(ramp("#a84a4a")[BASE], [(1, 11), (2, 10)])  # The membrane joining them.
+    return s
+
+
+def coffee_sapling_hand():
+    # Coffee: glossy, dark green, wavy-edged leaves in pairs.
+    return sapling("#2e6e30", trunk_colour="#6a5a3a", leaf=(2.6, 1.5))
+
+
+def concha_topping_hand():
+    # Concha topping: a soft paste of flour, sugar and lard, half of it coloured with cocoa, in two balls.
+    s = Sprite()
+    for (cx, cy), colour in [((5.0, 8.4), "#f2e2bc"), ((10.6, 9.0), "#7a4a32")]:
+        tones = plain_ramp(colour)
+        s.ellipse(tones, cx, cy, 3.6, 3.2)
+        s.put(round(cx) - 2, round(cy) - 2, tones[HIGHLIGHT])
+    return s
+
+
+def concha(topping, cx, cy, r, s):
+    """A concha: a round sweet bun with a sugar crust scored in a shell pattern."""
+    bun = ramp("#d8a058", spread=0.6)
+    s.ellipse(bun, cx, cy + 1.0, r, r * 0.7)
+    crust = plain_ramp(topping)
+    s.ellipse(crust, cx, cy, r - 0.6, r * 0.6, outline=False)
+    for k in (-2, 0, 2):  # The shell grooves fanning from the front.
+        s.line(crust[SHADOW], round(cx + k * 0.4), round(cy + r * 0.4), round(cx + k * 1.4), round(cy - r * 0.4))
+    return s
+
+
+def conchas_hand():
+    # Conchas: round Mexican sweet buns, one with a white crust and one with a cocoa crust, scored like shells.
+    s = concha("#f4e8cc", 5.0, 5.4, 4.4, Sprite())
+    return concha("#7a4a32", 10.6, 10.6, 4.4, s)
+
+
+def cookbook_hand():
+    # The cookbook: a thick book bound in deep red cloth, a gold spoon and fork crossed on its cover.
+    s = Sprite()
+    cover = ramp("#8a2a2a", spread=0.6)
+    s.shape(lambda x, y: 2 <= x <= 13 and 1 <= y <= 14, cover, (7.5, 7.5), (5.5, 6.5))
+    pages = plain_ramp("#f2ead4")
+    s.pixels_at(pages[BASE], [(x, 14) for x in range(3, 13)])
+    s.pixels_at(pages[SHADOW], [(13, y) for y in range(2, 14)])
+    s.pixels_at(cover[SHADOW], [(3, y) for y in range(2, 14)])  # The spine.
+    gold = ramp("#e8b830", spread=0.6)
+    s.line(gold[BASE], 5, 11, 11, 4)  # The spoon handle.
+    s.ellipse(gold, 11.0, 4.0, 1.3, 1.6, angle=40)
+    s.line(gold[LIGHT], 5, 4, 11, 11)  # The fork handle.
+    s.pixels_at(gold[LIGHT], [(4, 3), (5, 2), (6, 3), (4, 4)])  # The fork tines.
+    return s
+
+
+def cooked_black_beans_hand():
+    # Cooked black beans: whole, glossy, purple-black beans in their dark broth, in a bowl.
+    s = bowl("#2a2230", mound=0.8)
+    shine = ramp("#6a5a7a")[BASE]
+    for x, y in [(4, 7), (7, 6), (10, 7), (6, 8), (9, 8)]:
+        s.put(x, y, shine)
+    return s
+
+
+def cooked_chevon_hand():
+    # Seared goat meat: a lean piece browned dark and crusty on the outside.
+    s = slab("#7a3a24", rx=6.4, ry=4.6, angle=-12, seed=67)
+    s.pixels_at(ramp("#3a1e14")[BASE], [(4, 7), (7, 6), (10, 8), (6, 10), (11, 6)])
+    s.pixels_at(ramp("#b86a40")[BASE], [(5, 6), (9, 6)])
+    return s
+
+
+def cooked_corn_hand():
+    # Cooked corn: a boiled cob, its kernels plump, bright and glistening.
+    s = SPRITES["corn"]()
+    for x in range(16):
+        for y in range(16):
+            if s.pixels[y][x] is not None and (x * 2 + y * 3) % 7 == 0 and sum(s.pixels[y][x]) > 400:
+                s.put(x, y, (255, 246, 200))
+    return s
+
+
+def cooked_soybeans_hand():
+    # Cooked soybeans: plump, pale yellow beans, soft from simmering, in a bowl.
+    s = bowl("#e0cc80", mound=1.0, texture=bumpy)
+    return s
+
+
+def cookie_dough_hand():
+    # Cookie dough: a soft, buttery, tan dough studded with bits of cocoa bean.
+    s = dough_ball("#e2c088", flour=False)
+    s.pixels_at(ramp("#4a2a1a")[BASE], [(4, 9), (7, 7), (10, 9), (6, 11), (9, 12), (11, 7)])
+    return s
+
+
+def cooled_brigadeiro_mixture_hand():
+    # Cooled brigadeiro mixture: the fudge set firm and matte, with a scoop taken out of it, in a bowl.
+    s = bowl("#4a2a1e", mound=1.6)
+    s.pixels_at(ramp("#2e1a12")[BASE], [(8, 6), (9, 6), (9, 7)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -4992,6 +5133,7 @@ SEED_PLANTS = {
     "blackcurrant_cutting": "blackcurrant", "redcurrant_cutting": "redcurrant", "savory_seeds": "savory",
     "allspice_sapling": "allspice", "almond_sapling": "almond", "annatto_sapling": "annatto", "apple_sapling": "apple",
     "apricot_sapling": "apricot", "bay_laurel_sapling": "bay_laurel_leaf", "cinnamon_sapling": "cinnamon_bark", "clove_sapling": "clove_bud",
+    "coconut_sapling": "coconut", "coffee_sapling": "coffee_cherry",
 }
 # Pictures for plants whose fruit is a vanilla item, which this script does not draw.
 BADGE_ONLY = {"apple": apple_badge, "annatto": annatto_badge}
@@ -5026,6 +5168,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"cocoa_powder": cocoa_powder_hand, "cocoa_press_cake": cocoa_press_cake_hand, "coconut_sapling": coconut_sapling_hand,
+             "coconut_sticky_rice": coconut_sticky_rice_hand, "cod_roe": cod_roe_hand, "coffee_sapling": coffee_sapling_hand,
+             "concha_topping": concha_topping_hand, "conchas": conchas_hand, "cookbook": cookbook_hand,
+             "cooked_black_beans": cooked_black_beans_hand, "cooked_chevon": cooked_chevon_hand, "cooked_corn": cooked_corn_hand,
+             "cooked_soybeans": cooked_soybeans_hand, "cookie_dough": cookie_dough_hand, "cooled_brigadeiro_mixture": cooled_brigadeiro_mixture_hand})
 HAND.update({"chorizo_filling": chorizo_filling_hand, "choux_buns": choux_buns_hand, "choux_panade": choux_panade_hand,
              "choux_pastry": choux_pastry_hand, "churro_dough": churro_dough_hand, "churros": churros_hand, "cinnamon": cinnamon_hand,
              "cinnamon_sapling": cinnamon_sapling_hand, "clove_sapling": clove_sapling_hand, "cloves": cloves_hand, "coarse_salt": coarse_salt_hand,
