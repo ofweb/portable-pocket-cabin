@@ -276,21 +276,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] chopped_onion
 - [x] chopped_rhubarb
 - [x] chorizo
-- [ ] chorizo_filling
-- [ ] choux_buns
-- [ ] choux_panade
-- [ ] choux_pastry
-- [ ] churro_dough
-- [ ] churros
-- [ ] cinnamon
-- [ ] cinnamon_sapling
-- [ ] clove_sapling
-- [ ] cloves
-- [ ] coarse_salt
-- [ ] coated_water_chestnut
-- [ ] cocktail_sausage_filling
-- [ ] cocktail_sausages
-- [ ] cocoa_mass
+- [x] chorizo_filling
+- [x] choux_buns
+- [x] choux_panade
+- [x] choux_pastry
+- [x] churro_dough
+- [x] churros
+- [x] cinnamon
+- [x] cinnamon_sapling
+- [x] clove_sapling
+- [x] cloves
+- [x] coarse_salt
+- [x] coated_water_chestnut
+- [x] cocktail_sausage_filling
+- [x] cocktail_sausages
+- [x] cocoa_mass
 - [ ] cocoa_powder
 - [ ] cocoa_press_cake
 - [ ] coconut_sapling

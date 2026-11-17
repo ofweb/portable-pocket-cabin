@@ -1864,9 +1864,19 @@ def cinnamon_bark_hand():
 
 
 def clove_bud_hand():
+    # Fresh clove buds, picked before they open: pink-red heads on greenish stems.
+    return clove_heads("#8a7a3a", "#d0604a")
+
+
+def cloves_hand():
+    # Cloves: the buds dried to a dark, woody brown.
+    return clove_heads("#5a3020", "#8a5a38")
+
+
+def clove_heads(stem_colour, head_colour):
     s = Sprite()
-    clove = ramp("#6a3a22", spread=0.85)
-    head = ramp("#a06a40")
+    clove = ramp(stem_colour, spread=0.85)
+    head = ramp(head_colour)
     # Three nail-shaped buds: a tapering stem with a round head held in four pointed sepals.
     for (hx, hy), (tx, ty) in (((4.0, 3.6), (7.6, 12.4)), ((11.4, 3.4), (9.0, 13.0)), ((12.6, 9.6), (3.6, 14.4))):
         s.capsule(clove, [(hx, hy), (tx, ty)], (1.3, 0.6))
@@ -4848,6 +4858,124 @@ def chorizo_hand():
     s.pixels_at(plain_ramp("#f2e8d8")[BASE], [(10, 11), (12, 12), (11, 10), (12, 10)])
     return s
 
+def chorizo_filling_hand():
+    # Chorizo filling: minced pork stained deep orange-red with paprika, flecked with garlic, in a bowl.
+    return bowl("#c84a2a", mound=1.8, texture=bumpy, flecks=[("#f0e8d0", 0.06), ("#8a2a1a", 0.08)])
+
+
+def choux_buns_hand():
+    # Choux buns: light, hollow, puffed pastry balls, golden brown with crisp, cracked tops.
+    s = Sprite()
+    pastry = ramp("#d0923e", spread=0.6)
+    for cx, cy, r in [(4.6, 10.6, 3.6), (11.0, 10.4, 3.4), (7.8, 5.0, 3.6)]:
+        s.ellipse(pastry, cx, cy, r, r * 0.85)
+        s.pixels_at(ramp("#8a5420")[BASE], [(round(cx) - 1, round(cy) - 1), (round(cx), round(cy) - 2), (round(cx) + 1, round(cy) - 1)])  # Cracks.
+        s.put(round(cx) - 2, round(cy) - 2, pastry[HIGHLIGHT])
+    return s
+
+
+def choux_panade_hand():
+    # Choux panade: flour cooked into butter and water until it forms a smooth, pale ball that leaves the pan clean.
+    s = dough_ball("#f2dc9c", flour=False)
+    s.pixels_at(plain_ramp("#fbefc4")[BASE], [(5, 7), (6, 7)])
+    return s
+
+
+def choux_pastry_hand():
+    # Choux pastry: the panade beaten with eggs into a smooth, glossy, pale yellow paste, in a bowl.
+    s = bowl("#f2d070", mound=1.4, plain=True)
+    s.pixels_at(plain_ramp("#fbe8a8")[BASE], [(5, 5), (6, 5), (7, 6)])
+    return s
+
+
+def churro_dough_hand():
+    # Churro dough: a stiff, smooth, pale dough of flour cooked with water.
+    return dough_ball("#f0e2bc", flour=False)
+
+
+def churros_hand():
+    # Churros: ridged golden sticks of fried dough rolled in cinnamon sugar, with a little dish of chocolate sauce.
+    s = Sprite()
+    dish = plain_ramp("#e8eaee")
+    s.ellipse(dish, 11.6, 12.4, 3.8, 2.4)
+    s.ellipse(ramp("#4a2618", spread=0.5), 11.6, 12.0, 2.8, 1.4, outline=False)
+    dough = ramp("#d8963a", spread=0.6)
+    for start, end in [((1.6, 12.0), (9.6, 1.6)), ((4.6, 14.4), (13.0, 4.0))]:
+        s.capsule(dough, [start, end], (1.5, 1.5))
+        length = math.dist(start, end)
+        for t in range(1, int(length), 2):
+            x = start[0] + (end[0] - start[0]) * t / length
+            y = start[1] + (end[1] - start[1]) * t / length
+            s.put(round(x - 0.5), round(y - 0.5), dough[SHADOW])  # The ridges.
+        s.put(round(start[0] + 2), round(start[1] - 3), plain_ramp("#f6eedc")[BASE])  # Sugar.
+    return s
+
+
+def cinnamon_hand():
+    # Cinnamon: dried quills rolled tight, thin and dark reddish brown, three together.
+    s = Sprite()
+    bark = ramp("#8a4424", spread=0.8)
+    for start, end in (((1.6, 6.6), (12.6, 1.4)), ((3.0, 14.4), (14.4, 8.6))):
+        s.capsule(bark, [start, end], (1.8, 1.8))
+        x, y = round(start[0]), round(start[1])
+        s.pixels_at(ramp("#c8804a")[BASE], [(x - 1, y - 1), (x, y - 1)])
+        s.put(x - 1, y, bark[OUTLINE])
+    return s
+
+
+def cinnamon_sapling_hand():
+    # Cinnamon: glossy, leathery leaves, flushed red when young, with three pale veins.
+    s = sapling("#3e8a3a", trunk_colour="#8a5a3a", leaf=(2.6, 1.5))
+    s.pixels_at(ramp("#b84a3a")[BASE], [(5, 2), (5, 3)])  # A young red leaf at the top.
+    return s
+
+
+def clove_sapling_hand():
+    # Clove: slim, glossy, aromatic leaves, pinkish when young.
+    return sapling("#3a8040", trunk_colour="#7a6048", leaf=(2.6, 1.2))
+
+
+def coarse_salt_hand():
+    # Coarse salt: a heap of big, clear, white crystals.
+    s = Sprite()
+    salt = plain_ramp("#eef0f2")
+    rng = random.Random(61)
+    for cx, cy in [(4, 13), (7, 13), (10, 13), (13, 13), (5, 10), (8, 10), (11, 10), (6, 7), (9, 7), (7, 4)]:
+        cx, cy = cx + rng.choice((0, 1)), cy
+        s.pixels_at(salt[SHADOW], [(cx, cy + 1), (cx + 1, cy + 1)])
+        s.pixels_at(salt[BASE], [(cx, cy), (cx + 1, cy)])
+        s.pixels_at(salt[HIGHLIGHT], [(cx, cy - 1)])
+        s.pixels_at(salt[OUTLINE], [(cx + 2, cy + 1), (cx - 1, cy + 1)])
+    return s
+
+
+def coated_water_chestnut_hand():
+    # Coated water chestnut: little cubes dyed ruby red with beetroot and dusted in white tapioca starch.
+    s = chopped("#c82a3a", size=1.2, seed=19)
+    s.pixels_at(plain_ramp("#f4f2ee")[BASE], [(3, 3), (8, 2), (12, 4), (6, 7), (11, 8), (3, 12), (9, 11)])
+    return s
+
+
+def cocktail_sausage_filling_hand():
+    # Cocktail sausage filling: plain, finely minced pale pink pork, in a bowl.
+    return bowl("#eab4aa", mound=1.8, texture=bumpy)
+
+
+def cocktail_sausages_hand():
+    # Cocktail sausages: small, plump, smoked links, reddish brown, linked together in a row.
+    s = Sprite()
+    for (sx, sy), (ex, ey) in [((2.4, 5.0), (6.4, 3.4)), ((9.0, 3.4), (13.0, 5.0)), ((2.4, 12.0), (6.4, 10.4)), ((9.0, 10.4), (13.0, 12.0))]:
+        sausage("#b04a2e", (sx, sy), (ex, ey), radius=2.0, s=s)
+    s.pixels_at(plain_ramp("#d8c8a8")[SHADOW], [(7, 4), (8, 4), (7, 11), (8, 11)])  # The twists linking them.
+    return s
+
+
+def cocoa_mass_hand():
+    # Cocoa mass: ground roasted cocoa nibs, a thick, glossy, very dark brown liquor, in a bowl.
+    s = bowl("#3a2018", mound=0.6)
+    s.pixels_at(ramp("#6a4030")[BASE], [(4, 7), (5, 7), (9, 7)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -4863,7 +4991,7 @@ SEED_PLANTS = {
     "mint_seeds": "mint", "grape_cutting": "grape", "red_grape_cutting": "red_grape", "white_grape_cutting": "white_grape",
     "blackcurrant_cutting": "blackcurrant", "redcurrant_cutting": "redcurrant", "savory_seeds": "savory",
     "allspice_sapling": "allspice", "almond_sapling": "almond", "annatto_sapling": "annatto", "apple_sapling": "apple",
-    "apricot_sapling": "apricot", "bay_laurel_sapling": "bay_laurel_leaf",
+    "apricot_sapling": "apricot", "bay_laurel_sapling": "bay_laurel_leaf", "cinnamon_sapling": "cinnamon_bark", "clove_sapling": "clove_bud",
 }
 # Pictures for plants whose fruit is a vanilla item, which this script does not draw.
 BADGE_ONLY = {"apple": apple_badge, "annatto": annatto_badge}
@@ -4898,6 +5026,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"chorizo_filling": chorizo_filling_hand, "choux_buns": choux_buns_hand, "choux_panade": choux_panade_hand,
+             "choux_pastry": choux_pastry_hand, "churro_dough": churro_dough_hand, "churros": churros_hand, "cinnamon": cinnamon_hand,
+             "cinnamon_sapling": cinnamon_sapling_hand, "clove_sapling": clove_sapling_hand, "cloves": cloves_hand, "coarse_salt": coarse_salt_hand,
+             "coated_water_chestnut": coated_water_chestnut_hand, "cocktail_sausage_filling": cocktail_sausage_filling_hand,
+             "cocktail_sausages": cocktail_sausages_hand, "cocoa_mass": cocoa_mass_hand})
 HAND.update({"chiles_rellenos": chiles_rellenos_hand, "chili_garlic": chili_garlic_hand, "chili_pork": chili_pork_hand,
              "chili_powder": chili_powder_hand, "chocolate": chocolate_hand, "chocolate_sponge": chocolate_sponge_hand,
              "chopped_almonds": chopped_almonds_hand, "chopped_apple": chopped_apple_hand, "chopped_beetroot": chopped_beetroot_hand,
