@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/arepas_con_queso",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 15257728
-      }
-    ]
+    "model": "portable_pocket_cabin:item/arepas_con_queso"
   }
 }

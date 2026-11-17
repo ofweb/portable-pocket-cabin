@@ -3422,6 +3422,193 @@ def almond_sapling_hand():
     # Almond: slender, pointed, bright green leaves on a reddish-grey stem.
     return sapling("#5a9a44", trunk_colour="#7a5a52", leaf=(2.8, 1.0))
 
+def fish(body, back, start, end, depth=2.2, s=None):
+    """A small whole fish seen from the side, from its tail at {start} to its head at {end}: a slim body with a darker
+    back and pale belly, an eye at the head, and a forked tail."""
+    s = s or Sprite()
+    belly, dark = plain_ramp(body), ramp(back, spread=0.6)
+    length = math.dist(start, end)
+    dx, dy = (end[0] - start[0]) / length, (end[1] - start[1]) / length
+    mid = (start[0] + dx * length * 0.55, start[1] + dy * length * 0.55)
+    s.capsule(belly, [(start[0] + dx * 1.4, start[1] + dy * 1.4), mid, end], (1.1, depth))
+    # The back: the half of the body on the upper side of its line, darker.
+    for y in range(16):
+        for x in range(16):
+            side = (x + 0.5 - start[0]) * dy - (y + 0.5 - start[1]) * dx
+            if s.pixels[y][x] in belly[1:] and side > 0.2:
+                s.put(x, y, dark[BASE])
+    for k in (-1, 1):  # The forked tail.
+        s.put(round(start[0] - dy * k * 0.9 - 0.5), round(start[1] + dx * k * 0.9 - 0.5), dark[SHADOW])
+    s.put(round(end[0] - dx * 1.4 - 0.5), round(end[1] - dy * 1.4 - 0.5), (20, 20, 24))  # The eye.
+    return s
+
+
+def anchovy_hand():
+    # Two small anchovies: slim silver fish with blue-green backs.
+    s = fish("#cdd4dc", "#2e5a6a", (1.4, 8.6), (13.4, 2.0))
+    return fish("#cdd4dc", "#2e5a6a", (2.4, 14.8), (14.6, 8.2), s=s)
+
+
+def anko_hand():
+    # Sweet azuki bean paste: smooth, glossy, a deep reddish-brown, heaped in a bowl.
+    s = bowl("#5a2a2a", mound=2.4)
+    s.pixels_at(ramp("#5a2a2a")[HIGHLIGHT], [(5, 6), (6, 6)])
+    return s
+
+
+def annatto_sapling_hand():
+    # Annatto: broad, heart-shaped leaves on a reddish stem.
+    return sapling("#4a8a3a", trunk_colour="#8a4a3a", leaf=(2.6, 1.8))
+
+
+def anticucho_marinade_hand():
+    # A bowl of thin, rusty red marinade of chilies and vinegar, flecked with herbs.
+    s = bowl("#a83a1e", flecks=[("#6a7a3a", 0.06), ("#e0a060", 0.05)])
+    s.pixels_at(ramp("#a83a1e")[HIGHLIGHT], [(4, 7), (5, 7), (6, 8)])
+    return s
+
+
+def skewer(chunk_colour, chunks=4, char="#3a1e14", s=None, start=(1.6, 14.4), end=(14.6, 1.4)):
+    """A wooden skewer from lower left to upper right with chunks of grilled food along it, charred at the edges."""
+    s = s or Sprite()
+    s.line(ramp("#c8a070")[BASE], round(start[0]), round(start[1]), round(end[0]), round(end[1]))
+    tones = ramp(chunk_colour, spread=0.7)
+    for i in range(chunks):
+        t = 0.22 + i * (0.62 / max(1, chunks - 1))
+        cx, cy = start[0] + (end[0] - start[0]) * t, start[1] + (end[1] - start[1]) * t
+        s.ellipse(tones, cx, cy, 2.4, 2.4)
+        s.pixels_at(ramp(char)[BASE], [(int(cx) + 1, int(cy) + 1), (int(cx) - 1, int(cy) + 1)])
+        s.put(int(cx) - 1, int(cy) - 1, tones[HIGHLIGHT])
+    return s
+
+
+def anticucho_skewer_hand():
+    # Grilled chunks of beef heart on a skewer, dark red-brown and charred, glazed with the chili marinade.
+    return skewer("#a84a2c")
+
+
+def anticuchos_hand():
+    # Anticuchos served: a skewer lying across a plate, with a boiled potato and a piece of corn on the cob.
+    s = plate()
+    potato = ramp("#d8b46a", spread=0.6)
+    s.ellipse(potato, 4.4, 11.8, 2.6, 1.9)
+    s.put(3, 11, potato[HIGHLIGHT])
+    corn = ramp("#f0c840", spread=0.6)
+    s.ellipse(corn, 11.0, 12.0, 3.0, 1.6, texture=lambda x, y: -1 if (x + y) % 2 else 0)
+    return skewer("#a84a2c", chunks=3, s=s, start=(0.6, 8.6), end=(15.0, 5.0))
+
+
+def plate(colour="#e4e6ea"):
+    """A plain white plate seen from a little above, filling the lower part of the icon."""
+    s = Sprite()
+    tones = plain_ramp(colour)
+    s.ellipse(tones, 7.5, 11.8, 7.4, 3.2)
+    s.ellipse(plain_ramp("#f2f3f5"), 7.5, 11.6, 5.4, 2.0, outline=False)
+    return s
+
+
+def aonori_hand():
+    # Aonori: fine, bright green flakes of dried sea lettuce, in a small bowl.
+    return spice_bowl("#4a9a3a", fleck="#2a6a2a", seed=5)
+
+
+def apfelstrudel_hand():
+    # A length of apple strudel: a long roll of thin, golden, flaky pastry dusted with sugar, cut at the front to show the
+    # apple and raisin filling wound inside.
+    s = Sprite()
+    pastry = ramp("#d49a4a", spread=0.7)
+    s.capsule(pastry, [(13.6, 3.6), (5.0, 10.4)], (3.4, 3.4))
+    sugar = plain_ramp("#fafaf6")[BASE]
+    s.pixels_at(sugar, [(11, 2), (9, 4), (12, 4), (7, 6), (10, 6), (5, 8)])
+    for x, y in [(12, 6), (9, 8)]:
+        s.put(x, y, pastry[SHADOW])  # The folds of the pastry.
+    # The cut end, toward the lower left: a spiral of filling inside a rim of pastry.
+    s.ellipse(pastry, 4.6, 11.0, 3.4, 3.4)
+    s.ellipse(ramp("#ecd088", spread=0.5), 4.6, 11.0, 2.4, 2.4, outline=False)
+    s.pixels_at(pastry[LIGHT], [(4, 10), (5, 11), (3, 12)])
+    s.pixels_at(ramp("#5a2a2a")[BASE], [(5, 10), (3, 11)])
+    return s
+
+
+def apple_compote_hand():
+    # A bowl of soft, pale golden apple pieces in their syrup.
+    s = bowl("#e8c060", mound=1.4, texture=bumpy)
+    s.pixels_at(plain_ramp("#f4e0a0")[BASE], [(5, 6), (8, 6), (10, 7)])
+    return s
+
+
+def apple_pomace_hand():
+    # Apple pomace: the pressed-out pulp, a damp, fibrous, tan-brown heap flecked with red peel and seeds.
+    return seed_heap("#b08a50", fleck="#a83a2a", seed=17)
+
+
+def apple_badge():
+    """A small red apple with a leaf, for the apple sapling's picture: the apple itself is a vanilla item."""
+    s = Sprite()
+    apple = ramp("#c8282a", spread=0.7)
+    s.ellipse(apple, 7.5, 9.0, 6.0, 5.6)
+    s.line(ramp("#5a3a24")[BASE], 7, 4, 8, 1)
+    s.ellipse(ramp("#4a9a34"), 10.4, 2.6, 2.2, 1.2, angle=-20)
+    s.pixels_at(apple[HIGHLIGHT], [(4, 6), (4, 7), (5, 6)])
+    return s
+
+
+def annatto_badge():
+    """A small annatto pod for the annatto sapling's picture: heart-shaped, red, and covered in soft spines."""
+    s = Sprite()
+    pod = ramp("#c8302a")
+    # Heart-shaped: broad at the top, drawn to a point below.
+    s.shape(lambda x, y: ((x - 7.5) / 5.6) ** 2 + ((y - 7.0) / 4.4) ** 2 <= 1 or (y >= 7 and abs(x - 7.5) <= (15.0 - y) * 0.7),
+            pod, (7.5, 8.6), (5.6, 6.0))
+    s.pixels_at(pod[HIGHLIGHT], [(4, 5), (5, 4)])
+    spine = ramp("#f08a6a")[BASE]
+    s.pixels_at(spine, [(1, 7), (14, 7), (3, 3), (12, 3), (2, 10), (13, 10), (5, 13), (10, 13), (6, 6), (9, 8), (7, 11)])
+    s.line(ramp("#5a3a24")[BASE], 7, 3, 8, 0)
+    return s
+
+
+def apple_sapling_hand():
+    return sapling("#4e9440", leaf=(2.4, 1.6))
+
+
+def apricot_sapling_hand():
+    # Apricot: rounded, toothed leaves on a reddish stem.
+    return sapling("#58983e", trunk_colour="#7a4a3a", leaf=(2.2, 1.8))
+
+
+def arepa_dough_hand():
+    # Arepa dough: a smooth, pale yellow-white ball of precooked maize flour.
+    return dough_ball("#f0e2a8", flour=False)
+
+
+def arepa(s=None, cx=7.5, cy=8.6):
+    """A round, thick maize cake griddled golden, with darker scorched patches."""
+    s = s or Sprite()
+    tones = plain_ramp("#eed490")
+    s.ellipse(tones, cx, cy + 1.6, 6.6, 3.0)
+    s.ellipse(tones, cx, cy, 6.6, 3.0)
+    s.pixels_at(ramp("#b0782a")[BASE], [(int(cx) - 3, int(cy)), (int(cx) + 2, int(cy) - 1), (int(cx), int(cy) + 1), (int(cx) + 4, int(cy) + 1)])
+    s.put(int(cx) - 2, int(cy) - 2, tones[HIGHLIGHT])
+    return s
+
+
+def arepas_hand():
+    s = arepa(cx=7.5, cy=10.2)
+    return arepa(s, cx=7.5, cy=5.4)
+
+
+def arepas_con_queso_hand():
+    # An arepa split open and stuffed with soft white cheese, a pat of butter melting on top.
+    s = Sprite()
+    tones = plain_ramp("#eed490")
+    s.ellipse(tones, 7.5, 11.6, 6.6, 2.6)
+    cheese = plain_ramp("#f6f4ea")
+    s.ellipse(cheese, 7.5, 9.0, 6.0, 1.8)
+    s.ellipse(tones, 7.0, 6.2, 6.4, 2.8, angle=-8)
+    s.pixels_at(ramp("#b0782a")[BASE], [(4, 6), (9, 5), (6, 12), (10, 12)])
+    s.ellipse(ramp("#f4d860", spread=0.5), 8.6, 4.4, 1.6, 0.9)
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -3436,13 +3623,16 @@ SEED_PLANTS = {
     "courgette_seeds": "courgette", "cucumber_seeds": "cucumber", "marjoram_seeds": "marjoram", "oregano_seeds": "oregano",
     "mint_seeds": "mint", "grape_cutting": "grape", "red_grape_cutting": "red_grape", "white_grape_cutting": "white_grape",
     "blackcurrant_cutting": "blackcurrant", "redcurrant_cutting": "redcurrant", "savory_seeds": "savory",
-    "allspice_sapling": "allspice", "almond_sapling": "almond",
+    "allspice_sapling": "allspice", "almond_sapling": "almond", "annatto_sapling": "annatto", "apple_sapling": "apple",
+    "apricot_sapling": "apricot",
 }
+# Pictures for plants whose fruit is a vanilla item, which this script does not draw.
+BADGE_ONLY = {"apple": apple_badge, "annatto": annatto_badge}
 BADGE = 8
 
 
 def plant_badge(source):
-    small = SPRITES[source]().image().resize((BADGE, BADGE), Image.BOX)
+    small = (BADGE_ONLY.get(source) or SPRITES[source])().image().resize((BADGE, BADGE), Image.BOX)
     pixels = small.load()
     for y in range(BADGE):
         for x in range(BADGE):
@@ -3469,6 +3659,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"anchovy": anchovy_hand, "anko": anko_hand, "annatto_sapling": annatto_sapling_hand, "anticucho_marinade": anticucho_marinade_hand,
+             "anticucho_skewer": anticucho_skewer_hand, "anticuchos": anticuchos_hand, "aonori": aonori_hand, "apfelstrudel": apfelstrudel_hand,
+             "apple_compote": apple_compote_hand, "apple_pomace": apple_pomace_hand, "apple_sapling": apple_sapling_hand,
+             "apricot_sapling": apricot_sapling_hand, "arepa_dough": arepa_dough_hand, "arepas": arepas_hand,
+             "arepas_con_queso": arepas_con_queso_hand})
 HAND.update({"alfajor_dough": alfajor_dough_hand, "alfajor_rounds": alfajor_rounds_hand, "alfajores_de_maicena": alfajores_de_maicena_hand,
              "allspice_sapling": allspice_sapling_hand, "almond_sapling": almond_sapling_hand})
 HAND.update({"aged_yerba_mate": aged_yerba_mate_hand, "ajitsuke_tamago": ajitsuke_tamago_hand, "al_pastor_adobo": al_pastor_adobo_hand,

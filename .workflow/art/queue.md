@@ -141,21 +141,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] alfajores_de_maicena
 - [x] allspice_sapling
 - [x] almond_sapling
-- [ ] anchovy
-- [ ] anko
-- [ ] annatto_sapling
-- [ ] anticucho_marinade
-- [ ] anticucho_skewer
-- [ ] anticuchos
-- [ ] aonori
-- [ ] apfelstrudel
-- [ ] apple_compote
-- [ ] apple_pomace
-- [ ] apple_sapling
-- [ ] apricot_sapling
-- [ ] arepa_dough
-- [ ] arepas
-- [ ] arepas_con_queso
+- [x] anchovy
+- [x] anko
+- [x] annatto_sapling
+- [x] anticucho_marinade
+- [x] anticucho_skewer
+- [x] anticuchos
+- [x] aonori
+- [x] apfelstrudel
+- [x] apple_compote
+- [x] apple_pomace
+- [x] apple_sapling
+- [x] apricot_sapling
+- [x] arepa_dough
+- [x] arepas
+- [x] arepas_con_queso
 - [ ] arroz_con_leche
 - [ ] azuki_mash
 - [ ] back_fat
