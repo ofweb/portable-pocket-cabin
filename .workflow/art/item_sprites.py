@@ -3915,8 +3915,19 @@ def beef_sirloin_hand():
 
 def beef_strips_hand():
     # Thin strips of sliced beef, lean and red, lying at angles.
+    return strips("#c24a40")
+
+
+def cured_beef_strips_hand():
+    # Cured beef strips: darkened to a deep, dense red by the salt, with a few white grains still on them.
+    s = strips("#8a2a2a")
+    s.pixels_at(plain_ramp("#f2f0ea")[BASE], [(5, 2), (8, 6), (11, 6), (4, 12), (12, 12)])
+    return s
+
+
+def strips(colour):
     s = Sprite()
-    meat = ramp("#c24a40", spread=0.55)
+    meat = ramp(colour, spread=0.55)
     for start, end in [((1.6, 3.4), (10.0, 1.6)), ((2.4, 8.4), (14.0, 4.8)), ((1.6, 13.6), (11.0, 10.4)), ((8.0, 14.6), (14.6, 11.4))]:
         s.capsule(meat, [start, end], (1.5, 1.3))
         s.put(round((start[0] + end[0]) / 2 - 0.5), round((start[1] + end[1]) / 2 - 1.0), meat[HIGHLIGHT])
@@ -5362,6 +5373,117 @@ def curds_hand():
         s.put(x, y - 1, curd[HIGHLIGHT])
     return s
 
+def cured_pork_belly_hand():
+    # Cured pork belly: a slab of layered pink meat and white fat, firm from its dry cure, crusted with salt and sugar.
+    s = Sprite()
+    meat, fat = ramp("#c86a6a", spread=0.6), plain_ramp("#f2e8dc")
+    s.shape(lambda x, y: 1 <= x <= 14 and 4 <= y <= 12, meat, (7.5, 8.0), (7.0, 4.0))
+    for y in (6, 9):
+        s.pixels_at(fat[BASE], [(x, y) for x in range(2, 14)])
+    s.pixels_at(plain_ramp("#e8d8c4")[BASE], [(x, 5) for x in range(2, 14)])  # The rind.
+    s.pixels_at(plain_ramp("#fafaf6")[BASE], [(3, 7), (7, 8), (11, 7), (5, 10), (10, 11)])  # Salt.
+    return s
+
+
+def cured_pork_shoulder_hand():
+    # Cured pork shoulder: a deep rose-pink joint, darkened by the cure, with a rim of white fat and a dusting of salt.
+    s = slab("#b84a4e", fat="#f0e6d6", rx=6.4, ry=5.0, angle=-10, fat_side=1.2, seed=97)
+    s.pixels_at(plain_ramp("#fafaf6")[BASE], [(4, 6), (8, 5), (10, 8), (6, 9)])
+    return s
+
+
+def cured_salmon_hand():
+    # Cured salmon: thin, glossy, deep orange-pink slices with pale fat lines, edged with a crust of chopped dill.
+    s = Sprite()
+    fish_ = plain_ramp("#f0946a")
+    for start, end in [((2.0, 4.6), (12.6, 2.4)), ((2.6, 9.4), (13.6, 7.2)), ((3.0, 14.0), (14.0, 11.8))]:
+        s.capsule(fish_, [start, end], (1.8, 1.6))
+        length = math.dist(start, end)
+        for t in range(2, int(length) - 1, 3):
+            x = start[0] + (end[0] - start[0]) * t / length
+            y = start[1] + (end[1] - start[1]) * t / length
+            s.put(round(x - 0.5), round(y - 0.5), plain_ramp("#f8c8b0")[BASE])  # The fat lines.
+        s.pixels_at(ramp("#3a8a34")[BASE], [(round(start[0]), round(start[1]) + 1), (round(start[0]) + 2, round(start[1]) + 1)])  # Dill.
+    return s
+
+
+def curried_fish_paste_hand():
+    # Curried fish paste: white fish pounded with red curry paste into a thick orange-red paste, in a bowl.
+    return bowl("#d85a2a", mound=1.6, texture=bumpy, flecks=[("#f0a070", 0.08)])
+
+
+def curry_ketchup_hand():
+    # Curry ketchup: a smooth, glossy, bright red-orange sauce, in a bowl.
+    s = bowl("#d83a1e")
+    s.pixels_at(ramp("#f08a4a")[BASE], [(4, 7), (5, 7), (6, 7)])
+    return s
+
+
+def curry_ketchup_base_hand():
+    # Curry ketchup base: tomatoes, vinegar and curry powder cooked down to a thick, chunky, darker red, in a bowl.
+    return bowl("#a8301c", mound=1.0, texture=bumpy, flecks=[("#d0a030", 0.06)])
+
+
+def curry_powder_hand():
+    # Curry powder: a warm golden-yellow powder.
+    return spice_bowl("#d8a02a", fleck="#a8601e", seed=101)
+
+
+def curry_spice_mix_hand():
+    # Curry spice mix: the whole spices blended before toasting, a coarse ochre mix flecked with red, brown and green.
+    s = spice_bowl("#c89a3a", seed=103)
+    for (x, y), colour in [((4, 6), "#b8321e"), ((7, 5), "#5a3a24"), ((10, 6), "#7a8a4a"), ((6, 7), "#3a3a3a"), ((9, 7), "#b8321e")]:
+        s.put(x, y, ramp(colour)[BASE])
+    return s
+
+
+def currywurst_hand():
+    # Currywurst: a sliced bratwurst under curry ketchup dusted with curry powder, with fried potatoes, on a plate.
+    s = plate()
+    fries = plain_ramp("#f0cc70")
+    for x0, y0, x1, y1 in [(10, 13, 14, 9), (11, 14, 15, 10), (12, 14, 15, 12)]:
+        s.line(fries[BASE], x0, y0, x1, y1)
+    sauce = ramp("#d83a1e", spread=0.5)
+    s.ellipse(sauce, 6.4, 10.4, 5.4, 2.6)
+    meat = ramp("#c8844a", spread=0.6)
+    for cx in (3.4, 6.0, 8.6):
+        s.ellipse(meat, cx, 9.6, 1.3, 1.1)
+    s.pixels_at(ramp("#e8b030")[BASE], [(4, 9), (7, 8), (9, 10), (5, 11)])  # Curry powder.
+    return s
+
+
+def daifuku_mochi_hand():
+    # Daifuku: soft, round, white rice-cake balls dusted with starch, one cut to show the dark bean paste and strawberry.
+    s = Sprite()
+    mochi = plain_ramp("#f8f6f0")
+    s.ellipse(mochi, 4.8, 6.0, 4.0, 3.6)
+    s.put(3, 4, mochi[HIGHLIGHT])
+    s.ellipse(mochi, 10.6, 10.6, 4.4, 4.0)
+    s.ellipse(ramp("#5a2a2a", spread=0.5), 10.6, 10.8, 3.0, 2.6, outline=False)
+    s.ellipse(ramp("#d02a3a", spread=0.5), 10.6, 10.2, 1.6, 1.4, outline=False)
+    s.put(10, 9, plain_ramp("#f8d8d8")[BASE])
+    return s
+
+
+def dango_dough_hand():
+    # Dango dough: a smooth, bright white ball of rice flour dough.
+    return dough_ball("#f4f2ec", flour=False)
+
+
+def desiccated_coconut_hand():
+    # Desiccated coconut: fine, dry, snow-white shreds, in a clay bowl so they show.
+    return spice_bowl("#f8f6f0", fleck="#e4e0d4", seed=107, bowl_colour=CLAY)
+
+
+def diced_aubergine_hand():
+    # Diced aubergine: small creamy cubes, some with a strip of glossy purple skin.
+    return chopped("#ece0b8", skin="#4a2a5a", size=1.2, seed=109, plain=True)
+
+
+def diced_beef_hand():
+    # Diced beef: neat red cubes of chuck.
+    return chopped("#b03a34", size=1.2, seed=113)
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -5413,6 +5535,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"cured_beef_strips": cured_beef_strips_hand, "cured_pork_belly": cured_pork_belly_hand, "cured_pork_shoulder": cured_pork_shoulder_hand,
+             "cured_salmon": cured_salmon_hand, "curried_fish_paste": curried_fish_paste_hand, "curry_ketchup": curry_ketchup_hand,
+             "curry_ketchup_base": curry_ketchup_base_hand, "curry_powder": curry_powder_hand, "curry_spice_mix": curry_spice_mix_hand,
+             "currywurst": currywurst_hand, "daifuku_mochi": daifuku_mochi_hand, "dango_dough": dango_dough_hand,
+             "desiccated_coconut": desiccated_coconut_hand, "diced_aubergine": diced_aubergine_hand, "diced_beef": diced_beef_hand})
 HAND.update({"creme_brulee": creme_brulee_hand, "creme_brulee_custard": creme_brulee_custard_hand, "creme_fraiche": creme_fraiche_hand,
              "crisp_bacon": crisp_bacon_hand, "crisp_carnitas": crisp_carnitas_hand, "crisp_pork_belly": crisp_pork_belly_hand,
              "croque_monsieur": croque_monsieur_hand, "crushed_blackcurrants": crushed_blackcurrants_hand, "crushed_ice": crushed_ice_hand,

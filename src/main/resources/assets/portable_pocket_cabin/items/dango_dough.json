@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/dango_dough",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 16579836
-      }
-    ]
+    "model": "portable_pocket_cabin:item/dango_dough"
   }
 }

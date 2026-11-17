@@ -336,21 +336,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] cubed_tofu
 - [x] cucumber_relish
 - [x] curds
-- [ ] cured_beef_strips
-- [ ] cured_pork_belly
-- [ ] cured_pork_shoulder
-- [ ] cured_salmon
-- [ ] curried_fish_paste
-- [ ] curry_ketchup
-- [ ] curry_ketchup_base
-- [ ] curry_powder
-- [ ] curry_spice_mix
-- [ ] currywurst
-- [ ] daifuku_mochi
-- [ ] dango_dough
-- [ ] desiccated_coconut
-- [ ] diced_aubergine
-- [ ] diced_beef
+- [x] cured_beef_strips
+- [x] cured_pork_belly
+- [x] cured_pork_shoulder
+- [x] cured_salmon
+- [x] curried_fish_paste
+- [x] curry_ketchup
+- [x] curry_ketchup_base
+- [x] curry_powder
+- [x] curry_spice_mix
+- [x] currywurst
+- [x] daifuku_mochi
+- [x] dango_dough
+- [x] desiccated_coconut
+- [x] diced_aubergine
+- [x] diced_beef
 - [ ] diced_bell_pepper
 - [ ] diced_courgette
 - [ ] diced_nopales
