@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/coq_au_vin",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 8006186
-      }
-    ]
+    "model": "portable_pocket_cabin:item/coq_au_vin"
   }
 }

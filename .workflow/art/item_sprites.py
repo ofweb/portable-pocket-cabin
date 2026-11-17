@@ -3163,11 +3163,11 @@ def wasabi_root_hand():
     return s
 
 
-def spice_bowl(powder, fleck=None, seed=7):
+def spice_bowl(powder, fleck=None, seed=7, bowl_colour="#d6d8dc"):
     """A ground spice: a small pale ceramic bowl heaped with fine powder, flecked and lit on top. The bowl is pale so
     that brown and red spices stand out against it."""
     s = Sprite()
-    wood = plain_ramp("#d6d8dc")
+    wood = plain_ramp(bowl_colour)
     s.shape(lambda x, y: y >= 9.0 and ((x - 7.5) / 7.0) ** 2 + ((y - 9.0) / 6.0) ** 2 <= 1, wood, (7.5, 11.0), (7.0, 5.0))
     s.pixels_at(wood[SHADOW], [(x, 14) for x in range(5, 11)])
     tones = ramp(powder, spread=0.6)
@@ -5117,6 +5117,126 @@ def cooled_brigadeiro_mixture_hand():
     s.pixels_at(ramp("#2e1a12")[BASE], [(8, 6), (9, 6), (9, 7)])
     return s
 
+def coq_au_vin_hand():
+    # Coq au vin: chicken braised in red wine, the pieces glazed a deep burgundy, with mushrooms and little onions.
+    s = bowl("#5a1e2a", mound=1.0, flecks=[("#c8885a", 0.16), ("#d8c4a0", 0.06), ("#f0e8dc", 0.04)])
+    return s
+
+
+def corn_husk_hand():
+    # Corn husks: long, papery, pale green-gold leaves stripped from the cob, laid one over another.
+    s = Sprite()
+    for i, (start, end) in enumerate([((2.0, 14.6), (10.0, 1.0)), ((5.0, 15.0), (13.6, 2.4)), ((7.4, 15.0), (14.6, 6.0))]):
+        tones = plain_ramp(["#d8d494", "#c8cc84", "#e2dca4"][i])
+        s.capsule(tones, [start, ((start[0] + end[0]) / 2 + 0.6, (start[1] + end[1]) / 2), end], (2.0, 0.6))
+        s.line(tones[SHADOW], round(start[0] + 1), round(start[1] - 1), round(end[0] - 1), round(end[1] + 1))
+    return s
+
+
+def corn_kernels_hand():
+    # Corn kernels: a heap of plump, golden-yellow kernels cut from the cob.
+    s = Sprite()
+    kernel = ramp("#f0c030", spread=0.6)
+    rows = [(5, 4, 3), (4, 7, 5), (3, 10, 7), (2, 13, 8)]
+    for y0, x0, count in [(r[1], r[0], r[2]) for r in [(6, 4, 3), (5, 7, 4), (3, 10, 6), (2, 13, 7)]]:
+        for k in range(count):
+            x = x0 + k * 2
+            s.pixels_at(kernel[BASE], [(x, y0)])
+            s.pixels_at(kernel[HIGHLIGHT], [(x, y0 - 1)])
+            s.pixels_at(kernel[SHADOW], [(x + 1, y0), (x, y0 + 1)])
+    return s
+
+
+def corn_paste_hand():
+    # Corn paste: fresh corn ground to a thick, coarse, pale yellow paste, in a bowl.
+    return bowl("#ecd47a", mound=1.4, texture=bumpy, plain=True)
+
+
+def corn_tortilla_hand():
+    # Corn tortillas: a small stack of thin, round, pale yellow flatbreads, freckled brown from the griddle.
+    s = Sprite()
+    tones = plain_ramp("#ecd8a0")
+    for dy in (3.0, 1.5, 0.0):
+        s.ellipse(tones, 7.5, 7.6 + dy, 6.8, 3.6)
+    s.pixels_at(ramp("#a8742a")[BASE], [(4, 7), (7, 6), (10, 8), (6, 9), (11, 6), (8, 8)])
+    return s
+
+
+def cornstarch_hand():
+    # Cornstarch: a fine, squeaky, pure white powder, in a dark clay bowl so it shows.
+    return spice_bowl("#f4f4f2", fleck="#e2e2de", seed=59, bowl_colour=CLAY)
+
+
+def cotija_cheese_hand():
+    # Cotija: a hard, dry, salty white cheese, a wedge of it crumbling at the edge.
+    s = cheese_wedge("#f2eedc", "#e0d8c0", holes=[(5, 12), (8, 11)], plain=True)
+    s.pixels_at(plain_ramp("#f2eedc")[BASE], [(2, 15), (4, 15), (13, 15)])  # Crumbs.
+    s.pixels_at(plain_ramp("#f2eedc")[SHADOW], [(3, 15), (14, 15)])
+    return s
+
+
+def cow_carcass_hand():
+    # A side of beef: deep red meat over a pale curve of ribs, with a thick layer of white fat along the back, hung from
+    # a hook.
+    s = Sprite()
+    s.line(ramp("#8a8a90")[BASE], 8, 0, 8, 2)
+    meat = ramp("#a83430", spread=0.6)
+    s.shape(lambda x, y: ((x - 8.0) / 5.6) ** 2 + ((y - 9.0) / 6.8) ** 2 <= 1, meat, (8.0, 9.0), (5.6, 6.8))
+    fat = plain_ramp("#f0e6d6")
+    for y in range(3, 15):
+        for x in range(2, 6):
+            if s.pixels[y][x] in meat[1:] and s.pixels[y][x - 1] in (None, meat[OUTLINE]):
+                s.pixels_at(fat[BASE], [(x, y), (x + 1, y)])
+    for y in (6, 8, 10, 12):
+        s.line(plain_ramp("#e8dcc8")[SHADOW], 8, y, 12, y + 1)  # The ribs.
+    return s
+
+
+def coxinha_dough_hand():
+    # Coxinha dough: flour cooked in chicken stock into a smooth, pale golden dough.
+    return dough_ball("#eed8a0", flour=False)
+
+
+def coxinhas_hand():
+    # Coxinhas: teardrop-shaped croquettes, crumbed and fried a deep golden brown.
+    s = Sprite()
+    crumb = ramp("#c8823a", spread=0.6)
+    for cx, cy in [(5.0, 9.4), (11.0, 10.4)]:
+        s.shape(lambda x, y, cx=cx, cy=cy: ((x - cx) / 3.4) ** 2 + ((y - cy - 1.0) / 3.2) ** 2 <= 1 or
+                (y <= cy and abs(x - cx) <= (y - (cy - 5.4)) * 0.6), crumb, (cx, cy), (3.4, 4.4),
+                texture=lambda x, y: -1 if (x * 3 + y) % 4 == 0 else 0)
+        s.put(round(cx) - 1, round(cy) - 1, crumb[HIGHLIGHT])
+    return s
+
+
+def cracked_rye_hand():
+    # Cracked rye: a heap of broken grey-brown grains.
+    return seed_heap("#8a7a5a", fleck="#c8b890", seed=71)
+
+
+def cracklings_hand():
+    # Cracklings: crisp, puffed, golden-brown bits of pork skin and fat left from rendering.
+    return chopped("#c8862e", size=1.4, seed=73)
+
+
+def cream_cheese_hand():
+    # Cream cheese: a thick, smooth, bright white mound with a swirl on top, in a clay bowl.
+    s = bowl("#f6f4ee", mound=2.4, plain=True, bowl_colour=CLAY)
+    s.pixels_at(plain_ramp("#f6f4ee")[SHADOW], [(6, 5), (7, 6), (9, 5)])
+    return s
+
+
+def creamed_chicken_sauce_hand():
+    # Creamed chicken sauce: a pale, creamy sauce with pieces of chicken, in a clay bowl.
+    return bowl("#f0e4c4", plain=True, bowl_colour=CLAY, flecks=[("#e8c8a0", 0.14), ("#6a9a4a", 0.04)])
+
+
+def crema_hand():
+    # Crema: thin, tangy soured cream, glossy white with a little lime, in a clay bowl.
+    s = bowl("#f6f4ec", plain=True, bowl_colour=CLAY, flecks=[("#9ac850", 0.03)])
+    s.pixels_at(plain_ramp("#ffffff")[BASE], [(4, 7), (5, 7), (6, 7)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -5168,6 +5288,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"coq_au_vin": coq_au_vin_hand, "corn_husk": corn_husk_hand, "corn_kernels": corn_kernels_hand, "corn_paste": corn_paste_hand,
+             "corn_tortilla": corn_tortilla_hand, "cornstarch": cornstarch_hand, "cotija_cheese": cotija_cheese_hand,
+             "cow_carcass": cow_carcass_hand, "coxinha_dough": coxinha_dough_hand, "coxinhas": coxinhas_hand, "cracked_rye": cracked_rye_hand,
+             "cracklings": cracklings_hand, "cream_cheese": cream_cheese_hand, "creamed_chicken_sauce": creamed_chicken_sauce_hand,
+             "crema": crema_hand})
 HAND.update({"cocoa_powder": cocoa_powder_hand, "cocoa_press_cake": cocoa_press_cake_hand, "coconut_sapling": coconut_sapling_hand,
              "coconut_sticky_rice": coconut_sticky_rice_hand, "cod_roe": cod_roe_hand, "coffee_sapling": coffee_sapling_hand,
              "concha_topping": concha_topping_hand, "conchas": conchas_hand, "cookbook": cookbook_hand,

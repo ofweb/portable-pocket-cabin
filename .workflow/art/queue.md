@@ -306,21 +306,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] cooked_soybeans
 - [x] cookie_dough
 - [x] cooled_brigadeiro_mixture
-- [ ] coq_au_vin
-- [ ] corn_husk
-- [ ] corn_kernels
-- [ ] corn_paste
-- [ ] corn_tortilla
-- [ ] cornstarch
-- [ ] cotija_cheese
-- [ ] cow_carcass
-- [ ] coxinha_dough
-- [ ] coxinhas
-- [ ] cracked_rye
-- [ ] cracklings
-- [ ] cream_cheese
-- [ ] creamed_chicken_sauce
-- [ ] crema
+- [x] coq_au_vin
+- [x] corn_husk
+- [x] corn_kernels
+- [x] corn_paste
+- [x] corn_tortilla
+- [x] cornstarch
+- [x] cotija_cheese
+- [x] cow_carcass
+- [x] coxinha_dough
+- [x] coxinhas
+- [x] cracked_rye
+- [x] cracklings
+- [x] cream_cheese
+- [x] creamed_chicken_sauce
+- [x] crema
 - [ ] creme_brulee
 - [ ] creme_brulee_custard
 - [ ] creme_fraiche

@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/corn_tortilla",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 15257744
-      }
-    ]
+    "model": "portable_pocket_cabin:item/corn_tortilla"
   }
 }
