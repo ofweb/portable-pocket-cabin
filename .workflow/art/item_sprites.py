@@ -4708,6 +4708,146 @@ def chickpea_flour_hand():
     # Chickpea flour: a fine, pale yellow flour.
     return spice_bowl("#e8d48a", fleck="#c8b060", seed=47)
 
+PIECES = [(3.4, 4.0), (8.0, 3.2), (12.4, 4.6), (2.6, 8.6), (6.6, 7.8), (11.0, 8.8), (4.2, 12.6), (8.6, 12.2), (12.8, 12.8)]
+
+
+def chopped(flesh, skin=None, size=1.6, seed=3, plain=False, spots=PIECES):
+    """Chopped or diced food: small solid cubes scattered in a heap, each lit on its top and left faces and shaded on its
+    bottom and right, some showing the skin along the bottom edge. Size 1.2 reads as diced, 1.6 and up as chopped."""
+    s = Sprite()
+    tones = plain_ramp(flesh) if plain else ramp(flesh, spread=0.6)
+    rind = (plain_ramp(skin) if plain else ramp(skin, spread=0.6)) if skin else None
+    rng = random.Random(seed)
+    side = max(3, round(size * 2.2))
+    for cx, cy in spots:
+        x0 = round(cx - side / 2 + rng.uniform(-0.5, 0.5))
+        y0 = round(cy - side / 2 + rng.uniform(-0.5, 0.5))
+        w, h = side + rng.choice((0, 0, 1)), side + rng.choice((0, 0, -1 if side > 3 else 0))
+        for y in range(y0, y0 + h):
+            for x in range(x0, x0 + w):
+                if x == x0 + w - 1 or y == y0 + h - 1:
+                    colour = tones[OUTLINE] if x == x0 + w - 1 and y == y0 + h - 1 else tones[SHADOW]
+                elif x == x0 or y == y0:
+                    colour = tones[LIGHT]
+                else:
+                    colour = tones[BASE]
+                s.put(x, y, colour)
+        s.put(x0, y0, tones[HIGHLIGHT])
+        if rind and rng.random() < 0.6:
+            s.pixels_at(rind[BASE], [(x, y0 + h - 1) for x in range(x0, x0 + w - 1)])
+    return s
+
+
+def chiles_rellenos_hand():
+    # Chiles rellenos: a stuffed poblano fried in a golden, puffy egg batter, served in a pool of tomato caldillo.
+    s = plate()
+    sauce = ramp("#c83a26", spread=0.5)
+    s.ellipse(sauce, 7.5, 11.2, 6.0, 2.6)
+    batter = plain_ramp("#e8c060")
+    s.ellipse(batter, 7.4, 8.8, 5.6, 2.8, angle=-10)
+    s.pixels_at(ramp("#3a7a2a")[BASE], [(11, 7), (12, 6), (13, 6)])  # The chili's stem.
+    s.pixels_at(batter[HIGHLIGHT], [(4, 8), (6, 7), (8, 7)])
+    s.pixels_at(batter[SHADOW], [(5, 10), (9, 10)])
+    return s
+
+
+def chili_garlic_hand():
+    # Chili garlic: a coarse paste of pounded red chilies and white garlic, in a bowl.
+    return bowl("#c82a1e", mound=1.0, flecks=[("#f2e8d0", 0.14), ("#f05a3a", 0.1)])
+
+
+def chili_pork_hand():
+    # Chili pork: chunks of pork shoulder simmered in a dark red chili sauce, in a bowl.
+    return bowl("#8a2418", mound=0.8, flecks=[("#c8885a", 0.16), ("#b03a26", 0.1)])
+
+
+def chili_powder_hand():
+    # Chili powder: a deep brick-red powder.
+    return spice_bowl("#b8321e", fleck="#e0602e", seed=51)
+
+
+def chocolate_hand():
+    # A bar of chocolate: dark, glossy, set in squares, with one corner broken off.
+    s = Sprite()
+    choc = ramp("#5a301e", spread=0.6)
+    s.shape(lambda x, y: 2 <= x <= 13 and 1 <= y <= 14 and not (x >= 11 and y <= 3), choc, (7.5, 7.5), (5.5, 6.5))
+    for y in range(2, 14):
+        for x in range(3, 13):
+            if s.pixels[y][x] in choc[1:]:
+                if (y - 1) % 4 == 0 or (x - 2) % 4 == 0:
+                    s.put(x, y, choc[SHADOW])  # The grooves between squares.
+                elif (y - 2) % 4 == 0 and (x - 3) % 4 == 0:
+                    s.put(x, y, choc[HIGHLIGHT])
+    return s
+
+
+def chocolate_sponge_hand():
+    # A chocolate sponge: a round, risen, dark brown cake, cut to show its airy crumb.
+    s = Sprite()
+    cake = ramp("#6a3a24", spread=0.6)
+    s.ellipse(cake, 7.5, 10.4, 7.0, 3.4)
+    s.shape(lambda x, y: 1 <= x <= 14 and 6 <= y <= 10, cake, (7.5, 8.0), (7.0, 2.0))
+    s.ellipse(ramp("#7a4630", spread=0.5), 7.5, 6.2, 7.0, 2.8)
+    for x, y in [(3, 9), (6, 10), (9, 9), (12, 10), (5, 12), (10, 12)]:
+        s.put(x, y, cake[SHADOW])  # Air holes in the crumb.
+    s.pixels_at(cake[HIGHLIGHT], [(4, 5), (5, 5)])
+    return s
+
+
+def chopped_almonds_hand():
+    # Chopped almonds: rough, creamy white pieces of blanched almond.
+    return chopped("#e8d6b0", size=1.3, plain=True, seed=5)
+
+
+def chopped_apple_hand():
+    # Chopped apple: crisp, pale cream chunks, some with a strip of red skin.
+    return chopped("#f2e6b4", skin="#c82a2a", seed=7, plain=True)
+
+
+def chopped_beetroot_hand():
+    # Chopped beetroot: deep purple-red cubes.
+    return chopped("#8a1a40", seed=9)
+
+
+def chopped_carrot_hand():
+    # Chopped carrot: bright orange chunks.
+    return chopped("#f07a20", seed=11)
+
+
+def chopped_gherkins_hand():
+    # Chopped gherkins: pieces of pickled cucumber, olive green with bumpy dark skin on one edge.
+    return chopped("#8e9e4c", skin="#3a5a22", seed=13)
+
+
+def chopped_laver_hand():
+    # Chopped laver: thin, ragged, dark green-black strips of seaweed.
+    s = Sprite()
+    laver = ramp("#2a3a2a", spread=0.5)
+    for start, end in [((2.0, 3.0), (7.0, 5.0)), ((9.0, 2.0), (14.0, 4.0)), ((1.4, 8.0), (6.0, 10.0)), ((8.0, 7.6), (13.6, 9.4)),
+                       ((3.0, 13.0), (8.0, 14.4)), ((10.0, 12.4), (14.6, 14.0))]:
+        s.capsule(laver, [start, end], (1.1, 0.9))
+        s.put(round(start[0] + 1), round(start[1] - 1), ramp("#4a6a4a")[BASE])
+    return s
+
+
+def chopped_onion_hand():
+    # Chopped onion: small, glassy white pieces with a pale green-yellow tinge.
+    return chopped("#e8e6d0", size=1.3, plain=True, seed=15)
+
+
+def chopped_rhubarb_hand():
+    # Chopped rhubarb: pieces of stalk, pink-red outside shading to green.
+    return chopped("#c8e0a0", skin="#d03a4a", seed=17, plain=True)
+
+
+def chorizo_hand():
+    # Chorizo: a cured, wrinkled, brick-red sausage, and a slice cut from it showing red meat flecked with white fat.
+    s = sausage("#a02a1e", (2.0, 11.6), (11.4, 2.2), radius=2.2)
+    s.ellipse(ramp("#a02a1e", spread=0.5), 11.4, 11.6, 3.0, 3.0)
+    s.ellipse(ramp("#c8402a", spread=0.4), 11.4, 11.6, 2.0, 2.0, outline=False)
+    s.pixels_at(plain_ramp("#f2e8d8")[BASE], [(10, 11), (12, 12), (11, 10), (12, 10)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -4758,6 +4898,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"chiles_rellenos": chiles_rellenos_hand, "chili_garlic": chili_garlic_hand, "chili_pork": chili_pork_hand,
+             "chili_powder": chili_powder_hand, "chocolate": chocolate_hand, "chocolate_sponge": chocolate_sponge_hand,
+             "chopped_almonds": chopped_almonds_hand, "chopped_apple": chopped_apple_hand, "chopped_beetroot": chopped_beetroot_hand,
+             "chopped_carrot": chopped_carrot_hand, "chopped_gherkins": chopped_gherkins_hand, "chopped_laver": chopped_laver_hand,
+             "chopped_onion": chopped_onion_hand, "chopped_rhubarb": chopped_rhubarb_hand, "chorizo": chorizo_hand})
 HAND.update({"chashu_pork": chashu_pork_hand, "cheesecake_filling": cheesecake_filling_hand, "cherry_compote": cherry_compote_hand,
              "cherry_sauce": cherry_sauce_hand, "chevon_chops": chevon_chops_hand, "chicken_bones": chicken_bones_hand,
              "chicken_breast": chicken_breast_hand, "chicken_carcass": chicken_carcass_hand, "chicken_drumsticks": chicken_drumsticks_hand,

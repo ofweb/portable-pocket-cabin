@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/chiles_rellenos",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 12607530
-      }
-    ]
+    "model": "portable_pocket_cabin:item/chiles_rellenos"
   }
 }

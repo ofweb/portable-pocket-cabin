@@ -261,21 +261,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] chicken_thighs
 - [x] chicken_wings
 - [x] chickpea_flour
-- [ ] chiles_rellenos
-- [ ] chili_garlic
-- [ ] chili_pork
-- [ ] chili_powder
-- [ ] chocolate
-- [ ] chocolate_sponge
-- [ ] chopped_almonds
-- [ ] chopped_apple
-- [ ] chopped_beetroot
-- [ ] chopped_carrot
-- [ ] chopped_gherkins
-- [ ] chopped_laver
-- [ ] chopped_onion
-- [ ] chopped_rhubarb
-- [ ] chorizo
+- [x] chiles_rellenos
+- [x] chili_garlic
+- [x] chili_pork
+- [x] chili_powder
+- [x] chocolate
+- [x] chocolate_sponge
+- [x] chopped_almonds
+- [x] chopped_apple
+- [x] chopped_beetroot
+- [x] chopped_carrot
+- [x] chopped_gherkins
+- [x] chopped_laver
+- [x] chopped_onion
+- [x] chopped_rhubarb
+- [x] chorizo
 - [ ] chorizo_filling
 - [ ] choux_buns
 - [ ] choux_panade
