@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/crushed_red_grapes",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 5902400
-      }
-    ]
+    "model": "portable_pocket_cabin:item/crushed_red_grapes"
   }
 }

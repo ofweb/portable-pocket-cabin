@@ -3670,9 +3670,18 @@ def back_fat_hand():
 
 
 def bacon_hand():
+    return bacon_rashers("#c85a52", "#f2e4d8")
+
+
+def crisp_bacon_hand():
+    # Crisp bacon: the rashers fried until the meat is deep reddish brown and the fat golden.
+    return bacon_rashers("#8a3a24", "#e0b060")
+
+
+def bacon_rashers(lean, fat_colour):
     # Three rashers of smoked streaky bacon, gently rippled: layers of deep pink meat and white fat, browned at the ends.
     s = Sprite()
-    meat, fat = ramp("#c85a52", spread=0.6), plain_ramp("#f2e4d8")
+    meat, fat = ramp(lean, spread=0.6), plain_ramp(fat_colour)
     for i, y0 in enumerate((2.0, 7.0, 12.0)):
         for x in range(1, 15):
             top = round(y0 + math.sin(x * 0.55 + i * 1.3) * 0.6)
@@ -3712,17 +3721,27 @@ def bienenstich_hand():
 
 
 def baked_creme_brulee_hand():
-    # Crème brûlée: a white ramekin of custard under a crackled, glassy caramel top.
+    # Baked custard in its white ramekin, before the sugar is caramelised: smooth and pale yellow.
+    return ramekin(caramel=False)
+
+
+def creme_brulee_hand():
+    # Crème brûlée: the custard under a crackled, glassy caramel top.
+    return ramekin(caramel=True)
+
+
+def ramekin(caramel):
     s = Sprite()
     dish = plain_ramp("#eceef2")
     s.shape(lambda x, y: 1 <= x <= 14 and 7 <= y <= 14, dish, (7.5, 10.5), (7.0, 4.0))
     s.pixels_at(dish[SHADOW], [(x, 13) for x in range(2, 14)])
     for y in (9, 11):
         s.pixels_at(dish[LIGHT], [(x, y) for x in range(2, 14, 2)])  # The fluted side.
-    top = ramp("#c07a2a", spread=0.6)
+    top = ramp("#c07a2a", spread=0.6) if caramel else plain_ramp("#f2dc90")
     s.ellipse(top, 7.5, 6.6, 6.4, 2.4)
     s.pixels_at(top[HIGHLIGHT], [(4, 6), (5, 5), (9, 6)])
-    s.pixels_at(top[SHADOW], [(7, 6), (8, 7), (11, 6)])  # Cracks.
+    if caramel:
+        s.pixels_at(top[SHADOW], [(7, 6), (8, 7), (11, 6)])  # Cracks.
     return s
 
 
@@ -4464,8 +4483,19 @@ def carne_seca_hand():
 
 def carnitas_pork_hand():
     # Carnitas: chunks of pork slow-cooked in lard until tender and golden brown.
+    return carnitas("#c8823e")
+
+
+def crisp_carnitas_hand():
+    # Crisp carnitas: the pork chunks fried hard until deep brown and crackling at the edges.
+    s = carnitas("#9a5a26")
+    s.pixels_at(ramp("#4a2814")[BASE], [(3, 4), (11, 5), (5, 10), (10, 11), (14, 13)])
+    return s
+
+
+def carnitas(colour):
     s = Sprite()
-    meat = ramp("#c8823e", spread=0.6)
+    meat = ramp(colour, spread=0.6)
     for cx, cy in [(4.6, 5.0), (10.6, 5.6), (4.4, 11.0), (9.8, 10.6), (13.0, 12.6)]:
         s.ellipse(meat, cx, cy, 2.8, 2.4, texture=lambda x, y: -1 if (x + y) % 3 == 0 else 0)
         s.put(round(cx) - 1, round(cy) - 1, meat[HIGHLIGHT])
@@ -5237,6 +5267,101 @@ def crema_hand():
     s.pixels_at(plain_ramp("#ffffff")[BASE], [(4, 7), (5, 7), (6, 7)])
     return s
 
+def creme_brulee_custard_hand():
+    # Crème brûlée custard: cream, egg yolks and sugar, a smooth pale yellow speckled with vanilla, in a bowl.
+    return bowl("#f2dc90", plain=True, flecks=[("#2a2018", 0.06)])
+
+
+def creme_fraiche_hand():
+    # Crème fraîche: thick, rich, slightly soured cream, heaped in a clay bowl.
+    s = bowl("#f6f2e2", mound=1.8, plain=True, bowl_colour=CLAY)
+    s.pixels_at(plain_ramp("#f6f2e2")[SHADOW], [(7, 6), (8, 5)])
+    return s
+
+
+def crisp_pork_belly_hand():
+    # Crisp pork belly: slices fried golden, with a layer of puffed, crackling skin along the top.
+    s = Sprite()
+    for cx, cy in [(5.4, 5.4), (10.2, 10.6)]:
+        meat, fat, crackle = ramp("#b8783e", spread=0.6), plain_ramp("#f0d8a8"), ramp("#d89a3a", spread=0.6)
+        s.shape(lambda x, y, cx=cx, cy=cy: abs(x - cx) <= 4.4 and abs(y - cy) <= 3.2, meat, (cx, cy), (4.4, 3.2))
+        for x in range(round(cx) - 3, round(cx) + 4):
+            s.put(x, round(cy) - 2, crackle[LIGHT if x % 2 else BASE])
+            s.put(x, round(cy), fat[BASE])
+    return s
+
+
+def croque_monsieur_hand():
+    # A croque monsieur: a toasted ham sandwich under a bubbling, browned top of cheese sauce.
+    s = Sprite()
+    bread = plain_ramp("#e8c888")
+    s.shape(lambda x, y: 1 <= x <= 14 and 5 <= y <= 13, bread, (7.5, 9.0), (7.0, 4.0))
+    s.pixels_at(ramp("#d07a6a")[BASE], [(x, 10) for x in range(2, 14)])  # The ham.
+    s.pixels_at(bread[SHADOW], [(x, 12) for x in range(2, 14)])
+    top = ramp("#e8b450", spread=0.6)
+    s.ellipse(top, 7.5, 6.0, 6.8, 2.2)
+    s.pixels_at(ramp("#a8641e")[BASE], [(4, 5), (7, 6), (10, 5), (12, 6), (6, 7)])  # Browned bubbles.
+    return s
+
+
+def crushed_blackcurrants_hand():
+    # Crushed blackcurrants: a dark purple-black mash of berries and juice, in a bowl.
+    return bowl("#3a1a3a", mound=1.0, flecks=[("#6a2a5a", 0.16)])
+
+
+def crushed_ice_hand():
+    # Crushed ice: a heap of clear, glinting blue-white chips.
+    s = Sprite()
+    ice = plain_ramp("#d8ecf4")
+    rng = random.Random(83)
+    for cx, cy in [(4, 13), (7, 13), (10, 13), (13, 13), (5, 10), (8, 10), (11, 10), (6, 7), (9, 7), (7, 4)]:
+        cx += rng.choice((0, 1))
+        s.pixels_at(ice[SHADOW], [(cx, cy + 1), (cx + 1, cy + 1)])
+        s.pixels_at(ice[BASE], [(cx, cy), (cx + 1, cy)])
+        s.pixels_at((255, 255, 255), [(cx, cy - 1)])
+        s.pixels_at(ice[OUTLINE], [(cx + 2, cy + 1), (cx - 1, cy + 1)])
+    return s
+
+
+def crushed_red_grapes_hand():
+    # Crushed red grapes: a deep red-purple must full of broken skins, in a bowl.
+    return bowl("#5a1a3a", mound=1.0, flecks=[("#8a2a5a", 0.14), ("#3a8a3a", 0.02)])
+
+
+def crushed_white_grapes_hand():
+    # Crushed white grapes: a pale green-gold must full of broken skins, in a bowl.
+    return bowl("#c8d080", mound=1.0, flecks=[("#a8b860", 0.14)])
+
+
+def crustless_bread_hand():
+    # Crustless bread: two soft white slices with the crusts cut off, square and even.
+    s = Sprite()
+    crumb = plain_ramp("#f4eedc")
+    for x0, y0 in [(1, 2), (6, 7)]:
+        s.shape(lambda x, y, x0=x0, y0=y0: x0 <= x <= x0 + 8 and y0 <= y <= y0 + 7, crumb, (x0 + 4, y0 + 3.5), (4.0, 3.5))
+        s.pixels_at(crumb[SHADOW], [(x0 + 3, y0 + 3), (x0 + 6, y0 + 5), (x0 + 2, y0 + 5)])  # The open crumb.
+    return s
+
+
+def cubed_tofu_hand():
+    # Cubed tofu: neat, soft, creamy white cubes.
+    return chopped("#f2f0e4", size=1.5, plain=True, seed=89)
+
+
+def cucumber_relish_hand():
+    # Cucumber relish: diced cucumber and shallot with slivers of red chili in a sweet vinegar, in a bowl.
+    return bowl("#c8dca0", plain=True, flecks=[("#4a8a34", 0.16), ("#d8a8b0", 0.06), ("#d02a2a", 0.05)])
+
+
+def curds_hand():
+    # Curds: soft white lumps of set milk sitting in pale yellow whey, in a clay bowl.
+    s = bowl("#e8e4b8", plain=True, bowl_colour=CLAY)
+    curd = plain_ramp("#f8f6ee")
+    for x, y in [(4, 7), (7, 6), (10, 7), (6, 8), (9, 8)]:
+        s.pixels_at(curd[BASE], [(x, y), (x + 1, y)])
+        s.put(x, y - 1, curd[HIGHLIGHT])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -5288,6 +5413,12 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"creme_brulee": creme_brulee_hand, "creme_brulee_custard": creme_brulee_custard_hand, "creme_fraiche": creme_fraiche_hand,
+             "crisp_bacon": crisp_bacon_hand, "crisp_carnitas": crisp_carnitas_hand, "crisp_pork_belly": crisp_pork_belly_hand,
+             "croque_monsieur": croque_monsieur_hand, "crushed_blackcurrants": crushed_blackcurrants_hand, "crushed_ice": crushed_ice_hand,
+             "crushed_red_grapes": crushed_red_grapes_hand, "crushed_white_grapes": crushed_white_grapes_hand,
+             "crustless_bread": crustless_bread_hand, "cubed_tofu": cubed_tofu_hand, "cucumber_relish": cucumber_relish_hand,
+             "curds": curds_hand})
 HAND.update({"coq_au_vin": coq_au_vin_hand, "corn_husk": corn_husk_hand, "corn_kernels": corn_kernels_hand, "corn_paste": corn_paste_hand,
              "corn_tortilla": corn_tortilla_hand, "cornstarch": cornstarch_hand, "cotija_cheese": cotija_cheese_hand,
              "cow_carcass": cow_carcass_hand, "coxinha_dough": coxinha_dough_hand, "coxinhas": coxinhas_hand, "cracked_rye": cracked_rye_hand,

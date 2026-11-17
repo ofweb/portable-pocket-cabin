@@ -321,21 +321,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] cream_cheese
 - [x] creamed_chicken_sauce
 - [x] crema
-- [ ] creme_brulee
-- [ ] creme_brulee_custard
-- [ ] creme_fraiche
-- [ ] crisp_bacon
-- [ ] crisp_carnitas
-- [ ] crisp_pork_belly
-- [ ] croque_monsieur
-- [ ] crushed_blackcurrants
-- [ ] crushed_ice
-- [ ] crushed_red_grapes
-- [ ] crushed_white_grapes
-- [ ] crustless_bread
-- [ ] cubed_tofu
-- [ ] cucumber_relish
-- [ ] curds
+- [x] creme_brulee
+- [x] creme_brulee_custard
+- [x] creme_fraiche
+- [x] crisp_bacon
+- [x] crisp_carnitas
+- [x] crisp_pork_belly
+- [x] croque_monsieur
+- [x] crushed_blackcurrants
+- [x] crushed_ice
+- [x] crushed_red_grapes
+- [x] crushed_white_grapes
+- [x] crustless_bread
+- [x] cubed_tofu
+- [x] cucumber_relish
+- [x] curds
 - [ ] cured_beef_strips
 - [ ] cured_pork_belly
 - [ ] cured_pork_shoulder
