@@ -503,21 +503,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] grilled_beef_skewer
 - [x] grilled_chicken_skewer
 - [x] grilled_mutton_skewer
-- [ ] grilled_pork_skewer
-- [ ] grilled_salted_salmon
-- [ ] grilled_satay_skewer
-- [ ] grilled_yakitori
-- [ ] ground_malt
-- [ ] ground_mole_base
-- [ ] ground_mustard
-- [ ] ground_peanuts
-- [ ] gyoza
-- [ ] gyoza_filling
-- [ ] gyoza_wrappers
-- [ ] halved_stone_fruit
-- [ ] ham
-- [ ] hanging_hook
-- [ ] hard_boiled_egg
+- [x] grilled_pork_skewer
+- [x] grilled_salted_salmon
+- [x] grilled_satay_skewer
+- [x] grilled_yakitori
+- [x] ground_malt
+- [x] ground_mole_base
+- [x] ground_mustard
+- [x] ground_peanuts
+- [x] gyoza
+- [x] gyoza_filling
+- [x] gyoza_wrappers
+- [x] halved_stone_fruit
+- [x] ham
+- [x] hanging_hook
+- [x] hard_boiled_egg
 - [ ] hard_cheese_wedge
 - [ ] herbes_de_provence
 - [ ] herring

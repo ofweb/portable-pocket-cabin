@@ -6634,6 +6634,113 @@ def griddled_tlacoyos_hand():
     # Griddled tlacoyos: thick, oval flatbreads of blue corn masa, stuffed with beans and griddled with dark spots.
     return patties("#6a6a9a", spots=((5.0, 5.4), (10.6, 10.6)), rx=4.6, ry=2.8, flecks=[("#3a2a2a", -1, 0), ("#3a2a2a", 2, 1)])
 
+def grilled_salted_salmon_hand():
+    # Grilled salted salmon: a thick fillet of orange-pink salmon, crisp and charred in stripes, flecked with salt.
+    s = Sprite()
+    fish_ = plain_ramp("#f0946a")
+    s.ellipse(fish_, 7.5, 8.6, 6.8, 4.2, angle=-15)
+    for k in range(-2, 3):
+        s.line(ramp("#5a2a1a")[BASE], 5 + k * 2, 12, 9 + k * 2, 5)  # Grill marks.
+    s.pixels_at(plain_ramp("#d8d0c8")[BASE], [(x, 12) for x in range(4, 12)])  # The silver skin.
+    s.pixels_at(plain_ramp("#fafaf6")[BASE], [(4, 7), (9, 6), (11, 9)])
+    return s
+
+
+def grilled_yakitori_hand():
+    # Grilled yakitori: chicken and leek alternating on a skewer, glazed glossy dark brown with tare.
+    s = Sprite()
+    start, end = (1.6, 14.4), (14.6, 1.4)
+    s.line(ramp("#c8a070")[BASE], 2, 14, 15, 1)
+    for i in range(4):
+        t = 0.2 + i * 0.2
+        cx, cy = start[0] + (end[0] - start[0]) * t, start[1] + (end[1] - start[1]) * t
+        tones = ramp("#7a3a1e", spread=0.6) if i % 2 == 0 else ramp("#d8e0a0", spread=0.5)
+        s.ellipse(tones, cx, cy, 2.2, 2.2)
+        s.put(round(cx) - 1, round(cy) - 1, tones[HIGHLIGHT])
+    return s
+
+
+def hanging_hook_hand():
+    # The hanging hook: a heavy iron S-hook hung from a short length of chain.
+    s = Sprite()
+    iron = ramp("#8a8e96", spread=0.6)
+    for y in (0, 3):
+        s.ellipse(iron, 7.5, y + 1.0, 1.4, 1.6)  # Chain links.
+    s.pixels_at(iron[OUTLINE], [(7, 1), (7, 4)])
+    hook = [(7.5 + 3.4 * math.cos(math.radians(a)), 11.0 + 3.4 * math.sin(math.radians(a))) for a in range(-90, 181, 20)]
+    s.capsule(iron, [(7.5, 5.0)] + hook, (1.0, 1.0))
+    s.pixels_at(iron[HIGHLIGHT], [(8, 6), (11, 10)])
+    s.put(4, 9, iron[LIGHT])  # The hook's point.
+    return s
+
+
+def gyoza_hand():
+    # Gyoza: pleated crescent dumplings, pan-fried crisp and golden underneath, pale and steamed on top.
+    s = Sprite()
+    for cx, cy in [(5.0, 5.4), (10.6, 11.4)]:
+        dough = plain_ramp("#f2e6c8")
+        s.shape(lambda x, y, cx=cx, cy=cy: y <= cy + 2.0 and ((x - cx) / 4.8) ** 2 + ((y - cy - 2.0) / 5.2) ** 2 <= 1, dough,
+                (cx, cy), (4.8, 3.6))
+        s.pixels_at(ramp("#c8823a")[BASE], [(x, round(cy) + 2) for x in range(round(cx) - 4, round(cx) + 5)])  # The crisp base.
+        for x in range(round(cx) - 2, round(cx) + 3, 2):
+            s.put(x, round(cy) - 1, dough[SHADOW])  # The pleats.
+    return s
+
+
+def gyoza_filling_hand():
+    # Gyoza filling: pink minced pork with shreds of green cabbage, ginger and garlic, in a bowl.
+    return bowl("#e0a8a0", mound=1.8, texture=bumpy, flecks=[("#8ac060", 0.12), ("#f0e0b0", 0.04)])
+
+
+def gyoza_wrappers_hand():
+    # Gyoza wrappers: a stack of thin, round, floury white dough discs, the top one a little askew.
+    s = Sprite()
+    disc = plain_ramp("#f4f0e4")
+    for dy in (3.0, 2.0, 1.0, 0.0):
+        s.ellipse(disc, 7.5, 7.8 + dy, 6.8, 3.4)
+    s.ellipse(disc, 8.4, 6.6, 6.4, 3.2)
+    s.pixels_at(plain_ramp("#fbfaf6")[BASE], [(6, 5), (10, 6), (5, 7)])  # Flour.
+    return s
+
+
+def halved_stone_fruit_hand():
+    # Halved stone fruit: a plum cut in two, purple skin round golden flesh, the stone still in one half.
+    s = Sprite()
+    for cx, cy, stone in [(5.0, 6.0, True), (10.6, 10.6, False)]:
+        s.ellipse(ramp("#5a2a4a", spread=0.6), cx, cy, 4.2, 3.8)
+        s.ellipse(plain_ramp("#f0c060"), cx, cy, 3.2, 2.8, outline=False)
+        if stone:
+            s.ellipse(ramp("#9a5a3a", spread=0.5), cx, cy, 1.4, 1.6)
+        else:
+            s.ellipse(plain_ramp("#d89a40"), cx, cy, 1.4, 1.6, outline=False)  # The hollow left by the stone.
+    return s
+
+
+def ham_hand():
+    # Ham: a whole poached ham with a smooth rind of fat, and a slice cut to show the rosy pink meat.
+    s = Sprite()
+    fat = plain_ramp("#f0dcc0")
+    s.ellipse(fat, 6.6, 8.0, 5.6, 5.4)
+    s.ellipse(ramp("#e08a8a", spread=0.5), 6.6, 8.2, 4.4, 4.2, outline=False)
+    s.pixels_at(ramp("#c86a6a")[BASE], [(5, 7), (7, 9), (6, 10)])
+    bone = plain_ramp("#ece2cc")
+    s.ellipse(bone, 6.6, 8.0, 1.0, 1.0)
+    slice_ = ramp("#e08a8a", spread=0.5)
+    s.ellipse(fat, 12.0, 11.6, 3.4, 3.2)
+    s.ellipse(slice_, 12.0, 11.6, 2.4, 2.2, outline=False)
+    return s
+
+
+def hard_boiled_egg_hand():
+    # Hard-boiled eggs: one whole and peeled, smooth and white, and one halved to show the firm yellow yolk.
+    s = Sprite()
+    white = plain_ramp("#f6f4ee")
+    s.ellipse(white, 5.0, 6.4, 3.6, 4.4)
+    s.put(3, 4, (255, 255, 255))
+    s.ellipse(white, 10.6, 11.0, 4.2, 3.4)
+    s.ellipse(ramp("#f0c030", spread=0.5), 10.6, 11.0, 2.2, 1.8, outline=False)
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -6685,6 +6792,12 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"grilled_pork_skewer": lambda: skewer("#d0985a", char="#8a5a2a"), "grilled_salted_salmon": grilled_salted_salmon_hand,
+             "grilled_satay_skewer": lambda: skewer("#e8a020", char="#8a4a1a"), "grilled_yakitori": grilled_yakitori_hand,
+             "ground_malt": lambda: spice_bowl("#c8a068", fleck="#8a6a3a", seed=229), "ground_mole_base": lambda: spice_bowl("#5a2a20", fleck="#a85a3a", seed=233),
+             "ground_mustard": lambda: spice_bowl("#e0c040", fleck="#a88a2a", seed=239), "ground_peanuts": lambda: spice_bowl("#c88a4a", fleck="#f0d8a8", seed=241),
+             "gyoza": gyoza_hand, "gyoza_filling": gyoza_filling_hand, "gyoza_wrappers": gyoza_wrappers_hand,
+             "halved_stone_fruit": halved_stone_fruit_hand, "ham": ham_hand, "hanging_hook": hanging_hook_hand, "hard_boiled_egg": hard_boiled_egg_hand})
 HAND.update({"gougeres": gougeres_hand, "grated_carrot": grated("#f07a20", seed=3), "grated_cassava": grated("#f2eedc", plain=True, seed=5),
              "grated_coconut": grated("#f8f6f0", plain=True, seed=7), "grated_potato": grated("#ece0a8", plain=True, seed=9),
              "grated_sweet_potato": grated("#f09038", seed=11), "green_coffee_beans": green_coffee_beans_hand, "green_curry": green_curry_hand,
