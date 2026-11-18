@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/fermenting_anchovies",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 8022618
-      }
-    ]
+    "model": "portable_pocket_cabin:item/fermenting_anchovies"
   }
 }

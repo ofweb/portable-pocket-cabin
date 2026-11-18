@@ -427,21 +427,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] fermented_coffee_cherries
 - [x] fermented_red_grapes
 - [x] fermented_shrimp
-- [ ] fermented_tapioca_starch
-- [ ] fermenting_anchovies
-- [ ] fischbrotchen
-- [ ] fish_bones
-- [ ] fish_guts
-- [ ] fish_head
-- [ ] fish_scales
-- [ ] fiskefrikadeller
-- [ ] fiskefrikadeller_fars
-- [ ] flaeskesteg
-- [ ] flaeskesteg_med_rodkal
-- [ ] flammkuchen
-- [ ] flan_custard
-- [ ] flan_napolitano
-- [ ] flatbread_dough
+- [x] fermented_tapioca_starch
+- [x] fermenting_anchovies
+- [x] fischbrotchen
+- [x] fish_bones
+- [x] fish_guts
+- [x] fish_head
+- [x] fish_scales
+- [x] fiskefrikadeller
+- [x] fiskefrikadeller_fars
+- [x] flaeskesteg
+- [x] flaeskesteg_med_rodkal
+- [x] flammkuchen
+- [x] flan_custard
+- [x] flan_napolitano
+- [x] flatbread_dough
 - [ ] french_onion_soup
 - [ ] fresh_cheese
 - [ ] fresh_chorizo

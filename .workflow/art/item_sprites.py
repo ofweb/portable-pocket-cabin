@@ -6011,6 +6011,168 @@ def fermented_shrimp_hand():
     # Fermented shrimp: a thick, salty, greyish-pink shrimp paste, in a crock.
     return bowl("#a8706a", mound=1.4, bowl_colour="#8a6a4a", flecks=[("#6a4a48", 0.1)])
 
+def fermented_tapioca_starch_hand():
+    # Fermented tapioca starch: wet, sour, bright white starch settled under a little cloudy water, in a clay bowl.
+    s = bowl("#f2f2ec", plain=True, bowl_colour=CLAY)
+    s.pixels_at(plain_ramp("#dce4e4")[BASE], [(4, 7), (8, 7), (11, 8)])  # Bubbles.
+    return s
+
+
+def fermenting_anchovies_hand():
+    # Fermenting anchovies: little silver fish packed in salt and brown brine, in a crock.
+    s = bowl("#8a5a2a", bowl_colour="#8a6a4a")
+    s.pixels_at(plain_ramp("#c8d0d8")[BASE], [(3, 7), (4, 7), (5, 7), (8, 8), (9, 8), (10, 8)])
+    s.pixels_at(plain_ramp("#f4f2ec")[BASE], [(7, 7), (12, 7)])  # Salt.
+    return s
+
+
+def fischbrotchen_hand():
+    # Fischbrötchen: a split bread roll filled with a silver-skinned pickled herring fillet, onion rings and gherkin.
+    s = Sprite()
+    roll = ramp("#c88a3a", spread=0.6)
+    s.ellipse(roll, 7.5, 11.4, 6.6, 2.6)
+    s.ellipse(plain_ramp("#c8d0d8"), 7.5, 8.8, 6.4, 1.6)  # The herring.
+    s.pixels_at(plain_ramp("#f0eadc")[BASE], [(4, 8), (6, 7), (9, 8), (11, 7)])  # Onion rings.
+    s.pixels_at(ramp("#6a8a3a")[BASE], [(8, 7), (12, 8)])
+    s.ellipse(roll, 7.5, 6.0, 6.4, 2.6)
+    s.pixels_at(roll[HIGHLIGHT], [(4, 5), (5, 4)])
+    return s
+
+
+def fish_bones_hand():
+    # Fish bones: a whole skeleton, a spine with fine ribs, the head at one end and the tail fan at the other.
+    s = Sprite()
+    bone = plain_ramp("#e2dccc")
+    for t in range(1, 8):  # Fine ribs either side of the spine.
+        x, y = 3 + t * 9 / 8, 12 - t * 9 / 8
+        s.line(bone[SHADOW], round(x), round(y), round(x - 2), round(y - 2))
+        s.line(bone[SHADOW], round(x), round(y), round(x + 2), round(y + 2))
+    s.capsule(bone, [(3.0, 12.0), (12.0, 3.0)], (0.8, 0.8))
+    s.ellipse(bone, 12.6, 2.6, 2.2, 1.8)
+    s.put(13, 2, (30, 30, 34))
+    s.pixels_at(bone[BASE], [(1, 13), (2, 14), (1, 11), (3, 14)])  # The tail.
+    return s
+
+
+def fish_guts_hand():
+    # Fish guts: a slippery heap of dark red and grey innards.
+    s = Sprite()
+    for (cx, cy, rx, ry), colour in [((6.0, 9.0, 4.0, 3.0), "#7a2a30"), ((10.0, 10.4, 3.4, 2.6), "#8a7a80"), ((7.6, 12.0, 3.0, 2.0), "#a03a3a")]:
+        tones = ramp(colour, spread=0.6)
+        s.ellipse(tones, cx, cy, rx, ry)
+        s.put(round(cx) - 1, round(cy) - 1, tones[HIGHLIGHT])
+    return s
+
+
+def fish_head_hand():
+    # A fish head: cut behind the gills, silvery grey with a darker back, a round eye and an open mouth.
+    s = Sprite()
+    head = plain_ramp("#b8c0c8")
+    s.shape(lambda x, y: ((x - 9.0) / 6.0) ** 2 + ((y - 8.0) / 5.4) ** 2 <= 1 and x >= 5.4 + abs(y - 8.0) * 0.6, head, (9.0, 8.0), (6.0, 5.4))
+    s.pixels_at(ramp("#4a5a6a")[BASE], [(9, 4), (10, 4), (11, 4), (8, 5), (12, 5)])
+    s.ellipse(plain_ramp("#f0e8c8"), 8.6, 7.4, 1.4, 1.4)
+    s.put(8, 7, (20, 20, 24))
+    s.pixels_at(ramp("#a84a4a")[BASE], [(14, 8), (13, 8), (14, 9)])  # The cut, red at the gills.
+    s.pixels_at(head[OUTLINE], [(4, 9), (5, 9)])  # The mouth.
+    return s
+
+
+def fish_scales_hand():
+    # Fish scales: a pile of small, thin, translucent silvery discs catching the light.
+    s = Sprite()
+    rng = random.Random(179)
+    for _ in range(14):
+        x, y = rng.randint(2, 13), rng.randint(4, 13)
+        s.pixels_at(plain_ramp("#d8e0e8")[BASE], [(x, y), (x + 1, y)])
+        s.put(x, y - 1, (248, 252, 255))
+        s.put(x + 1, y + 1, plain_ramp("#a8b4c0")[BASE])
+    return s
+
+
+def fiskefrikadeller_hand():
+    # Fiskefrikadeller: golden fried fish cakes with a dollop of yellow remoulade, on a plate.
+    s = plate()
+    cake = ramp("#c8903e", spread=0.6)
+    for cx, cy in [(4.8, 9.6), (9.6, 8.8)]:
+        s.ellipse(cake, cx, cy, 3.4, 2.4)
+        s.put(round(cx) - 1, round(cy) - 1, cake[HIGHLIGHT])
+    s.ellipse(plain_ramp("#ece08a"), 12.0, 12.0, 1.8, 1.0)
+    s.put(4, 12, ramp("#9ac040")[BASE])
+    return s
+
+
+def fiskefrikadeller_fars_hand():
+    # Fiskefrikadeller fars: minced white fish with onion, egg and dill, a pale, flecked mixture in a bowl.
+    return bowl("#ece6d6", mound=1.6, texture=bumpy, plain=True, bowl_colour=CLAY, flecks=[("#4a8a3a", 0.08)])
+
+
+def flaeskesteg_hand():
+    # Flæskesteg: Danish roast pork with a thick layer of golden, blistered crackling scored into strips across the top.
+    s = Sprite()
+    meat, fat = ramp("#c8806a", spread=0.6), plain_ramp("#f0dcc0")
+    s.shape(lambda x, y: 1 <= x <= 14 and 6 <= y <= 13, meat, (7.5, 9.5), (7.0, 3.5))
+    s.pixels_at(fat[BASE], [(x, 9) for x in range(2, 14)])
+    crackling = ramp("#d89a3a", spread=0.6)
+    s.shape(lambda x, y: 1 <= x <= 14 and 3 <= y <= 8, crackling, (7.5, 5.5), (7.0, 2.5),
+            texture=lambda x, y: 1 if (x * 3 + y) % 4 == 0 else 0)
+    for x in range(3, 14, 3):
+        s.line(crackling[OUTLINE], x, 3, x, 7)  # The scoring.
+    s.pixels_at(ramp("#5a7a3a")[BASE], [(7, 2), (8, 2)])  # A bay leaf tucked in.
+    return s
+
+
+def flaeskesteg_med_rodkal_hand():
+    # Flæskesteg med rødkål: slices of roast pork with crackling, purple red cabbage, boiled potatoes and brown gravy.
+    s = plate()
+    s.ellipse(ramp("#6a2a4a", spread=0.5), 11.0, 11.0, 3.4, 1.8)  # Red cabbage.
+    potato = plain_ramp("#ecd890")
+    s.ellipse(potato, 3.6, 11.4, 2.0, 1.4)
+    s.ellipse(ramp("#7a4a2a", spread=0.5), 7.0, 12.2, 2.6, 1.2)  # Gravy.
+    meat = ramp("#c8806a", spread=0.6)
+    s.shape(lambda x, y: 2 <= x <= 10 and 6 <= y <= 9, meat, (6.0, 7.5), (4.0, 1.5))
+    s.pixels_at(ramp("#d89a3a")[LIGHT], [(x, 6) for x in range(3, 10)])  # The crackling.
+    return s
+
+
+def flammkuchen_hand():
+    # Flammkuchen: a thin, crisp, oblong tart spread with white cream, scattered with bacon and onion, charred at the edges.
+    s = Sprite()
+    crust = ramp("#c8904a", spread=0.6)
+    s.shape(lambda x, y: 1 <= x <= 14 and 3 <= y <= 12 and not ((x in (1, 14)) and (y in (3, 12))), crust, (7.5, 7.5), (7.0, 4.5))
+    cream = plain_ramp("#f2ecd8")
+    for y in range(5, 11):
+        for x in range(3, 13):
+            s.put(x, y, cream[BASE])
+    s.pixels_at(ramp("#b84a3a")[BASE], [(4, 5), (8, 6), (11, 5), (5, 9), (10, 10), (7, 8)])  # Bacon.
+    s.pixels_at(plain_ramp("#e8dcb8")[SHADOW], [(6, 5), (9, 8), (3, 8), (12, 8)])  # Onion.
+    s.pixels_at(ramp("#3a2a1e")[BASE], [(1, 6), (14, 9), (5, 12), (10, 3)])  # Char.
+    return s
+
+
+def flan_custard_hand():
+    # Flan custard: a smooth, rich, pale golden custard mixture, in a bowl.
+    return bowl("#f0d888", plain=True, flecks=[("#2a2018", 0.03)])
+
+
+def flan_napolitano_hand():
+    # Flan napolitano: a tall, smooth, golden custard turned out onto a plate, glossy caramel pooling over and around it.
+    s = plate()
+    custard = plain_ramp("#f0cc6a")
+    s.shape(lambda x, y: 3 <= x <= 12 and 4 <= y <= 11, custard, (7.5, 7.5), (4.5, 3.5))
+    caramel = ramp("#a8561e", spread=0.6)
+    s.ellipse(caramel, 7.5, 4.4, 4.6, 1.6)
+    s.pixels_at(caramel[BASE], [(3, 6), (3, 7), (12, 6), (12, 8), (8, 6)])  # Drips.
+    s.pixels_at(caramel[SHADOW], [(2, 12), (13, 12), (5, 13), (10, 13)])  # The pool.
+    s.pixels_at(custard[HIGHLIGHT], [(4, 7), (4, 8)])
+    return s
+
+
+def flatbread_dough_hand():
+    # Flatbread dough: a soft, smooth, oiled ball of plain dough.
+    s = dough_ball("#ecd8b0", flour=False)
+    s.pixels_at(plain_ramp("#f8ecc8")[BASE], [(5, 6), (6, 6)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -6062,6 +6224,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"fermented_tapioca_starch": fermented_tapioca_starch_hand, "fermenting_anchovies": fermenting_anchovies_hand,
+             "fischbrotchen": fischbrotchen_hand, "fish_bones": fish_bones_hand, "fish_guts": fish_guts_hand, "fish_head": fish_head_hand,
+             "fish_scales": fish_scales_hand, "fiskefrikadeller": fiskefrikadeller_hand, "fiskefrikadeller_fars": fiskefrikadeller_fars_hand,
+             "flaeskesteg": flaeskesteg_hand, "flaeskesteg_med_rodkal": flaeskesteg_med_rodkal_hand, "flammkuchen": flammkuchen_hand,
+             "flan_custard": flan_custard_hand, "flan_napolitano": flan_napolitano_hand, "flatbread_dough": flatbread_dough_hand})
 HAND.update({"duck_heart_and_gizzard": duck_heart_and_gizzard_hand, "duck_legs": duck_legs_hand, "duck_liver": duck_liver_hand,
              "duck_spawn_egg": duck_spawn_egg_hand, "duck_wings": duck_wings_hand, "elote": elote_hand, "empanada_dough": empanada_dough_hand,
              "empanadas_de_carne": empanadas_de_carne_hand, "enchiladas_verdes": enchiladas_verdes_hand, "feijoada": feijoada_hand,
