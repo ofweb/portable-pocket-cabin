@@ -518,21 +518,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] ham
 - [x] hanging_hook
 - [x] hard_boiled_egg
-- [ ] hard_cheese_wedge
-- [ ] herbes_de_provence
-- [ ] herring
-- [ ] hojicha_leaves
-- [ ] hollowed_pumpkin
-- [ ] hominy
-- [ ] hons_i_asparges
-- [ ] horchata_base
-- [ ] jerky
-- [ ] kammerjunkere
-- [ ] kammerjunkere_dough
-- [ ] karaage
-- [ ] karaage_chicken
-- [ ] karrysalat
-- [ ] kartoffelpuffer
+- [x] hard_cheese_wedge
+- [x] herbes_de_provence
+- [x] herring
+- [x] hojicha_leaves
+- [x] hollowed_pumpkin
+- [x] hominy
+- [x] hons_i_asparges
+- [x] horchata_base
+- [x] jerky
+- [x] kammerjunkere
+- [x] kammerjunkere_dough
+- [x] karaage
+- [x] karaage_chicken
+- [x] karrysalat
+- [x] kartoffelpuffer
 - [ ] kasekuchen
 - [ ] kasespatzle
 - [ ] katsuobushi

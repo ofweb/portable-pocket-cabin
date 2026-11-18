@@ -3302,7 +3302,19 @@ def cheese_wedge(inside, rind, holes=(), ooze=False, plain=False):
 
 
 def aged_hard_cheese_hand():
-    # A wedge of aged hard cheese: deep golden inside with a few small holes, and a hard, waxy brown rind.
+    # A whole wheel of aged hard cheese: a squat drum with a hard, waxy brown rind and a deep golden top.
+    s = Sprite()
+    rind = ramp("#8a5a28", spread=0.6)
+    s.ellipse(rind, 7.5, 10.6, 7.0, 3.2)
+    s.shape(lambda x, y: 0.5 <= x <= 14.5 and 6.4 <= y <= 10.6, rind, (7.5, 8.5), (7.0, 2.2))
+    s.ellipse(ramp("#d8a040", spread=0.6), 7.5, 6.4, 7.0, 3.0)
+    s.pixels_at(rind[LIGHT], [(2, 8), (2, 9), (3, 10)])
+    s.pixels_at(ramp("#b07a2a")[BASE], [(5, 6), (9, 5), (11, 7)])  # Marks of the press cloth.
+    return s
+
+
+def hard_cheese_wedge_hand():
+    # A wedge cut from the wheel: deep golden inside with a few small holes, and a hard, waxy brown rind.
     return cheese_wedge("#e6b44a", "#8a5a28", holes=[(6, 11), (9, 9), (10, 12), (4, 12), (8, 12)])
 
 
@@ -6741,6 +6753,89 @@ def hard_boiled_egg_hand():
     s.ellipse(ramp("#f0c030", spread=0.5), 10.6, 11.0, 2.2, 1.8, outline=False)
     return s
 
+def herring_hand():
+    # Herring: two plump silver fish with blue-green backs, bigger than anchovies.
+    s = fish("#d8dee6", "#2a5a6a", (0.6, 8.0), (14.0, 1.6), depth=2.6)
+    return fish("#d8dee6", "#2a5a6a", (1.6, 15.0), (15.0, 8.4), depth=2.6, s=s)
+
+
+def hollowed_pumpkin_hand():
+    # A hollowed pumpkin: its lid cut off and its seeds scooped out, ready to fill.
+    s = Sprite()
+    skin = ramp("#e07a1e", spread=0.6)
+    s.ellipse(skin, 7.5, 9.4, 7.0, 5.6, texture=lambda x, y: -1 if x in (4, 7, 11) else 0)
+    s.ellipse(plain_ramp("#f0b060"), 7.5, 5.8, 5.4, 2.4)  # The cut rim.
+    s.ellipse(ramp("#5a2208", spread=0.4), 7.5, 6.0, 4.2, 1.6, outline=False)  # The dark hollow inside.
+    return s
+
+
+def hominy_hand():
+    # Hominy: big, puffed, chewy white kernels of nixtamalised corn, in a bowl.
+    s = bowl("#ece6d0", mound=1.6, texture=bumpy, plain=True, bowl_colour=CLAY)
+    s.pixels_at(plain_ramp("#f8f6ee")[BASE], [(4, 6), (7, 6), (10, 6), (6, 7), (9, 7)])
+    return s
+
+
+def hons_i_asparges_hand():
+    # Høns i asparges: poached chicken and asparagus in a creamy white sauce, in a clay bowl.
+    return bowl("#f2ead2", plain=True, bowl_colour=CLAY, flecks=[("#7ab048", 0.12), ("#e8d0b0", 0.12)])
+
+
+def horchata_base_hand():
+    # Horchata base: soaked rice ground with water into a milky, slightly gritty white liquid, in a clay bowl.
+    return bowl("#f4f0e6", plain=True, bowl_colour=CLAY, flecks=[("#e8e0cc", 0.1)])
+
+
+def kammerjunkere_hand():
+    # Kammerjunkere: the split biscuits baked a second time until crisp and evenly golden brown.
+    s = SPRITES["baked_kammerjunkere"]()
+    for y in range(16):
+        for x in range(16):
+            c = s.pixels[y][x]
+            if c is not None:
+                s.put(x, y, (round(c[0] * 0.88), round(c[1] * 0.78), round(c[2] * 0.62)))
+    return s
+
+
+def kammerjunkere_dough_hand():
+    # Kammerjunkere dough: a buttery, pale dough flecked with cardamom.
+    s = dough_ball("#eedaa8", flour=False)
+    s.pixels_at(ramp("#4a4a3a")[BASE], [(5, 9), (8, 7), (10, 10), (7, 12)])
+    return s
+
+
+def karaage_hand():
+    # Karaage: craggy chunks of chicken fried in a potato-starch crust, deep golden and crisp.
+    s = Sprite()
+    crust = ramp("#c8822e", spread=0.6)
+    for cx, cy in [(4.6, 5.0), (10.6, 5.6), (4.4, 11.0), (10.0, 11.0), (7.4, 8.2)]:
+        s.ellipse(crust, cx, cy, 2.8, 2.4, texture=lambda x, y: 1 if (x * 3 + y) % 4 == 0 else -1 if (x + y * 2) % 5 == 0 else 0)
+    return s
+
+
+def karaage_chicken_hand():
+    # Karaage chicken: pieces of thigh marinated in soy, ginger and garlic, dusted white with potato starch.
+    s = Sprite()
+    meat = ramp("#b8705a", spread=0.6)
+    for cx, cy in [(4.6, 5.0), (10.6, 5.6), (4.4, 11.0), (10.0, 11.0)]:
+        s.ellipse(meat, cx, cy, 3.0, 2.4)
+        s.pixels_at(plain_ramp("#f6f4ee")[BASE], [(round(cx) - 1, round(cy) - 1), (round(cx) + 1, round(cy)), (round(cx), round(cy) + 1)])
+    return s
+
+
+def karrysalat_hand():
+    # Karrysalat: a pale yellow curry mayonnaise with crisp diced apple and onion, in a bowl.
+    return bowl("#ecd468", mound=1.4, plain=True, flecks=[("#f4ecd0", 0.12), ("#c8302a", 0.03)])
+
+
+def kartoffelpuffer_hand():
+    # Kartoffelpuffer: thin, lacy potato pancakes fried golden brown and crisp at the frilly edges.
+    s = patties("#d89a3a", rx=4.6, ry=3.2)
+    for cx, cy in [(5.0, 5.4), (10.6, 10.6)]:
+        for dx in (-4, -2, 2, 4):
+            s.put(round(cx + dx), round(cy + 3), ramp("#8a5420")[BASE])  # Crisp, frilly edges.
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -6792,6 +6887,12 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"hard_cheese_wedge": hard_cheese_wedge_hand, "herbes_de_provence": lambda: spice_bowl("#7a8a5a", fleck="#b8a0c8", seed=251),
+             "herring": herring_hand, "hojicha_leaves": lambda: seed_heap("#7a4a2a", fleck="#b8885a", seed=257),
+             "hollowed_pumpkin": hollowed_pumpkin_hand, "hominy": hominy_hand, "hons_i_asparges": hons_i_asparges_hand,
+             "horchata_base": horchata_base_hand, "jerky": lambda: strips("#5a2a1e"), "kammerjunkere": kammerjunkere_hand,
+             "kammerjunkere_dough": kammerjunkere_dough_hand, "karaage": karaage_hand, "karaage_chicken": karaage_chicken_hand,
+             "karrysalat": karrysalat_hand, "kartoffelpuffer": kartoffelpuffer_hand})
 HAND.update({"grilled_pork_skewer": lambda: skewer("#d0985a", char="#8a5a2a"), "grilled_salted_salmon": grilled_salted_salmon_hand,
              "grilled_satay_skewer": lambda: skewer("#e8a020", char="#8a4a1a"), "grilled_yakitori": grilled_yakitori_hand,
              "ground_malt": lambda: spice_bowl("#c8a068", fleck="#8a6a3a", seed=229), "ground_mole_base": lambda: spice_bowl("#5a2a20", fleck="#a85a3a", seed=233),
