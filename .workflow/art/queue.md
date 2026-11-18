@@ -488,21 +488,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] goat_shoulder
 - [x] goat_stew_meat
 - [x] gougere_dough
-- [ ] gougeres
-- [ ] grated_carrot
-- [ ] grated_cassava
-- [ ] grated_coconut
-- [ ] grated_potato
-- [ ] grated_sweet_potato
-- [ ] green_coffee_beans
-- [ ] green_curry
-- [ ] green_curry_mix
-- [ ] green_curry_paste
-- [ ] green_curry_sauce
-- [ ] griddled_tlacoyos
-- [ ] grilled_beef_skewer
-- [ ] grilled_chicken_skewer
-- [ ] grilled_mutton_skewer
+- [x] gougeres
+- [x] grated_carrot
+- [x] grated_cassava
+- [x] grated_coconut
+- [x] grated_potato
+- [x] grated_sweet_potato
+- [x] green_coffee_beans
+- [x] green_curry
+- [x] green_curry_mix
+- [x] green_curry_paste
+- [x] green_curry_sauce
+- [x] griddled_tlacoyos
+- [x] grilled_beef_skewer
+- [x] grilled_chicken_skewer
+- [x] grilled_mutton_skewer
 - [ ] grilled_pork_skewer
 - [ ] grilled_salted_salmon
 - [ ] grilled_satay_skewer

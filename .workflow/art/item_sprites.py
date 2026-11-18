@@ -6570,6 +6570,70 @@ def gougere_dough_hand():
     s = bowl("#f0cc6a", mound=1.4, plain=True, flecks=[("#e8a83a", 0.12)])
     return s
 
+def grated(colour, plain=False, seed=1):
+    """Grated food: a loose heap of fine shreds, each a short slanting strand, lit on top."""
+    def drawn():
+        s = Sprite()
+        tones = plain_ramp(colour) if plain else ramp(colour, spread=0.6)
+        s.shape(lambda x, y: y >= 5.0 and ((x - 7.5) / 7.0) ** 2 + ((y - 15.0) / 10.0) ** 2 <= 1, tones, (7.5, 10.5), (7.0, 5.0))
+        rng = random.Random(seed)
+        for y in range(5, 16):
+            for x in range(1, 15):
+                if s.pixels[y][x] in (None, tones[OUTLINE]):
+                    continue
+                # Strands slanting down to the right, alternately lit and shaded.
+                band = (x - y + rng.choice((0, 0, 1))) % 3
+                s.put(x, y, tones[HIGHLIGHT] if band == 0 and y < 10 else tones[LIGHT] if band == 0 else tones[SHADOW] if band == 2 else tones[BASE])
+        for x, y in [(1, 15), (14, 14), (2, 13)]:
+            s.put(x, y, tones[LIGHT])  # Loose shreds.
+        return s
+    return drawn
+
+
+def gougeres_hand():
+    # Gougères: small, light, golden cheese puffs with crisp, cracked tops crusted with browned cheese.
+    s = SPRITES["choux_buns"]()
+    s.pixels_at(ramp("#e8b850")[BASE], [(4, 9), (6, 9), (10, 9), (12, 9), (7, 4), (9, 4)])
+    return s
+
+
+def green_coffee_beans_hand():
+    # Green coffee beans: hulled, raw beans, a pale grey-green, each with a curving seam down its flat face.
+    s = bean_pile("#a8b48a", PILE, spread=0.6)
+    for cx, cy, rx, ry, angle in PILE:
+        s.put(round(cx - 0.5), round(cy - 0.5), ramp("#6a7a5a")[BASE])
+        s.put(round(cx + 0.5), round(cy + 0.5), ramp("#6a7a5a")[BASE])
+    return s
+
+
+def green_curry_hand():
+    # Green curry: chicken, little round aubergines and Thai basil in a creamy pale green coconut curry, in a bowl.
+    return bowl("#8ab45a", mound=0.6, flecks=[("#f0e0c8", 0.1), ("#c8d870", 0.08), ("#2a6a2a", 0.06)])
+
+
+def green_curry_mix_hand():
+    # Green curry mix: roughly chopped green chilies, lemongrass, galangal, garlic and shallot, in a bowl.
+    return bowl("#5a9a3a", mound=1.6, texture=bumpy, flecks=[("#d8e0a0", 0.12), ("#f0e8d0", 0.06), ("#c8a0a8", 0.04)])
+
+
+def green_curry_paste_hand():
+    # Green curry paste: the mix pounded to a thick, fragrant, deep green paste, in a bowl.
+    s = bowl("#3a7a2a", mound=1.4)
+    s.pixels_at(ramp("#5a9a3a")[BASE], [(5, 6), (6, 6), (9, 7)])
+    return s
+
+
+def green_curry_sauce_hand():
+    # Green curry sauce: the paste fried and loosened with coconut milk, a smooth, creamy pale green, in a bowl.
+    s = bowl("#a8c880", plain=True, flecks=[("#e8d860", 0.04)])
+    s.pixels_at(plain_ramp("#d8e8c0")[BASE], [(4, 7), (5, 7)])
+    return s
+
+
+def griddled_tlacoyos_hand():
+    # Griddled tlacoyos: thick, oval flatbreads of blue corn masa, stuffed with beans and griddled with dark spots.
+    return patties("#6a6a9a", spots=((5.0, 5.4), (10.6, 10.6)), rx=4.6, ry=2.8, flecks=[("#3a2a2a", -1, 0), ("#3a2a2a", 2, 1)])
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -6621,6 +6685,12 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"gougeres": gougeres_hand, "grated_carrot": grated("#f07a20", seed=3), "grated_cassava": grated("#f2eedc", plain=True, seed=5),
+             "grated_coconut": grated("#f8f6f0", plain=True, seed=7), "grated_potato": grated("#ece0a8", plain=True, seed=9),
+             "grated_sweet_potato": grated("#f09038", seed=11), "green_coffee_beans": green_coffee_beans_hand, "green_curry": green_curry_hand,
+             "green_curry_mix": green_curry_mix_hand, "green_curry_paste": green_curry_paste_hand, "green_curry_sauce": green_curry_sauce_hand,
+             "griddled_tlacoyos": griddled_tlacoyos_hand, "grilled_beef_skewer": lambda: skewer("#7a3a24"),
+             "grilled_chicken_skewer": lambda: skewer("#d89a4a", char="#7a4a24"), "grilled_mutton_skewer": lambda: skewer("#6a3a2a", char="#f0e0c8")})
 HAND.update({"gherkins": gherkins_hand, "gingerbread": gingerbread_hand, "gingerbread_dough": gingerbread_dough_hand,
              "glass_noodle_dough": glass_noodle_dough_hand, "glass_noodles": glass_noodles_hand, "glutinous_rice_flour": glutinous_rice_flour_hand,
              # Goat: lean, dark red meat with little fat.
