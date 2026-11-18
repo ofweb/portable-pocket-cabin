@@ -6313,6 +6313,137 @@ def fried_korokke_hand():
         s.ellipse(crumb, cx, cy, 4.4, 3.2, texture=lambda x, y: 1 if (x * 3 + y) % 4 == 0 else -1 if (x + y * 3) % 5 == 0 else 0)
     return s
 
+def patties(colour, spots=((5.0, 5.4), (10.6, 10.6)), rx=4.2, ry=3.0, flecks=(), s=None):
+    """Flat fried patties, browned on top with a darker crust round the edge, optionally flecked."""
+    s = s or Sprite()
+    tones = ramp(colour, spread=0.6)
+    for cx, cy in spots:
+        s.ellipse(tones, cx, cy, rx, ry)
+        s.pixels_at(tones[SHADOW], [(round(cx) - 1, round(cy)), (round(cx) + 1, round(cy) + 1)])
+        s.put(round(cx) - 2, round(cy) - 1, tones[HIGHLIGHT])
+        for k, (colour_, dx, dy) in enumerate(flecks):
+            s.put(round(cx + dx), round(cy + dy), ramp(colour_)[BASE])
+    return s
+
+
+def fried_llapingachos_hand():
+    # Fried llapingachos: thick potato-and-cheese patties fried to a golden crust, flecked orange with achiote.
+    return patties("#e0a84a", flecks=[("#d8601e", -1, -1), ("#d8601e", 2, 0)])
+
+
+def fried_nam_prik_mix_hand():
+    # Fried nam prik: chili, shallot and shrimp paste fried in oil to a dark, glossy red-brown, in a bowl.
+    s = bowl("#7a2a1a", mound=1.0, flecks=[("#c8401e", 0.12), ("#e8a040", 0.04)])
+    return s
+
+
+def fried_okonomiyaki_hand():
+    # Fried okonomiyaki: a thick, round cabbage pancake fried golden brown on both sides, green flecks of cabbage showing.
+    s = Sprite()
+    cake = ramp("#c88a3a", spread=0.6)
+    s.ellipse(cake, 7.5, 9.6, 7.0, 3.4)
+    s.ellipse(ramp("#d8a050", spread=0.5), 7.5, 8.8, 6.2, 2.6, outline=False)
+    s.pixels_at(ramp("#9ac060")[BASE], [(4, 8), (7, 9), (10, 8), (6, 10), (11, 10)])
+    return s
+
+
+def fried_pambazo_filling_hand():
+    # Fried pambazo filling: potato and chorizo fried together, a red-orange, crumbly mix, in a bowl.
+    return bowl("#c8502a", mound=1.6, texture=bumpy, flecks=[("#e8c070", 0.14)])
+
+
+def fried_picarones_hand():
+    # Fried picarones: light, ragged rings of sweet-potato and pumpkin dough fried a deep golden orange.
+    s = Sprite()
+    dough = ramp("#d8862e", spread=0.6)
+    for cx, cy in [(5.0, 5.4), (10.6, 10.4)]:
+        ring = [(cx + 3.4 * math.cos(math.radians(a)), cy + 3.0 * math.sin(math.radians(a))) for a in range(0, 361, 30)]
+        s.capsule(dough, ring, (1.4, 1.4))
+        s.put(round(cx) - 2, round(cy) - 3, dough[HIGHLIGHT])
+    return s
+
+
+def fried_potatoes_hand():
+    # Fried potatoes: cubes of potato deep-fried crisp and golden.
+    return chopped("#e0a840", size=1.4, seed=191)
+
+
+def fried_spring_rolls_hand():
+    # Fried spring rolls: crisp, blistered, golden rolls of pastry, sealed at the ends.
+    s = Sprite()
+    wrap = ramp("#d8a040", spread=0.6)
+    for start, end in [((2.0, 6.4), (12.0, 2.4)), ((4.0, 13.4), (14.0, 9.4))]:
+        s.capsule(wrap, [start, end], (2.4, 2.4), texture=lambda x, y: 1 if (x * 3 + y) % 5 == 0 else 0)
+        s.put(round(start[0]), round(start[1]), wrap[SHADOW])
+    return s
+
+
+def fried_tod_mun_hand():
+    # Fried tod mun: springy, flat Thai fish cakes, reddish-brown from curry paste, studded with green beans.
+    return patties("#b0582e", flecks=[("#4a9a3a", -1, -1), ("#4a9a3a", 1, 1), ("#e8a050", 2, -1)])
+
+
+def frikadeller_hand():
+    # Frikadeller: flattened Danish meatballs fried a deep brown on the outside.
+    return patties("#8a5228", rx=4.0, ry=3.2)
+
+
+def frikadeller_fars_hand():
+    # Frikadeller fars: minced pork with onion, egg and flour, a pale pink, flecked mixture in a bowl.
+    return bowl("#e8b4a8", mound=1.8, texture=bumpy, flecks=[("#f0e8d0", 0.08)])
+
+
+def fruchtetee_blend_hand():
+    # Früchtetee: a loose blend of dried berries, deep red hibiscus, rosehip and pale apple pieces.
+    s = Sprite()
+    rng = random.Random(193)
+    for _ in range(26):
+        x, y = rng.randint(2, 13), rng.randint(5, 14)
+        if abs(x - 7.5) > (y - 3) * 0.8:
+            continue
+        colour = rng.choice(["#7a1e2a", "#a8283a", "#c86a3a", "#d8c088", "#3a1e3a"])
+        s.pixels_at(ramp(colour)[BASE], [(x, y), (x + 1, y)])
+        s.put(x, y + 1, ramp(colour)[SHADOW])
+    return s
+
+
+def gai_satay_hand():
+    # Gai satay: skewers of grilled turmeric chicken with a dish of peanut sauce and a little cucumber relish.
+    s = plate()
+    s.ellipse(ramp("#b8783a", spread=0.5), 11.6, 11.8, 2.6, 1.4)  # Peanut sauce.
+    s.pixels_at(ramp("#9ac060")[BASE], [(3, 12), (4, 12), (5, 13)])  # Cucumber relish.
+    return skewer("#e0a040", chunks=4, s=s, start=(0.6, 10.0), end=(15.0, 1.4))
+
+
+def gammeldags_aeblekage_hand():
+    # Gammeldags æblekage: a glass layered with apple compote, buttery toasted crumbs and whipped cream, a dot of
+    # redcurrant jelly on top.
+    s = Sprite()
+    glass = plain_ramp("#dce8ec")
+    s.shape(lambda x, y: 3 <= x <= 12 and 3 <= y <= 14 - (1 if x in (3, 12) else 0), glass, (7.5, 8.5), (4.5, 5.5))
+    for y, colour in [(13, "#e8c060"), (12, "#e8c060"), (11, "#b8783a"), (10, "#b8783a"), (9, "#e8c060"), (8, "#b8783a"),
+                      (7, "#faf8f2"), (6, "#faf8f2"), (5, "#faf8f2")]:
+        s.pixels_at(plain_ramp(colour)[BASE], [(x, y) for x in range(4, 12)])
+    s.pixels_at(ramp("#c8202a")[BASE], [(7, 4), (8, 4)])
+    s.pixels_at(glass[HIGHLIGHT], [(4, 6), (4, 7), (4, 8)])
+    return s
+
+
+def garniture_hand():
+    # Garniture: crisp bacon lardons, sautéed mushrooms and onion, mixed in a bowl.
+    return bowl("#a8643a", mound=1.4, flecks=[("#7a3a24", 0.14), ("#c8a878", 0.12), ("#f0e8d0", 0.06)])
+
+
+def gelatin_hand():
+    # Gelatin: a clear, pale amber, wobbly set block with a glassy shine.
+    s = Sprite()
+    jelly = plain_ramp("#e8c880")
+    s.shape(lambda x, y: 2 <= x <= 13 and 5 <= y <= 13, jelly, (7.5, 9.0), (5.5, 4.0))
+    s.pixels_at(plain_ramp("#f6e6b8")[BASE], [(x, 5) for x in range(3, 13)])  # The top face.
+    s.pixels_at((255, 250, 235), [(4, 7), (4, 8), (5, 7)])
+    s.pixels_at(jelly[SHADOW], [(11, 11), (12, 12), (10, 12)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -6364,6 +6495,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"fried_llapingachos": fried_llapingachos_hand, "fried_nam_prik_mix": fried_nam_prik_mix_hand, "fried_okonomiyaki": fried_okonomiyaki_hand,
+             "fried_pambazo_filling": fried_pambazo_filling_hand, "fried_picarones": fried_picarones_hand, "fried_potatoes": fried_potatoes_hand,
+             "fried_spring_rolls": fried_spring_rolls_hand, "fried_tod_mun": fried_tod_mun_hand, "frikadeller": frikadeller_hand,
+             "frikadeller_fars": frikadeller_fars_hand, "fruchtetee_blend": fruchtetee_blend_hand, "gai_satay": gai_satay_hand,
+             "gammeldags_aeblekage": gammeldags_aeblekage_hand, "garniture": garniture_hand, "gelatin": gelatin_hand})
 HAND.update({"french_onion_soup": french_onion_soup_hand, "fresh_cheese": fresh_cheese_hand, "fresh_chorizo": fresh_chorizo_hand,
              "fresh_empanada_dough": fresh_empanada_dough_hand, "fresh_glass_noodles": fresh_glass_noodles_hand, "fresh_panko": fresh_panko_hand,
              "fresh_rice_noodles": fresh_rice_noodles_hand, "fried_bratwurst": fried_bratwurst_hand, "fried_bread_roll": fried_bread_roll_hand,

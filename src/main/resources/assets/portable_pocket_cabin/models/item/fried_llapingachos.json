@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/cookie"
+    "layer0": "portable_pocket_cabin:item/fried_llapingachos"
   }
 }

@@ -457,21 +457,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] fried_egg
 - [x] fried_fiskefrikadeller
 - [x] fried_korokke
-- [ ] fried_llapingachos
-- [ ] fried_nam_prik_mix
-- [ ] fried_okonomiyaki
-- [ ] fried_pambazo_filling
-- [ ] fried_picarones
-- [ ] fried_potatoes
-- [ ] fried_spring_rolls
-- [ ] fried_tod_mun
-- [ ] frikadeller
-- [ ] frikadeller_fars
-- [ ] fruchtetee_blend
-- [ ] gai_satay
-- [ ] gammeldags_aeblekage
-- [ ] garniture
-- [ ] gelatin
+- [x] fried_llapingachos
+- [x] fried_nam_prik_mix
+- [x] fried_okonomiyaki
+- [x] fried_pambazo_filling
+- [x] fried_picarones
+- [x] fried_potatoes
+- [x] fried_spring_rolls
+- [x] fried_tod_mun
+- [x] frikadeller
+- [x] frikadeller_fars
+- [x] fruchtetee_blend
+- [x] gai_satay
+- [x] gammeldags_aeblekage
+- [x] garniture
+- [x] gelatin
 - [ ] gherkins
 - [ ] gingerbread
 - [ ] gingerbread_dough
