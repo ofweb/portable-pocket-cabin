@@ -442,21 +442,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] flan_custard
 - [x] flan_napolitano
 - [x] flatbread_dough
-- [ ] french_onion_soup
-- [ ] fresh_cheese
-- [ ] fresh_chorizo
-- [ ] fresh_empanada_dough
-- [ ] fresh_glass_noodles
-- [ ] fresh_panko
-- [ ] fresh_rice_noodles
-- [ ] fried_bratwurst
-- [ ] fried_bread_roll
-- [ ] fried_chile_relleno
-- [ ] fried_churros
-- [ ] fried_doughnut
-- [ ] fried_egg
-- [ ] fried_fiskefrikadeller
-- [ ] fried_korokke
+- [x] french_onion_soup
+- [x] fresh_cheese
+- [x] fresh_chorizo
+- [x] fresh_empanada_dough
+- [x] fresh_glass_noodles
+- [x] fresh_panko
+- [x] fresh_rice_noodles
+- [x] fried_bratwurst
+- [x] fried_bread_roll
+- [x] fried_chile_relleno
+- [x] fried_churros
+- [x] fried_doughnut
+- [x] fried_egg
+- [x] fried_fiskefrikadeller
+- [x] fried_korokke
 - [ ] fried_llapingachos
 - [ ] fried_nam_prik_mix
 - [ ] fried_okonomiyaki

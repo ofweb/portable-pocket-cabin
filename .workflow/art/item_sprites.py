@@ -3946,10 +3946,22 @@ def beef_tongue_hand():
 
 def berliner_hand():
     # A Berliner: a round, golden-brown doughnut with a pale band round its middle, dusted with sugar, red jam peeping out.
+    return doughnut(filled=True)
+
+
+def fried_doughnut_hand():
+    # A fried doughnut: the plain golden ball with its pale band, before it is filled and sugared.
+    return doughnut(filled=False)
+
+
+def doughnut(filled):
     s = Sprite()
     dough = ramp("#d0903a", spread=0.7)
     s.ellipse(dough, 7.5, 8.4, 6.6, 5.6)
     s.pixels_at(plain_ramp("#f0d8a0")[BASE], [(x, 10) for x in range(2, 14)])  # The pale band where it floated.
+    if not filled:
+        s.pixels_at(dough[HIGHLIGHT], [(4, 5), (5, 4)])
+        return s
     sugar = plain_ramp("#fafaf6")[BASE]
     s.pixels_at(sugar, [(5, 4), (7, 4), (9, 5), (6, 6), (10, 4), (8, 6), (4, 6)])
     jam = ramp("#c02a3a", spread=0.6)
@@ -4923,10 +4935,20 @@ def churro_dough_hand():
 
 def churros_hand():
     # Churros: ridged golden sticks of fried dough rolled in cinnamon sugar, with a little dish of chocolate sauce.
+    return churro_sticks(served=True)
+
+
+def fried_churros_hand():
+    # Fried churros: the ridged golden sticks straight from the oil, before sugar and sauce.
+    return churro_sticks(served=False)
+
+
+def churro_sticks(served):
     s = Sprite()
-    dish = plain_ramp("#e8eaee")
-    s.ellipse(dish, 11.6, 12.4, 3.8, 2.4)
-    s.ellipse(ramp("#4a2618", spread=0.5), 11.6, 12.0, 2.8, 1.4, outline=False)
+    if served:
+        dish = plain_ramp("#e8eaee")
+        s.ellipse(dish, 11.6, 12.4, 3.8, 2.4)
+        s.ellipse(ramp("#4a2618", spread=0.5), 11.6, 12.0, 2.8, 1.4, outline=False)
     dough = ramp("#d8963a", spread=0.6)
     for start, end in [((1.6, 12.0), (9.6, 1.6)), ((4.6, 14.4), (13.0, 4.0))]:
         s.capsule(dough, [start, end], (1.5, 1.5))
@@ -4935,7 +4957,8 @@ def churros_hand():
             x = start[0] + (end[0] - start[0]) * t / length
             y = start[1] + (end[1] - start[1]) * t / length
             s.put(round(x - 0.5), round(y - 0.5), dough[SHADOW])  # The ridges.
-        s.put(round(start[0] + 2), round(start[1] - 3), plain_ramp("#f6eedc")[BASE])  # Sugar.
+        if served:
+            s.put(round(start[0] + 2), round(start[1] - 3), plain_ramp("#f6eedc")[BASE])  # Sugar.
     return s
 
 
@@ -6173,6 +6196,123 @@ def flatbread_dough_hand():
     s.pixels_at(plain_ramp("#f8ecc8")[BASE], [(5, 6), (6, 6)])
     return s
 
+def french_onion_soup_hand():
+    # French onion soup: a deep crock bowl of dark onion broth under a slice of bread and bubbling, browned cheese.
+    s = Sprite()
+    crock = ramp("#7a5a8a", spread=0.6)
+    s.shape(lambda x, y: y >= 7 and ((x - 7.5) / 6.6) ** 2 + ((y - 7.0) / 7.6) ** 2 <= 1, crock, (7.5, 10.5), (6.6, 4.6))
+    cheese = ramp("#e8b04a", spread=0.6)
+    s.ellipse(cheese, 7.5, 6.6, 7.0, 2.8)
+    s.pixels_at(ramp("#9a5a1e")[BASE], [(4, 6), (7, 5), (10, 6), (6, 7), (12, 7)])  # Browned spots.
+    s.pixels_at(cheese[LIGHT], [(2, 8), (2, 9), (13, 8)])  # Cheese melting over the rim.
+    return s
+
+
+def fresh_cheese_hand():
+    # Fresh cheese: a small, soft, pressed round of bright white cheese, marked by its mould.
+    s = Sprite()
+    cheese = plain_ramp("#f6f4ec")
+    s.ellipse(cheese, 7.5, 10.0, 6.6, 3.0)
+    s.shape(lambda x, y: 1 <= x <= 14 and 6 <= y <= 10, cheese, (7.5, 8.0), (6.6, 2.0))
+    s.ellipse(plain_ramp("#fbfaf6"), 7.5, 6.4, 6.6, 2.6)
+    for x in range(2, 14, 2):
+        s.put(x, 9, cheese[SHADOW])  # The basket marks.
+    return s
+
+
+def fresh_chorizo_hand():
+    # Fresh chorizo: soft, raw links of bright orange-red sausage, twisted between.
+    s = Sprite()
+    for (sx, sy), (ex, ey) in [((2.4, 5.0), (6.4, 3.4)), ((9.0, 3.4), (13.0, 5.0)), ((2.4, 12.0), (6.4, 10.4)), ((9.0, 10.4), (13.0, 12.0))]:
+        sausage("#d8502e", (sx, sy), (ex, ey), radius=2.0, s=s)
+    s.pixels_at(plain_ramp("#d8c8a8")[SHADOW], [(7, 4), (8, 4), (7, 11), (8, 11)])
+    return s
+
+
+def fresh_empanada_dough_hand():
+    # Fresh empanada dough: just kneaded, soft and pale, before it rests.
+    return dough_ball("#f0dcae")
+
+
+def fresh_glass_noodles_hand():
+    # Fresh glass noodles: a nest of thin, clear, glassy grey-white strands.
+    return noodles("#dcdee2")
+
+
+def fresh_panko_hand():
+    # Fresh panko: big, light, jagged white flakes torn from crustless bread, in a clay bowl.
+    return spice_bowl("#f6f2e6", fleck="#e8dcc4", seed=181, bowl_colour=CLAY)
+
+
+def fresh_rice_noodles_hand():
+    # Fresh rice noodles: a soft pile of wide, flat, opaque white ribbons.
+    s = Sprite()
+    noodle = plain_ramp("#f4f2ea")
+    for y0 in (4, 7, 10, 13):
+        s.capsule(noodle, [(1.6, y0 + 0.5), (5.0, y0 - 0.5), (9.0, y0 + 0.8), (14.0, y0 - 0.2)], (1.2, 1.2))
+    return s
+
+
+def fried_bratwurst_hand():
+    # Fried bratwurst: two plump sausages fried a deep golden brown, glossy and lightly split.
+    s = sausage("#94521e", (2.4, 6.6), (12.0, 3.0), radius=2.7)
+    s = sausage("#94521e", (4.0, 13.4), (13.6, 9.8), radius=2.7, s=s)
+    s.pixels_at(plain_ramp("#e8c8a0")[BASE], [(6, 4), (9, 11)])  # Split skins.
+    return s
+
+
+def fried_bread_roll_hand():
+    # A fried bread roll: the chili-soaked roll fried until its red coat is dark and crisp.
+    s = SPRITES["dipped_bread_roll"]()
+    for x in range(16):
+        for y in range(16):
+            if s.pixels[y][x] is not None and (x * 3 + y) % 5 == 0:
+                s.put(x, y, (90, 30, 20))
+    return s
+
+
+def fried_chile_relleno_hand():
+    # A fried chile relleno: a stuffed poblano in a puffy, golden egg batter, its green stem poking out.
+    s = Sprite()
+    batter = plain_ramp("#e8bc58")
+    s.ellipse(batter, 7.0, 9.0, 6.2, 3.8, angle=-25)
+    s.pixels_at(batter[HIGHLIGHT], [(4, 9), (5, 8), (7, 7)])
+    s.pixels_at(batter[SHADOW], [(6, 11), (9, 10)])
+    s.pixels_at(ramp("#3a7a2a")[BASE], [(12, 4), (13, 3), (14, 2)])
+    return s
+
+
+def fried_egg_hand():
+    # A fried egg: a spread of white with crisp golden edges and a round, glossy yolk.
+    s = Sprite()
+    white = plain_ramp("#f6f4ee")
+    s.shape(lambda x, y: ((x - 7.5) / 6.6) ** 2 + ((y - 8.0) / 5.6) ** 2 + 0.12 * math.sin(x * 1.3 + y) <= 1, white, (7.5, 8.0), (6.6, 5.6))
+    s.pixels_at(ramp("#d8a040")[BASE], [(2, 7), (13, 9), (6, 13), (10, 3)])  # Crisp edges.
+    yolk = ramp("#f0a010", spread=0.5)
+    s.ellipse(yolk, 8.0, 7.6, 2.6, 2.4)
+    s.put(7, 6, yolk[HIGHLIGHT])
+    return s
+
+
+def fried_fiskefrikadeller_hand():
+    # Fried fiskefrikadeller: oval fish cakes fried golden brown, a little craggy on top.
+    s = Sprite()
+    cake = ramp("#c8903e", spread=0.6)
+    for cx, cy in [(5.0, 5.4), (10.6, 10.6)]:
+        s.ellipse(cake, cx, cy, 4.2, 3.0)
+        s.pixels_at(cake[SHADOW], [(round(cx) - 1, round(cy)), (round(cx) + 1, round(cy) + 1)])
+        s.put(round(cx) - 2, round(cy) - 1, cake[HIGHLIGHT])
+    return s
+
+
+def fried_korokke_hand():
+    # Fried korokke: oval potato croquettes in a coat of crisp, jagged golden panko.
+    s = Sprite()
+    crumb = ramp("#d8963a", spread=0.6)
+    for cx, cy in [(5.0, 5.4), (10.6, 10.6)]:
+        s.ellipse(crumb, cx, cy, 4.4, 3.2, texture=lambda x, y: 1 if (x * 3 + y) % 4 == 0 else -1 if (x + y * 3) % 5 == 0 else 0)
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -6224,6 +6364,11 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"french_onion_soup": french_onion_soup_hand, "fresh_cheese": fresh_cheese_hand, "fresh_chorizo": fresh_chorizo_hand,
+             "fresh_empanada_dough": fresh_empanada_dough_hand, "fresh_glass_noodles": fresh_glass_noodles_hand, "fresh_panko": fresh_panko_hand,
+             "fresh_rice_noodles": fresh_rice_noodles_hand, "fried_bratwurst": fried_bratwurst_hand, "fried_bread_roll": fried_bread_roll_hand,
+             "fried_chile_relleno": fried_chile_relleno_hand, "fried_churros": fried_churros_hand, "fried_doughnut": fried_doughnut_hand,
+             "fried_egg": fried_egg_hand, "fried_fiskefrikadeller": fried_fiskefrikadeller_hand, "fried_korokke": fried_korokke_hand})
 HAND.update({"fermented_tapioca_starch": fermented_tapioca_starch_hand, "fermenting_anchovies": fermenting_anchovies_hand,
              "fischbrotchen": fischbrotchen_hand, "fish_bones": fish_bones_hand, "fish_guts": fish_guts_hand, "fish_head": fish_head_hand,
              "fish_scales": fish_scales_hand, "fiskefrikadeller": fiskefrikadeller_hand, "fiskefrikadeller_fars": fiskefrikadeller_fars_hand,
