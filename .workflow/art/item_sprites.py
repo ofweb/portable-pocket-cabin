@@ -5815,6 +5815,34 @@ def dried_bread_hand():
                 s.put(x, y, crumb[BASE] if (x + y) % 4 else crumb[SHADOW])
     return s
 
+def dried_cocoa_beans_hand():
+    # Dried cocoa beans: plump, almond-shaped beans with a papery, dusty purplish-brown shell.
+    return bean_pile("#6a3a30", PILE, shine=ramp("#a87a6a")[BASE], spread=0.7)
+
+
+def dried_fruit_hand():
+    # Dried stone fruit: halves of apricot and plum dried to soft, wrinkled, glossy deep orange and dark red.
+    s = Sprite()
+    rng = random.Random(163)
+    for (cx, cy), colour in [((4.6, 4.8), "#e07a1e"), ((11.0, 5.4), "#7a2a3a"), ((4.2, 11.0), "#7a2a3a"), ((10.6, 11.4), "#e07a1e")]:
+        tones = ramp(colour, spread=0.6)
+        s.ellipse(tones, cx, cy, 3.4, 2.8)
+        for _ in range(3):
+            s.put(round(cx + rng.uniform(-2, 2)), round(cy + rng.uniform(-1.4, 1.4)), tones[SHADOW])  # Wrinkles.
+        s.put(round(cx) - 2, round(cy) - 1, tones[HIGHLIGHT])
+    return s
+
+def dried_peppercorns_hand():
+    # Dried peppercorns: the green berries dried to hard, wrinkled black balls, loose in a little heap.
+    s = Sprite()
+    corn = ramp("#2e2a28", spread=0.5)
+    rng = random.Random(167)
+    for cx, cy in [(4.0, 12.4), (7.4, 12.8), (10.8, 12.4), (13.0, 10.4), (5.6, 9.4), (9.0, 9.6), (3.0, 8.4), (7.4, 6.6), (11.0, 7.2), (9.2, 4.0)]:
+        s.ellipse(corn, cx, cy, 1.6, 1.5)
+        s.put(round(cx) - 1, round(cy) - 1, ramp("#7a746e")[BASE])
+        s.put(round(cx) + rng.choice((-1, 0)), round(cy), corn[OUTLINE])  # Wrinkles.
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -5866,6 +5894,14 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"dried_chickpeas": dried("chickpea", 0.6, 0.9, 0.1, 11), "dried_chilies": dried("red_chili", 0.85, 0.62, 0.16, 13),
+             "dried_cocoa_beans": dried_cocoa_beans_hand, "dried_coffee_cherries": dried("coffee_cherry", 0.5, 0.55, 0.2, 17),
+             "dried_cooked_corn": dried("cooked_corn", 0.6, 0.85, 0.1, 19), "dried_corn": dried("corn_kernels", 0.7, 0.85, 0.08, 23),
+             "dried_corn_husks": dried("corn_husk", 0.35, 1.0, 0.08, 29), "dried_fruit": dried_fruit_hand,
+             "dried_hibiscus": dried("roselle", 0.7, 0.55, 0.16, 31), "dried_mint": dried("mint", 0.45, 0.85, 0.12, 37),
+             "dried_nutmeg": dried("nutmeg_seed", 0.5, 0.8, 0.1, 41), "dried_oregano": dried("oregano", 0.45, 0.85, 0.12, 43),
+             "dried_paprika_pepper": dried("paprika_pepper", 0.85, 0.62, 0.16, 47), "dried_peppercorns": dried_peppercorns_hand,
+             "dried_raspberry": dried("raspberry", 0.6, 0.7, 0.16, 59)})
 HAND.update({"drained_cream": drained_cream_hand, "dried_apple": dried_apple_hand, "dried_azuki_beans": dried("azuki_bean", 0.7, 0.85, 0.1, 3),
              "dried_berries": dried_berries_hand, "dried_black_beans": dried("black_bean", 0.5, 0.95, 0.06, 5),
              "dried_blackcurrant": dried("blackcurrant", 0.6, 0.8, 0.18, 7), "dried_bread": dried_bread_hand,

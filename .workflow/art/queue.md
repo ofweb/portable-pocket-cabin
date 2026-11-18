@@ -381,21 +381,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] dried_blackcurrant
 - [x] dried_bread
 - [x] dried_cardamom_pods
-- [ ] dried_chickpeas
-- [ ] dried_chilies
-- [ ] dried_cocoa_beans
-- [ ] dried_coffee_cherries
-- [ ] dried_cooked_corn
-- [ ] dried_corn
-- [ ] dried_corn_husks
-- [ ] dried_fruit
-- [ ] dried_hibiscus
-- [ ] dried_mint
-- [ ] dried_nutmeg
-- [ ] dried_oregano
-- [ ] dried_paprika_pepper
-- [ ] dried_peppercorns
-- [ ] dried_raspberry
+- [x] dried_chickpeas
+- [x] dried_chilies
+- [x] dried_cocoa_beans
+- [x] dried_coffee_cherries
+- [x] dried_cooked_corn
+- [x] dried_corn
+- [x] dried_corn_husks
+- [x] dried_fruit
+- [x] dried_hibiscus
+- [x] dried_mint
+- [x] dried_nutmeg
+- [x] dried_oregano
+- [x] dried_paprika_pepper
+- [x] dried_peppercorns
+- [x] dried_raspberry
 - [ ] dried_rosehip
 - [ ] dried_rosemary
 - [ ] dried_savory
