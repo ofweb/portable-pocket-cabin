@@ -396,22 +396,22 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] dried_paprika_pepper
 - [x] dried_peppercorns
 - [x] dried_raspberry
-- [ ] dried_rosehip
-- [ ] dried_rosemary
-- [ ] dried_savory
-- [ ] dried_sea_lettuce
-- [ ] dried_shrimp
-- [ ] dried_soybeans
-- [ ] dried_sweet_berries
-- [ ] dried_thyme
-- [ ] dried_wakame
-- [ ] dried_white_beans
-- [ ] dried_yerba_mate_leaves
-- [ ] duck_bones
-- [ ] duck_breasts
+- [x] dried_rosehip
+- [x] dried_rosemary
+- [x] dried_savory
+- [x] dried_sea_lettuce
+- [x] dried_shrimp
+- [x] dried_soybeans
+- [x] dried_sweet_berries
+- [x] dried_thyme
+- [x] dried_wakame
+- [x] dried_white_beans
+- [x] dried_yerba_mate_leaves
+- [x] duck_bones
+- [x] duck_breasts
 - [x] duck_carcass
-- [ ] duck_confit
-- [ ] duck_fat
+- [x] duck_confit
+- [x] duck_fat
 - [ ] duck_heart_and_gizzard
 - [ ] duck_legs
 - [ ] duck_liver

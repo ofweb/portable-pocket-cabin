@@ -5843,6 +5843,57 @@ def dried_peppercorns_hand():
         s.put(round(cx) + rng.choice((-1, 0)), round(cy), corn[OUTLINE])  # Wrinkles.
     return s
 
+def dried_sweet_berries_hand():
+    # Dried sweet berries: small, shrivelled, deep red berries, a few still on their stalks.
+    s = Sprite()
+    rng = random.Random(173)
+    for cx, cy in [(4.0, 4.4), (8.6, 3.6), (12.4, 5.0), (3.4, 9.0), (7.4, 8.4), (11.4, 9.6), (5.0, 13.0), (9.4, 12.6), (13.0, 13.2)]:
+        tones = ramp("#8a1e24", spread=0.6)
+        s.ellipse(tones, cx, cy, 1.9, 1.7)
+        s.put(round(cx) - 1, round(cy) - 1, tones[HIGHLIGHT])
+        s.put(round(cx) + rng.choice((0, 1)), round(cy), tones[SHADOW])
+    s.pixels_at(ramp("#5a4a2a")[BASE], [(8, 1), (12, 2)])
+    return s
+
+
+def duck_bones_hand():
+    # Duck bones: a long breastbone keel and two leg bones, creamy and a little greyer than chicken's.
+    s = Sprite()
+    bone = plain_ramp("#e2d8c0")
+    s.capsule(bone, [(2.0, 4.0), (8.0, 2.0), (13.6, 4.4)], (1.4, 1.0))  # The keel.
+    for start, end in [((3.0, 14.0), (8.0, 7.0)), ((8.4, 14.6), (13.6, 8.0))]:
+        s.capsule(bone, [start, end], (1.3, 1.3))
+        for x, y in (start, end):
+            s.ellipse(bone, x, y, 1.7, 1.6)
+    return s
+
+
+def duck_breasts_hand():
+    # Duck breasts: two dark red fillets under a thick cap of creamy fat, the skin scored in a diamond pattern.
+    s = Sprite()
+    for cx, cy in [(5.2, 5.4), (10.6, 10.6)]:
+        meat, fat = ramp("#8a2a2a", spread=0.6), plain_ramp("#f0dcb4")
+        s.ellipse(meat, cx, cy, 4.6, 3.2, angle=-20)
+        s.ellipse(fat, cx - 0.4, cy - 0.6, 3.8, 2.2, angle=-20, outline=False)
+        for k in (-2, 0, 2):
+            s.put(round(cx + k), round(cy - 1 + (k % 4 == 0)), fat[SHADOW])  # The scoring.
+    return s
+
+
+def duck_confit_hand():
+    # Duck confit: legs slow-cooked in their own fat, the skin crisp and deep golden brown.
+    s = drumstick("#b06e2a", 4.6, 4.6, 35, Sprite())
+    s = drumstick("#b06e2a", 8.4, 9.6, 15, s)
+    s.pixels_at(ramp("#e8b860")[BASE], [(3, 3), (7, 8)])
+    return s
+
+
+def duck_fat_hand():
+    # Duck fat: rendered and set, a smooth, pale creamy-yellow fat, in a clay bowl.
+    s = bowl("#f2e2a8", mound=0.6, plain=True, bowl_colour=CLAY)
+    s.pixels_at(plain_ramp("#faf2d0")[BASE], [(4, 7), (5, 7), (6, 7)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -5894,6 +5945,13 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"dried_rosehip": dried("rosehip", 0.6, 0.7, 0.16, 61), "dried_rosemary": dried("rosemary", 0.5, 0.85, 0.1, 67),
+             "dried_savory": dried("savory", 0.45, 0.85, 0.12, 71), "dried_sea_lettuce": dried("sea_lettuce", 0.45, 0.6, 0.14, 73),
+             "dried_shrimp": dried("boiled_prawns", 0.8, 0.72, 0.2, 79), "dried_soybeans": lambda: bean_pile("#d8bc80", PILE, spread=0.6),
+             "dried_sweet_berries": dried_sweet_berries_hand, "dried_thyme": dried("thyme", 0.45, 0.85, 0.12, 89),
+             "dried_wakame": dried("wakame", 0.35, 0.45, 0.14, 97), "dried_white_beans": dried("white_bean", 0.6, 0.92, 0.08, 101),
+             "dried_yerba_mate_leaves": dried("yerba_mate_leaf", 0.5, 0.8, 0.12, 103), "duck_bones": duck_bones_hand,
+             "duck_breasts": duck_breasts_hand, "duck_confit": duck_confit_hand, "duck_fat": duck_fat_hand})
 HAND.update({"dried_chickpeas": dried("chickpea", 0.6, 0.9, 0.1, 11), "dried_chilies": dried("red_chili", 0.85, 0.62, 0.16, 13),
              "dried_cocoa_beans": dried_cocoa_beans_hand, "dried_coffee_cherries": dried("coffee_cherry", 0.5, 0.55, 0.2, 17),
              "dried_cooked_corn": dried("cooked_corn", 0.6, 0.85, 0.1, 19), "dried_corn": dried("corn_kernels", 0.7, 0.85, 0.08, 23),
