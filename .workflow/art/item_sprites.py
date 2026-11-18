@@ -5484,6 +5484,164 @@ def diced_beef_hand():
     # Diced beef: neat red cubes of chuck.
     return chopped("#b03a34", size=1.2, seed=113)
 
+def diced_bell_pepper_hand():
+    # Diced bell pepper: small, glossy red squares.
+    return chopped("#d8281e", size=1.2, seed=127)
+
+
+def diced_courgette_hand():
+    # Diced courgette: pale green-white cubes edged with dark green skin.
+    return chopped("#dce8b8", skin="#2e6a2a", size=1.2, seed=131, plain=True)
+
+
+def diced_nopales_hand():
+    # Diced nopales: bright green squares of cactus paddle, a few with pale spine marks.
+    s = chopped("#5aa040", size=1.2, seed=137)
+    s.pixels_at(plain_ramp("#e8ecc8")[BASE], [(3, 3), (12, 4), (7, 8), (4, 12)])
+    return s
+
+
+def diced_potato_hand():
+    # Diced potato: neat, pale yellow cubes.
+    return chopped("#ecdc98", size=1.2, seed=139, plain=True)
+
+
+def diced_water_chestnut_hand():
+    # Diced water chestnut: crisp white cubes, a few with a sliver of dark brown skin.
+    return chopped("#f2f0e2", skin="#5a3a28", size=1.2, seed=149, plain=True)
+
+
+def diced_white_fish_hand():
+    # Diced white fish: soft, translucent white chunks, showing the grain of the flakes.
+    s = chopped("#eeeae4", size=1.4, seed=151, plain=True)
+    s.pixels_at(plain_ramp("#eeeae4")[SHADOW], [(4, 4), (9, 3), (12, 5), (3, 9), (7, 8), (11, 9), (5, 13), (9, 12)])
+    return s
+
+
+def dimensional_anchor_hand():
+    # The dimensional anchor: a heavy block of obsidian bound with iron at the corners, an amethyst crystal set glowing
+    # in its heart.
+    s = Sprite()
+    stone = ramp("#2a1e3a", spread=0.6)
+    s.shape(lambda x, y: 1 <= x <= 14 and 1 <= y <= 14, stone, (7.5, 7.5), (6.5, 6.5),
+            texture=lambda x, y: 1 if (x * 7 + y * 3) % 11 == 0 else 0)
+    iron = plain_ramp("#d8dce2")
+    for cx, cy in [(2, 2), (13, 2), (2, 13), (13, 13)]:
+        s.pixels_at(iron[BASE], [(cx, cy), (cx + (1 if cx < 7 else -1), cy), (cx, cy + (1 if cy < 7 else -1))])
+        s.put(cx, cy, iron[HIGHLIGHT])
+    gem = ramp("#a86ae0", spread=0.6)
+    s.shape(lambda x, y: abs(x - 7.5) + abs(y - 7.5) <= 3.6, gem, (7.5, 7.5), (3.6, 3.6))
+    s.pixels_at(plain_ramp("#f0d8ff")[BASE], [(6, 6), (7, 5)])
+    s.pixels_at(gem[LIGHT], [(7, 1), (1, 7), (14, 8), (8, 14)])  # Light leaking from the seams.
+    return s
+
+
+def dimensional_folding_core_hand():
+    # The dimensional folding core: a copper ring holding a swirling teal pearl of folded space, amethyst shards at
+    # its four points.
+    s = Sprite()
+    copper = ramp("#c8703a", spread=0.6)
+    s.ellipse(copper, 7.5, 7.5, 7.0, 7.0)
+    s.ellipse(ramp("#1e3a3a", spread=0.4), 7.5, 7.5, 5.0, 5.0, outline=False)
+    pearl = ramp("#2aa898", spread=0.6)
+    s.ellipse(pearl, 7.5, 7.5, 3.6, 3.6)
+    for x, y in [(6, 6), (7, 7), (8, 8), (9, 7), (6, 9)]:
+        s.put(x, y, ramp("#7ae8d0")[BASE])  # The swirl.
+    s.put(6, 5, (240, 255, 250))
+    gem = ramp("#a86ae0", spread=0.6)
+    for x, y in [(7, 0), (0, 7), (14, 7), (7, 14)]:
+        s.pixels_at(gem[BASE], [(x, y), (x + 1, y) if y in (0, 14) else (x, y + 1)])
+    return s
+
+
+def dimensional_logic_core_hand():
+    # The dimensional logic core: a copper plate etched with glowing redstone traces, an amethyst gem at the centre.
+    s = Sprite()
+    copper = ramp("#c8703a", spread=0.6)
+    s.shape(lambda x, y: 1 <= x <= 14 and 1 <= y <= 14 and not ((x in (1, 14)) and (y in (1, 14))), copper, (7.5, 7.5), (6.5, 6.5))
+    trace = ramp("#e02a1e", spread=0.5)
+    for points in [[(3, 3), (3, 6), (6, 6)], [(12, 3), (9, 3), (9, 6)], [(3, 12), (6, 12), (6, 9)], [(12, 12), (12, 9), (9, 9)]]:
+        for (x0, y0), (x1, y1) in zip(points, points[1:]):
+            s.line(trace[BASE], x0, y0, x1, y1)
+        s.put(*points[0], ramp("#ff7a5a")[BASE])
+    gem = ramp("#a86ae0", spread=0.6)
+    s.ellipse(gem, 7.5, 7.5, 2.2, 2.2)
+    s.put(7, 6, plain_ramp("#f0d8ff")[BASE])
+    return s
+
+
+def dipped_bread_roll_hand():
+    # A bread roll dipped in red chili sauce: soaked through and glossy deep red, with a little of the pale crumb showing.
+    s = Sprite()
+    roll = ramp("#b0301e", spread=0.6)
+    s.ellipse(roll, 7.5, 9.0, 6.4, 5.0)
+    s.pixels_at(ramp("#e86a3a")[BASE], [(4, 6), (5, 5), (6, 5)])
+    s.pixels_at(plain_ramp("#e8c890")[BASE], [(10, 11), (11, 10)])
+    s.pixels_at(roll[BASE], [(9, 14), (9, 15)])  # A drip.
+    return s
+
+
+def pretzel(dough, salt=True, s=None):
+    """A pretzel: a rope of dough knotted into two loops over a crossed twist, sprinkled with coarse salt."""
+    s = s or Sprite()
+    tones = ramp(dough, spread=0.6)
+    for cx in (4.8, 10.2):
+        ring = [(cx + 3.6 * math.cos(math.radians(a)), 7.0 + 4.0 * math.sin(math.radians(a))) for a in range(0, 361, 30)]
+        s.capsule(tones, ring, (1.2, 1.2))
+    s.capsule(tones, [(1.6, 13.6), (7.5, 9.0), (13.4, 13.6)], (1.2, 1.2))  # The twisted arms.
+    s.pixels_at(tones[HIGHLIGHT], [(3, 4), (9, 4), (12, 4)])
+    if salt:
+        s.pixels_at(plain_ramp("#fafaf6")[BASE], [(5, 3), (11, 3), (2, 7), (13, 7), (7, 10), (4, 12), (11, 12)])
+    return s
+
+
+def dipped_pretzels_hand():
+    # Dipped pretzels: shaped raw dough dipped in lye and salted, pale and slick, not yet baked brown.
+    return pretzel("#e2cc9a")
+
+
+def dipped_tortillas_hand():
+    # Dipped tortillas: corn tortillas warmed in green salsa, soft and coated green.
+    s = corn_tortilla_hand()
+    sauce = ramp("#5a9a3a", spread=0.6)
+    s.ellipse(sauce, 7.5, 7.6, 5.6, 2.6, outline=False)
+    s.pixels_at(sauce[LIGHT], [(5, 7), (6, 6), (9, 7)])
+    return s
+
+
+def dorayaki_pancake(s, cx, cy):
+    tones = ramp("#b8702a", spread=0.6)
+    s.ellipse(tones, cx, cy, 5.6, 2.4)
+    s.ellipse(ramp("#d89a4a", spread=0.5), cx, cy - 0.3, 4.0, 1.4, outline=False)
+    return s
+
+
+def dorayaki_hand():
+    # Dorayaki: two round, golden-brown honey pancakes sandwiching a thick layer of dark red bean paste.
+    s = Sprite()
+    pancake = plain_ramp("#e8c078")
+    s.ellipse(pancake, 7.5, 11.0, 6.6, 2.6)
+    s.ellipse(ramp("#5a2a2a", spread=0.6), 7.5, 9.0, 6.0, 1.8)
+    s.ellipse(ramp("#b8702a", spread=0.6), 7.5, 6.6, 6.6, 3.0)
+    s.ellipse(ramp("#d08a3a", spread=0.5), 7.5, 6.2, 4.8, 1.8, outline=False)
+    s.put(5, 5, ramp("#e8b060")[BASE])
+    return s
+
+
+def dorayaki_batter_hand():
+    # Dorayaki batter: egg, sugar, honey and flour whisked into a smooth, golden batter, in a bowl.
+    s = bowl("#ecc060", plain=True)
+    s.pixels_at(plain_ramp("#f8dc90")[BASE], [(4, 7), (5, 7)])
+    return s
+
+
+def dorayaki_pancakes_hand():
+    # Dorayaki pancakes: a stack of small, round, evenly golden-brown pancakes.
+    s = Sprite()
+    for cy in (11.6, 8.6, 5.6):
+        dorayaki_pancake(s, 7.5, cy)
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -5535,6 +5693,12 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"diced_bell_pepper": diced_bell_pepper_hand, "diced_courgette": diced_courgette_hand, "diced_nopales": diced_nopales_hand,
+             "diced_potato": diced_potato_hand, "diced_water_chestnut": diced_water_chestnut_hand, "diced_white_fish": diced_white_fish_hand,
+             "dimensional_anchor": dimensional_anchor_hand, "dimensional_folding_core": dimensional_folding_core_hand,
+             "dimensional_logic_core": dimensional_logic_core_hand, "dipped_bread_roll": dipped_bread_roll_hand,
+             "dipped_pretzels": dipped_pretzels_hand, "dipped_tortillas": dipped_tortillas_hand, "dorayaki": dorayaki_hand,
+             "dorayaki_batter": dorayaki_batter_hand, "dorayaki_pancakes": dorayaki_pancakes_hand})
 HAND.update({"cured_beef_strips": cured_beef_strips_hand, "cured_pork_belly": cured_pork_belly_hand, "cured_pork_shoulder": cured_pork_shoulder_hand,
              "cured_salmon": cured_salmon_hand, "curried_fish_paste": curried_fish_paste_hand, "curry_ketchup": curry_ketchup_hand,
              "curry_ketchup_base": curry_ketchup_base_hand, "curry_powder": curry_powder_hand, "curry_spice_mix": curry_spice_mix_hand,

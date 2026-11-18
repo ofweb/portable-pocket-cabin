@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:block/obsidian"
+    "layer0": "portable_pocket_cabin:item/dimensional_anchor"
   }
 }

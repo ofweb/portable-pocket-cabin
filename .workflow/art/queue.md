@@ -351,21 +351,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] desiccated_coconut
 - [x] diced_aubergine
 - [x] diced_beef
-- [ ] diced_bell_pepper
-- [ ] diced_courgette
-- [ ] diced_nopales
-- [ ] diced_potato
-- [ ] diced_water_chestnut
-- [ ] diced_white_fish
-- [ ] dimensional_anchor
-- [ ] dimensional_folding_core
-- [ ] dimensional_logic_core
-- [ ] dipped_bread_roll
-- [ ] dipped_pretzels
-- [ ] dipped_tortillas
-- [ ] dorayaki
-- [ ] dorayaki_batter
-- [ ] dorayaki_pancakes
+- [x] diced_bell_pepper
+- [x] diced_courgette
+- [x] diced_nopales
+- [x] diced_potato
+- [x] diced_water_chestnut
+- [x] diced_white_fish
+- [x] dimensional_anchor
+- [x] dimensional_folding_core
+- [x] dimensional_logic_core
+- [x] dipped_bread_roll
+- [x] dipped_pretzels
+- [x] dipped_tortillas
+- [x] dorayaki
+- [x] dorayaki_batter
+- [x] dorayaki_pancakes
 - [ ] drained_cream
 - [ ] dressed_chicken
 - [ ] dressed_cow
