@@ -472,22 +472,22 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] gammeldags_aeblekage
 - [x] garniture
 - [x] gelatin
-- [ ] gherkins
-- [ ] gingerbread
-- [ ] gingerbread_dough
-- [ ] glass_noodle_dough
-- [ ] glass_noodles
-- [ ] glutinous_rice_flour
-- [ ] goat_bones
+- [x] gherkins
+- [x] gingerbread
+- [x] gingerbread_dough
+- [x] glass_noodle_dough
+- [x] glass_noodles
+- [x] glutinous_rice_flour
+- [x] goat_bones
 - [x] goat_carcass
-- [ ] goat_casing
-- [ ] goat_fat
-- [ ] goat_heart
-- [ ] goat_leg
-- [ ] goat_liver
-- [ ] goat_shoulder
-- [ ] goat_stew_meat
-- [ ] gougere_dough
+- [x] goat_casing
+- [x] goat_fat
+- [x] goat_heart
+- [x] goat_leg
+- [x] goat_liver
+- [x] goat_shoulder
+- [x] goat_stew_meat
+- [x] gougere_dough
 - [ ] gougeres
 - [ ] grated_carrot
 - [ ] grated_cassava

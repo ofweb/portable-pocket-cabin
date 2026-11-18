@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/gingerbread",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 9062938
-      }
-    ]
+    "model": "portable_pocket_cabin:item/gingerbread"
   }
 }

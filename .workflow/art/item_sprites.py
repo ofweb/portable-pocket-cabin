@@ -6444,6 +6444,132 @@ def gelatin_hand():
     s.pixels_at(jelly[SHADOW], [(11, 11), (12, 12), (10, 12)])
     return s
 
+def gherkins_hand():
+    # Gherkins: small, knobbly, dark olive-green pickled cucumbers with a sprig of dill.
+    s = Sprite()
+    pickle = ramp("#5a7a2e", spread=0.6)
+    for start, end in [((2.4, 6.0), (11.0, 2.6)), ((4.0, 13.0), (13.6, 9.4))]:
+        s.capsule(pickle, [start, end], (2.2, 2.0), texture=lambda x, y: 1 if (x * 2 + y * 3) % 5 == 0 else 0)
+    s.pixels_at(ramp("#8ab84a")[BASE], [(13, 4), (14, 3), (13, 2)])
+    return s
+
+
+def gingerbread_hand():
+    # Gingerbread: dark, spiced honey biscuits, a heart and a round, piped with white icing.
+    s = Sprite()
+    biscuit = ramp("#8a4a24", spread=0.6)
+    s.shape(lambda x, y: ((x - 3.6) / 2.8) ** 2 + ((y - 4.0) / 2.6) ** 2 <= 1 or ((x - 8.4) / 2.8) ** 2 + ((y - 4.0) / 2.6) ** 2 <= 1 or
+            (y >= 4 and abs(x - 6.0) <= (11.0 - y) * 0.8), biscuit, (6.0, 6.0), (5.4, 5.0))
+    s.ellipse(biscuit, 11.4, 11.4, 3.6, 3.4)
+    icing = plain_ramp("#faf8f2")[BASE]
+    s.pixels_at(icing, [(3, 4), (4, 3), (8, 3), (9, 4), (6, 8), (4, 6), (8, 6)])
+    s.pixels_at(icing, [(10, 10), (12, 10), (11, 12), (9, 12), (13, 12)])
+    return s
+
+
+def gingerbread_dough_hand():
+    # Gingerbread dough: a dark, sticky, spiced brown dough.
+    return dough_ball("#8a5a34", flour=False)
+
+
+def glass_noodle_dough_hand():
+    # Glass noodle dough: sweet potato starch and water, a heavy, translucent grey paste.
+    return dough_ball("#c8c4c0", flour=False)
+
+
+def glass_noodles_hand():
+    # Glass noodles: dried bundles of fine, wiry, translucent grey-white strands, tied in the middle.
+    s = Sprite()
+    strand = plain_ramp("#e2e4e6")
+    for k in range(-3, 4):
+        # Each strand a fine line, bunched at the tie and fanning out at the ends.
+        y_end = 8 + k * 2
+        s.line(strand[BASE if k % 2 else LIGHT], 1, y_end, 7, 8 + (k > 0) - (k < 0))
+        s.line(strand[BASE if k % 2 else LIGHT], 8, 8 + (k > 0) - (k < 0), 14, y_end)
+    s.pixels_at(ramp("#c8a070")[BASE], [(7, 6), (7, 7), (7, 8), (7, 9), (8, 6), (8, 9)])  # The tie.
+    return s
+
+
+def glutinous_rice_flour_hand():
+    # Glutinous rice flour: a soft, bright white flour, in a clay bowl.
+    return spice_bowl("#f8f6f0", fleck="#e8e4da", seed=197, bowl_colour=CLAY)
+
+
+def bones_of(colour, size=1.0, scrap=None):
+    """A pair of bones, knobbed at the ends, sized for the animal, with an optional scrap of meat."""
+    def drawn():
+        s = Sprite()
+        bone = plain_ramp(colour)
+        for start, end in [((3.0, 12.6), (12.6, 3.0)), ((3.6, 5.0), (9.0, 13.0))]:
+            s.capsule(bone, [start, end], (1.1 * size, 1.1 * size))
+            for x, y in (start, end):
+                s.ellipse(bone, x, y, 1.6 * size, 1.5 * size)
+        s.pixels_at(bone[HIGHLIGHT], [(7, 7), (8, 6)])
+        if scrap:
+            s.pixels_at(ramp(scrap)[BASE], [(8, 8), (9, 7)])
+        return s
+    return drawn
+
+
+def casing(colour):
+    """A natural sausage casing: a thin, translucent tube wound into a loose coil."""
+    def drawn():
+        s = Sprite()
+        tube = plain_ramp(colour)
+        # A spiral, drawn as a line of pixels, inner turns paler.
+        points = []
+        for step in range(0, 900, 12):
+            r = 1.4 + step / 900 * 5.0
+            a = math.radians(step)
+            points.append((round(7.5 + r * math.cos(a)), round(8.0 + r * 0.8 * math.sin(a))))
+        for i, (x, y) in enumerate(points):
+            s.put(x, y, tube[SHADOW] if i % 3 == 0 else tube[BASE])
+        s.pixels_at((252, 250, 246), [points[len(points) // 2], points[-6]])
+        return s
+    return drawn
+
+
+def fat_chunk(colour, rind=None):
+    """A chunk of raw fat: a creamy, waxy, irregular block, with an optional strip of skin."""
+    def drawn():
+        s = Sprite()
+        fat = plain_ramp(colour)
+        s.shape(lambda x, y: ((x - 7.5) / 6.0) ** 2 + ((y - 8.6) / 4.6) ** 2 + 0.15 * math.sin(x * 1.1 + y * 0.7) <= 1, fat, (7.5, 8.6),
+                (6.0, 4.6))
+        s.pixels_at(fat[HIGHLIGHT], [(4, 6), (5, 5), (6, 5)])
+        s.pixels_at(fat[SHADOW], [(9, 10), (10, 11), (6, 11)])
+        if rind:
+            s.pixels_at(plain_ramp(rind)[BASE], [(x, 12) for x in range(4, 12)])
+        return s
+    return drawn
+
+
+def leg_joint(lean, fat):
+    """A whole leg joint: a plump rounded roast of lean meat with a cap of fat, the white shank bone sticking out."""
+    def drawn():
+        s = Sprite()
+        bone = plain_ramp("#ece2cc")
+        s.capsule(bone, [(10.0, 6.0), (14.4, 1.6)], (1.1, 1.0))
+        s.ellipse(bone, 14.2, 1.8, 1.4, 1.4)
+        slab(lean, fat=fat, cx=6.6, cy=9.4, rx=5.6, ry=4.8, angle=-35, fat_side=1.2, seed=211, s=s)
+        return s
+    return drawn
+
+
+def stew_meat(lean):
+    """Stew meat: neat cubes of lean meat for braising."""
+    return lambda: chopped(lean, size=1.3, seed=223)
+
+
+def goat_casing_hand():
+    return casing("#ece0d8")()
+
+
+def gougere_dough_hand():
+    # Gougère dough: choux paste folded with grated hard cheese, a glossy yellow paste flecked with cheese, in a bowl.
+    s = bowl("#f0cc6a", mound=1.4, plain=True, flecks=[("#e8a83a", 0.12)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -6495,6 +6621,14 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"gherkins": gherkins_hand, "gingerbread": gingerbread_hand, "gingerbread_dough": gingerbread_dough_hand,
+             "glass_noodle_dough": glass_noodle_dough_hand, "glass_noodles": glass_noodles_hand, "glutinous_rice_flour": glutinous_rice_flour_hand,
+             # Goat: lean, dark red meat with little fat.
+             "goat_bones": bones_of("#e6dcc4", 1.1, scrap="#9a3a30"), "goat_casing": goat_casing_hand, "goat_fat": fat_chunk("#efe4cc"),
+             "goat_heart": lambda: heart("#7a2a2a", fat="#efe4cc"), "goat_leg": leg_joint("#9a3a30", "#efe2d0"),
+             "goat_liver": lambda: liver("#6a2a24"), "goat_shoulder": lambda: slab("#9a3a30", fat="#efe2d0", rx=6.2, ry=5.2, angle=-8,
+                                                                                    fat_side=0.8, marbling=0.05, seed=227),
+             "goat_stew_meat": stew_meat("#9a3a30"), "gougere_dough": gougere_dough_hand})
 HAND.update({"fried_llapingachos": fried_llapingachos_hand, "fried_nam_prik_mix": fried_nam_prik_mix_hand, "fried_okonomiyaki": fried_okonomiyaki_hand,
              "fried_pambazo_filling": fried_pambazo_filling_hand, "fried_picarones": fried_picarones_hand, "fried_potatoes": fried_potatoes_hand,
              "fried_spring_rolls": fried_spring_rolls_hand, "fried_tod_mun": fried_tod_mun_hand, "frikadeller": frikadeller_hand,
