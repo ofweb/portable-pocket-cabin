@@ -4651,19 +4651,6 @@ def chicken_breast_hand():
     return s
 
 
-def chicken_carcass_hand():
-    # A whole plucked chicken: plump, pale golden-pink skin, legs tucked up, ready to be scalded and dressed.
-    s = Sprite()
-    skin = plain_ramp("#f0d0a8")
-    s.ellipse(skin, 7.0, 9.6, 6.2, 4.6)
-    for start, end in [((10.0, 7.0), (14.0, 3.0)), ((11.0, 10.0), (14.6, 7.0))]:
-        s.capsule(skin, [start, end], (1.8, 1.0))
-        s.ellipse(plain_ramp("#f4ece0"), end[0], end[1], 1.0, 1.0)  # The knuckle.
-    s.pixels_at(skin[HIGHLIGHT], [(4, 7), (5, 6), (6, 6)])
-    s.pixels_at(skin[SHADOW], [(3, 11), (5, 13), (8, 13)])
-    return s
-
-
 def drumstick(skin, cx, cy, angle, s):
     """A drumstick: a plump rounded thigh end tapering to a knuckle of bone."""
     tones = plain_ramp(skin)
@@ -5216,23 +5203,6 @@ def cotija_cheese_hand():
     return s
 
 
-def cow_carcass_hand():
-    # A side of beef: deep red meat over a pale curve of ribs, with a thick layer of white fat along the back, hung from
-    # a hook.
-    s = Sprite()
-    s.line(ramp("#8a8a90")[BASE], 8, 0, 8, 2)
-    meat = ramp("#a83430", spread=0.6)
-    s.shape(lambda x, y: ((x - 8.0) / 5.6) ** 2 + ((y - 9.0) / 6.8) ** 2 <= 1, meat, (8.0, 9.0), (5.6, 6.8))
-    fat = plain_ramp("#f0e6d6")
-    for y in range(3, 15):
-        for x in range(2, 6):
-            if s.pixels[y][x] in meat[1:] and s.pixels[y][x - 1] in (None, meat[OUTLINE]):
-                s.pixels_at(fat[BASE], [(x, y), (x + 1, y)])
-    for y in (6, 8, 10, 12):
-        s.line(plain_ramp("#e8dcc8")[SHADOW], 8, y, 12, y + 1)  # The ribs.
-    return s
-
-
 def coxinha_dough_hand():
     # Coxinha dough: flour cooked in chicken stock into a smooth, pale golden dough.
     return dough_ball("#eed8a0", flour=False)
@@ -5642,6 +5612,209 @@ def dorayaki_pancakes_hand():
         dorayaki_pancake(s, 7.5, cy)
     return s
 
+def hook(s):
+    """A butcher's hook at the top of the icon."""
+    steel = plain_ramp("#a8acb4")
+    s.pixels_at(steel[BASE], [(7, 0), (8, 0), (8, 1)])
+    s.pixels_at(steel[SHADOW], [(7, 1)])
+    return s
+
+
+def hung_beast(coat, width=1.0, texture=None, dressed=False, fat=None, head=None, ears=False):
+    """A four-legged animal hung head down from a hook by its hind legs. Undressed it wears its coat and has its head and
+    front legs; dressed it is skinned and cleaned, the head and lower legs gone, showing meat with fat along the back."""
+    s = hook(Sprite())
+    tones = plain_ramp(coat) if not dressed else ramp(coat, spread=0.6)
+    leg = tones
+    s.capsule(leg, [(7.0, 2.4), (5.0 - width, 5.0)], (0.8, 0.9))
+    s.capsule(leg, [(8.4, 2.4), (10.0 + width, 5.0)], (0.8, 0.9))
+    rx = 2.6 + 1.8 * width
+    s.shape(lambda x, y: ((x - 7.5) / rx) ** 2 + ((y - 8.6) / 4.6) ** 2 <= 1, tones, (7.5, 8.6), (rx, 4.6), texture=texture)
+    if dressed:
+        if fat:
+            fat_tones = plain_ramp(fat)
+            for y in range(5, 13):
+                for x in range(16):
+                    if s.pixels[y][x] in tones[1:] and (s.pixels[y][x - 1] in (None, tones[OUTLINE])):
+                        s.pixels_at(fat_tones[BASE], [(x, y)])
+            for y in (7, 9, 11):
+                s.line(fat_tones[SHADOW], 8, y, round(7.5 + rx) - 2, y + 1)  # The ribs.
+        s.capsule(tones, [(6.0, 12.0), (5.6, 14.0)], (0.9, 0.7))  # The cut stumps of the front legs.
+        s.capsule(tones, [(9.0, 12.0), (9.4, 14.0)], (0.9, 0.7))
+    else:
+        s.capsule(leg, [(5.4, 11.6), (4.6, 15.0)], (0.9, 0.8))
+        s.capsule(leg, [(9.6, 11.6), (10.4, 15.0)], (0.9, 0.8))
+        face = plain_ramp(head or coat)
+        s.ellipse(face, 7.5, 13.4, 1.8, 2.0)
+        s.put(7, 14, (30, 24, 24))
+        if ears:  # Long ears hanging down past the head.
+            s.pixels_at(face[SHADOW], [(6, 15), (9, 15)])
+    s.put(5, 7, tones[HIGHLIGHT])
+    return s
+
+
+def hung_bird(feathers, dressed=False, head=None, bill=None, wing=None):
+    """A bird hung head down from a hook by its feet: in its feathers with its head on, or plucked and cleaned."""
+    s = hook(Sprite())
+    foot = plain_ramp("#e8b850")
+    s.pixels_at(foot[BASE], [(7, 2), (8, 2), (6, 3), (9, 3)])
+    tones = plain_ramp(feathers)
+    s.ellipse(tones, 7.5, 8.0, 4.8, 4.2, texture=None if dressed else (lambda x, y: -1 if (x + y * 2) % 5 == 0 else 0))
+    if wing and not dressed:
+        wings = plain_ramp(wing)
+        s.pixels_at(wings[BASE], [(3, 7), (3, 8), (4, 9), (12, 7), (12, 8), (11, 9)])
+    if dressed:
+        s.pixels_at(tones[SHADOW], [(5, 10), (9, 10), (7, 11)])  # Pimpled, plucked skin.
+        s.put(7, 12, tones[OUTLINE])  # The cleaned cavity.
+    else:
+        s.capsule(plain_ramp(head or feathers), [(7.5, 11.6), (7.5, 13.4)], (1.0, 1.4))
+        if bill:
+            s.pixels_at(plain_ramp(bill)[BASE], [(7, 15), (8, 15)])
+        s.put(6, 13, (24, 20, 20))
+    s.put(5, 6, tones[HIGHLIGHT])
+    return s
+
+
+def cow_carcass_hand():
+    # A cow carcass: the whole animal, still in its brown and white hide, hung from a hook.
+    s = hung_beast("#6a4a32", width=1.4, head="#5a3e2a")
+    s.pixels_at(plain_ramp("#f2efe8")[BASE], [(4, 6), (5, 6), (4, 7), (9, 9), (10, 9), (10, 10), (11, 10), (6, 11), (7, 11), (6, 5)])
+    return s
+
+
+def dressed_cow_hand():
+    # A dressed cow: skinned and cleaned, a big side of deep red beef with white fat along the back and pale ribs.
+    return hung_beast("#a83430", width=1.4, dressed=True, fat="#f0e6d6")
+
+
+def pig_carcass_hand():
+    # A pig carcass: the whole pig, pink and bristly, hung from a hook.
+    return hung_beast("#e8a8a0", width=1.2, texture=lambda x, y: -1 if (x * 3 + y * 5) % 7 == 0 else 0, head="#e09890")
+
+
+def dressed_pig_hand():
+    # A dressed pig: scalded smooth and scraped clean, pale pink skin on, opened and cleaned.
+    return hung_beast("#f0c8b8", width=1.2, dressed=True, fat="#faf2ea")
+
+
+def sheep_carcass_hand():
+    # A sheep carcass: the whole sheep, in its thick, creamy wool, hung from a hook.
+    return hung_beast("#ece6d6", width=1.3, texture=lambda x, y: -1 if (x + y) % 3 == 0 else 1 if (x * 2 + y) % 5 == 0 else 0, head="#3a3030")
+
+
+def dressed_sheep_hand():
+    # A dressed sheep: skinned, a pinkish-red lamb carcass with plenty of white fat.
+    return hung_beast("#b84a44", width=1.1, dressed=True, fat="#f2eadc")
+
+
+def goat_carcass_hand():
+    # A goat carcass: the whole goat, in its rough grey-brown coat, hung from a hook.
+    return hung_beast("#8a7a68", width=0.9, texture=lambda x, y: -1 if (x * 2 + y) % 4 == 0 else 0, head="#6a5a4a")
+
+
+def dressed_goat_hand():
+    # A dressed goat: skinned, a lean, dark red carcass with only a thin edge of fat.
+    return hung_beast("#9a3a30", width=0.9, dressed=True, fat="#ece0cc")
+
+
+def rabbit_carcass_hand():
+    # A rabbit carcass: the whole rabbit, in its soft grey-brown fur, hung from a hook.
+    return hung_beast("#9a8470", width=0.4, texture=lambda x, y: -1 if (x + y * 3) % 5 == 0 else 0, head="#8a7460", ears=True)
+
+
+def dressed_rabbit_hand():
+    # A dressed rabbit: skinned, a slim, pale pink-red carcass.
+    return hung_beast("#d08880", width=0.4, dressed=True)
+
+
+def chicken_carcass_hand():
+    # A chicken carcass: the whole bird, in its white feathers, hung by its feet before it is scalded and plucked.
+    return hung_bird("#f2f0ea", head="#e8e4dc", bill="#d02a2a")
+
+
+def dressed_chicken_hand():
+    # A dressed chicken: scalded, plucked and cleaned, plump with pale golden skin.
+    return hung_bird("#f0d0a8", dressed=True)
+
+
+def duck_carcass_hand():
+    # A duck carcass: the whole duck, in brown feathers with a green head, hung by its feet.
+    return hung_bird("#8a6a4a", head="#2a6a3a", bill="#e0a030", wing="#5a4a8a")
+
+
+def dressed_duck_hand():
+    # A dressed duck: plucked and cleaned, with creamy, fatty skin.
+    s = hung_bird("#e2b884", dressed=True)
+    s.pixels_at(plain_ramp("#f6ead0")[BASE], [(4, 8), (10, 7), (6, 9), (9, 10)])  # Its thick layer of fat.
+    return s
+
+def dried(name, saturation=0.6, lightness=0.85, shrivel=0.12, seed=1):
+    """Another item's sprite dried: its colours duller and darker, with shrivelled creases scattered over it."""
+    def drawn():
+        s = SPRITES[name]()
+        rng = random.Random(seed)
+        for y in range(16):
+            for x in range(16):
+                colour = s.pixels[y][x]
+                if colour is None:
+                    continue
+                h, l, sat = colorsys.rgb_to_hls(*(c / 255 for c in colour))
+                l *= lightness
+                if rng.random() < shrivel and 0.15 < l:
+                    l *= 0.75  # A crease.
+                s.put(x, y, tuple(round(c * 255) for c in colorsys.hls_to_rgb(h, l, sat * saturation)))
+        return s
+    return drawn
+
+
+def drained_cream_hand():
+    # Drained cream: crème fraîche hung in cloth until thick and firm, a dense white mound, in a clay bowl.
+    s = bowl("#f6f2e4", mound=3.0, plain=True, bowl_colour=CLAY)
+    s.pixels_at(plain_ramp("#f6f2e4")[SHADOW], [(5, 6), (8, 5), (10, 6)])  # The marks of the cloth.
+    return s
+
+
+def dried_apple_hand():
+    # Dried apple rings: leathery, pale tan rings with a hole in the middle and a thin edge of red-brown skin.
+    s = Sprite()
+    for cx, cy in [(5.0, 5.6), (10.6, 10.4)]:
+        ring = plain_ramp("#d8b878")
+        s.ellipse(ramp("#8a3a2a", spread=0.5), cx, cy, 4.6, 4.0)
+        s.ellipse(ring, cx, cy, 3.8, 3.2, outline=False)
+        s.ellipse(ring, cx, cy, 1.4, 1.2)
+        s.pixels_at([None], [(round(cx) - 1, round(cy) - 1), (round(cx), round(cy) - 1)])
+        s.put(round(cx) - 2, round(cy) - 2, ring[HIGHLIGHT])
+    for cx, cy in [(5.0, 5.6), (10.6, 10.4)]:
+        for x, y in [(round(cx) - 1, round(cy) - 1), (round(cx), round(cy) - 1), (round(cx) - 1, round(cy)), (round(cx), round(cy))]:
+            s.pixels[y][x] = None  # The hole where the core was.
+    return s
+
+
+def dried_berries_hand():
+    # Dried berries: a mix of shrivelled red, purple-black and dark pink berries.
+    s = Sprite()
+    rng = random.Random(157)
+    for (cx, cy), colour in zip([(4.0, 4.4), (8.6, 3.6), (12.4, 5.0), (3.4, 9.0), (7.4, 8.4), (11.4, 9.6), (5.0, 13.0), (9.4, 12.6), (13.0, 13.2)],
+                                ["#8a1e2a", "#3a1e3a", "#a83a5a"] * 3):
+        tones = ramp(colour, spread=0.6)
+        s.ellipse(tones, cx, cy, 1.9, 1.7)
+        s.put(round(cx) - 1, round(cy) - 1, tones[HIGHLIGHT])
+        s.put(round(cx) + rng.choice((0, 1)), round(cy), tones[SHADOW])  # Wrinkles.
+    return s
+
+
+def dried_bread_hand():
+    # Dried bread: two hard, pale, stale slices, the crust darker and the crumb dry and open.
+    s = Sprite()
+    crust, crumb = plain_ramp("#b8803a"), plain_ramp("#e8d4a4")
+    for x0, y0 in [(1, 2), (6, 7)]:
+        s.shape(lambda x, y, x0=x0, y0=y0: x0 <= x <= x0 + 8 and y0 <= y <= y0 + 7 and not (y == y0 and x in (x0, x0 + 8)), crust,
+                (x0 + 4, y0 + 3.5), (4.0, 3.5))
+        for y in range(y0 + 1, y0 + 7):
+            for x in range(x0 + 1, x0 + 8):
+                s.put(x, y, crumb[BASE] if (x + y) % 4 else crumb[SHADOW])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -5693,6 +5866,15 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"drained_cream": drained_cream_hand, "dried_apple": dried_apple_hand, "dried_azuki_beans": dried("azuki_bean", 0.7, 0.85, 0.1, 3),
+             "dried_berries": dried_berries_hand, "dried_black_beans": dried("black_bean", 0.5, 0.95, 0.06, 5),
+             "dried_blackcurrant": dried("blackcurrant", 0.6, 0.8, 0.18, 7), "dried_bread": dried_bread_hand,
+             "dried_cardamom_pods": dried("cardamom_pod", 0.55, 0.85, 0.1, 9)})
+HAND.update({"dressed_chicken": dressed_chicken_hand, "dressed_cow": dressed_cow_hand, "dressed_duck": dressed_duck_hand,
+             "dressed_goat": dressed_goat_hand, "dressed_pig": dressed_pig_hand, "dressed_rabbit": dressed_rabbit_hand,
+             "dressed_sheep": dressed_sheep_hand, "duck_carcass": duck_carcass_hand, "goat_carcass": goat_carcass_hand,
+             "pig_carcass": pig_carcass_hand, "rabbit_carcass": rabbit_carcass_hand, "sheep_carcass": sheep_carcass_hand,
+             "cow_carcass": cow_carcass_hand, "chicken_carcass": chicken_carcass_hand})
 HAND.update({"diced_bell_pepper": diced_bell_pepper_hand, "diced_courgette": diced_courgette_hand, "diced_nopales": diced_nopales_hand,
              "diced_potato": diced_potato_hand, "diced_water_chestnut": diced_water_chestnut_hand, "diced_white_fish": diced_white_fish_hand,
              "dimensional_anchor": dimensional_anchor_hand, "dimensional_folding_core": dimensional_folding_core_hand,

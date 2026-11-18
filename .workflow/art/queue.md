@@ -366,21 +366,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] dorayaki
 - [x] dorayaki_batter
 - [x] dorayaki_pancakes
-- [ ] drained_cream
-- [ ] dressed_chicken
-- [ ] dressed_cow
-- [ ] dressed_duck
-- [ ] dressed_goat
-- [ ] dressed_pig
-- [ ] dressed_rabbit
-- [ ] dressed_sheep
-- [ ] dried_apple
-- [ ] dried_azuki_beans
-- [ ] dried_berries
-- [ ] dried_black_beans
-- [ ] dried_blackcurrant
-- [ ] dried_bread
-- [ ] dried_cardamom_pods
+- [x] drained_cream
+- [x] dressed_chicken
+- [x] dressed_cow
+- [x] dressed_duck
+- [x] dressed_goat
+- [x] dressed_pig
+- [x] dressed_rabbit
+- [x] dressed_sheep
+- [x] dried_apple
+- [x] dried_azuki_beans
+- [x] dried_berries
+- [x] dried_black_beans
+- [x] dried_blackcurrant
+- [x] dried_bread
+- [x] dried_cardamom_pods
 - [ ] dried_chickpeas
 - [ ] dried_chilies
 - [ ] dried_cocoa_beans
@@ -409,7 +409,7 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] dried_yerba_mate_leaves
 - [ ] duck_bones
 - [ ] duck_breasts
-- [ ] duck_carcass
+- [x] duck_carcass
 - [ ] duck_confit
 - [ ] duck_fat
 - [ ] duck_heart_and_gizzard
@@ -479,7 +479,7 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] glass_noodles
 - [ ] glutinous_rice_flour
 - [ ] goat_bones
-- [ ] goat_carcass
+- [x] goat_carcass
 - [ ] goat_casing
 - [ ] goat_fat
 - [ ] goat_heart
@@ -660,7 +660,7 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] pickled_herring
 - [ ] pickling_spice
 - [ ] pig_bristles
-- [ ] pig_carcass
+- [x] pig_carcass
 - [ ] pig_trotters
 - [ ] pino
 - [ ] pissaladiere
@@ -713,7 +713,7 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] quiche_custard
 - [ ] quiche_lorraine
 - [ ] rabbit_bones
-- [ ] rabbit_carcass
+- [x] rabbit_carcass
 - [ ] rabbit_legs
 - [ ] rabbit_offal
 - [ ] rabbit_saddle
@@ -834,7 +834,7 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [ ] shaped_kammerjunkere
 - [ ] shaped_pretzels
 - [ ] shaped_rolls
-- [ ] sheep_carcass
+- [x] sheep_carcass
 - [ ] sheep_casing
 - [ ] shortcrust_dough
 - [ ] shortcrust_pastry
