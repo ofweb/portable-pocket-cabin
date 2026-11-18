@@ -412,21 +412,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] duck_carcass
 - [x] duck_confit
 - [x] duck_fat
-- [ ] duck_heart_and_gizzard
-- [ ] duck_legs
-- [ ] duck_liver
-- [ ] duck_spawn_egg
-- [ ] duck_wings
-- [ ] elote
-- [ ] empanada_dough
-- [ ] empanadas_de_carne
-- [ ] enchiladas_verdes
-- [ ] feijoada
-- [ ] feijoada_beans
-- [ ] fermented_cocoa_beans
-- [ ] fermented_coffee_cherries
-- [ ] fermented_red_grapes
-- [ ] fermented_shrimp
+- [x] duck_heart_and_gizzard
+- [x] duck_legs
+- [x] duck_liver
+- [x] duck_spawn_egg
+- [x] duck_wings
+- [x] elote
+- [x] empanada_dough
+- [x] empanadas_de_carne
+- [x] enchiladas_verdes
+- [x] feijoada
+- [x] feijoada_beans
+- [x] fermented_cocoa_beans
+- [x] fermented_coffee_cherries
+- [x] fermented_red_grapes
+- [x] fermented_shrimp
 - [ ] fermented_tapioca_starch
 - [ ] fermenting_anchovies
 - [ ] fischbrotchen

@@ -5894,6 +5894,123 @@ def duck_fat_hand():
     s.pixels_at(plain_ramp("#faf2d0")[BASE], [(4, 7), (5, 7), (6, 7)])
     return s
 
+def duck_heart_and_gizzard_hand():
+    # A duck's heart and gizzard: a small dark red heart and a plump, dark gizzard with its pale silver skin.
+    s = heart("#8a2a30", cx=5.0, cy=6.0, size=0.6)
+    gizzard = ramp("#8a3a34", spread=0.6)
+    s.ellipse(gizzard, 10.4, 10.6, 4.0, 3.2)
+    s.pixels_at(plain_ramp("#e8d8c0")[BASE], [(9, 10), (10, 10), (11, 11), (10, 11)])
+    return s
+
+
+def duck_legs_hand():
+    # Raw duck legs: dark red meat under thick, pale, fatty skin, tapering to the knuckle.
+    s = drumstick("#e8c0a0", 4.6, 4.6, 35, Sprite())
+    s = drumstick("#e8c0a0", 8.4, 9.6, 15, s)
+    s.pixels_at(ramp("#9a3a34")[BASE], [(6, 7), (10, 11)])  # Meat showing at the cut edge.
+    return s
+
+
+def duck_liver_hand():
+    # Duck liver: a smooth, plump, glossy lobe, paler and pinker than other livers.
+    return liver("#b0605a")
+
+
+def duck_spawn_egg_hand():
+    # The duck spawn egg: brown, speckled green and yellow, like a mallard.
+    s = Sprite()
+    shell = ramp("#8a6a4a", spread=0.6)
+    s.shape(lambda x, y: ((x - 7.5) / 5.2) ** 2 + ((y - 8.6) / 6.6) ** 2 + 0.08 * (8.6 - y) / 6.6 <= 1, shell, (7.5, 8.6), (5.2, 6.6))
+    for (x, y), colour in [((5, 5), "#2a7a3a"), ((9, 4), "#2a7a3a"), ((10, 8), "#e0b030"), ((5, 10), "#2a7a3a"), ((8, 12), "#e0b030"),
+                           ((7, 7), "#e0b030"), ((11, 11), "#2a7a3a")]:
+        s.pixels_at(ramp(colour)[BASE], [(x, y), (x + 1, y)])
+    s.pixels_at(shell[HIGHLIGHT], [(5, 3), (4, 4)])
+    return s
+
+
+def duck_wings_hand():
+    # Raw duck wings: jointed wings in pale, fatty skin with a pointed tip.
+    s = Sprite()
+    skin = plain_ramp("#ecc8a8")
+    for (ax, ay), (bx, by), (tx, ty) in [((2.0, 6.0), (6.6, 4.0), (10.0, 1.4)), ((5.0, 13.0), (10.0, 10.6), (14.4, 7.0))]:
+        s.capsule(skin, [(ax, ay), (bx, by)], (2.8, 2.4))
+        s.capsule(skin, [(bx, by), (tx, ty)], (2.2, 0.8))
+        s.put(round(bx - 0.5), round(by - 0.5), skin[SHADOW])
+    return s
+
+
+def elote_hand():
+    # Elote: a charred corn cob on a stick, smeared with white crema, sprinkled with cotija, and dusted with red chili.
+    s = SPRITES["charred_corn"]()
+    s.pixels_at(plain_ramp("#f6f2e6")[BASE], [(7, 3), (8, 5), (7, 7), (8, 9), (7, 11)])
+    s.pixels_at(ramp("#c8321e")[BASE], [(8, 4), (7, 6), (8, 8), (7, 10)])
+    s.pixels_at(ramp("#9ac040")[BASE], [(12, 14), (13, 13)])  # A wedge of lime.
+    return s
+
+
+def empanada_dough_hand():
+    # Empanada dough: a rested ball of rich, golden pastry dough.
+    return dough_ball("#ecd09a")
+
+
+def empanadas_de_carne_hand():
+    # Empanadas de carne: golden, half-moon pastries with crimped, rope-twisted edges.
+    s = Sprite()
+    pastry = ramp("#d8963e", spread=0.6)
+    for cx, cy in [(5.4, 5.0), (10.4, 11.4)]:
+        s.shape(lambda x, y, cx=cx, cy=cy: y <= cy + 2.4 and ((x - cx) / 5.0) ** 2 + ((y - cy - 2.4) / 5.0) ** 2 <= 1, pastry,
+                (cx, cy), (5.0, 3.6))
+        for x in range(round(cx) - 4, round(cx) + 5, 2):
+            s.put(x, round(cy) + 2, pastry[SHADOW])  # The crimping.
+        s.put(round(cx) - 1, round(cy) - 2, pastry[HIGHLIGHT])
+    return s
+
+
+def enchiladas_verdes_hand():
+    # Enchiladas verdes: rolled tortillas baked under green salsa, drizzled with crema and crumbled cheese, in a dish.
+    s = Sprite()
+    dish = ramp("#b8743e", spread=0.6)
+    s.shape(lambda x, y: 1 <= x <= 14 and 5 <= y <= 13, dish, (7.5, 9.0), (7.0, 4.0))
+    sauce = ramp("#5a9a3a", spread=0.6)
+    for y in (6, 8, 10):
+        s.capsule(sauce, [(2.6, y + 0.5), (12.6, y + 0.5)], (1.0, 1.0))
+    s.pixels_at(plain_ramp("#f6f2e6")[BASE], [(3, 7), (5, 8), (7, 7), (9, 9), (11, 8), (4, 10), (8, 11)])
+    return s
+
+
+def feijoada_hand():
+    # Feijoada: a rich, dark black-bean stew with chunks of pork and smoked sausage, in a clay bowl.
+    return bowl("#2a2028", mound=1.0, bowl_colour=CLAY, flecks=[("#a8523a", 0.12), ("#d8a888", 0.06), ("#4a6a3a", 0.02)])
+
+
+def feijoada_beans_hand():
+    # Feijoada beans: black beans soaking with dried beef, onion and garlic, in a bowl.
+    return bowl("#2a2230", mound=0.8, flecks=[("#6a2a20", 0.08), ("#f0e8d0", 0.06)])
+
+
+def fermented_cocoa_beans_hand():
+    # Fermented cocoa beans: beans turned purple-brown in the sweatbox, still sticky with patches of pale pulp.
+    s = bean_pile("#7a3a3a", PILE, spread=0.7)
+    s.pixels_at(plain_ramp("#f0e4c8")[BASE], [(5, 7), (11, 8), (4, 11), (9, 11), (12, 13)])
+    return s
+
+
+def fermented_coffee_cherries_hand():
+    # Fermented coffee cherries: soft, darkened, mushy red-brown cherries with a sticky sheen.
+    return dried("coffee_cherry", 0.75, 0.7, 0.08, 107)()
+
+
+def fermented_red_grapes_hand():
+    # Fermented red grapes: dark wine-red must, frothing with bubbles on top, in a crock.
+    s = bowl("#4a1428", bowl_colour="#8a6a4a")
+    s.pixels_at(plain_ramp("#d8a8b8")[BASE], [(4, 7), (6, 7), (9, 7), (11, 8), (7, 8)])  # Froth.
+    return s
+
+
+def fermented_shrimp_hand():
+    # Fermented shrimp: a thick, salty, greyish-pink shrimp paste, in a crock.
+    return bowl("#a8706a", mound=1.4, bowl_colour="#8a6a4a", flecks=[("#6a4a48", 0.1)])
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -5945,6 +6062,12 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"duck_heart_and_gizzard": duck_heart_and_gizzard_hand, "duck_legs": duck_legs_hand, "duck_liver": duck_liver_hand,
+             "duck_spawn_egg": duck_spawn_egg_hand, "duck_wings": duck_wings_hand, "elote": elote_hand, "empanada_dough": empanada_dough_hand,
+             "empanadas_de_carne": empanadas_de_carne_hand, "enchiladas_verdes": enchiladas_verdes_hand, "feijoada": feijoada_hand,
+             "feijoada_beans": feijoada_beans_hand, "fermented_cocoa_beans": fermented_cocoa_beans_hand,
+             "fermented_coffee_cherries": fermented_coffee_cherries_hand, "fermented_red_grapes": fermented_red_grapes_hand,
+             "fermented_shrimp": fermented_shrimp_hand})
 HAND.update({"dried_rosehip": dried("rosehip", 0.6, 0.7, 0.16, 61), "dried_rosemary": dried("rosemary", 0.5, 0.85, 0.1, 67),
              "dried_savory": dried("savory", 0.45, 0.85, 0.12, 71), "dried_sea_lettuce": dried("sea_lettuce", 0.45, 0.6, 0.14, 73),
              "dried_shrimp": dried("boiled_prawns", 0.8, 0.72, 0.2, 79), "dried_soybeans": lambda: bean_pile("#d8bc80", PILE, spread=0.6),
