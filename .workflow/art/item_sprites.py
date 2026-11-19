@@ -6836,6 +6836,117 @@ def kartoffelpuffer_hand():
             s.put(round(cx + dx), round(cy + 3), ramp("#8a5420")[BASE])  # Crisp, frilly edges.
     return s
 
+def kasekuchen_hand():
+    # Käsekuchen: a slice of German cheesecake, a tall, pale, creamy quark filling with a golden top on a thin pastry base.
+    s = Sprite()
+    filling = plain_ramp("#f2e4b0")
+    s.shape(lambda x, y: 1 <= x <= 14 and 4 <= y <= 13 and y >= 4 + (x - 1) * 0.0, filling, (7.5, 8.5), (7.0, 4.5))
+    s.pixels_at(ramp("#d8a040")[BASE], [(x, 4) for x in range(2, 14)])  # The golden top.
+    s.pixels_at(ramp("#c8863a")[LIGHT], [(x, 5) for x in range(3, 13, 2)])
+    s.pixels_at(plain_ramp("#d8b070")[BASE], [(x, 12) for x in range(2, 14)])  # The pastry base.
+    return s
+
+
+def kasespatzle_hand():
+    # Käsespätzle: soft egg noodles baked with melted cheese under crisp, brown fried onions, in a dish.
+    s = Sprite()
+    dish = ramp("#7a4a2e", spread=0.6)
+    s.shape(lambda x, y: y >= 7 and ((x - 7.5) / 7.2) ** 2 + ((y - 7.0) / 7.4) ** 2 <= 1, dish, (7.5, 10.5), (7.2, 5.0))
+    noodles_ = plain_ramp("#f0d070")
+    s.ellipse(noodles_, 7.5, 7.0, 6.6, 2.6, texture=lambda x, y: -1 if (x + y) % 3 == 0 else 0)
+    s.pixels_at(ramp("#8a4a1e")[BASE], [(4, 6), (7, 5), (10, 6), (6, 7), (9, 8)])  # Fried onions.
+    return s
+
+
+def katsuobushi_hand():
+    # Katsuobushi: a smoked, dried and fermented tuna loin, hard as wood, dark brown with a dusty surface.
+    s = Sprite()
+    loin = ramp("#6a4a30", spread=0.6)
+    s.capsule(loin, [(2.6, 12.6), (8.0, 7.0), (13.4, 3.0)], (2.6, 1.6), texture=lambda x, y: -1 if (x + y * 2) % 5 == 0 else 0)
+    s.pixels_at(plain_ramp("#b8a088")[BASE], [(5, 9), (9, 6), (11, 4)])  # The dusty mould bloom.
+    return s
+
+
+def khanom_krok_hand():
+    # Khanom krok: little round coconut-rice cups, crisp and browned underneath, soft white tops scattered with spring onion.
+    s = Sprite()
+    for cx, cy in [(4.6, 5.4), (11.0, 5.4), (4.6, 11.4), (11.0, 11.4)]:
+        s.ellipse(ramp("#c8823a", spread=0.6), cx, cy, 3.2, 2.8)
+        s.ellipse(plain_ramp("#f6f2e6"), cx, cy - 0.4, 2.2, 1.8, outline=False)
+        s.put(round(cx), round(cy) - 1, ramp("#5aa040")[BASE])
+    return s
+
+
+def khanom_krok_batter_hand():
+    # Khanom krok batter: rice flour and coconut milk, a thin white batter flecked with spring onion, in a clay bowl.
+    return bowl("#f6f2e6", plain=True, bowl_colour=CLAY, flecks=[("#5aa040", 0.08)])
+
+
+def kitchen_knife_hand():
+    # The kitchen knife: a broad, bright steel blade with a keen edge, on a dark wooden handle with brass rivets.
+    s = Sprite()
+    steel = plain_ramp("#d8dce2")
+    s.shape(lambda x, y: x + y >= 12 and x - y <= 6 and x + y <= 21 and y >= 1 and x <= 14 and (x - y) >= -2, steel, (9.5, 5.5), (5.0, 5.0))
+    s.line(plain_ramp("#f8fafc")[BASE], 9, 2, 14, 7)  # The edge.
+    wood = ramp("#5a3420", spread=0.6)
+    s.capsule(wood, [(2.0, 13.6), (6.4, 9.2)], (1.4, 1.4))
+    s.pixels_at(ramp("#d8a840")[BASE], [(3, 12), (5, 10)])
+    return s
+
+
+def koji_rice_hand():
+    # Koji rice: steamed rice grains furred with soft, white mould, clumped in a heap.
+    s = seed_heap("#f2f0e6", fleck="#d8dcb8", seed=263)
+    s.pixels_at((255, 255, 255), [(5, 9), (8, 8), (10, 10), (7, 11)])
+    return s
+
+
+def koji_spores_hand():
+    # Koji spores: a fine, pale yellow-green dust, in a small bowl.
+    return spice_bowl("#c8d080", fleck="#a8b060", seed=269)
+
+
+def koldskal_med_kammerjunkere_hand():
+    # Koldskål med kammerjunkere: a bowl of cold, pale yellow buttermilk soup with crisp kammerjunkere floating on top.
+    s = bowl("#f4e8b8", plain=True)
+    biscuit = plain_ramp("#c8904a")
+    for x0 in (3, 7, 10):
+        s.pixels_at(biscuit[BASE], [(x0, 7), (x0 + 1, 7)])
+        s.put(x0, 6, biscuit[LIGHT])
+    return s
+
+
+def korokke_hand():
+    # Korokke served: golden crumbed croquettes drizzled with dark tonkatsu sauce, with shredded cabbage, on a plate.
+    s = plate()
+    crumb = ramp("#d8963a", spread=0.6)
+    for cx, cy in [(5.0, 9.0), (10.4, 9.0)]:
+        s.ellipse(crumb, cx, cy, 3.4, 2.4, texture=lambda x, y: 1 if (x * 3 + y) % 4 == 0 else 0)
+        s.line(ramp("#4a2618")[BASE], round(cx) - 2, round(cy) - 1, round(cx) + 2, round(cy))
+    s.pixels_at(ramp("#c8e090")[BASE], [(2, 12), (3, 12), (12, 12), (13, 12)])
+    return s
+
+
+def korokke_mash_hand():
+    # Korokke mash: mashed potato with browned mince and onion, in a bowl.
+    return bowl("#ecd8a0", mound=1.8, texture=bumpy, plain=True, flecks=[("#7a4a2e", 0.12)])
+
+
+def kra_pao_pork_hand():
+    # Kra pao pork: minced pork stir-fried with chili, garlic and holy basil, beside white rice, on a plate.
+    s = plate()
+    s.ellipse(plain_ramp("#f6f4ec"), 4.6, 10.4, 3.6, 2.4, texture=lambda x, y: -1 if (x * 3 + y) % 5 == 0 else 0)
+    s.ellipse(ramp("#7a4a2a", spread=0.6), 10.4, 10.4, 4.0, 2.4, texture=lambda x, y: 1 if (x + y) % 3 == 0 else 0)
+    s.pixels_at(ramp("#3a8a34")[BASE], [(9, 9), (11, 10), (12, 9)])
+    s.pixels_at(ramp("#d02a2a")[BASE], [(10, 11), (13, 10)])
+    return s
+
+
+def lamb_chops_hand():
+    # Lamb chops: pink-red meat with a thick edge of white fat, on a long, frenched bone.
+    s = chop("#c04a4a", "#f2e8dc", cx=5.6, cy=5.4, bone_end=(1.0, 12.4))
+    return chop("#c04a4a", "#f2e8dc", s=s, cx=10.8, cy=9.6, bone_end=(5.4, 15.0))
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -6887,6 +6998,12 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"kasekuchen": kasekuchen_hand, "kasespatzle": kasespatzle_hand, "katsuobushi": katsuobushi_hand, "khanom_krok": khanom_krok_hand,
+             "khanom_krok_batter": khanom_krok_batter_hand, "kitchen_knife": kitchen_knife_hand, "koji_rice": koji_rice_hand,
+             "koji_spores": koji_spores_hand, "koldskal_med_kammerjunkere": koldskal_med_kammerjunkere_hand, "korokke": korokke_hand,
+             "korokke_mash": korokke_mash_hand, "kra_pao_pork": kra_pao_pork_hand,
+             # Lamb: pinker meat than goat, with plenty of white fat.
+             "lamb_bones": bones_of("#ece2cc", 1.0, scrap="#c04a4a"), "lamb_chops": lamb_chops_hand, "lamb_fat": fat_chunk("#f4ece0")})
 HAND.update({"hard_cheese_wedge": hard_cheese_wedge_hand, "herbes_de_provence": lambda: spice_bowl("#7a8a5a", fleck="#b8a0c8", seed=251),
              "herring": herring_hand, "hojicha_leaves": lambda: seed_heap("#7a4a2a", fleck="#b8885a", seed=257),
              "hollowed_pumpkin": hollowed_pumpkin_hand, "hominy": hominy_hand, "hons_i_asparges": hons_i_asparges_hand,

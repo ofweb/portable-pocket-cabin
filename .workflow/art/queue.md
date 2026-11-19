@@ -533,21 +533,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] karaage_chicken
 - [x] karrysalat
 - [x] kartoffelpuffer
-- [ ] kasekuchen
-- [ ] kasespatzle
-- [ ] katsuobushi
-- [ ] khanom_krok
-- [ ] khanom_krok_batter
-- [ ] kitchen_knife
-- [ ] koji_rice
-- [ ] koji_spores
-- [ ] koldskal_med_kammerjunkere
-- [ ] korokke
-- [ ] korokke_mash
-- [ ] kra_pao_pork
-- [ ] lamb_bones
-- [ ] lamb_chops
-- [ ] lamb_fat
+- [x] kasekuchen
+- [x] kasespatzle
+- [x] katsuobushi
+- [x] khanom_krok
+- [x] khanom_krok_batter
+- [x] kitchen_knife
+- [x] koji_rice
+- [x] koji_spores
+- [x] koldskal_med_kammerjunkere
+- [x] korokke
+- [x] korokke_mash
+- [x] kra_pao_pork
+- [x] lamb_bones
+- [x] lamb_chops
+- [x] lamb_fat
 - [ ] lamb_heart
 - [ ] lamb_kidneys
 - [ ] lamb_liver
