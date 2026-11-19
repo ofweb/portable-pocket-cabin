@@ -6947,6 +6947,82 @@ def lamb_chops_hand():
     s = chop("#c04a4a", "#f2e8dc", cx=5.6, cy=5.4, bone_end=(1.0, 12.4))
     return chop("#c04a4a", "#f2e8dc", s=s, cx=10.8, cy=9.6, bone_end=(5.4, 15.0))
 
+def bean_kidneys(colour):
+    """A pair of smooth, bean-shaped kidneys, as from a lamb or pig, each with the pale notch where it was attached."""
+    def drawn():
+        s = Sprite()
+        tones = ramp(colour, spread=0.6)
+        for cx, cy, angle in [(5.0, 5.6, -20), (10.6, 10.6, 20)]:
+            s.ellipse(tones, cx, cy, 4.0, 2.8, angle=angle)
+            s.put(round(cx), round(cy + 1.6), plain_ramp("#e8d0c0")[BASE])  # The notch.
+            s.put(round(cx) - 2, round(cy) - 1, tones[HIGHLIGHT])
+        return s
+    return drawn
+
+
+def shanks(lean, fat):
+    """Two shanks: rounded, tapering cuts of meat round the bone, the knuckle of bone showing at the narrow end."""
+    def drawn():
+        s = Sprite()
+        bone = plain_ramp("#ece2cc")
+        meat = ramp(lean, spread=0.6)
+        for (sx, sy), (ex, ey) in [((2.6, 8.6), (12.0, 2.0)), ((4.0, 15.0), (13.6, 8.4))]:
+            s.capsule(meat, [(sx, sy), (ex, ey)], (2.8, 1.4))
+            s.ellipse(bone, ex + 0.6, ey - 0.4, 1.2, 1.2)
+            s.put(round(sx + 1), round(sy - 2), plain_ramp(fat)[BASE])
+        return s
+    return drawn
+
+
+def laminated_dough_hand():
+    # Laminated dough: a folded block of dough, its cut edge showing many thin, alternating layers of dough and butter.
+    s = Sprite()
+    dough, butter = plain_ramp("#f0dcae"), plain_ramp("#f4e070")
+    s.shape(lambda x, y: 1 <= x <= 14 and 4 <= y <= 13, dough, (7.5, 8.5), (7.0, 4.5))
+    for y in range(5, 13, 2):
+        s.pixels_at(butter[BASE], [(x, y) for x in range(2, 14)])
+    s.pixels_at(plain_ramp("#fbfaf6")[BASE], [(3, 4), (8, 4), (12, 4)])  # Flour.
+    return s
+
+
+def leverpostej_hand():
+    # Leverpostej: Danish liver pâté baked in a tin, smooth and brown inside under a darker, glossy top.
+    s = Sprite()
+    tin = plain_ramp("#b8bcc4")
+    s.shape(lambda x, y: 1 <= x <= 14 and 6 <= y <= 13 and (y < 13 or 2 <= x <= 13), tin, (7.5, 9.5), (7.0, 3.5))
+    pate = ramp("#8a5a44", spread=0.6)
+    s.ellipse(pate, 7.5, 6.4, 6.4, 2.0)
+    s.pixels_at(pate[HIGHLIGHT], [(4, 6), (5, 5)])
+    return s
+
+
+def leverpostej_mix_hand():
+    # Leverpostej mix: minced liver, fat, onion and anchovy beaten with milk and flour, a smooth, pinkish-brown batter.
+    return bowl("#a8706a", plain=True)
+
+
+def lime_cured_fish_hand():
+    # Lime-cured fish: cubes of white fish turned opaque in lime juice, with red onion, yellow chili and cilantro.
+    return bowl("#f0ece0", plain=True, bowl_colour=CLAY, flecks=[("#a83a6a", 0.08), ("#e8b030", 0.06), ("#3a9a34", 0.06)])
+
+
+def lime_marinated_fish_hand():
+    # Lime-marinated fish: a white fish fillet sitting in lime juice, with slices of lime.
+    s = Sprite()
+    fillet = plain_ramp("#f2eee4")
+    s.ellipse(fillet, 7.0, 8.4, 6.0, 3.4, angle=-15)
+    s.pixels_at(fillet[SHADOW], [(4, 9), (7, 8), (10, 7)])  # The flakes.
+    lime = ramp("#7ac040", spread=0.6)
+    for cx, cy in [(11.6, 12.0), (4.0, 4.4)]:
+        s.ellipse(lime, cx, cy, 2.2, 2.0)
+        s.ellipse(plain_ramp("#e0f0b0"), cx, cy, 1.2, 1.0, outline=False)
+    return s
+
+
+def liver_mince_hand():
+    # Liver mince: pork liver ground with back fat, a dark red-brown paste flecked with white, in a bowl.
+    return bowl("#6a2a24", mound=1.6, texture=bumpy, flecks=[("#f0e4d4", 0.08)])
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -6963,7 +7039,7 @@ SEED_PLANTS = {
     "blackcurrant_cutting": "blackcurrant", "redcurrant_cutting": "redcurrant", "savory_seeds": "savory",
     "allspice_sapling": "allspice", "almond_sapling": "almond", "annatto_sapling": "annatto", "apple_sapling": "apple",
     "apricot_sapling": "apricot", "bay_laurel_sapling": "bay_laurel_leaf", "cinnamon_sapling": "cinnamon_bark", "clove_sapling": "clove_bud",
-    "coconut_sapling": "coconut", "coffee_sapling": "coffee_cherry",
+    "coconut_sapling": "coconut", "coffee_sapling": "coffee_cherry", "lemon_sapling": "lemon", "lime_sapling": "lime",
 }
 # Pictures for plants whose fruit is a vanilla item, which this script does not draw.
 BADGE_ONLY = {"apple": apple_badge, "annatto": annatto_badge}
@@ -6998,6 +7074,13 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"lamb_heart": lambda: heart("#9a3a3a", fat="#f4ece0"), "lamb_kidneys": bean_kidneys("#8a3434"),
+             "lamb_liver": lambda: liver("#7a2e2a"), "lamb_shanks": shanks("#c04a4a", "#f2e8dc"),
+             "lamb_shoulder": lambda: slab("#c04a4a", fat="#f2e8dc", rx=6.2, ry=5.2, angle=-8, fat_side=1.4, marbling=0.08, seed=271),
+             "lamb_stew_meat": stew_meat("#c04a4a"), "laminated_dough": laminated_dough_hand, "leg_of_lamb": leg_joint("#c04a4a", "#f2e8dc"),
+             "lemon_sapling": lambda: sapling("#3e8a3a", trunk_colour="#7a6448", leaf=(2.4, 1.4)), "leverpostej": leverpostej_hand,
+             "leverpostej_mix": leverpostej_mix_hand, "lime_cured_fish": lime_cured_fish_hand, "lime_marinated_fish": lime_marinated_fish_hand,
+             "lime_sapling": lambda: sapling("#357a32", trunk_colour="#6a5a40", leaf=(2.2, 1.3)), "liver_mince": liver_mince_hand})
 HAND.update({"kasekuchen": kasekuchen_hand, "kasespatzle": kasespatzle_hand, "katsuobushi": katsuobushi_hand, "khanom_krok": khanom_krok_hand,
              "khanom_krok_batter": khanom_krok_batter_hand, "kitchen_knife": kitchen_knife_hand, "koji_rice": koji_rice_hand,
              "koji_spores": koji_spores_hand, "koldskal_med_kammerjunkere": koldskal_med_kammerjunkere_hand, "korokke": korokke_hand,

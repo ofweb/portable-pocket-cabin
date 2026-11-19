@@ -548,21 +548,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] lamb_bones
 - [x] lamb_chops
 - [x] lamb_fat
-- [ ] lamb_heart
-- [ ] lamb_kidneys
-- [ ] lamb_liver
-- [ ] lamb_shanks
-- [ ] lamb_shoulder
-- [ ] lamb_stew_meat
-- [ ] laminated_dough
-- [ ] leg_of_lamb
-- [ ] lemon_sapling
-- [ ] leverpostej
-- [ ] leverpostej_mix
-- [ ] lime_cured_fish
-- [ ] lime_marinated_fish
-- [ ] lime_sapling
-- [ ] liver_mince
+- [x] lamb_heart
+- [x] lamb_kidneys
+- [x] lamb_liver
+- [x] lamb_shanks
+- [x] lamb_shoulder
+- [x] lamb_stew_meat
+- [x] laminated_dough
+- [x] leg_of_lamb
+- [x] lemon_sapling
+- [x] leverpostej
+- [x] leverpostej_mix
+- [x] lime_cured_fish
+- [x] lime_marinated_fish
+- [x] lime_sapling
+- [x] liver_mince
 - [ ] llapingachos
 - [ ] lomo_saltado
 - [ ] lomo_saltado_beef
