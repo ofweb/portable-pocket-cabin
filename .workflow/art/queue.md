@@ -563,21 +563,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] lime_marinated_fish
 - [x] lime_sapling
 - [x] liver_mince
-- [ ] llapingachos
-- [ ] lomo_saltado
-- [ ] lomo_saltado_beef
-- [ ] madeleine_batter
-- [ ] madeleines
-- [ ] maki_sushi
-- [ ] makrut_lime_sapling
-- [ ] malted_barley
-- [ ] mango_sapling
-- [ ] mango_sticky_rice
-- [ ] marinated_al_pastor
-- [ ] marinated_beef_heart
-- [ ] marinated_beef_round
-- [ ] marinated_satay_chicken
-- [ ] marinating_eggs
+- [x] llapingachos
+- [x] lomo_saltado
+- [x] lomo_saltado_beef
+- [x] madeleine_batter
+- [x] madeleines
+- [x] maki_sushi
+- [x] makrut_lime_sapling
+- [x] malted_barley
+- [x] mango_sapling
+- [x] mango_sticky_rice
+- [x] marinated_al_pastor
+- [x] marinated_beef_heart
+- [x] marinated_beef_round
+- [x] marinated_satay_chicken
+- [x] marinating_eggs
 - [ ] marrow_bones
 - [ ] masa
 - [ ] masarepa

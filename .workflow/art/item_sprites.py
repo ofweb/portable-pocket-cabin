@@ -7023,6 +7023,122 @@ def liver_mince_hand():
     # Liver mince: pork liver ground with back fat, a dark red-brown paste flecked with white, in a bowl.
     return bowl("#6a2a24", mound=1.6, texture=bumpy, flecks=[("#f0e4d4", 0.08)])
 
+def llapingachos_hand():
+    # Llapingachos served: golden potato patties with a fried egg, a slice of chorizo and peanut sauce, on a plate.
+    s = plate()
+    patties("#e0a84a", spots=((4.6, 9.4), (9.0, 10.6)), rx=3.0, ry=2.0, s=s)
+    s.ellipse(plain_ramp("#f6f4ee"), 10.6, 7.0, 3.0, 2.2)
+    s.ellipse(ramp("#f0a010", spread=0.5), 10.8, 6.8, 1.2, 1.0)
+    s.ellipse(ramp("#c8502e", spread=0.6), 13.2, 11.0, 1.4, 1.2)
+    s.pixels_at(ramp("#b8783a")[BASE], [(3, 12), (4, 12), (5, 13)])  # Peanut sauce.
+    return s
+
+
+def lomo_saltado_beef_hand():
+    # Lomo saltado beef: strips of beef stir-fried with red onion and tomato in a glossy soy sauce, in a bowl.
+    return bowl("#6a2e20", mound=1.2, flecks=[("#a83a6a", 0.1), ("#d83a2a", 0.1), ("#8a4a2a", 0.12)])
+
+
+def lomo_saltado_hand():
+    # Lomo saltado served: the stir-fried beef with golden fried potatoes and white rice, on a plate.
+    s = plate()
+    s.ellipse(plain_ramp("#f6f4ec"), 4.4, 10.4, 3.2, 2.2, texture=lambda x, y: -1 if (x * 3 + y) % 5 == 0 else 0)
+    s.ellipse(ramp("#6a2e20", spread=0.6), 9.8, 9.6, 3.6, 2.2)
+    s.pixels_at(ramp("#d83a2a")[BASE], [(9, 9), (11, 10)])
+    s.pixels_at(ramp("#a83a6a")[BASE], [(8, 10), (10, 8)])
+    fries = plain_ramp("#f0cc70")
+    for x0, y0, x1, y1 in [(10, 13, 14, 11), (11, 14, 15, 12)]:
+        s.line(fries[BASE], x0, y0, x1, y1)
+    return s
+
+
+def madeleine_batter_hand():
+    # Madeleine batter: eggs, sugar and flour with nutty brown butter and lemon, a glossy golden batter, in a bowl.
+    s = bowl("#ecc670", plain=True, flecks=[("#f4e070", 0.04)])
+    s.pixels_at(plain_ramp("#f8e0a0")[BASE], [(4, 7), (5, 7)])
+    return s
+
+
+def madeleines_hand():
+    # Madeleines: little shell-shaped sponge cakes, golden with ridged backs and browned edges.
+    s = Sprite()
+    cake = ramp("#d8a04a", spread=0.6)
+    for cx, cy, angle in [(5.4, 5.6, -20), (10.4, 10.6, -20)]:
+        s.ellipse(cake, cx, cy, 4.6, 3.2, angle=angle)
+        cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+        for k in (-2, 0, 2):  # The shell ridges, fanning from the base.
+            s.line(cake[SHADOW], round(cx - cos * 3), round(cy - sin * 3), round(cx + k * 0.6 + sin * 2), round(cy - 2 + k * 0.6))
+        s.put(round(cx) + 2, round(cy) - 2, cake[HIGHLIGHT])
+    return s
+
+
+def maki_sushi_hand():
+    # Maki sushi: rounds of rice rolled in dark nori, with salmon, cucumber and a dab of pickled ginger beside them.
+    s = Sprite()
+    for (cx, cy), filling in [((4.8, 5.0), "#f0845a"), ((11.0, 5.0), "#6ab040"), ((7.8, 11.0), "#f0845a")]:
+        s.ellipse(ramp("#1e2a24", spread=0.4), cx, cy, 3.4, 3.2)
+        s.ellipse(plain_ramp("#f6f4ee"), cx, cy, 2.4, 2.2, outline=False)
+        s.ellipse(plain_ramp(filling), cx, cy, 1.0, 1.0, outline=False)
+    s.pixels_at(plain_ramp("#f0b8a8")[BASE], [(13, 12), (14, 12), (13, 13)])  # Pickled ginger.
+    return s
+
+
+def malted_barley_hand():
+    # Malted barley: sprouted and dried grains, pale golden, each with a tiny withered rootlet.
+    return seed_heap("#d8b468", fleck="#a8884a", seed=277)
+
+
+def mango_sticky_rice_hand():
+    # Mango sticky rice: a mound of coconut sticky rice beside slices of ripe yellow mango, with coconut cream, on a plate.
+    s = plate()
+    s.ellipse(plain_ramp("#f4f0e2"), 4.6, 9.6, 3.6, 2.6, texture=lambda x, y: -1 if (x * 3 + y) % 5 == 0 else 0)
+    s.pixels_at(plain_ramp("#fbf6e8")[BASE], [(3, 8), (4, 8), (5, 8)])
+    mango = ramp("#f0b020", spread=0.6)
+    for cx in (9.6, 12.0):
+        s.ellipse(mango, cx, 9.6, 1.4, 3.2, angle=-20)
+    return s
+
+
+def marinated(lean, stain, **kw):
+    """A cut of meat steeped in a coloured marinade: the slab stained at the edges and glistening."""
+    def drawn():
+        s = slab(lean, **kw)
+        tones = ramp(stain, spread=0.6)
+        for y in range(16):
+            for x in range(16):
+                c = s.pixels[y][x]
+                if c is not None and (x + y * 2) % 5 == 0:
+                    s.put(x, y, tones[BASE])
+        s.pixels_at(tones[HIGHLIGHT], [(5, 6), (9, 5)])
+        return s
+    return drawn
+
+
+def marinated_beef_heart_hand():
+    # Marinated beef heart: the heart steeped in the dark red anticucho marinade.
+    s = heart("#6a2020", fat="#f0e6d6")
+    s.pixels_at(ramp("#b84a2a")[BASE], [(5, 7), (8, 9), (6, 11), (9, 6)])
+    return s
+
+
+def marinated_satay_chicken_hand():
+    # Marinated satay chicken: pieces of thigh stained bright yellow with turmeric and coconut marinade.
+    s = Sprite()
+    meat = ramp("#e0a838", spread=0.6)
+    for cx, cy in [(4.6, 5.0), (10.6, 5.6), (4.4, 11.0), (10.0, 11.0)]:
+        s.ellipse(meat, cx, cy, 3.0, 2.4)
+        s.put(round(cx) - 1, round(cy) - 1, meat[HIGHLIGHT])
+    return s
+
+
+def marinating_eggs_hand():
+    # Marinating eggs: peeled boiled eggs steeping in a dark soy and mirin marinade, in a bowl.
+    s = bowl("#4a2a1a")
+    egg = plain_ramp("#d8a868")
+    for cx in (4.6, 8.0, 11.4):
+        s.ellipse(egg, cx, 6.8, 1.6, 1.2)
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -7040,6 +7156,7 @@ SEED_PLANTS = {
     "allspice_sapling": "allspice", "almond_sapling": "almond", "annatto_sapling": "annatto", "apple_sapling": "apple",
     "apricot_sapling": "apricot", "bay_laurel_sapling": "bay_laurel_leaf", "cinnamon_sapling": "cinnamon_bark", "clove_sapling": "clove_bud",
     "coconut_sapling": "coconut", "coffee_sapling": "coffee_cherry", "lemon_sapling": "lemon", "lime_sapling": "lime",
+    "makrut_lime_sapling": "makrut_lime_leaf", "mango_sapling": "mango",
 }
 # Pictures for plants whose fruit is a vanilla item, which this script does not draw.
 BADGE_ONLY = {"apple": apple_badge, "annatto": annatto_badge}
@@ -7074,6 +7191,14 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"llapingachos": llapingachos_hand, "lomo_saltado": lomo_saltado_hand, "lomo_saltado_beef": lomo_saltado_beef_hand,
+             "madeleine_batter": madeleine_batter_hand, "madeleines": madeleines_hand, "maki_sushi": maki_sushi_hand,
+             "makrut_lime_sapling": lambda: sapling("#2e6e2e", trunk_colour="#6a5a40", leaf=(2.2, 1.3)), "malted_barley": malted_barley_hand,
+             "mango_sapling": lambda: sapling("#3a7a3a", trunk_colour="#7a5a3a", leaf=(2.8, 1.1)), "mango_sticky_rice": mango_sticky_rice_hand,
+             "marinated_al_pastor": marinated("#d8806a", "#c8401e", fat="#f0dcc8", rx=6.4, ry=4.8, angle=-10, fat_side=1.2, seed=281),
+             "marinated_beef_heart": marinated_beef_heart_hand,
+             "marinated_beef_round": marinated("#a83430", "#5a1e3a", fat="#f0e6d6", rx=6.2, ry=5.2, angle=10, fat_side=0.6, seed=283),
+             "marinated_satay_chicken": marinated_satay_chicken_hand, "marinating_eggs": marinating_eggs_hand})
 HAND.update({"lamb_heart": lambda: heart("#9a3a3a", fat="#f4ece0"), "lamb_kidneys": bean_kidneys("#8a3434"),
              "lamb_liver": lambda: liver("#7a2e2a"), "lamb_shanks": shanks("#c04a4a", "#f2e8dc"),
              "lamb_shoulder": lambda: slab("#c04a4a", fat="#f2e8dc", rx=6.2, ry=5.2, angle=-8, fat_side=1.4, marbling=0.08, seed=271),
