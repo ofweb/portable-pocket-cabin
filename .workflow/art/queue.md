@@ -578,21 +578,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] marinated_beef_round
 - [x] marinated_satay_chicken
 - [x] marinating_eggs
-- [ ] marrow_bones
-- [ ] masa
-- [ ] masarepa
-- [ ] massaman_curry
-- [ ] massaman_curry_mix
-- [ ] massaman_curry_paste
-- [ ] massaman_sauce
-- [ ] massaman_spices
-- [ ] matcha_powder
-- [ ] mazamorra_morada
-- [ ] mexican_chocolate
-- [ ] mexican_chocolate_mix
-- [ ] mexican_chocolate_paste
-- [ ] miang_filling
-- [ ] miang_kham
+- [x] marrow_bones
+- [x] masa
+- [x] masarepa
+- [x] massaman_curry
+- [x] massaman_curry_mix
+- [x] massaman_curry_paste
+- [x] massaman_sauce
+- [x] massaman_spices
+- [x] matcha_powder
+- [x] mazamorra_morada
+- [x] mexican_chocolate
+- [x] mexican_chocolate_mix
+- [x] mexican_chocolate_paste
+- [x] miang_filling
+- [x] miang_kham
 - [ ] miang_sauce
 - [ ] minas_cheese
 - [ ] minced_beef

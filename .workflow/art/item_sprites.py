@@ -7139,6 +7139,65 @@ def marinating_eggs_hand():
         s.ellipse(egg, cx, 6.8, 1.6, 1.2)
     return s
 
+def marrow_bones_hand():
+    # Marrow bones: thick cross-cut rounds of beef bone, each a ring of white bone round soft, pink-cream marrow.
+    s = Sprite()
+    bone = plain_ramp("#ece2cc")
+    for cx, cy, r in [(5.0, 5.4, 3.8), (10.8, 10.6, 3.6)]:
+        s.ellipse(bone, cx, cy, r, r * 0.9)
+        s.ellipse(plain_ramp("#e8b4a0"), cx, cy, r * 0.55, r * 0.5, outline=False)
+        s.put(round(cx) - 2, round(cy) - 2, bone[HIGHLIGHT])
+    return s
+
+
+def massaman_curry_hand():
+    # Massaman curry: braised beef and potato in a rich, mild, orange-brown curry scattered with peanuts, in a bowl.
+    return bowl("#b8682e", mound=0.8, flecks=[("#6a3020", 0.12), ("#ecd090", 0.1), ("#d8a060", 0.06)])
+
+
+def mazamorra_morada_hand():
+    # Mazamorra morada: a thick, glossy, deep purple pudding of purple corn, studded with dried fruit, in a bowl.
+    s = bowl("#4a1a4a", mound=0.8, flecks=[("#e07a1e", 0.06), ("#8a2a3a", 0.08)])
+    s.pixels_at(ramp("#8a4a8a")[BASE], [(4, 7), (5, 7)])
+    return s
+
+
+def mexican_chocolate_hand():
+    # Mexican chocolate: round, rustic tablets of coarse, grainy chocolate, scored into wedges.
+    s = Sprite()
+    choc = ramp("#5a301e", spread=0.6)
+    for cx, cy in [(5.4, 5.4), (10.4, 10.6)]:
+        s.ellipse(choc, cx, cy, 4.4, 4.0, texture=lambda x, y: 1 if (x * 3 + y * 5) % 7 == 0 else 0)
+        for a in range(0, 360, 60):
+            s.line(choc[SHADOW], round(cx), round(cy), round(cx + 3.2 * math.cos(math.radians(a))), round(cy + 3.0 * math.sin(math.radians(a))))
+    return s
+
+
+def mexican_chocolate_mix_hand():
+    # Mexican chocolate mix: roasted cocoa nibs with coarse sugar and cinnamon, a rough heap of brown and white.
+    return seed_heap("#5a3220", fleck="#f0e8d8", seed=283)
+
+
+def mexican_chocolate_paste_hand():
+    # Mexican chocolate paste: the mix ground coarsely into a thick, grainy, dark brown paste, in a bowl.
+    return bowl("#4a2618", mound=1.4, texture=bumpy, flecks=[("#d8c0a0", 0.08)])
+
+
+def miang_filling_hand():
+    # Miang filling: toasted coconut, peanuts, diced lime, shallot, ginger and dried shrimp, mixed in a bowl.
+    return bowl("#c8945a", mound=1.4, flecks=[("#f0dca0", 0.12), ("#7ac040", 0.08), ("#f08a6a", 0.06), ("#c8a0b0", 0.06)])
+
+
+def miang_kham_hand():
+    # Miang kham: glossy green betel leaves folded into little cones round a spoonful of filling and a sliver of chili.
+    s = Sprite()
+    leaf = ramp("#3e8a2a", spread=0.6)
+    for cx, cy in [(5.0, 6.0), (10.6, 10.6)]:
+        s.shape(lambda x, y, cx=cx, cy=cy: y >= cy - 2 and abs(x - cx) <= (cy + 4.0 - y) * 0.75, leaf, (cx, cy), (4.0, 4.0))
+        s.ellipse(ramp("#c8945a", spread=0.5), cx, cy - 2.0, 2.4, 1.2)
+        s.pixels_at(ramp("#d02a2a")[BASE], [(round(cx), round(cy) - 3)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -7191,6 +7250,13 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"marrow_bones": marrow_bones_hand, "masa": lambda: dough_ball("#f0e2b0", flour=False),
+             "masarepa": lambda: spice_bowl("#f0dc90", fleck="#e0c070", seed=287), "massaman_curry": massaman_curry_hand,
+             "massaman_curry_mix": lambda: bowl("#9a2a1e", mound=1.6, texture=bumpy, flecks=[("#c8a0b0", 0.1), ("#f0e8d0", 0.06), ("#a8c070", 0.04)]),
+             "massaman_curry_paste": lambda: bowl("#7a2a1a", mound=1.4), "massaman_sauce": lambda: bowl("#d07a3a", plain=True),
+             "massaman_spices": lambda: spice_bowl("#9a6438", fleck="#4a2a1e", seed=293), "matcha_powder": lambda: spice_bowl("#7ab040", fleck="#5a9030", seed=307),
+             "mazamorra_morada": mazamorra_morada_hand, "mexican_chocolate": mexican_chocolate_hand, "mexican_chocolate_mix": mexican_chocolate_mix_hand,
+             "mexican_chocolate_paste": mexican_chocolate_paste_hand, "miang_filling": miang_filling_hand, "miang_kham": miang_kham_hand})
 HAND.update({"llapingachos": llapingachos_hand, "lomo_saltado": lomo_saltado_hand, "lomo_saltado_beef": lomo_saltado_beef_hand,
              "madeleine_batter": madeleine_batter_hand, "madeleines": madeleines_hand, "maki_sushi": maki_sushi_hand,
              "makrut_lime_sapling": lambda: sapling("#2e6e2e", trunk_colour="#6a5a40", leaf=(2.2, 1.3)), "malted_barley": malted_barley_hand,
