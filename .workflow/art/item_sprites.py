@@ -7284,6 +7284,45 @@ def mole_poblano_hand():
     s.pixels_at(plain_ramp("#f0dca0")[BASE], [(4, 9), (6, 8), (9, 9), (11, 8), (7, 10), (10, 10)])
     return s
 
+def moules_marinieres_hand():
+    # Moules marinières: open black mussel shells showing orange flesh, steamed in a pale wine and butter broth.
+    s = bowl("#e8dcb0", plain=True, bowl_colour="#5a5e66")
+    shell, flesh = ramp("#1e2230", spread=0.5), plain_ramp("#f0a060")
+    for x0 in (3, 7, 10):
+        s.pixels_at(shell[BASE], [(x0, 6), (x0 + 1, 6), (x0, 7)])
+        s.put(x0 + 1, 7, flesh[BASE])
+    return s
+
+
+def nori_hand():
+    # Nori: thin, crisp sheets of dried laver, a dark, glossy green-black, stacked slightly askew.
+    s = Sprite()
+    for x0, y0, colour in [(1, 2, "#24301e"), (4, 5, "#1e2a1a")]:
+        tones = ramp(colour, spread=0.4)
+        s.shape(lambda x, y, x0=x0, y0=y0: x0 <= x <= x0 + 10 and y0 <= y <= y0 + 9, tones, (x0 + 5, y0 + 4.5), (5.0, 4.5),
+                texture=lambda x, y: 1 if (x * 2 + y * 3) % 7 == 0 else 0)
+    s.pixels_at(ramp("#4a6a3a")[BASE], [(6, 7), (9, 10), (12, 8)])  # A green sheen.
+    return s
+
+
+def obatzda_hand():
+    # Obatzda: soft cheese mashed with butter, paprika and beer into an orange-pink spread, with onion and caraway.
+    return bowl("#e8a070", mound=1.8, plain=True, flecks=[("#f0e8d8", 0.08), ("#5a3a24", 0.06)])
+
+
+def obatzda_with_bread_hand():
+    # Obatzda served with a pretzel: a mound of the orange-pink cheese spread beside a glossy brown pretzel.
+    s = plate()
+    s.ellipse(plain_ramp("#e8a070"), 4.6, 9.6, 3.4, 2.4)
+    s.pixels_at(plain_ramp("#f0e8d8")[BASE], [(4, 9), (5, 10)])
+    knot = ramp("#a85a1e", spread=0.6)
+    for cx in (9.4, 12.4):
+        ring = [(cx + 1.8 * math.cos(math.radians(a)), 7.6 + 2.0 * math.sin(math.radians(a))) for a in range(0, 361, 45)]
+        s.capsule(knot, ring, (0.8, 0.8))
+    s.capsule(knot, [(8.0, 11.6), (10.9, 9.2), (13.8, 11.6)], (0.8, 0.8))
+    s.pixels_at(plain_ramp("#fafaf6")[BASE], [(9, 6), (12, 6)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -7302,6 +7341,7 @@ SEED_PLANTS = {
     "apricot_sapling": "apricot", "bay_laurel_sapling": "bay_laurel_leaf", "cinnamon_sapling": "cinnamon_bark", "clove_sapling": "clove_bud",
     "coconut_sapling": "coconut", "coffee_sapling": "coffee_cherry", "lemon_sapling": "lemon", "lime_sapling": "lime",
     "makrut_lime_sapling": "makrut_lime_leaf", "mango_sapling": "mango",
+    "nutmeg_sapling": "nutmeg_seed", "oil_palm_sapling": "oil_palm_fruit",
 }
 # Pictures for plants whose fruit is a vanilla item, which this script does not draw.
 BADGE_ONLY = {"apple": apple_badge, "annatto": annatto_badge}
@@ -7336,6 +7376,17 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"moqueca_baiana": lambda: bowl("#d85a26", bowl_colour=CLAY, flecks=[("#f2ece2", 0.1), ("#f08a6a", 0.08), ("#4a9a3a", 0.04)]),
+             "moqueca_vegetables": lambda: bowl("#d03a26", mound=1.4, texture=bumpy, flecks=[("#e8c030", 0.1), ("#f0e8d0", 0.08), ("#3a9a34", 0.06)]),
+             "moromi": lambda: bowl("#4a2a18", mound=0.6, bowl_colour="#8a6a4a", flecks=[("#7a4a2a", 0.14)]),
+             "moules_marinieres": moules_marinieres_hand,
+             "nam_prik_mix": lambda: bowl("#a8301e", mound=1.6, texture=bumpy, flecks=[("#c8a0b0", 0.1), ("#f0e8d0", 0.06), ("#f08a6a", 0.06)]),
+             "nam_prik_pao": lambda: bowl("#6a1e14", mound=0.6, flecks=[("#c8401e", 0.1)]), "nam_prik_paste": lambda: bowl("#8a2a1a", mound=1.4),
+             "nopales": lambda: chopped("#6a9050", size=1.2, seed=337), "nori": nori_hand,
+             "nutmeg": lambda: spice_bowl("#a8784a", fleck="#6a4428", seed=347),
+             "nutmeg_sapling": lambda: sapling("#3a7a3a", trunk_colour="#6a5040", leaf=(2.6, 1.3)), "obatzda": obatzda_hand,
+             "obatzda_with_bread": obatzda_with_bread_hand, "oil_palm_mash": lambda: bowl("#d8501e", mound=1.6, texture=bumpy, flecks=[("#a8301e", 0.12)]),
+             "oil_palm_sapling": lambda: sapling("#3a8a34", trunk_colour="#6a5a3a", palm=True)})
 HAND.update({"miang_sauce": miang_sauce_hand, "minas_cheese": minas_cheese_hand, "minced_beef": minced("#a83430", fat="#f0e6d6", seed=311),
              "minced_fish": minced("#ece4dc", seed=313), "minced_pork": minced("#e0948c", fat="#f4ece0", seed=317), "mirin_mash": mirin_mash_hand,
              "miso": miso_hand, "miso_soup": miso_soup_hand, "mitarashi_dango": mitarashi_dango_hand, "mochi": mochi_hand,

@@ -608,21 +608,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] mole_paste
 - [x] mole_poblano
 - [x] mole_spices
-- [ ] moqueca_baiana
-- [ ] moqueca_vegetables
-- [ ] moromi
-- [ ] moules_marinieres
-- [ ] nam_prik_mix
-- [ ] nam_prik_pao
-- [ ] nam_prik_paste
-- [ ] nopales
-- [ ] nori
-- [ ] nutmeg
-- [ ] nutmeg_sapling
-- [ ] obatzda
-- [ ] obatzda_with_bread
-- [ ] oil_palm_mash
-- [ ] oil_palm_sapling
+- [x] moqueca_baiana
+- [x] moqueca_vegetables
+- [x] moromi
+- [x] moules_marinieres
+- [x] nam_prik_mix
+- [x] nam_prik_pao
+- [x] nam_prik_paste
+- [x] nopales
+- [x] nori
+- [x] nutmeg
+- [x] nutmeg_sapling
+- [x] obatzda
+- [x] obatzda_with_bread
+- [x] oil_palm_mash
+- [x] oil_palm_sapling
 - [ ] okonomiyaki
 - [ ] okonomiyaki_batter
 - [ ] olive_paste
