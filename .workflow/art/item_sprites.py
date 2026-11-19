@@ -7198,6 +7198,92 @@ def miang_kham_hand():
         s.pixels_at(ramp("#d02a2a")[BASE], [(round(cx), round(cy) - 3)])
     return s
 
+def minced(colour, fat=None, seed=1):
+    """Freshly minced meat or fish: a soft heap of fine, wormy strands from the grinder, flecked with fat."""
+    def drawn():
+        s = Sprite()
+        tones = ramp(colour, spread=0.6)
+        s.shape(lambda x, y: y >= 5.0 and ((x - 7.5) / 7.0) ** 2 + ((y - 15.0) / 10.0) ** 2 <= 1, tones, (7.5, 10.5), (7.0, 5.0))
+        rng = random.Random(seed)
+        for y in range(5, 16):
+            for x in range(1, 15):
+                if s.pixels[y][x] in (None, tones[OUTLINE]):
+                    continue
+                wave = (x + round(math.sin(y * 1.7) * 1.5)) % 3
+                s.put(x, y, tones[LIGHT] if wave == 0 else tones[SHADOW] if wave == 2 else tones[BASE])
+                if fat and rng.random() < 0.08:
+                    s.put(x, y, plain_ramp(fat)[BASE])
+        return s
+    return drawn
+
+
+def miang_sauce_hand():
+    # Miang sauce: palm sugar, fish sauce and shrimp paste cooked to a thick, glossy, caramel-brown syrup, in a bowl.
+    s = bowl("#8a4a1e", flecks=[("#d8b878", 0.06)])
+    s.pixels_at(ramp("#c8823a")[BASE], [(4, 7), (5, 7)])
+    return s
+
+
+def minas_cheese_hand():
+    # Minas cheese: an aged Brazilian cheese, a small round with a thin yellowed rind and a firm, pale inside.
+    s = SPRITES["fresh_cheese"]()
+    for y in range(16):
+        for x in range(16):
+            c = s.pixels[y][x]
+            if c is not None:
+                s.put(x, y, (c[0], round(c[1] * 0.95), round(c[2] * 0.78)))
+    return s
+
+
+def mirin_mash_hand():
+    # Mirin mash: sticky rice, koji and spirit ageing into a sweet, golden, grainy mash, in a crock.
+    return bowl("#d8b060", mound=1.0, bowl_colour="#8a6a4a", flecks=[("#f0e0b0", 0.16)])
+
+
+def miso_hand():
+    # Miso: a thick, smooth, salty paste of fermented soybeans, a rich reddish brown, in a crock.
+    s = bowl("#9a5a2e", mound=1.6, bowl_colour="#8a6a4a")
+    s.pixels_at(ramp("#b8783e")[BASE], [(5, 6), (6, 6)])
+    return s
+
+
+def miso_soup_hand():
+    # Miso soup: a cloudy golden broth with cubes of white tofu, dark wakame and green spring onion, in a bowl.
+    s = bowl("#d8b070", flecks=[("#f6f4ec", 0.1), ("#2a4a2a", 0.08), ("#5ab040", 0.06)], bowl_colour="#5a2a24")
+    return s
+
+
+def mitarashi_dango_hand():
+    # Mitarashi dango: three charred rice dumplings on a skewer, glazed with glossy, amber sweet soy sauce.
+    s = SPRITES["charred_dango_skewer"]()
+    glaze = ramp("#b8702a", spread=0.6)
+    for cx, cy in [(5.2, 11.6), (7.8, 7.8), (10.4, 4.2)]:
+        s.pixels_at(glaze[BASE], [(round(cx), round(cy) - 1), (round(cx) + 1, round(cy) - 1), (round(cx) - 1, round(cy))])
+        s.put(round(cx), round(cy) - 2, glaze[HIGHLIGHT])
+    return s
+
+
+def mochi_hand():
+    # Mochi: pounded glutinous rice, a soft, smooth, stretchy white mass dusted with starch.
+    s = dough_ball("#f8f6f0")
+    s.pixels_at(plain_ramp("#ffffff")[BASE], [(5, 6), (6, 5)])
+    return s
+
+
+def mole_base_hand():
+    # Mole base: toasted chilies, peanuts, sesame, raisins and torn tortilla mixed together, a dark, rough mix in a bowl.
+    return bowl("#5a2a1e", mound=1.6, texture=bumpy, flecks=[("#c8945a", 0.1), ("#f0e0b0", 0.06), ("#2a1a1a", 0.08)])
+
+
+def mole_poblano_hand():
+    # Mole poblano: chicken under a glossy, near-black chocolate and chili mole, scattered with toasted sesame, on a plate.
+    s = plate()
+    mole = ramp("#3a1a14", spread=0.6)
+    s.ellipse(mole, 7.5, 9.6, 6.0, 3.0)
+    s.ellipse(ramp("#5a2a1e", spread=0.5), 7.5, 8.8, 3.6, 1.6, outline=False)  # The chicken under the sauce.
+    s.pixels_at(plain_ramp("#f0dca0")[BASE], [(4, 9), (6, 8), (9, 9), (11, 8), (7, 10), (10, 10)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -7250,6 +7336,12 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"miang_sauce": miang_sauce_hand, "minas_cheese": minas_cheese_hand, "minced_beef": minced("#a83430", fat="#f0e6d6", seed=311),
+             "minced_fish": minced("#ece4dc", seed=313), "minced_pork": minced("#e0948c", fat="#f4ece0", seed=317), "mirin_mash": mirin_mash_hand,
+             "miso": miso_hand, "miso_soup": miso_soup_hand, "mitarashi_dango": mitarashi_dango_hand, "mochi": mochi_hand,
+             "mole_base": mole_base_hand, "mole_chicken": lambda: bowl("#3a1a14", mound=0.8, flecks=[("#d8a888", 0.12)]),
+             "mole_paste": lambda: bowl("#2e1610", mound=1.6), "mole_poblano": mole_poblano_hand,
+             "mole_spices": lambda: spice_bowl("#7a4428", fleck="#3a2018", seed=331)})
 HAND.update({"marrow_bones": marrow_bones_hand, "masa": lambda: dough_ball("#f0e2b0", flour=False),
              "masarepa": lambda: spice_bowl("#f0dc90", fleck="#e0c070", seed=287), "massaman_curry": massaman_curry_hand,
              "massaman_curry_mix": lambda: bowl("#9a2a1e", mound=1.6, texture=bumpy, flecks=[("#c8a0b0", 0.1), ("#f0e8d0", 0.06), ("#a8c070", 0.04)]),

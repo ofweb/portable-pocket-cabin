@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/miso_soup",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 12623968
-      }
-    ]
+    "model": "portable_pocket_cabin:item/miso_soup"
   }
 }

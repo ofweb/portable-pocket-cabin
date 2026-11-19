@@ -593,21 +593,21 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] mexican_chocolate_paste
 - [x] miang_filling
 - [x] miang_kham
-- [ ] miang_sauce
-- [ ] minas_cheese
-- [ ] minced_beef
-- [ ] minced_fish
-- [ ] minced_pork
-- [ ] mirin_mash
-- [ ] miso
-- [ ] miso_soup
-- [ ] mitarashi_dango
-- [ ] mochi
-- [ ] mole_base
-- [ ] mole_chicken
-- [ ] mole_paste
-- [ ] mole_poblano
-- [ ] mole_spices
+- [x] miang_sauce
+- [x] minas_cheese
+- [x] minced_beef
+- [x] minced_fish
+- [x] minced_pork
+- [x] mirin_mash
+- [x] miso
+- [x] miso_soup
+- [x] mitarashi_dango
+- [x] mochi
+- [x] mole_base
+- [x] mole_chicken
+- [x] mole_paste
+- [x] mole_poblano
+- [x] mole_spices
 - [ ] moqueca_baiana
 - [ ] moqueca_vegetables
 - [ ] moromi
