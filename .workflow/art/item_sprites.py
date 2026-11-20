@@ -8030,6 +8030,85 @@ def salt_cod_hand():
     s.pixels_at((252, 252, 250), [(7, 4), (5, 10), (9, 7), (11, 13), (4, 13)])
     return s
 
+def salted_cod_hand():
+    # Salted cod: a thick white fillet of cod packed in salt, before it is dried.
+    s = Sprite()
+    fillet = plain_ramp("#f0ece4")
+    s.ellipse(fillet, 7.5, 8.4, 6.6, 3.6, angle=-15)
+    s.pixels_at(fillet[SHADOW], [(4, 9), (7, 8), (10, 7)])
+    s.pixels_at((252, 252, 250), [(5, 7), (9, 6), (11, 9), (6, 10), (3, 9)])
+    return s
+
+
+def salted_tuna_loin_hand():
+    # A salted tuna loin: a long, dense, deep red block of tuna rubbed with salt.
+    s = Sprite()
+    loin = ramp("#a82a30", spread=0.6)
+    s.capsule(loin, [(2.6, 11.6), (13.0, 4.0)], (3.0, 2.4))
+    s.pixels_at((250, 250, 246), [(4, 10), (7, 8), (10, 6), (6, 11), (11, 4)])
+    return s
+
+
+def sangkhaya_fak_thong_hand():
+    # Sangkhaya fak thong: a pumpkin steamed whole with coconut custard inside, cut open to show the set, pale custard.
+    s = Sprite()
+    skin = ramp("#d8701e", spread=0.6)
+    s.ellipse(skin, 7.5, 9.0, 7.0, 5.8)
+    s.ellipse(ramp("#f0a040", spread=0.5), 7.5, 9.0, 5.6, 4.6, outline=False)  # The flesh.
+    s.ellipse(plain_ramp("#e8dca0"), 7.5, 8.6, 3.6, 3.0, outline=False)  # The custard.
+    s.pixels_at(plain_ramp("#f2ecc8")[BASE], [(6, 7), (7, 7)])
+    return s
+
+
+def sauerbraten_hand():
+    # Sauerbraten: slices of dark, tender braised beef in a glossy brown gravy studded with raisins, on a plate.
+    s = plate()
+    s.ellipse(ramp("#5a2a1a", spread=0.5), 7.5, 10.6, 6.4, 2.4)
+    meat = ramp("#6a3424", spread=0.6)
+    for cx in (4.6, 8.0, 11.2):
+        s.ellipse(meat, cx, 8.6, 1.8, 2.6)
+    s.pixels_at(ramp("#2a1018")[BASE], [(3, 11), (7, 12), (11, 11)])
+    return s
+
+
+def schwarzwalder_kirschtorte_hand():
+    # Schwarzwälder Kirschtorte: a slice of chocolate sponge layered with whipped cream and cherries, topped with cream,
+    # a cherry and chocolate shavings.
+    s = Sprite()
+    sponge, cream = ramp("#4a2a1e", spread=0.6), plain_ramp("#faf8f2")
+    s.shape(lambda x, y: 1 <= x <= 14 and 4 <= y <= 14, sponge, (7.5, 9.0), (7.0, 5.0))
+    for y in (7, 10):
+        s.pixels_at(cream[BASE], [(x, y) for x in range(2, 14)])
+        s.pixels_at(ramp("#a8202a")[BASE], [(4, y), (9, y), (12, y)])
+    s.pixels_at(cream[BASE], [(x, 4) for x in range(2, 14)] + [(x, 5) for x in range(2, 14)])
+    s.ellipse(ramp("#b81e2a", spread=0.5), 7.5, 2.6, 1.4, 1.4)
+    s.pixels_at(ramp("#3a2014")[BASE], [(4, 4), (10, 5), (12, 4)])
+    return s
+
+
+def scored_pork_loin_hand():
+    # A scored pork loin: the rind cut in close parallel lines, ready to crackle in the oven.
+    s = SPRITES["pork_loin"]()
+    for x in range(3, 14, 2):
+        s.line(plain_ramp("#c8a088")[SHADOW], x, 5, x - 1, 8)
+    return s
+
+
+def seared(name, colour="#5a2a1a", amount=0.45):
+    """Another item's sprite seared brown on the outside."""
+    return raw_of(name, colour, amount)
+
+
+def shortcrust_pastry_hand():
+    # Shortcrust pastry: the dough chilled into a firm, flat, pale golden disc, ready to roll.
+    s = Sprite()
+    pastry = plain_ramp("#ecd298")
+    s.ellipse(pastry, 7.5, 10.0, 6.6, 3.0)
+    s.shape(lambda x, y: 1 <= x <= 14 and 7 <= y <= 10, pastry, (7.5, 8.5), (6.6, 1.5))
+    s.ellipse(plain_ramp("#f4e2b0"), 7.5, 7.0, 6.6, 2.6)
+    s.pixels_at(pastry[SHADOW], [(5, 7), (9, 6), (11, 8)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -8084,6 +8163,22 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"salted_cod": salted_cod_hand, "salted_duck_legs": salted("duck_legs", 12, 9), "salted_herring": salted("herring", 12, 11),
+             "salted_salmon": grated("#f08a5a", plain=True, seed=23), "salted_salmon_fillet": salted("salmon_fillet", 12, 13),
+             "salted_tuna_loin": salted_tuna_loin_hand, "salted_ume": raw_of("ume_plum", "#c8304a", 0.6),
+             "sangkhaya_custard": lambda: bowl("#c8c890", plain=True, flecks=[("#8aa860", 0.05)]), "sangkhaya_fak_thong": sangkhaya_fak_thong_hand,
+             "satay_marinade": lambda: bowl("#e8b030", flecks=[("#f0e0b0", 0.06)]), "satay_spices": lambda: spice_bowl("#b88a4a", fleck="#6a4a2a", seed=479),
+             "sauerbraten": sauerbraten_hand, "sauerkraut": jar("#e8e0a0", brine="#f0ecd0", seed=13),
+             "sauteed_mushrooms": lambda: bowl("#8a5a34", mound=1.2, flecks=[("#c8a078", 0.14), ("#4a2a1a", 0.08)]),
+             "sauteed_vegetables": lambda: bowl("#a8803a", mound=1.2, flecks=[("#4a2a5a", 0.12), ("#4a8a3a", 0.1), ("#d02a1e", 0.08), ("#f0e0b0", 0.06)]),
+             "scalded_starch": lambda: bowl("#f4f2ea", mound=1.6, plain=True, bowl_colour=CLAY, flecks=[("#fbfbf8", 0.1)]),
+             "schwarzwalder_kirschtorte": schwarzwalder_kirschtorte_hand, "scored_pork_loin": scored_pork_loin_hand,
+             "seared_marinated_beef": seared("marinated_beef_round"), "seared_rinderrouladen": seared("raw_rinderrouladen"),
+             "seared_yerba_mate_leaves": charred("yerba_mate_leaf", 0.16, 17), "sencha_leaves": lambda: seed_heap("#4a7a2a", fleck="#2a4a1a", seed=487),
+             "sesame_paste": lambda: bowl("#d8b47a", mound=0.8, plain=True), "shaped_arepas": raw_of("arepas", "#f4ecc8", 0.55),
+             "shaped_kammerjunkere": lambda: balls("#eedaa8", [(4.4, 10.8), (11.0, 10.6), (7.6, 5.0)], radius=2.8),
+             "shaped_pretzels": lambda: pretzel("#ecdcb8", salt=False), "shaped_rolls": raw_of("bread_roll", "#f0e2c4", 0.6),
+             "sheep_casing": casing("#f2eae0"), "shortcrust_dough": lambda: dough_ball("#ecd8a0", flour=True), "shortcrust_pastry": shortcrust_pastry_hand})
 HAND.update({"roasted_cocoa_nibs": lambda: seed_heap("#4a2a1a", fleck="#8a5a40", seed=433),
              "roasted_coffee": lambda: spice_bowl("#4a2c1e", fleck="#2a1a12", seed=439),
              "roasted_coffee_beans": lambda: bean_pile("#4a2a1a", PILE, shine=ramp("#8a5a40")[BASE], spread=0.6),

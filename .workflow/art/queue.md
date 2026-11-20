@@ -806,38 +806,38 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] salted_anchovies
 - [x] salted_beef_round
 - [x] salted_butter
-- [ ] salted_cod
-- [ ] salted_duck_legs
-- [ ] salted_herring
-- [ ] salted_salmon
-- [ ] salted_salmon_fillet
-- [ ] salted_tuna_loin
-- [ ] salted_ume
-- [ ] sangkhaya_custard
-- [ ] sangkhaya_fak_thong
-- [ ] satay_marinade
-- [ ] satay_spices
-- [ ] sauerbraten
-- [ ] sauerkraut
-- [ ] sauteed_mushrooms
-- [ ] sauteed_vegetables
+- [x] salted_cod
+- [x] salted_duck_legs
+- [x] salted_herring
+- [x] salted_salmon
+- [x] salted_salmon_fillet
+- [x] salted_tuna_loin
+- [x] salted_ume
+- [x] sangkhaya_custard
+- [x] sangkhaya_fak_thong
+- [x] satay_marinade
+- [x] satay_spices
+- [x] sauerbraten
+- [x] sauerkraut
+- [x] sauteed_mushrooms
+- [x] sauteed_vegetables
 - [x] savory
-- [ ] scalded_starch
-- [ ] schwarzwalder_kirschtorte
-- [ ] scored_pork_loin
-- [ ] seared_marinated_beef
-- [ ] seared_rinderrouladen
-- [ ] seared_yerba_mate_leaves
-- [ ] sencha_leaves
-- [ ] sesame_paste
-- [ ] shaped_arepas
-- [ ] shaped_kammerjunkere
-- [ ] shaped_pretzels
-- [ ] shaped_rolls
+- [x] scalded_starch
+- [x] schwarzwalder_kirschtorte
+- [x] scored_pork_loin
+- [x] seared_marinated_beef
+- [x] seared_rinderrouladen
+- [x] seared_yerba_mate_leaves
+- [x] sencha_leaves
+- [x] sesame_paste
+- [x] shaped_arepas
+- [x] shaped_kammerjunkere
+- [x] shaped_pretzels
+- [x] shaped_rolls
 - [x] sheep_carcass
-- [ ] sheep_casing
-- [ ] shortcrust_dough
-- [ ] shortcrust_pastry
+- [x] sheep_casing
+- [x] shortcrust_dough
+- [x] shortcrust_pastry
 - [ ] shoyu_koji
 - [ ] shoyu_ramen
 - [ ] shredded_cabbage
