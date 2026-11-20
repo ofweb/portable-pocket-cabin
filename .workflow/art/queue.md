@@ -746,36 +746,36 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] raw_smoked_sausage
 - [x] raw_sopes
 - [x] raw_spring_rolls
-- [ ] raw_tamales
-- [ ] raw_tequenos
-- [ ] raw_tlacoyos
-- [ ] raw_tod_mun
-- [ ] raw_tortilla
-- [ ] raw_yakitori
-- [ ] red_chili_blend
-- [ ] red_chili_sauce
-- [ ] red_curry_mix
-- [ ] red_curry_paste
-- [ ] refried_beans
-- [ ] relleno_batter
-- [ ] remoulade
-- [ ] rested_canele_batter
-- [ ] rested_gingerbread_dough
-- [ ] rested_picarones_dough
-- [ ] rice_flour
-- [ ] rice_noodle_batter
-- [ ] rice_noodles
-- [ ] rice_pudding
-- [ ] rice_sheets
-- [ ] rinderrouladen
-- [ ] risalamande
-- [ ] risalamande_med_kirsebaersauce
-- [ ] roast_chicken
-- [ ] roast_duck
-- [ ] roasted_al_pastor
-- [ ] roasted_barley
-- [ ] roasted_beef_bones
-- [ ] roasted_cocoa_beans
+- [x] raw_tamales
+- [x] raw_tequenos
+- [x] raw_tlacoyos
+- [x] raw_tod_mun
+- [x] raw_tortilla
+- [x] raw_yakitori
+- [x] red_chili_blend
+- [x] red_chili_sauce
+- [x] red_curry_mix
+- [x] red_curry_paste
+- [x] refried_beans
+- [x] relleno_batter
+- [x] remoulade
+- [x] rested_canele_batter
+- [x] rested_gingerbread_dough
+- [x] rested_picarones_dough
+- [x] rice_flour
+- [x] rice_noodle_batter
+- [x] rice_noodles
+- [x] rice_pudding
+- [x] rice_sheets
+- [x] rinderrouladen
+- [x] risalamande
+- [x] risalamande_med_kirsebaersauce
+- [x] roast_chicken
+- [x] roast_duck
+- [x] roasted_al_pastor
+- [x] roasted_barley
+- [x] roasted_beef_bones
+- [x] roasted_cocoa_beans
 - [ ] roasted_cocoa_nibs
 - [ ] roasted_coffee
 - [ ] roasted_coffee_beans

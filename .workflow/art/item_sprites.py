@@ -7822,6 +7822,96 @@ def raw_sopes_hand():
         s.put(round(cx) - 3, round(cy) - 1, masa[HIGHLIGHT])
     return s
 
+def roast_bird(skin, glaze=None):
+    """A whole roast bird on a plate: a plump, browned breast with the drumsticks tucked at the front."""
+    def drawn():
+        s = plate()
+        tones = ramp(skin, spread=0.6)
+        s.ellipse(tones, 7.5, 8.0, 5.6, 4.0)
+        for cx in (4.0, 11.0):
+            s.ellipse(tones, cx, 10.6, 2.0, 1.6)
+            s.ellipse(plain_ramp("#ece2cc"), cx + (-1.6 if cx < 7 else 1.6), 11.4, 0.8, 0.8)
+        s.pixels_at(tones[HIGHLIGHT], [(5, 5), (6, 5), (7, 5)])
+        if glaze:
+            s.pixels_at(ramp(glaze)[BASE], [(8, 7), (9, 8), (6, 8)])
+        return s
+    return drawn
+
+
+def raw_tamales_hand():
+    # Raw tamales: masa and chili pork wrapped in pale corn husks, folded and tied at the ends.
+    s = Sprite()
+    husk = plain_ramp("#d8cc98")
+    for cx, cy in [(5.4, 5.6), (10.4, 10.6)]:
+        s.capsule(husk, [(cx - 4.2, cy + 2.4), (cx + 4.2, cy - 2.4)], (1.4, 1.4))
+        s.ellipse(husk, cx, cy, 3.0, 2.4)
+        s.ellipse(plain_ramp("#f0dca0"), cx, cy - 0.3, 1.8, 1.2, outline=False)  # The masa showing.
+        s.line(husk[SHADOW], round(cx) - 1, round(cy) + 1, round(cx) + 2, round(cy) - 1)
+    return s
+
+
+def raw_tequenos_hand():
+    # Raw tequeños: sticks of white cheese wound round with strips of pale puff dough.
+    s = Sprite()
+    dough = plain_ramp("#f2e4c0")
+    for start, end in [((2.0, 6.4), (12.0, 2.4)), ((4.0, 13.4), (14.0, 9.4))]:
+        s.capsule(dough, [start, end], (1.8, 1.8))
+        length = math.dist(start, end)
+        for t in range(1, int(length), 2):
+            x = start[0] + (end[0] - start[0]) * t / length
+            y = start[1] + (end[1] - start[1]) * t / length
+            s.put(round(x - 0.5), round(y - 1.0), dough[SHADOW])  # The wound strips.
+    return s
+
+
+def rice_sheets_hand():
+    # Rice sheets: thin, soft, steamed sheets of rice batter, white and slightly translucent, folded in a stack.
+    s = Sprite()
+    sheet = plain_ramp("#f4f2ea")
+    for k, (x0, y0) in enumerate([(1, 6), (2, 4), (3, 2)]):
+        s.shape(lambda x, y, x0=x0, y0=y0: x0 <= x <= x0 + 11 and y0 <= y <= y0 + 7, sheet, (x0 + 5.5, y0 + 3.5), (5.5, 3.5))
+    s.pixels_at(sheet[SHADOW], [(5, 6), (9, 7), (7, 9)])
+    return s
+
+
+def rinderrouladen_hand():
+    # Rinderrouladen: beef rolls braised dark and tender in a rich red-wine gravy, on a plate.
+    s = plate()
+    s.ellipse(ramp("#5a2a1a", spread=0.5), 7.5, 10.8, 6.4, 2.4)
+    meat = ramp("#6a3020", spread=0.6)
+    for cx in (5.0, 10.0):
+        s.capsule(meat, [(cx - 2.0, 8.6), (cx + 2.0, 7.6)], (2.0, 2.0))
+        s.line(plain_ramp("#f2eee0")[BASE], round(cx), 6, round(cx), 10)
+    return s
+
+
+def risalamande_hand():
+    # Risalamande: cold rice pudding folded with whipped cream and chopped almonds, pale and creamy, in a glass bowl.
+    s = bowl("#f6f2e4", mound=1.6, plain=True, bowl_colour="#c8dce4", texture=bumpy, flecks=[("#e8d8b0", 0.1)])
+    return s
+
+
+def risalamande_med_kirsebaersauce_hand():
+    # Risalamande med kirsebærsauce: the creamy rice pudding under a pour of warm, dark red cherry sauce.
+    s = risalamande_hand()
+    sauce = ramp("#8a1a2a", spread=0.6)
+    s.pixels_at(sauce[BASE], [(6, 5), (7, 5), (8, 5), (7, 6), (5, 6), (9, 6), (6, 7), (8, 7)])
+    s.pixels_at(sauce[HIGHLIGHT], [(7, 5)])
+    s.pixels_at(sauce[BASE], [(4, 8), (11, 8)])  # Drips.
+    return s
+
+
+def roasted_al_pastor_hand():
+    # Roasted al pastor: the trompo, a tall cone of red-orange marinated pork stacked on a spit, a pineapple on top.
+    s = Sprite()
+    s.line(plain_ramp("#a8acb4")[BASE], 7, 1, 7, 15)
+    meat = ramp("#c8502a", spread=0.6)
+    s.shape(lambda x, y: 4 <= y <= 14 and abs(x - 7.5) <= 2.4 + (14 - y) * 0.28, meat, (7.5, 9.0), (5.0, 5.0),
+            texture=lambda x, y: -1 if y % 2 == 0 else 1 if (x + y) % 5 == 0 else 0)
+    s.ellipse(ramp("#f0c040", spread=0.6), 7.5, 3.0, 2.0, 1.6)
+    s.pixels_at(ramp("#4a9a3a")[BASE], [(7, 0), (8, 0), (6, 1)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -7876,6 +7966,23 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"raw_tamales": raw_tamales_hand, "raw_tequenos": raw_tequenos_hand, "raw_tlacoyos": raw_of("griddled_tlacoyos", "#a8acc8", 0.4),
+             "raw_tod_mun": raw_of("fried_tod_mun", "#e8b0a0", 0.4), "raw_tortilla": raw_of("corn_tortilla", "#f4ecc8", 0.5),
+             "raw_yakitori": raw_skewer("#f0c0b0", "#8ac060"),
+             "red_chili_blend": lambda: bowl("#b8301e", mound=1.0, flecks=[("#8a5a2a", 0.06)]), "red_chili_sauce": lambda: bowl("#9a2214"),
+             "red_curry_mix": lambda: bowl("#c83020", mound=1.6, texture=bumpy, flecks=[("#d8e0a0", 0.1), ("#f0e8d0", 0.06), ("#c8a0b0", 0.04)]),
+             "red_curry_paste": lambda: bowl("#a82a1a", mound=1.4), "refried_beans": lambda: bowl("#4a3030", mound=2.0, texture=bumpy),
+             "relleno_batter": lambda: bowl("#f4e4a0", mound=1.6, plain=True, flecks=[("#fbf4d8", 0.2)]),
+             "remoulade": lambda: bowl("#ecdc80", plain=True, flecks=[("#6a8a3a", 0.1), ("#f0ecd8", 0.06)]),
+             "rested_canele_batter": lambda: SPRITES["canele_batter"](), "rested_gingerbread_dough": lambda: dough_ball("#7a4e2e", flour=True),
+             "rested_picarones_dough": proofed("#e8a858", flour=False), "rice_flour": lambda: spice_bowl("#f8f6f0", fleck="#ecead8", seed=419, bowl_colour=CLAY),
+             "rice_noodle_batter": lambda: bowl("#f6f4ec", plain=True, bowl_colour=CLAY), "rice_noodles": raw_of("glass_noodles", "#f6f2e6", 0.6),
+             "rice_pudding": lambda: bowl("#f4f0e2", mound=1.4, plain=True, bowl_colour=CLAY, texture=bumpy), "rice_sheets": rice_sheets_hand,
+             "rinderrouladen": rinderrouladen_hand, "risalamande": risalamande_hand,
+             "risalamande_med_kirsebaersauce": risalamande_med_kirsebaersauce_hand, "roast_chicken": roast_bird("#c8862e"),
+             "roast_duck": roast_bird("#8a3e1e", glaze="#c86a2a"), "roasted_al_pastor": roasted_al_pastor_hand,
+             "roasted_barley": lambda: seed_heap("#8a5a2a", fleck="#c8945a", seed=421), "roasted_beef_bones": charred("beef_bones", 0.2, 11),
+             "roasted_cocoa_beans": lambda: bean_pile("#4a281a", PILE, shine=ramp("#8a5a40")[BASE], spread=0.6)})
 HAND.update({"rabbit_saddle": rabbit_saddle_hand, "rabbit_stew_meat": stew_meat("#d8908a"), "raisins": raisins_hand,
              "ramen_broth": ramen_broth_hand, "ramen_dough": lambda: dough_ball("#f2e0a0", flour=False), "ramen_noodles": ramen_noodles_hand,
              "ratatouille": ratatouille_hand, "raw_anticucho_skewer": raw_skewer("#7a2a2a", "#8a2a2a"),
