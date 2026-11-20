@@ -7588,6 +7588,125 @@ def pork_belly_slab():
     s.pixels_at(plain_ramp("#f0d8c4")[BASE], [(x, 5) for x in range(2, 14)])  # The skin.
     return s
 
+def proofed(colour, flour=True):
+    """A dough risen until puffy: bigger and rounder than when it was kneaded, its surface stretched with small bubbles."""
+    def drawn():
+        s = Sprite()
+        dough = plain_ramp(colour)
+        s.shape(lambda x, y: ((x - 7.5) / 7.0) ** 2 + ((y - 8.6) / 6.2) ** 2 <= 1 and y <= 14.4, dough, (7.5, 8.6), (7.0, 6.2))
+        s.pixels_at(dough[HIGHLIGHT], [(4, 5), (5, 4), (6, 4)])
+        s.pixels_at(dough[SHADOW], [(7, 7), (10, 9), (5, 10), (9, 12)])  # Bubbles.
+        if flour:
+            s.pixels_at(plain_ramp("#f6f4ee")[BASE], [(8, 4), (11, 6)])
+        return s
+    return drawn
+
+
+def press_cake_hand():
+    # Press cake: the hard, dense disc of pumpkin-seed solids left once the oil is pressed out, a dark olive green.
+    s = SPRITES["cocoa_press_cake"]()
+    for y in range(16):
+        for x in range(16):
+            c = s.pixels[y][x]
+            if c is not None:
+                s.put(x, y, (round(c[0] * 0.7), round(c[1] * 0.95 + 18), round(c[2] * 0.6)))
+    return s
+
+
+def prawn_shells_hand():
+    # Prawn shells: a little heap of empty, curled pink-orange shells and tails, kept for stock.
+    s = Sprite()
+    shell = plain_ramp("#f0a080")
+    rng = random.Random(397)
+    for _ in range(8):
+        x, y = rng.randint(2, 12), rng.randint(5, 13)
+        s.pixels_at(shell[BASE], [(x, y), (x + 1, y), (x + 1, y + 1)])
+        s.put(x + 2, y + 1, shell[SHADOW])
+    s.pixels_at(ramp("#d05a3a")[BASE], [(3, 12), (12, 6)])  # Tail fans.
+    return s
+
+
+def pressed_cheese_hand():
+    # Pressed cheese: curds pressed into a firm, pale yellow round, marked by its cloth.
+    s = SPRITES["fresh_cheese"]()
+    for y in range(16):
+        for x in range(16):
+            c = s.pixels[y][x]
+            if c is not None:
+                s.put(x, y, (c[0], round(c[1] * 0.96), round(c[2] * 0.8)))
+    return s
+
+
+def pretzel_hand():
+    # A pretzel: baked a deep, glossy mahogany brown and studded with coarse white salt.
+    return pretzel("#9a4a18")
+
+
+def profiteroles_hand():
+    # Profiteroles: cream-filled choux buns piled up under a pour of dark chocolate sauce.
+    s = SPRITES["choux_buns"]()
+    choc = ramp("#3a1e14", spread=0.6)
+    s.pixels_at(choc[BASE], [(6, 2), (7, 2), (8, 2), (7, 3), (3, 7), (4, 7), (11, 7), (12, 7), (4, 8), (12, 8), (7, 6)])
+    s.pixels_at(choc[HIGHLIGHT], [(7, 2), (4, 7)])
+    s.pixels_at(plain_ramp("#faf8f2")[BASE], [(4, 12), (11, 12)])  # Cream peeking out.
+    return s
+
+
+def puff_pastry_hand():
+    # Puff pastry: a chilled, folded block with a neat, layered edge, ready to roll and bake.
+    s = SPRITES["laminated_dough"]()
+    for y in range(16):
+        for x in range(16):
+            c = s.pixels[y][x]
+            if c is not None:
+                s.put(x, y, (round(c[0] * 0.97), round(c[1] * 0.97), min(255, round(c[2] * 1.04))))
+    return s
+
+
+def quesadilla_hand():
+    # A quesadilla: a tortilla folded over melted cheese and griddled golden with brown spots, cheese oozing at the edge.
+    s = Sprite()
+    tortilla = plain_ramp("#ecd498")
+    s.shape(lambda x, y: y <= 11.0 and ((x - 7.5) / 7.0) ** 2 + ((y - 11.0) / 7.6) ** 2 <= 1, tortilla, (7.5, 7.5), (7.0, 4.0))
+    s.pixels_at(ramp("#a8742a")[BASE], [(4, 7), (7, 5), (10, 8), (6, 9), (11, 6)])
+    s.pixels_at(plain_ramp("#f6e8a0")[BASE], [(3, 11), (5, 12), (9, 12), (12, 11)])
+    return s
+
+
+def queso_oaxaca_hand():
+    # Queso Oaxaca: a long rope of white, stretched string cheese wound into a ball.
+    s = Sprite()
+    cheese = plain_ramp("#f0e6cc")
+    s.ellipse(cheese, 7.5, 8.0, 6.8, 5.8)
+    for r in (5.0, 3.0):  # The wound rope, its turns shaded apart.
+        ring = [(round(7.5 + r * math.cos(math.radians(a))), round(8.0 + r * 0.85 * math.sin(math.radians(a)))) for a in range(0, 360, 15)]
+        s.pixels_at(cheese[SHADOW], ring)
+    s.ellipse(cheese, 7.5, 8.0, 1.0, 1.0)
+    return s
+
+
+def quiche_lorraine_hand():
+    # Quiche lorraine: a golden pastry case of set, puffed, browned egg custard studded with bacon.
+    s = tart_shell(filling="#f0d070")
+    s.pixels_at(ramp("#b84a3a")[BASE], [(5, 8), (8, 9), (10, 8), (6, 10)])
+    s.pixels_at(ramp("#c8902a")[BASE], [(4, 9), (9, 10), (11, 9)])
+    return s
+
+
+def rabbit_legs_hand():
+    # Rabbit legs: two slim, lean, pale pink hind legs.
+    s = drumstick("#e0a8a0", 4.6, 4.6, 35, Sprite())
+    return drumstick("#e0a8a0", 8.4, 9.6, 15, s)
+
+
+def rabbit_offal_hand():
+    # Rabbit offal: a tiny heart, kidneys and a small, dark liver.
+    s = heart("#8a2a30", cx=4.6, cy=5.4, size=0.5)
+    liver("#6a2028", cx=10.6, cy=5.4, rx=3.4, ry=2.4, s=s)
+    for cx in (6.0, 10.0):
+        s.ellipse(ramp("#8a3434", spread=0.6), cx, 11.4, 2.0, 1.4)
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -7642,6 +7761,22 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"pounded_shrimp": lambda: bowl("#d89a8a", mound=1.4, texture=bumpy, bowl_colour="#8a6a4a"),
+             "pozole_base": lambda: bowl("#b0301e", mound=0.6, flecks=[("#f0eadc", 0.14), ("#e0948c", 0.08)]),
+             "pozole_rojo": lambda: bowl("#b0301e", mound=0.6, flecks=[("#f0eadc", 0.12), ("#c8e0a0", 0.08), ("#d84a6a", 0.04), ("#7ac040", 0.03)]),
+             "prawn_shells": prawn_shells_hand, "prawns": lambda: prawn("#8a9a98"),
+             "press_cake": lambda: press_cake_hand(),
+             "pressed_cheese": pressed_cheese_hand, "pretzel": pretzel_hand, "pretzel_dough": lambda: dough_ball("#eadcb8"),
+             "profiteroles": profiteroles_hand, "proofed_bread_dough": proofed("#ecdcb8"), "proofed_polsehorn": proofed("#f0e0bc", flour=False),
+             "proofed_pretzel_dough": proofed("#eadcb8"), "proofed_rugbrod_dough": proofed("#6a4a34", flour=False),
+             "proofed_sweet_dough": proofed("#f2dca0", flour=False), "puff_dough": lambda: dough_ball("#f0e2c0"), "puff_pastry": puff_pastry_hand,
+             "pulp": lambda: seed_heap("#d8d0a8", fleck="#f2eedc", seed=401), "quark": lambda: bowl("#f6f2e6", mound=2.0, plain=True, bowl_colour=CLAY),
+             "quesadilla": quesadilla_hand, "queso_blanco": lambda: SPRITES["fresh_cheese"](),
+             "queso_blanco_curds": lambda: SPRITES["curds"](), "queso_fresco": lambda: cheese_wedge("#f6f4ea", "#ece8d8", holes=[(5, 12), (9, 11)], plain=True),
+             "queso_fresco_curds": lambda: bowl("#ece8c0", plain=True, bowl_colour=CLAY, flecks=[("#fafaf4", 0.3)]),
+             "queso_oaxaca": queso_oaxaca_hand, "quiche_custard": lambda: bowl("#f0d478", plain=True, flecks=[("#e8b040", 0.08)]),
+             "quiche_lorraine": quiche_lorraine_hand, "rabbit_bones": bones_of("#ece4d0", 0.8, scrap="#d08880"), "rabbit_legs": rabbit_legs_hand,
+             "rabbit_offal": rabbit_offal_hand})
 HAND.update({"pickled_beetroot": jar("#8a1a40", brine="#c84a6a", seed=3), "pickled_carrots": jar("#f07a20", brine="#f0e0b8", seed=5),
              "pickled_ginger": jar("#f0b8a8", brine="#f8e0d8", seed=9), "pickled_herring": pickled_herring_hand,
              "pickling_spice": lambda: spice_bowl("#a87a4a", fleck="#3a2a20", seed=367), "pig_bristles": pig_bristles_hand,

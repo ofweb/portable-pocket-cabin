@@ -685,37 +685,37 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] pork_skin
 - [x] potato_batter
 - [x] potato_starch
-- [ ] pounded_shrimp
-- [ ] pozole_base
-- [ ] pozole_rojo
-- [ ] prawn_shells
-- [ ] prawns
-- [ ] press_cake
-- [ ] pressed_cheese
-- [ ] pretzel
-- [ ] pretzel_dough
-- [ ] profiteroles
-- [ ] proofed_bread_dough
-- [ ] proofed_polsehorn
-- [ ] proofed_pretzel_dough
-- [ ] proofed_rugbrod_dough
-- [ ] proofed_sweet_dough
-- [ ] puff_dough
-- [ ] puff_pastry
-- [ ] pulp
-- [ ] quark
-- [ ] quesadilla
-- [ ] queso_blanco
-- [ ] queso_blanco_curds
-- [ ] queso_fresco
-- [ ] queso_fresco_curds
-- [ ] queso_oaxaca
-- [ ] quiche_custard
-- [ ] quiche_lorraine
-- [ ] rabbit_bones
+- [x] pounded_shrimp
+- [x] pozole_base
+- [x] pozole_rojo
+- [x] prawn_shells
+- [x] prawns
+- [x] press_cake
+- [x] pressed_cheese
+- [x] pretzel
+- [x] pretzel_dough
+- [x] profiteroles
+- [x] proofed_bread_dough
+- [x] proofed_polsehorn
+- [x] proofed_pretzel_dough
+- [x] proofed_rugbrod_dough
+- [x] proofed_sweet_dough
+- [x] puff_dough
+- [x] puff_pastry
+- [x] pulp
+- [x] quark
+- [x] quesadilla
+- [x] queso_blanco
+- [x] queso_blanco_curds
+- [x] queso_fresco
+- [x] queso_fresco_curds
+- [x] queso_oaxaca
+- [x] quiche_custard
+- [x] quiche_lorraine
+- [x] rabbit_bones
 - [x] rabbit_carcass
-- [ ] rabbit_legs
-- [ ] rabbit_offal
+- [x] rabbit_legs
+- [x] rabbit_offal
 - [ ] rabbit_saddle
 - [ ] rabbit_stew_meat
 - [ ] raisins
