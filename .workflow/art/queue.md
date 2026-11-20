@@ -776,36 +776,36 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] roasted_barley
 - [x] roasted_beef_bones
 - [x] roasted_cocoa_beans
-- [ ] roasted_cocoa_nibs
-- [ ] roasted_coffee
-- [ ] roasted_coffee_beans
-- [ ] roasted_malt
-- [ ] roasted_peanut_pods
-- [ ] roasted_peanuts
-- [ ] roasted_tomatillo
-- [ ] roasted_wheat
-- [ ] rock_salt
-- [ ] rodgrod
-- [ ] rodgrod_med_flode
-- [ ] rodkal
-- [ ] rolled_enchiladas
-- [ ] rolled_pork_belly
-- [ ] rolled_tea_leaves
-- [ ] roux
-- [ ] rugbrod
-- [ ] rugbrod_dough
-- [ ] rye_flour
-- [ ] sake_mash
-- [ ] salmon_fillet
-- [ ] salmon_roe
-- [ ] salmon_skin
-- [ ] salsa_roja
-- [ ] salsa_verde
-- [ ] salt
-- [ ] salt_cod
-- [ ] salted_anchovies
-- [ ] salted_beef_round
-- [ ] salted_butter
+- [x] roasted_cocoa_nibs
+- [x] roasted_coffee
+- [x] roasted_coffee_beans
+- [x] roasted_malt
+- [x] roasted_peanut_pods
+- [x] roasted_peanuts
+- [x] roasted_tomatillo
+- [x] roasted_wheat
+- [x] rock_salt
+- [x] rodgrod
+- [x] rodgrod_med_flode
+- [x] rodkal
+- [x] rolled_enchiladas
+- [x] rolled_pork_belly
+- [x] rolled_tea_leaves
+- [x] roux
+- [x] rugbrod
+- [x] rugbrod_dough
+- [x] rye_flour
+- [x] sake_mash
+- [x] salmon_fillet
+- [x] salmon_roe
+- [x] salmon_skin
+- [x] salsa_roja
+- [x] salsa_verde
+- [x] salt
+- [x] salt_cod
+- [x] salted_anchovies
+- [x] salted_beef_round
+- [x] salted_butter
 - [ ] salted_cod
 - [ ] salted_duck_legs
 - [ ] salted_herring

@@ -7912,6 +7912,124 @@ def roasted_al_pastor_hand():
     s.pixels_at(ramp("#4a9a3a")[BASE], [(7, 0), (8, 0), (6, 1)])
     return s
 
+def salted(name, amount=10, seed=1):
+    """Another item's sprite crusted with grains of white salt."""
+    def drawn():
+        s = SPRITES[name]()
+        rng = random.Random(seed)
+        spots = [(x, y) for y in range(16) for x in range(16) if s.pixels[y][x] is not None]
+        for x, y in rng.sample(spots, min(amount, len(spots))):
+            s.put(x, y, (250, 250, 246))
+        return s
+    return drawn
+
+
+def rodgrod_cream():
+    # Rødgrød med fløde: the red berry pudding with a pour of cold cream across the top.
+    s = bowl("#8a1426", mound=0.6, flecks=[("#b8283a", 0.12)])
+    s.pixels_at(plain_ramp("#faf6ec")[BASE], [(4, 7), (5, 6), (6, 6), (7, 7), (8, 7), (9, 6)])
+    return s
+
+
+def rock_salt_hand():
+    # Rock salt: big, rough, pinkish-grey crystals of mined salt.
+    s = Sprite()
+    rng = random.Random(431)
+    for cx, cy in [(4.6, 11.4), (10.6, 11.6), (7.6, 6.6), (12.6, 6.0), (3.4, 5.4)]:
+        tones = plain_ramp(rng.choice(["#e8d0cc", "#d8d0d0", "#f0e0dc"]))
+        r = rng.uniform(2.0, 2.8)
+        s.shape(lambda x, y, cx=cx, cy=cy, r=r: abs(x - cx) + abs(y - cy) * 1.2 <= r * 1.3, tones, (cx, cy), (r, r))
+        s.put(round(cx) - 1, round(cy) - 1, (255, 252, 250))
+    return s
+
+
+def rodkal_hand():
+    # Rødkål: red cabbage braised sweet and sour until soft, glossy and deep purple, in a bowl.
+    return bowl("#5a1a3a", mound=1.4, texture=lambda x, y: -1 if (x + y * 2) % 3 == 0 else 0, flecks=[("#8a3a6a", 0.14)])
+
+
+def rolled_enchiladas_hand():
+    # Rolled enchiladas: salsa-dipped tortillas rolled round shredded chicken and onion, laid side by side.
+    s = Sprite()
+    wrap = ramp("#7aa848", spread=0.6)
+    for y0 in (4.0, 8.0, 12.0):
+        s.capsule(wrap, [(2.0, y0), (13.6, y0 - 1.0)], (1.8, 1.8))
+        s.ellipse(plain_ramp("#f2e8d4"), 2.0, y0, 1.2, 1.2)  # The filling at the open end.
+    return s
+
+
+def rolled_pork_belly_hand():
+    # Rolled pork belly: the belly rolled up into a log and tied with string, the spiral of meat and fat at its end.
+    s = Sprite()
+    skin = plain_ramp("#f0d0bc")
+    s.capsule(skin, [(4.4, 10.6), (13.0, 4.6)], (3.6, 3.6))
+    for t in (0.3, 0.55, 0.8):
+        x0, y0 = 4.4 + 8.6 * t, 10.6 - 6.0 * t
+        s.line(plain_ramp("#faf6ec")[BASE], round(x0 - 2), round(y0 - 3), round(x0 + 2), round(y0 + 3))  # The string.
+    s.ellipse(fat := plain_ramp("#f4ece0"), 4.4, 10.6, 3.2, 3.2)
+    s.ellipse(ramp("#e0948c", spread=0.5), 4.4, 10.6, 2.2, 2.2, outline=False)
+    s.ellipse(fat, 4.4, 10.6, 1.0, 1.0, outline=False)
+    return s
+
+
+def roux_hand():
+    # Roux: butter and flour cooked together into a smooth, blond, bubbling paste, in a bowl.
+    s = bowl("#e0b860", mound=0.8, plain=True)
+    s.pixels_at(plain_ramp("#f0d488")[BASE], [(4, 7), (8, 6), (10, 7)])
+    return s
+
+
+def rugbrod_hand():
+    # Rugbrød: a dense, dark Danish rye loaf studded with whole grains and seeds, cut to show its crumb.
+    s = Sprite()
+    crust = ramp("#4a2e1e", spread=0.6)
+    s.shape(lambda x, y: 1 <= x <= 14 and 4 <= y <= 13, crust, (7.5, 8.5), (7.0, 4.5))
+    crumb = ramp("#6a4430", spread=0.5)
+    for y in range(5, 13):
+        for x in range(2, 9):
+            s.put(x, y, crumb[BASE])
+    s.pixels_at(plain_ramp("#c8a878")[BASE], [(3, 6), (6, 7), (4, 9), (7, 10), (5, 12), (3, 11)])  # Seeds and grains.
+    return s
+
+
+def salmon_fillet_hand():
+    # A salmon fillet: deep orange-pink flesh striped with pale lines of fat, on its silvery skin.
+    s = Sprite()
+    fish_ = plain_ramp("#f08a5a")
+    s.ellipse(fish_, 7.5, 8.4, 7.0, 4.0, angle=-15)
+    for k in range(-2, 3):
+        s.line(plain_ramp("#f8c8a8")[BASE], 6 + k * 2, 11, 8 + k * 2, 5)
+    s.pixels_at(plain_ramp("#b8c0c8")[BASE], [(x, 12 - (x - 2) // 4) for x in range(3, 13)])  # The skin.
+    return s
+
+
+def salmon_roe_hand():
+    # Salmon roe: big, glossy, translucent orange eggs, each with a bright glint, in a small bowl.
+    s = bowl("#e85a1e", mound=1.4, bowl_colour="#2a2a30")
+    for x, y in [(4, 6), (6, 5), (8, 5), (10, 6), (5, 7), (7, 7), (9, 7), (11, 7)]:
+        s.put(x, y, (255, 200, 160))
+    return s
+
+
+def salmon_skin_hand():
+    # Salmon skin: a long strip of silvery grey skin with a thin edge of orange flesh still on it.
+    s = Sprite()
+    skin = plain_ramp("#a8b0b8")
+    s.capsule(skin, [(1.6, 11.0), (8.0, 7.6), (14.4, 3.4)], (2.4, 1.6))
+    s.pixels_at(plain_ramp("#f08a5a")[BASE], [(3, 12), (6, 10), (9, 8), (12, 6)])
+    s.pixels_at(plain_ramp("#d0d8e0")[BASE], [(4, 9), (8, 7), (11, 5)])
+    return s
+
+
+def salt_cod_hand():
+    # Salt cod: a stiff, flat, dried fillet of cod, greyish white and crusted with salt.
+    s = Sprite()
+    cod = plain_ramp("#e8e2d4")
+    s.shape(lambda x, y: y >= 2 and abs(x - 7.5) <= 1.0 + (y - 2) * 0.5 and y <= 14, cod, (7.5, 8.0), (6.0, 6.0))
+    s.pixels_at(plain_ramp("#c8c0b0")[BASE], [(6, 6), (8, 9), (7, 12), (10, 12)])
+    s.pixels_at((252, 252, 250), [(7, 4), (5, 10), (9, 7), (11, 13), (4, 13)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -7966,6 +8084,22 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"roasted_cocoa_nibs": lambda: seed_heap("#4a2a1a", fleck="#8a5a40", seed=433),
+             "roasted_coffee": lambda: spice_bowl("#4a2c1e", fleck="#2a1a12", seed=439),
+             "roasted_coffee_beans": lambda: bean_pile("#4a2a1a", PILE, shine=ramp("#8a5a40")[BASE], spread=0.6),
+             "roasted_malt": lambda: seed_heap("#b07a3a", fleck="#6a4422", seed=443), "roasted_peanut_pods": dried("peanut", 0.9, 0.82, 0.05, 449),
+             "roasted_peanuts": lambda: bean_pile("#d0944e", PILE, hilum=ramp("#a8402a")[BASE], spread=0.6),
+             "roasted_tomatillo": charred("tomatillo", 0.2, 13), "roasted_wheat": lambda: seed_heap("#c8903e", fleck="#8a5a24", seed=457),
+             "rock_salt": raw_of("coarse_salt", "#d8a8a4", 0.45), "rodgrod": lambda: bowl("#8a1426", mound=0.6, flecks=[("#b8283a", 0.12)]),
+             "rodgrod_med_flode": lambda: rodgrod_cream(), "rodkal": rodkal_hand, "rolled_enchiladas": rolled_enchiladas_hand,
+             "rolled_pork_belly": rolled_pork_belly_hand, "rolled_tea_leaves": lambda: seed_heap("#3a5a2a", fleck="#6a8a3a", seed=461),
+             "roux": roux_hand, "rugbrod": rugbrod_hand, "rugbrod_dough": lambda: bowl("#5a3a28", mound=1.6, texture=bumpy, flecks=[("#c8a878", 0.1)]),
+             "rye_flour": lambda: spice_bowl("#b8a488", fleck="#8a7a64", seed=463),
+             "sake_mash": lambda: bowl("#f0ece0", mound=1.0, plain=True, bowl_colour="#8a6a4a", texture=bumpy),
+             "salmon_fillet": salmon_fillet_hand, "salmon_roe": salmon_roe_hand, "salmon_skin": salmon_skin_hand,
+             "salsa_roja": lambda: bowl("#a8281a"), "salsa_verde": lambda: bowl("#6a9a3a", flecks=[("#f0e8d0", 0.06), ("#2a6a2a", 0.08)]),
+             "salt": lambda: spice_bowl("#f8f8f6", fleck="#e4e6e8", seed=467, bowl_colour=CLAY), "salt_cod": salt_cod_hand,
+             "salted_anchovies": salted("anchovy", 12, 3), "salted_beef_round": salted("beef_round", 14, 5), "salted_butter": salted("raw_butter", 8, 7)})
 HAND.update({"raw_tamales": raw_tamales_hand, "raw_tequenos": raw_tequenos_hand, "raw_tlacoyos": raw_of("griddled_tlacoyos", "#a8acc8", 0.4),
              "raw_tod_mun": raw_of("fried_tod_mun", "#e8b0a0", 0.4), "raw_tortilla": raw_of("corn_tortilla", "#f4ecc8", 0.5),
              "raw_yakitori": raw_skewer("#f0c0b0", "#8ac060"),
