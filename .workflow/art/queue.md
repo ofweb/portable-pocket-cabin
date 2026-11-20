@@ -868,36 +868,36 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] soaked_glutinous_rice
 - [x] soaked_grated_coconut
 - [x] soaked_horchata_rice
-- [ ] soaked_rice_noodles
-- [ ] soaked_soybeans
-- [ ] socca
-- [ ] socca_batter
-- [ ] soft_cheese_curds
-- [ ] som_tam
-- [ ] sope_shells
-- [ ] sopes
-- [ ] sour_cassava_starch
-- [ ] sourdough_starter
-- [ ] soured_milk_bucket
-- [ ] soy_curds
-- [ ] soybean_mash
-- [ ] soybean_paste
-- [ ] spare_ribs
-- [ ] spatzle
-- [ ] spatzle_dough
-- [ ] split_chocolate_sponge
-- [ ] sponge_batter
-- [ ] spoon
-- [ ] spring_roll_batter
-- [ ] spring_roll_filling
-- [ ] spring_roll_wrappers
-- [ ] sprouted_barley
-- [ ] squid
-- [ ] squid_tentacles
-- [ ] star_anise
-- [ ] star_anise_sapling
-- [ ] steamed_glutinous_rice
-- [ ] steamed_mochi_dough
+- [x] soaked_rice_noodles
+- [x] soaked_soybeans
+- [x] socca
+- [x] socca_batter
+- [x] soft_cheese_curds
+- [x] som_tam
+- [x] sope_shells
+- [x] sopes
+- [x] sour_cassava_starch
+- [x] sourdough_starter
+- [x] soured_milk_bucket
+- [x] soy_curds
+- [x] soybean_mash
+- [x] soybean_paste
+- [x] spare_ribs
+- [x] spatzle
+- [x] spatzle_dough
+- [x] split_chocolate_sponge
+- [x] sponge_batter
+- [x] spoon
+- [x] spring_roll_batter
+- [x] spring_roll_filling
+- [x] spring_roll_wrappers
+- [x] sprouted_barley
+- [x] squid
+- [x] squid_tentacles
+- [x] star_anise
+- [x] star_anise_sapling
+- [x] steamed_glutinous_rice
+- [x] steamed_mochi_dough
 - [ ] steamed_rice
 - [ ] steamed_shaded_tea_leaves
 - [ ] steamed_tea_leaves

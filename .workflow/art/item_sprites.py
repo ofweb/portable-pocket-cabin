@@ -8220,6 +8220,111 @@ def shrimp_paste_hand():
     s.pixels_at(ramp("#7a5050")[BASE], [(x, 5) for x in range(4, 12)])
     return s
 
+def socca_hand():
+    # Socca: a thin, crisp chickpea pancake, golden and blistered dark, cut into wedges and peppered.
+    s = Sprite()
+    cake = ramp("#e0b050", spread=0.6)
+    s.ellipse(cake, 7.5, 8.4, 7.0, 5.0)
+    for a in range(0, 360, 72):
+        s.line(cake[SHADOW], 7, 8, round(7.5 + 6.0 * math.cos(math.radians(a))), round(8.4 + 4.2 * math.sin(math.radians(a))))
+    s.pixels_at(ramp("#5a3a1e")[BASE], [(4, 6), (10, 5), (6, 11), (11, 10), (3, 9)])
+    return s
+
+
+def sopes_hand():
+    # Sopes: little thick masa cups topped with refried beans, chorizo, red salsa, crema and crumbled cheese.
+    s = Sprite()
+    base = ramp("#d8b068", spread=0.6)
+    for cx, cy in [(5.0, 5.6), (10.6, 10.6)]:
+        s.ellipse(base, cx, cy, 4.2, 3.0)
+        s.ellipse(ramp("#4a3030", spread=0.5), cx, cy - 0.4, 3.0, 1.8, outline=False)
+        s.pixels_at(ramp("#c8502e")[BASE], [(round(cx) - 1, round(cy) - 1)])
+        s.pixels_at(ramp("#b8281e")[BASE], [(round(cx) + 1, round(cy))])
+        s.pixels_at(plain_ramp("#f6f2e6")[BASE], [(round(cx), round(cy) - 1), (round(cx) - 2, round(cy))])
+    return s
+
+
+def spoon_hand():
+    # The spoon: a long-handled wooden cooking spoon with a deep, rounded bowl.
+    s = Sprite()
+    wood = ramp("#b8844a", spread=0.6)
+    s.capsule(wood, [(2.0, 14.0), (9.0, 7.0)], (0.9, 0.9))
+    s.ellipse(wood, 11.0, 5.0, 3.4, 2.6, angle=-45)
+    s.ellipse(ramp("#8a5a2a", spread=0.5), 11.2, 4.8, 2.2, 1.6, angle=-45, outline=False)
+    return s
+
+
+def spare_ribs_hand():
+    # Spare ribs: a rack of pork ribs, pink meat between pale bones, with a cap of fat.
+    s = Sprite()
+    meat = ramp("#e0948c", spread=0.6)
+    s.shape(lambda x, y: 1 <= x <= 14 and 4 <= y <= 12 and y <= 12 - (x - 1) * 0.15, meat, (7.5, 8.0), (7.0, 4.0))
+    bone = plain_ramp("#ece2cc")
+    for x in range(3, 14, 3):
+        s.line(bone[BASE], x, 4, x, 11)
+        s.put(x, 3, bone[LIGHT])
+    s.pixels_at(plain_ramp("#f4ece0")[BASE], [(x, 4) for x in range(2, 14) if x % 3])
+    return s
+
+
+def spatzle_hand():
+    # Spätzle: soft, short, irregular little egg noodles, pale golden, in a heap.
+    return grated("#f0d070", plain=True, seed=37)()
+
+
+def split_chocolate_sponge_hand():
+    # A split chocolate sponge: the cake cut through into two thin layers, ready for filling.
+    s = Sprite()
+    for cy in (10.6, 5.6):
+        cake = ramp("#6a3a24", spread=0.6)
+        s.ellipse(cake, 7.5, cy + 1.2, 7.0, 2.4)
+        s.ellipse(ramp("#7a4630", spread=0.5), 7.5, cy, 7.0, 2.4)
+        s.pixels_at(cake[SHADOW], [(4, round(cy)), (8, round(cy) - 1), (11, round(cy))])
+    return s
+
+
+def spring_roll_wrappers_hand():
+    # Spring roll wrappers: a stack of thin, round, papery white pastry sheets.
+    # Square, unlike the round gyoza wrappers.
+    return raw_of("rice_sheets", "#efe6d0", 0.3)()
+
+
+def sprouted_barley_hand():
+    # Sprouted barley: golden grains just bursting with tiny white rootlets and pale shoots.
+    s = seed_heap("#d8b468", fleck="#a8884a", seed=491)
+    s.pixels_at(plain_ramp("#f6f2e6")[BASE], [(4, 7), (8, 6), (11, 8), (6, 10), (10, 11), (3, 12)])
+    return s
+
+
+def squid_hand():
+    # A squid: a long, pale, mottled pinkish-white body with fins at the tip, eyes, and a trail of tentacles.
+    s = Sprite()
+    body = plain_ramp("#dcc0c4")
+    s.capsule(body, [(10.6, 5.0), (5.6, 10.0)], (2.8, 2.0))
+    s.shape(lambda x, y: abs((x - 12.4) + (y - 3.2)) <= 1.2 and abs((x - 12.4) - (y - 3.2)) <= 4.0, body, (12.4, 3.2), (3.0, 3.0))  # Fins.
+    s.pixels_at(ramp("#a86a8a")[BASE], [(8, 7), (10, 6), (7, 9), (11, 4)])  # Mottling.
+    for k in range(4):
+        s.line(body[SHADOW], 4 - k // 2, 10 + k // 2, 1 + k, 14)
+    s.put(5, 9, (30, 30, 34))  # The eye.
+    return s
+
+
+def squid_tentacles_hand():
+    # Squid tentacles: a tangle of curling, pinkish-purple arms dotted with pale suckers.
+    s = Sprite()
+    arm = ramp("#c88a9a", spread=0.6)
+    for start, mid, end in [((7.0, 2.0), (3.0, 7.0), (5.0, 13.0)), ((8.0, 2.0), (8.0, 8.0), (11.0, 14.0)), ((9.0, 2.0), (13.0, 6.0), (13.0, 11.0))]:
+        s.capsule(arm, [start, mid, end], (1.4, 0.6))
+        s.put(round(mid[0]), round(mid[1]), plain_ramp("#f0e0e4")[BASE])
+    return s
+
+
+def steamed_mochi_dough_hand():
+    # Steamed mochi dough: glutinous rice flour steamed into a glossy, sticky, translucent white mass.
+    s = dough_ball("#f2f0ea", flour=False)
+    s.pixels_at((255, 255, 255), [(5, 6), (6, 5), (9, 7)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -8239,7 +8344,7 @@ SEED_PLANTS = {
     "coconut_sapling": "coconut", "coffee_sapling": "coffee_cherry", "lemon_sapling": "lemon", "lime_sapling": "lime",
     "makrut_lime_sapling": "makrut_lime_leaf", "mango_sapling": "mango",
     "nutmeg_sapling": "nutmeg_seed", "oil_palm_sapling": "oil_palm_fruit", "olive_sapling": "green_olive", "orange_sapling": "orange",
-    "papaya_sapling": "green_papaya", "plum_sapling": "plum",
+    "papaya_sapling": "green_papaya", "plum_sapling": "plum", "star_anise_sapling": "star_anise_pod",
 }
 # Pictures for plants whose fruit is a vanilla item, which this script does not draw.
 BADGE_ONLY = {"apple": apple_badge, "annatto": annatto_badge}
@@ -8274,6 +8379,26 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"soaked_rice_noodles": soaking("#f6f2e6", pieces=0.4), "soaked_soybeans": soaking("#d8bc80", pieces=0.4),
+             "socca": socca_hand, "socca_batter": lambda: bowl("#e8d08a", plain=True, flecks=[("#3a3a3a", 0.04)]),
+             "soft_cheese_curds": lambda: bowl("#f4f2e6", mound=1.8, plain=True, bowl_colour=CLAY, texture=bumpy),
+             "som_tam": lambda: bowl("#c8dc98", mound=1.6, plain=True, texture=bumpy, flecks=[("#d8302a", 0.08), ("#c8945a", 0.06), ("#e85a3a", 0.04)]),
+             "sope_shells": raw_of("raw_sopes", "#c8944a", 0.35), "sopes": sopes_hand,
+             "sour_cassava_starch": lambda: spice_bowl("#f6f6f0", fleck="#e8e6dc", seed=499, bowl_colour=CLAY),
+             "sourdough_starter": lambda: bowl("#ece0c0", mound=1.2, plain=True, bowl_colour="#8a6a4a", flecks=[("#c8bca0", 0.14)]),
+             "soured_milk_bucket": lambda: raw_of("skimmed_milk_bucket", "#f0ecd8", 0.2)(),
+             "soy_curds": lambda: bowl("#f4f0e0", mound=1.6, plain=True, bowl_colour=CLAY, texture=bumpy, flecks=[("#e8e0c0", 0.1)]),
+             "soybean_mash": lambda: bowl("#e8dcb0", mound=1.6, plain=True, texture=bumpy),
+             "soybean_paste": lambda: bowl("#c8a46a", mound=1.6, texture=bumpy, bowl_colour="#8a6a4a"), "spare_ribs": spare_ribs_hand,
+             "spatzle": spatzle_hand, "spatzle_dough": lambda: bowl("#f0d888", mound=1.2, plain=True), "split_chocolate_sponge": split_chocolate_sponge_hand,
+             "sponge_batter": lambda: bowl("#7a4a30", mound=0.6), "spoon": spoon_hand,
+             "spring_roll_batter": lambda: bowl("#f4f2ea", plain=True, bowl_colour=CLAY),
+             "spring_roll_filling": lambda: bowl("#c8b088", mound=1.6, flecks=[("#d0e4a8", 0.14), ("#f07a20", 0.08), ("#e0a098", 0.08), ("#e8e8e8", 0.06)]),
+             "spring_roll_wrappers": spring_roll_wrappers_hand, "sprouted_barley": sprouted_barley_hand, "squid": squid_hand,
+             "squid_tentacles": squid_tentacles_hand, "star_anise": dried("star_anise_pod", 0.7, 0.75, 0.08, 503),
+             "star_anise_sapling": lambda: sapling("#3a7a3a", trunk_colour="#6a5a40", leaf=(2.6, 1.2)),
+             "steamed_glutinous_rice": lambda: bowl("#f6f4ee", mound=2.0, plain=True, bowl_colour=CLAY, texture=bumpy),
+             "steamed_mochi_dough": steamed_mochi_dough_hand})
 HAND.update({"shoyu_koji": lambda: bowl("#c8a46a", mound=1.4, texture=bumpy, bowl_colour="#8a6a4a", flecks=[("#d0d890", 0.16)]),
              "shoyu_ramen": shoyu_ramen_hand, "shredded_cabbage": grated("#d0e4a8", plain=True, seed=29), "shredded_papaya": grated("#c8dc98", plain=True, seed=31),
              "shrimp_paste": shrimp_paste_hand, "sildemad_med_karrysalat": open_sandwich(sildemad),

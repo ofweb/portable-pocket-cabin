@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/star_anise",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 5909008
-      }
-    ]
+    "model": "portable_pocket_cabin:item/star_anise"
   }
 }
