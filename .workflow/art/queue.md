@@ -928,46 +928,46 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] tarte_tatin
 - [x] tarteletter_med_hons_i_asparges
 - [x] tartlet_rings
-- [ ] tartlet_shells
-- [ ] tempered_chocolate
-- [ ] tempura
-- [ ] tempura_batter
-- [ ] tempura_pieces
-- [ ] tencha
-- [ ] tenkasu
-- [ ] tenkasu_batter
-- [ ] tequenos
-- [ ] teriyaki_salmon
-- [ ] thai_tea_leaves
-- [ ] thick_palm_syrup
-- [ ] thin_beef_slices
-- [ ] tlacoyos
-- [ ] toasted_chilies
-- [ ] toasted_coconut
-- [ ] toasted_corn
-- [ ] toasted_curry_spices
-- [ ] toasted_massaman_spices
-- [ ] toasted_prawn_shells
-- [ ] toasted_sweet_crumbs
-- [ ] tod_mun_mix
-- [ ] tod_mun_pla
-- [ ] tofu
-- [ ] tom_kha_base
-- [ ] tom_kha_gai
-- [ ] tom_yum_broth
-- [ ] tom_yum_goong
-- [ ] tomato_caldillo
-- [ ] toulouse_filling
-- [ ] toulouse_sausage
-- [ ] tripe
-- [ ] tub_tim_grob
-- [ ] tuna_loin
-- [ ] ume_sapling
-- [ ] umeboshi
-- [ ] unbaked_apfelstrudel
-- [ ] unbaked_bienenstich
-- [ ] unbaked_brunsviger
-- [ ] unbaked_conchas
+- [x] tartlet_shells
+- [x] tempered_chocolate
+- [x] tempura
+- [x] tempura_batter
+- [x] tempura_pieces
+- [x] tencha
+- [x] tenkasu
+- [x] tenkasu_batter
+- [x] tequenos
+- [x] teriyaki_salmon
+- [x] thai_tea_leaves
+- [x] thick_palm_syrup
+- [x] thin_beef_slices
+- [x] tlacoyos
+- [x] toasted_chilies
+- [x] toasted_coconut
+- [x] toasted_corn
+- [x] toasted_curry_spices
+- [x] toasted_massaman_spices
+- [x] toasted_prawn_shells
+- [x] toasted_sweet_crumbs
+- [x] tod_mun_mix
+- [x] tod_mun_pla
+- [x] tofu
+- [x] tom_kha_base
+- [x] tom_kha_gai
+- [x] tom_yum_broth
+- [x] tom_yum_goong
+- [x] tomato_caldillo
+- [x] toulouse_filling
+- [x] toulouse_sausage
+- [x] tripe
+- [x] tub_tim_grob
+- [x] tuna_loin
+- [x] ume_sapling
+- [x] umeboshi
+- [x] unbaked_apfelstrudel
+- [x] unbaked_bienenstich
+- [x] unbaked_brunsviger
+- [x] unbaked_conchas
 - [ ] unbaked_croque_monsieur
 - [ ] unbaked_flammkuchen
 - [ ] unbaked_kasekuchen

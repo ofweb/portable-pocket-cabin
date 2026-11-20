@@ -8440,6 +8440,121 @@ def tartlet(filling, flecks=()):
         return s
     return drawn
 
+def tempered_chocolate_hand():
+    # Tempered chocolate: melted chocolate worked to a smooth, glossy, dark sheen, in a bowl.
+    s = bowl("#4a2618")
+    s.pixels_at(ramp("#8a5a40")[BASE], [(4, 7), (5, 7), (6, 7)])
+    return s
+
+
+def tempura_pieces_hand():
+    # Tempura pieces: prawns and sweet potato in a light, lacy, pale golden batter.
+    s = Sprite()
+    batter = plain_ramp("#f0d898")
+    s.capsule(batter, [(2.0, 6.0), (11.0, 2.4)], (2.0, 1.4), texture=lambda x, y: -1 if (x * 3 + y) % 4 == 0 else 0)
+    s.pixels_at(ramp("#e85a3a")[BASE], [(12, 2), (13, 1)])  # The prawn's tail.
+    s.ellipse(batter, 9.0, 11.0, 4.4, 2.8, texture=lambda x, y: -1 if (x * 3 + y) % 4 == 0 else 0)
+    s.pixels_at(ramp("#f08a30")[BASE], [(8, 11), (9, 11), (10, 11)])  # Sweet potato peeking through.
+    return s
+
+
+def tempura_hand():
+    # Tempura served: the crisp pieces on a plate with a little dish of tentsuyu dipping sauce.
+    s = plate()
+    batter = plain_ramp("#f0d898")
+    s.capsule(batter, [(2.0, 9.0), (10.0, 6.0)], (1.8, 1.2), texture=lambda x, y: -1 if (x * 3 + y) % 4 == 0 else 0)
+    s.pixels_at(ramp("#e85a3a")[BASE], [(11, 6)])
+    s.ellipse(batter, 6.0, 11.0, 3.0, 1.6)
+    s.ellipse(plain_ramp("#e8eaee"), 12.4, 11.6, 2.4, 1.6)
+    s.ellipse(ramp("#6a3a1a", spread=0.5), 12.4, 11.4, 1.6, 0.9, outline=False)
+    return s
+
+
+def tenkasu_hand():
+    # Tenkasu: crunchy little drops of fried tempura batter, pale gold.
+    return seed_heap("#e8c878", fleck="#f4e4b0", seed=523)
+
+
+def teriyaki_salmon_hand():
+    # Teriyaki salmon: a seared salmon fillet under a glossy, dark, sweet soy glaze.
+    s = SPRITES["salmon_fillet"]()
+    glaze = ramp("#6a2a14", spread=0.6)
+    for y in range(16):
+        for x in range(16):
+            c = s.pixels[y][x]
+            if c is not None and sum(c) > 300 and (x + y) % 3:
+                s.put(x, y, glaze[BASE] if (x + y) % 3 == 1 else glaze[LIGHT])
+    s.pixels_at(glaze[HIGHLIGHT], [(6, 6), (8, 5)])
+    return s
+
+
+def tlacoyos_hand():
+    # Tlacoyos served: blue-corn ovals topped with diced nopales, green salsa and crumbled white cheese.
+    s = SPRITES["griddled_tlacoyos"]()
+    for cx, cy in [(5.0, 5.4), (10.6, 10.6)]:
+        s.pixels_at(ramp("#6a9a40")[BASE], [(round(cx) - 2, round(cy) - 1), (round(cx), round(cy) - 2)])
+        s.pixels_at(plain_ramp("#f6f4ee")[BASE], [(round(cx) - 1, round(cy) - 1), (round(cx) + 1, round(cy) - 1), (round(cx) + 2, round(cy))])
+    return s
+
+
+def tod_mun_pla_hand():
+    # Tod mun pla: the springy fish cakes on a plate with a little bowl of sweet cucumber relish.
+    s = plate()
+    patties("#b0582e", spots=((4.6, 9.4), (9.0, 8.6)), rx=3.0, ry=2.0, flecks=[("#4a9a3a", 0, 0)], s=s)
+    s.ellipse(plain_ramp("#e8eaee"), 12.0, 11.6, 2.6, 1.6)
+    s.pixels_at(ramp("#8ac060")[BASE], [(11, 11), (12, 11), (13, 11)])
+    return s
+
+
+def tofu_hand():
+    # Tofu: a soft, smooth, pure white block, pressed and squared off.
+    s = Sprite()
+    tofu = plain_ramp("#f6f4ec")
+    s.shape(lambda x, y: 2 <= x <= 13 and 4 <= y <= 13, tofu, (7.5, 8.5), (5.5, 4.5))
+    s.pixels_at(plain_ramp("#fbfaf6")[BASE], [(x, 4) for x in range(3, 13)])
+    s.pixels_at(tofu[SHADOW], [(5, 8), (9, 10)])  # The cloth's faint mark.
+    return s
+
+
+def tripe_hand():
+    # Tripe: a pale, creamy sheet of beef stomach, its surface a honeycomb of little cells.
+    s = Sprite()
+    tripe = plain_ramp("#ece2cc")
+    s.shape(lambda x, y: ((x - 7.5) / 6.8) ** 2 + ((y - 8.0) / 5.4) ** 2 + 0.12 * math.sin(x + y) <= 1, tripe, (7.5, 8.0), (6.8, 5.4))
+    for y in range(4, 13, 2):
+        for x in range(2 + (y // 2) % 2, 14, 2):
+            if s.pixels[y][x] in tripe[1:]:
+                s.put(x, y, tripe[SHADOW])
+    return s
+
+
+def tub_tim_grob_hand():
+    # Tub tim grob: ruby-red water chestnut jewels in sweet coconut milk over crushed ice, in a glass.
+    s = Sprite()
+    glass = plain_ramp("#d8e4e8")
+    s.shape(lambda x, y: 3 <= x <= 12 and 2 <= y <= 14, glass, (7.5, 8.0), (4.5, 6.0))
+    for y in range(4, 14):
+        for x in range(4, 12):
+            s.put(x, y, plain_ramp("#f4f2e8")[BASE] if y < 9 else plain_ramp("#e0ecf4")[BASE])
+    s.pixels_at(ramp("#d0283a")[BASE], [(5, 5), (8, 6), (10, 5), (6, 7), (9, 8), (7, 4)])
+    s.pixels_at((255, 255, 255), [(5, 10), (8, 11), (10, 12), (6, 12)])  # Ice.
+    return s
+
+
+def tuna_loin_hand():
+    # A tuna loin: a long, dense block of deep red tuna, darker along one side.
+    s = Sprite()
+    loin = ramp("#b02a32", spread=0.6)
+    s.capsule(loin, [(2.6, 11.6), (13.0, 4.0)], (3.0, 2.4))
+    s.line(ramp("#6a1a24")[BASE], 3, 13, 13, 6)
+    s.pixels_at(loin[HIGHLIGHT], [(6, 8), (9, 6)])
+    return s
+
+
+def umeboshi_hand():
+    # Umeboshi: salted, sun-dried ume, deeply wrinkled and a soft, sour pinkish red.
+    return dried("salted_ume", 0.9, 0.85, 0.24, 541)()
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -8460,7 +8575,7 @@ SEED_PLANTS = {
     "makrut_lime_sapling": "makrut_lime_leaf", "mango_sapling": "mango",
     "nutmeg_sapling": "nutmeg_seed", "oil_palm_sapling": "oil_palm_fruit", "olive_sapling": "green_olive", "orange_sapling": "orange",
     "papaya_sapling": "green_papaya", "plum_sapling": "plum", "star_anise_sapling": "star_anise_pod",
-    "sweet_cherry_sapling": "cherry", "tamarind_sapling": "tamarind_pod",
+    "sweet_cherry_sapling": "cherry", "tamarind_sapling": "tamarind_pod", "ume_sapling": "ume_plum",
 }
 # Pictures for plants whose fruit is a vanilla item, which this script does not draw.
 BADGE_ONLY = {"apple": apple_badge, "annatto": annatto_badge}
@@ -8495,6 +8610,30 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"tartlet_shells": tartlet(None), "tempered_chocolate": tempered_chocolate_hand, "tempura": tempura_hand,
+             "tempura_batter": lambda: bowl("#f2e8c8", plain=True, flecks=[("#e8d8a8", 0.1)]), "tempura_pieces": tempura_pieces_hand,
+             "tencha": lambda: seed_heap("#3a6a2a", fleck="#5a8a3a", seed=547), "tenkasu": tenkasu_hand,
+             "tenkasu_batter": lambda: bowl("#f0e4c4", plain=True), "tequenos": raw_of("raw_tequenos", "#d8a050", 0.4),
+             "teriyaki_salmon": teriyaki_salmon_hand, "thai_tea_leaves": lambda: seed_heap("#4a2a1e", fleck="#c87a3a", seed=557),
+             "thick_palm_syrup": lambda: bowl("#a8642a", flecks=[("#d09850", 0.06)]), "thin_beef_slices": lambda: strips("#b83a34"),
+             "tlacoyos": tlacoyos_hand, "toasted_chilies": raw_of("dried_chilies", "#4a1a10", 0.3),
+             "toasted_coconut": lambda: spice_bowl("#d8a860", fleck="#f4e8d0", seed=563),
+             "toasted_corn": raw_of("dried_corn", "#a8682a", 0.35),
+             "toasted_curry_spices": raw_of("curry_spice_mix", "#7a4a20", 0.3), "toasted_massaman_spices": raw_of("massaman_spices", "#5a3018", 0.3),
+             "toasted_prawn_shells": raw_of("prawn_shells", "#c8501e", 0.35), "toasted_sweet_crumbs": raw_of("buttered_crumbs", "#a8641e", 0.3),
+             "tod_mun_mix": lambda: bowl("#c86a3a", mound=1.6, texture=bumpy, flecks=[("#4a9a3a", 0.1), ("#2e6e2e", 0.06)]),
+             "tod_mun_pla": tod_mun_pla_hand, "tofu": tofu_hand,
+             "tom_kha_base": lambda: bowl("#f2ecd8", plain=True, flecks=[("#e8d0b0", 0.1), ("#c8b878", 0.06), ("#3a7a3a", 0.04)]),
+             "tom_kha_gai": lambda: bowl("#f0e4c4", plain=True, bowl_colour="#2a2a30", flecks=[("#e8d0b0", 0.1), ("#d02a1e", 0.04), ("#3a7a3a", 0.05)]),
+             "tom_yum_broth": lambda: bowl("#d89850", flecks=[("#c8d090", 0.08), ("#3a7a3a", 0.04)]),
+             "tom_yum_goong": lambda: bowl("#d8602a", bowl_colour="#2a2a30", flecks=[("#f08a6a", 0.12), ("#3a7a3a", 0.05), ("#d02a1e", 0.04)]),
+             "tomato_caldillo": lambda: bowl("#d0402a", flecks=[("#f0d8b0", 0.05)]),
+             "toulouse_filling": lambda: bowl("#e0a098", mound=1.8, texture=bumpy, flecks=[("#3a3a3a", 0.05), ("#f0e8d0", 0.05)]),
+             "toulouse_sausage": lambda: sausage("#d89088", (1.6, 12.4), (13.0, 2.6), radius=2.6), "tripe": tripe_hand,
+             "tub_tim_grob": tub_tim_grob_hand, "tuna_loin": tuna_loin_hand, "ume_sapling": lambda: sapling("#4a8a3a", trunk_colour="#5a4a40", leaf=(2.2, 1.5)),
+             "umeboshi": umeboshi_hand, "unbaked_apfelstrudel": raw_of("apfelstrudel", "#f4e8cc", 0.55),
+             "unbaked_bienenstich": raw_of("baked_bienenstich", "#f2e2b8", 0.45), "unbaked_brunsviger": raw_of("brunsviger", "#f0dcb0", 0.35),
+             "unbaked_conchas": raw_of("conchas", "#f2e4c4", 0.45)})
 HAND.update({"steamed_rice": lambda: bowl("#f6f4ee", mound=2.0, plain=True, bowl_colour=CLAY, texture=lambda x, y: -1 if (x * 3 + y) % 5 == 0 else 0),
              "steamed_shaded_tea_leaves": raw_of("shaded_tea_leaf", "#1e4a2a", 0.35), "steamed_tea_leaves": raw_of("tea_leaf", "#2a6a2a", 0.35),
              "stegt_flaesk_med_persillesovs": stegt_flaesk_hand, "stew_beef": stew_meat("#a83430"),

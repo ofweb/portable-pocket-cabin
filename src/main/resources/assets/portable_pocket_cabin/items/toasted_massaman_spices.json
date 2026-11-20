@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/toasted_massaman_spices",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 6965786
-      }
-    ]
+    "model": "portable_pocket_cabin:item/toasted_massaman_spices"
   }
 }
