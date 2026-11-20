@@ -838,36 +838,36 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] sheep_casing
 - [x] shortcrust_dough
 - [x] shortcrust_pastry
-- [ ] shoyu_koji
-- [ ] shoyu_ramen
-- [ ] shredded_cabbage
-- [ ] shredded_papaya
-- [ ] shrimp_paste
-- [ ] sildemad_med_karrysalat
-- [ ] simmered_azuki_beans
-- [ ] skimmed_milk_bucket
-- [ ] skipjack_tuna
-- [ ] sliced_almonds
-- [ ] sliced_beetroot
-- [ ] sliced_brown_mushrooms
-- [ ] sliced_galangal
-- [ ] sliced_ginger
-- [ ] sliced_mango
-- [ ] sliced_pork_belly
-- [ ] sliced_red_mushrooms
-- [ ] sliced_rugbrod
-- [ ] smoked_pork
-- [ ] smoked_pork_shoulder
-- [ ] smoked_salmon
-- [ ] smoked_sausage
-- [ ] smoked_sausage_filling
-- [ ] smoked_tuna_loin
-- [ ] smorrebrod_med_leverpostej
-- [ ] soaked_chilies
-- [ ] soaked_corn
-- [ ] soaked_glutinous_rice
-- [ ] soaked_grated_coconut
-- [ ] soaked_horchata_rice
+- [x] shoyu_koji
+- [x] shoyu_ramen
+- [x] shredded_cabbage
+- [x] shredded_papaya
+- [x] shrimp_paste
+- [x] sildemad_med_karrysalat
+- [x] simmered_azuki_beans
+- [x] skimmed_milk_bucket
+- [x] skipjack_tuna
+- [x] sliced_almonds
+- [x] sliced_beetroot
+- [x] sliced_brown_mushrooms
+- [x] sliced_galangal
+- [x] sliced_ginger
+- [x] sliced_mango
+- [x] sliced_pork_belly
+- [x] sliced_red_mushrooms
+- [x] sliced_rugbrod
+- [x] smoked_pork
+- [x] smoked_pork_shoulder
+- [x] smoked_salmon
+- [x] smoked_sausage
+- [x] smoked_sausage_filling
+- [x] smoked_tuna_loin
+- [x] smorrebrod_med_leverpostej
+- [x] soaked_chilies
+- [x] soaked_corn
+- [x] soaked_glutinous_rice
+- [x] soaked_grated_coconut
+- [x] soaked_horchata_rice
 - [ ] soaked_rice_noodles
 - [ ] soaked_soybeans
 - [ ] socca

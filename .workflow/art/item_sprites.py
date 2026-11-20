@@ -8109,6 +8109,117 @@ def shortcrust_pastry_hand():
     s.pixels_at(pastry[SHADOW], [(5, 7), (9, 6), (11, 8)])
     return s
 
+def sliced(flesh, rim=None, rings=None, plain=False, size=(3.2, 2.6)):
+    """Round slices fanned out in a row, each lit on its face, with an optional rim of skin and inner ring."""
+    def drawn():
+        s = Sprite()
+        rx, ry = size
+        for cx, cy in [(4.4, 4.6), (8.0, 8.0), (11.6, 11.4)]:
+            if rim:
+                s.ellipse(ramp(rim, spread=0.6), cx, cy, rx, ry)
+            tones = plain_ramp(flesh) if plain else ramp(flesh, spread=0.5)
+            s.ellipse(tones, cx, cy, rx - (0.8 if rim else 0), ry - (0.8 if rim else 0), outline=not rim)
+            if rings:
+                s.ellipse(ramp(rings, spread=0.5), cx, cy, rx * 0.45, ry * 0.45, outline=False)
+            s.put(round(cx) - 1, round(cy) - 1, tones[HIGHLIGHT])
+        return s
+    return drawn
+
+
+def mushroom_slices(cap, gill="#e8dcc8"):
+    """Slices through a mushroom: each a pale cut face in the shape of cap and stem, edged with the cap's colour."""
+    def drawn():
+        s = Sprite()
+        for cx, cy in [(4.6, 5.0), (10.6, 6.0), (7.4, 11.4)]:
+            s.shape(lambda x, y, cx=cx, cy=cy: (y <= cy and ((x - cx) / 3.4) ** 2 + ((y - cy) / 2.6) ** 2 <= 1) or
+                    (cy <= y <= cy + 3 and abs(x - cx) <= 1.2), plain_ramp(gill), (cx, cy), (3.4, 2.6))
+            s.pixels_at(ramp(cap)[BASE], [(round(cx) + k, round(cy) - 3 + abs(k) // 2) for k in range(-3, 4)])
+        return s
+    return drawn
+
+
+def open_sandwich(toppings):
+    """Smørrebrød: a slice of dark rye bread spread and piled with toppings, seen a little from above."""
+    def drawn():
+        s = Sprite()
+        bread = ramp("#4a2e1e", spread=0.6)
+        s.shape(lambda x, y: 1 <= x <= 14 and 6 <= y <= 13, bread, (7.5, 9.5), (7.0, 3.5))
+        s.pixels_at(plain_ramp("#c8a878")[BASE], [(3, 12), (8, 12), (12, 12)])
+        toppings(s)
+        return s
+    return drawn
+
+
+def smorrebrod_leverpostej(s):
+    s.ellipse(ramp("#8a5a44", spread=0.5), 7.5, 7.0, 6.0, 1.8)  # The pâté.
+    s.pixels_at(ramp("#8a5a34")[BASE], [(4, 6), (7, 5), (10, 6)])  # Mushrooms.
+    s.pixels_at(ramp("#7a3a24")[BASE], [(5, 5), (9, 5), (11, 5)])  # Bacon.
+    s.pixels_at(ramp("#8a1a40")[BASE], [(6, 6), (12, 7)])  # Pickled beetroot.
+
+
+def sildemad(s):
+    s.ellipse(plain_ramp("#ecd468"), 7.5, 7.4, 6.0, 1.6)  # Curry salad.
+    s.pixels_at(plain_ramp("#c8d0d8")[BASE], [(3, 6), (4, 6), (5, 6), (6, 5), (7, 5)])  # Herring.
+    s.pixels_at(plain_ramp("#f6f4ee")[BASE], [(9, 5), (10, 5), (12, 6)])  # Egg.
+    s.pixels_at(ramp("#f0b020")[BASE], [(10, 6)])
+    s.pixels_at(plain_ramp("#f0e8d8")[BASE], [(8, 6), (11, 7)])  # Onion.
+
+
+def soaking(contents, water="#b8d0d8", pieces=0.3, plain=False):
+    """Something soaking: a bowl of water with the food sitting in it."""
+    return lambda: bowl(water, plain=True, flecks=[(contents, pieces)])
+
+
+def rugbrod_slices():
+    # Sliced rugbrød: two dense, dark rye slices studded with grains and seeds.
+    s = Sprite()
+    for x0, y0 in [(1, 2), (6, 7)]:
+        crumb = ramp("#5a3a28", spread=0.6)
+        s.shape(lambda x, y, x0=x0, y0=y0: x0 <= x <= x0 + 8 and y0 <= y <= y0 + 7, crumb, (x0 + 4, y0 + 3.5), (4.0, 3.5))
+        s.pixels_at(plain_ramp("#c8a878")[BASE], [(x0 + 2, y0 + 2), (x0 + 5, y0 + 4), (x0 + 3, y0 + 5), (x0 + 6, y0 + 2)])
+    return s
+
+
+def skimmed_milk_bucket_hand():
+    # Skimmed milk: a bucket of thin, bluish-white milk with the cream taken off.
+    s = Sprite()
+    iron = plain_ramp("#a8acb4")
+    s.shape(lambda x, y: 4 <= y <= 14 and abs(x - 7.5) <= 5.6 - (y - 4) * 0.15, iron, (7.5, 9.0), (5.6, 5.0))
+    s.ellipse(iron, 7.5, 4.6, 5.8, 1.8)
+    s.ellipse(plain_ramp("#e8f0f6"), 7.5, 4.6, 4.6, 1.2, outline=False)
+    s.pixels_at(iron[HIGHLIGHT], [(3, 7), (3, 8), (3, 9)])
+    s.pixels_at(plain_ramp("#6a6e76")[BASE], [(1, 3), (2, 2), (13, 2), (14, 3)])  # The handle.
+    return s
+
+
+def skipjack_tuna_hand():
+    # Skipjack tuna: a stout, bullet-shaped fish, dark blue-black above and silver below, with dark stripes on its belly.
+    s = fish("#d0d8e0", "#1e2a4a", (0.6, 11.6), (14.6, 4.0), depth=3.4)
+    for x, y in [(5, 11), (7, 10), (9, 9), (11, 8)]:
+        s.pixels_at(ramp("#3a4a6a")[BASE], [(x, y), (x + 1, y)])
+    return s
+
+
+def shoyu_ramen_hand():
+    # Shoyu ramen: noodles in a clear brown soy broth, topped with chashu, a halved marinated egg, nori and spring onion.
+    s = bowl("#a86a34", bowl_colour="#2a2a30")
+    s.pixels_at(plain_ramp("#f2dc90")[BASE], [(3, 7), (4, 7), (5, 7)])  # Noodles.
+    s.pixels_at(plain_ramp("#e8c8a8")[BASE], [(6, 6), (7, 6)])  # Chashu.
+    s.pixels_at(plain_ramp("#f2e8d0")[BASE], [(9, 6), (10, 6)])
+    s.put(10, 6, ramp("#f0a020")[BASE])  # The egg's yolk.
+    s.pixels_at(ramp("#1e2a24")[BASE], [(12, 5), (12, 6), (12, 7)])  # Nori.
+    s.pixels_at(ramp("#5ab040")[BASE], [(8, 7), (11, 7)])
+    return s
+
+
+def shrimp_paste_hand():
+    # Shrimp paste: fermented shrimp dried and pressed into a firm, dark purplish-brown block.
+    s = Sprite()
+    block = ramp("#5a3a3a", spread=0.6)
+    s.shape(lambda x, y: 3 <= x <= 12 and 5 <= y <= 12, block, (7.5, 8.5), (4.5, 3.5), texture=lambda x, y: 1 if (x * 2 + y) % 5 == 0 else 0)
+    s.pixels_at(ramp("#7a5050")[BASE], [(x, 5) for x in range(4, 12)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -8163,6 +8274,22 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"shoyu_koji": lambda: bowl("#c8a46a", mound=1.4, texture=bumpy, bowl_colour="#8a6a4a", flecks=[("#d0d890", 0.16)]),
+             "shoyu_ramen": shoyu_ramen_hand, "shredded_cabbage": grated("#d0e4a8", plain=True, seed=29), "shredded_papaya": grated("#c8dc98", plain=True, seed=31),
+             "shrimp_paste": shrimp_paste_hand, "sildemad_med_karrysalat": open_sandwich(sildemad),
+             "simmered_azuki_beans": lambda: bowl("#6a2a2a", mound=0.6, flecks=[("#8c2a2e", 0.3)]), "skimmed_milk_bucket": skimmed_milk_bucket_hand,
+             "skipjack_tuna": skipjack_tuna_hand, "sliced_almonds": sliced("#e2cfa4", plain=True, size=(3.2, 1.9)),
+             "sliced_beetroot": sliced("#9a1a48", rim="#5a1430", rings="#7a1438"), "sliced_brown_mushrooms": mushroom_slices("#7a5034"),
+             "sliced_galangal": sliced("#f2e4c0", rim="#d8a0a0", plain=True), "sliced_ginger": sliced("#f2e0a0", rim="#b8945a", plain=True),
+             "sliced_mango": sliced("#f0b020", size=(3.6, 1.8)), "sliced_pork_belly": lambda: bacon_rashers("#e0948c", "#f4ece0"),
+             "sliced_red_mushrooms": mushroom_slices("#c8302a"), "sliced_rugbrod": lambda: rugbrod_slices(),
+             "smoked_pork": seared("pork_loin", "#7a3e20", 0.6), "smoked_pork_shoulder": seared("pork_shoulder", "#7a3e20", 0.6),
+             "smoked_salmon": seared("cured_salmon", "#c8502a", 0.25), "smoked_sausage": lambda: sausage("#7a2e1e", (2.4, 11.0), (12.4, 3.0), radius=2.4),
+             "smoked_sausage_filling": lambda: bowl("#e0a098", mound=1.8, texture=bumpy, flecks=[("#f0e8d0", 0.06)]),
+             "smoked_tuna_loin": seared("salted_tuna_loin", "#4a2a1a", 0.5), "smorrebrod_med_leverpostej": open_sandwich(smorrebrod_leverpostej),
+             "soaked_chilies": soaking("#a8281e", pieces=0.3), "soaked_corn": soaking("#f0c840", pieces=0.35),
+             "soaked_glutinous_rice": soaking("#f8f6f0", pieces=0.4), "soaked_grated_coconut": soaking("#fbfaf6", water="#e8ecee", pieces=0.4),
+             "soaked_horchata_rice": soaking("#f6f4ec", pieces=0.35)})
 HAND.update({"salted_cod": salted_cod_hand, "salted_duck_legs": salted("duck_legs", 12, 9), "salted_herring": salted("herring", 12, 11),
              "salted_salmon": grated("#f08a5a", plain=True, seed=23), "salted_salmon_fillet": salted("salmon_fillet", 12, 13),
              "salted_tuna_loin": salted_tuna_loin_hand, "salted_ume": raw_of("ume_plum", "#c8304a", 0.6),
