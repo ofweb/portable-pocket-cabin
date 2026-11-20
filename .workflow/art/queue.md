@@ -968,37 +968,37 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] unbaked_bienenstich
 - [x] unbaked_brunsviger
 - [x] unbaked_conchas
-- [ ] unbaked_croque_monsieur
-- [ ] unbaked_flammkuchen
-- [ ] unbaked_kasekuchen
-- [ ] unbaked_pissaladiere
-- [ ] unbaked_pumpkin_pie
-- [ ] unbaked_quesadilla
-- [ ] vanilla
-- [ ] vanilla_custard
-- [ ] vanilla_milk
-- [ ] vegetable_soup
-- [ ] warm_milk_bucket
-- [ ] warm_rice_pudding
-- [ ] warm_sauerkraut
-- [ ] warm_vanilla_custard
-- [ ] wet_cornstarch
-- [ ] wet_glutinous_rice_flour
-- [ ] wet_potato_starch
-- [ ] wet_salt
-- [ ] wet_sweet_potato_starch
-- [ ] wet_tapioca_starch
-- [ ] wheat_flour
-- [ ] whipped_cream
-- [ ] white_fish_fillet
-- [ ] withered_tea_leaves
-- [ ] wood_ash
-- [ ] worcestershire_mash
-- [ ] yakitori
-- [ ] yeast
-- [ ] yerba_mate
-- [ ] yerba_mate_sapling
-- [ ] yogurt
+- [x] unbaked_croque_monsieur
+- [x] unbaked_flammkuchen
+- [x] unbaked_kasekuchen
+- [x] unbaked_pissaladiere
+- [x] unbaked_pumpkin_pie
+- [x] unbaked_quesadilla
+- [x] vanilla
+- [x] vanilla_custard
+- [x] vanilla_milk
+- [x] vegetable_soup
+- [x] warm_milk_bucket
+- [x] warm_rice_pudding
+- [x] warm_sauerkraut
+- [x] warm_vanilla_custard
+- [x] wet_cornstarch
+- [x] wet_glutinous_rice_flour
+- [x] wet_potato_starch
+- [x] wet_salt
+- [x] wet_sweet_potato_starch
+- [x] wet_tapioca_starch
+- [x] wheat_flour
+- [x] whipped_cream
+- [x] white_fish_fillet
+- [x] withered_tea_leaves
+- [x] wood_ash
+- [x] worcestershire_mash
+- [x] yakitori
+- [x] yeast
+- [x] yerba_mate
+- [x] yerba_mate_sapling
+- [x] yogurt
 
 ## Kept on the vanilla flask
 

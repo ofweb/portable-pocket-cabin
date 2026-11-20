@@ -8555,6 +8555,56 @@ def umeboshi_hand():
     # Umeboshi: salted, sun-dried ume, deeply wrinkled and a soft, sour pinkish red.
     return dried("salted_ume", 0.9, 0.85, 0.24, 541)()
 
+def unbaked_croque_monsieur_hand():
+    # An unbaked croque monsieur: a ham sandwich spread with pale béchamel and scattered with grated cheese.
+    s = SPRITES["croque_monsieur"]()
+    top = plain_ramp("#f4ecd0")
+    for x in range(1, 15):
+        for y in range(3, 9):
+            if s.pixels[y][x] is not None and s.pixels[y][x] != top[OUTLINE] and y >= 4:
+                s.put(x, y, top[BASE] if (x + y) % 3 else plain_ramp("#f0d070")[BASE])
+    return s
+
+
+def unbaked_pumpkin_pie_hand():
+    # An unbaked pumpkin pie: a pale pastry case filled with smooth, bright orange pumpkin custard.
+    return tart_shell("#ecd298", filling="#e88a30")
+
+
+def warm_milk_bucket_hand():
+    # Warm milk: a bucket of milk gently warmed, a wisp of steam rising from it.
+    s = skimmed_milk_bucket_hand()
+    s.ellipse(plain_ramp("#f8f6ee"), 7.5, 4.6, 4.6, 1.2, outline=False)
+    s.pixels_at(plain_ramp("#e8ecf0")[BASE], [(6, 1), (7, 0), (9, 1), (8, 2)])
+    return s
+
+
+def white_fish_fillet_hand():
+    # A white fish fillet: firm, translucent white flesh with faint lines between its flakes.
+    s = Sprite()
+    fillet = plain_ramp("#f0ece6")
+    s.ellipse(fillet, 7.5, 8.4, 6.8, 3.6, angle=-15)
+    for k in range(-2, 3):
+        s.line(fillet[SHADOW], 6 + k * 2, 11, 8 + k * 2, 6)
+    return s
+
+
+def wood_ash_hand():
+    # Wood ash: a soft heap of fine, pale grey ash with a few dark flecks of charcoal.
+    return seed_heap("#b8b4ae", fleck="#3a3634", seed=569)
+
+
+def yerba_mate_hand():
+    # Yerba mate: dried, crushed leaf packed into a round gourd, with a metal straw standing in it.
+    s = Sprite()
+    gourd = ramp("#8a5a34", spread=0.6)
+    s.ellipse(gourd, 7.0, 10.0, 5.6, 5.0)
+    s.ellipse(ramp("#7a8a48", spread=0.5), 7.0, 6.4, 4.2, 1.6, outline=False)  # The leaf inside.
+    s.pixels_at(ramp("#9aa858")[BASE], [(5, 6), (8, 6)])
+    s.line(plain_ramp("#c8ccd4")[BASE], 9, 7, 13, 0)  # The bombilla.
+    s.pixels_at(gourd[HIGHLIGHT], [(3, 9), (3, 10)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -8575,7 +8625,7 @@ SEED_PLANTS = {
     "makrut_lime_sapling": "makrut_lime_leaf", "mango_sapling": "mango",
     "nutmeg_sapling": "nutmeg_seed", "oil_palm_sapling": "oil_palm_fruit", "olive_sapling": "green_olive", "orange_sapling": "orange",
     "papaya_sapling": "green_papaya", "plum_sapling": "plum", "star_anise_sapling": "star_anise_pod",
-    "sweet_cherry_sapling": "cherry", "tamarind_sapling": "tamarind_pod", "ume_sapling": "ume_plum",
+    "sweet_cherry_sapling": "cherry", "tamarind_sapling": "tamarind_pod", "ume_sapling": "ume_plum", "yerba_mate_sapling": "yerba_mate_leaf",
 }
 # Pictures for plants whose fruit is a vanilla item, which this script does not draw.
 BADGE_ONLY = {"apple": apple_badge, "annatto": annatto_badge}
@@ -8610,6 +8660,29 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"unbaked_croque_monsieur": unbaked_croque_monsieur_hand, "unbaked_flammkuchen": raw_of("flammkuchen", "#f2e6c8", 0.4),
+             "unbaked_kasekuchen": raw_of("kasekuchen", "#f6ecc8", 0.4), "unbaked_pissaladiere": raw_of("pissaladiere", "#f0dcb0", 0.3),
+             "unbaked_pumpkin_pie": unbaked_pumpkin_pie_hand, "unbaked_quesadilla": raw_of("quesadilla", "#f4ecc8", 0.5),
+             "vanilla": lambda: vanilla_pods("#2e1a14"), "vanilla_custard": lambda: bowl("#f4dc88", mound=0.8, plain=True, flecks=[("#2a2018", 0.04)]),
+             "vanilla_milk": lambda: bowl("#f6f2e2", plain=True, bowl_colour=CLAY, flecks=[("#2a2018", 0.04)]),
+             "vegetable_soup": lambda: bowl("#c8804a", flecks=[("#f07a20", 0.12), ("#ecd890", 0.1), ("#8a1a40", 0.08)]),
+             "warm_milk_bucket": warm_milk_bucket_hand,
+             "warm_rice_pudding": lambda: bowl("#f4ecd4", mound=1.2, plain=True, bowl_colour=CLAY, texture=bumpy, flecks=[("#2a2018", 0.03)]),
+             "warm_sauerkraut": lambda: bowl("#e0d494", mound=1.4, plain=True, texture=lambda x, y: -1 if (x + y * 2) % 3 == 0 else 0),
+             "warm_vanilla_custard": lambda: bowl("#f0d070", plain=True, flecks=[("#2a2018", 0.04)]),
+             "wet_cornstarch": lambda: bowl("#f0e2a8", plain=True, bowl_colour=CLAY, flecks=[("#e8e4c8", 0.1)]),
+             "wet_glutinous_rice_flour": lambda: bowl("#f8f6f0", mound=0.8, plain=True, bowl_colour=CLAY),
+             "wet_potato_starch": lambda: bowl("#dcd8cc", plain=True, bowl_colour=CLAY, flecks=[("#d8d8d0", 0.1)]),
+             "wet_salt": lambda: bowl("#c8ccd0", mound=1.0, plain=True, bowl_colour=CLAY, flecks=[("#fbfcfc", 0.2)]),
+             "wet_sweet_potato_starch": lambda: bowl("#f0cca8", plain=True, bowl_colour=CLAY, flecks=[("#e0d4b8", 0.1)]),
+             "wet_tapioca_starch": lambda: bowl("#e6eef2", plain=True, bowl_colour=CLAY, flecks=[("#e6e6e0", 0.08)]),
+             "wheat_flour": lambda: spice_bowl("#f4eedc", fleck="#e4dcc4", seed=571, bowl_colour=CLAY),
+             "whipped_cream": lambda: bowl("#fbfaf6", mound=2.6, plain=True, bowl_colour=CLAY, texture=lambda x, y: -1 if (x * 2 + y) % 5 == 0 else 0),
+             "white_fish_fillet": white_fish_fillet_hand, "withered_tea_leaves": dried("tea_leaf", 0.7, 0.85, 0.1, 577),
+             "wood_ash": wood_ash_hand, "worcestershire_mash": lambda: bowl("#3a2018", mound=1.0, bowl_colour="#8a6a4a", flecks=[("#6a3a24", 0.12)]),
+             "yakitori": raw_of("grilled_yakitori", "#5a1e0e", 0.2), "yeast": lambda: seed_heap("#c8a46a", fleck="#e8d8b0", seed=587),
+             "yerba_mate": yerba_mate_hand, "yerba_mate_sapling": lambda: sapling("#3a7a34", trunk_colour="#6a5a40", leaf=(2.4, 1.3)),
+             "yogurt": lambda: bowl("#f8f6ee", mound=1.4, plain=True, bowl_colour=CLAY)})
 HAND.update({"tartlet_shells": tartlet(None), "tempered_chocolate": tempered_chocolate_hand, "tempura": tempura_hand,
              "tempura_batter": lambda: bowl("#f2e8c8", plain=True, flecks=[("#e8d8a8", 0.1)]), "tempura_pieces": tempura_pieces_hand,
              "tencha": lambda: seed_heap("#3a6a2a", fleck="#5a8a3a", seed=547), "tenkasu": tenkasu_hand,
