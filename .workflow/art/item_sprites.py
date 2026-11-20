@@ -7707,6 +7707,121 @@ def rabbit_offal_hand():
         s.ellipse(ramp("#8a3434", spread=0.6), cx, 11.4, 2.0, 1.4)
     return s
 
+def raw_of(name, toward="#f0e4c8", amount=0.55):
+    """Another item's sprite as it was before cooking: its colours paled toward raw dough or crumb."""
+    def drawn():
+        s = SPRITES[name]()
+        tr, tg, tb = hex_rgb(toward)
+        for y in range(16):
+            for x in range(16):
+                c = s.pixels[y][x]
+                if c is None:
+                    continue
+                # Keep the dark outline dark, so the shape still reads.
+                k = amount if sum(c) > 150 else amount * 0.4
+                s.put(x, y, (round(c[0] + (tr - c[0]) * k), round(c[1] + (tg - c[1]) * k), round(c[2] + (tb - c[2]) * k)))
+        return s
+    return drawn
+
+
+def raw_skewer(meat, veg):
+    """A raw skewer: chunks of uncooked meat alternating with a vegetable, threaded on a wooden stick."""
+    def drawn():
+        s = Sprite()
+        start, end = (1.6, 14.4), (14.6, 1.4)
+        s.line(ramp("#c8a070")[BASE], 2, 14, 15, 1)
+        for i in range(4):
+            t = 0.22 + i * 0.2
+            cx, cy = start[0] + (end[0] - start[0]) * t, start[1] + (end[1] - start[1]) * t
+            tones = ramp(meat if i % 2 == 0 else veg, spread=0.6)
+            s.ellipse(tones, cx, cy, 2.3, 2.3)
+            s.put(round(cx) - 1, round(cy) - 1, tones[HIGHLIGHT])
+        return s
+    return drawn
+
+
+def raw_dango():
+    # A raw dango skewer: three plain white rice dumplings threaded on a stick, not yet charred.
+    s = Sprite()
+    s.line(ramp("#c8a070")[BASE], 3, 15, 13, 1)
+    ball = plain_ramp("#f2ece0")
+    for cx, cy in [(5.2, 11.6), (7.8, 7.8), (10.4, 4.2)]:
+        s.ellipse(ball, cx, cy, 2.6, 2.4)
+        s.put(round(cx) - 1, round(cy) - 1, ball[HIGHLIGHT])
+    return s
+
+
+def rabbit_saddle_hand():
+    # A saddle of rabbit: the slim, lean, pale pink loin on its backbone, a long narrow joint.
+    s = Sprite()
+    meat = ramp("#d8908a", spread=0.6)
+    s.capsule(meat, [(2.0, 12.0), (13.4, 3.4)], (2.8, 2.4))
+    for t in range(2, 11, 2):
+        s.put(2 + t, 12 - round(t * 0.75), plain_ramp("#ece2cc")[SHADOW])  # The backbone.
+    return s
+
+
+def raisins_hand():
+    # Raisins: a little heap of dark, wrinkled, purple-brown dried grapes.
+    s = Sprite()
+    rng = random.Random(409)
+    for cx, cy in [(4.0, 12.4), (7.4, 12.8), (10.8, 12.4), (13.0, 10.4), (5.6, 9.4), (9.0, 9.6), (3.0, 8.4), (7.4, 6.6), (11.0, 7.2), (9.2, 4.0)]:
+        tones = ramp("#4a2230", spread=0.6)
+        s.ellipse(tones, cx, cy, 1.8, 1.4)
+        s.put(round(cx) - 1, round(cy) - 1, tones[HIGHLIGHT])
+        s.put(round(cx) + rng.choice((-1, 0)), round(cy), tones[OUTLINE])
+    return s
+
+
+def ramen_broth_hand():
+    # Ramen broth: a rich, cloudy, golden-brown broth beaded with fat, in a deep bowl.
+    s = bowl("#c8904a", flecks=[("#f0d890", 0.08)], bowl_colour="#2a2a30")
+    return s
+
+
+def ramen_noodles_hand():
+    # Ramen noodles: fresh, curly, pale yellow noodles dusted with flour, in a loose bundle.
+    return noodles("#f4e2a0")
+
+
+def ratatouille_hand():
+    # Ratatouille: courgette, aubergine and peppers stewed with tomato and herbs, a colourful stew in a clay bowl.
+    return bowl("#c8402a", mound=1.0, bowl_colour=CLAY, flecks=[("#4a8a3a", 0.1), ("#4a2a5a", 0.1), ("#e8c030", 0.08), ("#f0e0b0", 0.06)])
+
+
+def raw_butter_hand():
+    # Raw butter: freshly churned, a soft, pale yellow block, ridged from the paddles.
+    s = Sprite()
+    butter = plain_ramp("#f4e090")
+    s.shape(lambda x, y: 2 <= x <= 13 and 5 <= y <= 12, butter, (7.5, 8.5), (5.5, 3.5))
+    s.pixels_at(plain_ramp("#faf0c0")[BASE], [(x, 5) for x in range(3, 13)])
+    for x in range(4, 12, 3):
+        s.line(butter[SHADOW], x, 6, x + 1, 11)  # The paddle ridges.
+    return s
+
+
+def raw_rinderrouladen_hand():
+    # Raw rinderrouladen: thin slices of beef rolled up round bacon, onion and gherkin, tied with string.
+    s = Sprite()
+    meat = ramp("#b83a34", spread=0.6)
+    for cx, cy in [(5.0, 5.6), (10.6, 10.6)]:
+        s.capsule(meat, [(cx - 3.4, cy + 1.6), (cx + 3.4, cy - 1.6)], (2.6, 2.6))
+        s.ellipse(ramp("#e8b0a0", spread=0.5), cx - 3.0, cy + 1.4, 1.6, 1.6)  # The spiral end.
+        s.put(round(cx - 3), round(cy + 1), ramp("#4a7a2a")[BASE])
+        s.line(plain_ramp("#f2eee0")[BASE], round(cx) - 1, round(cy) - 2, round(cx) + 1, round(cy) + 2)  # The string.
+    return s
+
+
+def raw_sopes_hand():
+    # Raw sopes: thick little discs of fresh masa with their rims pinched up to hold a filling.
+    s = Sprite()
+    masa = plain_ramp("#f0e2b0")
+    for cx, cy in [(5.0, 5.6), (10.6, 10.6)]:
+        s.ellipse(masa, cx, cy, 4.2, 3.0)
+        s.ellipse(masa, cx, cy - 0.4, 2.8, 1.8, outline=False, light=(0.6, 0.8))
+        s.put(round(cx) - 3, round(cy) - 1, masa[HIGHLIGHT])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -7761,6 +7876,20 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"rabbit_saddle": rabbit_saddle_hand, "rabbit_stew_meat": stew_meat("#d8908a"), "raisins": raisins_hand,
+             "ramen_broth": ramen_broth_hand, "ramen_dough": lambda: dough_ball("#f2e0a0", flour=False), "ramen_noodles": ramen_noodles_hand,
+             "ratatouille": ratatouille_hand, "raw_anticucho_skewer": raw_skewer("#7a2a2a", "#8a2a2a"),
+             "raw_beef_skewer": raw_skewer("#b83a34", "#f07a20"), "raw_blood_sausage": lambda: sausage("#3a1a1e", (2.4, 11.0), (12.4, 3.0), radius=2.4),
+             "raw_bratwurst": lambda: sausage("#e8b8a8", (2.4, 11.0), (12.4, 3.0), radius=2.4), "raw_butter": raw_butter_hand,
+             "raw_chicken_skewer": raw_skewer("#f0c0b0", "#8a1a40"), "raw_cocktail_sausages": raw_of("cocktail_sausages", "#e8b0a8", 0.5),
+             "raw_coxinhas": raw_of("coxinhas"), "raw_dango_skewer": lambda: raw_dango(),
+             "raw_empanadas": raw_of("empanadas_de_carne"), "raw_gyoza": raw_of("gyoza", "#f4ecd8", 0.7), "raw_korokke": raw_of("fried_korokke"),
+             "raw_llapingachos": raw_of("fried_llapingachos", "#f0d890", 0.5), "raw_mutton_skewer": raw_skewer("#a8403a", "#a88a6a"),
+             "raw_pino": lambda: bowl("#a84a3a", mound=1.4, texture=bumpy, flecks=[("#f0e0c8", 0.12), ("#c8401e", 0.06)]),
+             "raw_polsehorn": raw_of("polsehorn"), "raw_pork_skewer": raw_skewer("#e8a098", "#ecd890"),
+             "raw_rinderrouladen": raw_rinderrouladen_hand, "raw_salsa_roja": lambda: bowl("#c83a24", mound=0.8, flecks=[("#3a1a14", 0.08), ("#f0e8d0", 0.06)]),
+             "raw_satay_skewer": raw_skewer("#e8b040", "#e8b040"), "raw_smoked_sausage": lambda: sausage("#d8908a", (2.4, 11.0), (12.4, 3.0), radius=2.4),
+             "raw_sopes": raw_sopes_hand, "raw_spring_rolls": raw_of("fried_spring_rolls", "#f6f0e2", 0.7)})
 HAND.update({"pounded_shrimp": lambda: bowl("#d89a8a", mound=1.4, texture=bumpy, bowl_colour="#8a6a4a"),
              "pozole_base": lambda: bowl("#b0301e", mound=0.6, flecks=[("#f0eadc", 0.14), ("#e0948c", 0.08)]),
              "pozole_rojo": lambda: bowl("#b0301e", mound=0.6, flecks=[("#f0eadc", 0.12), ("#c8e0a0", 0.08), ("#d84a6a", 0.04), ("#7ac040", 0.03)]),

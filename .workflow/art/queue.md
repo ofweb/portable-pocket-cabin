@@ -716,36 +716,36 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] rabbit_carcass
 - [x] rabbit_legs
 - [x] rabbit_offal
-- [ ] rabbit_saddle
-- [ ] rabbit_stew_meat
-- [ ] raisins
-- [ ] ramen_broth
-- [ ] ramen_dough
-- [ ] ramen_noodles
-- [ ] ratatouille
-- [ ] raw_anticucho_skewer
-- [ ] raw_beef_skewer
-- [ ] raw_blood_sausage
-- [ ] raw_bratwurst
-- [ ] raw_butter
-- [ ] raw_chicken_skewer
-- [ ] raw_cocktail_sausages
-- [ ] raw_coxinhas
-- [ ] raw_dango_skewer
-- [ ] raw_empanadas
-- [ ] raw_gyoza
-- [ ] raw_korokke
-- [ ] raw_llapingachos
-- [ ] raw_mutton_skewer
-- [ ] raw_pino
-- [ ] raw_polsehorn
-- [ ] raw_pork_skewer
-- [ ] raw_rinderrouladen
-- [ ] raw_salsa_roja
-- [ ] raw_satay_skewer
-- [ ] raw_smoked_sausage
-- [ ] raw_sopes
-- [ ] raw_spring_rolls
+- [x] rabbit_saddle
+- [x] rabbit_stew_meat
+- [x] raisins
+- [x] ramen_broth
+- [x] ramen_dough
+- [x] ramen_noodles
+- [x] ratatouille
+- [x] raw_anticucho_skewer
+- [x] raw_beef_skewer
+- [x] raw_blood_sausage
+- [x] raw_bratwurst
+- [x] raw_butter
+- [x] raw_chicken_skewer
+- [x] raw_cocktail_sausages
+- [x] raw_coxinhas
+- [x] raw_dango_skewer
+- [x] raw_empanadas
+- [x] raw_gyoza
+- [x] raw_korokke
+- [x] raw_llapingachos
+- [x] raw_mutton_skewer
+- [x] raw_pino
+- [x] raw_polsehorn
+- [x] raw_pork_skewer
+- [x] raw_rinderrouladen
+- [x] raw_salsa_roja
+- [x] raw_satay_skewer
+- [x] raw_smoked_sausage
+- [x] raw_sopes
+- [x] raw_spring_rolls
 - [ ] raw_tamales
 - [ ] raw_tequenos
 - [ ] raw_tlacoyos
