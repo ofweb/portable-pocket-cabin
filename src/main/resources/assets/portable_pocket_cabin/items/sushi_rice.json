@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/sushi_rice",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 16579828
-      }
-    ]
+    "model": "portable_pocket_cabin:item/sushi_rice"
   }
 }

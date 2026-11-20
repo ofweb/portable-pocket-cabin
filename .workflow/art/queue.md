@@ -898,36 +898,36 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] star_anise_sapling
 - [x] steamed_glutinous_rice
 - [x] steamed_mochi_dough
-- [ ] steamed_rice
-- [ ] steamed_shaded_tea_leaves
-- [ ] steamed_tea_leaves
-- [ ] stegt_flaesk_med_persillesovs
-- [ ] stew_beef
-- [ ] stir_fried_rice_noodles
-- [ ] stir_fried_vegetables
-- [ ] stretched_curds
-- [ ] strudel_dough
-- [ ] stuffed_poblano
-- [ ] suet
-- [ ] sushi_rice
-- [ ] sweated_vanilla_pods
-- [ ] sweet_cherry_sapling
-- [ ] sweet_potato_starch
-- [ ] sweet_yeast_dough
-- [ ] tacos_al_pastor
-- [ ] taiyaki
-- [ ] taiyaki_batter
-- [ ] takoyaki
-- [ ] takoyaki_balls
-- [ ] takoyaki_batter
-- [ ] tamal_masa
-- [ ] tamales
-- [ ] tamarind_pulp
-- [ ] tamarind_sapling
-- [ ] tapioca_starch
-- [ ] tarte_tatin
-- [ ] tarteletter_med_hons_i_asparges
-- [ ] tartlet_rings
+- [x] steamed_rice
+- [x] steamed_shaded_tea_leaves
+- [x] steamed_tea_leaves
+- [x] stegt_flaesk_med_persillesovs
+- [x] stew_beef
+- [x] stir_fried_rice_noodles
+- [x] stir_fried_vegetables
+- [x] stretched_curds
+- [x] strudel_dough
+- [x] stuffed_poblano
+- [x] suet
+- [x] sushi_rice
+- [x] sweated_vanilla_pods
+- [x] sweet_cherry_sapling
+- [x] sweet_potato_starch
+- [x] sweet_yeast_dough
+- [x] tacos_al_pastor
+- [x] taiyaki
+- [x] taiyaki_batter
+- [x] takoyaki
+- [x] takoyaki_balls
+- [x] takoyaki_batter
+- [x] tamal_masa
+- [x] tamales
+- [x] tamarind_pulp
+- [x] tamarind_sapling
+- [x] tapioca_starch
+- [x] tarte_tatin
+- [x] tarteletter_med_hons_i_asparges
+- [x] tartlet_rings
 - [ ] tartlet_shells
 - [ ] tempered_chocolate
 - [ ] tempura

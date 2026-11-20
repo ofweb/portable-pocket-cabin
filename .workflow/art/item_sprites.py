@@ -8325,6 +8325,121 @@ def steamed_mochi_dough_hand():
     s.pixels_at((255, 255, 255), [(5, 6), (6, 5), (9, 7)])
     return s
 
+def stegt_flaesk_hand():
+    # Stegt flæsk med persillesovs: crisp slices of fried pork belly with boiled potatoes and creamy parsley sauce.
+    s = plate()
+    s.ellipse(plain_ramp("#f2eedc"), 4.6, 11.0, 3.6, 1.6)
+    s.pixels_at(ramp("#3a9a34")[BASE], [(3, 11), (5, 11), (4, 10)])
+    potato = plain_ramp("#ecd890")
+    s.ellipse(potato, 11.6, 11.0, 2.2, 1.6)
+    crisp = ramp("#c8823a", spread=0.6)
+    for y in (6, 8):
+        s.capsule(crisp, [(2.0, y + 0.5), (12.0, y - 0.5)], (1.0, 1.0))
+        s.pixels_at(plain_ramp("#f0d8a8")[BASE], [(x, y) for x in range(4, 11, 3)])
+    return s
+
+
+def stretched_curds_hand():
+    # Stretched curds: hot curds pulled into a long, glossy, elastic white ribbon, folding over itself.
+    s = Sprite()
+    cheese = plain_ramp("#f2ead4")
+    s.capsule(cheese, [(1.6, 12.0), (5.0, 4.0), (9.0, 11.0), (13.6, 3.0)], (1.6, 1.4))
+    s.pixels_at((255, 252, 244), [(4, 6), (8, 9), (12, 5)])
+    return s
+
+
+def strudel_dough_hand():
+    # Strudel dough: rested dough stretched paper-thin over the back of the hands, a translucent, draped pale sheet.
+    s = Sprite()
+    sheet = plain_ramp("#f2e8cc")
+    s.shape(lambda x, y: ((x - 7.5) / 7.0) ** 2 + ((y - 8.0) / 5.6) ** 2 + 0.2 * math.sin(x * 0.9) <= 1, sheet, (7.5, 8.0), (7.0, 5.6))
+    for x in range(3, 13, 3):
+        s.line(sheet[SHADOW], x, 4, x + 1, 12)  # The folds.
+    return s
+
+
+def stuffed_poblano_hand():
+    # A stuffed poblano: the charred, peeled chili split and filled with white Oaxaca cheese.
+    s = SPRITES["charred_poblano"]()
+    s.pixels_at(plain_ramp("#f4f0e2")[BASE], [(6, 7), (7, 8), (8, 9), (7, 9), (8, 10)])
+    return s
+
+
+def tacos_al_pastor_hand():
+    # Tacos al pastor: small corn tortillas heaped with red-orange pork, pineapple, white onion and cilantro.
+    s = Sprite()
+    tortilla = plain_ramp("#e8d090")
+    for cx, cy in [(5.0, 6.2), (10.4, 10.6)]:
+        s.ellipse(tortilla, cx, cy, 4.8, 3.8)
+        s.pixels_at(ramp("#c8502a")[BASE], [(round(cx) + k, round(cy) - 1 - (k % 2)) for k in range(-2, 3)])
+        s.pixels_at(ramp("#f0c840")[BASE], [(round(cx) - 1, round(cy) - 3)])
+        s.pixels_at(plain_ramp("#f6f4ee")[BASE], [(round(cx) + 1, round(cy) - 3)])
+        s.pixels_at(ramp("#3a9a34")[BASE], [(round(cx), round(cy) - 3), (round(cx) + 2, round(cy) - 2)])
+    return s
+
+
+def taiyaki_hand():
+    # Taiyaki: a fish-shaped cake of golden waffle batter with a crisp scaly pattern, filled with red bean paste.
+    s = fish("#e0a050", "#c8823a", (1.6, 11.0), (14.0, 4.0), depth=3.6)
+    for x, y in [(5, 9), (7, 8), (9, 7), (6, 10), (8, 9), (10, 8)]:
+        s.put(x, y, ramp("#b8722a")[BASE])  # The scales from the mould.
+    return s
+
+
+def takoyaki_balls_hand():
+    # Takoyaki balls: round, golden-brown octopus dumplings, crisp outside.
+    return balls("#d08a3a", [(4.4, 10.8), (11.0, 10.6), (7.6, 5.0)], radius=3.2, plain=False)
+
+
+def takoyaki_hand():
+    # Takoyaki: the golden balls in a little boat, under dark sauce, mayonnaise, aonori and bonito flakes.
+    s = Sprite()
+    tray = plain_ramp("#d8b888")
+    s.shape(lambda x, y: 9 <= y <= 13 and abs(x - 7.5) <= 7.0 - (y - 9) * 0.6, tray, (7.5, 11.0), (7.0, 2.0))
+    balls("#d08a3a", [(4.0, 8.0), (7.6, 7.0), (11.2, 8.0)], radius=2.6, s=s, plain=False)
+    s.pixels_at(ramp("#4a2618")[BASE], [(3, 6), (4, 6), (7, 5), (8, 5), (11, 6), (12, 6)])
+    s.pixels_at(plain_ramp("#f8f2d8")[BASE], [(5, 6), (9, 5), (10, 6)])
+    s.pixels_at(ramp("#4a9a3a")[BASE], [(6, 6), (12, 7)])
+    return s
+
+
+def tamarind_pulp_hand():
+    # Tamarind pulp: a sticky, fibrous, dark brown lump of pulp with a few glossy seeds.
+    s = Sprite()
+    pulp = ramp("#6a3a1e", spread=0.6)
+    s.shape(lambda x, y: ((x - 7.5) / 6.0) ** 2 + ((y - 9.0) / 4.6) ** 2 + 0.12 * math.sin(x * 1.4 + y) <= 1, pulp, (7.5, 9.0), (6.0, 4.6),
+            texture=lambda x, y: 1 if (x * 3 + y) % 5 == 0 else 0)
+    s.pixels_at(ramp("#3a2014")[BASE], [(5, 9), (9, 8), (8, 11)])
+    s.pixels_at(ramp("#a86a3a")[BASE], [(5, 8), (9, 7)])
+    return s
+
+
+def tarte_tatin_hand():
+    # Tarte tatin: an upside-down tart of apple halves cooked in deep amber caramel on a crisp pastry base.
+    s = Sprite()
+    pastry = plain_ramp("#e8c078")
+    s.ellipse(pastry, 7.5, 10.6, 7.0, 3.0)
+    caramel = ramp("#b8641e", spread=0.6)
+    s.ellipse(caramel, 7.5, 8.6, 6.6, 3.4)
+    for cx, cy in [(4.4, 8.4), (7.6, 7.4), (10.8, 8.6), (7.6, 10.0)]:
+        s.ellipse(ramp("#d88a2a", spread=0.5), cx, cy, 1.8, 1.4)
+        s.put(round(cx) - 1, round(cy) - 1, ramp("#f0b050")[BASE])
+    return s
+
+
+def tartlet(filling, flecks=()):
+    """Little puff-pastry tartlet cases, golden and flaky, holding a filling."""
+    def drawn():
+        s = Sprite()
+        for cx, cy in [(5.0, 6.0), (10.6, 11.0)]:
+            case = ramp("#d8a050", spread=0.6)
+            s.ellipse(case, cx, cy + 1.0, 4.4, 2.8)
+            s.ellipse(plain_ramp(filling) if filling else ramp("#c88a3a", spread=0.5), cx, cy, 3.0, 1.6, outline=False)
+            for colour, (dx, dy) in flecks:
+                s.put(round(cx + dx), round(cy + dy), ramp(colour)[BASE])
+        return s
+    return drawn
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -8345,6 +8460,7 @@ SEED_PLANTS = {
     "makrut_lime_sapling": "makrut_lime_leaf", "mango_sapling": "mango",
     "nutmeg_sapling": "nutmeg_seed", "oil_palm_sapling": "oil_palm_fruit", "olive_sapling": "green_olive", "orange_sapling": "orange",
     "papaya_sapling": "green_papaya", "plum_sapling": "plum", "star_anise_sapling": "star_anise_pod",
+    "sweet_cherry_sapling": "cherry", "tamarind_sapling": "tamarind_pod",
 }
 # Pictures for plants whose fruit is a vanilla item, which this script does not draw.
 BADGE_ONLY = {"apple": apple_badge, "annatto": annatto_badge}
@@ -8379,6 +8495,24 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"steamed_rice": lambda: bowl("#f6f4ee", mound=2.0, plain=True, bowl_colour=CLAY, texture=lambda x, y: -1 if (x * 3 + y) % 5 == 0 else 0),
+             "steamed_shaded_tea_leaves": raw_of("shaded_tea_leaf", "#1e4a2a", 0.35), "steamed_tea_leaves": raw_of("tea_leaf", "#2a6a2a", 0.35),
+             "stegt_flaesk_med_persillesovs": stegt_flaesk_hand, "stew_beef": stew_meat("#a83430"),
+             "stir_fried_rice_noodles": lambda: noodles("#d8a060"),
+             "stir_fried_vegetables": lambda: bowl("#a8703a", mound=1.2, flecks=[("#f07a20", 0.14), ("#8a1a40", 0.12), ("#7a5034", 0.1)]),
+             "stretched_curds": stretched_curds_hand, "strudel_dough": strudel_dough_hand, "stuffed_poblano": stuffed_poblano_hand,
+             "suet": fat_chunk("#f6f2e6"), "sushi_rice": lambda: bowl("#f8f6f0", mound=1.6, plain=True, bowl_colour="#b8844a", texture=bumpy),
+             "sweated_vanilla_pods": lambda: vanilla_pods("#5a3a24"),
+             "sweet_cherry_sapling": lambda: sapling("#4a8a3a", trunk_colour="#6a3a3a", leaf=(2.4, 1.4)),
+             "sweet_potato_starch": lambda: spice_bowl("#f6f4ee", fleck="#e8e4da", seed=509, bowl_colour=CLAY),
+             "sweet_yeast_dough": lambda: dough_ball("#f2dca0"), "tacos_al_pastor": tacos_al_pastor_hand, "taiyaki": taiyaki_hand,
+             "taiyaki_batter": lambda: bowl("#ecc670", plain=True), "takoyaki": takoyaki_hand, "takoyaki_balls": takoyaki_balls_hand,
+             "takoyaki_batter": lambda: bowl("#f0e4c0", plain=True, flecks=[("#d07a8a", 0.06), ("#e8a8a0", 0.06), ("#4a9a3a", 0.04)]),
+             "tamal_masa": lambda: bowl("#f2e0a0", mound=2.0, plain=True, texture=bumpy), "tamales": raw_of("raw_tamales", "#b8a868", 0.25),
+             "tamarind_pulp": tamarind_pulp_hand, "tamarind_sapling": lambda: sapling("#4a8a3a", trunk_colour="#6a5040", leaf=(1.8, 0.9)),
+             "tapioca_starch": lambda: spice_bowl("#f8f8f4", fleck="#ecece4", seed=521, bowl_colour=CLAY), "tarte_tatin": tarte_tatin_hand,
+             "tarteletter_med_hons_i_asparges": tartlet("#f2ead2", flecks=[("#7ab048", (-1, 0)), ("#e8d0b0", (1, -1))]),
+             "tartlet_rings": lambda: raw_of("fried_picarones", "#f2e4c0", 0.65)()})
 HAND.update({"soaked_rice_noodles": soaking("#f6f2e6", pieces=0.4), "soaked_soybeans": soaking("#d8bc80", pieces=0.4),
              "socca": socca_hand, "socca_batter": lambda: bowl("#e8d08a", plain=True, flecks=[("#3a3a3a", 0.04)]),
              "soft_cheese_curds": lambda: bowl("#f4f2e6", mound=1.8, plain=True, bowl_colour=CLAY, texture=bumpy),
