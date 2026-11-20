@@ -7467,6 +7467,127 @@ def picarones_hand():
     s.pixels_at(syrup[HIGHLIGHT], [(4, 3), (9, 8)])
     return s
 
+def jar(contents, pieces=None, brine="#e8e0b8", lid="#c8a040", seed=1):
+    """A glass preserving jar with a metal lid, full of food in brine: the contents seen through the glass, with a glint."""
+    def drawn():
+        s = Sprite()
+        glass = plain_ramp("#d8e4e8")
+        s.shape(lambda x, y: 3 <= x <= 12 and 3 <= y <= 14 and not (y == 14 and x in (3, 12)), glass, (7.5, 8.5), (4.5, 5.5))
+        liquid = plain_ramp(brine)
+        for y in range(5, 14):
+            for x in range(4, 12):
+                s.put(x, y, liquid[BASE])
+        tones = ramp(contents, spread=0.6)
+        rng = random.Random(seed)
+        for _ in range(9):
+            x, y = rng.randint(4, 10), rng.randint(6, 12)
+            s.pixels_at(tones[BASE], [(x, y), (x + 1, y)])
+            s.put(x, y + 1, tones[SHADOW])
+        if pieces:
+            pieces(s)
+        cap = ramp(lid, spread=0.6)
+        s.shape(lambda x, y: 3 <= x <= 12 and 1 <= y <= 3, cap, (7.5, 2.0), (4.5, 1.0))
+        s.pixels_at((250, 252, 255), [(4, 6), (4, 7), (4, 8)])  # A glint on the glass.
+        return s
+    return drawn
+
+
+def pickled_herring_hand():
+    # Pickled herring: silver-skinned fillets rolled with onion rings in a clear, spiced brine, in a jar.
+    def pieces(s):
+        for y in (7, 10):
+            s.pixels_at(plain_ramp("#c8d0d8")[BASE], [(x, y) for x in range(5, 11)])
+            s.pixels_at(plain_ramp("#4a6a7a")[BASE], [(x, y - 1) for x in range(6, 10)])
+    return jar("#f0e8d8", pieces=pieces, brine="#ece4c8", seed=7)()
+
+
+def pig_bristles_hand():
+    # Pig bristles: a stiff tuft of coarse, pale grey-white hairs, bound at the root, kept for brushes.
+    s = Sprite()
+    for k in range(-4, 5):
+        s.line(plain_ramp("#d8d4cc")[BASE if k % 2 else LIGHT], 7 + k // 3, 13, 7 + k, 2 + abs(k) // 2)
+    s.pixels_at(ramp("#8a5a3a")[BASE], [(6, 12), (7, 12), (8, 12), (6, 13), (7, 13), (8, 13)])
+    return s
+
+
+def pig_trotters_hand():
+    # Pig trotters: two pale pink feet, scalded clean, ending in a pair of hard toes.
+    s = Sprite()
+    skin = plain_ramp("#f0c8b8")
+    for (sx, sy), (ex, ey) in [((2.6, 4.0), (9.0, 7.4)), ((5.0, 10.0), (11.4, 13.4))]:
+        s.capsule(skin, [(sx, sy), (ex, ey)], (2.0, 1.6))
+        s.pixels_at(plain_ramp("#d8b8a0")[SHADOW], [(round(ex) + 1, round(ey) - 1), (round(ex) + 1, round(ey) + 1)])  # The toes.
+        s.put(round(sx), round(sy), ramp("#c86a6a")[BASE])  # The cut end.
+    return s
+
+
+def pissaladiere_hand():
+    # Pissaladière: a thick bread base under sweet, golden caramelised onions, criss-crossed with anchovies and olives.
+    s = SPRITES["flammkuchen"]()
+    onion = ramp("#c8904a", spread=0.5)
+    for y in range(5, 11):
+        for x in range(3, 13):
+            s.put(x, y, onion[BASE] if (x + y) % 3 else onion[LIGHT])
+    for k in range(3):
+        s.line(ramp("#6a4a3a")[BASE], 3 + k * 4, 5, 6 + k * 4, 10)
+    s.pixels_at(ramp("#2a2420")[BASE], [(5, 7), (9, 8), (11, 6)])  # Olives.
+    return s
+
+
+def plain_aebleskiver_hand():
+    # Plain æbleskiver: the golden balls straight from the pan, before sugar and jam.
+    s = Sprite()
+    ball = ramp("#c8843a", spread=0.75)
+    for cx, cy in [(4.6, 9.4), (10.6, 9.4), (7.6, 5.2)]:
+        s.ellipse(ball, cx, cy, 3.4, 3.2)
+        s.put(round(cx) - 1, round(cy) - 2, ball[HIGHLIGHT])
+    return s
+
+
+def poached_chicken_hand():
+    # Poached chicken: tender white chicken pulled into shreds.
+    return grated("#f2e8dc", plain=True, seed=19)()
+
+
+def poached_chicken_thighs_hand():
+    # Poached chicken thighs: cooked through, pale and tender, the skin soft and creamy white.
+    s = SPRITES["chicken_thighs"]()
+    for y in range(16):
+        for x in range(16):
+            c = s.pixels[y][x]
+            if c is not None:
+                s.put(x, y, (min(255, c[0] + 10), min(255, c[1] + 18), min(255, c[2] + 14)))
+    return s
+
+
+def poh_pia_tod_hand():
+    # Poh pia tod: crisp golden spring rolls cut on the slant, with a little dish of sweet chili sauce.
+    s = SPRITES["fried_spring_rolls"]()
+    s.ellipse(plain_ramp("#e8eaee"), 12.0, 12.6, 3.4, 2.2)
+    s.ellipse(ramp("#e04a2a", spread=0.5), 12.0, 12.2, 2.4, 1.2, outline=False)
+    return s
+
+
+def polsehorn_hand():
+    # Pølsehorn: soft, golden bread crescents baked round a sausage, its end peeking out.
+    s = Sprite()
+    bread = ramp("#d89a4a", spread=0.6)
+    for cx, cy in [(5.4, 5.6), (10.4, 11.0)]:
+        s.capsule(bread, [(cx - 4.0, cy + 1.4), (cx, cy - 0.6), (cx + 4.0, cy + 1.4)], (1.8, 1.8))
+        s.ellipse(ramp("#c86a4a", spread=0.5), cx + 4.4, cy + 1.6, 1.2, 1.0)
+        s.put(round(cx) - 1, round(cy) - 2, bread[HIGHLIGHT])
+    return s
+
+def pork_belly_slab():
+    # Pork belly: a slab of pink meat layered with white fat, the pale skin still on top.
+    s = Sprite()
+    meat, fat = ramp("#e0948c", spread=0.6), plain_ramp("#f4ece0")
+    s.shape(lambda x, y: 1 <= x <= 14 and 4 <= y <= 12, meat, (7.5, 8.0), (7.0, 4.0))
+    for y in (6, 9):
+        s.pixels_at(fat[BASE], [(x, y) for x in range(2, 14)])
+    s.pixels_at(plain_ramp("#f0d8c4")[BASE], [(x, 5) for x in range(2, 14)])  # The skin.
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -7486,7 +7607,7 @@ SEED_PLANTS = {
     "coconut_sapling": "coconut", "coffee_sapling": "coffee_cherry", "lemon_sapling": "lemon", "lime_sapling": "lime",
     "makrut_lime_sapling": "makrut_lime_leaf", "mango_sapling": "mango",
     "nutmeg_sapling": "nutmeg_seed", "oil_palm_sapling": "oil_palm_fruit", "olive_sapling": "green_olive", "orange_sapling": "orange",
-    "papaya_sapling": "green_papaya",
+    "papaya_sapling": "green_papaya", "plum_sapling": "plum",
 }
 # Pictures for plants whose fruit is a vanilla item, which this script does not draw.
 BADGE_ONLY = {"apple": apple_badge, "annatto": annatto_badge}
@@ -7521,6 +7642,23 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"pickled_beetroot": jar("#8a1a40", brine="#c84a6a", seed=3), "pickled_carrots": jar("#f07a20", brine="#f0e0b8", seed=5),
+             "pickled_ginger": jar("#f0b8a8", brine="#f8e0d8", seed=9), "pickled_herring": pickled_herring_hand,
+             "pickling_spice": lambda: spice_bowl("#a87a4a", fleck="#3a2a20", seed=367), "pig_bristles": pig_bristles_hand,
+             "pig_trotters": pig_trotters_hand, "pino": lambda: bowl("#8a4a2a", mound=1.4, texture=bumpy, flecks=[("#f0e0c8", 0.1), ("#2a2420", 0.04)]),
+             "pissaladiere": pissaladiere_hand, "plain_aebleskiver": plain_aebleskiver_hand, "plain_dough": lambda: dough_ball("#eee0c0"),
+             "plum_sapling": lambda: sapling("#4a8a3a", trunk_colour="#6a4048", leaf=(2.2, 1.5)),
+             "poached_boller": lambda: balls("#e8c8b0", [(4.4, 10.8), (11.0, 10.6), (7.6, 5.0)], radius=3.0),
+             "poached_chicken": poached_chicken_hand, "poached_chicken_thighs": poached_chicken_thighs_hand,
+             "poached_cocktail_sausages": lambda: SPRITES["cocktail_sausages"](), "poh_pia_tod": poh_pia_tod_hand, "polsehorn": polsehorn_hand,
+             # Pork: pale pink meat with plenty of white fat, and pale skin.
+             "pork_belly": lambda: pork_belly_slab(), "pork_bones": bones_of("#ece2cc", 1.1, scrap="#e0948c"),
+             "pork_casing": casing("#f0e2d8"), "pork_cheek": lambda: slab("#c8605a", rx=4.6, ry=3.6, angle=-10, seed=373),
+             "pork_heart": lambda: heart("#a84a4a", fat="#f4ece0"), "pork_leg": leg_joint("#e0948c", "#f4ece0"),
+             "pork_liver": lambda: liver("#7a2e2a"), "pork_loin": lambda: slab("#e8a098", fat="#f4ece0", rx=7.0, ry=4.0, angle=-10, fat_side=1.8, seed=379),
+             "pork_shoulder": lambda: slab("#e0948c", fat="#f4ece0", rx=6.2, ry=5.2, angle=-8, fat_side=1.2, marbling=0.1, seed=383),
+             "pork_skin": lambda: fat_chunk("#f0dcc8", rind="#e8c0a8")(), "potato_batter": lambda: grated("#ece0a8", plain=True, seed=21)(),
+             "potato_starch": lambda: spice_bowl("#f8f8f4", fleck="#e8e8e0", seed=389, bowl_colour=CLAY)})
 HAND.update({"okonomiyaki": okonomiyaki_hand,
              "okonomiyaki_batter": lambda: bowl("#ece0b0", mound=1.0, plain=True, flecks=[("#8ac060", 0.14), ("#e0a0a0", 0.06)]),
              "olive_paste": lambda: bowl("#3a3a24", mound=1.4, flecks=[("#6a6a3a", 0.1)]),

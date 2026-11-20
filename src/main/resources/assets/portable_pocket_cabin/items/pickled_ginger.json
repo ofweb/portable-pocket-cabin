@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/pickled_ginger",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 15773872
-      }
-    ]
+    "model": "portable_pocket_cabin:item/pickled_ginger"
   }
 }

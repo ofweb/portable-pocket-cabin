@@ -654,37 +654,37 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] pestle
 - [x] picarones
 - [x] picarones_dough
-- [ ] pickled_beetroot
-- [ ] pickled_carrots
-- [ ] pickled_ginger
-- [ ] pickled_herring
-- [ ] pickling_spice
-- [ ] pig_bristles
+- [x] pickled_beetroot
+- [x] pickled_carrots
+- [x] pickled_ginger
+- [x] pickled_herring
+- [x] pickling_spice
+- [x] pig_bristles
 - [x] pig_carcass
-- [ ] pig_trotters
-- [ ] pino
-- [ ] pissaladiere
-- [ ] plain_aebleskiver
-- [ ] plain_dough
-- [ ] plum_sapling
-- [ ] poached_boller
-- [ ] poached_chicken
-- [ ] poached_chicken_thighs
-- [ ] poached_cocktail_sausages
-- [ ] poh_pia_tod
-- [ ] polsehorn
-- [ ] pork_belly
-- [ ] pork_bones
-- [ ] pork_casing
-- [ ] pork_cheek
-- [ ] pork_heart
-- [ ] pork_leg
-- [ ] pork_liver
-- [ ] pork_loin
-- [ ] pork_shoulder
-- [ ] pork_skin
-- [ ] potato_batter
-- [ ] potato_starch
+- [x] pig_trotters
+- [x] pino
+- [x] pissaladiere
+- [x] plain_aebleskiver
+- [x] plain_dough
+- [x] plum_sapling
+- [x] poached_boller
+- [x] poached_chicken
+- [x] poached_chicken_thighs
+- [x] poached_cocktail_sausages
+- [x] poh_pia_tod
+- [x] polsehorn
+- [x] pork_belly
+- [x] pork_bones
+- [x] pork_casing
+- [x] pork_cheek
+- [x] pork_heart
+- [x] pork_leg
+- [x] pork_liver
+- [x] pork_loin
+- [x] pork_shoulder
+- [x] pork_skin
+- [x] potato_batter
+- [x] potato_starch
 - [ ] pounded_shrimp
 - [ ] pozole_base
 - [ ] pozole_rojo
