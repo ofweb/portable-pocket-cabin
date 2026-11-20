@@ -8605,6 +8605,26 @@ def yerba_mate_hand():
     s.pixels_at(gourd[HIGHLIGHT], [(3, 9), (3, 10)])
     return s
 
+def cleaver_hand():
+    # The cleaver: a heavy, square, steel butcher's blade with a hole at the corner, on a stout wooden handle.
+    s = Sprite()
+    steel = plain_ramp("#c8ccd4")
+    s.shape(lambda x, y: 5 <= x <= 14 and 1 <= y <= 9, steel, (9.5, 5.0), (4.5, 4.0))
+    s.line(plain_ramp("#f2f4f8")[BASE], 5, 9, 14, 9)  # The edge.
+    s.ellipse(plain_ramp("#6a6e76"), 12.4, 3.0, 0.8, 0.8)  # The hanging hole.
+    wood = ramp("#5a3420", spread=0.6)
+    s.capsule(wood, [(1.4, 14.4), (5.4, 7.0)], (1.4, 1.2))
+    s.pixels_at(ramp("#d8a840")[BASE], [(3, 11), (4, 9)])
+    return s
+
+
+def skewer_hand():
+    # A skewer: a long, thin, pointed stick of pale wood.
+    s = Sprite()
+    s.capsule(ramp("#d0aa74", spread=0.6), [(1.6, 14.4), (14.0, 2.0)], (0.8, 0.5))
+    s.put(14, 1, ramp("#b8905a")[SHADOW])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -8660,6 +8680,7 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"cleaver": cleaver_hand, "skewer": skewer_hand})
 HAND.update({"unbaked_croque_monsieur": unbaked_croque_monsieur_hand, "unbaked_flammkuchen": raw_of("flammkuchen", "#f2e6c8", 0.4),
              "unbaked_kasekuchen": raw_of("kasekuchen", "#f6ecc8", 0.4), "unbaked_pissaladiere": raw_of("pissaladiere", "#f0dcb0", 0.3),
              "unbaked_pumpkin_pie": unbaked_pumpkin_pie_hand, "unbaked_quesadilla": raw_of("quesadilla", "#f4ecc8", 0.5),
