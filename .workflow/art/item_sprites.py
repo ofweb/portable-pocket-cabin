@@ -7323,6 +7323,150 @@ def obatzda_with_bread_hand():
     s.pixels_at(plain_ramp("#fafaf6")[BASE], [(9, 6), (12, 6)])
     return s
 
+def okonomiyaki_hand():
+    # Okonomiyaki: the savoury pancake under dark okonomi sauce and a zigzag of mayonnaise, with aonori and bonito flakes.
+    s = Sprite()
+    cake = ramp("#c88a3a", spread=0.6)
+    s.ellipse(cake, 7.5, 9.6, 7.0, 3.6)
+    s.ellipse(ramp("#5a2a14", spread=0.5), 7.5, 9.0, 6.0, 2.6, outline=False)
+    for x in range(3, 13):
+        s.put(x, 8 + (x % 2), plain_ramp("#f8f2d8")[BASE])  # The mayonnaise.
+    s.pixels_at(ramp("#4a9a3a")[BASE], [(4, 10), (8, 10), (11, 9)])
+    s.pixels_at(plain_ramp("#e8a890")[BASE], [(6, 7), (10, 7), (9, 10)])
+    return s
+
+
+def onigiri_hand():
+    # Onigiri: a triangle of pressed white rice with a band of dark nori at the base and a red pickled plum peeping out.
+    s = Sprite()
+    rice = plain_ramp("#f6f4ec")
+    s.shape(lambda x, y: y <= 13.5 and abs(x - 7.5) <= (y - 1.5) * 0.62 + 0.6, rice, (7.5, 8.0), (6.0, 6.0),
+            texture=lambda x, y: -1 if (x * 3 + y) % 5 == 0 else 0)
+    nori = ramp("#1e2a24", spread=0.4)
+    s.shape(lambda x, y: 10 <= y <= 13.5 and 5 <= x <= 10, nori, (7.5, 12.0), (2.5, 2.0))
+    s.pixels_at(ramp("#c8202a")[BASE], [(7, 6), (8, 6)])
+    return s
+
+
+def oxtail_hand():
+    # Oxtail: thick, round cross-cut sections of tail, red meat and white fat round a central knuckle of bone.
+    s = Sprite()
+    for cx, cy, r in [(5.0, 5.4, 3.8), (10.8, 10.6, 3.6)]:
+        s.ellipse(plain_ramp("#f0e6d6"), cx, cy, r, r * 0.9)
+        s.ellipse(ramp("#a83430", spread=0.6), cx, cy, r * 0.75, r * 0.7, outline=False)
+        s.ellipse(plain_ramp("#ece2cc"), cx, cy, 1.0, 1.0)
+    return s
+
+
+def packed_cabin_hand():
+    # The cabin kit: a little log cabin folded down to fit in a pocket, a wooden house with a peaked red roof, a door and
+    # a lit window, bound with a leather strap.
+    s = Sprite()
+    wood = ramp("#a8743e", spread=0.6)
+    s.shape(lambda x, y: 2 <= x <= 13 and 7 <= y <= 14, wood, (7.5, 10.5), (5.5, 3.5))
+    for y in (8, 10, 12):
+        s.pixels_at(wood[SHADOW], [(x, y) for x in range(3, 13)])  # The logs.
+    roof = ramp("#a83a2a", spread=0.6)
+    s.shape(lambda x, y: 1 <= y <= 7 and abs(x - 7.5) <= (y - 0.5) * 1.05 + 0.4, roof, (7.5, 4.5), (7.0, 3.5))
+    s.pixels_at(ramp("#5a3a24")[BASE], [(6, 11), (6, 12), (6, 13), (7, 11), (7, 12), (7, 13)])  # The door.
+    s.pixels_at(ramp("#f0d060")[BASE], [(10, 10), (11, 10)])  # A lit window.
+    s.pixels_at(ramp("#5a3a24")[SHADOW], [(x, 9) for x in range(2, 14) if x % 4 == 0])
+    s.pixels_at(ramp("#c89a3a")[BASE], [(13, 3), (14, 2)])  # A buckle on the strap.
+    return s
+
+
+def pad_kra_pao_hand():
+    # Pad kra pao: stir-fried pork and holy basil over rice, topped with a crisp-edged fried egg, on a plate.
+    s = SPRITES["kra_pao_pork"]()
+    s.ellipse(plain_ramp("#f6f4ee"), 9.6, 7.0, 3.2, 2.2)
+    s.ellipse(ramp("#f0a010", spread=0.5), 9.8, 6.8, 1.3, 1.1)
+    return s
+
+
+def pad_thai_hand():
+    # Pad thai: tangled rice noodles stir-fried an orange-tan, with bean sprouts, crushed peanuts and a wedge of lime.
+    s = plate()
+    noodles(ramp("#d89a5a")[BASE] and "#d89a5a", cx=7.0, cy=9.4, rx=6.0, ry=3.0, s=s)
+    s.pixels_at(plain_ramp("#f2eed4")[BASE], [(4, 8), (9, 9), (6, 11)])  # Bean sprouts.
+    s.pixels_at(ramp("#a86a3a")[BASE], [(5, 9), (8, 8), (10, 10)])  # Peanuts.
+    s.ellipse(ramp("#7ac040", spread=0.6), 12.6, 11.6, 1.6, 1.2)
+    return s
+
+
+def palm_sugar_hand():
+    # Palm sugar: little round cakes of set sugar, a soft, crumbly golden brown.
+    s = Sprite()
+    sugar = ramp("#b8783a", spread=0.6)
+    for cx, cy in [(5.0, 5.4), (10.6, 6.6), (6.6, 11.4)]:
+        s.ellipse(sugar, cx, cy + 0.8, 3.4, 2.0)
+        s.ellipse(ramp("#d09850", spread=0.5), cx, cy, 3.2, 1.6, outline=False)
+    return s
+
+
+def pambazos_hand():
+    # Pambazos: a roll soaked red in chili sauce and fried, split and filled with potato-chorizo, lettuce, crema and cheese.
+    s = Sprite()
+    roll = ramp("#b0301e", spread=0.6)
+    s.ellipse(roll, 7.5, 11.4, 6.6, 2.6)
+    s.pixels_at(ramp("#5aa040")[BASE], [(x, 9) for x in range(2, 14) if x % 2])
+    s.pixels_at(plain_ramp("#f6f2e6")[BASE], [(x, 9) for x in range(3, 13) if x % 2 == 0])
+    s.ellipse(ramp("#c8502e", spread=0.5), 7.5, 8.0, 6.0, 1.0)
+    s.ellipse(roll, 7.5, 5.8, 6.4, 2.6)
+    s.pixels_at(roll[HIGHLIGHT], [(4, 5), (5, 4)])
+    return s
+
+
+def panela_hand():
+    # Panela: a hard, rough block of unrefined cane sugar, a deep golden brown.
+    s = Sprite()
+    block = ramp("#a8682a", spread=0.6)
+    s.shape(lambda x, y: 2 <= x <= 13 and 4 <= y <= 13, block, (7.5, 8.5), (5.5, 4.5), texture=lambda x, y: 1 if (x * 3 + y * 2) % 7 == 0 else 0)
+    s.pixels_at(ramp("#c88a40")[BASE], [(x, 4) for x in range(3, 13)])
+    return s
+
+
+def pao_de_queijo_hand():
+    # Pão de queijo: small, puffed cheese breads, golden and crisp outside with cracked tops.
+    s = balls("#e0b058", [(4.4, 10.8), (11.0, 10.6), (7.6, 5.0)], radius=3.3, plain=False)
+    s.pixels_at(ramp("#a8702a")[BASE], [(4, 10), (11, 10), (7, 4)])
+    return s
+
+
+def pastel_de_choclo_hand():
+    # Pastel de choclo: an earthenware dish of meat filling under a golden corn crust, sprinkled with sugar and browned.
+    s = Sprite()
+    dish = ramp("#a85a32", spread=0.6)
+    s.shape(lambda x, y: y >= 7 and ((x - 7.5) / 7.2) ** 2 + ((y - 7.0) / 7.4) ** 2 <= 1, dish, (7.5, 10.5), (7.2, 5.0))
+    crust = ramp("#e8b850", spread=0.6)
+    s.ellipse(crust, 7.5, 7.0, 6.6, 2.6)
+    s.pixels_at(ramp("#a8641e")[BASE], [(4, 6), (8, 5), (10, 7), (6, 8)])
+    s.pixels_at(plain_ramp("#fafaf2")[BASE], [(5, 7), (9, 6), (11, 6)])  # Sugar.
+    return s
+
+
+def peeled_prawns_hand():
+    # Peeled prawns: raw prawns out of their shells, translucent grey-pink and curled.
+    return prawn("#e0a8a0")
+
+
+def pestle_hand():
+    # The pestle: a heavy, rounded club of grey stone, worn smooth at its broad end.
+    s = Sprite()
+    stone = plain_ramp("#a8a4a0")
+    s.capsule(stone, [(3.0, 13.0), (12.0, 3.4)], (2.6, 1.2))
+    s.pixels_at(stone[HIGHLIGHT], [(4, 10), (5, 9), (6, 8)])
+    s.pixels_at(stone[SHADOW], [(6, 12), (9, 9)])
+    return s
+
+
+def picarones_hand():
+    # Picarones: the golden rings drizzled with dark chancaca syrup.
+    s = SPRITES["fried_picarones"]()
+    syrup = ramp("#5a2a14", spread=0.6)
+    s.pixels_at(syrup[BASE], [(3, 3), (4, 3), (7, 5), (8, 9), (9, 8), (12, 12), (13, 11), (2, 6)])
+    s.pixels_at(syrup[HIGHLIGHT], [(4, 3), (9, 8)])
+    return s
+
 
 # Seeds that look like other seeds carry a small picture of their plant in the top right corner, so they can be told
 # apart: the chilies and peppers, the cabbages and radish, the basils, the aubergines, tomato and tomatillo, and the
@@ -7341,7 +7485,8 @@ SEED_PLANTS = {
     "apricot_sapling": "apricot", "bay_laurel_sapling": "bay_laurel_leaf", "cinnamon_sapling": "cinnamon_bark", "clove_sapling": "clove_bud",
     "coconut_sapling": "coconut", "coffee_sapling": "coffee_cherry", "lemon_sapling": "lemon", "lime_sapling": "lime",
     "makrut_lime_sapling": "makrut_lime_leaf", "mango_sapling": "mango",
-    "nutmeg_sapling": "nutmeg_seed", "oil_palm_sapling": "oil_palm_fruit",
+    "nutmeg_sapling": "nutmeg_seed", "oil_palm_sapling": "oil_palm_fruit", "olive_sapling": "green_olive", "orange_sapling": "orange",
+    "papaya_sapling": "green_papaya",
 }
 # Pictures for plants whose fruit is a vanilla item, which this script does not draw.
 BADGE_ONLY = {"apple": apple_badge, "annatto": annatto_badge}
@@ -7376,6 +7521,24 @@ def with_plant(draw, source):
 
 
 HAND = {"plum": plum_hand, "apricot": apricot_hand, "orange": orange_hand, "lime": lime_hand, "mango": mango_hand}
+HAND.update({"okonomiyaki": okonomiyaki_hand,
+             "okonomiyaki_batter": lambda: bowl("#ece0b0", mound=1.0, plain=True, flecks=[("#8ac060", 0.14), ("#e0a0a0", 0.06)]),
+             "olive_paste": lambda: bowl("#3a3a24", mound=1.4, flecks=[("#6a6a3a", 0.1)]),
+             "olive_sapling": lambda: sapling("#7a9a7a", trunk_colour="#6a6050", leaf=(2.6, 1.0)), "onigiri": onigiri_hand,
+             "onion_soup": lambda: bowl("#8a5228", flecks=[("#c8945a", 0.16)], bowl_colour="#7a5a8a"),
+             "orange_sapling": lambda: sapling("#3a8a3a", trunk_colour="#6a5a40", leaf=(2.4, 1.5)),
+             "oxidised_tea_leaves": lambda: seed_heap("#8a4a24", fleck="#4a6a2a", seed=349), "oxtail": oxtail_hand,
+             "packed_cabin": packed_cabin_hand, "pad_kra_pao": pad_kra_pao_hand, "pad_thai": pad_thai_hand, "palm_sugar": palm_sugar_hand,
+             "pambazo_filling": lambda: bowl("#c8502a", mound=1.6, texture=bumpy, flecks=[("#ecd890", 0.16)]), "pambazos": pambazos_hand,
+             "panela": panela_hand, "panko": lambda: spice_bowl("#ecd49a", fleck="#d8b878", seed=353, bowl_colour=CLAY),
+             "pao_de_queijo": pao_de_queijo_hand, "pao_de_queijo_balls": lambda: balls("#f2e2b0", [(4.4, 10.8), (11.0, 10.6), (7.6, 5.0)], radius=3.0),
+             "pao_de_queijo_dough": lambda: dough_ball("#f2e0a8", flour=False),
+             "papaya_sapling": lambda: sapling("#4a9a3a", trunk_colour="#8a8a5a", palm=True),
+             "paprika": lambda: spice_bowl("#c8301e", fleck="#e8603a", seed=359), "pastel_de_choclo": pastel_de_choclo_hand,
+             "pastelera": lambda: bowl("#e8d47a", mound=1.4, texture=bumpy, plain=True, flecks=[("#5a9a3a", 0.05)]),
+             "peanut_sauce": lambda: bowl("#b8703a", flecks=[("#d8a060", 0.08)]), "peeled_prawns": peeled_prawns_hand,
+             "persillesovs": lambda: bowl("#f4f0e2", plain=True, bowl_colour=CLAY, flecks=[("#3a9a34", 0.14)]), "pestle": pestle_hand,
+             "picarones": picarones_hand, "picarones_dough": lambda: dough_ball("#e8a858", flour=False)})
 HAND.update({"moqueca_baiana": lambda: bowl("#d85a26", bowl_colour=CLAY, flecks=[("#f2ece2", 0.1), ("#f08a6a", 0.08), ("#4a9a3a", 0.04)]),
              "moqueca_vegetables": lambda: bowl("#d03a26", mound=1.4, texture=bumpy, flecks=[("#e8c030", 0.1), ("#f0e8d0", 0.08), ("#3a9a34", 0.06)]),
              "moromi": lambda: bowl("#4a2a18", mound=0.6, bowl_colour="#8a6a4a", flecks=[("#7a4a2a", 0.14)]),

@@ -623,37 +623,37 @@ Raw harvests come first, then what plants things, then made foods. Regenerate th
 - [x] obatzda_with_bread
 - [x] oil_palm_mash
 - [x] oil_palm_sapling
-- [ ] okonomiyaki
-- [ ] okonomiyaki_batter
-- [ ] olive_paste
-- [ ] olive_sapling
-- [ ] onigiri
-- [ ] onion_soup
-- [ ] orange_sapling
+- [x] okonomiyaki
+- [x] okonomiyaki_batter
+- [x] olive_paste
+- [x] olive_sapling
+- [x] onigiri
+- [x] onion_soup
+- [x] orange_sapling
 - [x] oregano
-- [ ] oxidised_tea_leaves
-- [ ] oxtail
-- [ ] packed_cabin
-- [ ] pad_kra_pao
-- [ ] pad_thai
-- [ ] palm_sugar
-- [ ] pambazo_filling
-- [ ] pambazos
-- [ ] panela
-- [ ] panko
-- [ ] pao_de_queijo
-- [ ] pao_de_queijo_balls
-- [ ] pao_de_queijo_dough
-- [ ] papaya_sapling
-- [ ] paprika
-- [ ] pastel_de_choclo
-- [ ] pastelera
-- [ ] peanut_sauce
-- [ ] peeled_prawns
-- [ ] persillesovs
-- [ ] pestle
-- [ ] picarones
-- [ ] picarones_dough
+- [x] oxidised_tea_leaves
+- [x] oxtail
+- [x] packed_cabin
+- [x] pad_kra_pao
+- [x] pad_thai
+- [x] palm_sugar
+- [x] pambazo_filling
+- [x] pambazos
+- [x] panela
+- [x] panko
+- [x] pao_de_queijo
+- [x] pao_de_queijo_balls
+- [x] pao_de_queijo_dough
+- [x] papaya_sapling
+- [x] paprika
+- [x] pastel_de_choclo
+- [x] pastelera
+- [x] peanut_sauce
+- [x] peeled_prawns
+- [x] persillesovs
+- [x] pestle
+- [x] picarones
+- [x] picarones_dough
 - [ ] pickled_beetroot
 - [ ] pickled_carrots
 - [ ] pickled_ginger

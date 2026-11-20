@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/onion_soup",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 10512938
-      }
-    ]
+    "model": "portable_pocket_cabin:item/onion_soup"
   }
 }
