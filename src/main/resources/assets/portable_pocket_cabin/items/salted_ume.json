@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/salted_ume",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 14205008
-      }
-    ]
+    "model": "portable_pocket_cabin:item/salted_ume"
   }
 }

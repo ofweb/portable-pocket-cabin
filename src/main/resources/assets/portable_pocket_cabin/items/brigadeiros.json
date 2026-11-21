@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/brigadeiros",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 3809304
-      }
-    ]
+    "model": "portable_pocket_cabin:item/brigadeiros"
   }
 }

@@ -1,0 +1,1177 @@
+# Item art queue
+
+Items still drawn with a tinted vanilla texture, in the order they get their own sprite, five at a time.
+Raw harvests come first, then what plants things, then made foods. Regenerate the order by removing drawn items.
+
+## Raw harvests
+
+- [x] allspice
+- [x] azuki_bean
+- [x] betel_leaf
+- [x] black_bean
+- [x] black_olive
+- [x] blue_corn
+- [x] cardamom_pod
+- [x] celery
+- [x] chickpea
+- [x] cilantro
+- [x] cinnamon_bark
+- [x] clove_bud
+- [x] coffee_cherry
+- [x] elderflower
+- [x] glutinous_rice
+- [x] green_olive
+- [x] holy_basil
+- [x] hops
+- [x] laver
+- [x] lemongrass
+- [x] long_bean
+- [x] makrut_lime_leaf
+- [x] marjoram
+- [x] oil_palm_fruit
+- [x] oyster
+- [x] oyster_mushroom
+- [x] pandan_leaf
+- [x] peanut
+- [x] peppercorn
+- [x] purple_corn
+- [x] rapeseed
+- [x] rosehip
+- [x] roselle
+- [x] rye
+- [x] sea_lettuce
+- [x] shaded_tea_leaf
+- [x] soybean
+- [x] spring_onion
+- [x] star_anise_pod
+- [x] tamarind_pod
+- [x] tea_leaf
+- [x] thai_basil
+- [x] vanilla_pod
+- [x] wakame
+- [x] water_chestnut
+- [x] white_bean
+- [x] yerba_mate_leaf
+
+## Seeds, cuttings, and crowns
+
+- [x] aji_amarillo_seeds
+- [x] anise_seed
+- [x] annatto_seed
+- [x] asparagus_crown
+- [x] aubergine_seeds
+- [x] basil_seeds
+- [x] bell_pepper_seeds
+- [x] betel_cutting
+- [x] birds_eye_chili_seeds
+- [x] blackcurrant_cutting
+- [x] cabbage_seeds
+- [x] caraway_seed
+- [x] cardamom_seeds
+- [x] celery_seeds
+- [x] coriander_seed
+- [x] courgette_seeds
+- [x] cucumber_seeds
+- [x] cumin_seed
+- [x] dill_seeds
+- [x] dried_cumin_seed
+- [x] elder_cutting
+- [x] grape_cutting
+- [x] green_chili_seeds
+- [x] holy_basil_seeds
+- [x] hop_rhizome
+- [x] lettuce_seeds
+- [x] long_bean_seeds
+- [x] marjoram_seeds
+- [x] mint_seeds
+- [x] mustard_seed
+- [x] nutmeg_seed
+- [x] oregano_seeds
+- [x] pandan_cutting
+- [x] paprika_pepper_seeds
+- [x] parsley_seeds
+- [x] peppercorn_cutting
+- [x] pineapple_crown
+- [x] poblano_chili_seeds
+- [x] radish_seeds
+- [x] raspberry_cutting
+- [x] red_cabbage_seeds
+- [x] red_chili_seeds
+- [x] red_grape_cutting
+- [x] redcurrant_cutting
+- [x] rhubarb_crown
+- [x] roselle_seeds
+- [x] rosemary_cutting
+- [x] savory_seeds
+- [x] sesame_seed
+- [x] spring_onion_seeds
+- [x] strawberry_runner
+- [x] sunflower_seeds
+- [x] tea_cutting
+- [x] thai_aubergine_seeds
+- [x] thai_basil_seeds
+- [x] thyme_cutting
+- [x] toasted_cumin_seed
+- [x] toasted_pumpkin_seeds
+- [x] toasted_sesame_seeds
+- [x] tomatillo_seeds
+- [x] tomato_seeds
+- [x] vanilla_cutting
+- [x] wasabi_root
+- [x] white_grape_cutting
+
+## Made foods and other items
+
+- [x] anise
+- [x] cumin
+- [x] cardamom
+- [x] wasabi
+- [x] achiote_potato_mash
+- [x] aebleskiver
+- [x] aebleskiver_batter
+- [x] aged_hard_cheese
+- [x] aged_soft_cheese
+- [x] aged_yerba_mate
+- [x] ajitsuke_tamago
+- [x] al_pastor_adobo
+- [x] al_pastor_meat
+- [x] alfajor_biscuits
+- [x] alfajor_dough
+- [x] alfajor_rounds
+- [x] alfajores_de_maicena
+- [x] allspice_sapling
+- [x] almond_sapling
+- [x] anchovy
+- [x] anko
+- [x] annatto_sapling
+- [x] anticucho_marinade
+- [x] anticucho_skewer
+- [x] anticuchos
+- [x] aonori
+- [x] apfelstrudel
+- [x] apple_compote
+- [x] apple_pomace
+- [x] apple_sapling
+- [x] apricot_sapling
+- [x] arepa_dough
+- [x] arepas
+- [x] arepas_con_queso
+- [x] arroz_con_leche
+- [x] azuki_mash
+- [x] back_fat
+- [x] bacon
+- [x] baked_bienenstich
+- [x] baked_creme_brulee
+- [x] baked_kammerjunkere
+- [x] bay_laurel_sapling
+- [x] bay_leaf
+- [x] bean_sprouts
+- [x] bechamel
+- [x] beef_bones
+- [x] beef_brisket
+- [x] beef_chuck
+- [x] beef_heart
+- [x] beef_kidneys
+- [x] beef_liver
+- [x] beef_rib_roast
+- [x] beef_round
+- [x] beef_shank
+- [x] beef_sirloin
+- [x] beef_strips
+- [x] beef_tongue
+- [x] berliner
+- [x] bienenstich
+- [x] black_bean_mash
+- [x] black_pepper
+- [x] black_tea
+- [x] blanched_almonds
+- [x] blanched_vanilla_pods
+- [x] blind_baked_shell
+- [x] blood_sausage
+- [x] blood_sausage_filling
+- [x] blue_corn_masa
+- [x] blue_hominy
+- [x] boeuf_bourguignon
+- [x] boiled_beetroot
+- [x] boiled_bua_loy
+- [x] boiled_dango
+- [x] boiled_oil_palm_fruit
+- [x] boiled_picarones_vegetables
+- [x] boiled_potatoes
+- [x] boiled_prawns
+- [x] boiled_ramen_noodles
+- [x] boiled_sweet_potato
+- [x] boiled_tub_tim
+- [x] boller_i_karry
+- [x] boller_i_karry_stew
+- [x] bonito_flakes
+- [x] bouquet_garni
+- [x] bratwurst_filling
+- [x] bratwurst_mit_sauerkraut
+- [x] bread_dough
+- [x] bread_roll
+- [x] breadcrumbs
+- [x] brigadeiro_mixture
+- [x] brigadeiros
+- [x] brined_cheese
+- [x] brined_pork
+- [x] brown_butter
+- [x] brown_sugar
+- [x] browned_beef
+- [x] browned_mince
+- [x] bruised_lemongrass
+- [x] bruised_tea_leaves
+- [x] brunsviger
+- [x] bua_loy
+- [x] bua_loy_balls
+- [x] bua_loy_dough
+- [x] buttered_crumbs
+- [x] cake_batter
+- [x] caldillo_base
+- [x] calf_stomach
+- [x] cane_sugar_paste
+- [x] canele_batter
+- [x] caneles
+- [x] caramel
+- [x] caramelised_onion
+- [x] cardoon
+- [x] cardoon_flower
+- [x] carne_seca
+- [x] carnitas_pork
+- [x] carnitas_tacos
+- [x] cassoulet
+- [x] cassoulet_beans
+- [x] ceviche
+- [x] charred_corn
+- [x] charred_dango_skewer
+- [x] charred_poblano
+- [x] charred_tomato
+- [x] chashu_pork
+- [x] cheesecake_filling
+- [x] cherry_compote
+- [x] cherry_sauce
+- [x] chevon_chops
+- [x] chicken_bones
+- [x] chicken_breast
+- [x] chicken_carcass
+- [x] chicken_drumsticks
+- [x] chicken_feet
+- [x] chicken_giblets
+- [x] chicken_skin
+- [x] chicken_thighs
+- [x] chicken_wings
+- [x] chickpea_flour
+- [x] chiles_rellenos
+- [x] chili_garlic
+- [x] chili_pork
+- [x] chili_powder
+- [x] chocolate
+- [x] chocolate_sponge
+- [x] chopped_almonds
+- [x] chopped_apple
+- [x] chopped_beetroot
+- [x] chopped_carrot
+- [x] chopped_gherkins
+- [x] chopped_laver
+- [x] chopped_onion
+- [x] chopped_rhubarb
+- [x] chorizo
+- [x] chorizo_filling
+- [x] choux_buns
+- [x] choux_panade
+- [x] choux_pastry
+- [x] churro_dough
+- [x] churros
+- [x] cinnamon
+- [x] cinnamon_sapling
+- [x] clove_sapling
+- [x] cloves
+- [x] coarse_salt
+- [x] coated_water_chestnut
+- [x] cocktail_sausage_filling
+- [x] cocktail_sausages
+- [x] cocoa_mass
+- [x] cocoa_powder
+- [x] cocoa_press_cake
+- [x] coconut_sapling
+- [x] coconut_sticky_rice
+- [x] cod_roe
+- [x] coffee_sapling
+- [x] concha_topping
+- [x] conchas
+- [x] cookbook
+- [x] cooked_black_beans
+- [x] cooked_chevon
+- [x] cooked_corn
+- [x] cooked_soybeans
+- [x] cookie_dough
+- [x] cooled_brigadeiro_mixture
+- [x] coq_au_vin
+- [x] corn_husk
+- [x] corn_kernels
+- [x] corn_paste
+- [x] corn_tortilla
+- [x] cornstarch
+- [x] cotija_cheese
+- [x] cow_carcass
+- [x] coxinha_dough
+- [x] coxinhas
+- [x] cracked_rye
+- [x] cracklings
+- [x] cream_cheese
+- [x] creamed_chicken_sauce
+- [x] crema
+- [x] creme_brulee
+- [x] creme_brulee_custard
+- [x] creme_fraiche
+- [x] crisp_bacon
+- [x] crisp_carnitas
+- [x] crisp_pork_belly
+- [x] croque_monsieur
+- [x] crushed_blackcurrants
+- [x] crushed_ice
+- [x] crushed_red_grapes
+- [x] crushed_white_grapes
+- [x] crustless_bread
+- [x] cubed_tofu
+- [x] cucumber_relish
+- [x] curds
+- [x] cured_beef_strips
+- [x] cured_pork_belly
+- [x] cured_pork_shoulder
+- [x] cured_salmon
+- [x] curried_fish_paste
+- [x] curry_ketchup
+- [x] curry_ketchup_base
+- [x] curry_powder
+- [x] curry_spice_mix
+- [x] currywurst
+- [x] daifuku_mochi
+- [x] dango_dough
+- [x] desiccated_coconut
+- [x] diced_aubergine
+- [x] diced_beef
+- [x] diced_bell_pepper
+- [x] diced_courgette
+- [x] diced_nopales
+- [x] diced_potato
+- [x] diced_water_chestnut
+- [x] diced_white_fish
+- [x] dimensional_anchor
+- [x] dimensional_folding_core
+- [x] dimensional_logic_core
+- [x] dipped_bread_roll
+- [x] dipped_pretzels
+- [x] dipped_tortillas
+- [x] dorayaki
+- [x] dorayaki_batter
+- [x] dorayaki_pancakes
+- [x] drained_cream
+- [x] dressed_chicken
+- [x] dressed_cow
+- [x] dressed_duck
+- [x] dressed_goat
+- [x] dressed_pig
+- [x] dressed_rabbit
+- [x] dressed_sheep
+- [x] dried_apple
+- [x] dried_azuki_beans
+- [x] dried_berries
+- [x] dried_black_beans
+- [x] dried_blackcurrant
+- [x] dried_bread
+- [x] dried_cardamom_pods
+- [x] dried_chickpeas
+- [x] dried_chilies
+- [x] dried_cocoa_beans
+- [x] dried_coffee_cherries
+- [x] dried_cooked_corn
+- [x] dried_corn
+- [x] dried_corn_husks
+- [x] dried_fruit
+- [x] dried_hibiscus
+- [x] dried_mint
+- [x] dried_nutmeg
+- [x] dried_oregano
+- [x] dried_paprika_pepper
+- [x] dried_peppercorns
+- [x] dried_raspberry
+- [x] dried_rosehip
+- [x] dried_rosemary
+- [x] dried_savory
+- [x] dried_sea_lettuce
+- [x] dried_shrimp
+- [x] dried_soybeans
+- [x] dried_sweet_berries
+- [x] dried_thyme
+- [x] dried_wakame
+- [x] dried_white_beans
+- [x] dried_yerba_mate_leaves
+- [x] duck_bones
+- [x] duck_breasts
+- [x] duck_carcass
+- [x] duck_confit
+- [x] duck_fat
+- [x] duck_heart_and_gizzard
+- [x] duck_legs
+- [x] duck_liver
+- [x] duck_spawn_egg
+- [x] duck_wings
+- [x] elote
+- [x] empanada_dough
+- [x] empanadas_de_carne
+- [x] enchiladas_verdes
+- [x] feijoada
+- [x] feijoada_beans
+- [x] fermented_cocoa_beans
+- [x] fermented_coffee_cherries
+- [x] fermented_red_grapes
+- [x] fermented_shrimp
+- [x] fermented_tapioca_starch
+- [x] fermenting_anchovies
+- [x] fischbrotchen
+- [x] fish_bones
+- [x] fish_guts
+- [x] fish_head
+- [x] fish_scales
+- [x] fiskefrikadeller
+- [x] fiskefrikadeller_fars
+- [x] flaeskesteg
+- [x] flaeskesteg_med_rodkal
+- [x] flammkuchen
+- [x] flan_custard
+- [x] flan_napolitano
+- [x] flatbread_dough
+- [x] french_onion_soup
+- [x] fresh_cheese
+- [x] fresh_chorizo
+- [x] fresh_empanada_dough
+- [x] fresh_glass_noodles
+- [x] fresh_panko
+- [x] fresh_rice_noodles
+- [x] fried_bratwurst
+- [x] fried_bread_roll
+- [x] fried_chile_relleno
+- [x] fried_churros
+- [x] fried_doughnut
+- [x] fried_egg
+- [x] fried_fiskefrikadeller
+- [x] fried_korokke
+- [x] fried_llapingachos
+- [x] fried_nam_prik_mix
+- [x] fried_okonomiyaki
+- [x] fried_pambazo_filling
+- [x] fried_picarones
+- [x] fried_potatoes
+- [x] fried_spring_rolls
+- [x] fried_tod_mun
+- [x] frikadeller
+- [x] frikadeller_fars
+- [x] fruchtetee_blend
+- [x] gai_satay
+- [x] gammeldags_aeblekage
+- [x] garniture
+- [x] gelatin
+- [x] gherkins
+- [x] gingerbread
+- [x] gingerbread_dough
+- [x] glass_noodle_dough
+- [x] glass_noodles
+- [x] glutinous_rice_flour
+- [x] goat_bones
+- [x] goat_carcass
+- [x] goat_casing
+- [x] goat_fat
+- [x] goat_heart
+- [x] goat_leg
+- [x] goat_liver
+- [x] goat_shoulder
+- [x] goat_stew_meat
+- [x] gougere_dough
+- [x] gougeres
+- [x] grated_carrot
+- [x] grated_cassava
+- [x] grated_coconut
+- [x] grated_potato
+- [x] grated_sweet_potato
+- [x] green_coffee_beans
+- [x] green_curry
+- [x] green_curry_mix
+- [x] green_curry_paste
+- [x] green_curry_sauce
+- [x] griddled_tlacoyos
+- [x] grilled_beef_skewer
+- [x] grilled_chicken_skewer
+- [x] grilled_mutton_skewer
+- [x] grilled_pork_skewer
+- [x] grilled_salted_salmon
+- [x] grilled_satay_skewer
+- [x] grilled_yakitori
+- [x] ground_malt
+- [x] ground_mole_base
+- [x] ground_mustard
+- [x] ground_peanuts
+- [x] gyoza
+- [x] gyoza_filling
+- [x] gyoza_wrappers
+- [x] halved_stone_fruit
+- [x] ham
+- [x] hanging_hook
+- [x] hard_boiled_egg
+- [x] hard_cheese_wedge
+- [x] herbes_de_provence
+- [x] herring
+- [x] hojicha_leaves
+- [x] hollowed_pumpkin
+- [x] hominy
+- [x] hons_i_asparges
+- [x] horchata_base
+- [x] jerky
+- [x] kammerjunkere
+- [x] kammerjunkere_dough
+- [x] karaage
+- [x] karaage_chicken
+- [x] karrysalat
+- [x] kartoffelpuffer
+- [x] kasekuchen
+- [x] kasespatzle
+- [x] katsuobushi
+- [x] khanom_krok
+- [x] khanom_krok_batter
+- [x] kitchen_knife
+- [x] koji_rice
+- [x] koji_spores
+- [x] koldskal_med_kammerjunkere
+- [x] korokke
+- [x] korokke_mash
+- [x] kra_pao_pork
+- [x] lamb_bones
+- [x] lamb_chops
+- [x] lamb_fat
+- [x] lamb_heart
+- [x] lamb_kidneys
+- [x] lamb_liver
+- [x] lamb_shanks
+- [x] lamb_shoulder
+- [x] lamb_stew_meat
+- [x] laminated_dough
+- [x] leg_of_lamb
+- [x] lemon_sapling
+- [x] leverpostej
+- [x] leverpostej_mix
+- [x] lime_cured_fish
+- [x] lime_marinated_fish
+- [x] lime_sapling
+- [x] liver_mince
+- [x] llapingachos
+- [x] lomo_saltado
+- [x] lomo_saltado_beef
+- [x] madeleine_batter
+- [x] madeleines
+- [x] maki_sushi
+- [x] makrut_lime_sapling
+- [x] malted_barley
+- [x] mango_sapling
+- [x] mango_sticky_rice
+- [x] marinated_al_pastor
+- [x] marinated_beef_heart
+- [x] marinated_beef_round
+- [x] marinated_satay_chicken
+- [x] marinating_eggs
+- [x] marrow_bones
+- [x] masa
+- [x] masarepa
+- [x] massaman_curry
+- [x] massaman_curry_mix
+- [x] massaman_curry_paste
+- [x] massaman_sauce
+- [x] massaman_spices
+- [x] matcha_powder
+- [x] mazamorra_morada
+- [x] mexican_chocolate
+- [x] mexican_chocolate_mix
+- [x] mexican_chocolate_paste
+- [x] miang_filling
+- [x] miang_kham
+- [x] miang_sauce
+- [x] minas_cheese
+- [x] minced_beef
+- [x] minced_fish
+- [x] minced_pork
+- [x] mirin_mash
+- [x] miso
+- [x] miso_soup
+- [x] mitarashi_dango
+- [x] mochi
+- [x] mole_base
+- [x] mole_chicken
+- [x] mole_paste
+- [x] mole_poblano
+- [x] mole_spices
+- [x] moqueca_baiana
+- [x] moqueca_vegetables
+- [x] moromi
+- [x] moules_marinieres
+- [x] nam_prik_mix
+- [x] nam_prik_pao
+- [x] nam_prik_paste
+- [x] nopales
+- [x] nori
+- [x] nutmeg
+- [x] nutmeg_sapling
+- [x] obatzda
+- [x] obatzda_with_bread
+- [x] oil_palm_mash
+- [x] oil_palm_sapling
+- [x] okonomiyaki
+- [x] okonomiyaki_batter
+- [x] olive_paste
+- [x] olive_sapling
+- [x] onigiri
+- [x] onion_soup
+- [x] orange_sapling
+- [x] oregano
+- [x] oxidised_tea_leaves
+- [x] oxtail
+- [x] packed_cabin
+- [x] pad_kra_pao
+- [x] pad_thai
+- [x] palm_sugar
+- [x] pambazo_filling
+- [x] pambazos
+- [x] panela
+- [x] panko
+- [x] pao_de_queijo
+- [x] pao_de_queijo_balls
+- [x] pao_de_queijo_dough
+- [x] papaya_sapling
+- [x] paprika
+- [x] pastel_de_choclo
+- [x] pastelera
+- [x] peanut_sauce
+- [x] peeled_prawns
+- [x] persillesovs
+- [x] pestle
+- [x] picarones
+- [x] picarones_dough
+- [x] pickled_beetroot
+- [x] pickled_carrots
+- [x] pickled_ginger
+- [x] pickled_herring
+- [x] pickling_spice
+- [x] pig_bristles
+- [x] pig_carcass
+- [x] pig_trotters
+- [x] pino
+- [x] pissaladiere
+- [x] plain_aebleskiver
+- [x] plain_dough
+- [x] plum_sapling
+- [x] poached_boller
+- [x] poached_chicken
+- [x] poached_chicken_thighs
+- [x] poached_cocktail_sausages
+- [x] poh_pia_tod
+- [x] polsehorn
+- [x] pork_belly
+- [x] pork_bones
+- [x] pork_casing
+- [x] pork_cheek
+- [x] pork_heart
+- [x] pork_leg
+- [x] pork_liver
+- [x] pork_loin
+- [x] pork_shoulder
+- [x] pork_skin
+- [x] potato_batter
+- [x] potato_starch
+- [x] pounded_shrimp
+- [x] pozole_base
+- [x] pozole_rojo
+- [x] prawn_shells
+- [x] prawns
+- [x] press_cake
+- [x] pressed_cheese
+- [x] pretzel
+- [x] pretzel_dough
+- [x] profiteroles
+- [x] proofed_bread_dough
+- [x] proofed_polsehorn
+- [x] proofed_pretzel_dough
+- [x] proofed_rugbrod_dough
+- [x] proofed_sweet_dough
+- [x] puff_dough
+- [x] puff_pastry
+- [x] pulp
+- [x] quark
+- [x] quesadilla
+- [x] queso_blanco
+- [x] queso_blanco_curds
+- [x] queso_fresco
+- [x] queso_fresco_curds
+- [x] queso_oaxaca
+- [x] quiche_custard
+- [x] quiche_lorraine
+- [x] rabbit_bones
+- [x] rabbit_carcass
+- [x] rabbit_legs
+- [x] rabbit_offal
+- [x] rabbit_saddle
+- [x] rabbit_stew_meat
+- [x] raisins
+- [x] ramen_broth
+- [x] ramen_dough
+- [x] ramen_noodles
+- [x] ratatouille
+- [x] raw_anticucho_skewer
+- [x] raw_beef_skewer
+- [x] raw_blood_sausage
+- [x] raw_bratwurst
+- [x] raw_butter
+- [x] raw_chicken_skewer
+- [x] raw_cocktail_sausages
+- [x] raw_coxinhas
+- [x] raw_dango_skewer
+- [x] raw_empanadas
+- [x] raw_gyoza
+- [x] raw_korokke
+- [x] raw_llapingachos
+- [x] raw_mutton_skewer
+- [x] raw_pino
+- [x] raw_polsehorn
+- [x] raw_pork_skewer
+- [x] raw_rinderrouladen
+- [x] raw_salsa_roja
+- [x] raw_satay_skewer
+- [x] raw_smoked_sausage
+- [x] raw_sopes
+- [x] raw_spring_rolls
+- [x] raw_tamales
+- [x] raw_tequenos
+- [x] raw_tlacoyos
+- [x] raw_tod_mun
+- [x] raw_tortilla
+- [x] raw_yakitori
+- [x] red_chili_blend
+- [x] red_chili_sauce
+- [x] red_curry_mix
+- [x] red_curry_paste
+- [x] refried_beans
+- [x] relleno_batter
+- [x] remoulade
+- [x] rested_canele_batter
+- [x] rested_gingerbread_dough
+- [x] rested_picarones_dough
+- [x] rice_flour
+- [x] rice_noodle_batter
+- [x] rice_noodles
+- [x] rice_pudding
+- [x] rice_sheets
+- [x] rinderrouladen
+- [x] risalamande
+- [x] risalamande_med_kirsebaersauce
+- [x] roast_chicken
+- [x] roast_duck
+- [x] roasted_al_pastor
+- [x] roasted_barley
+- [x] roasted_beef_bones
+- [x] roasted_cocoa_beans
+- [x] roasted_cocoa_nibs
+- [x] roasted_coffee
+- [x] roasted_coffee_beans
+- [x] roasted_malt
+- [x] roasted_peanut_pods
+- [x] roasted_peanuts
+- [x] roasted_tomatillo
+- [x] roasted_wheat
+- [x] rock_salt
+- [x] rodgrod
+- [x] rodgrod_med_flode
+- [x] rodkal
+- [x] rolled_enchiladas
+- [x] rolled_pork_belly
+- [x] rolled_tea_leaves
+- [x] roux
+- [x] rugbrod
+- [x] rugbrod_dough
+- [x] rye_flour
+- [x] sake_mash
+- [x] salmon_fillet
+- [x] salmon_roe
+- [x] salmon_skin
+- [x] salsa_roja
+- [x] salsa_verde
+- [x] salt
+- [x] salt_cod
+- [x] salted_anchovies
+- [x] salted_beef_round
+- [x] salted_butter
+- [x] salted_cod
+- [x] salted_duck_legs
+- [x] salted_herring
+- [x] salted_salmon
+- [x] salted_salmon_fillet
+- [x] salted_tuna_loin
+- [x] salted_ume
+- [x] sangkhaya_custard
+- [x] sangkhaya_fak_thong
+- [x] satay_marinade
+- [x] satay_spices
+- [x] sauerbraten
+- [x] sauerkraut
+- [x] sauteed_mushrooms
+- [x] sauteed_vegetables
+- [x] savory
+- [x] scalded_starch
+- [x] schwarzwalder_kirschtorte
+- [x] scored_pork_loin
+- [x] seared_marinated_beef
+- [x] seared_rinderrouladen
+- [x] seared_yerba_mate_leaves
+- [x] sencha_leaves
+- [x] sesame_paste
+- [x] shaped_arepas
+- [x] shaped_kammerjunkere
+- [x] shaped_pretzels
+- [x] shaped_rolls
+- [x] sheep_carcass
+- [x] sheep_casing
+- [x] shortcrust_dough
+- [x] shortcrust_pastry
+- [x] shoyu_koji
+- [x] shoyu_ramen
+- [x] shredded_cabbage
+- [x] shredded_papaya
+- [x] shrimp_paste
+- [x] sildemad_med_karrysalat
+- [x] simmered_azuki_beans
+- [x] skimmed_milk_bucket
+- [x] skipjack_tuna
+- [x] sliced_almonds
+- [x] sliced_beetroot
+- [x] sliced_brown_mushrooms
+- [x] sliced_galangal
+- [x] sliced_ginger
+- [x] sliced_mango
+- [x] sliced_pork_belly
+- [x] sliced_red_mushrooms
+- [x] sliced_rugbrod
+- [x] smoked_pork
+- [x] smoked_pork_shoulder
+- [x] smoked_salmon
+- [x] smoked_sausage
+- [x] smoked_sausage_filling
+- [x] smoked_tuna_loin
+- [x] smorrebrod_med_leverpostej
+- [x] soaked_chilies
+- [x] soaked_corn
+- [x] soaked_glutinous_rice
+- [x] soaked_grated_coconut
+- [x] soaked_horchata_rice
+- [x] soaked_rice_noodles
+- [x] soaked_soybeans
+- [x] socca
+- [x] socca_batter
+- [x] soft_cheese_curds
+- [x] som_tam
+- [x] sope_shells
+- [x] sopes
+- [x] sour_cassava_starch
+- [x] sourdough_starter
+- [x] soured_milk_bucket
+- [x] soy_curds
+- [x] soybean_mash
+- [x] soybean_paste
+- [x] spare_ribs
+- [x] spatzle
+- [x] spatzle_dough
+- [x] split_chocolate_sponge
+- [x] sponge_batter
+- [x] spoon
+- [x] spring_roll_batter
+- [x] spring_roll_filling
+- [x] spring_roll_wrappers
+- [x] sprouted_barley
+- [x] squid
+- [x] squid_tentacles
+- [x] star_anise
+- [x] star_anise_sapling
+- [x] steamed_glutinous_rice
+- [x] steamed_mochi_dough
+- [x] steamed_rice
+- [x] steamed_shaded_tea_leaves
+- [x] steamed_tea_leaves
+- [x] stegt_flaesk_med_persillesovs
+- [x] stew_beef
+- [x] stir_fried_rice_noodles
+- [x] stir_fried_vegetables
+- [x] stretched_curds
+- [x] strudel_dough
+- [x] stuffed_poblano
+- [x] suet
+- [x] sushi_rice
+- [x] sweated_vanilla_pods
+- [x] sweet_cherry_sapling
+- [x] sweet_potato_starch
+- [x] sweet_yeast_dough
+- [x] tacos_al_pastor
+- [x] taiyaki
+- [x] taiyaki_batter
+- [x] takoyaki
+- [x] takoyaki_balls
+- [x] takoyaki_batter
+- [x] tamal_masa
+- [x] tamales
+- [x] tamarind_pulp
+- [x] tamarind_sapling
+- [x] tapioca_starch
+- [x] tarte_tatin
+- [x] tarteletter_med_hons_i_asparges
+- [x] tartlet_rings
+- [x] tartlet_shells
+- [x] tempered_chocolate
+- [x] tempura
+- [x] tempura_batter
+- [x] tempura_pieces
+- [x] tencha
+- [x] tenkasu
+- [x] tenkasu_batter
+- [x] tequenos
+- [x] teriyaki_salmon
+- [x] thai_tea_leaves
+- [x] thick_palm_syrup
+- [x] thin_beef_slices
+- [x] tlacoyos
+- [x] toasted_chilies
+- [x] toasted_coconut
+- [x] toasted_corn
+- [x] toasted_curry_spices
+- [x] toasted_massaman_spices
+- [x] toasted_prawn_shells
+- [x] toasted_sweet_crumbs
+- [x] tod_mun_mix
+- [x] tod_mun_pla
+- [x] tofu
+- [x] tom_kha_base
+- [x] tom_kha_gai
+- [x] tom_yum_broth
+- [x] tom_yum_goong
+- [x] tomato_caldillo
+- [x] toulouse_filling
+- [x] toulouse_sausage
+- [x] tripe
+- [x] tub_tim_grob
+- [x] tuna_loin
+- [x] ume_sapling
+- [x] umeboshi
+- [x] unbaked_apfelstrudel
+- [x] unbaked_bienenstich
+- [x] unbaked_brunsviger
+- [x] unbaked_conchas
+- [x] unbaked_croque_monsieur
+- [x] unbaked_flammkuchen
+- [x] unbaked_kasekuchen
+- [x] unbaked_pissaladiere
+- [x] unbaked_pumpkin_pie
+- [x] unbaked_quesadilla
+- [x] vanilla
+- [x] vanilla_custard
+- [x] vanilla_milk
+- [x] vegetable_soup
+- [x] warm_milk_bucket
+- [x] warm_rice_pudding
+- [x] warm_sauerkraut
+- [x] warm_vanilla_custard
+- [x] wet_cornstarch
+- [x] wet_glutinous_rice_flour
+- [x] wet_potato_starch
+- [x] wet_salt
+- [x] wet_sweet_potato_starch
+- [x] wet_tapioca_starch
+- [x] wheat_flour
+- [x] whipped_cream
+- [x] white_fish_fillet
+- [x] withered_tea_leaves
+- [x] wood_ash
+- [x] worcestershire_mash
+- [x] yakitori
+- [x] yeast
+- [x] yerba_mate
+- [x] yerba_mate_sapling
+- [x] yogurt
+
+## Kept on the vanilla flask
+
+Bottled drinks, juices, syrups, and oils keep the vanilla Minecraft flask, tinted to their colour.
+
+- achiote_oil
+- agua_de_jamaica
+- agua_de_tamarindo
+- aguapanela
+- aguapanela_con_limon
+- apple_juice
+- apple_syrup
+- beef_stock
+- beer
+- blackcurrant_juice
+- blood
+- brewed_black_tea
+- brun_sovs
+- buttermilk
+- cafe_de_olla
+- calf_rennet
+- cane_juice
+- caramel_sauce
+- carrot_juice
+- cassis_syrup
+- cha_manao
+- cha_yen
+- champurrado
+- chancaca_syrup
+- chicha_morada
+- chicken_stock
+- chilled_koldskal
+- chocolat_chaud
+- chocolate_sauce
+- cider
+- cider_vinegar
+- citron_presse
+- citronnade_maison
+- cocoa_butter
+- coconut_cream
+- coconut_milk
+- condensed_milk
+- cream
+- dashi
+- dende_oil
+- dulce_de_leche
+- evaporated_milk
+- fish_sauce
+- fish_stock
+- fruchtetee
+- herring_pickling_liquid
+- hojicha
+- horchata_de_arroz
+- hot_hibiscus
+- hyldeblomstsaft
+- infused_elderflower
+- japanese_mayonnaise
+- kalter_kakao
+- kansui
+- kinderpunsch
+- kirsch
+- koji_amazake
+- koldskal
+- kra_pao_sauce
+- lard
+- lemon_juice
+- lime_juice
+- limonada_de_coco
+- limonada_de_coco_mix
+- limonada_suica
+- limonada_suica_mix
+- lomo_saltado_sauce
+- lye_solution
+- malzkaffee
+- matcha
+- mayonnaise
+- melon_juice
+- menthe_a_leau
+- mint_syrup
+- mirin
+- mitarashi_glaze
+- mugicha
+- nam_krajeab
+- nam_manao
+- nam_takrai
+- nigari
+- okonomi_sauce
+- olive_oil
+- oyster_sauce
+- pad_thai_sauce
+- palm_sap
+- pfefferminztee
+- pork_bone_broth
+- pork_stock
+- prawn_stock
+- prepared_mustard
+- pumpkin_seed_oil
+- rabarbersaft
+- raspberry_jam
+- red_wine
+- redcurrant_jelly
+- rendered_duck_fat
+- rice_vinegar
+- rum
+- sake
+- sauerbraten_marinade
+- schmaltz
+- seawater
+- sencha
+- sesame_oil
+- settled_coconut_milk
+- shoyu_tare
+- simple_syrup
+- sirop_de_cassis
+- soaked_tamarind
+- solbaersaft
+- som_tam_dressing
+- soy_milk
+- soy_sauce
+- strained_chicha_morada
+- strained_hibiscus
+- strained_horchata
+- strained_redcurrant_jelly
+- strained_thai_tea
+- strawberry_jam
+- strong_thai_tea
+- sunflower_oil
+- sweet_berry_cordial
+- sweet_berry_jam
+- sweet_berry_juice
+- sweet_chili_sauce
+- sweet_coconut_sauce
+- tallow
+- tamarind_paste
+- tamarind_water
+- tentsuyu
+- terere
+- tonkatsu_sauce
+- unsettled_olive_oil
+- unstrained_achiote_oil
+- unstrained_beef_stock
+- unstrained_berry_cordial
+- unstrained_cafe_de_olla
+- unstrained_chancaca_syrup
+- unstrained_chicha_morada
+- unstrained_chicken_stock
+- unstrained_dashi
+- unstrained_duck_fat
+- unstrained_fish_stock
+- unstrained_hyldebaersaft
+- unstrained_lard
+- unstrained_mint_syrup
+- unstrained_nam_takrai
+- unstrained_pork_bone_broth
+- unstrained_pork_stock
+- unstrained_prawn_stock
+- unstrained_rabarbersaft
+- unstrained_redcurrant_jelly
+- unstrained_schmaltz
+- unstrained_solbaersaft
+- unstrained_soy_milk
+- unstrained_tallow
+- unstrained_worcestershire_sauce
+- vanilla_infused_cream
+- varm_hyldebaersaft
+- vegetable_rennet
+- warm_cocoa
+- whey
+- white_grape_must
+- white_wine
+- wine_vinegar
+- worcestershire_sauce
+- wort
+- yakitori_tare
+- yeast_culture
+- young_red_wine

@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/coconut",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 6965802
-      }
-    ]
+    "model": "portable_pocket_cabin:item/coconut"
   }
 }

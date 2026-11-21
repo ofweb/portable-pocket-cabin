@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/gougeres",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 15251552
-      }
-    ]
+    "model": "portable_pocket_cabin:item/gougeres"
   }
 }

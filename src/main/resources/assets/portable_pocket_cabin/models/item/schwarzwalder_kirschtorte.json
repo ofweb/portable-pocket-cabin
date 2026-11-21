@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/cake"
+    "layer0": "portable_pocket_cabin:item/schwarzwalder_kirschtorte"
   }
 }

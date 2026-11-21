@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/salted_herring",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 12634320
-      }
-    ]
+    "model": "portable_pocket_cabin:item/salted_herring"
   }
 }

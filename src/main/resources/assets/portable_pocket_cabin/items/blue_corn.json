@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/blue_corn",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 3820186
-      }
-    ]
+    "model": "portable_pocket_cabin:item/blue_corn"
   }
 }

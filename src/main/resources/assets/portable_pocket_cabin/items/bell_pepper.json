@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/bell_pepper",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 14170154
-      }
-    ]
+    "model": "portable_pocket_cabin:item/bell_pepper"
   }
 }

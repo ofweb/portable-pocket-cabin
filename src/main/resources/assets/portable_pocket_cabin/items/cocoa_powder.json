@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/cocoa_powder",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 6963248
-      }
-    ]
+    "model": "portable_pocket_cabin:item/cocoa_powder"
   }
 }

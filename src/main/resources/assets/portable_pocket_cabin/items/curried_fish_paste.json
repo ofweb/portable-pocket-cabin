@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/curried_fish_paste",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 13660240
-      }
-    ]
+    "model": "portable_pocket_cabin:item/curried_fish_paste"
   }
 }

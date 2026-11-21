@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/ume_plum",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 13156416
-      }
-    ]
+    "model": "portable_pocket_cabin:item/ume_plum"
   }
 }

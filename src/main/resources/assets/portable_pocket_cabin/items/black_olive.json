@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/black_olive",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 3812922
-      }
-    ]
+    "model": "portable_pocket_cabin:item/black_olive"
   }
 }

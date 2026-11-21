@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/fish_scales",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 13687008
-      }
-    ]
+    "model": "portable_pocket_cabin:item/fish_scales"
   }
 }

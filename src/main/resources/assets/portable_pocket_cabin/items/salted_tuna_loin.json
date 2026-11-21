@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/salted_tuna_loin",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 9062986
-      }
-    ]
+    "model": "portable_pocket_cabin:item/salted_tuna_loin"
   }
 }

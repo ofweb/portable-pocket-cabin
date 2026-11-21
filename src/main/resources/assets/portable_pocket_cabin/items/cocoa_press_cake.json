@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/cocoa_press_cake",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 5913128
-      }
-    ]
+    "model": "portable_pocket_cabin:item/cocoa_press_cake"
   }
 }

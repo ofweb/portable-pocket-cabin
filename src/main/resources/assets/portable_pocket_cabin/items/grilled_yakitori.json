@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/grilled_yakitori",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 11561530
-      }
-    ]
+    "model": "portable_pocket_cabin:item/grilled_yakitori"
   }
 }

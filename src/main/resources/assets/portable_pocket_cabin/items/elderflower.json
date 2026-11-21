@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/elderflower",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 16052432
-      }
-    ]
+    "model": "portable_pocket_cabin:item/elderflower"
   }
 }

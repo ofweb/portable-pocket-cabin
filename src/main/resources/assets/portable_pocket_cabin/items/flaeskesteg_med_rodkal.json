@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/flaeskesteg_med_rodkal",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 11565642
-      }
-    ]
+    "model": "portable_pocket_cabin:item/flaeskesteg_med_rodkal"
   }
 }

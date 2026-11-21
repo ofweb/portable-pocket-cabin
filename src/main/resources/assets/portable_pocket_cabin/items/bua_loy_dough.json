@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/bua_loy_dough",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 16302176
-      }
-    ]
+    "model": "portable_pocket_cabin:item/bua_loy_dough"
   }
 }

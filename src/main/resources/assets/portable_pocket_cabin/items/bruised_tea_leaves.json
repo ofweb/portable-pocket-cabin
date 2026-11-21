@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/bruised_tea_leaves",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 6969898
-      }
-    ]
+    "model": "portable_pocket_cabin:item/bruised_tea_leaves"
   }
 }

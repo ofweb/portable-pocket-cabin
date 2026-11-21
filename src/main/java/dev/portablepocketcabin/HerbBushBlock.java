@@ -31,7 +31,8 @@ import java.util.function.Supplier;
  * A perennial plant that regrows after picking, like a sweet berry bush: thyme, strawberries, raspberries, and oyster
  * mushrooms. A two-season bush, the elder, gives one harvest at its flowering stage and another when it fruits.
  * Picking sets it back to its first grown stage. Tea remembers whether it ripened under a roof, and then gives shaded
- * tea leaves. A bush grown from cuttings gives a cutting to shears once grown, and is set back two stages.
+ * tea leaves. A bush grown from cuttings gives a cutting to shears once grown, and is set back two stages. A bush grown
+ * from seeds, such as mint, gives two or three seeds when a grown one is broken.
  */
 class HerbBushBlock extends VegetationBlock implements BonemealableBlock, CookingPlant {
 	static final int MAX_AGE = 3;

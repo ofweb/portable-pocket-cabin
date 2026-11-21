@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/savory",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 8030810
-      }
-    ]
+    "model": "portable_pocket_cabin:item/savory"
   }
 }

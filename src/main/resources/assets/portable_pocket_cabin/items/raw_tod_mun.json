@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/raw_tod_mun",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 14717040
-      }
-    ]
+    "model": "portable_pocket_cabin:item/raw_tod_mun"
   }
 }

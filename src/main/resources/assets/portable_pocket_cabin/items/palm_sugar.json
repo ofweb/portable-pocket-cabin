@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/palm_sugar",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 10514480
-      }
-    ]
+    "model": "portable_pocket_cabin:item/palm_sugar"
   }
 }

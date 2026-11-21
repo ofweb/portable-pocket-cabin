@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/massaman_curry_mix",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 10111530
-      }
-    ]
+    "model": "portable_pocket_cabin:item/massaman_curry_mix"
   }
 }

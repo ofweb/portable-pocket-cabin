@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/cassoulet",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 12618320
-      }
-    ]
+    "model": "portable_pocket_cabin:item/cassoulet"
   }
 }

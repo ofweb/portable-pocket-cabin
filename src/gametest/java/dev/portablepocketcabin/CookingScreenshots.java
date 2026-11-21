@@ -105,6 +105,7 @@ final class CookingScreenshots {
 			capturePress(context, world, origin[0]);
 			capturePhase3(context, world, origin[0]);
 			captureGarden(context, world, origin[0]);
+			captureArtPilot(context, world);
 			captureButchery(context, world, origin[0]);
 		}
 	}
@@ -422,6 +423,34 @@ final class CookingScreenshots {
 		});
 		world.getConnection().waitForClientboundPackets();
 		context.waitForScreen(CookingScreen.class);
+	}
+
+	/** The code-drawn item textures (.workflow/art/item_sprites.py), shown in the inventory screen, 36 at a time. */
+	private static void captureArtPilot(ClientGameTestContext context, TestSingleplayerContext world) {
+		var drawn = context.computeOnClient(client -> {
+			var names = new java.util.ArrayList<String>();
+			for (var id : net.minecraft.core.registries.BuiltInRegistries.ITEM.keySet()) {
+				if (id.getNamespace().equals(PortablePocketCabin.MOD_ID) && client.getResourceManager()
+					.getResource(PortablePocketCabin.id("textures/item/" + id.getPath() + ".png")).isPresent()) names.add(id.getPath());
+			}
+			java.util.Collections.sort(names);
+			return names;
+		});
+		for (int page = 0; page * 36 < drawn.size(); page++) {
+			var names = drawn.subList(page * 36, Math.min(drawn.size(), page * 36 + 36));
+			world.getServer().runOnServer(server -> {
+				var inventory = world.getConnection().getServerPlayer().getInventory();
+				inventory.clearContent();
+				for (int i = 0; i < names.size(); i++) {
+					inventory.setItem(i, new ItemStack(net.minecraft.core.registries.BuiltInRegistries.ITEM.getValue(PortablePocketCabin.id(names.get(i)))));
+				}
+			});
+			world.getConnection().waitForClientboundPackets();
+			context.runOnClient(client -> client.gui.setScreen(new net.minecraft.client.gui.screens.inventory.InventoryScreen(client.player)));
+			context.waitTicks(5);
+			shot(context, "art-inventory-" + (page + 1));
+			context.runOnClient(client -> client.gui.setScreen(null));
+		}
 	}
 
 	private static void shot(ClientGameTestContext context, String name) {

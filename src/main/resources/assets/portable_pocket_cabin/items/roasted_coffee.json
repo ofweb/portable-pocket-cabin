@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/roasted_coffee",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 2757640
-      }
-    ]
+    "model": "portable_pocket_cabin:item/roasted_coffee"
   }
 }

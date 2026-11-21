@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "portable_pocket_cabin:item/strawberry",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 14692410
-      }
-    ]
+    "model": "portable_pocket_cabin:item/strawberry"
   }
 }
