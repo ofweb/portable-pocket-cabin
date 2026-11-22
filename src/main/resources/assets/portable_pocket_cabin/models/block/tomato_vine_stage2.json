@@ -2,9 +2,9 @@
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
   "textures": {
-    "particle": "portable_pocket_cabin:block/tomato_vine_young",
-    "plant": "portable_pocket_cabin:block/tomato_vine_young",
-    "post": "minecraft:block/stripped_oak_log"
+    "particle": "portable_pocket_cabin:block/tomato_vine_vine",
+    "post": "minecraft:block/stripped_oak_log",
+    "young": "portable_pocket_cabin:block/tomato_vine_young"
   },
   "elements": [
     {
@@ -187,7 +187,7 @@
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#young"
         },
         "south": {
           "uv": [
@@ -196,7 +196,7 @@
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#young"
         }
       }
     },
@@ -220,7 +220,7 @@
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#young"
         },
         "south": {
           "uv": [
@@ -229,7 +229,7 @@
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#young"
         }
       }
     }

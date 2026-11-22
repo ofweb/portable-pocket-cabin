@@ -4,6 +4,7 @@
   "textures": {
     "particle": "portable_pocket_cabin:block/radish_leaf",
     "seed_leaf": "portable_pocket_cabin:block/radish_seed_leaf",
+    "stalk": "portable_pocket_cabin:block/radish_stalk",
     "small_leaf": "portable_pocket_cabin:block/radish_small_leaf"
   },
   "elements": [
@@ -93,19 +94,88 @@
     },
     {
       "from": [
-        6.0,
-        -1.0,
-        1.0
+        7.5,
+        -1,
+        7.5
       ],
       "to": [
-        10.0,
-        -1.0,
-        8.0
+        8.5,
+        2,
+        8.5
       ],
       "rotation": {
         "origin": [
           8,
-          -1.0,
+          -1,
+          8
+        ],
+        "x": -15,
+        "y": 90.0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            13,
+            1,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "south": {
+          "uv": [
+            0,
+            13,
+            1,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "east": {
+          "uv": [
+            0,
+            13,
+            1,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "west": {
+          "uv": [
+            0,
+            13,
+            1,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "up": {
+          "uv": [
+            0,
+            13,
+            1,
+            14
+          ],
+          "texture": "#stalk"
+        }
+      }
+    },
+    {
+      "from": [
+        6.0,
+        1.0420117618624767,
+        1.7494351708406901
+      ],
+      "to": [
+        10.0,
+        1.0420117618624767,
+        6.74943517084069
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          1.0420117618624767,
           8
         ],
         "x": 50,
@@ -118,7 +188,7 @@
             0,
             0,
             4,
-            7
+            5
           ],
           "texture": "#small_leaf"
         },
@@ -127,7 +197,7 @@
             0,
             0,
             4,
-            7
+            5
           ],
           "texture": "#small_leaf"
         }
@@ -135,19 +205,88 @@
     },
     {
       "from": [
-        6.0,
-        -1.0,
-        1.0
+        7.5,
+        -1,
+        7.5
       ],
       "to": [
-        10.0,
-        -1.0,
-        8.0
+        8.5,
+        2,
+        8.5
       ],
       "rotation": {
         "origin": [
           8,
-          -1.0,
+          -1,
+          8
+        ],
+        "x": -15,
+        "y": 270.0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            13,
+            1,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "south": {
+          "uv": [
+            0,
+            13,
+            1,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "east": {
+          "uv": [
+            0,
+            13,
+            1,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "west": {
+          "uv": [
+            0,
+            13,
+            1,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "up": {
+          "uv": [
+            0,
+            13,
+            1,
+            14
+          ],
+          "texture": "#stalk"
+        }
+      }
+    },
+    {
+      "from": [
+        6.0,
+        1.0420117618624767,
+        1.7494351708406901
+      ],
+      "to": [
+        10.0,
+        1.0420117618624767,
+        6.74943517084069
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          1.0420117618624767,
           8
         ],
         "x": 50,
@@ -160,7 +299,7 @@
             0,
             0,
             4,
-            7
+            5
           ],
           "texture": "#small_leaf"
         },
@@ -169,7 +308,7 @@
             0,
             0,
             4,
-            7
+            5
           ],
           "texture": "#small_leaf"
         }

@@ -22,7 +22,7 @@ final class PlantModelScreenshots {
 	}
 
 	static void capture(ClientGameTestContext context) {
-		String[] plants = System.getenv().getOrDefault("PPC_PLANTS", "cabbage,tomato_vine").split(",");
+		String[] plants = System.getenv().getOrDefault("PPC_PLANTS", "cabbage,tomato_vine,barley,onion,red_onion,radish,courgette,strawberry_bush").split(",");
 		try (TestSingleplayerContext world = context.worldBuilder().create()) {
 			for (String plant : plants) {
 				world.getServer().runOnServer(server -> {

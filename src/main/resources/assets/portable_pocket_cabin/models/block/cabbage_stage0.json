@@ -3,12 +3,7 @@
   "ambientocclusion": false,
   "textures": {
     "particle": "portable_pocket_cabin:block/cabbage_large_leaf",
-    "seed_leaf": "portable_pocket_cabin:block/cabbage_seed_leaf",
-    "small_leaf": "portable_pocket_cabin:block/cabbage_small_leaf",
-    "large_leaf": "portable_pocket_cabin:block/cabbage_large_leaf",
-    "wrapper_leaf": "portable_pocket_cabin:block/cabbage_wrapper_leaf",
-    "side": "portable_pocket_cabin:block/cabbage_head_side",
-    "top": "portable_pocket_cabin:block/cabbage_head_top"
+    "seed_leaf": "portable_pocket_cabin:block/cabbage_seed_leaf"
   },
   "elements": [
     {
