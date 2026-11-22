@@ -5,9 +5,11 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContex
 import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotOptions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.FarmlandBlock;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.Set;
 
@@ -35,12 +37,16 @@ final class PlantModelScreenshots {
 						level.setBlockAndUpdate(base.offset(x, -1, z), Blocks.GRASS_BLOCK.defaultBlockState());
 						for (int y = 0; y < 4; y++) level.setBlockAndUpdate(base.offset(x, y, z), Blocks.AIR.defaultBlockState());
 					}
-					var crop = (CropBlock) CookingPlants.PLANTS.get(plant);
-					// One plant per growth stage, left to right, on watered farmland.
-					for (int age = 0; age <= crop.getMaxAge(); age++) {
-						var pos = base.offset(age - crop.getMaxAge() / 2, 0, 0);
-						level.setBlockAndUpdate(pos.below(), Blocks.FARMLAND.defaultBlockState().setValue(FarmlandBlock.MOISTURE, 7));
-						level.setBlockAndUpdate(pos, crop.getStateForAge(age));
+					var block = CookingPlants.PLANTS.get(plant);
+					var age = (IntegerProperty) block.getStateDefinition().getProperty("age");
+					int maxAge = age.getPossibleValues().stream().mapToInt(Integer::intValue).max().orElseThrow();
+					// One plant per growth stage, left to right: crops on watered farmland, the rest on the grass.
+					for (int stage = 0; stage <= maxAge; stage++) {
+						var pos = base.offset(stage - maxAge / 2, 0, 0);
+						if (block instanceof CropBlock) {
+							level.setBlockAndUpdate(pos.below(), Blocks.FARMLAND.defaultBlockState().setValue(FarmlandBlock.MOISTURE, 7));
+						}
+						level.setBlock(pos, block.defaultBlockState().setValue(age, stage), Block.UPDATE_CLIENTS);
 					}
 					player.teleportTo(level, base.getX() + .5, base.getY() + 1.5, base.getZ() + 3.8, Set.of(), 180, 24, false);
 				});
