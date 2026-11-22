@@ -22,7 +22,7 @@ final class PlantModelScreenshots {
 	}
 
 	static void capture(ClientGameTestContext context) {
-		String[] plants = System.getenv().getOrDefault("PPC_PLANTS", "cabbage,tomato_vine,barley,onion,red_onion,radish,courgette,strawberry_bush").split(",");
+		String[] plants = System.getenv().getOrDefault("PPC_PLANTS", "cabbage,tomato_vine,barley,onion,red_onion,radish,courgette,strawberry_bush,corn,white_grape_vine,rice,rhubarb,dill").split(",");
 		try (TestSingleplayerContext world = context.worldBuilder().create()) {
 			for (String plant : plants) {
 				world.getServer().runOnServer(server -> {
@@ -40,10 +40,19 @@ final class PlantModelScreenshots {
 					var block = CookingPlants.PLANTS.get(plant);
 					var age = (IntegerProperty) block.getStateDefinition().getProperty("age");
 					int maxAge = age.getPossibleValues().stream().mapToInt(Integer::intValue).max().orElseThrow();
-					// One plant per growth stage, left to right: crops on watered farmland, the rest on the grass.
+					// One plant per growth stage, left to right: paddy crops standing in water on mud, walled in so the
+					// water stays put; other crops on watered farmland; the rest on the grass.
+					boolean paddy = block instanceof PaddyCropBlock;
+					if (paddy) {
+						for (int x = -6; x <= 6; x++) for (int z = -1; z <= 1; z++) {
+							if (z != 0 || x < -maxAge / 2 || x > maxAge - maxAge / 2) level.setBlockAndUpdate(base.offset(x, 0, z), Blocks.GRASS_BLOCK.defaultBlockState());
+						}
+					}
 					for (int stage = 0; stage <= maxAge; stage++) {
 						var pos = base.offset(stage - maxAge / 2, 0, 0);
-						if (block instanceof CropBlock) {
+						if (paddy) {
+							level.setBlockAndUpdate(pos.below(), Blocks.MUD.defaultBlockState());
+						} else if (block instanceof CropBlock) {
 							level.setBlockAndUpdate(pos.below(), Blocks.FARMLAND.defaultBlockState().setValue(FarmlandBlock.MOISTURE, 7));
 						}
 						level.setBlock(pos, block.defaultBlockState().setValue(age, stage), Block.UPDATE_CLIENTS);

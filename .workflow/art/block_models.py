@@ -85,10 +85,11 @@ def leaf_grid(width, height):
     return ["".join(row) for row in grid]
 
 
-def leaf(texture, size, heading, tilt, out=0.0, rise=0.0, ground=GROUND):
+def leaf(texture, size, heading, tilt, out=0.0, rise=0.0, ground=GROUND, v=0):
     """A leaf of size (width, length) pixels growing out from the plant's centre, its stalk `out` pixels from the
     centre and `rise` above the ground, tilted up by `tilt` degrees and turned to face `heading` degrees round the plant.
-    The texture is drawn at one texel per pixel, so its pixels match the rest of the plant."""
+    The texture is drawn at one texel per pixel, so its pixels match the rest of the plant, starting `v` rows down,
+    so a long leaf can be built from pieces of one texture."""
     import math
     w, length = size
     # Laid flat pointing north from the stalk, then tilted up and turned round the plant's centre.
@@ -96,18 +97,18 @@ def leaf(texture, size, heading, tilt, out=0.0, rise=0.0, ground=GROUND):
     reach = out / math.cos(math.radians(tilt))
     root_z = 8 - reach
     y = ground + rise - reach * math.sin(math.radians(tilt))
-    face = {"uv": [0, 0, w, length], "texture": "#" + texture}
+    face = {"uv": [0, v, w, v + length], "texture": "#" + texture}
     return {"from": [8 - w / 2, y, root_z - length], "to": [8 + w / 2, y, root_z],
             "rotation": {"origin": [8, y, 8], "x": tilt, "y": heading, "z": 0},
             "faces": {"up": face, "down": face}}
 
 
-def stalk(texture, length, heading, tilt, out=0.0, ground=GROUND, column=0):
-    """A thin stalk or tube a pixel thick, rising `length` pixels from `out` pixels north of the centre, leaning out by
-    `tilt` degrees and turned to `heading`. Its sides show one column of the texture, bottom row at the ground."""
-    side = {"uv": [column, 16 - length, column + 1, 16], "texture": "#" + texture}
-    tip = {"uv": [column, 16 - length, column + 1, 17 - length], "texture": "#" + texture}
-    return {"from": [7.5, ground, 7.5 - out], "to": [8.5, ground + length, 8.5 - out],
+def stalk(texture, length, heading, tilt, out=0.0, ground=GROUND, column=0, width=1):
+    """A stalk or tube `width` pixels thick, rising `length` pixels from `out` pixels north of the centre, leaning out
+    by `tilt` degrees and turned to `heading`. Its sides show `width` columns of the texture, bottom row at the ground."""
+    side = {"uv": [column, 16 - length, column + width, 16], "texture": "#" + texture}
+    tip = {"uv": [column, 16 - length, column + width, 16 - length + width], "texture": "#" + texture}
+    return {"from": [8 - width / 2, ground, 8 - width / 2 - out], "to": [8 + width / 2, ground + length, 8 + width / 2 - out],
             "rotation": {"origin": [8, ground, 8], "x": -tilt, "y": heading, "z": 0},
             "faces": {"north": side, "south": side, "east": side, "west": side, "up": tip}}
 
@@ -233,10 +234,17 @@ def ball_top(diameter, height, ground=GROUND, sink=0):
 
 
 def rod(x, z, y0, y1, texture, column=0):
-    """A thin upright stalk a pixel thick from y0 to y1 at (x, z), showing one column of the texture."""
-    side = {"uv": [column, 16 - (y1 - y0), column + 1, 16], "texture": "#" + texture}
-    return {"from": [x - 0.5, y0, z - 0.5], "to": [x + 0.5, y1, z + 0.5],
-            "faces": {d: side for d in ("north", "south", "east", "west")}}
+    """A thin upright stalk a pixel thick from y0 to y1 at (x, z), showing one column of the texture, stacked from
+    pieces at most 16 pixels high when it is taller than the texture. Returns one element, or a list when stacked."""
+    pieces = []
+    y = y0
+    while y < y1:
+        h = min(16, y1 - y)
+        side = {"uv": [column, 16 - h, column + 1, 16], "texture": "#" + texture}
+        pieces.append({"from": [x - 0.5, y, z - 0.5], "to": [x + 0.5, y + h, z + 0.5],
+                       "faces": {d: side for d in ("north", "south", "east", "west")}})
+        y += h
+    return pieces[0] if len(pieces) == 1 else pieces
 
 
 def truss(x, z, top, fruits, stem="stalk"):
@@ -245,6 +253,46 @@ def truss(x, z, top, fruits, stem="stalk"):
     for i, fruit in enumerate(fruits):
         fx, fy = x + (0.9 if i % 2 else -0.9), top - 2.2 * (i + 1)
         parts.append(solid((fx - 1, fy, z - 1), (fx + 1, fy + 2, z + 1), fruit))
+    return parts
+
+
+def column(x, z, y0, y1, texture, width=2):
+    """A solid upright stem `width` pixels thick from y0 to y1 at (x, z), taller than a texture if need be: it is
+    stacked from pieces at most 16 pixels high, each showing the bottom of the texture's first `width` columns."""
+    parts = []
+    y = y0
+    while y < y1:
+        h = min(16, y1 - y)
+        side = {"uv": [0, 16 - h, width, 16], "texture": "#" + texture}
+        faces = {d: side for d in ("north", "south", "east", "west")}
+        if y + h >= y1:
+            faces["up"] = {"uv": [0, 0, width, width], "texture": "#" + texture}
+        parts.append({"from": [x - width / 2, y, z - width / 2], "to": [x + width / 2, y + h, z + width / 2], "faces": faces})
+        y += h
+    return parts
+
+
+def arching_leaf(texture, width, heading, y, base, tip, rise_tilt=50, droop=-15, out=1.0):
+    """A long leaf that rises from the stem and arches over: a base piece tilted up and a tip piece drooping from its
+    end, cut from one texture whose top `tip` rows are the tip and whose next `base` rows are the base."""
+    first = leaf(texture, (width, base), heading, rise_tilt, out, y - GROUND, v=tip)
+    end_out = out + base * _m.cos(_m.radians(rise_tilt))
+    end_rise = y - GROUND + base * _m.sin(_m.radians(rise_tilt))
+    second = leaf(texture, (width, tip), heading, droop, end_out, end_rise)
+    return [first, second]
+
+
+def bunch(x, z, top, rows, berry, stem="stalk"):
+    """A bunch of grapes hanging from `top`: rows of small round berries, as many in each row as `rows` says, staggered
+    in and out so the bunch has depth, narrowing to its tip."""
+    parts = [rod(x, z, top - 1, top, stem)]
+    size = 1.5
+    for r, n in enumerate(rows):
+        y = top - 1 - size * (r + 1)
+        for j in range(n):
+            bx = x + (j - (n - 1) / 2) * 1.4
+            bz = z + (0.35 if (r + j) % 2 else -0.35)
+            parts.append(solid((bx - size / 2, y, bz - size / 2), (bx + size / 2, y + size, bz + size / 2), berry))
     return parts
 
 
@@ -625,6 +673,229 @@ def strawberry():
     build("strawberry_bush", STRAWBERRY, textures, stages, "leaf")
 
 
+# Corn: a thick stalk with long strap leaves arching from each joint, a tassel at the top, and husked cobs whose silk
+# turns brown as they ripen. It grows taller than a block, as maize does.
+
+CORN = {"a": "#1e4a1e", "b": "#2c6428", "c": "#3e7e34", "d": "#58983e", "e": "#7cb456", "f": "#a8d07c",
+        "h": "#a8883e", "i": "#ccac5a", "j": "#e8d088", "y": "#b8a040", "z": "#d8c868",
+        "H": "#78a84a", "I": "#a4c870", "T": "#c0a860", "U": "#dcc890", "k": "#e8c888", "m": "#6a3e1c"}
+
+
+def corn():
+    strap = [".d."] + ["ded"] * 4 + ["cec"] * 5 + ["cdc"] * 4
+    husk = ["".join("I" if x % 3 == 0 else "H" for x in range(16)) for _ in range(16)]
+    dry = recolour(husk, {"I": "U", "H": "T"})
+    textures = {"leaf": padded(strap), "old_leaf": padded(recolour(strap, {"d": "z", "e": "z", "c": "y"})),
+                "stalk": stalk_strip(["cdccdcccdccdccdc", "dcdcccdcdcccdcdc"]),
+                "tassel": bottom_padded(["i.j.i", ".iji.", "j.i.j", ".hih.", "..h..", "..h.."]),
+                "brown_tassel": bottom_padded(recolour(["i.j.i", ".iji.", "j.i.j", ".hih.", "..h..", "..h.."], {"i": "h", "j": "i"})),
+                "husk": husk, "silk": padded(["kk.", "kkk", ".kk"]), "dry_husk": dry, "dry_silk": padded(["mm.", "mmm", ".mm"])}
+
+    def plant(height, leaves, length, tassel=None, cobs=None, old=0):
+        parts = column(8, 8, GROUND, GROUND + height, "stalk")
+        for k in range(leaves):
+            y = GROUND + 2 + k * (height - 3) / max(1, leaves)
+            name = "old_leaf" if k < old else "leaf"
+            parts += arching_leaf(name, 3, k * 180 + k * 23, y, length // 2, length - length // 2)
+        if tassel:
+            for i, turn in enumerate((0, 60, 120)):
+                parts += tuft(tassel, (5, 6), (8, 8), turn, 8 if i % 2 else -8, ground=GROUND + height)
+        for heading, y, side, top in cobs or ():
+            parts.append(solid((6.5, y, 4), (9.5, y + 7, 7), side, top=top,
+                               rotation={"origin": [8, y, 8], "x": -18, "y": heading, "z": 0}))
+        return parts
+    stages = [
+        plant(2, 3, 6), plant(4, 4, 8), plant(8, 5, 10), plant(12, 6, 12), plant(18, 7, 13),
+        plant(24, 8, 13, tassel="tassel"),
+        plant(24, 8, 13, tassel="tassel", cobs=[(40, GROUND + 9, "husk", "silk"), (220, GROUND + 12, "husk", "silk")]),
+        plant(24, 8, 13, tassel="brown_tassel", old=2,
+              cobs=[(40, GROUND + 9, "dry_husk", "dry_silk"), (220, GROUND + 12, "dry_husk", "dry_silk")]),
+    ]
+    build("corn", CORN, textures, stages, "leaf")
+
+
+# White grape: a cutting, a young vine, then a woody vine trained along the trellis rails with big lobed leaves,
+# setting small green bunches that swell and ripen golden green.
+
+GRAPE = {"a": "#1e4a24", "b": "#2c6630", "c": "#40823c", "d": "#5c9e48", "e": "#86c060",
+         "h": "#4a2e16", "i": "#6e4826", "j": "#94683a",
+         "P": "#e8f0a0", "Q": "#c8d870", "R": "#9aae48", "G": "#a8c860", "K": "#7a9a3a", "L": "#5e7e2c"}
+GRAPE_VINE = [
+    "..ddc....dcd....",
+    ".dcecd..dceccd..",
+    ".cdecc.dcdecdc..",
+    "..cbc...ccbcc...",
+    "....i....ib.....",
+    "iiiiijiiiijiiiii",
+    "..dd..ij....dd..",
+    ".dcecd.i...dcecd",
+    ".cdecc.ji..cdecc",
+    "..cbc...i...cbc.",
+    "iiiiiiiijiiiiiii",
+    ".dd....ij...dd..",
+    "dced...i...dcecd",
+    "cdec...ji..cdec.",
+    ".cb.....i...cb..",
+    ".......hi.......",
+]
+
+
+def grape():
+    young = ["." * 16] * 6 + [
+        "......dd........",
+        ".....dced.......",
+        ".....cdec..dd...",
+        "......cb..dcec..",
+        ".......i..cdec..",
+        "..dd...ij..cb...",
+        ".dcec...i.......",
+        ".cdec...ji......",
+        "..cb.....i......",
+        ".........hi.....",
+    ]
+    cutting = ["." * 16] * 11 + ["......dd........", ".....dcec.......", ".....cdec.......", "......cbi.......", ".......hi......."]
+    textures = {"cutting": cutting, "young": young, "vine": GRAPE_VINE, "stalk": stalk_strip(["iijiiiijiiijiiij"]),
+                "ripe": padded(["PQ", "QR"]), "green": padded(["GK", "KL"])}
+
+    def on_trellis(stage, bunches=()):
+        parts = trellis_frame() + trellis_planes("#" + stage)
+        for b in bunches:
+            parts += bunch(*b)
+        return parts
+    front, back = 10.4, 5.6
+    small, big = [2, 2, 1], [3, 3, 3, 2, 2, 1]
+    stages = [
+        on_trellis("cutting"), on_trellis("cutting"), on_trellis("young"), on_trellis("young"), on_trellis("vine"),
+        on_trellis("vine"),
+        on_trellis("vine", [(5, front, 9.5, small, "green"), (11, front, 14.5, small, "green"), (8, back, 9.5, small, "green")]),
+        on_trellis("vine", [(4.5, front, 9.5, big, "ripe"), (11.5, front, 14.5, big, "ripe"), (8, front, 4.5, [2, 2, 1], "ripe"),
+                            (6, back, 14.5, big, "ripe"), (11, back, 9.5, big, "ripe")]),
+    ]
+    build("white_grape_vine", GRAPE, textures, stages, "vine", extra={"post": "minecraft:block/stripped_oak_log"})
+
+
+# Rice: a clump of grassy shoots rising out of standing water, then green heads that droop as they fill and ripen
+# gold. The block holds the water, so the plant grows up from its bottom and only shows above the surface.
+
+RICE = {"a": "#24502a", "b": "#346c30", "c": "#4a8a3a", "d": "#68a648", "e": "#92c464", "f": "#c0dc8c",
+        "h": "#9a7a30", "i": "#c8a448", "j": "#e4c868"}
+RICE_SPOTS = [(8, 8), (6.5, 6.5), (9.5, 6.5), (6.5, 9.5), (9.5, 9.5), (8, 5.5), (5.5, 8), (10.5, 8), (8, 10.5)]
+RICE_TURNS = [0, 40, 80, 120, 160, 20, 60, 100, 140]
+RICE_LEANS = [0, -10, 9, -8, 10, -6, 7, -9, 8]
+RICE_BLADES = ["..e..", ".e.e.", "e.d.d", ".d.d.", "d.cd.", ".dc.d", "..cd.", ".cd..", "..c..", ".cc..", "..c..", "..cc.",
+               "..c..", ".cc..", "..c..", "..c.."]
+RICE_HEADING = ["..ff.", ".f..f", "....f", "..e.f", ".e.d.", "e.d.d", ".dcd.", "..cd.", ".cd..", "..c..", ".cc..", "..c..",
+                "..cc.", "..c..", "..c..", "..c.."]
+
+
+def rice():
+    textures = {"blades": bottom_padded(RICE_BLADES), "heading": bottom_padded(RICE_HEADING),
+                "ripe": bottom_padded(recolour(RICE_HEADING, {"f": "j", "e": "i", "d": "d"})),
+                "stems": bottom_padded([".c.c."] * 16)}
+
+    def clump(texture, count, top):
+        base = top - 16
+        parts = []
+        for i in range(count):
+            spot, turn, lean = RICE_SPOTS[i], RICE_TURNS[i], RICE_LEANS[i]
+            parts += tuft(texture, (5, 16), spot, turn, lean, ground=base)
+            if base > 0:
+                parts += tuft("stems", (5, base), spot, turn, lean / 2, ground=0)
+        return parts
+    stages = [clump("blades", 3, 16), clump("blades", 5, 18), clump("blades", 7, 20), clump("blades", 9, 22),
+              clump("blades", 9, 24), clump("heading", 9, 26), clump("heading", 9, 27), clump("ripe", 9, 27)]
+    build("rice", RICE, textures, stages, "blades")
+
+
+# Rhubarb: red buds breaking from the crown, then huge, crinkled leaves held up on thick red stalks.
+
+RHUBARB = {"a": "#1e4224", "b": "#2c5e30", "c": "#3e7a3a", "d": "#56964a", "e": "#7eb466", "f": "#a8d08c",
+           "r": "#6e1424", "s": "#a82638", "t": "#d0485a", "u": "#ec8496"}
+
+
+def rhubarb():
+    def crinkled(w, h):
+        grid = [list(row) for row in leaf_grid(w, h)]
+        for y in range(h):
+            for x in range(w):
+                if grid[y][x] in "cd" and (x * 5 + y * 3) % 7 == 0:
+                    grid[y][x] = "b"
+        return ["".join(r) for r in grid]
+    textures = {"small_leaf": padded(crinkled(6, 6)), "leaf": padded(crinkled(8, 7)), "big_leaf": padded(crinkled(10, 9)),
+                "stalk": stalk_strip(["tsstssts" * 2, "ssrssrss" * 2]), "bud": padded(["ut", "ts"])}
+
+    def leaves(texture, size, count, rise, lean, turn=0, tilt=20):
+        parts = []
+        length = rise / _m.cos(_m.radians(lean))
+        out = rise * _m.tan(_m.radians(lean))
+        for i in range(count):
+            heading = turn + i * 360 / count
+            parts.append(stalk("stalk", round(length), heading, lean, width=2))
+            parts.append(leaf(texture, size, heading, tilt, out, rise))
+        return parts
+
+    def buds(n):
+        return [solid((8 + 2 * _m.sin(a) - 1, GROUND, 8 + 2 * _m.cos(a) - 1), (8 + 2 * _m.sin(a) + 1, GROUND + 2, 8 + 2 * _m.cos(a) + 1), "bud")
+                for a in [k * 2 * _m.pi / n for k in range(n)]]
+    stages = [
+        buds(3) + leaves("small_leaf", (6, 6), 1, 2, 15, tilt=40),
+        buds(2) + leaves("small_leaf", (6, 6), 3, 3, 20, tilt=35),
+        leaves("leaf", (8, 7), 4, 5, 22, tilt=30),
+        leaves("leaf", (8, 7), 5, 6, 22, turn=30, tilt=25),
+        leaves("big_leaf", (10, 9), 5, 7, 22),
+        leaves("big_leaf", (10, 9), 6, 8, 22, turn=20),
+        leaves("big_leaf", (10, 9), 6, 9, 22, turn=10, tilt=18) + buds(2),
+        leaves("big_leaf", (10, 9), 7, 9, 22, turn=25, tilt=18),
+    ]
+    build("rhubarb", RHUBARB, textures, stages, "big_leaf")
+
+
+# Dill: feathery blue-green fronds, then a tall stem carrying flat umbrellas of tiny yellow flowers that turn to brown
+# seed heads.
+
+DILL = {"a": "#2a4e3a", "b": "#3a6a4c", "c": "#4a7e58", "d": "#5e946a", "e": "#78aa80", "f": "#a8c890",
+        "Y": "#e8d040", "Z": "#c0a020", "h": "#7a5a2e", "i": "#a8844a"}
+DILL_FROND = ["...e...", "e..d..e", ".e.d.e.", "..ede..", "e..d..e", ".e.d.e.", "..ede..", "e..d..e", ".e.d.e.", "...d..."]
+DILL_SMALL = ["..e..", "e.d.e", ".ede.", "e.d.e", ".ede.", "..d.."]
+DILL_UMBEL = ["..Y.Y..", ".YY.YY.", "YY.c.YY", "..ccc..", "YY.c.YY", ".YY.YY.", "..Y.Y.."]
+DILL_RAYS = ["Y..Y..Y", ".c.c.c.", "..ccc.."]
+DILL_SPOTS = [(8, 6), (10, 8.5), (6, 9), (8.5, 10.5), (5.5, 6.5), (10.5, 5.5)]
+
+
+def dill():
+    seed = {"Y": "h", "Z": "i"}
+    bud = {"Y": "d"}
+    textures = {"frond": bottom_padded(DILL_FROND), "small_frond": bottom_padded(DILL_SMALL),
+                "stalk": stalk_strip(["cdcccdcccdcccdcc"]),
+                "umbel": padded(DILL_UMBEL), "rays": bottom_padded(DILL_RAYS),
+                "bud_umbel": padded(recolour(DILL_UMBEL, bud)), "bud_rays": bottom_padded(recolour(DILL_RAYS, bud)),
+                "seed_umbel": padded(recolour(DILL_UMBEL, seed)), "seed_rays": bottom_padded(recolour(DILL_RAYS, seed)),
+                "old_frond": bottom_padded(recolour(DILL_FROND, {"e": "f", "d": "e"}))}
+
+    def fronds(texture, size, count):
+        parts = []
+        for i in range(count):
+            parts += tuft(texture, size, DILL_SPOTS[i], i * 50, (-1) ** i * 12)
+        return parts
+
+    def umbel(x, z, height, kind=""):
+        top = GROUND + height
+        face = {"uv": [0, 0, 7, 7], "texture": "#" + kind + "umbel"}
+        stem = rod(x, z, GROUND, top, "stalk")
+        return ((stem if isinstance(stem, list) else [stem]) + tuft(kind + "rays", (7, 3), (x, z), 20, 0, ground=top)
+                + [{"from": [x - 3.5, top + 3, z - 3.5], "to": [x + 3.5, top + 3, z + 3.5], "shade": False,
+                    "faces": {"up": face, "down": face}}])
+    stages = [
+        fronds("small_frond", (5, 6), 2), fronds("small_frond", (5, 6), 4), fronds("frond", (7, 10), 4),
+        fronds("frond", (7, 10), 6),
+        fronds("frond", (7, 10), 6) + umbel(8, 8, 14, "bud_"),
+        fronds("frond", (7, 10), 6) + umbel(8, 8, 17) + umbel(10, 7, 13, "bud_"),
+        fronds("frond", (7, 10), 6) + umbel(8, 8, 19) + umbel(10, 7, 15) + umbel(6, 9.5, 12, "bud_"),
+        fronds("old_frond", (7, 10), 5) + umbel(8, 8, 19, "seed_") + umbel(10, 7, 15, "seed_") + umbel(6, 9.5, 12, "seed_"),
+    ]
+    build("dill", DILL, textures, stages, "frond")
+
+
 def main():
     cabbage()
     tomato()
@@ -634,6 +905,11 @@ def main():
     radish()
     courgette()
     strawberry()
+    corn()
+    grape()
+    rice()
+    rhubarb()
+    dill()
 
 
 if __name__ == "__main__":
