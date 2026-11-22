@@ -2,93 +2,222 @@
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
   "textures": {
-    "particle": "portable_pocket_cabin:block/cabbage_rosette",
-    "crop": "portable_pocket_cabin:block/cabbage_rosette"
+    "particle": "portable_pocket_cabin:block/cabbage_large_leaf",
+    "seed_leaf": "portable_pocket_cabin:block/cabbage_seed_leaf",
+    "small_leaf": "portable_pocket_cabin:block/cabbage_small_leaf",
+    "large_leaf": "portable_pocket_cabin:block/cabbage_large_leaf",
+    "wrapper_leaf": "portable_pocket_cabin:block/cabbage_wrapper_leaf",
+    "side": "portable_pocket_cabin:block/cabbage_head_side",
+    "top": "portable_pocket_cabin:block/cabbage_head_top"
   },
   "elements": [
     {
       "from": [
-        0.8,
-        -1,
-        8
+        5.0,
+        -1.0,
+        1.0
       ],
       "to": [
-        15.2,
-        15,
-        8
+        11.0,
+        -1.0,
+        8.0
       ],
       "rotation": {
         "origin": [
           8,
-          8,
+          -1.0,
           8
         ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
+        "x": 30,
+        "y": 0.0,
+        "z": 0
       },
-      "shade": false,
       "faces": {
-        "north": {
+        "up": {
           "uv": [
             0,
             0,
-            16,
-            16
+            6,
+            7
           ],
-          "texture": "#crop"
+          "texture": "#small_leaf"
         },
-        "south": {
+        "down": {
           "uv": [
             0,
             0,
-            16,
-            16
+            6,
+            7
           ],
-          "texture": "#crop"
+          "texture": "#small_leaf"
         }
       }
     },
     {
       "from": [
-        8,
-        -1,
-        0.8
+        5.0,
+        -1.0,
+        1.0
       ],
       "to": [
-        8,
-        15,
-        15.2
+        11.0,
+        -1.0,
+        8.0
       ],
       "rotation": {
         "origin": [
           8,
-          8,
+          -1.0,
           8
         ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
+        "x": 30,
+        "y": 72.0,
+        "z": 0
       },
-      "shade": false,
       "faces": {
-        "east": {
+        "up": {
           "uv": [
             0,
             0,
-            16,
-            16
+            6,
+            7
           ],
-          "texture": "#crop"
+          "texture": "#small_leaf"
         },
-        "west": {
+        "down": {
           "uv": [
             0,
             0,
-            16,
-            16
+            6,
+            7
           ],
-          "texture": "#crop"
+          "texture": "#small_leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        1.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 30,
+        "y": 144.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            7
+          ],
+          "texture": "#small_leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            7
+          ],
+          "texture": "#small_leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        1.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 30,
+        "y": 216.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            7
+          ],
+          "texture": "#small_leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            7
+          ],
+          "texture": "#small_leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        1.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 30,
+        "y": 288.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            7
+          ],
+          "texture": "#small_leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            7
+          ],
+          "texture": "#small_leaf"
         }
       }
     }

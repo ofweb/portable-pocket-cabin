@@ -5,7 +5,9 @@ Each growth stage is a 16x16 grid of palette letters ('.' is clear), seen from t
 upper left, dark below, no outlines, and gaps between the leaves so the plant reads as leaves rather than a blob. The
 stage textures go to textures/block/, and models/block/<plant>_stage<age>.json put them on two crossed planes, sunk a
 pixel so the plant stands in farmland rather than floating on it; trellis vines lie flat over the trellis.
-A plant with a firm heart, like a cabbage head, gets that as a solid block standing in its leaves. The blockstates already point each age at its model.
+Plants that need more than that are built in 3D: leaves as flat planes tilted out from the stem at any angle, and a
+solid heart such as a cabbage head, all mapped one texel per pixel so they match. The blockstates already point each
+age at its model.
 """
 import json
 import os
@@ -50,25 +52,96 @@ def cross_planes(texture, bottom):
     ]
 
 
-def crop_model(texture, head=None):
-    """A field crop: crossed planes sunk a pixel into the farmland, and optionally a solid head standing in them,
-    given as (width, height) in pixels with its side and top textures drawn 1:1 so its pixels match the leaves."""
-    textures = {"particle": NS + texture, "crop": NS + texture}
-    elements = cross_planes("#crop", -1)
-    if head:
-        (w, h), (side, top) = head
-        lo, hi = 8 - w / 2, 8 + w / 2
-        textures.update(side=NS + side, top=NS + top)
-        side_face = {"uv": [lo, 16 - h, hi, 16], "texture": "#side"}
-        top_face = {"uv": [lo, lo, hi, hi], "texture": "#top"}
-        elements.append({"from": [lo, -1, lo], "to": [hi, h - 2, hi],
-                         "faces": {"north": side_face, "south": side_face, "east": side_face, "west": side_face, "up": top_face}})
-        # A narrower cap a pixel high, so the head domes rather than ending flat.
-        cap_side = {"uv": [lo + 1, 16 - h, hi - 1, 17 - h], "texture": "#side"}
-        cap_top = {"uv": [lo + 1, lo + 1, hi - 1, hi - 1], "texture": "#top"}
-        elements.append({"from": [lo + 1, h - 2, lo + 1], "to": [hi - 1, h - 1, hi - 1],
-                         "faces": {"north": cap_side, "south": cap_side, "east": cap_side, "west": cap_side, "up": cap_top}})
-    return {"parent": "minecraft:block/block", "ambientocclusion": False, "textures": textures, "elements": elements}
+def crop_model(texture):
+    """A field crop: crossed planes sunk a pixel into the farmland."""
+    return {"parent": "minecraft:block/block", "ambientocclusion": False,
+            "textures": {"particle": NS + texture, "crop": NS + texture}, "elements": cross_planes("#crop", -1)}
+
+
+# Plants built in 3D: leaves as flat planes tilted out from the stem, and a solid heart such as a cabbage head.
+# The farmland's top is a pixel below the block, so the ground these stand on is y = -1.
+
+GROUND = -1
+
+
+def leaf_grid(width, height):
+    """A broad leaf seen flat, tip at the top and stalk at the bottom: lighter toward the sunny tip, darker toward the
+    stalk and along the edge, with a pale midrib and veins running up and out from it, and a gently scalloped edge."""
+    import math
+    centre = (width - 1) / 2
+    grid = []
+    for y in range(height):
+        t = y / max(1, height - 1)
+        half = width / 2 * math.sqrt(max(0.0, 1 - ((t - 0.4) / 0.6) ** 2))
+        row = []
+        for x in range(width):
+            dx = abs(x - centre)
+            # Scallops: the edge dips in every third pixel down the leaf.
+            edge = half - (0.6 if (y + (x > centre)) % 3 == 0 else 0)
+            if dx > edge and not (dx < 0.6 and y >= height - 2):
+                row.append(".")
+                continue
+            tone = "d" if t < 0.3 else "c" if t < 0.7 else "b"
+            if dx > edge - 1:
+                tone = {"d": "c", "c": "b", "b": "a"}[tone]
+            row.append(tone)
+        grid.append(row)
+    lighter = {"a": "b", "b": "c", "c": "d", "d": "e", "e": "f", "f": "f"}
+    mid = round(centre)
+    for y in range(1, height):
+        if grid[y][mid] != ".":
+            grid[y][mid] = lighter[grid[y][mid]]
+        # Veins every third row, sweeping up and out to each side.
+        if y % 3 == 1:
+            for side in (-1, 1):
+                for k in (1, 2, 3):
+                    x, vy = mid + side * k, y - k
+                    if 0 <= x < width and 0 <= vy and grid[vy][x] not in ".":
+                        grid[vy][x] = lighter[grid[vy][x]]
+    return ["".join(row) for row in grid]
+
+
+def leaf(texture, size, heading, tilt, out=0.0, rise=0.0):
+    """A leaf of size (width, length) pixels growing out from the plant's centre, its stalk `out` pixels from the
+    centre and `rise` above the ground, tilted up by `tilt` degrees and turned to face `heading` degrees round the plant.
+    The texture is drawn at one texel per pixel, so its pixels match the rest of the plant."""
+    import math
+    w, length = size
+    # Laid flat pointing north from the stalk, then tilted up and turned round the plant's centre.
+    # Tilting swings the stalk up round the centre, so start it further out and lower to land it where it should be.
+    reach = out / math.cos(math.radians(tilt))
+    root_z = 8 - reach
+    y = GROUND + rise - reach * math.sin(math.radians(tilt))
+    face = {"uv": [0, 0, w, length], "texture": "#" + texture}
+    return {"from": [8 - w / 2, y, root_z - length], "to": [8 + w / 2, y, root_z],
+            "rotation": {"origin": [8, y, 8], "x": tilt, "y": heading, "z": 0},
+            "faces": {"up": face, "down": face}}
+
+
+def head(size, side="side", top="top"):
+    """A firm, rounded heart of (width, height) pixels: a narrower foot, the full body, and narrowing tiers on top,
+    each face mapped one texel per pixel from the side and top textures."""
+    w, h = size
+    # Narrowing by two pixels a tier above the body, as many tiers as the width allows, a pixel high each.
+    tops = [w - 2 * k for k in range(1, 4) if w - 2 * k >= 4]
+    body = h - 1 - len(tops)
+    tiers = [(w - 2, GROUND, GROUND + 1), (w, GROUND + 1, GROUND + 1 + body)]
+    for k, tw in enumerate(tops):
+        tiers.append((tw, GROUND + 1 + body + k, GROUND + 2 + body + k))
+    elements = []
+    for tw, y0, y1 in tiers:
+        lo, hi = 8 - tw / 2, 8 + tw / 2
+        # The side texture's bottom row sits on the ground, so each tier shows the rows at its own height.
+        side_face = {"uv": [lo, 16 - (y1 - GROUND), hi, 16 - (y0 - GROUND)], "texture": "#" + side}
+        elements.append({"from": [lo, y0, lo], "to": [hi, y1, hi],
+                         "faces": {"north": side_face, "south": side_face, "east": side_face, "west": side_face,
+                                   "up": {"uv": [lo, lo, hi, hi], "texture": "#" + top}}})
+    return elements
+
+
+def built_model(textures, elements):
+    return {"parent": "minecraft:block/block", "ambientocclusion": False,
+            "textures": {k: (v if ":" in v else NS + v) for k, v in textures.items()}, "elements": elements}
 
 
 TRELLIS_FRAME = [
@@ -91,106 +164,32 @@ def trellis_model(texture):
             "elements": frame + trellis_planes("#plant")}
 
 
-# Cabbage: two seed leaves, a low rosette, a cupped plant with a pale heart, then a round, pale head in its outer leaves.
+# Cabbage: two seed leaves, a rosette of broad leaves, leaves cupping a small heart, then a firm, domed head in a ring
+# of big outer leaves spread round its foot.
 
-CABBAGE = {"a": "#1e3f2a", "b": "#2a5634", "c": "#3c7042", "d": "#548c4c", "e": "#7cb05e", "f": "#a8d27e", "g": "#cfeaa6",
-           "r": "#4a3418", "s": "#6e5226"}
+CABBAGE = {"a": "#1e3f2a", "b": "#2a5634", "c": "#3c7042", "d": "#548c4c", "e": "#7cb05e", "f": "#a8d27e", "g": "#cfeaa6"}
+CABBAGE_LEAVES = {"seed_leaf": (4, 4), "small_leaf": (6, 7), "large_leaf": (9, 9), "wrapper_leaf": (8, 8)}
+# The wrapper leaves hugging the head are paler than the outer leaves, halfway to the head's colour.
+PALER = {"wrapper_leaf": 2}
 
-CABBAGE_STAGES = {
-    "sprout": [
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "....ee....ee....",
-        "...edcd..dced...",
-        "....cbbddbbc....",
-        ".......sr.......",
-    ],
-    "rosette": [
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "......ed........",
-        "...ee.dce.de....",
-        "..edcbdcdbdce...",
-        "..dccbcecbccdb..",
-        "...bbcbccbcbb...",
-        "......rssr......",
-    ],
-    # The outer leaves round a head; the head itself is a solid block standing in them.
-    "leaves_small": [
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "..ee........ee..",
-        ".edcd......dced.",
-        "..dccb....bccd..",
-        "..bccdd..ddccb..",
-        "...bbccddccbb...",
-        "....abbccbba....",
-        "......rssr......",
-    ],
-    "leaves_large": [
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................",
-        ".ee..........ee.",
-        "edce........ecde",
-        "dcdde......eddcd",
-        "dccde......edccd",
-        ".bccde....edccb.",
-        ".bbccdd..ddccbb.",
-        "..bbccdeedccbb..",
-        "..abbccddccbba..",
-        "...aabbccbbaa...",
-        "......rssr......",
-    ],
-    # A firm, pale head of tightly wrapped leaves, the leaf edges running round it.
-    "head_side": [
-        "gggggfggggggfggg",
-        "ggggfefgggggefgg",
-        "gggfeeffggggfeef",
-        "ggfefgfefggfefgf",
-        "gfeffggfeffefggf",
-        "fefgggggfeefgggf",
-        "effggggggfefgggf",
-        "efggggggfeefggfe",
-        "efgggggfefffgfee",
-        "effgggfefgfeffef",
-        "defgffefggfefeed",
-        "defffefggffeffed",
-        "deeffeffffefeeed",
-        "ddeeeeeeeeeeeedd",
-        "cddeeddeeddeeddc",
-        "ccddcddddddcddcc",
-    ],
-    "head_top": None,  # drawn by spiral_top() below
-}
+CABBAGE_HEAD_SIDE = [
+    "gggggfggggggfggg",
+    "ggggfffgggggffgg",
+    "gggfffffggggffff",
+    "ggfffgfffggfffgf",
+    "gffffggffffffggf",
+    "fffgggggffffgggf",
+    "fffggggggfffgggf",
+    "ffggggggffffggff",
+    "ffgggggfffffgfff",
+    "fffgggfffgffffff",
+    "defgffefggfefeed",
+    "defffefggffeffed",
+    "deeffeffffefeeed",
+    "ddeeeeeeeeeeeedd",
+    "cddeeddeeddeeddc",
+    "ccddcddddddcddcc",
+]
 
 
 def spiral_top():
@@ -217,12 +216,25 @@ def spiral_top():
     return ["".join(row) for row in grid]
 
 
-CABBAGE_STAGES["head_top"] = spiral_top()
+def ring(texture, count, tilt, out=0.0, rise=0.0, turn=0.0):
+    """Leaves of one kind evenly round the plant."""
+    return [leaf(texture, CABBAGE_LEAVES[texture], turn + i * 360 / count, tilt, out, rise) for i in range(count)]
 
-# Each age's leaves, and the head standing in them as (width, height) in pixels.
-CABBAGE_BY_AGE = [("sprout", None), ("sprout", None), ("rosette", None), ("rosette", None),
-                  ("leaves_small", (4, 4)), ("leaves_small", (6, 5)), ("leaves_large", (7, 6)), ("leaves_large", (8, 8))]
 
+CABBAGE_BY_AGE = [
+    # Two seed leaves, then two more as the first true leaves come.
+    ring("seed_leaf", 2, 35, rise=1),
+    ring("seed_leaf", 2, 30, rise=1) + ring("small_leaf", 2, 50, turn=90),
+    # A rosette of broad leaves, rising as it grows.
+    ring("small_leaf", 5, 30),
+    ring("small_leaf", 3, 30, turn=60) + ring("large_leaf", 3, 25),
+    # Leaves cupping a small heart, with the outer leaves spreading.
+    head((4, 4)) + ring("small_leaf", 4, 55, out=1.5) + ring("large_leaf", 4, 25, out=1, turn=45),
+    head((6, 6)) + ring("small_leaf", 4, 60, out=2.5) + ring("large_leaf", 5, 22, out=1.5, turn=36),
+    # A firm head, its wrapper leaves rising from its foot and hugging it, in a ring of big outer leaves.
+    head((8, 7)) + ring("wrapper_leaf", 4, 58, out=3.0, turn=45) + ring("large_leaf", 5, 20, out=2.5),
+    head((10, 9)) + ring("wrapper_leaf", 5, 60, out=4.0, turn=20) + ring("large_leaf", 6, 18, out=3.5),
+]
 
 
 # Tomato: a seedling, a young plant, then a vine up the trellis, flowering with green fruit, then hung with red fruit.
@@ -295,10 +307,18 @@ FLOWER_SPOTS = [(4, 4), (12, 8), (0, 13), (13, 0)]
 
 
 def main():
-    for stage, grid in CABBAGE_STAGES.items():
-        draw(f"cabbage_{stage}", grid, CABBAGE)
-    for age, (stage, head) in enumerate(CABBAGE_BY_AGE):
-        write_model(f"cabbage_stage{age}", crop_model(f"cabbage_{stage}", head and (head, ("cabbage_head_side", "cabbage_head_top"))))
+    step = {"a": "b", "b": "c", "c": "d", "d": "e", "e": "f", "f": "g", "g": "g", ".": "."}
+    for name, size in CABBAGE_LEAVES.items():
+        grid = leaf_grid(*size)
+        for _ in range(PALER.get(name, 0)):
+            grid = ["".join(step[ch] for ch in row) for row in grid]
+        draw(f"cabbage_{name}", [row.ljust(16, ".") for row in grid] + ["." * 16] * (16 - size[1]), CABBAGE)
+    draw("cabbage_head_side", CABBAGE_HEAD_SIDE, CABBAGE)
+    draw("cabbage_head_top", spiral_top(), CABBAGE)
+    textures = {"particle": "cabbage_large_leaf", **{name: f"cabbage_{name}" for name in CABBAGE_LEAVES},
+                "side": "cabbage_head_side", "top": "cabbage_head_top"}
+    for age, elements in enumerate(CABBAGE_BY_AGE):
+        write_model(f"cabbage_stage{age}", built_model(textures, elements))
 
     for stage, grid in TOMATO_STAGES.items():
         draw(f"tomato_vine_{stage}", grid, TOMATO)
