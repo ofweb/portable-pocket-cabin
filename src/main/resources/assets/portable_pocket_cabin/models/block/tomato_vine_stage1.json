@@ -2,9 +2,16 @@
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
   "textures": {
-    "particle": "minecraft:block/cave_vines_plant",
+    "particle": "portable_pocket_cabin:block/tomato_vine_full",
     "post": "minecraft:block/stripped_oak_log",
-    "plant": "minecraft:block/cave_vines_plant"
+    "young": "portable_pocket_cabin:block/tomato_vine_young",
+    "half": "portable_pocket_cabin:block/tomato_vine_half",
+    "full": "portable_pocket_cabin:block/tomato_vine_full",
+    "flowering": "portable_pocket_cabin:block/tomato_vine_flowering",
+    "fruit": "portable_pocket_cabin:block/tomato_fruit",
+    "fruit_top": "portable_pocket_cabin:block/tomato_fruit_top",
+    "unripe": "portable_pocket_cabin:block/tomato_fruit_unripe",
+    "unripe_top": "portable_pocket_cabin:block/tomato_fruit_unripe_top"
   },
   "elements": [
     {
@@ -169,25 +176,15 @@
     },
     {
       "from": [
-        0.8,
         0,
-        8
+        0,
+        7.2
       ],
       "to": [
-        15.2,
         16,
-        8
+        16,
+        7.2
       ],
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          8
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
-      },
       "shade": false,
       "faces": {
         "north": {
@@ -197,7 +194,7 @@
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#young"
         },
         "south": {
           "uv": [
@@ -206,50 +203,40 @@
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#young"
         }
       }
     },
     {
       "from": [
-        8,
         0,
-        0.8
+        0,
+        8.8
       ],
       "to": [
-        8,
         16,
-        15.2
+        16,
+        8.8
       ],
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          8
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
-      },
       "shade": false,
       "faces": {
-        "east": {
+        "north": {
           "uv": [
             0,
             0,
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#young"
         },
-        "west": {
+        "south": {
           "uv": [
             0,
             0,
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#young"
         }
       }
     }

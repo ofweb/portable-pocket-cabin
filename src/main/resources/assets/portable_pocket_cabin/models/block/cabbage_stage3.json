@@ -1,6 +1,181 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/beetroots_stage1"
-  }
+    "particle": "portable_pocket_cabin:block/cabbage_leaf",
+    "sprout": "portable_pocket_cabin:block/cabbage_sprout",
+    "leaf": "portable_pocket_cabin:block/cabbage_leaf",
+    "head_side": "portable_pocket_cabin:block/cabbage_head_side",
+    "head_top": "portable_pocket_cabin:block/cabbage_head_top"
+  },
+  "elements": [
+    {
+      "from": [
+        5.0,
+        0.6,
+        1.5
+      ],
+      "to": [
+        11.0,
+        0.6,
+        8
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          0.6,
+          8
+        ],
+        "axis": "x",
+        "angle": 22.5
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        0.6,
+        8
+      ],
+      "to": [
+        11.0,
+        0.6,
+        14.5
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          0.6,
+          8
+        ],
+        "axis": "x",
+        "angle": -22.5
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        8,
+        0.6,
+        5.0
+      ],
+      "to": [
+        14.5,
+        0.6,
+        11.0
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          0.6,
+          8
+        ],
+        "axis": "z",
+        "angle": 22.5
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        1.5,
+        0.6,
+        5.0
+      ],
+      "to": [
+        8,
+        0.6,
+        11.0
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          0.6,
+          8
+        ],
+        "axis": "z",
+        "angle": -22.5
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        }
+      }
+    }
+  ]
 }

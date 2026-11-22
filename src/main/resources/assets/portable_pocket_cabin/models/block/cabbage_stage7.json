@@ -1,6 +1,485 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/beetroots_stage3"
-  }
+    "particle": "portable_pocket_cabin:block/cabbage_leaf",
+    "sprout": "portable_pocket_cabin:block/cabbage_sprout",
+    "leaf": "portable_pocket_cabin:block/cabbage_leaf",
+    "head_side": "portable_pocket_cabin:block/cabbage_head_side",
+    "head_top": "portable_pocket_cabin:block/cabbage_head_top"
+  },
+  "elements": [
+    {
+      "from": [
+        4.5,
+        0,
+        4.5
+      ],
+      "to": [
+        11.5,
+        6,
+        11.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#head_side",
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ]
+        },
+        "south": {
+          "texture": "#head_side",
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ]
+        },
+        "east": {
+          "texture": "#head_side",
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ]
+        },
+        "west": {
+          "texture": "#head_side",
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ]
+        },
+        "up": {
+          "texture": "#head_top",
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ]
+        },
+        "down": {
+          "texture": "#head_top",
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        5.25,
+        5.5,
+        5.25
+      ],
+      "to": [
+        10.75,
+        7.5,
+        10.75
+      ],
+      "faces": {
+        "north": {
+          "texture": "#head_side",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        },
+        "south": {
+          "texture": "#head_side",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        },
+        "east": {
+          "texture": "#head_side",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        },
+        "west": {
+          "texture": "#head_side",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        },
+        "up": {
+          "texture": "#head_top",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        },
+        "down": {
+          "texture": "#head_top",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        3.5,
+        0.4,
+        0.0
+      ],
+      "to": [
+        12.5,
+        0.4,
+        8
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          0.4,
+          8
+        ],
+        "axis": "x",
+        "angle": 22.5
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        3.5,
+        0.4,
+        8
+      ],
+      "to": [
+        12.5,
+        0.4,
+        16.0
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          0.4,
+          8
+        ],
+        "axis": "x",
+        "angle": -22.5
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        8,
+        0.4,
+        3.5
+      ],
+      "to": [
+        16.0,
+        0.4,
+        12.5
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          0.4,
+          8
+        ],
+        "axis": "z",
+        "angle": 22.5
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        0.0,
+        0.4,
+        3.5
+      ],
+      "to": [
+        8,
+        0.4,
+        12.5
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          0.4,
+          8
+        ],
+        "axis": "z",
+        "angle": -22.5
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        4.5,
+        0.6,
+        -0.5999999999999996
+      ],
+      "to": [
+        11.5,
+        0.6,
+        4.4
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          0.6,
+          4.4
+        ],
+        "axis": "x",
+        "angle": 45
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        4.5,
+        0.6,
+        11.6
+      ],
+      "to": [
+        11.5,
+        0.6,
+        16.6
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          0.6,
+          11.6
+        ],
+        "axis": "x",
+        "angle": -45
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        -0.5999999999999996,
+        0.6,
+        4.5
+      ],
+      "to": [
+        4.4,
+        0.6,
+        11.5
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          4.4,
+          0.6,
+          8
+        ],
+        "axis": "z",
+        "angle": -45
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        11.6,
+        0.6,
+        4.5
+      ],
+      "to": [
+        16.6,
+        0.6,
+        11.5
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          11.6,
+          0.6,
+          8
+        ],
+        "axis": "z",
+        "angle": 45
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#leaf"
+        }
+      }
+    }
+  ]
 }
