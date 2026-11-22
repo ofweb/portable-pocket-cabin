@@ -2,22 +2,19 @@
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
   "textures": {
-    "particle": "portable_pocket_cabin:block/cabbage_leaf",
-    "sprout": "portable_pocket_cabin:block/cabbage_sprout",
-    "leaf": "portable_pocket_cabin:block/cabbage_leaf",
-    "head_side": "portable_pocket_cabin:block/cabbage_head_side",
-    "head_top": "portable_pocket_cabin:block/cabbage_head_top"
+    "particle": "portable_pocket_cabin:block/cabbage_sprout",
+    "crop": "portable_pocket_cabin:block/cabbage_sprout"
   },
   "elements": [
     {
       "from": [
         0.8,
-        0,
+        -1,
         8
       ],
       "to": [
         15.2,
-        8,
+        15,
         8
       ],
       "rotation": {
@@ -35,32 +32,32 @@
         "north": {
           "uv": [
             0,
-            8,
+            0,
             16,
             16
           ],
-          "texture": "#sprout"
+          "texture": "#crop"
         },
         "south": {
           "uv": [
             0,
-            8,
+            0,
             16,
             16
           ],
-          "texture": "#sprout"
+          "texture": "#crop"
         }
       }
     },
     {
       "from": [
         8,
-        0,
+        -1,
         0.8
       ],
       "to": [
         8,
-        8,
+        15,
         15.2
       ],
       "rotation": {
@@ -78,20 +75,20 @@
         "east": {
           "uv": [
             0,
-            8,
+            0,
             16,
             16
           ],
-          "texture": "#sprout"
+          "texture": "#crop"
         },
         "west": {
           "uv": [
             0,
-            8,
+            0,
             16,
             16
           ],
-          "texture": "#sprout"
+          "texture": "#crop"
         }
       }
     }

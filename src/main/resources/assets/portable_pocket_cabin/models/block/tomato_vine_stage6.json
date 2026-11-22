@@ -2,16 +2,9 @@
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
   "textures": {
-    "particle": "portable_pocket_cabin:block/tomato_vine_full",
-    "post": "minecraft:block/stripped_oak_log",
-    "young": "portable_pocket_cabin:block/tomato_vine_young",
-    "half": "portable_pocket_cabin:block/tomato_vine_half",
-    "full": "portable_pocket_cabin:block/tomato_vine_full",
-    "flowering": "portable_pocket_cabin:block/tomato_vine_flowering",
-    "fruit": "portable_pocket_cabin:block/tomato_fruit",
-    "fruit_top": "portable_pocket_cabin:block/tomato_fruit_top",
-    "unripe": "portable_pocket_cabin:block/tomato_fruit_unripe",
-    "unripe_top": "portable_pocket_cabin:block/tomato_fruit_unripe_top"
+    "particle": "portable_pocket_cabin:block/tomato_vine_flowering",
+    "plant": "portable_pocket_cabin:block/tomato_vine_flowering",
+    "post": "minecraft:block/stripped_oak_log"
   },
   "elements": [
     {
@@ -178,12 +171,12 @@
       "from": [
         0,
         0,
-        7.2
+        6.9
       ],
       "to": [
         16,
         16,
-        7.2
+        6.9
       ],
       "shade": false,
       "faces": {
@@ -194,7 +187,7 @@
             16,
             16
           ],
-          "texture": "#flowering"
+          "texture": "#plant"
         },
         "south": {
           "uv": [
@@ -203,7 +196,7 @@
             16,
             16
           ],
-          "texture": "#flowering"
+          "texture": "#plant"
         }
       }
     },
@@ -211,12 +204,12 @@
       "from": [
         0,
         0,
-        8.8
+        9.1
       ],
       "to": [
         16,
         16,
-        8.8
+        9.1
       ],
       "shade": false,
       "faces": {
@@ -227,7 +220,7 @@
             16,
             16
           ],
-          "texture": "#flowering"
+          "texture": "#plant"
         },
         "south": {
           "uv": [
@@ -236,279 +229,7 @@
             16,
             16
           ],
-          "texture": "#flowering"
-        }
-      }
-    },
-    {
-      "from": [
-        3.6,
-        10.6,
-        9.0
-      ],
-      "to": [
-        6.4,
-        13.4,
-        10.6
-      ],
-      "faces": {
-        "north": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "south": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "east": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "west": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "up": {
-          "texture": "#unripe_top",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "down": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        }
-      }
-    },
-    {
-      "from": [
-        9.1,
-        5.6,
-        9.0
-      ],
-      "to": [
-        11.9,
-        8.4,
-        10.6
-      ],
-      "faces": {
-        "north": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "south": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "east": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "west": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "up": {
-          "texture": "#unripe_top",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "down": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        }
-      }
-    },
-    {
-      "from": [
-        6.6,
-        2.1,
-        9.0
-      ],
-      "to": [
-        9.4,
-        4.9,
-        10.6
-      ],
-      "faces": {
-        "north": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "south": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "east": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "west": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "up": {
-          "texture": "#unripe_top",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "down": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        }
-      }
-    },
-    {
-      "from": [
-        9.6,
-        10.6,
-        5.4
-      ],
-      "to": [
-        12.4,
-        13.4,
-        7.0
-      ],
-      "faces": {
-        "north": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "south": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "east": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "west": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "up": {
-          "texture": "#unripe_top",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
-        },
-        "down": {
-          "texture": "#unripe",
-          "uv": [
-            4,
-            4,
-            12,
-            12
-          ]
+          "texture": "#plant"
         }
       }
     }

@@ -2,16 +2,9 @@
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
   "textures": {
-    "particle": "portable_pocket_cabin:block/tomato_vine_full",
-    "post": "minecraft:block/stripped_oak_log",
-    "young": "portable_pocket_cabin:block/tomato_vine_young",
-    "half": "portable_pocket_cabin:block/tomato_vine_half",
-    "full": "portable_pocket_cabin:block/tomato_vine_full",
-    "flowering": "portable_pocket_cabin:block/tomato_vine_flowering",
-    "fruit": "portable_pocket_cabin:block/tomato_fruit",
-    "fruit_top": "portable_pocket_cabin:block/tomato_fruit_top",
-    "unripe": "portable_pocket_cabin:block/tomato_fruit_unripe",
-    "unripe_top": "portable_pocket_cabin:block/tomato_fruit_unripe_top"
+    "particle": "portable_pocket_cabin:block/tomato_vine_vine",
+    "plant": "portable_pocket_cabin:block/tomato_vine_vine",
+    "post": "minecraft:block/stripped_oak_log"
   },
   "elements": [
     {
@@ -178,12 +171,12 @@
       "from": [
         0,
         0,
-        7.2
+        6.9
       ],
       "to": [
         16,
         16,
-        7.2
+        6.9
       ],
       "shade": false,
       "faces": {
@@ -194,7 +187,7 @@
             16,
             16
           ],
-          "texture": "#full"
+          "texture": "#plant"
         },
         "south": {
           "uv": [
@@ -203,7 +196,7 @@
             16,
             16
           ],
-          "texture": "#full"
+          "texture": "#plant"
         }
       }
     },
@@ -211,12 +204,12 @@
       "from": [
         0,
         0,
-        8.8
+        9.1
       ],
       "to": [
         16,
         16,
-        8.8
+        9.1
       ],
       "shade": false,
       "faces": {
@@ -227,7 +220,7 @@
             16,
             16
           ],
-          "texture": "#full"
+          "texture": "#plant"
         },
         "south": {
           "uv": [
@@ -236,7 +229,7 @@
             16,
             16
           ],
-          "texture": "#full"
+          "texture": "#plant"
         }
       }
     }

@@ -1,238 +1,314 @@
-"""Code-drawn plant block models: 3D models built from elements, and the textures they use.
+"""Plant block textures and models, drawn as pixel grids and shown on flat planes like vanilla crops.
 
 Run from the repository root: python3 .workflow/art/block_models.py
-Each plant's growth stages are drawn as a model per stage, written to models/block/<plant>_stage<age>.json over the
-borrowed vanilla models, with textures in textures/block/. The blockstates already point each age at its stage model.
-Drawing helpers (Sprite, ramp, and the tones) come from item_sprites.py, so blocks and items share one style.
+Each growth stage is a 16x16 grid of palette letters ('.' is clear), seen from the side: a few flat greens, light on the
+upper left, dark below, no outlines, and gaps between the leaves so the plant reads as leaves rather than a blob. The
+stage textures go to textures/block/, and models/block/<plant>_stage<age>.json put them on two crossed planes, sunk a
+pixel so the plant stands in farmland rather than floating on it; trellis vines lie flat over the trellis.
+A plant with a firm heart, like a cabbage head, gets that as a solid block standing in its leaves. The blockstates already point each age at its model.
 """
 import json
-import math
 import os
-import sys
 
-sys.path.insert(0, os.path.dirname(__file__))
-from item_sprites import BASE, HIGHLIGHT, LIGHT, OUTLINE, SHADOW, Sprite, plain_ramp, ramp  # noqa: E402
+from PIL import Image
 
 A = "src/main/resources/assets/portable_pocket_cabin"
 NS = "portable_pocket_cabin:block/"
-ALL_FACES = ("north", "south", "east", "west", "up", "down")
 
 
-def write_texture(name, sprite):
+def rgb(value):
+    value = value.lstrip("#")
+    return tuple(int(value[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def draw(name, grid, palette, overlays=()):
+    """Writes a stage texture from rows of palette letters; overlays are (grid, x, y) pasted on top."""
+    assert len(grid) == 16 and all(len(row) == 16 for row in grid), (name, [len(r) for r in grid])
+    img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    for layer, ox, oy in [(grid, 0, 0), *overlays]:
+        for y, row in enumerate(layer):
+            for x, ch in enumerate(row):
+                if ch != "." and 0 <= x + ox < 16 and 0 <= y + oy < 16:
+                    img.putpixel((x + ox, y + oy), (*rgb(palette[ch]), 255))
     path = f"{A}/textures/block/{name}.png"
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    sprite.image().save(path)
+    img.save(path)
 
 
-def write_model(name, textures, elements, particle):
-    model = {"parent": "minecraft:block/block", "ambientocclusion": False,
-             "textures": {"particle": NS + particle, **{k: (v if ":" in v else NS + v) for k, v in textures.items()}},
-             "elements": elements}
+def write_model(name, model):
     with open(f"{A}/models/block/{name}.json", "w") as f:
         json.dump(model, f, indent=2)
         f.write("\n")
 
 
-def box(start, end, texture, faces=ALL_FACES, uv=None, rotation=None, shade=True):
-    """A solid box from start to end, the given faces showing a texture (one per face when a dict)."""
-    element = {"from": list(start), "to": list(end), "faces": {}}
-    for face in faces:
-        tex = texture[face] if isinstance(texture, dict) else texture
-        element["faces"][face] = {"texture": "#" + tex, **({"uv": uv} if uv else {})}
-    if rotation:
-        element["rotation"] = rotation
-    if not shade:
-        element["shade"] = False
-    return element
-
-
-def plane_x(x0, x1, y0, y1, z, texture, uv=(0, 0, 16, 16)):
-    """A flat, upright plane across x at depth z, showing the texture on both sides."""
-    return {"from": [x0, y0, z], "to": [x1, y1, z], "shade": False,
-            "faces": {"north": {"uv": list(uv), "texture": "#" + texture}, "south": {"uv": list(uv), "texture": "#" + texture}}}
-
-
-def cross(texture, height=16, inset=0.8):
-    """Two planes crossed diagonally, like a sapling or a young crop."""
+def cross_planes(texture, bottom):
     rot = {"origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": True}
+    face = {"uv": [0, 0, 16, 16], "texture": texture}
     return [
-        {"from": [inset, 0, 8], "to": [16 - inset, height, 8], "rotation": rot, "shade": False,
-         "faces": {"north": {"uv": [0, 16 - height, 16, 16], "texture": "#" + texture},
-                   "south": {"uv": [0, 16 - height, 16, 16], "texture": "#" + texture}}},
-        {"from": [8, 0, inset], "to": [8, height, 16 - inset], "rotation": rot, "shade": False,
-         "faces": {"east": {"uv": [0, 16 - height, 16, 16], "texture": "#" + texture},
-                   "west": {"uv": [0, 16 - height, 16, 16], "texture": "#" + texture}}},
+        {"from": [0.8, bottom, 8], "to": [15.2, bottom + 16, 8], "rotation": rot, "shade": False, "faces": {"north": face, "south": face}},
+        {"from": [8, bottom, 0.8], "to": [8, bottom + 16, 15.2], "rotation": rot, "shade": False, "faces": {"east": face, "west": face}},
     ]
 
 
-def leaf(direction, length, width, lift, angle, texture, centre=(8, 8)):
-    """A flat leaf lying out from the plant's centre in a direction, tilted up by an angle (a multiple of 22.5)."""
-    cx, cz = centre
-    half = width / 2
-    if direction == "north":
-        start, end, axis, sign = [cx - half, lift, cz - length], [cx + half, lift, cz], "x", 1
-    elif direction == "south":
-        start, end, axis, sign = [cx - half, lift, cz], [cx + half, lift, cz + length], "x", -1
-    elif direction == "west":
-        start, end, axis, sign = [cx - length, lift, cz - half], [cx, lift, cz + half], "z", -1
-    else:
-        start, end, axis, sign = [cx, lift, cz - half], [cx + length, lift, cz + half], "z", 1
-    return {"from": start, "to": end, "shade": False,
-            "rotation": {"origin": [cx, lift, cz], "axis": axis, "angle": sign * angle},
-            "faces": {"up": {"uv": [0, 0, 16, 16], "texture": "#" + texture},
-                      "down": {"uv": [0, 0, 16, 16], "texture": "#" + texture}}}
+def crop_model(texture, head=None):
+    """A field crop: crossed planes sunk a pixel into the farmland, and optionally a solid head standing in them,
+    given as (width, height) in pixels with its side and top textures drawn 1:1 so its pixels match the leaves."""
+    textures = {"particle": NS + texture, "crop": NS + texture}
+    elements = cross_planes("#crop", -1)
+    if head:
+        (w, h), (side, top) = head
+        lo, hi = 8 - w / 2, 8 + w / 2
+        textures.update(side=NS + side, top=NS + top)
+        side_face = {"uv": [lo, 16 - h, hi, 16], "texture": "#side"}
+        top_face = {"uv": [lo, lo, hi, hi], "texture": "#top"}
+        elements.append({"from": [lo, -1, lo], "to": [hi, h - 2, hi],
+                         "faces": {"north": side_face, "south": side_face, "east": side_face, "west": side_face, "up": top_face}})
+        # A narrower cap a pixel high, so the head domes rather than ending flat.
+        cap_side = {"uv": [lo + 1, 16 - h, hi - 1, 17 - h], "texture": "#side"}
+        cap_top = {"uv": [lo + 1, lo + 1, hi - 1, hi - 1], "texture": "#top"}
+        elements.append({"from": [lo + 1, h - 2, lo + 1], "to": [hi - 1, h - 1, hi - 1],
+                         "faces": {"north": cap_side, "south": cap_side, "east": cap_side, "west": cap_side, "up": cap_top}})
+    return {"parent": "minecraft:block/block", "ambientocclusion": False, "textures": textures, "elements": elements}
 
 
-# Cabbage: a sprout, a rosette of broad leaves, a young head, and a full, firm head cupped in its outer leaves.
-
-def cabbage_textures():
-    sprout = Sprite()
-    stem, seedleaf = ramp("#6a9a48"), ramp("#7ab05a", spread=0.6)
-    sprout.line(stem[BASE], 8, 15, 8, 11)
-    sprout.ellipse(seedleaf, 5.4, 10.6, 2.6, 1.6, angle=-20)
-    sprout.ellipse(seedleaf, 10.6, 10.6, 2.6, 1.6, angle=20)
-    write_texture("cabbage_sprout", sprout)
-
-    # One broad, round, blue-green outer leaf seen from above, its pale midrib running up from the stem end.
-    blade = Sprite()
-    tones = ramp("#6a9a6a", spread=0.6)
-    blade.shape(lambda x, y: ((x - 7.5) / 7.2) ** 2 + ((y - 7.0) / 7.4) ** 2 + 0.06 * math.sin(x * 1.7) <= 1, tones, (7.5, 7.0), (7.2, 7.4))
-    vein = plain_ramp("#c8dcb8")
-    blade.line(vein[BASE], 8, 15, 8, 2)
-    for y in (5, 8, 11):
-        blade.line(vein[SHADOW], 8, y, 4, y - 3)
-        blade.line(vein[SHADOW], 8, y, 12, y - 3)
-    write_texture("cabbage_leaf", blade)
-
-    # The head: tight, pale green leaves wrapped over one another.
-    side = Sprite()
-    head = ramp("#a8cc88", spread=0.5)
-    side.shape(lambda x, y: True, head, (7.5, 7.5), (8.0, 8.0))
-    for k, y0 in enumerate((3, 8, 13)):
-        for x in range(16):
-            y = y0 + round(math.sin((x + k * 5) / 16 * math.pi * 2) * 1.6)
-            side.put(x, y, head[SHADOW])
-            side.put(x, y - 1, head[LIGHT])
-    write_texture("cabbage_head_side", side)
-
-    top = Sprite()
-    top.shape(lambda x, y: True, head, (7.5, 7.5), (8.0, 8.0))
-    for r in (2.4, 4.6, 6.8):
-        for a in range(0, 360, 12):
-            x, y = round(7.5 + r * math.cos(math.radians(a + r * 30))), round(7.5 + r * math.sin(math.radians(a + r * 30)))
-            top.put(x, y, head[SHADOW])
-    top.pixels_at(head[HIGHLIGHT], [(6, 6), (7, 6), (6, 7)])
-    write_texture("cabbage_head_top", top)
-
-
-def OUTER_CUP(r):
-    """Leaves standing up round a head of half-width r, each rooted at the head's foot on its side."""
-    return [("north", (8, 8 - r)), ("south", (8, 8 + r)), ("west", (8 - r, 8)), ("east", (8 + r, 8))]
-
-
-def cabbage_models():
-    head_faces = {"north": "head_side", "south": "head_side", "east": "head_side", "west": "head_side", "up": "head_top", "down": "head_top"}
-    textures = {"sprout": "cabbage_sprout", "leaf": "cabbage_leaf", "head_side": "cabbage_head_side", "head_top": "cabbage_head_top"}
-    stages = {
-        # A seedling: two round seed leaves on a short stem.
-        "sprout": cross("sprout", height=8),
-        # A low rosette of four broad leaves.
-        "rosette": [leaf(d, 6.5, 6.0, 0.6, 22.5, "leaf") for d in ("north", "south", "east", "west")],
-        # A small head forming, cupped by leaves standing up round it.
-        "young": [box((6, 0, 6), (10, 4, 10), head_faces, uv=[4, 4, 12, 12]),
-                  box((6.75, 4, 6.75), (9.25, 5, 9.25), head_faces, uv=[5, 5, 11, 11])]
-                 + [leaf(d, 6.5, 6.0, 0.5, 22.5, "leaf") for d in ("north", "south", "east", "west")]
-                 + [leaf(d, 4.5, 5.0, 0.5, 45, "leaf", centre=c) for d, c in OUTER_CUP(2.0)],
-        # A full, firm head with its big outer leaves spread round its foot.
-        "ripe": [box((4.5, 0, 4.5), (11.5, 6, 11.5), head_faces, uv=[1, 1, 15, 15]),
-                 box((5.25, 5.5, 5.25), (10.75, 7.5, 10.75), head_faces, uv=[2, 2, 14, 14])]
-                + [leaf(d, 8.0, 9.0, 0.4, 22.5, "leaf") for d in ("north", "south", "east", "west")]
-                + [leaf(d, 5.0, 7.0, 0.6, 45, "leaf", centre=c) for d, c in OUTER_CUP(3.6)],
-    }
-    by_age = ["sprout", "sprout", "rosette", "rosette", "young", "young", "ripe", "ripe"]
-    for age, stage in enumerate(by_age):
-        write_model(f"cabbage_stage{age}", textures, stages[stage], particle="cabbage_leaf")
-
-
-# Tomato: a vine climbing the trellis, leafier each stage, flowering yellow, then hung with green and then red fruit.
-
-TRELLIS = [
-    box((1, 0, 7), (3, 16, 9), "post"), box((13, 0, 7), (15, 16, 9), "post"),
-    box((1, 5, 7.5), (15, 6, 8.5), "post"), box((1, 10, 7.5), (15, 11, 8.5), "post"), box((1, 15, 7.5), (15, 16, 8.5), "post"),
+TRELLIS_FRAME = [
+    {"from": [1, 0, 7], "to": [3, 16, 9]}, {"from": [13, 0, 7], "to": [15, 16, 9]},
+    {"from": [1, 5, 7.5], "to": [15, 6, 8.5]}, {"from": [1, 10, 7.5], "to": [15, 11, 8.5]}, {"from": [1, 15, 7.5], "to": [15, 16, 8.5]},
 ]
 
 
-def tomato_textures():
-    stem, leaves = ramp("#4f8a30"), ["#5ea83e", "#6cb646", "#559c38"]
-
-    def vine(height, flowers=False):
-        s = Sprite()
-        # Two stems winding up the trellis from the root.
-        for x0, phase in ((6, 0.0), (10, 2.0)):
-            points = []
-            for y in range(15, 15 - height, -1):
-                points.append((round(x0 + math.sin(y * 0.6 + phase) * 1.4), y))
-            for x, y in points:
-                s.put(x, y, stem[BASE])
-            # Toothed compound leaves along the stems, alternating sides.
-            for i, (x, y) in enumerate(points[1::3]):
-                tones = ramp(leaves[i % 3], spread=0.5)
-                side = 1 if (i + (x0 > 8)) % 2 else -1
-                s.ellipse(tones, x + side * 2.0, y - 0.5, 1.9, 1.2, angle=side * 30, outline=False)
-                s.ellipse(tones, x + side * 3.4, y - 1.8, 1.0, 0.8, outline=False)
-                s.line(stem[SHADOW], x, y, x + side * 3, y - 1)
-        if flowers:
-            for x, y in [(4, 4), (11, 6), (7, 9), (12, 11), (5, 12)]:
-                s.pixels_at(ramp("#f0d030")[BASE], [(x, y), (x + 1, y)])
-        return s
-    write_texture("tomato_vine_young", vine(5))
-    write_texture("tomato_vine_half", vine(10))
-    write_texture("tomato_vine_full", vine(16))
-    write_texture("tomato_vine_flowering", vine(16, flowers=True))
-
-    for name, colour, calyx in (("tomato_fruit", "#d8281e", "#4a8a2a"), ("tomato_fruit_unripe", "#8ab84a", "#3a7a2a")):
-        fruit = Sprite()
-        tones = ramp(colour, spread=0.6)
-        fruit.shape(lambda x, y: True, tones, (7.5, 7.5), (8.0, 8.0))
-        fruit.pixels_at(tones[HIGHLIGHT], [(4, 4), (5, 4), (4, 5)])
-        write_texture(name, fruit)
-        top = Sprite()
-        top.shape(lambda x, y: True, tones, (7.5, 7.5), (8.0, 8.0))
-        green = ramp(calyx)
-        top.pixels_at(green[BASE], [(7, 7), (8, 7), (7, 8), (8, 8), (6, 6), (9, 6), (6, 9), (9, 9), (7, 5), (8, 10)])
-        write_texture(name + "_top", top)
+def trellis_planes(texture):
+    """The vine flat against both faces of the trellis, the way a climber grows on one."""
+    face = {"uv": [0, 0, 16, 16], "texture": texture}
+    return [{"from": [0, 0, z], "to": [16, 16, z], "shade": False, "faces": {"north": face, "south": face}} for z in (6.9, 9.1)]
 
 
-def tomato_models():
-    textures = {"post": "minecraft:block/stripped_oak_log", "young": "tomato_vine_young", "half": "tomato_vine_half",
-                "full": "tomato_vine_full", "flowering": "tomato_vine_flowering", "fruit": "tomato_fruit", "fruit_top": "tomato_fruit_top",
-                "unripe": "tomato_fruit_unripe", "unripe_top": "tomato_fruit_unripe_top"}
+def trellis_model(texture):
+    """A trellis vine: the wooden frame with the plant growing flat over both its faces."""
+    frame = [{**part, "faces": {side: {"texture": "#post"} for side in ("north", "south", "east", "west", "up", "down")}} for part in TRELLIS_FRAME]
+    return {"parent": "minecraft:block/block", "ambientocclusion": False,
+            "textures": {"particle": NS + texture, "plant": NS + texture, "post": "minecraft:block/stripped_oak_log"},
+            "elements": frame + trellis_planes("#plant")}
 
-    def on_trellis(vine):
-        # The vine on both faces of the trellis, just in front of and behind its rails.
-        return TRELLIS + [plane_x(0, 16, 0, 16, 7.2, vine), plane_x(0, 16, 0, 16, 8.8, vine)]
 
-    def fruit(colour):
-        faces = {"north": colour, "south": colour, "east": colour, "west": colour, "up": colour + "_top", "down": colour}
-        # Trusses of two or three fruit hanging on each face of the trellis, the front ones first.
-        spots = [(5, 12, 9.0), (6.6, 10.6, 9.0), (10.5, 7, 9.0), (11.8, 8.6, 9.0), (8, 3.5, 9.0),
-                 (4.5, 7, 5.4), (11, 12, 5.4), (9.4, 13.2, 5.4)]
-        return [box((x - 1.4, y - 1.4, z), (x + 1.4, y + 1.4, z + 1.6), faces, uv=[4, 4, 12, 12]) for x, y, z in spots]
-    stages = {
-        "young": on_trellis("young"), "half": on_trellis("half"), "full": on_trellis("full"),
-        "flowering": on_trellis("flowering") + fruit("unripe")[::2],
-        "ripe": on_trellis("full") + fruit("fruit"),
-    }
-    by_age = ["young", "young", "half", "half", "full", "full", "flowering", "ripe"]
-    for age, stage in enumerate(by_age):
-        write_model(f"tomato_vine_stage{age}", textures, stages[stage], particle="tomato_vine_full")
+# Cabbage: two seed leaves, a low rosette, a cupped plant with a pale heart, then a round, pale head in its outer leaves.
+
+CABBAGE = {"a": "#1e3f2a", "b": "#2a5634", "c": "#3c7042", "d": "#548c4c", "e": "#7cb05e", "f": "#a8d27e", "g": "#cfeaa6",
+           "r": "#4a3418", "s": "#6e5226"}
+
+CABBAGE_STAGES = {
+    "sprout": [
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "....ee....ee....",
+        "...edcd..dced...",
+        "....cbbddbbc....",
+        ".......sr.......",
+    ],
+    "rosette": [
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "......ed........",
+        "...ee.dce.de....",
+        "..edcbdcdbdce...",
+        "..dccbcecbccdb..",
+        "...bbcbccbcbb...",
+        "......rssr......",
+    ],
+    # The outer leaves round a head; the head itself is a solid block standing in them.
+    "leaves_small": [
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "..ee........ee..",
+        ".edcd......dced.",
+        "..dccb....bccd..",
+        "..bccdd..ddccb..",
+        "...bbccddccbb...",
+        "....abbccbba....",
+        "......rssr......",
+    ],
+    "leaves_large": [
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        ".ee..........ee.",
+        "edce........ecde",
+        "dcdde......eddcd",
+        "dccde......edccd",
+        ".bccde....edccb.",
+        ".bbccdd..ddccbb.",
+        "..bbccdeedccbb..",
+        "..abbccddccbba..",
+        "...aabbccbbaa...",
+        "......rssr......",
+    ],
+    # A firm, pale head of tightly wrapped leaves, the leaf edges running round it.
+    "head_side": [
+        "gggggfggggggfggg",
+        "ggggfefgggggefgg",
+        "gggfeeffggggfeef",
+        "ggfefgfefggfefgf",
+        "gfeffggfeffefggf",
+        "fefgggggfeefgggf",
+        "effggggggfefgggf",
+        "efggggggfeefggfe",
+        "efgggggfefffgfee",
+        "effgggfefgfeffef",
+        "defgffefggfefeed",
+        "defffefggffeffed",
+        "deeffeffffefeeed",
+        "ddeeeeeeeeeeeedd",
+        "cddeeddeeddeeddc",
+        "ccddcddddddcddcc",
+    ],
+    "head_top": None,  # drawn by spiral_top() below
+}
+
+
+def spiral_top():
+    """The head from above: pale leaves wrapped in a spiral, each leaf's edge a darker curve sweeping out from the heart."""
+    import math
+    grid = [["f"] * 16 for _ in range(16)]
+    for y in range(16):
+        for x in range(16):
+            # Lighter toward the upper left, where the light falls; the rim rolls over into shade.
+            r = math.hypot(x - 7.5, y - 7.5)
+            grid[y][x] = "g" if (x + y < 15 and r < 6.5) else "f" if r < 7.2 else "e"
+    for arm in range(3):
+        for step in range(30):
+            t = step / 30 * 1.5
+            angle = arm * math.pi * 2 / 3 + t * 1.5
+            r = 1.0 + t * 3.6
+            x, y = round(7.5 + r * math.cos(angle)), round(7.5 + r * math.sin(angle))
+            if 0 <= x < 16 and 0 <= y < 16:
+                grid[y][x] = "e"
+                # A pale lip on the leaf edge's sunny side.
+                lx, ly = x - 1, y - 1
+                if 0 <= lx < 16 and 0 <= ly < 16 and grid[ly][lx] in "fg":
+                    grid[ly][lx] = "g"
+    return ["".join(row) for row in grid]
+
+
+CABBAGE_STAGES["head_top"] = spiral_top()
+
+# Each age's leaves, and the head standing in them as (width, height) in pixels.
+CABBAGE_BY_AGE = [("sprout", None), ("sprout", None), ("rosette", None), ("rosette", None),
+                  ("leaves_small", (4, 4)), ("leaves_small", (6, 5)), ("leaves_large", (7, 6)), ("leaves_large", (8, 8))]
+
+
+
+# Tomato: a seedling, a young plant, then a vine up the trellis, flowering with green fruit, then hung with red fruit.
+
+TOMATO = {"a": "#1c4424", "b": "#2c5e30", "c": "#3f7c3a", "d": "#5c9a44", "e": "#8cc05a",
+          "R": "#6e1a2a", "S": "#a82634", "T": "#d8442e", "U": "#ff9a80",
+          "G": "#4c7a26", "H": "#7cae3c", "I": "#b8dc78", "Y": "#e8c234", "Z": "#b07a1c", "k": "#2c5e30"}
+
+TOMATO_STAGES = {
+    "seedling": [
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "......ed........",
+        "....edcb.de.....",
+        "......b.dcb.....",
+        ".......bb.......",
+        ".......b........",
+    ],
+    "young": [
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "........ed......",
+        "......edcb......",
+        "...ed...b..ed...",
+        "..dcbb..b.dccb..",
+        "....bbbbb.bb....",
+        ".ed....b........",
+        "dccb...bbbed....",
+        ".cbbb.bb.dcb....",
+        ".....bb.........",
+        ".......b........",
+    ],
+    "vine": [
+        ".......edd......",
+        "..ed..edcbc.ed..",
+        ".edcd..cb..edcd.",
+        "..cbbb.b.bbcbc..",
+        "......bb.b......",
+        ".ed...b...edd...",
+        "edcd..bb.edcbc..",
+        ".cbcbb.bbb.cb...",
+        "......b.........",
+        "...edd.b..edd...",
+        "..edcbcbbedcdc..",
+        "...cb..b..cbc...",
+        ".......bb.......",
+        "..edd...b.edd...",
+        ".edcbcb.bedcbc..",
+        "..cb..bb..cb....",
+    ],
+}
+TOMATO_FRUIT = ["..k..", ".TUT.", ".STS.", "..R.."]
+GREEN_FRUIT = ["..k..", ".HIH.", ".GHG.", "..G.."]
+FLOWER = ["Y.Y", ".Z.", "Y.Y"]
+FRUIT_SPOTS = [(7, 3), (1, 7), (9, 10), (2, 11), (11, 4)]
+FLOWER_SPOTS = [(4, 4), (12, 8), (0, 13), (13, 0)]
 
 
 def main():
-    cabbage_textures()
-    cabbage_models()
-    tomato_textures()
-    tomato_models()
+    for stage, grid in CABBAGE_STAGES.items():
+        draw(f"cabbage_{stage}", grid, CABBAGE)
+    for age, (stage, head) in enumerate(CABBAGE_BY_AGE):
+        write_model(f"cabbage_stage{age}", crop_model(f"cabbage_{stage}", head and (head, ("cabbage_head_side", "cabbage_head_top"))))
+
+    for stage, grid in TOMATO_STAGES.items():
+        draw(f"tomato_vine_{stage}", grid, TOMATO)
+    vine = TOMATO_STAGES["vine"]
+    draw("tomato_vine_flowering", vine, TOMATO,
+         [(FLOWER, x, y) for x, y in FLOWER_SPOTS] + [(GREEN_FRUIT, x, y) for x, y in FRUIT_SPOTS[:3]])
+    draw("tomato_vine_ripe", vine, TOMATO, [(TOMATO_FRUIT, x, y) for x, y in FRUIT_SPOTS])
+    by_age = ["seedling", "seedling", "young", "young", "vine", "vine", "flowering", "ripe"]
+    for age, stage in enumerate(by_age):
+        write_model(f"tomato_vine_stage{age}", trellis_model(f"tomato_vine_{stage}"))
 
 
 if __name__ == "__main__":

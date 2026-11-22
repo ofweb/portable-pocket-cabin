@@ -51,6 +51,14 @@ final class PlantModelScreenshots {
 				context.runOnClient(client -> client.gui.toastManager().clear());
 				context.waitTick();
 				context.takeScreenshot(TestScreenshotOptions.of("plant-" + plant).disableCounterPrefix());
+				// The same row from a front corner, since crossed planes look different from the diagonal.
+				world.getServer().runOnServer(server -> {
+					var player = world.getConnection().getServerPlayer();
+					player.teleportTo(player.level(), player.getX() + 3.2, player.getY(), player.getZ() - 0.6, Set.of(), 140, 26, false);
+				});
+				world.getConnection().waitForClientboundPackets();
+				context.waitTicks(10);
+				context.takeScreenshot(TestScreenshotOptions.of("plant-" + plant + "-corner").disableCounterPrefix());
 			}
 		}
 	}
