@@ -887,18 +887,20 @@ RHUBARB = {"a": "#1e4224", "b": "#2c5e30", "c": "#3e7a3a", "d": "#56964a", "e": 
            "r": "#6e1424", "s": "#a82638", "t": "#d0485a", "u": "#ec8496"}
 
 
+# Rhubarb leaves: broad and roundish with a wavy, crinkled edge, a notch either side of the stalk, and pale veins
+# fanning out from where it joins.
+RHUBARB_BIG_LEAF = ["...bb.bbc.bb..", "..bccbccdcbcb.", ".bccdcceccdcb.", "bccdccdecdccdb", "bcecdcdedccecb",
+                    "bccecddedcdccb", ".bcceddeddcccb", ".bccceddecccb.", "..bbcccdccbb..", "...bb.dd.bb...", "......dd......"]
+RHUBARB_LEAF = ["..bb.bcb..", ".bccbccdb.", "bcdcecdccb", "bccdedcecb", "bcecdedccb", ".bccddccb.", "..bb.dbb..", ".....d...."]
+RHUBARB_SMALL_LEAF = [".bb.bb.", "bccbccb", "bcdedcb", "bccdccb", ".bbdbb.", "...d..."]
+
+
 def rhubarb():
-    def crinkled(w, h):
-        grid = [list(row) for row in leaf_grid(w, h)]
-        for y in range(h):
-            for x in range(w):
-                if grid[y][x] in "cd" and (x * 5 + y * 3) % 7 == 0:
-                    grid[y][x] = "b"
-        return ["".join(r) for r in grid]
-    textures = {"small_leaf": padded(crinkled(6, 6)), "leaf": padded(crinkled(8, 7)), "big_leaf": padded(crinkled(10, 9)),
+    textures = {"small_leaf": padded(RHUBARB_SMALL_LEAF), "leaf": padded(RHUBARB_LEAF), "big_leaf": padded(RHUBARB_BIG_LEAF),
                 "stalk": stalk_strip(["tsstssts" * 2, "ssrssrss" * 2]), "bud": padded(["ut", "ts"])}
 
-    def leaves(texture, size, count, rise, lean, turn=0, tilt=20):
+    def leaves(texture, size, count, rise, lean, turn=0, tilt=15):
+        # Leaves held on thick red stalks leaning well out from the crown, so the grown plant spreads wide and low.
         parts = []
         length = rise / _m.cos(_m.radians(lean))
         out = rise * _m.tan(_m.radians(lean))
@@ -911,15 +913,17 @@ def rhubarb():
     def buds(n):
         return [solid((8 + 2 * _m.sin(a) - 1, GROUND, 8 + 2 * _m.cos(a) - 1), (8 + 2 * _m.sin(a) + 1, GROUND + 2, 8 + 2 * _m.cos(a) + 1), "bud")
                 for a in [k * 2 * _m.pi / n for k in range(n)]]
+    big, medium = (14, 11), (10, 8)
     stages = [
-        buds(3) + leaves("small_leaf", (6, 6), 1, 2, 15, tilt=40),
-        buds(2) + leaves("small_leaf", (6, 6), 3, 3, 20, tilt=35),
-        leaves("leaf", (8, 7), 4, 6, 15, tilt=35),
-        leaves("leaf", (8, 7), 5, 7, 15, turn=30, tilt=32),
-        leaves("big_leaf", (10, 9), 4, 9, 14, tilt=32),
-        leaves("big_leaf", (10, 9), 5, 10, 14, turn=20, tilt=30),
-        leaves("big_leaf", (10, 9), 5, 11, 14, turn=10, tilt=28) + buds(2),
-        leaves("big_leaf", (10, 9), 6, 12, 14, turn=25, tilt=28),
+        buds(3) + leaves("small_leaf", (7, 6), 1, 2, 20, tilt=30),
+        buds(2) + leaves("small_leaf", (7, 6), 3, 3, 25, tilt=25),
+        leaves("leaf", medium, 4, 4, 30, tilt=20),
+        leaves("leaf", medium, 5, 5, 32, turn=30, tilt=20),
+        # From its fifth stage its huge leaves reach about a block past each side, under a block high.
+        leaves("big_leaf", big, 5, 6, 38) + leaves("leaf", medium, 2, 6, 12, turn=36, tilt=35),
+        leaves("big_leaf", big, 6, 7, 40, turn=20) + leaves("leaf", medium, 2, 7, 12, turn=50, tilt=35),
+        leaves("big_leaf", big, 6, 7, 40, turn=10) + leaves("leaf", medium, 3, 7, 12, turn=70, tilt=35) + buds(2),
+        leaves("big_leaf", big, 7, 8, 42, turn=25) + leaves("leaf", medium, 3, 8, 12, turn=85, tilt=35),
     ]
     build("rhubarb", RHUBARB, textures, stages, "big_leaf")
 

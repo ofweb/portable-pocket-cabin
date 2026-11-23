@@ -19,7 +19,7 @@ import java.util.Set;
  */
 final class PlantModelScreenshots {
 	/** Plants that sprawl past their own block, shown spaced out. */
-	private static final Set<String> WIDE = Set.of("courgette");
+	private static final Set<String> WIDE = Set.of("courgette", "rhubarb");
 
 	private PlantModelScreenshots() {
 	}
