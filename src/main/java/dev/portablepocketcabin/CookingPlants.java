@@ -78,6 +78,15 @@ final class CookingPlants {
 	// Delivery 1: climbing plants on trellises.
 	static final Block TRELLIS = registerBlockWithItem("trellis", TrellisBlock::new, BlockBehaviour.Properties.of()
 		.strength(0.5F).sound(SoundType.WOOD).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY));
+	/** The upper block of a tall plant: corn and the like once grown, and a second trellis that a vine has climbed. */
+	static final Block PLANT_TOP = registerBlock("plant_top", PlantTopBlock::new, BlockBehaviour.Properties.of()
+		.strength(0.3F).sound(SoundType.CROP).noOcclusion().pushReaction(PushReaction.DESTROY));
+	/**
+	 * The plants that grow taller than a block, and the stage from which they do: field crops into the block above while
+	 * it is free, vines up a second trellis stacked on their own.
+	 */
+	private static final Map<String, Integer> TALL_FROM = Map.of("corn", 4, "blue_corn", 4, "purple_corn", 4, "courgette", 5, "dill", 4,
+		"tomato_vine", 4, "white_grape_vine", 4);
 	static final Item CUCUMBER = ingredient("cucumber", food(2, 1.2F));
 	static final Item WHITE_GRAPE = ingredient("white_grape", food(2, 1.2F));
 	static final Item HOPS = ingredient("hops", null);
@@ -559,6 +568,11 @@ final class CookingPlants {
 		Map<String, Block> all = new LinkedHashMap<>(PLANTS);
 		all.putAll(GARDEN_ONLY);
 		return all;
+	}
+
+	/** The stage from which a plant fills the block above too, or -1 when it stays within one block. */
+	static int tallFrom(Block block) {
+		return TALL_FROM.getOrDefault(BuiltInRegistries.BLOCK.getKey(block).getPath(), -1);
 	}
 
 	static Item item(String name) {

@@ -106,6 +106,92 @@ public final class CabinPlantGameTest {
 	}
 
 	@GameTest
+	public void tallCropsTakeTheBlockAboveAndGoWithIt(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var corn = (FieldCropBlock) CookingPlants.CORN_CROP;
+		helper.setBlock(BASE.west(), Blocks.WATER);
+		helper.setBlock(BASE.below(), Blocks.FARMLAND);
+		helper.setBlock(BASE, corn);
+		tick(helper, BASE, 400);
+		var top = helper.absolutePos(BASE.above());
+		helper.assertTrue(age(helper, BASE) == 7 && level.getBlockState(top).is(CookingPlants.PLANT_TOP),
+			"Corn grows to harvest and takes the block above for its top");
+
+		// Using the top acts on the plant, and breaking the top breaks the whole plant with its harvest.
+		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+		helper.assertTrue(level.getBlockState(top).getShape(level, top).max(net.minecraft.core.Direction.Axis.Y) > 0.5,
+			"The top gives the upper block an outline");
+		CookingPlants.PLANT_TOP.playerWillDestroy(level, top, level.getBlockState(top), player);
+		level.removeBlock(top, false);
+		helper.assertTrue(level.getBlockState(helper.absolutePos(BASE)).isAir() && level.getBlockState(top).isAir(),
+			"Breaking the top breaks the corn below");
+
+		// With no room above, corn waits at the stage before it grows tall, and bone meal does nothing.
+		var roofed = BASE.east(3);
+		helper.setBlock(roofed.west(), Blocks.WATER);
+		helper.setBlock(roofed.below(), Blocks.FARMLAND);
+		helper.setBlock(roofed, corn);
+		helper.setBlock(roofed.above(), Blocks.OAK_LEAVES);
+		tick(helper, roofed, 400);
+		var roofedPos = helper.absolutePos(roofed);
+		helper.assertTrue(age(helper, roofed) == corn.tallFrom() - 1, "Corn with no room above stops below its tall stages");
+		helper.assertTrue(!corn.isValidBonemealTarget(level, roofedPos, level.getBlockState(roofedPos)), "Bone meal cannot push it past");
+		helper.assertTrue(!CabinGreenhouseGrowth.canProgress(level, roofedPos, level.getBlockState(roofedPos)),
+			"Greenhouse catch-up does not wait on it");
+
+		// Breaking the plant takes its top with it.
+		helper.setBlock(roofed.above(), Blocks.AIR);
+		tick(helper, roofed, 400);
+		helper.assertTrue(level.getBlockState(helper.absolutePos(roofed.above())).is(CookingPlants.PLANT_TOP), "Given room, it grows on");
+		level.destroyBlock(roofedPos, true);
+		helper.assertTrue(level.getBlockState(helper.absolutePos(roofed.above())).isAir(), "Breaking the plant takes its top too");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void tallVinesClimbAStackedTrellis(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var tomato = (TrellisCropBlock) CookingPlants.PLANTS.get("tomato_vine");
+		var random = RandomSource.create(7);
+		helper.setBlock(BASE.west(), Blocks.WATER);
+		helper.setBlock(BASE.below(), Blocks.FARMLAND);
+		helper.setBlock(BASE, tomato.getStateForAge(0));
+		helper.setBlock(BASE.above(), CookingPlants.TRELLIS);
+		var pos = helper.absolutePos(BASE);
+		var top = pos.above();
+		while (!tomato.isMaxAge(level.getBlockState(pos))) tomato.performBonemeal(level, random, pos, level.getBlockState(pos));
+		helper.assertTrue(level.getBlockState(pos).getValue(TrellisCropBlock.TALL) && level.getBlockState(top).is(CookingPlants.PLANT_TOP)
+			&& level.getBlockState(top).getValue(PlantTopBlock.TRELLIS), "A tomato vine climbs the trellis stacked on its own");
+
+		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+		var hit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(top), net.minecraft.core.Direction.NORTH, top, false);
+		level.getBlockState(top).useWithoutItem(level, player, hit);
+		helper.assertTrue(age(helper, BASE) == 7 - TrellisCropBlock.PICKED_BACK && level.getBlockState(pos).getValue(TrellisCropBlock.TALL),
+			"Picking from the climbed trellis picks the vine, which stays tall");
+		helper.assertTrue(Block.getDrops(level.getBlockState(top), level, top, null).stream().anyMatch(stack -> stack.is(CookingPlants.TRELLIS.asItem())),
+			"The climbed trellis gives back a trellis");
+
+		level.removeBlock(top, false);
+		helper.assertTrue(!level.getBlockState(pos).getValue(TrellisCropBlock.TALL) && age(helper, BASE) == 7 - TrellisCropBlock.PICKED_BACK,
+			"Without the trellis above, the vine stays, one block high");
+		level.setBlockAndUpdate(top, CookingPlants.TRELLIS.defaultBlockState());
+		level.getBlockState(pos).tick(level, pos, random);
+		helper.assertTrue(level.getBlockState(pos).getValue(TrellisCropBlock.TALL), "A grown vine climbs a trellis stacked on it again");
+
+		// On a single trellis a tall vine grows and fruits at one block high.
+		var single = BASE.east(3);
+		helper.setBlock(single.west(), Blocks.WATER);
+		helper.setBlock(single.below(), Blocks.FARMLAND);
+		helper.setBlock(single, tomato.getStateForAge(0));
+		var singlePos = helper.absolutePos(single);
+		while (!tomato.isMaxAge(level.getBlockState(singlePos))) tomato.performBonemeal(level, random, singlePos, level.getBlockState(singlePos));
+		helper.assertTrue(!level.getBlockState(singlePos).getValue(TrellisCropBlock.TALL) && level.getBlockState(singlePos.above()).isAir(),
+			"On one trellis the vine ripens one block high");
+		helper.assertTrue(CookingPlants.TRELLIS.defaultBlockState().canSurvive(level, singlePos.above()), "A trellis stands on a vine");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void bushesRegrowAndElderGivesTwoHarvests(GameTestHelper helper) {
 		var level = helper.getLevel();
 		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);

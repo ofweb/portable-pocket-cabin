@@ -22,7 +22,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-/** A trellis of sticks standing on farmland. Using a climbing plant's seeds or cutting on it plants the vine there. */
+/**
+ * A trellis of sticks standing on farmland. Using a climbing plant's seeds or cutting on it plants the vine there. A
+ * second trellis can stand on a trellis or its vine, for a tall vine to climb.
+ */
 final class TrellisBlock extends Block {
 	static final MapCodec<TrellisBlock> CODEC = simpleCodec(TrellisBlock::new);
 	static final VoxelShape SHAPE = Block.box(1, 0, 7, 15, 16, 9);
@@ -43,7 +46,9 @@ final class TrellisBlock extends Block {
 
 	@Override
 	protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-		return level.getBlockState(pos.below()).is(Blocks.FARMLAND);
+		BlockState below = level.getBlockState(pos.below());
+		return below.is(Blocks.FARMLAND) || below.is(this) || below.getBlock() instanceof TrellisCropBlock
+			|| below.is(CookingPlants.PLANT_TOP) && below.getValue(PlantTopBlock.TRELLIS);
 	}
 
 	@Override
