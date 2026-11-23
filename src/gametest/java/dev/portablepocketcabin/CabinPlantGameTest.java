@@ -139,6 +139,19 @@ public final class CabinPlantGameTest {
 		helper.assertTrue(!CabinGreenhouseGrowth.canProgress(level, roofedPos, level.getBlockState(roofedPos)),
 			"Greenhouse catch-up does not wait on it");
 
+		// It never grows into another block, not even one that could be replaced such as a light block, nor through a
+		// greenhouse's glass roof.
+		for (var cover : List.of(Blocks.LIGHT, Blocks.GLASS)) {
+			var covered = roofed.east(2);
+			helper.setBlock(covered.west(), Blocks.WATER);
+			helper.setBlock(covered.below(), Blocks.FARMLAND);
+			helper.setBlock(covered, corn);
+			helper.setBlock(covered.above(), cover);
+			tick(helper, covered, 400);
+			helper.assertTrue(age(helper, covered) == corn.tallFrom() - 1 && level.getBlockState(helper.absolutePos(covered.above())).is(cover),
+				"Corn under " + cover.getName().getString() + " waits and leaves it be");
+		}
+
 		// Breaking the plant takes its top with it.
 		helper.setBlock(roofed.above(), Blocks.AIR);
 		tick(helper, roofed, 400);

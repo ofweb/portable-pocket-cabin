@@ -80,11 +80,14 @@ class FieldCropBlock extends CropBlock implements CookingPlant {
 		return CookingPlants.tallFrom(this);
 	}
 
-	/** Whether the plant can grow to {@code age} where it stands: a tall stage needs the block above free, or its top. */
+	/**
+	 * Whether the plant can grow to {@code age} where it stands: a tall stage needs empty air above, or its own top. It
+	 * never grows into another block, not even grass or snow, so a greenhouse's glass roof stops it below.
+	 */
 	boolean canGrowTo(LevelReader level, BlockPos pos, int age) {
 		if (tallFrom() < 0 || age < tallFrom()) return true;
 		BlockState above = level.getBlockState(pos.above());
-		return above.is(CookingPlants.PLANT_TOP) || above.canBeReplaced() && above.getFluidState().isEmpty();
+		return above.is(CookingPlants.PLANT_TOP) || above.isAir();
 	}
 
 	/** Whether the plant, as it is, also fills the block above, which then holds its top. */
