@@ -18,6 +18,9 @@ import java.util.Set;
  * ripe. Run with PPC_CAPTURE_PLANTS=1 ./gradlew runClientGameTest, optionally naming the plants in PPC_PLANTS.
  */
 final class PlantModelScreenshots {
+	/** Plants that sprawl past their own block, shown spaced out. */
+	private static final Set<String> WIDE = Set.of("courgette");
+
 	private PlantModelScreenshots() {
 	}
 
@@ -32,7 +35,7 @@ final class PlantModelScreenshots {
 					server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "time set noon");
 					server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "weather clear");
 					BlockPos base = player.blockPosition().offset(0, 30, 0);
-					for (int x = -6; x <= 6; x++) for (int z = -3; z <= 3; z++) {
+					for (int x = -9; x <= 9; x++) for (int z = -3; z <= 3; z++) {
 						level.setBlockAndUpdate(base.offset(x, -2, z), Blocks.DIRT.defaultBlockState());
 						level.setBlockAndUpdate(base.offset(x, -1, z), Blocks.GRASS_BLOCK.defaultBlockState());
 						for (int y = 0; y < 4; y++) level.setBlockAndUpdate(base.offset(x, y, z), Blocks.AIR.defaultBlockState());
@@ -44,12 +47,14 @@ final class PlantModelScreenshots {
 					// water stays put; other crops on watered farmland; the rest on the grass.
 					boolean paddy = block instanceof PaddyCropBlock;
 					if (paddy) {
-						for (int x = -6; x <= 6; x++) for (int z = -1; z <= 1; z++) {
+						for (int x = -9; x <= 9; x++) for (int z = -1; z <= 1; z++) {
 							if (z != 0 || x < -maxAge / 2 || x > maxAge - maxAge / 2) level.setBlockAndUpdate(base.offset(x, 0, z), Blocks.GRASS_BLOCK.defaultBlockState());
 						}
 					}
+					// Plants that sprawl past their block, such as courgette, stand two blocks apart so each can be seen whole.
+					int spacing = WIDE.contains(plant) ? 2 : 1;
 					for (int stage = 0; stage <= maxAge; stage++) {
-						var pos = base.offset(stage - maxAge / 2, 0, 0);
+						var pos = base.offset((stage - maxAge / 2) * spacing, 0, 0);
 						if (paddy) {
 							level.setBlockAndUpdate(pos.below(), Blocks.MUD.defaultBlockState());
 						} else if (block instanceof CropBlock) {
@@ -69,7 +74,8 @@ final class PlantModelScreenshots {
 					}
 					// Plants two blocks tall are seen from further back and higher up, so their tops are in view.
 					boolean tall = block instanceof FieldCropBlock crop && crop.tallFrom() >= 0;
-					player.teleportTo(level, base.getX() + .5, base.getY() + (tall ? 2.1 : 1.5), base.getZ() + (tall ? 4.4 : 3.8), Set.of(), 180,
+					if (spacing > 1) player.teleportTo(level, base.getX() + 1.5, base.getY() + 2.4, base.getZ() + 5.0, Set.of(), 180, 24, false);
+					else player.teleportTo(level, base.getX() + .5, base.getY() + (tall ? 2.1 : 1.5), base.getZ() + (tall ? 4.4 : 3.8), Set.of(), 180,
 						tall ? 16 : 24, false);
 				});
 				world.getConnection().waitForClientboundPackets();

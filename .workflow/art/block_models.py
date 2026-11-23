@@ -641,18 +641,21 @@ def courgette():
     def big_leaves(n, rise=8, turn=0):
         return on_stalks("big_leaf", (9, 9), n, 25, rise, 20, turn)
 
-    def huge_leaves(n, rise, turn=0):
-        # Held high on long stalks, as a grown courgette's are: taller than a block from its fifth stage.
-        return on_stalks("huge_leaf", (11, 11), n, 22, rise, 18, turn)
+    def huge_leaves(n, rise, lean, turn=0):
+        # Spread wide on long stalks leaning out from the crown, as a grown courgette's are: from its fifth stage it
+        # sprawls about a block past each side of its own, while staying under a block high.
+        return on_stalks("huge_leaf", (11, 11), n, 12, rise, lean, turn)
     stages = [
         ring_of("seed_leaf", (4, 4), 2, 25),
         ring_of("seed_leaf", (4, 4), 2, 20) + on_stalks("small_leaf", (7, 7), 1, 30, 2, 15, turn=90),
         on_stalks("small_leaf", (7, 7), 3, 30, 3, 20),
         on_stalks("small_leaf", (7, 7), 2, 30, 4, 15, turn=60) + big_leaves(3, 5),
-        big_leaves(5, 9),
-        huge_leaves(6, 13) + flower_at(30, 4, 3) + flower_at(200, 4.5, 2),
-        huge_leaves(7, 14, 20) + flower_at(30, 4, 3) + flower_at(200, 4.5, 2) + [fruit_at(9, 11, 2, 5, 70)],
-        huge_leaves(7, 14, 20) + flower_at(250, 4, 3) + [fruit_at(9, 11, 3, 9, 70), fruit_at(6, 5, 2, 7, 150)],
+        huge_leaves(5, 6, 35),
+        huge_leaves(6, 7, 45) + on_stalks("big_leaf", (9, 9), 3, 30, 8, 15, 60) + flower_at(30, 4, 3) + flower_at(200, 4.5, 2),
+        huge_leaves(7, 7, 48, 20) + on_stalks("big_leaf", (9, 9), 3, 30, 8, 15, 80) + flower_at(30, 4, 3) + flower_at(200, 4.5, 2)
+        + [fruit_at(9, 11, 2, 5, 70)],
+        huge_leaves(7, 7, 48, 20) + on_stalks("big_leaf", (9, 9), 3, 30, 8, 15, 80) + flower_at(250, 4, 3)
+        + [fruit_at(9, 11, 3, 9, 70), fruit_at(6, 5, 2, 7, 150), fruit_at(12, 6, 2, 6, 20)],
     ]
     build("courgette", COURGETTE, textures, stages, "big_leaf")
 

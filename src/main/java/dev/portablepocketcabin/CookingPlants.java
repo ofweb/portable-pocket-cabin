@@ -85,7 +85,7 @@ final class CookingPlants {
 	 * The plants that grow taller than a block, and the stage from which they do: field crops into the block above while
 	 * it is free, vines up a second trellis stacked on their own.
 	 */
-	private static final Map<String, Integer> TALL_FROM = Map.of("corn", 4, "blue_corn", 4, "purple_corn", 4, "courgette", 5, "dill", 4,
+	private static final Map<String, Integer> TALL_FROM = Map.of("corn", 4, "blue_corn", 4, "purple_corn", 4, "dill", 4,
 		"tomato_vine", 4, "white_grape_vine", 4);
 	static final Item CUCUMBER = ingredient("cucumber", food(2, 1.2F));
 	static final Item WHITE_GRAPE = ingredient("white_grape", food(2, 1.2F));
