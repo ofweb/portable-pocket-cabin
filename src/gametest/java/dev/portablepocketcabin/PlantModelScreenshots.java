@@ -55,9 +55,22 @@ final class PlantModelScreenshots {
 						} else if (block instanceof CropBlock) {
 							level.setBlockAndUpdate(pos.below(), Blocks.FARMLAND.defaultBlockState().setValue(FarmlandBlock.MOISTURE, 7));
 						}
-						level.setBlock(pos, block.defaultBlockState().setValue(age, stage), Block.UPDATE_CLIENTS);
+						var state = block.defaultBlockState().setValue(age, stage);
+						// Tall vines get a second trellis to climb, climbed from their tall stage on; tall crops their top.
+						if (block instanceof TrellisCropBlock vine && vine.tallFrom() >= 0) {
+							boolean tall = stage >= vine.tallFrom();
+							state = state.setValue(TrellisCropBlock.TALL, tall);
+							level.setBlock(pos.above(), tall ? CookingPlants.PLANT_TOP.defaultBlockState().setValue(PlantTopBlock.TRELLIS, true)
+								: CookingPlants.TRELLIS.defaultBlockState(), Block.UPDATE_CLIENTS);
+						} else if (block instanceof FieldCropBlock crop && crop.fillsAbove(state)) {
+							level.setBlock(pos.above(), CookingPlants.PLANT_TOP.defaultBlockState(), Block.UPDATE_CLIENTS);
+						}
+						level.setBlock(pos, state, Block.UPDATE_CLIENTS);
 					}
-					player.teleportTo(level, base.getX() + .5, base.getY() + 1.5, base.getZ() + 3.8, Set.of(), 180, 24, false);
+					// Plants two blocks tall are seen from further back and higher up, so their tops are in view.
+					boolean tall = block instanceof FieldCropBlock crop && crop.tallFrom() >= 0;
+					player.teleportTo(level, base.getX() + .5, base.getY() + (tall ? 2.1 : 1.5), base.getZ() + (tall ? 4.4 : 3.8), Set.of(), 180,
+						tall ? 16 : 24, false);
 				});
 				world.getConnection().waitForClientboundPackets();
 				world.getConnection().waitForChunksRender();

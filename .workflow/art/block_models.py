@@ -167,10 +167,11 @@ TRELLIS_FRAME = [
 ]
 
 
-def trellis_planes(texture):
-    """The vine flat against both faces of the trellis, the way a climber grows on one."""
+def trellis_planes(texture, bottom=0):
+    """The vine flat against both faces of the trellis, the way a climber grows on one; `bottom` 16 for the trellis above."""
     face = {"uv": [0, 0, 16, 16], "texture": texture}
-    return [{"from": [0, 0, z], "to": [16, 16, z], "shade": False, "faces": {"north": face, "south": face}} for z in (6.9, 9.1)]
+    return [{"from": [0, bottom, z], "to": [16, bottom + 16, z], "shade": False, "faces": {"north": face, "south": face}}
+            for z in (6.9, 9.1)]
 
 
 # Shared pieces for building plants.
@@ -319,18 +320,31 @@ def shaded_side(palette_letters, height, light_columns=(2, 3, 4, 5)):
     return rows
 
 
-def build(plant, palette, textures, stages, particle, extra=None):
-    """Draws a plant's textures and writes one model per growth stage. `extra` names textures it borrows."""
+def build(plant, palette, textures, stages, particle, extra=None, tall=None):
+    """Draws a plant's textures and writes one model per growth stage. `extra` names textures it borrows. A vine that
+    climbs a second trellis gives `tall`, its two-block models by stage, written as <plant>_stage<age>_tall, with a
+    blockstate choosing them when the vine is tall."""
     for name, grid in textures.items():
         draw(f"{plant}_{name}", grid, palette)
     names = {"particle": f"{plant}_{particle}", **{name: f"{plant}_{name}" for name in textures}, **(extra or {})}
-    for age, elements in enumerate(stages):
+
+    def model(name, elements):
         used = {"particle": names["particle"]}
         for element in elements:
             for face in element["faces"].values():
                 key = face["texture"][1:]
                 used[key] = names[key]
-        write_model(f"{plant}_stage{age}", built_model(used, elements))
+        write_model(name, built_model(used, elements))
+    for age, elements in enumerate(stages):
+        model(f"{plant}_stage{age}", elements)
+    if tall is not None:
+        for age, elements in tall.items():
+            model(f"{plant}_stage{age}_tall", elements)
+        variants = {f"age={age},tall={str(t).lower()}": {"model": NS + f"{plant}_stage{age}" + ("_tall" if t and age in tall else "")}
+                    for age in range(len(stages)) for t in (False, True)}
+        with open(f"{A}/blockstates/{plant}.json", "w") as f:
+            json.dump({"variants": variants}, f, indent=2)
+            f.write("\n")
 
 
 # Cabbage: seed leaves, a rosette of broad blue-green leaves, then a smooth, pale, round head cupped by paler wrapper
@@ -480,7 +494,17 @@ def tomato():
         on_trellis("vine", [(4.5, front, 14.5, [r, r, o, g]), (9, front, 15, [r, r, r, o, g, g]),
                             (12.5, front, 9.5, [r, o, g]), (6, back, 14, [r, r, o, o, g]), (11, back, 10, [r, r, g])]),
     ]
-    build("tomato_vine", TOMATO, textures, stages, "vine", extra={"post": "minecraft:block/stripped_oak_log"})
+
+    def climbed(stage, trusses=()):
+        # Over both trellises: the climbed one above shows itself, so only the vine is drawn there.
+        return on_trellis(stage, trusses) + trellis_planes("#" + stage, 16)
+    tall = {
+        4: climbed("vine"), 5: climbed("vine"),
+        6: climbed("flowering", [(5, front, 24, [g, g, g]), (11.5, front, 18, [g, g]), (8, front, 12, [g, g]), (9, back, 22, [g, g, g])]),
+        7: climbed("vine", [(4.5, front, 23, [r, r, o, g, g]), (9, front, 28, [r, r, r, o, g]), (12.5, front, 17, [r, o, g, g]),
+                            (6, front, 12, [r, r, o]), (6, back, 25, [r, r, o, o, g]), (11, back, 19, [r, r, g, g]), (9, back, 11, [r, o])]),
+    }
+    build("tomato_vine", TOMATO, textures, stages, "vine", extra={"post": "minecraft:block/stripped_oak_log"}, tall=tall)
 
 
 # Barley: grassy shoots, then slender stems with long arching leaves, then slim ears with long, parallel beards that
@@ -595,9 +619,11 @@ def courgette():
     # Five pointed lobes, the veins pale, silver patches between them near the heart.
     big = ["....d....", "d...c...d", ".cc.c.cc.", ".cccecfc.", "ccfcecccc", ".cceeecc.", "bccfeccfb", ".bc.e.cb.",
            "....c...."]
+    huge = [".....d.....", "d....c....d", ".cc..c..cc.", ".cccfcfccc.", "..ccfefcc..", "dcccceccccd", ".cfceeecfc.",
+            "bccfcecfccb", "..bcceccb..", ".bb..c..bb.", ".....c....."]
     small = ["...d...", "d..c..d", ".ccecc.", "ccceccf", ".bcecb.", "..b.b..", "...c..."]
     flower = ["...Y...", ".Y.Y.Y.", "..YXY..", "YYXZXYY", "..YXY..", ".Y.Y.Y.", "...Y..."]
-    textures = {"seed_leaf": padded(leaf_grid(4, 4)), "small_leaf": padded(small), "big_leaf": padded(big),
+    textures = {"seed_leaf": padded(leaf_grid(4, 4)), "small_leaf": padded(small), "big_leaf": padded(big), "huge_leaf": padded(huge),
                 "stalk": stalk_strip(["deddeddddeddedde"]), "fruit": fruit, "flower": padded(flower),
                 "bud": padded(["ZY", "YZ"])}
 
@@ -614,15 +640,19 @@ def courgette():
 
     def big_leaves(n, rise=8, turn=0):
         return on_stalks("big_leaf", (9, 9), n, 25, rise, 20, turn)
+
+    def huge_leaves(n, rise, turn=0):
+        # Held high on long stalks, as a grown courgette's are: taller than a block from its fifth stage.
+        return on_stalks("huge_leaf", (11, 11), n, 22, rise, 18, turn)
     stages = [
         ring_of("seed_leaf", (4, 4), 2, 25),
         ring_of("seed_leaf", (4, 4), 2, 20) + on_stalks("small_leaf", (7, 7), 1, 30, 2, 15, turn=90),
         on_stalks("small_leaf", (7, 7), 3, 30, 3, 20),
         on_stalks("small_leaf", (7, 7), 2, 30, 4, 15, turn=60) + big_leaves(3, 5),
-        big_leaves(5, 7),
-        big_leaves(6) + flower_at(30, 4, 3) + flower_at(200, 4.5, 2),
-        big_leaves(6) + flower_at(30, 4, 3) + flower_at(200, 4.5, 2) + [fruit_at(9, 11, 2, 5, 70)],
-        big_leaves(6) + flower_at(250, 4, 3) + [fruit_at(9, 11, 3, 9, 70), fruit_at(6, 5, 2, 7, 150)],
+        big_leaves(5, 9),
+        huge_leaves(6, 13) + flower_at(30, 4, 3) + flower_at(200, 4.5, 2),
+        huge_leaves(7, 14, 20) + flower_at(30, 4, 3) + flower_at(200, 4.5, 2) + [fruit_at(9, 11, 2, 5, 70)],
+        huge_leaves(7, 14, 20) + flower_at(250, 4, 3) + [fruit_at(9, 11, 3, 9, 70), fruit_at(6, 5, 2, 7, 150)],
     ]
     build("courgette", COURGETTE, textures, stages, "big_leaf")
 
@@ -682,34 +712,39 @@ CORN = {"a": "#1e4a1e", "b": "#2c6428", "c": "#3e7e34", "d": "#58983e", "e": "#7
 
 
 def corn():
-    strap = [".d."] + ["ded"] * 4 + ["cec"] * 5 + ["cdc"] * 4
+    strap = [".d."] + ["ded"] * 5 + ["cec"] * 6 + ["cdc"] * 4
     husk = ["".join("I" if x % 3 == 0 else "H" for x in range(16)) for _ in range(16)]
-    dry = recolour(husk, {"I": "U", "H": "T"})
+    tassel = ["i.j.i", ".iji.", "j.i.j", ".hih.", "..h..", "..h.."]
     textures = {"leaf": padded(strap), "old_leaf": padded(recolour(strap, {"d": "z", "e": "z", "c": "y"})),
                 "stalk": stalk_strip(["cdccdcccdccdccdc", "dcdcccdcdcccdcdc"]),
-                "tassel": bottom_padded(["i.j.i", ".iji.", "j.i.j", ".hih.", "..h..", "..h.."]),
-                "brown_tassel": bottom_padded(recolour(["i.j.i", ".iji.", "j.i.j", ".hih.", "..h..", "..h.."], {"i": "h", "j": "i"})),
-                "husk": husk, "silk": padded(["kk.", "kkk", ".kk"]), "dry_husk": dry, "dry_silk": padded(["mm.", "mmm", ".mm"])}
+                "tassel": bottom_padded(tassel), "brown_tassel": bottom_padded(recolour(tassel, {"i": "h", "j": "i"})),
+                "husk": husk, "silk": padded(["kk.", "kkk", ".kk"]), "brown_silk": padded(["mm.", "mmm", ".mm"])}
 
-    def plant(height, leaves, length, tassel=None, cobs=None, old=0):
+    def cob(heading, y, silk):
+        # A husked cob leaning out from the stalk, tapering to its tuft of silk.
+        rotation = {"origin": [8, y, 8], "x": -20, "y": heading, "z": 0}
+        return [solid((6.5, y, 4), (9.5, y + 5, 7), "husk", rotation=rotation),
+                solid((7, y + 5, 4.5), (9, y + 7, 6.5), "husk", top=silk, rotation=rotation),
+                solid((7.5, y + 7, 5), (8.5, y + 8.5, 6), silk, rotation=rotation)]
+
+    def plant(height, leaves, length, tassel=None, cobs=(), silk="silk", old=0):
         parts = column(8, 8, GROUND, GROUND + height, "stalk")
         for k in range(leaves):
-            y = GROUND + 2 + k * (height - 3) / max(1, leaves)
+            y = GROUND + 2 + k * (height - 4) / max(1, leaves)
             name = "old_leaf" if k < old else "leaf"
             parts += arching_leaf(name, 3, k * 180 + k * 23, y, length // 2, length - length // 2)
         if tassel:
             for i, turn in enumerate((0, 60, 120)):
                 parts += tuft(tassel, (5, 6), (8, 8), turn, 8 if i % 2 else -8, ground=GROUND + height)
-        for heading, y, side, top in cobs or ():
-            parts.append(solid((6.5, y, 4), (9.5, y + 7, 7), side, top=top,
-                               rotation={"origin": [8, y, 8], "x": -18, "y": heading, "z": 0}))
+        for heading, y in cobs:
+            parts += cob(heading, GROUND + y, silk)
         return parts
+    # Up to its fourth stage corn stays within its block; from then on it is two blocks tall, its tassel near the top.
     stages = [
-        plant(2, 3, 6), plant(4, 4, 8), plant(8, 5, 10), plant(12, 6, 12), plant(18, 7, 13),
-        plant(24, 8, 13, tassel="tassel"),
-        plant(24, 8, 13, tassel="tassel", cobs=[(40, GROUND + 9, "husk", "silk"), (220, GROUND + 12, "husk", "silk")]),
-        plant(24, 8, 13, tassel="brown_tassel", old=2,
-              cobs=[(40, GROUND + 9, "dry_husk", "dry_silk"), (220, GROUND + 12, "dry_husk", "dry_silk")]),
+        plant(2, 3, 6), plant(4, 4, 8), plant(8, 5, 10), plant(12, 6, 12), plant(20, 8, 14),
+        plant(25, 10, 16, tassel="tassel"),
+        plant(25, 10, 16, tassel="tassel", cobs=[(40, 11), (220, 14)]),
+        plant(25, 10, 16, tassel="brown_tassel", cobs=[(40, 11), (220, 14)], silk="brown_silk", old=2),
     ]
     build("corn", CORN, textures, stages, "leaf")
 
@@ -717,7 +752,7 @@ def corn():
 # White grape: a cutting, a young vine, then a woody vine trained along the trellis rails with big lobed leaves,
 # setting small green bunches that swell and ripen golden green.
 
-GRAPE = {"a": "#1e4a24", "b": "#2c6630", "c": "#40823c", "d": "#5c9e48", "e": "#86c060",
+GRAPE = {"a": "#1e4a24", "b": "#2c6630", "c": "#40823c", "d": "#5c9e48", "e": "#86c060", "f": "#acd884",
          "h": "#4a2e16", "i": "#6e4826", "j": "#94683a",
          "P": "#e8f0a0", "Q": "#c8d870", "R": "#9aae48", "G": "#a8c860", "K": "#7a9a3a", "L": "#5e7e2c"}
 GRAPE_VINE = [
@@ -740,6 +775,27 @@ GRAPE_VINE = [
 ]
 
 
+# Grape leaves are broad, five-lobed and toothed; the canopy is stamped from them in two shades, with gaps.
+GRAPE_LEAF = ["d.d.d", "dcdcd", "cdedc", ".cec.", "..b.."]
+GRAPE_CANOPY = [(0, 0, 1), (5, 1, 0), (10, 0, 1), (2, 4, 0), (7, 5, 1), (11, 4, 0), (0, 8, 1), (5, 9, 0), (10, 9, 1),
+                (3, 12, 1), (8, 12, 0), (12, 13, 1), (-2, 13, 0)]
+GRAPE_CANOPY_FOOT = [(0, 0, 0), (5, 0, 1), (10, 1, 0), (2, 2, 1), (12, 2, 1), (7, 3, 0)]
+
+
+def stamped(stamps, cane_row=None):
+    """A grid of grape leaves stamped at (x, y), each lighter or not, and a woody cane along one row if asked."""
+    grid = [["."] * 16 for _ in range(16)]
+    if cane_row is not None:
+        grid[cane_row] = list("iiiijiiiiijiiiii")
+    for x0, y0, light in stamps:
+        for dy, row in enumerate(GRAPE_LEAF):
+            for dx, ch in enumerate(row):
+                x, y = x0 + dx, y0 + dy
+                if ch != "." and 0 <= x < 16 and 0 <= y < 16:
+                    grid[y][x] = STEP_LIGHTER[ch] if light else ch
+    return ["".join(r) for r in grid]
+
+
 def grape():
     young = ["." * 16] * 6 + [
         "......dd........",
@@ -755,7 +811,9 @@ def grape():
     ]
     cutting = ["." * 16] * 11 + ["......dd........", ".....dcec.......", ".....cdec.......", "......cbi.......", ".......hi......."]
     textures = {"cutting": cutting, "young": young, "vine": GRAPE_VINE, "stalk": stalk_strip(["iijiiiijiiijiiij"]),
-                "ripe": padded(["PQ", "QR"]), "green": padded(["GK", "KL"])}
+                "ripe": padded(["PQ", "QR"]), "green": padded(["GK", "KL"]),
+                "trunk": stalk_strip(["hihihhihhihihhih", "iijiiijiiijiiiji"]),
+                "canopy": stamped(GRAPE_CANOPY), "canopy_foot": stamped(GRAPE_CANOPY_FOOT, cane_row=5)}
 
     def on_trellis(stage, bunches=()):
         parts = trellis_frame() + trellis_planes("#" + stage)
@@ -771,14 +829,27 @@ def grape():
         on_trellis("vine", [(4.5, front, 9.5, big, "ripe"), (11.5, front, 14.5, big, "ripe"), (8, front, 4.5, [2, 2, 1], "ripe"),
                             (6, back, 14.5, big, "ripe"), (11, back, 9.5, big, "ripe")]),
     ]
-    build("white_grape_vine", GRAPE, textures, stages, "vine", extra={"post": "minecraft:block/stripped_oak_log"})
+
+    def climbed(bunches=()):
+        # A woody trunk up the lower trellis to a canopy of leaves over the climbed one, bunches hanging beneath it.
+        parts = trellis_frame() + column(8, 8, 0, 15, "trunk") + trellis_planes("#canopy_foot") + trellis_planes("#canopy", 16)
+        for b in bunches:
+            parts += bunch(*b)
+        return parts
+    tall = {
+        4: climbed(), 5: climbed(),
+        6: climbed([(5, front, 17, [2, 2, 2, 1], "green"), (11, front, 16, [2, 2, 1], "green"), (8, back, 17, [2, 2, 2, 1], "green")]),
+        7: climbed([(4.5, front, 17, big, "ripe"), (11.5, front, 16, [3, 3, 2, 2, 1], "ripe"), (8, front, 19, [3, 3, 3, 2, 1], "ripe"),
+                    (6, back, 17, big, "ripe"), (11, back, 18, [3, 3, 2, 2, 1], "ripe")]),
+    }
+    build("white_grape_vine", GRAPE, textures, stages, "vine", extra={"post": "minecraft:block/stripped_oak_log"}, tall=tall)
 
 
 # Rice: a clump of grassy shoots rising out of standing water, then green heads that droop as they fill and ripen
 # gold. The block holds the water, so the plant grows up from its bottom and only shows above the surface.
 
 RICE = {"a": "#24502a", "b": "#346c30", "c": "#4a8a3a", "d": "#68a648", "e": "#92c464", "f": "#c0dc8c",
-        "h": "#9a7a30", "i": "#c8a448", "j": "#e4c868"}
+        "h": "#9a7a30", "i": "#c8a448", "j": "#e4c868", "g": "#a8b848", "k": "#7e9a38"}
 RICE_SPOTS = [(8, 8), (6.5, 6.5), (9.5, 6.5), (6.5, 9.5), (9.5, 9.5), (8, 5.5), (5.5, 8), (10.5, 8), (8, 10.5)]
 RICE_TURNS = [0, 40, 80, 120, 160, 20, 60, 100, 140]
 RICE_LEANS = [0, -10, 9, -8, 10, -6, 7, -9, 8]
@@ -790,7 +861,7 @@ RICE_HEADING = ["..ff.", ".f..f", "....f", "..e.f", ".e.d.", "e.d.d", ".dcd.", "
 
 def rice():
     textures = {"blades": bottom_padded(RICE_BLADES), "heading": bottom_padded(RICE_HEADING),
-                "ripe": bottom_padded(recolour(RICE_HEADING, {"f": "j", "e": "i", "d": "d"})),
+                "ripe": bottom_padded(recolour(RICE_HEADING, {"f": "j", "e": "i", "d": "g", "c": "k"})),
                 "stems": bottom_padded([".c.c."] * 16)}
 
     def clump(texture, count, top):
@@ -840,12 +911,12 @@ def rhubarb():
     stages = [
         buds(3) + leaves("small_leaf", (6, 6), 1, 2, 15, tilt=40),
         buds(2) + leaves("small_leaf", (6, 6), 3, 3, 20, tilt=35),
-        leaves("leaf", (8, 7), 4, 5, 22, tilt=30),
-        leaves("leaf", (8, 7), 5, 6, 22, turn=30, tilt=25),
-        leaves("big_leaf", (10, 9), 5, 7, 22),
-        leaves("big_leaf", (10, 9), 6, 8, 22, turn=20),
-        leaves("big_leaf", (10, 9), 6, 9, 22, turn=10, tilt=18) + buds(2),
-        leaves("big_leaf", (10, 9), 7, 9, 22, turn=25, tilt=18),
+        leaves("leaf", (8, 7), 4, 6, 15, tilt=35),
+        leaves("leaf", (8, 7), 5, 7, 15, turn=30, tilt=32),
+        leaves("big_leaf", (10, 9), 4, 9, 14, tilt=32),
+        leaves("big_leaf", (10, 9), 5, 10, 14, turn=20, tilt=30),
+        leaves("big_leaf", (10, 9), 5, 11, 14, turn=10, tilt=28) + buds(2),
+        leaves("big_leaf", (10, 9), 6, 12, 14, turn=25, tilt=28),
     ]
     build("rhubarb", RHUBARB, textures, stages, "big_leaf")
 
@@ -853,7 +924,7 @@ def rhubarb():
 # Dill: feathery blue-green fronds, then a tall stem carrying flat umbrellas of tiny yellow flowers that turn to brown
 # seed heads.
 
-DILL = {"a": "#2a4e3a", "b": "#3a6a4c", "c": "#4a7e58", "d": "#5e946a", "e": "#78aa80", "f": "#a8c890",
+DILL = {"a": "#2e5232", "b": "#3e6e3e", "c": "#548a48", "d": "#6ea458", "e": "#94c070", "f": "#bcd890",
         "Y": "#e8d040", "Z": "#c0a020", "h": "#7a5a2e", "i": "#a8844a"}
 DILL_FROND = ["...e...", "e..d..e", ".e.d.e.", "..ede..", "e..d..e", ".e.d.e.", "..ede..", "e..d..e", ".e.d.e.", "...d..."]
 DILL_SMALL = ["..e..", "e.d.e", ".ede.", "e.d.e", ".ede.", "..d.."]
@@ -885,13 +956,23 @@ def dill():
         return ((stem if isinstance(stem, list) else [stem]) + tuft(kind + "rays", (7, 3), (x, z), 20, 0, ground=top)
                 + [{"from": [x - 3.5, top + 3, z - 3.5], "to": [x + 3.5, top + 3, z + 3.5], "shade": False,
                     "faces": {"up": face, "down": face}}])
+    def fronds_up(texture, levels):
+        # Feathery fronds along the stems as well as at their feet, so the tall plant stays airy all the way up.
+        parts = []
+        for k, y in enumerate(levels):
+            spot = DILL_SPOTS[(k * 2 + 1) % len(DILL_SPOTS)]
+            parts += tuft(texture, (7, 10), spot, 30 + k * 70, (-1) ** k * 15, ground=GROUND + y)
+        return parts
     stages = [
         fronds("small_frond", (5, 6), 2), fronds("small_frond", (5, 6), 4), fronds("frond", (7, 10), 4),
         fronds("frond", (7, 10), 6),
-        fronds("frond", (7, 10), 6) + umbel(8, 8, 14, "bud_"),
-        fronds("frond", (7, 10), 6) + umbel(8, 8, 17) + umbel(10, 7, 13, "bud_"),
-        fronds("frond", (7, 10), 6) + umbel(8, 8, 19) + umbel(10, 7, 15) + umbel(6, 9.5, 12, "bud_"),
-        fronds("old_frond", (7, 10), 5) + umbel(8, 8, 19, "seed_") + umbel(10, 7, 15, "seed_") + umbel(6, 9.5, 12, "seed_"),
+        # From its fifth stage dill is two blocks tall: stems with fronds up them, crowned with flower umbrellas.
+        fronds("frond", (7, 10), 6) + fronds_up("frond", [7]) + umbel(8, 8, 20, "bud_"),
+        fronds("frond", (7, 10), 6) + fronds_up("frond", [7, 13]) + umbel(8, 8, 25) + umbel(10, 7, 19, "bud_"),
+        fronds("frond", (7, 10), 6) + fronds_up("frond", [7, 13, 17]) + umbel(8, 8, 28) + umbel(10, 7, 23) + umbel(6, 9.5, 19)
+        + umbel(9.5, 10, 26, "bud_"),
+        fronds("old_frond", (7, 10), 5) + fronds_up("old_frond", [7, 13]) + umbel(8, 8, 28, "seed_") + umbel(10, 7, 23, "seed_")
+        + umbel(6, 9.5, 19, "seed_") + umbel(9.5, 10, 26, "seed_"),
     ]
     build("dill", DILL, textures, stages, "frond")
 
