@@ -984,60 +984,142 @@ def dill():
     build("dill", DILL, textures, stages, "frond")
 
 
-# Plum: fruit-tree leaves. A leaf block of small oval leaves with gaps between them, sprigs breaking its outline;
-# white blossom, then dusky purple plums hanging beneath it and from its sides.
+# Fruit-tree leaves, made like Minecraft's: a plain leaf cube of small, dense clumps of leaves in a few greens, with
+# holes, nothing sticking out of it. Blossom is drawn into the leaves, as on flowering azalea leaves, and the fruit too,
+# as on a sweet berry bush, with a few fruit also hanging below the leaves where you see them from under the canopy.
 
-PLUM = {"a": "#1a361c", "b": "#284c26", "c": "#3a6632", "d": "#528240", "e": "#72a252",
+PLUM = {"a": "#1a361c", "b": "#284c26", "c": "#3a6632", "d": "#528240", "e": "#6c9c4c",
         "P": "#341640", "Q": "#552866", "R": "#784290", "S": "#a684bc", "k": "#5a4020",
         "W": "#fff4f8", "V": "#f2c8da", "Y": "#f0d060"}
-LEAF_STAMPS = [["..de", ".dcd", "dcb.", "cb.."], ["ed..", "dcd.", ".bcd", "..bc"]]
 
 
-def leaf_block(flowers=False):
-    """A leaf-block face: dark foliage with a few gaps, overlaid with small oval leaves lit at their tips."""
-    grid = [["." if (x * 7 + y * 13) % 9 == 0 else "b" if (x + y) % 3 else "a" for x in range(16)] for y in range(16)]
-    k = 0
-    for y0 in range(-1, 16, 4):
-        for x0 in range(-1 + (y0 // 4) % 2 * 2, 16, 4):
-            for dy, row in enumerate(LEAF_STAMPS[k % 2]):
-                for dx, ch in enumerate(row):
-                    if ch != "." and 0 <= x0 + dx < 16 and 0 <= y0 + dy < 16:
-                        grid[y0 + dy][x0 + dx] = ch
-            k += 1
-    if flowers:
-        for x0, y0 in [(1, 1), (9, 2), (5, 6), (12, 8), (2, 11), (8, 12), (13, 13)]:
-            for dx, dy, ch in ((1, 0, "W"), (0, 1, "W"), (1, 1, "Y"), (2, 1, "W"), (1, 2, "V")):
-                if x0 + dx < 16 and y0 + dy < 16:
+def noise(x, y, seed=0):
+    """A fixed pseudo-random number in [0, 1) for a pixel, so textures come out the same every run."""
+    n = (x * 73856093) ^ (y * 19349663) ^ (seed * 83492791)
+    n = (n ^ (n >> 13)) * 1274126177
+    return ((n ^ (n >> 16)) & 0xFFFF) / 65536
+
+
+def vanilla_leaves(seed=0, holes=0.17):
+    """A leaf-cube face in the manner of Minecraft's leaves: two-by-two clumps of leaf in a few greens, each lit on its
+    upper left and shaded on its lower right, with a scattering of holes."""
+    grid = []
+    for y in range(16):
+        row = ""
+        for x in range(16):
+            if noise(x, y, seed) < holes:
+                row += "."
+                continue
+            clump = noise(x // 2 + (y // 2) % 2, y // 2, seed + 1)
+            tone = "b" if clump < 0.3 else "c" if clump < 0.7 else "d"
+            if x % 2 == 0 and y % 2 == 0 and tone != "b":
+                tone = {"c": "d", "d": "e"}[tone]
+            elif x % 2 == 1 and y % 2 == 1:
+                tone = {"b": "a", "c": "b", "d": "c"}[tone]
+            row += tone
+        grid.append(row)
+    return grid
+
+
+def stamp(grid, shape, spots):
+    """Draws a small shape onto a grid at each spot, its '.' pixels left as they are."""
+    grid = [list(r) for r in grid]
+    for x0, y0 in spots:
+        for dy, row in enumerate(shape):
+            for dx, ch in enumerate(row):
+                if ch != "." and 0 <= x0 + dx < 16 and 0 <= y0 + dy < 16:
                     grid[y0 + dy][x0 + dx] = ch
     return ["".join(r) for r in grid]
 
 
+PLUM_FLOWER = [".W.", "WYW", ".V."]
+PLUM_FRUIT = [".k.", "QRQ", "QSQ", ".P."]
+BLOSSOM_SPOTS = [(1, 1), (9, 2), (5, 6), (12, 8), (2, 11), (8, 12), (13, 13)]
+FRUIT_SPOTS_ON_LEAVES = [(2, 1), (10, 3), (6, 8), (12, 10), (1, 11)]
+
+
 def plum():
-    textures = {"leaves": leaf_block(), "blossom": leaf_block(flowers=True),
-                "sprig": bottom_padded(["d.e.d", ".dcd.", "e.c.e", ".bcb."]),
-                "blossom_sprig": bottom_padded(["W.V.W", ".dcd.", "e.c.W", ".bcb."]),
-                "plum_side": shaded_side("PQRS", 4, light_columns=(6, 7)), "plum_top": ["".join("k" if 7 <= x <= 8 and 7 <= y <= 8 else "Q" for x in range(16)) for y in range(16)],
+    leaves = vanilla_leaves(seed=3)
+    textures = {"leaves": leaves, "blossom": stamp(leaves, PLUM_FLOWER, BLOSSOM_SPOTS),
+                "fruiting": stamp(leaves, PLUM_FRUIT, FRUIT_SPOTS_ON_LEAVES),
+                "plum_side": shaded_side("PQRS", 4, light_columns=(6, 7)),
+                "plum_top": ["".join("k" if 7 <= x <= 8 and 7 <= y <= 8 else "Q" for x in range(16)) for y in range(16)],
                 "stalk": stalk_strip(["kkkkkkkkkkkkkkkk"])}
 
-    def block(face, sprig):
-        cube = {"from": [0, 0, 0], "to": [16, 16, 16],
-                "faces": {d: {"uv": [0, 0, 16, 16], "texture": "#" + face, "cullface": d} for d in ("north", "south", "east", "west", "up", "down")}}
-        # Sprigs of leaves breaking the cube's outline on top and at its upper edges.
-        sprigs = []
-        for i, (x, z) in enumerate([(4, 4), (11, 5), (7, 10), (12, 12), (3, 12)]):
-            sprigs += tuft(sprig, (5, 4), (x, z), i * 37, (-1) ** i * 20, ground=15)
-        return [cube] + sprigs
+    def cube(face):
+        return [{"from": [0, 0, 0], "to": [16, 16, 16],
+                 "faces": {d: {"uv": [0, 0, 16, 16], "texture": "#" + face, "cullface": d}
+                           for d in ("north", "south", "east", "west", "up", "down")}}]
 
-    def plum_at(x, y, z):
-        return ball(4, 4, "plum_side", "plum_top", ground=y, centre=(x, z)) + [rod(x, z, y + 4, y + 5, "stalk")]
-    hanging = [(4, -4.5, 4), (11, -5, 6), (7, -4.5, 11), (12, -4.5, 12), (3.5, -5, 9.5)]
-    sides = [(5, 3, 17), (11, 7, 17), (9, 4, -1), (-1, 5, 8), (17, 2, 5)]
-    stages = [
-        block("leaves", "sprig"),
-        block("blossom", "blossom_sprig"),
-        block("leaves", "sprig") + [p for x, y, z in hanging + [(sx, sy, sz) for sx, sy, sz in sides] for p in plum_at(x, y, z)],
-    ]
+    def hanging(x, z, drop):
+        # A plum on a short stalk below the leaves, as fruit hangs under a canopy.
+        return ball(4, 4, "plum_side", "plum_top", ground=-drop - 4, centre=(x, z)) + [rod(x, z, -drop, 0, "stalk")]
+    under = [(4, 4, 1), (11, 6, 2), (7, 11, 1), (12, 12, 1.5)]
+    stages = [cube("leaves"), cube("blossom"), cube("fruiting") + [p for x, z, d in under for p in hanging(x, z, d)]]
     build("plum_leaves", PLUM, textures, stages, "leaves")
+
+
+# Redcurrant, made like Minecraft's azalea: a leafy box on woody stems, its sides' leaves hanging ragged over the edge,
+# growing from a twiggy cutting to a full bush that flowers, then hangs strings of red currants round its foot.
+
+CURRANT = {"a": "#1c3a1e", "b": "#2a5428", "c": "#3c6e36", "d": "#548a44", "e": "#70a656",
+           "h": "#4a3420", "i": "#6a4e30", "j": "#8a6a44", "G": "#c8d080", "R": "#7a1020", "S": "#c42234", "T": "#ee5a64"}
+
+
+def ragged_side(seed):
+    """The side of a leafy bush box: leaves, the bottom rows more and more broken, so the leaves hang over the edge."""
+    grid = [list(r) for r in vanilla_leaves(seed=seed, holes=0.12)]
+    for y in range(11, 16):
+        for x in range(16):
+            if noise(x, y, seed + 7) < (y - 10) / 6:
+                grid[y][x] = "."
+    return ["".join(r) for r in grid]
+
+
+def redcurrant():
+    twigs = bottom_padded(["j.i.j", ".i.i.", "..h..", ".h.h.", "..h..", "..h..", ".h...", "..h..", "..h.."])
+    side = ragged_side(5)
+    flowers = stamp(side, ["G"], [(3, 6), (11, 4), (7, 9), (13, 10), (1, 9)])
+    berries = stamp(side, ["T", "S"], [(2, 7), (10, 5), (6, 10), (13, 9), (4, 2), (12, 12)])
+    textures = {"top": vanilla_leaves(seed=6), "side": side, "flowering_side": flowers, "fruiting_side": berries,
+                "twigs": twigs, "berry": padded(["TS", "SR"]), "stalk": stalk_strip(["iiiiiiiiiiiiiiii"])}
+
+    def stems(height):
+        parts = []
+        for i, (x, z) in enumerate([(8, 8), (6, 9), (10, 7)]):
+            parts += tuft("twigs", (5, min(9, height)), (x, z), i * 60, (-1) ** i * 10, ground=GRASS)
+        return parts
+
+    def box(lo, hi, top, depth, side):
+        # A leafy top and four sides hanging from it, each side seen from inside the bush too.
+        face_top = {"uv": [lo, lo, hi, hi], "texture": "#top"}
+        uv = [0, 16 - depth, hi - lo, 16]
+        flipped = [hi - lo, 16 - depth, 0, 16]
+        y0 = top - depth
+        return [
+            {"from": [lo, top, lo], "to": [hi, top, hi], "faces": {"up": face_top, "down": face_top}},
+            {"from": [lo, y0, lo], "to": [hi, top, lo + 0.01], "faces": {"north": {"uv": uv, "texture": "#" + side}, "south": {"uv": flipped, "texture": "#" + side}}},
+            {"from": [lo, y0, hi - 0.01], "to": [hi, top, hi], "faces": {"south": {"uv": uv, "texture": "#" + side}, "north": {"uv": flipped, "texture": "#" + side}}},
+            {"from": [lo, y0, lo], "to": [lo + 0.01, top, hi], "faces": {"west": {"uv": uv, "texture": "#" + side}, "east": {"uv": flipped, "texture": "#" + side}}},
+            {"from": [hi - 0.01, y0, lo], "to": [hi, top, hi], "faces": {"east": {"uv": uv, "texture": "#" + side}, "west": {"uv": flipped, "texture": "#" + side}}},
+        ]
+
+    def strings():
+        # Strings of currants hanging from under the leaves round the bush's edge.
+        parts = []
+        for x, z in [(2, 5), (5, 14.5), (11, 1.5), (14.5, 10), (8, 14.5), (1.5, 11)]:
+            parts.append(rod(x, z, 6, 9, "stalk"))
+            for k in range(4):
+                bx, by = x + (0.4 if k % 2 else -0.4), 8 - 1.3 * (k + 1)
+                parts.append(solid((bx - 0.6, by, z - 0.6), (bx + 0.6, by + 1.2, z + 0.6), "berry"))
+        return parts
+    stages = [
+        stems(6) + box(5, 11, 7, 3, "side"),
+        stems(8) + box(3, 13, 10, 6, "side"),
+        stems(9) + box(1, 15, 13, 9, "flowering_side"),
+        stems(9) + box(0, 16, 14, 10, "fruiting_side") + strings(),
+    ]
+    build("redcurrant_bush", CURRANT, textures, stages, "top")
 
 
 # Raspberry: a bush of arching, reddish canes with toothed leaves along them, white flowers, then red berries hanging
@@ -1208,6 +1290,7 @@ def main():
     asparagus()
     wakame()
     white_bean()
+    redcurrant()
 
 
 if __name__ == "__main__":
