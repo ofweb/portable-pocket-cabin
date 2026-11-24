@@ -259,17 +259,17 @@ public final class CabinPlantGameTest {
 	@GameTest
 	public void plumSaplingsGrowTreesThatFruitAgain(GameTestHelper helper) {
 		var level = helper.getLevel();
-		var base = new BlockPos(4, 2, 4);
-		helper.setBlock(base.below(), Blocks.GRASS_BLOCK);
 		var sapling = (net.minecraft.world.level.block.SaplingBlock) ((net.minecraft.world.item.BlockItem) CookingPlants.item("plum_sapling")).getBlock();
-		helper.setBlock(base, sapling);
-		var pos = helper.absolutePos(base);
+		// A plum tree is bigger than the test area, so it grows in open air high above it.
+		var pos = helper.absolutePos(new BlockPos(4, 2, 4)).above(CabinGrowEveryFoodGameTest.TREE_LIFT);
+		level.setBlockAndUpdate(pos.below(), Blocks.GRASS_BLOCK.defaultBlockState());
+		level.setBlockAndUpdate(pos, sapling.defaultBlockState());
 		for (int i = 0; i < 10 && level.getBlockState(pos).is(sapling); i++) {
 			sapling.advanceTree(level, pos, level.getBlockState(pos), RandomSource.create(i));
 		}
 		helper.assertTrue(level.getBlockState(pos).is(Blocks.OAK_LOG), "A plum sapling grows an oak-wood trunk");
 		BlockPos leaves = null;
-		for (BlockPos near : BlockPos.betweenClosed(pos.offset(-3, 1, -3), pos.offset(3, 7, 3))) {
+		for (BlockPos near : BlockPos.betweenClosed(pos.offset(-6, 1, -6), pos.offset(6, 12, 6))) {
 			if (level.getBlockState(near).is(CookingPlants.PLUM_LEAVES)) {
 				leaves = near.immutable();
 				break;
@@ -291,6 +291,7 @@ public final class CabinPlantGameTest {
 		helper.assertTrue(CabinGreenhouseGrowth.canProgress(CookingPlants.PLUM_LEAVES.defaultBlockState())
 			&& !CabinGreenhouseGrowth.canProgress(CookingPlants.PLUM_LEAVES.defaultBlockState().setValue(FruitingLeavesBlock.AGE, 2)),
 			"The greenhouse brings fruit trees into fruit, and stops there");
+		CabinGrowEveryFoodGameTest.clearTree(level, pos);
 		helper.succeed();
 	}
 
