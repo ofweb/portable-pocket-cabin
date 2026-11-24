@@ -105,7 +105,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "portable_pocket_cabin:green_olive"
+          "name": "portable_pocket_cabin:green_olive",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
         }
       ]
     },
@@ -152,7 +162,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "portable_pocket_cabin:black_olive"
+          "name": "portable_pocket_cabin:black_olive",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
         }
       ]
     }

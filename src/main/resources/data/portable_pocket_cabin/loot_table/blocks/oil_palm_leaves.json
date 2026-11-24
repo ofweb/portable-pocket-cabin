@@ -105,7 +105,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "portable_pocket_cabin:oil_palm_fruit"
+          "name": "portable_pocket_cabin:oil_palm_fruit",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
         }
       ]
     }

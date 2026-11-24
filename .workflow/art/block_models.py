@@ -1101,13 +1101,25 @@ def fruit_tree(tree, tint, flower, fruits, hanging=None, seed=1):
     def hang(x, z, drop):
         size = hanging[0]
         return ball(size, size, "fruit_side", "fruit_top", ground=-drop - size, centre=(x, z)) + [rod(x, z, -drop, 0, "stalk")]
-    stages = [cube("leaves"), cube("blossom")]
-    for i in range(len(fruits)):
-        parts = cube(f"fruiting{i}")
-        if hanging and i == len(fruits) - 1:
-            parts += [p for x, z, d in [(4, 4, 1), (11, 6, 2), (7, 11, 1), (12, 12, 1.5)] for p in hang(x, z, d)]
-        stages.append(parts)
+    stages = [cube("leaves"), cube("blossom")] + [cube(f"fruiting{i}") for i in range(len(fruits))]
     build(f"{tree}_leaves", palette, textures, stages, "leaves")
+    if hanging:
+        # Most fruiting leaf blocks hang no fruit below them and a few hang one or two, picked per block by Minecraft's
+        # weighted random models, so a canopy is dotted with fruit rather than lined with it.
+        last = len(stages) - 1
+        few = {"one": [(5, 6, 1)], "two": [(4, 5, 1), (11, 10, 2)]}
+        for name, spots in few.items():
+            elements = cube(f"fruiting{last - 2}") + [p for x, z, d in spots for p in hang(x, z, d)]
+            used = {"particle": f"{tree}_leaves_leaves", f"fruiting{last - 2}": f"{tree}_leaves_fruiting{last - 2}",
+                    "fruit_side": f"{tree}_leaves_fruit_side", "fruit_top": f"{tree}_leaves_fruit_top", "stalk": f"{tree}_leaves_stalk"}
+            write_model(f"{tree}_leaves_stage{last}_{name}", built_model(used, elements))
+        variants = {f"age={age}": {"model": NS + f"{tree}_leaves_stage{age}"} for age in range(last)}
+        variants[f"age={last}"] = [{"model": NS + f"{tree}_leaves_stage{last}", "weight": 6},
+                                   {"model": NS + f"{tree}_leaves_stage{last}_one", "weight": 3},
+                                   {"model": NS + f"{tree}_leaves_stage{last}_two", "weight": 1}]
+        with open(f"{A}/blockstates/{tree}_leaves.json", "w") as f:
+            json.dump({"variants": variants}, f, indent=2)
+            f.write("\n")
 
 
 # Flowers: five white petals round a yellow eye, pink-flushed for apple; small cream tufts for olive.

@@ -205,6 +205,28 @@ public final class CabinPlantGameTest {
 	}
 
 	@GameTest
+	public void brokenFruitingLeavesDropTheirFruit(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var pos = helper.absolutePos(BASE);
+		var leaves = CookingPlants.PLUM_LEAVES.defaultBlockState().setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
+		helper.setBlock(BASE, leaves.setValue(FruitingLeavesBlock.AGE, FruitingLeavesBlock.FRUITING));
+		int most = 0;
+		for (int i = 0; i < 40; i++) {
+			var drops = Block.getDrops(level.getBlockState(pos), level, pos, null);
+			int plums = count(drops, CookingPlants.PLUM);
+			helper.assertTrue(plums >= 1 && plums <= 2, "Breaking or decaying fruiting plum leaves drops one or two plums, as picking does");
+			most = Math.max(most, plums);
+		}
+		helper.assertTrue(most == 2, "Sometimes two");
+		var shears = new ItemStack(net.minecraft.world.item.Items.SHEARS);
+		var sheared = Block.getDrops(level.getBlockState(pos), level, pos, null, null, shears);
+		helper.assertTrue(has(sheared, CookingPlants.PLUM_LEAVES.asItem()) && !has(sheared, CookingPlants.PLUM), "Shears take the leaves, not the fruit");
+		helper.setBlock(BASE, leaves.setValue(FruitingLeavesBlock.AGE, 1));
+		helper.assertTrue(!has(Block.getDrops(level.getBlockState(pos), level, pos, null), CookingPlants.PLUM), "Leaves in blossom drop no fruit");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void bushesRegrowAndElderGivesTwoHarvests(GameTestHelper helper) {
 		var level = helper.getLevel();
 		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
