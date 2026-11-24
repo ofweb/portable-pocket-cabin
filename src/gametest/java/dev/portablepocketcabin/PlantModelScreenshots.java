@@ -40,10 +40,26 @@ final class PlantModelScreenshots {
 					server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "weather clear");
 					if (origin[0] == null) origin[0] = player.blockPosition().offset(0, 30, 0);
 					BlockPos base = origin[0];
-					for (int x = -12; x <= 12; x++) for (int z = -4; z <= 4; z++) {
+					// Rows of whole trees need a bigger pad, cleared higher, than a row of plants.
+					boolean trees = plant.startsWith("tree:");
+					int halfWidth = trees ? 30 : 12, halfDepth = trees ? 7 : 4, height = trees ? 18 : 12;
+					for (int x = -halfWidth; x <= halfWidth; x++) for (int z = -halfDepth; z <= halfDepth; z++) {
 						level.setBlockAndUpdate(base.offset(x, -2, z), Blocks.DIRT.defaultBlockState());
 						level.setBlockAndUpdate(base.offset(x, -1, z), Blocks.GRASS_BLOCK.defaultBlockState());
-						for (int y = 0; y < 12; y++) level.setBlockAndUpdate(base.offset(x, y, z), Blocks.AIR.defaultBlockState());
+						for (int y = 0; y < height; y++) level.setBlockAndUpdate(base.offset(x, y, z), Blocks.AIR.defaultBlockState());
+					}
+					// tree:<feature> grows five trees of a tree feature, vanilla's or ours, each from a different seed, since
+					// no two come out quite alike.
+					if (trees) {
+						var features = level.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.CONFIGURED_FEATURE);
+						var tree = features.getValue(net.minecraft.resources.Identifier.parse(plant.substring("tree:".length())));
+						for (int i = 0; i < 5; i++) {
+							tree.place(level, level.getChunkSource().getGenerator(), net.minecraft.util.RandomSource.create(1000 + i * 7919),
+								base.offset((i - 2) * 12, 0, 0));
+						}
+						server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "kill @e[type=item]");
+						player.teleportTo(level, base.getX() + .5, base.getY() + 5, base.getZ() + 30, Set.of(), 180, 4, false);
+						return;
 					}
 					// Minecraft's own bushes, for comparison: sweet berry bush through its stages, azalea, flowering azalea,
 					// bush, and firefly bush.
