@@ -25,11 +25,15 @@ import java.util.function.Supplier;
 
 /**
  * The leaves of a fruit tree. They flower (age 1), then bear fruit (age 2). Using fruiting leaves picks the fruit
- * without breaking the tree, and the leaves flower and fruit again. Leaves still decay like vanilla leaves. A species
+ * without breaking the tree, and the leaves flower and fruit again. Leaves still decay like vanilla leaves. Only one leaf
+ * block in {@link #BEARING_ONE_IN} flowers and fruits, picked by its position, so fruit is dotted through a crown and a
+ * tree gives a crop's worth rather than a basketful from every leaf. A species
  * with a later fruit, the olive, ripens one stage further: green olives at age 2, black olives at age 3.
  */
 class FruitingLeavesBlock extends UntintedParticleLeavesBlock implements CookingPlant {
 	static final int FRUITING = 2;
+	/** One leaf block in this many bears fruit: about 15 fruit a picking from an orchard tree of some 90 leaf blocks. */
+	static final int BEARING_ONE_IN = 8;
 	static final IntegerProperty AGE = BlockStateProperties.AGE_2;
 	private final Supplier<Item> fruit;
 	private final MapCodec<FruitingLeavesBlock> codec;
@@ -68,6 +72,11 @@ class FruitingLeavesBlock extends UntintedParticleLeavesBlock implements Cooking
 		builder.add(stage());
 	}
 
+	/** Whether the leaf block at a position is one of those that flower and fruit, the same blocks year after year. */
+	static boolean bears(BlockPos pos) {
+		return Math.floorMod(net.minecraft.util.Mth.getSeed(pos) >> 16, BEARING_ONE_IN) == 0;
+	}
+
 	Item fruit() {
 		return fruit.get();
 	}
@@ -81,7 +90,7 @@ class FruitingLeavesBlock extends UntintedParticleLeavesBlock implements Cooking
 	protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		super.randomTick(state, level, pos, random);
 		BlockState now = level.getBlockState(pos);
-		if (!now.is(this) || now.getValue(stage()) >= lastStage()) return;
+		if (!now.is(this) || now.getValue(stage()) >= lastStage() || !bears(pos)) return;
 		if (level.getRawBrightness(pos, 0) >= needs().light() && (!needs().shade() || PlantNeeds.roofed(level, pos))
 			&& random.nextFloat() < needs().growthChance(level, pos)) {
 			level.setBlock(pos, now.setValue(stage(), now.getValue(stage()) + 1), Block.UPDATE_CLIENTS);

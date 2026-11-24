@@ -176,6 +176,8 @@ final class CabinGreenhouseGrowth extends SavedData {
 	}
 
 	static boolean canProgress(ServerLevel level, BlockPos pos, BlockState state) {
+		// Fruit-tree leaves that never bear fruit do not keep catch-up going either.
+		if (state.getBlock() instanceof FruitingLeavesBlock && !FruitingLeavesBlock.bears(pos)) return false;
 		// A tall crop with no room above waits, so it does not keep catch-up going.
 		if (state.getBlock() instanceof FieldCropBlock crop && !crop.isMaxAge(state) && !crop.canGrowTo(level, pos, crop.getAge(state) + 1)) return false;
 		var id = BuiltInRegistries.BLOCK.getKey(state.getBlock());

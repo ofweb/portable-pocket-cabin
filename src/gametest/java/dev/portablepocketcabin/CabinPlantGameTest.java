@@ -220,9 +220,20 @@ public final class CabinPlantGameTest {
 		helper.assertTrue(most == 2, "Sometimes two");
 		var shears = new ItemStack(net.minecraft.world.item.Items.SHEARS);
 		var sheared = Block.getDrops(level.getBlockState(pos), level, pos, null, null, shears);
-		helper.assertTrue(has(sheared, CookingPlants.PLUM_LEAVES.asItem()) && !has(sheared, CookingPlants.PLUM), "Shears take the leaves, not the fruit");
+		helper.assertTrue(has(sheared, CookingPlants.PLUM_LEAVES.asItem()) && has(sheared, CookingPlants.PLUM), "Shears take the leaves and the fruit");
 		helper.setBlock(BASE, leaves.setValue(FruitingLeavesBlock.AGE, 1));
 		helper.assertTrue(!has(Block.getDrops(level.getBlockState(pos), level, pos, null), CookingPlants.PLUM), "Leaves in blossom drop no fruit");
+
+		// Only one leaf block in eight, the same ones each year, flowers and fruits.
+		int bearing = 0;
+		for (int x = 0; x < 40; x++) for (int z = 0; z < 40; z++) if (FruitingLeavesBlock.bears(new BlockPos(x, 70, z))) bearing++;
+		helper.assertTrue(bearing > 1600 / 8 * 0.7 && bearing < 1600 / 8 * 1.3, "About one leaf block in eight bears fruit, found " + bearing + " in 1600");
+		var barren = BlockPos.ZERO;
+		while (FruitingLeavesBlock.bears(helper.absolutePos(barren.offset(BASE)))) barren = barren.east();
+		helper.setBlock(BASE.offset(barren), leaves.setValue(FruitingLeavesBlock.AGE, 0));
+		tick(helper, BASE.offset(barren), 400);
+		helper.assertTrue(level.getBlockState(helper.absolutePos(BASE.offset(barren))).getValue(FruitingLeavesBlock.AGE) == 0,
+			"Leaves that do not bear stay green");
 		helper.succeed();
 	}
 
@@ -292,12 +303,12 @@ public final class CabinPlantGameTest {
 		helper.assertTrue(level.getBlockState(pos).is(Blocks.OAK_LOG), "A plum sapling grows an oak-wood trunk");
 		BlockPos leaves = null;
 		for (BlockPos near : BlockPos.betweenClosed(pos.offset(-6, 1, -6), pos.offset(6, 12, 6))) {
-			if (level.getBlockState(near).is(CookingPlants.PLUM_LEAVES)) {
+			if (level.getBlockState(near).is(CookingPlants.PLUM_LEAVES) && FruitingLeavesBlock.bears(near)) {
 				leaves = near.immutable();
 				break;
 			}
 		}
-		helper.assertTrue(leaves != null, "The tree has plum leaves");
+		helper.assertTrue(leaves != null, "The tree has plum leaves that bear fruit");
 		var random = RandomSource.create(7);
 		for (int i = 0; i < 200 && level.getBlockState(leaves).getValue(FruitingLeavesBlock.AGE) < FruitingLeavesBlock.FRUITING; i++) {
 			level.getBlockState(leaves).randomTick(level, leaves, random);

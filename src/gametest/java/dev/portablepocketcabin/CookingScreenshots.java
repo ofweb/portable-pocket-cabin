@@ -160,7 +160,7 @@ final class CookingScreenshots {
 			}
 			for (BlockPos near : BlockPos.betweenClosed(treePos.offset(-3, 1, -3), treePos.offset(3, 8, 3))) {
 				var state = level.getBlockState(near);
-				if (state.is(CookingPlants.PLUM_LEAVES)) level.setBlockAndUpdate(near, state.setValue(FruitingLeavesBlock.AGE, (near.getX() + near.getZ()) % 3 == 0 ? 1 : 2));
+				if (state.is(CookingPlants.PLUM_LEAVES) && FruitingLeavesBlock.bears(near)) level.setBlockAndUpdate(near, state.setValue(FruitingLeavesBlock.AGE, 2));
 			}
 			player.teleportTo(level, base.getX() + .5, base.getY(), base.getZ() + 10.5, java.util.Set.of(), 180, 25, false);
 		});

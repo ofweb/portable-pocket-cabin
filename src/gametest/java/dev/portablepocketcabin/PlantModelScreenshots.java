@@ -56,23 +56,24 @@ final class PlantModelScreenshots {
 						for (int i = 0; i < 5; i++) {
 							var trunk = base.offset((i - 2) * 12, 0, 0);
 							tree.place(level, level.getChunkSource().getGenerator(), net.minecraft.util.RandomSource.create(1000 + i * 7919), trunk);
-							// The five trees show their leaves' stages in turn: leaves, blossom, then fruit.
+							// The five trees show their leaves' stages in turn: leaves, blossom, then fruit, on the leaves that bear.
 							for (var pos : BlockPos.betweenClosed(trunk.offset(-7, 0, -7), trunk.offset(7, 16, 7))) {
 								var found = level.getBlockState(pos);
-								if (found.getBlock() instanceof FruitingLeavesBlock fruiting) {
+								if (found.getBlock() instanceof FruitingLeavesBlock fruiting && FruitingLeavesBlock.bears(pos)) {
 									var stage = fruiting.stage();
 									int last = stage.getPossibleValues().stream().mapToInt(Integer::intValue).max().orElse(0);
 									level.setBlock(pos, found.setValue(stage, Math.min(i, last)).setValue(LeavesBlock.PERSISTENT, true), Block.UPDATE_CLIENTS);
 								}
 							}
 							// Log each tree's height and width, to check what fits under a greenhouse roof.
-							int top = 0, minX = 99, maxX = -99;
+							int top = 0, minX = 99, maxX = -99, leafBlocks = 0;
 							for (var pos : BlockPos.betweenClosed(trunk.offset(-6, 0, -6), trunk.offset(6, 16, 6))) {
 								if (level.getBlockState(pos).isAir()) continue;
+								if (level.getBlockState(pos).getBlock() instanceof FruitingLeavesBlock) leafBlocks++;
 								top = Math.max(top, pos.getY() - trunk.getY() + 1);
 								minX = Math.min(minX, pos.getX()); maxX = Math.max(maxX, pos.getX());
 							}
-							System.out.println("TREE " + plant + " #" + i + " height " + top + " width " + (maxX - minX + 1));
+							System.out.println("TREE " + plant + " #" + i + " height " + top + " width " + (maxX - minX + 1) + " leaves " + leafBlocks);
 						}
 						server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "kill @e[type=item]");
 						player.teleportTo(level, base.getX() + .5, base.getY() + 5, base.getZ() + 30, Set.of(), 180, 4, false);
