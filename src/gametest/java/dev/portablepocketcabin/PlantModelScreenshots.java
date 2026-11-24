@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.FarmlandBlock;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.Set;
@@ -19,14 +20,17 @@ import java.util.Set;
  */
 final class PlantModelScreenshots {
 	/** Plants that sprawl past their own block, shown spaced out. */
-	private static final Set<String> WIDE = Set.of("courgette", "rhubarb");
+	private static final Set<String> WIDE = Set.of("courgette", "rhubarb", "plum_leaves");
 
 	private PlantModelScreenshots() {
 	}
 
 	static void capture(ClientGameTestContext context) {
-		String[] plants = System.getenv().getOrDefault("PPC_PLANTS", "cabbage,tomato_vine,barley,onion,red_onion,radish,courgette,strawberry_bush,corn,white_grape_vine,rice,rhubarb,dill").split(",");
+		String[] plants = System.getenv().getOrDefault("PPC_PLANTS", "cabbage,tomato_vine,barley,onion,red_onion,radish,courgette,strawberry_bush,corn,white_grape_vine,rice,rhubarb,dill,plum_leaves,raspberry_bush,asparagus,wakame_plant,white_bean").split(",");
 		try (TestSingleplayerContext world = context.worldBuilder().create()) {
+			// One pad for every plant, fixed above where the player first stands; taken afresh from the player each time,
+			// it would climb with the camera until it passed the top of the world.
+			BlockPos[] origin = new BlockPos[1];
 			for (String plant : plants) {
 				world.getServer().runOnServer(server -> {
 					var player = world.getConnection().getServerPlayer();
@@ -34,7 +38,8 @@ final class PlantModelScreenshots {
 					player.setGameMode(GameType.SPECTATOR);
 					server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "time set noon");
 					server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "weather clear");
-					BlockPos base = player.blockPosition().offset(0, 30, 0);
+					if (origin[0] == null) origin[0] = player.blockPosition().offset(0, 30, 0);
+					BlockPos base = origin[0];
 					for (int x = -9; x <= 9; x++) for (int z = -3; z <= 3; z++) {
 						level.setBlockAndUpdate(base.offset(x, -2, z), Blocks.DIRT.defaultBlockState());
 						level.setBlockAndUpdate(base.offset(x, -1, z), Blocks.GRASS_BLOCK.defaultBlockState());
@@ -44,8 +49,20 @@ final class PlantModelScreenshots {
 					var age = (IntegerProperty) block.getStateDefinition().getProperty("age");
 					int maxAge = age.getPossibleValues().stream().mapToInt(Integer::intValue).max().orElseThrow();
 					// One plant per growth stage, left to right: paddy crops standing in water on mud, walled in so the
-					// water stays put; other crops on watered farmland; the rest on the grass.
+					// water stays put; seaweed on sand under a block of water, walled in too; fruit-tree leaves on a log
+					// at head height; other crops on watered farmland; the rest on the grass.
 					boolean paddy = block instanceof PaddyCropBlock;
+					boolean sea = block instanceof SeaPlantBlock;
+					boolean leaves = block instanceof FruitingLeavesBlock;
+					if (sea) {
+						for (int x = -9; x <= 9; x++) for (int z = -2; z <= 2; z++) {
+							boolean pool = Math.abs(z) <= 1 && x >= -maxAge / 2 - 1 && x <= maxAge - maxAge / 2 + 1;
+							level.setBlockAndUpdate(base.offset(x, -1, z), (pool ? Blocks.SAND : Blocks.GRASS_BLOCK).defaultBlockState());
+							level.setBlockAndUpdate(base.offset(x, -2, z), Blocks.DIRT.defaultBlockState());
+							if (pool) level.setBlockAndUpdate(base.offset(x, 0, z), Blocks.WATER.defaultBlockState());
+							else if (Math.abs(z) <= 2) level.setBlockAndUpdate(base.offset(x, 0, z), Blocks.GRASS_BLOCK.defaultBlockState());
+						}
+					}
 					if (paddy) {
 						for (int x = -9; x <= 9; x++) for (int z = -1; z <= 1; z++) {
 							if (z != 0 || x < -maxAge / 2 || x > maxAge - maxAge / 2) level.setBlockAndUpdate(base.offset(x, 0, z), Blocks.GRASS_BLOCK.defaultBlockState());
@@ -61,6 +78,11 @@ final class PlantModelScreenshots {
 							level.setBlockAndUpdate(pos.below(), Blocks.FARMLAND.defaultBlockState().setValue(FarmlandBlock.MOISTURE, 7));
 						}
 						var state = block.defaultBlockState().setValue(age, stage);
+						if (leaves) {
+							level.setBlock(pos, Blocks.OAK_LOG.defaultBlockState(), Block.UPDATE_CLIENTS);
+							pos = pos.above();
+							state = state.setValue(LeavesBlock.PERSISTENT, true);
+						}
 						// Tall vines get a second trellis to climb, climbed from their tall stage on; tall crops their top.
 						if (block instanceof TrellisCropBlock vine && vine.tallFrom() >= 0) {
 							boolean tall = stage >= vine.tallFrom();
@@ -72,9 +94,12 @@ final class PlantModelScreenshots {
 						}
 						level.setBlock(pos, state, Block.UPDATE_CLIENTS);
 					}
+					// Clearing the last plant can drop its trellis; tidy away anything dropped.
+					server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "kill @e[type=item]");
 					// Plants two blocks tall are seen from further back and higher up, so their tops are in view.
-					boolean tall = block instanceof FieldCropBlock crop && crop.tallFrom() >= 0;
-					if (spacing > 1) player.teleportTo(level, base.getX() + 1.5, base.getY() + 2.4, base.getZ() + 5.0, Set.of(), 180, 24, false);
+					boolean tall = block instanceof FieldCropBlock crop && crop.tallFrom() >= 0 || leaves;
+					if (sea) player.teleportTo(level, base.getX() + .5, base.getY() + 1.4, base.getZ() + 3.2, Set.of(), 180, 38, false);
+					else if (spacing > 1) player.teleportTo(level, base.getX() + 1.5, base.getY() + 2.4, base.getZ() + 5.0, Set.of(), 180, 24, false);
 					else player.teleportTo(level, base.getX() + .5, base.getY() + (tall ? 2.1 : 1.5), base.getZ() + (tall ? 4.4 : 3.8), Set.of(), 180,
 						tall ? 16 : 24, false);
 				});

@@ -984,6 +984,211 @@ def dill():
     build("dill", DILL, textures, stages, "frond")
 
 
+# Plum: fruit-tree leaves. A leaf block of small oval leaves with gaps between them, sprigs breaking its outline;
+# white blossom, then dusky purple plums hanging beneath it and from its sides.
+
+PLUM = {"a": "#1a361c", "b": "#284c26", "c": "#3a6632", "d": "#528240", "e": "#72a252",
+        "P": "#341640", "Q": "#552866", "R": "#784290", "S": "#a684bc", "k": "#5a4020",
+        "W": "#fff4f8", "V": "#f2c8da", "Y": "#f0d060"}
+LEAF_STAMPS = [["..de", ".dcd", "dcb.", "cb.."], ["ed..", "dcd.", ".bcd", "..bc"]]
+
+
+def leaf_block(flowers=False):
+    """A leaf-block face: dark foliage with a few gaps, overlaid with small oval leaves lit at their tips."""
+    grid = [["." if (x * 7 + y * 13) % 9 == 0 else "b" if (x + y) % 3 else "a" for x in range(16)] for y in range(16)]
+    k = 0
+    for y0 in range(-1, 16, 4):
+        for x0 in range(-1 + (y0 // 4) % 2 * 2, 16, 4):
+            for dy, row in enumerate(LEAF_STAMPS[k % 2]):
+                for dx, ch in enumerate(row):
+                    if ch != "." and 0 <= x0 + dx < 16 and 0 <= y0 + dy < 16:
+                        grid[y0 + dy][x0 + dx] = ch
+            k += 1
+    if flowers:
+        for x0, y0 in [(1, 1), (9, 2), (5, 6), (12, 8), (2, 11), (8, 12), (13, 13)]:
+            for dx, dy, ch in ((1, 0, "W"), (0, 1, "W"), (1, 1, "Y"), (2, 1, "W"), (1, 2, "V")):
+                if x0 + dx < 16 and y0 + dy < 16:
+                    grid[y0 + dy][x0 + dx] = ch
+    return ["".join(r) for r in grid]
+
+
+def plum():
+    textures = {"leaves": leaf_block(), "blossom": leaf_block(flowers=True),
+                "sprig": bottom_padded(["d.e.d", ".dcd.", "e.c.e", ".bcb."]),
+                "blossom_sprig": bottom_padded(["W.V.W", ".dcd.", "e.c.W", ".bcb."]),
+                "plum_side": shaded_side("PQRS", 4, light_columns=(6, 7)), "plum_top": ["".join("k" if 7 <= x <= 8 and 7 <= y <= 8 else "Q" for x in range(16)) for y in range(16)],
+                "stalk": stalk_strip(["kkkkkkkkkkkkkkkk"])}
+
+    def block(face, sprig):
+        cube = {"from": [0, 0, 0], "to": [16, 16, 16],
+                "faces": {d: {"uv": [0, 0, 16, 16], "texture": "#" + face, "cullface": d} for d in ("north", "south", "east", "west", "up", "down")}}
+        # Sprigs of leaves breaking the cube's outline on top and at its upper edges.
+        sprigs = []
+        for i, (x, z) in enumerate([(4, 4), (11, 5), (7, 10), (12, 12), (3, 12)]):
+            sprigs += tuft(sprig, (5, 4), (x, z), i * 37, (-1) ** i * 20, ground=15)
+        return [cube] + sprigs
+
+    def plum_at(x, y, z):
+        return ball(4, 4, "plum_side", "plum_top", ground=y, centre=(x, z)) + [rod(x, z, y + 4, y + 5, "stalk")]
+    hanging = [(4, -4.5, 4), (11, -5, 6), (7, -4.5, 11), (12, -4.5, 12), (3.5, -5, 9.5)]
+    sides = [(5, 3, 17), (11, 7, 17), (9, 4, -1), (-1, 5, 8), (17, 2, 5)]
+    stages = [
+        block("leaves", "sprig"),
+        block("blossom", "blossom_sprig"),
+        block("leaves", "sprig") + [p for x, y, z in hanging + [(sx, sy, sz) for sx, sy, sz in sides] for p in plum_at(x, y, z)],
+    ]
+    build("plum_leaves", PLUM, textures, stages, "leaves")
+
+
+# Raspberry: a bush of arching, reddish canes with toothed leaves along them, white flowers, then red berries hanging
+# from the canes.
+
+RASPBERRY = {"a": "#1e4020", "b": "#2c5a2c", "c": "#3e763a", "d": "#58944c", "e": "#82b46a", "f": "#aad08c",
+             "h": "#5a2e2a", "i": "#7a4640", "R": "#8a1428", "S": "#c8283e", "T": "#ee5a6a", "W": "#f8f4ee", "Y": "#e8d070"}
+
+
+def raspberry():
+    textures = {"leaf": padded(leaf_grid(5, 6)), "small_leaf": padded(leaf_grid(4, 4)),
+                "cane": stalk_strip(["ihiiiihiiiihiiih"]), "berry": padded(["TS", "ST", "SR", "RS"]), "berry_top": padded(["ST", "TS"]),
+                "flower": padded([".W.", "WYW", ".W."])}
+
+    def along(heading, lean, t):
+        out, rise = t * _m.sin(_m.radians(lean)), t * _m.cos(_m.radians(lean))
+        return 8 + out * _m.sin(_m.radians(heading)), GRASS + rise, 8 - out * _m.cos(_m.radians(heading)), out, rise
+
+    def cane(heading, lean, length, berries=0, flowers=0, leaf_texture="leaf", size=(5, 6)):
+        parts = [stalk("cane", length, heading, lean, ground=GRASS)]
+        for k, t in enumerate((0.35, 0.6, 0.85)):
+            _, _, _, out, rise = along(heading, lean, t * length)
+            parts.append(leaf(leaf_texture, size, heading + (40 if k % 2 else -40), 25, out, rise, GRASS))
+        for k in range(berries):
+            x, y, z, _, _ = along(heading, lean, (0.55 + 0.3 * k) * length)
+            parts += [rod(x, z, y - 1, y, "cane"), solid((x - 1, y - 4, z - 1), (x + 1, y - 1, z + 1), "berry", top="berry_top")]
+        for k in range(flowers):
+            x, y, z, _, _ = along(heading, lean, (0.6 + 0.25 * k) * length)
+            face = {"uv": [0, 0, 3, 3], "texture": "#flower"}
+            parts.append({"from": [x - 1.5, y - 1, z - 1.5], "to": [x + 1.5, y - 1, z + 1.5], "shade": False, "faces": {"up": face, "down": face}})
+        return parts
+
+    def bush(n, length, berries=0, flowers=0, leaf_texture="leaf", size=(5, 6)):
+        parts = []
+        for i in range(n):
+            parts += cane(i * 360 / n + 15, 14 + (i % 3) * 7, length - (i % 2) * 2, berries, flowers, leaf_texture, size)
+        return parts
+    stages = [bush(2, 6, leaf_texture="small_leaf", size=(4, 4)), bush(4, 10), bush(5, 14, flowers=2), bush(6, 15, berries=2)]
+    build("raspberry_bush", RASPBERRY, textures, stages, "leaf")
+
+
+# Asparagus: a young crown sends up feathery fern while it builds strength, then thick, scaly spears with purple tips
+# push up from it, cut when tall and grown again.
+
+ASPARAGUS = {"a": "#2a4e2a", "b": "#3a6a36", "c": "#4e8644", "d": "#68a056", "e": "#8cbc6e", "f": "#b4d690",
+             "G": "#4e7a32", "H": "#6e9a44", "I": "#98bc64", "U": "#6a3e6e", "V": "#94609a"}
+ASPARAGUS_FERN = ["...e...", ".e.d.e.", "e.ede.e", ".e.d.e.", "..ede..", "e..d..e", ".e.d.e.", "..ede..", "e..d..e",
+                  "...d...", "...c...", "...c..."]
+ASPARAGUS_SPOTS = [(8, 8), (6, 9.5), (10, 6.5), (6.5, 6), (10, 10), (5, 7.5)]
+
+
+def asparagus():
+    spear = ["".join("I" if (x + y * 2) % 5 == 0 else "H" if x % 2 else "G" for x in range(16)) for y in range(16)]
+    textures = {"fern": bottom_padded(ASPARAGUS_FERN), "spear": spear, "tip": padded(["HU", "IH"] * 2)}
+
+    def fern(count, height):
+        parts = []
+        for i in range(count):
+            parts += tuft("fern", (7, height), ASPARAGUS_SPOTS[i], i * 47, (-1) ** i * 10)
+        return parts
+
+    def spears(heights):
+        parts = []
+        for (x, z), h in zip(ASPARAGUS_SPOTS, heights):
+            lean = {"origin": [x, GROUND, z], "x": 4, "y": x * 40, "z": 0}
+            # A green, scaly spear, its tip a pixel narrower and flecked purple.
+            parts.append(solid((x - 1, GROUND, z - 1), (x + 1, GROUND + h, z + 1), "spear", rotation=lean))
+            parts.append(solid((x - 0.5, GROUND + h, z - 0.5), (x + 0.5, GROUND + h + 1.5, z + 0.5), "tip", rotation=lean))
+        return parts
+    stages = [fern(1, 6), fern(2, 9), fern(4, 11), fern(5, 12),
+              spears([3, 2, 2]), spears([6, 4, 5, 3]), spears([10, 8, 9, 6, 4]), spears([14, 12, 13, 11, 9, 7])]
+    build("asparagus", ASPARAGUS, textures, stages, "fern")
+
+
+# Wakame: olive-brown seaweed, ribbon fronds with a pale midrib and wavy edges swaying up from a holdfast on the sea
+# floor, a ruffle of frills at their foot once grown.
+
+WAKAME = {"a": "#1e1e0c", "b": "#2e3014", "c": "#44441c", "d": "#5c5c26", "e": "#787834", "f": "#94944a"}
+WAKAME_SPOTS = [(8, 8), (6, 9), (10, 7), (7.5, 5.5), (9.5, 10.5), (5.5, 6.5)]
+
+
+def wakame():
+    blade = [".ddd." if y < 2 else ("bcecb" if y % 3 else "cdedc") for y in range(16)]
+    blade[0] = "..d.."
+    textures = {"blade": bottom_padded(blade), "frill": bottom_padded(["d.e.d", "cdcdc", ".bcb."]), "holdfast": padded(["ab", "ba"])}
+
+    def fronds(count, height, frills=False):
+        parts = [solid((6.5, 0, 6.5), (9.5, 1, 9.5), "holdfast")]
+        for i in range(count):
+            parts += tuft("blade", (5, height - (i % 2) * 2), WAKAME_SPOTS[i], i * 53, (-1) ** i * (8 + i * 2), ground=0)
+        if frills:
+            for i in range(3):
+                parts += tuft("frill", (5, 3), WAKAME_SPOTS[i], i * 60 + 20, 25, ground=1)
+        return parts
+    stages = [fronds(2, 6), fronds(3, 10), fronds(5, 14), fronds(6, 16, frills=True)]
+    write_blockstate = {f"age={age}": {"model": NS + f"wakame_plant_stage{age}"} for age in range(4)}
+    build("wakame_plant", WAKAME, textures, stages, "blade")
+    with open(f"{A}/blockstates/wakame_plant.json", "w") as f:
+        json.dump({"variants": write_blockstate}, f, indent=2)
+        f.write("\n")
+
+
+# White bean: a bush bean. Round seed leaves, then three-part leaves on stalks, small white flowers, slim green pods
+# hanging under the leaves, and at harvest the pods dry pale tan with the leaves yellowing.
+
+BEAN = {"a": "#1e4020", "b": "#2c5a2c", "c": "#3e7838", "d": "#58964a", "e": "#80b864", "f": "#a8d088",
+        "y": "#a8a040", "z": "#c8c060", "W": "#f8f8f0", "Y": "#e8e0a0",
+        "G": "#4e8a30", "H": "#72aa44", "I": "#9cca6a", "h": "#a8905a", "i": "#c8b07a", "j": "#e0cc98"}
+BEAN_LEAF = ["...ddd...", "..dcecd..", "..cdedc..", "dd.ccc.dd", "dcd.c.dcd", "cecd.dcec", ".cc.b.cc.", "....b...."]
+BEAN_POD_SPOTS = [(20, 3.5, 6), (100, 4, 5), (170, 3.5, 6), (240, 4, 5), (310, 3.5, 6), (60, 2, 5)]
+
+
+def white_bean():
+    pod = ["".join("I" if y % 3 == 1 and x % 2 == 0 else "H" if x % 2 else "G" for x in range(16)) for y in range(16)]
+    textures = {"seed_leaf": padded(leaf_grid(4, 4)), "leaf": padded(BEAN_LEAF),
+                "old_leaf": padded(recolour(BEAN_LEAF, {"d": "z", "e": "z", "c": "y"})),
+                "stalk": stalk_strip(["cdccdcccdccdccdc"]), "pod": pod, "dry_pod": recolour(pod, {"G": "h", "H": "i", "I": "j"}),
+                "flower": padded(["W.W", ".Y.", "W.W"])}
+
+    def leaves(n, rise, lean, texture="leaf", turn=0):
+        return on_stalks(texture, (9, 8), n, 30, rise, lean, turn)
+
+    def pods(kind, count, length=5):
+        parts = []
+        for heading, out, top in BEAN_POD_SPOTS[:count]:
+            x, z = 8 + out * _m.sin(_m.radians(heading)), 8 - out * _m.cos(_m.radians(heading))
+            rotation = {"origin": [x, GROUND + top, z], "x": 12, "y": heading, "z": 0}
+            parts.append(solid((x - 0.75, GROUND + top - length, z - 0.5), (x + 0.75, GROUND + top, z + 0.5), kind, rotation=rotation))
+        return parts
+
+    def flowers(count):
+        parts = []
+        for heading, out, top in BEAN_POD_SPOTS[:count]:
+            x, z = 8 + out * _m.sin(_m.radians(heading)), 8 - out * _m.cos(_m.radians(heading))
+            face = {"uv": [0, 0, 3, 3], "texture": "#flower"}
+            parts.append({"from": [x - 1.5, GROUND + top, z - 1.5], "to": [x + 1.5, GROUND + top, z + 1.5], "shade": False,
+                          "faces": {"up": face, "down": face}})
+        return parts
+    stages = [
+        ring_of("seed_leaf", (4, 4), 2, 25, rise=1),
+        ring_of("seed_leaf", (4, 4), 2, 20, rise=1) + leaves(2, 3, 10, turn=90),
+        leaves(4, 4, 18),
+        leaves(5, 6, 20) + leaves(2, 8, 8, turn=40),
+        leaves(6, 7, 22) + leaves(3, 9, 8, turn=30) + flowers(4),
+        leaves(6, 7, 22) + leaves(3, 9, 8, turn=30) + flowers(2) + pods("pod", 4, 4),
+        leaves(6, 7, 22) + leaves(3, 9, 8, turn=30) + pods("pod", 6),
+        leaves(4, 7, 26, "old_leaf") + leaves(2, 8, 10, turn=40) + pods("dry_pod", 6),
+    ]
+    build("white_bean", BEAN, textures, stages, "leaf")
+
+
 def main():
     cabbage()
     tomato()
@@ -998,6 +1203,11 @@ def main():
     rice()
     rhubarb()
     dill()
+    plum()
+    raspberry()
+    asparagus()
+    wakame()
+    white_bean()
 
 
 if __name__ == "__main__":
