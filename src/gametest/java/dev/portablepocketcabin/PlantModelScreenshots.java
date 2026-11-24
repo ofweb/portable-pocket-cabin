@@ -54,8 +54,16 @@ final class PlantModelScreenshots {
 						var features = level.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.CONFIGURED_FEATURE);
 						var tree = features.getValue(net.minecraft.resources.Identifier.parse(plant.substring("tree:".length())));
 						for (int i = 0; i < 5; i++) {
-							tree.place(level, level.getChunkSource().getGenerator(), net.minecraft.util.RandomSource.create(1000 + i * 7919),
-								base.offset((i - 2) * 12, 0, 0));
+							var trunk = base.offset((i - 2) * 12, 0, 0);
+							tree.place(level, level.getChunkSource().getGenerator(), net.minecraft.util.RandomSource.create(1000 + i * 7919), trunk);
+							// Log each tree's height and width, to check what fits under a greenhouse roof.
+							int top = 0, minX = 99, maxX = -99;
+							for (var pos : BlockPos.betweenClosed(trunk.offset(-6, 0, -6), trunk.offset(6, 16, 6))) {
+								if (level.getBlockState(pos).isAir()) continue;
+								top = Math.max(top, pos.getY() - trunk.getY() + 1);
+								minX = Math.min(minX, pos.getX()); maxX = Math.max(maxX, pos.getX());
+							}
+							System.out.println("TREE " + plant + " #" + i + " height " + top + " width " + (maxX - minX + 1));
 						}
 						server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "kill @e[type=item]");
 						player.teleportTo(level, base.getX() + .5, base.getY() + 5, base.getZ() + 30, Set.of(), 180, 4, false);
