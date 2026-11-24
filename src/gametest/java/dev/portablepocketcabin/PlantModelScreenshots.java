@@ -56,6 +56,15 @@ final class PlantModelScreenshots {
 						for (int i = 0; i < 5; i++) {
 							var trunk = base.offset((i - 2) * 12, 0, 0);
 							tree.place(level, level.getChunkSource().getGenerator(), net.minecraft.util.RandomSource.create(1000 + i * 7919), trunk);
+							// The five trees show their leaves' stages in turn: leaves, blossom, then fruit.
+							for (var pos : BlockPos.betweenClosed(trunk.offset(-7, 0, -7), trunk.offset(7, 16, 7))) {
+								var found = level.getBlockState(pos);
+								if (found.getBlock() instanceof FruitingLeavesBlock fruiting) {
+									var stage = fruiting.stage();
+									int last = stage.getPossibleValues().stream().mapToInt(Integer::intValue).max().orElse(0);
+									level.setBlock(pos, found.setValue(stage, Math.min(i, last)).setValue(LeavesBlock.PERSISTENT, true), Block.UPDATE_CLIENTS);
+								}
+							}
 							// Log each tree's height and width, to check what fits under a greenhouse roof.
 							int top = 0, minX = 99, maxX = -99;
 							for (var pos : BlockPos.betweenClosed(trunk.offset(-6, 0, -6), trunk.offset(6, 16, 6))) {

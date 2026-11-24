@@ -1038,25 +1038,104 @@ BLOSSOM_SPOTS = [(1, 1), (9, 2), (5, 6), (12, 8), (2, 11), (8, 12), (13, 13)]
 FRUIT_SPOTS_ON_LEAVES = [(2, 1), (10, 3), (6, 8), (12, 10), (1, 11)]
 
 
-def plum():
-    leaves = vanilla_leaves(seed=3)
-    textures = {"leaves": leaves, "blossom": stamp(leaves, PLUM_FLOWER, BLOSSOM_SPOTS),
-                "fruiting": stamp(leaves, PLUM_FRUIT, FRUIT_SPOTS_ON_LEAVES),
-                "plum_side": shaded_side("PQRS", 4, light_columns=(6, 7)),
-                "plum_top": ["".join("k" if 7 <= x <= 8 and 7 <= y <= 8 else "Q" for x in range(16)) for y in range(16)],
-                "stalk": stalk_strip(["kkkkkkkkkkkkkkkk"])}
+def leafy(seed, cover=0.67):
+    """A leaf-cube face in the manner of Minecraft's own leaves: small leaves of two to five pixels scattered and
+    overlapping, each lit on its upper left and shaded on its lower right, until about two thirds of the face is
+    covered and the rest is holes you see the leaves behind through. Four tones, 'a' darkest to 'd' lightest."""
+    import random
+    rng = random.Random(seed)
+    shapes = [[(0, 0), (1, 0), (0, 1), (1, 1)], [(0, 0), (1, 0), (1, 1), (2, 1)], [(1, 0), (0, 1), (1, 1), (1, 2)],
+              [(0, 0), (1, 0), (2, 0), (1, 1)], [(0, 0), (0, 1), (1, 1)], [(1, 0), (0, 1), (1, 1), (2, 1), (1, 2)]]
+    grid = [["."] * 16 for _ in range(16)]
+    filled = 0
+    while filled < 256 * cover:
+        shape = rng.choice(shapes)
+        x0, y0 = rng.randrange(16), rng.randrange(16)
+        base = rng.choice("bbcc")
+        for dx, dy in shape:
+            x, y = (x0 + dx) % 16, (y0 + dy) % 16
+            tone = base
+            if (dx, dy) == shape[0]:
+                tone = {"b": "c", "c": "d"}[base]
+            elif (dx, dy) == shape[-1]:
+                tone = {"b": "a", "c": "b"}[base]
+            if grid[y][x] == ".":
+                filled += 1
+            grid[y][x] = tone
+    return ["".join(r) for r in grid]
+
+
+def tinted(tint, tones=(0.46, 0.56, 0.70, 0.84)):
+    """A tree's four leaf greens, made as Minecraft makes its leaves: grey tones times a tint colour."""
+    r, g, b = rgb(tint)
+    return {k: "#%02x%02x%02x" % (round(r * t), round(g * t), round(b * t)) for k, t in zip("abcd", tones)}
+
+
+def fruit_tree(tree, tint, flower, fruits, hanging=None, seed=1):
+    """A fruit tree's leaves through its stages: plain leaves, leaves in blossom, then leaves bearing each kind of fruit
+    in turn (the olive ripens green, then black). Flowers and fruit are drawn into the leaves at spots on them; a tree
+    with large fruit also hangs a few round ones just below its leaves. The leaves are drawn once, so every stage of a
+    tree shows the same leaves.
+
+    flower: (shape, palette); fruits: [(shape, palette), ...]; hanging: (diameter, palette with P, Q, R, S, k) or None."""
+    leaves = leafy(seed)
+    palette = tinted(tint)
+    shape, colours = flower
+    palette.update(colours)
+    textures = {"leaves": leaves, "blossom": stamp(leaves, shape, BLOSSOM_SPOTS)}
+    for i, (shape, colours) in enumerate(fruits):
+        palette.update(colours)
+        textures[f"fruiting{i}"] = stamp(leaves, shape, FRUIT_SPOTS_ON_LEAVES)
+    if hanging:
+        size, colours = hanging
+        palette.update(colours)
+        textures["fruit_side"] = shaded_side("PQRS", size, light_columns=(6, 7))
+        textures["fruit_top"] = ["".join("k" if 7 <= x <= 8 and 7 <= y <= 8 else "Q" for x in range(16)) for y in range(16)]
+        textures["stalk"] = stalk_strip(["k" * 16])
 
     def cube(face):
         return [{"from": [0, 0, 0], "to": [16, 16, 16],
                  "faces": {d: {"uv": [0, 0, 16, 16], "texture": "#" + face, "cullface": d}
                            for d in ("north", "south", "east", "west", "up", "down")}}]
 
-    def hanging(x, z, drop):
-        # A plum on a short stalk below the leaves, as fruit hangs under a canopy.
-        return ball(4, 4, "plum_side", "plum_top", ground=-drop - 4, centre=(x, z)) + [rod(x, z, -drop, 0, "stalk")]
-    under = [(4, 4, 1), (11, 6, 2), (7, 11, 1), (12, 12, 1.5)]
-    stages = [cube("leaves"), cube("blossom"), cube("fruiting") + [p for x, z, d in under for p in hanging(x, z, d)]]
-    build("plum_leaves", PLUM, textures, stages, "leaves")
+    def hang(x, z, drop):
+        size = hanging[0]
+        return ball(size, size, "fruit_side", "fruit_top", ground=-drop - size, centre=(x, z)) + [rod(x, z, -drop, 0, "stalk")]
+    stages = [cube("leaves"), cube("blossom")]
+    for i in range(len(fruits)):
+        parts = cube(f"fruiting{i}")
+        if hanging and i == len(fruits) - 1:
+            parts += [p for x, z, d in [(4, 4, 1), (11, 6, 2), (7, 11, 1), (12, 12, 1.5)] for p in hang(x, z, d)]
+        stages.append(parts)
+    build(f"{tree}_leaves", palette, textures, stages, "leaves")
+
+
+# Flowers: five white petals round a yellow eye, pink-flushed for apple; small cream tufts for olive.
+WHITE_FLOWER = ([".W.", "WYW", ".V."], {"W": "#fff6f4", "V": "#e8d8d8", "Y": "#f0d060"})
+APPLE_FLOWER = ([".W.", "WYW", ".V."], {"W": "#fff0f2", "V": "#f2a8c0", "Y": "#f0d060"})
+OLIVE_FLOWER = (["WV", "VW"], {"W": "#f4f0d0", "V": "#d8d0a0"})
+# Fruit drawn into the leaves: a stalk, then the fruit, lit on its upper left.
+ROUND_FRUIT = [".k.", "QRQ", "QSQ", ".P."]
+CHERRIES = [".k.", "k.k", "RkR", "RRR", "R.R"]
+OLIVES = ["k..", "RR.", "RRR", ".RR"]
+GREEN_OLIVES = ["k..", "GG.", "GGG", ".GG"]
+BLACK_OLIVES = ["k..", "UR.", "RUR", ".RR"]
+
+
+def fruit_trees():
+    fruit_tree("apple", "#6ea83c", APPLE_FLOWER,
+               [(ROUND_FRUIT, {"k": "#5a4020", "P": "#7a1418", "Q": "#b8222a", "R": "#e04a3a", "S": "#f49a80"})],
+               hanging=(4, {"k": "#5a4020", "P": "#7a1418", "Q": "#b8222a", "R": "#e04a3a", "S": "#f49a80"}), seed=11)
+    fruit_tree("sweet_cherry", "#5ea444", WHITE_FLOWER,
+               [(CHERRIES, {"k": "#4a6a20", "R": "#9a0e26"})], seed=12)
+    fruit_tree("plum", "#5a9a44", WHITE_FLOWER,
+               [(ROUND_FRUIT, {"k": "#5a4020", "P": "#4a2266", "Q": "#7a3c9e", "R": "#a060c8", "S": "#d0a8ec"})],
+               hanging=(4, {"k": "#5a4020", "P": "#4a2266", "Q": "#7a3c9e", "R": "#a060c8", "S": "#d0a8ec"}), seed=13)
+    fruit_tree("orange", "#3e8a3a", WHITE_FLOWER,
+               [(ROUND_FRUIT, {"k": "#3a5a20", "P": "#b04a08", "Q": "#e06e10", "R": "#f8962a", "S": "#ffc070"})],
+               hanging=(4, {"k": "#3a5a20", "P": "#b04a08", "Q": "#e06e10", "R": "#f8962a", "S": "#ffc070"}), seed=14)
+    fruit_tree("olive", "#86a466", OLIVE_FLOWER,
+               [(GREEN_OLIVES, {"k": "#5a6a40", "G": "#9ab440"}), (BLACK_OLIVES, {"k": "#5a6a40", "R": "#3a2440", "U": "#8a6aa0"})], seed=15)
 
 
 # Redcurrant, made like Minecraft's azalea: a leafy box on woody stems, its sides' leaves hanging ragged over the edge,
@@ -1285,7 +1364,7 @@ def main():
     rice()
     rhubarb()
     dill()
-    plum()
+    fruit_trees()
     raspberry()
     asparagus()
     wakame()
