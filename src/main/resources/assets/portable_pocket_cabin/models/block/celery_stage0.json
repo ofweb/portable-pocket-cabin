@@ -1,6 +1,233 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/carrots_stage0"
-  }
+    "particle": "portable_pocket_cabin:block/celery_stalk",
+    "stalk": "portable_pocket_cabin:block/celery_stalk",
+    "leaflet": "portable_pocket_cabin:block/celery_leaflet"
+  },
+  "elements": [
+    {
+      "from": [
+        7.0,
+        -1,
+        7.0
+      ],
+      "to": [
+        9.0,
+        2,
+        9.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1,
+          8
+        ],
+        "x": -8,
+        "y": 0.0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            13,
+            2,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "south": {
+          "uv": [
+            0,
+            13,
+            2,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "east": {
+          "uv": [
+            0,
+            13,
+            2,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "west": {
+          "uv": [
+            0,
+            13,
+            2,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "up": {
+          "uv": [
+            0,
+            13,
+            2,
+            15
+          ],
+          "texture": "#stalk"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        0.502419870815096,
+        2.3504552723351297
+      ],
+      "to": [
+        10.5,
+        0.502419870815096,
+        7.35045527233513
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          0.502419870815096,
+          8
+        ],
+        "x": 50,
+        "y": 0.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            5
+          ],
+          "texture": "#leaflet"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            5
+          ],
+          "texture": "#leaflet"
+        }
+      }
+    },
+    {
+      "from": [
+        7.0,
+        -1,
+        7.0
+      ],
+      "to": [
+        9.0,
+        2,
+        9.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1,
+          8
+        ],
+        "x": -8,
+        "y": 187.0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            13,
+            2,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "south": {
+          "uv": [
+            0,
+            13,
+            2,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "east": {
+          "uv": [
+            0,
+            13,
+            2,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "west": {
+          "uv": [
+            0,
+            13,
+            2,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "up": {
+          "uv": [
+            0,
+            13,
+            2,
+            15
+          ],
+          "texture": "#stalk"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        0.502419870815096,
+        2.3504552723351297
+      ],
+      "to": [
+        10.5,
+        0.502419870815096,
+        7.35045527233513
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          0.502419870815096,
+          8
+        ],
+        "x": 50,
+        "y": 187.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            5
+          ],
+          "texture": "#leaflet"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            5
+          ],
+          "texture": "#leaflet"
+        }
+      }
+    }
+  ]
 }

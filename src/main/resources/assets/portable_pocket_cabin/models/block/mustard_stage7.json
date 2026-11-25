@@ -1,6 +1,766 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/wheat_stage7"
-  }
+    "particle": "portable_pocket_cabin:block/mustard_leaf",
+    "leaf": "portable_pocket_cabin:block/mustard_leaf",
+    "stem": "portable_pocket_cabin:block/mustard_stem",
+    "dry_pods": "portable_pocket_cabin:block/mustard_dry_pods"
+  },
+  "elements": [
+    {
+      "from": [
+        5.0,
+        -1.0,
+        0.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 25,
+        "y": 0.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        0.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 25,
+        "y": 72.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        0.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 25,
+        "y": 144.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        0.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 25,
+        "y": 216.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        0.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 25,
+        "y": 288.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        -1,
+        5.5
+      ],
+      "to": [
+        8.5,
+        8,
+        6.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "east": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "west": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        5,
+        6
+      ],
+      "to": [
+        10.5,
+        13,
+        6
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          5,
+          6
+        ],
+        "x": 8,
+        "y": 0,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        }
+      }
+    },
+    {
+      "from": [
+        8,
+        5,
+        3.5
+      ],
+      "to": [
+        8,
+        13,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          5,
+          6
+        ],
+        "x": 8,
+        "y": 0,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        }
+      }
+    },
+    {
+      "from": [
+        9.5,
+        -1,
+        8.0
+      ],
+      "to": [
+        10.5,
+        8,
+        9.0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "east": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "west": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        5,
+        8.5
+      ],
+      "to": [
+        12.5,
+        13,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          10,
+          5,
+          8.5
+        ],
+        "x": -8,
+        "y": 45,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        }
+      }
+    },
+    {
+      "from": [
+        10,
+        5,
+        6.0
+      ],
+      "to": [
+        10,
+        13,
+        11.0
+      ],
+      "rotation": {
+        "origin": [
+          10,
+          5,
+          8.5
+        ],
+        "x": -8,
+        "y": 45,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        -1,
+        8.5
+      ],
+      "to": [
+        6.5,
+        8,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "east": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "west": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        }
+      }
+    },
+    {
+      "from": [
+        3.5,
+        5,
+        9
+      ],
+      "to": [
+        8.5,
+        13,
+        9
+      ],
+      "rotation": {
+        "origin": [
+          6,
+          5,
+          9
+        ],
+        "x": 8,
+        "y": 90,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        5,
+        6.5
+      ],
+      "to": [
+        6,
+        13,
+        11.5
+      ],
+      "rotation": {
+        "origin": [
+          6,
+          5,
+          9
+        ],
+        "x": 8,
+        "y": 90,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        }
+      }
+    },
+    {
+      "from": [
+        8.0,
+        -1,
+        10.0
+      ],
+      "to": [
+        9.0,
+        8,
+        11.0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "east": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "west": {
+          "uv": [
+            0,
+            7,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        }
+      }
+    },
+    {
+      "from": [
+        6.0,
+        5,
+        10.5
+      ],
+      "to": [
+        11.0,
+        13,
+        10.5
+      ],
+      "rotation": {
+        "origin": [
+          8.5,
+          5,
+          10.5
+        ],
+        "x": -8,
+        "y": 135,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        }
+      }
+    },
+    {
+      "from": [
+        8.5,
+        5,
+        8.0
+      ],
+      "to": [
+        8.5,
+        13,
+        13.0
+      ],
+      "rotation": {
+        "origin": [
+          8.5,
+          5,
+          10.5
+        ],
+        "x": -8,
+        "y": 135,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#dry_pods"
+        }
+      }
+    }
+  ]
 }

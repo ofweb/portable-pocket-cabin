@@ -2008,6 +2008,172 @@ def betel():
     draw("betel_vine_stem", stalk_strip(["k" * 16]), BETEL)
 
 
+# Umbellifers like dill but within a block: anise, caraway and cumin grown for seed, flowering in flat umbrellas that
+# turn to brown seed heads; cilantro and parsley grown for their leaves, which bolt to flower and seed at the last stage.
+UMBEL_GREENS = {"a": "#2a4e2a", "b": "#3a6a36", "c": "#4e8644", "d": "#68a252", "e": "#8cc06a", "f": "#b4da8e",
+                "h": "#7a5a2e", "i": "#a8844a"}
+FLAT_LEAF = ["..dd...", ".dedd..", "dcedd.d", ".dcd.dd", "..c.dcd", "...cc..", "...c...", "...c..."]
+CURLY_LEAF = [".e.e.e.", "edededе".replace("е", "e"), ".dcdcd.", "edcdcde", ".dcdcd.", "..cdc..", "...c...", "...c..."]
+THREAD_LEAF = ["e...e..", ".d.d...", "..d..e.", "..d.d..", ".e.d...", "...d.e.", "...dd..", "...c..."]
+
+
+def umbellifer(plant, palette, frond, flower, leafy=False, frond_size=(7, 8), heights=(9, 11, 12)):
+    palette = {**UMBEL_GREENS, **palette, "Y": flower}
+    small = frond[-6:]
+    seed = {"Y": "h", "Z": "i"}
+    textures = {"frond": bottom_padded(frond), "small_frond": bottom_padded(small), "stalk": stalk_strip(["c" * 16]),
+                "umbel": padded(DILL_UMBEL), "rays": bottom_padded(DILL_RAYS),
+                "bud_umbel": padded(recolour(DILL_UMBEL, {"Y": "d"})), "bud_rays": bottom_padded(recolour(DILL_RAYS, {"Y": "d"})),
+                "seed_umbel": padded(recolour(DILL_UMBEL, seed)), "seed_rays": bottom_padded(recolour(DILL_RAYS, seed)),
+                "old_frond": bottom_padded(recolour(frond, {"e": "f", "d": "e"}))}
+
+    def fronds(texture, size, count):
+        parts = []
+        for i in range(count):
+            parts += tuft(texture, size, DILL_SPOTS[i], i * 50, (-1) ** i * 12)
+        return parts
+
+    def umbel(x, z, height, kind=""):
+        top = GROUND + height
+        face = {"uv": [0, 0, 7, 7], "texture": "#" + kind + "umbel"}
+        return ([rod(x, z, GROUND, top, "stalk")] + tuft(kind + "rays", (7, 3), (x, z), 20, 0, ground=top)
+                + [{"from": [x - 3.5, top + 3, z - 3.5], "to": [x + 3.5, top + 3, z + 3.5], "shade": False,
+                    "faces": {"up": face, "down": face}}])
+    F, S = frond_size, (frond_size[0] - 2, 6)
+    full = fronds("frond", F, 6)
+    a, b, c = heights
+    if leafy:
+        late = [full, fronds("frond", F, 6) + fronds("frond", (F[0], F[1] + 2), 2),
+                fronds("frond", (F[0], F[1] + 2), 6),
+                fronds("old_frond", F, 5) + umbel(8, 8, c) + umbel(10, 7, b, "seed_") + umbel(6, 9.5, a)]
+    else:
+        late = [full + umbel(8, 8, a, "bud_"), full + umbel(8, 8, c) + umbel(10, 7, b, "bud_"),
+                full + umbel(8, 8, c) + umbel(10, 7, b) + umbel(6, 9.5, a),
+                fronds("old_frond", F, 5) + umbel(8, 8, c, "seed_") + umbel(10, 7, b, "seed_") + umbel(6, 9.5, a, "seed_")]
+    stages = [fronds("small_frond", S, 2), fronds("small_frond", S, 4), fronds("frond", F, 4), fronds("frond", F, 5)] + late
+    build(plant, palette, textures, stages, "frond")
+
+
+# Celery: a bunch of thick, pale, ribbed stalks topped with leaflets, bolting to white umbels at the last stage.
+def celery():
+    palette = {**UMBEL_GREENS, "Y": "#f4f0e0", "s": "#a8cc78", "t": "#c8e0a0"}
+    textures = {"stalk": stalk_strip(["st" * 8, "ts" * 8]), "leaflet": padded(leaf_grid(5, 5)), "thin": stalk_strip(["c" * 16]),
+                "umbel": padded(DILL_UMBEL), "rays": bottom_padded(DILL_RAYS),
+                "seed_umbel": padded(recolour(DILL_UMBEL, {"Y": "h"})), "seed_rays": bottom_padded(recolour(DILL_RAYS, {"Y": "h"}))}
+
+    def bunch(count, height, lean=8):
+        parts = []
+        for i in range(count):
+            heading = i * 360 / count + i * 7
+            parts.append(stalk("stalk", height, heading, lean, width=2))
+            out = height * _m.sin(_m.radians(lean))
+            parts.append(leaf("leaflet", (5, 5), heading, 50, out, height - 1))
+        return parts
+
+    def umbel(x, z, height, kind=""):
+        top = GROUND + height
+        face = {"uv": [0, 0, 7, 7], "texture": "#" + kind + "umbel"}
+        return ([rod(x, z, GROUND, top, "thin")] + tuft(kind + "rays", (7, 3), (x, z), 20, 0, ground=top)
+                + [{"from": [x - 3.5, top + 3, z - 3.5], "to": [x + 3.5, top + 3, z + 3.5], "shade": False,
+                    "faces": {"up": face, "down": face}}])
+    stages = [bunch(2, 3), bunch(3, 4), bunch(4, 6), bunch(5, 7), bunch(6, 8), bunch(7, 9), bunch(8, 10),
+              bunch(5, 8, 14) + umbel(8, 8, 12) + umbel(10, 7, 10, "seed_")]
+    build("celery", palette, textures, stages, "stalk")
+
+
+# Basils: a bushy plant of paired, oval leaves on a square stem, going to spikes of small flowers at the last stage.
+def basil_plant(plant, palette, flower):
+    palette = {**palette, "W": flower[0], "V": flower[1]}
+    textures = {"seed_leaf": padded(leaf_grid(4, 4)), "leaf": padded(leaf_grid(5, 6)), "stem": stalk_strip(["s" * 16]),
+                "spike": bottom_padded([".W.", "WVW", ".W.", "VWV", ".W.", "WVW", ".s.", ".s."])}
+
+    def bush(h, levels, spikes=0):
+        parts = []
+        for stem in range(3):
+            heading = stem * 120
+            parts.append(stalk("stem", max(2, h), heading, 12))
+            for k in range(levels):
+                y = 1.5 + k * (h - 1.5) / max(1, levels)
+                out = y * _m.sin(_m.radians(12))
+                for side in (-1, 1):
+                    parts.append(leaf("leaf", (5, 6), heading + side * 70 + k * 40, 30, out, y))
+            if spikes:
+                out = h * _m.sin(_m.radians(12))
+                x, z = 8 + out * _m.sin(_m.radians(heading)), 8 - out * _m.cos(_m.radians(heading))
+                parts += tuft("spike", (3, 8), (x, z), heading, 0, ground=GROUND + h)
+        return parts
+    stages = [ring_of("seed_leaf", (4, 4), 2, 30, rise=1), ring_of("seed_leaf", (4, 4), 2, 25, rise=1) + bush(2, 1),
+              bush(3, 1), bush(4, 2), bush(5, 2), bush(6, 3), bush(7, 3), bush(7, 3, spikes=True)]
+    build(plant, palette, textures, stages, "leaf")
+
+
+BASIL = {"a": "#1e4a1e", "b": "#2e6a2a", "c": "#448a3a", "d": "#62a850", "e": "#8ac870", "f": "#b4e098", "s": "#4a7a2e"}
+HOLY_BASIL = {"a": "#2a2a2e", "b": "#3e4a34", "c": "#566a40", "d": "#728a52", "e": "#96aa70", "f": "#b8c498", "s": "#6a3a5a"}
+THAI_BASIL = {"a": "#1a3a20", "b": "#284e2a", "c": "#386a36", "d": "#4e8648", "e": "#70a66a", "f": "#9ac490", "s": "#6a2a5a"}
+
+
+# Mustard and rapeseed: a rosette of broad leaves, then tall stalks of yellow flowers, then slender pods. Sesame: an
+# upright stalk of paired leaves with white bell flowers along it, then ribbed capsules that dry brown.
+def brassica_seed(plant, palette):
+    palette = {**palette, "Y": "#f0d020", "Z": "#c8a010", "P": "#8aaa48", "Q": "#b8b060"}
+    flowers = [".Y.Y.", "YZYZY", ".YZY.", "..c..", "..c..", "..c..", "..c..", "..c.."]
+    textures = {"seed_leaf": padded(leaf_grid(4, 4)), "leaf": padded(leaf_grid(6, 8)), "stem": stalk_strip(["c" * 16]),
+                "buds": bottom_padded(recolour(flowers, {"Y": "d", "Z": "c"})), "flowers": bottom_padded(flowers),
+                "pods": bottom_padded(["P.Q.P", "P.Q.P", ".PQP.", "P.c.Q", ".Pc.P", "..c..", "..c..", "..c.."]),
+                "dry_pods": bottom_padded(recolour(["P.Q.P", "P.Q.P", ".PQP.", "P.c.Q", ".Pc.P", "..c..", "..c..", "..c.."],
+                                                   {"P": "Q", "c": "Q"}))}
+
+    def rosette(n, tilt=40):
+        return ring_of("leaf", (6, 8), n, tilt)
+
+    def stalks(head, height, count=4):
+        parts = rosette(5, 25)
+        for i in range(count):
+            x, z = DILL_SPOTS[i]
+            parts.append(rod(x, z, GROUND, GROUND + height, "stem"))
+            parts += tuft(head, (5, 8), (x, z), i * 45, (-1) ** i * 8, ground=GROUND + height - 3)
+        return parts
+    stages = [ring_of("seed_leaf", (4, 4), 2, 30, rise=1), rosette(3, 45), rosette(4), rosette(6, 35),
+              stalks("buds", 6, 3), stalks("flowers", 8), stalks("flowers", 9), stalks("dry_pods", 9)]
+    build(plant, palette, textures, stages, "leaf")
+
+
+def sesame():
+    palette = {**BASIL, "W": "#f8eef0", "V": "#e8b8c8", "G": "#6a9a3a", "H": "#8ab850", "P": "#7a5a30", "Q": "#a8844a"}
+    textures = {"seed_leaf": padded(leaf_grid(4, 4)), "leaf": padded(leaf_grid(4, 7)), "stem": stalk_strip(["s" * 16]),
+                "bell": padded(["WW", "WV"]), "capsule": padded(["HG", "GH"]), "dry_capsule": padded(["QP", "PQ"])}
+
+    def plant_at(h, levels, along=None):
+        parts = [stalk("stem", h, 0, 0)]
+        for k in range(levels):
+            y = 1.5 + k * (h - 2) / max(1, levels)
+            for side in (0, 180):
+                parts.append(leaf("leaf", (4, 7), side + k * 90, 40, 0.5, y))
+            if along:
+                for side in (90, 270):
+                    x, z = 8 + 1.2 * _m.sin(_m.radians(side + k * 90)), 8 - 1.2 * _m.cos(_m.radians(side + k * 90))
+                    parts.append(solid((x - 0.75, GROUND + y, z - 0.75), (x + 0.75, GROUND + y + 2, z + 0.75), along))
+        return parts
+    stages = [ring_of("seed_leaf", (4, 4), 2, 30, rise=1), plant_at(3, 1), plant_at(5, 2), plant_at(7, 3), plant_at(9, 4),
+              plant_at(11, 4, "bell"), plant_at(12, 5, "capsule"), plant_at(12, 5, "dry_capsule")]
+    build("sesame", palette, textures, stages, "leaf")
+
+
+def herbs_and_oilseeds():
+    umbellifer("cilantro", {}, FLAT_LEAF, "#f4f0f0", leafy=True)
+    umbellifer("parsley", {"c": "#3e7a36", "d": "#56963e"}, CURLY_LEAF, "#e8e0a0", leafy=True)
+    umbellifer("anise", {}, THREAD_LEAF, "#f4f0e8")
+    umbellifer("caraway", {}, THREAD_LEAF, "#f0d8e0")
+    umbellifer("cumin", {"d": "#7aa45a", "e": "#9cbc7a"}, THREAD_LEAF, "#f0d8e8", frond_size=(7, 6), heights=(7, 8, 9))
+    celery()
+    basil_plant("basil", BASIL, ("#f4f0f4", "#e0d0e8"))
+    basil_plant("holy_basil", HOLY_BASIL, ("#d8b0e0", "#a870c0"))
+    basil_plant("thai_basil", THAI_BASIL, ("#c890d8", "#8a4aa8"))
+    brassica_seed("mustard", {"a": "#22401e", "b": "#33582a", "c": "#48743a", "d": "#64904c", "e": "#88b06a", "f": "#aed090"})
+    brassica_seed("rapeseed", {"a": "#22383a", "b": "#344e4e", "c": "#4a6a66", "d": "#64887e", "e": "#86a898", "f": "#aac8b8"})
+    sesame()
+
+
 def main():
     cabbage()
     tomato()
@@ -2029,6 +2195,7 @@ def main():
     white_bean()
     other_beans()
     nightshades()
+    herbs_and_oilseeds()
     bushes()
     cabbage("red_cabbage", RED_CABBAGE)
     lettuce()
