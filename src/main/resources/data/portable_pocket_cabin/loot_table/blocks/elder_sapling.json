@@ -3,6 +3,11 @@
   "pools": [
     {
       "rolls": 1.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:item",
@@ -11,5 +16,5 @@
       ]
     }
   ],
-  "random_sequence": "portable_pocket_cabin:blocks/elder_bush"
+  "random_sequence": "portable_pocket_cabin:blocks/elder_sapling"
 }

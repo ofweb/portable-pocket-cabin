@@ -136,10 +136,9 @@ final class CookingScreenshots {
 				level.setBlockAndUpdate(pos.below(), Blocks.FARMLAND.defaultBlockState());
 				level.setBlockAndUpdate(pos, ((net.minecraft.world.level.block.CropBlock) CookingPlants.PLANTS.get(vines[i])).getStateForAge(7));
 			}
-			String[] bushes = {"thyme_bush", "strawberry_bush", "raspberry_bush", "elder_bush"};
+			String[] bushes = {"thyme_bush", "strawberry_bush", "raspberry_bush"};
 			for (int i = 0; i < bushes.length; i++) {
-				level.setBlockAndUpdate(base.offset(i, 0, 3), CookingPlants.PLANTS.get(bushes[i]).defaultBlockState()
-					.setValue(HerbBushBlock.AGE, bushes[i].equals("elder_bush") ? 2 : 3));
+				level.setBlockAndUpdate(base.offset(i, 0, 3), CookingPlants.PLANTS.get(bushes[i]).defaultBlockState().setValue(HerbBushBlock.AGE, 3));
 			}
 			// Delivery 2: taiga crops and currants, and wasabi in a gravel bed beside flowing water.
 			level.setBlockAndUpdate(base.offset(-4, -1, 5), Blocks.FARMLAND.defaultBlockState());

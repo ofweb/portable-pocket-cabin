@@ -1206,6 +1206,9 @@ def fruit_tree(tree, tint, flower, fruits, hanging=None, seed=1):
         return ball(size, size, "fruit_side", "fruit_top", ground=-drop - size, centre=(x, z)) + [rod(x, z, -drop, 0, "stalk")]
     stages = [cube("leaves"), cube("blossom")] + [cube(f"fruiting{i}") for i in range(len(fruits))]
     build(f"{tree}_leaves", palette, textures, stages, "leaves")
+    with open(f"{A}/blockstates/{tree}_leaves.json", "w") as f:
+        json.dump({"variants": {f"age={age}": {"model": NS + f"{tree}_leaves_stage{age}"} for age in range(len(stages))}}, f, indent=2)
+        f.write("\n")
     if hanging:
         # Most fruiting leaf blocks hang no fruit below them and a few hang one or two, picked per block by Minecraft's
         # weighted random models, so a canopy is dotted with fruit rather than lined with it.
@@ -1237,6 +1240,16 @@ GREEN_OLIVES = ["k..", "GG.", "GGG", ".GG"]
 BLACK_OLIVES = ["k..", "UR.", "RUR", ".RR"]
 
 
+ELDER_FLOWER = ([".W.W.", "WVWVW", ".WVW."], {"W": "#f6f0d8", "V": "#ddd4ac"})
+ELDER_BERRIES = [".k.k.", "PQPQP", ".PQP."]
+
+
+def sapling(name, palette, grid):
+    """A sapling: a small plant on two crossed planes, as Minecraft's are."""
+    draw(name, bottom_padded(grid), palette)
+    write_model(name, {"parent": "minecraft:block/cross", "textures": {"cross": NS + name}})
+
+
 def fruit_trees():
     fruit_tree("apple", "#6ea83c", APPLE_FLOWER,
                [(ROUND_FRUIT, {"k": "#5a4020", "P": "#7a1418", "Q": "#b8222a", "R": "#e04a3a", "S": "#f49a80"})],
@@ -1249,6 +1262,10 @@ def fruit_trees():
     fruit_tree("orange", "#3e8a3a", WHITE_FLOWER,
                [(ROUND_FRUIT, {"k": "#3a5a20", "P": "#b04a08", "Q": "#e06e10", "R": "#f8962a", "S": "#ffc070"})],
                hanging=(4, {"k": "#3a5a20", "P": "#b04a08", "Q": "#e06e10", "R": "#f8962a", "S": "#ffc070"}), seed=14)
+    fruit_tree("elder", "#5e9244", ELDER_FLOWER,
+               [(ELDER_BERRIES, {"k": "#4a3420", "P": "#24102c", "Q": "#4a2a5a"})], seed=16)
+    sapling("elder_sapling", {"a": "#2a4e24", "b": "#3c6a30", "c": "#58884a", "d": "#78a860", "h": "#5a4028", "i": "#7a5a38"},
+            ["..d.c..", ".dcd.d.", "c.bdc.d", ".c.ib..", "...i.c.", "..hi...", "...h...", "...h...", "..hh..."])
     fruit_tree("olive", "#86a466", OLIVE_FLOWER,
                [(GREEN_OLIVES, {"k": "#5a6a40", "G": "#9ab440"}), (BLACK_OLIVES, {"k": "#5a6a40", "R": "#3a2440", "U": "#8a6aa0"})], seed=15)
 
@@ -1363,22 +1380,6 @@ def redcurrant():
     currant("redcurrant_bush", CURRANT, 5)
 
 
-# Elder: a big woody shrub with flat, creamy heads of tiny flowers, then heads of small dark purple berries.
-ELDER = {**CURRANT, "W": "#f6f0d8", "V": "#e0d8b0", "P": "#2a1430", "Q": "#4a2850"}
-
-
-def elder():
-    side = ragged_side(9)
-    foliage = {"top": vanilla_leaves(seed=10), "side": side,
-               "flowering_side": stamp(side, ["WV", "VW"], [(2, 4), (10, 2), (6, 9), (13, 7)]),
-               "fruiting_side": stamp(side, ["PQ", "QP"], [(2, 5), (10, 3), (6, 10), (13, 8)]),
-               "umbel": padded([".W.V.", "WVWVW", ".WVW.", "WVWVW", ".V.W."]),
-               "berries": padded([".P.Q.", "PQPQP", ".QPQ.", "PQPQP", ".Q.P."])}
-    heads = [(4, 4), (11, 5), (7, 11), (12, 12), (3, 11)]
-    shrub("elder_bush", ELDER, foliage, WOODY, ["side", "side", "flowering_side", "fruiting_side"],
-          extras=[[], [], flat_flowers(heads, "umbel", 13.2), flat_flowers(heads, "berries", 14.2)])
-
-
 # Tea: a clipped hedge of glossy dark leaves, its top flushing with pale new shoots when ready to pick; grown in shade,
 # the flush is a deeper blue-green.
 TEA = {"a": "#16301c", "b": "#22482a", "c": "#2f5e36", "d": "#447a46", "e": "#5e9658",
@@ -1469,7 +1470,6 @@ def pandan():
 def bushes():
     redcurrant()
     currant("blackcurrant_bush", BLACKCURRANT, 7)
-    elder()
     tea()
     herbs()
     pandan()

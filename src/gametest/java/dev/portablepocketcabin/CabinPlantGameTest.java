@@ -254,10 +254,17 @@ public final class CabinPlantGameTest {
 		level.getBlockState(pos).useWithoutItem(level, player, hit);
 		helper.assertTrue(level.getBlockState(pos).getValue(HerbBushBlock.AGE) == 1, "Picking leaves the bush to regrow");
 
-		var elder = (HerbBushBlock) CookingPlants.ELDER_BUSH;
-		helper.assertTrue(elder.harvest(elder.defaultBlockState().setValue(HerbBushBlock.AGE, 2)) == CookingPlants.ELDERFLOWER
-			&& elder.harvest(elder.defaultBlockState().setValue(HerbBushBlock.AGE, 3)) == CookingPlants.ELDERBERRY,
+		// The elder is a small tree: its leaves give elderflower while they flower and elderberries when they fruit.
+		var elder = (FruitingLeavesBlock) CookingPlants.ELDER_LEAVES;
+		helper.assertTrue(elder.fruitAt(0) == null && elder.fruitAt(1) == CookingPlants.ELDERFLOWER && elder.fruitAt(2) == CookingPlants.ELDERBERRY,
 			"The elder gives elderflower when flowering and elderberries when ripe");
+		var flowering = elder.defaultBlockState().setValue(FruitingLeavesBlock.AGE, 1).setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
+		helper.setBlock(BASE.west(3), flowering);
+		var elderPos = helper.absolutePos(BASE.west(3));
+		var elderHit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(elderPos), net.minecraft.core.Direction.UP, elderPos, false);
+		level.getBlockState(elderPos).useWithoutItem(level, player, elderHit);
+		helper.assertTrue(level.getBlockState(elderPos).getValue(FruitingLeavesBlock.AGE) == 0, "Picking elderflowers leaves the leaves to flower again");
+		helper.assertTrue(CookingPlants.PLANTED_FROM.get("elder_leaves") == CookingPlants.item("elder_cutting"), "An elder is planted from a cutting");
 
 		helper.setBlock(BASE.east(3).below(), Blocks.OAK_LOG);
 		helper.setBlock(BASE.east(3), CookingPlants.OYSTER_MUSHROOM);

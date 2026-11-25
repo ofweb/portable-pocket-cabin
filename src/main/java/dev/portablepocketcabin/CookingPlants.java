@@ -105,7 +105,9 @@ final class CookingPlants {
 	/** The elder flowers, then fruits: elderflower at its flowering stage, elderberries when ripe. */
 	static final Item ELDERFLOWER = ingredient("elderflower", null);
 	static final Item ELDERBERRY = ingredient("elderberry", null);
-	static final Block ELDER_BUSH = bush("elder_bush", "elder_cutting", () -> ELDERFLOWER, () -> ELDERBERRY);
+	/** The elder grows from a cutting into a small tree three or four blocks high; its leaves flower, then fruit. */
+	static final Block ELDER_LEAVES = fruitTree("elder", properties -> new FruitingLeavesBlock.Elder(properties, () -> ELDERFLOWER,
+		() -> ELDERBERRY), List.of(ELDERFLOWER, ELDERBERRY), false, "elder_cutting");
 	// Delivery 1: fruit trees. Each species has a sapling and fruiting leaves on a vanilla trunk.
 	static final Item PLUM = ingredient("plum", food(3, 1.8F));
 	static final Block PLUM_LEAVES = fruitTree("plum", () -> PLUM);
@@ -636,15 +638,6 @@ final class CookingPlants {
 		return block[0];
 	}
 
-	/** A bush planted from a cutting, giving {@code flowering} at its flowering stage when not null, and {@code ripe} when ripe. */
-	private static Block bush(String plant, String cutting, java.util.function.Supplier<Item> flowering, java.util.function.Supplier<Item> ripe) {
-		Block block = registerBlock(plant, properties -> new HerbBushBlock(properties, flowering, ripe, true), bushProperties());
-		PLANTED_FROM.put(plant, registerItem(cutting, properties -> new BlockItem(block, properties.useItemDescriptionPrefix())));
-		PLANTS.put(plant, block);
-		GIVES.put(plant, flowering == null ? List.of(ripe.get()) : List.of(flowering.get(), ripe.get()));
-		return block;
-	}
-
 	/** A bush that gives {@code produce} when picked, and is planted from a {@code cutting} that shears take from it. */
 	private static Block cuttingBush(String plant, String produce, String cutting, FoodProperties food) {
 		Item item = ingredient(produce, food);
@@ -689,11 +682,25 @@ final class CookingPlants {
 	 * tree's sapling can also be planted on sand.
 	 */
 	private static Block fruitTree(String tree, java.util.function.Function<BlockBehaviour.Properties, Block> factory, List<Item> gives, boolean beach) {
+		return fruitTree(tree, factory, gives, beach, null);
+	}
+
+	/** A fruit tree whose sapling is planted from an item of another name, such as the elder's cutting, when given. */
+	private static Block fruitTree(String tree, java.util.function.Function<BlockBehaviour.Properties, Block> factory, List<Item> gives, boolean beach,
+		String plantedFrom) {
 		Block leaves = registerBlockWithItem(tree + "_leaves", factory, BlockBehaviour.Properties.of()
 			.strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY)
 			.isValidSpawn((state, level, pos, type) -> false).isSuffocating((state, level, pos) -> false).isViewBlocking((state, level, pos) -> false));
-		Block sapling = registerBlockWithItem(tree + "_sapling", properties -> new FruitSaplingBlock(FruitSaplingBlock.grower(tree), beach, properties),
-			saplingProperties());
+		java.util.function.Function<BlockBehaviour.Properties, Block> saplingFactory =
+			properties -> new FruitSaplingBlock(FruitSaplingBlock.grower(tree), beach, properties);
+		Block sapling;
+		if (plantedFrom == null) {
+			sapling = registerBlockWithItem(tree + "_sapling", saplingFactory, saplingProperties());
+		} else {
+			sapling = registerBlock(tree + "_sapling", saplingFactory, saplingProperties());
+			Block planted = sapling;
+			registerItem(plantedFrom, properties -> new BlockItem(planted, properties.useItemDescriptionPrefix()));
+		}
 		PLANTS.put(tree + "_leaves", leaves);
 		PLANTED_FROM.put(tree + "_leaves", sapling.asItem());
 		GIVES.put(tree + "_leaves", gives);

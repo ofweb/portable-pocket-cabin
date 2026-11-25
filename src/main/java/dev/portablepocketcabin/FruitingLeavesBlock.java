@@ -114,6 +114,33 @@ class FruitingLeavesBlock extends UntintedParticleLeavesBlock implements Cooking
 		return defaultBlockState().setValue(LeavesBlock.PERSISTENT, false);
 	}
 
+	/**
+	 * Elder leaves: their flowers are picked too, as elderflower, which leaves them to flower again rather than fruit; left
+	 * on the tree, the flowers ripen into elderberries.
+	 */
+	static final class Elder extends FruitingLeavesBlock {
+		private final Supplier<Item> flower;
+		private final MapCodec<Elder> elderCodec;
+
+		Elder(Properties properties, Supplier<Item> flower, Supplier<Item> berry) {
+			super(properties, berry);
+			this.flower = flower;
+			this.elderCodec = simpleCodec(p -> new Elder(p, flower, berry));
+		}
+
+		@Override
+		public MapCodec<UntintedParticleLeavesBlock> codec() {
+			@SuppressWarnings({"unchecked", "rawtypes"})
+			MapCodec<UntintedParticleLeavesBlock> cast = (MapCodec) elderCodec;
+			return cast;
+		}
+
+		@Override
+		Item fruitAt(int stage) {
+			return stage == FRUITING - 1 ? flower.get() : super.fruitAt(stage);
+		}
+	}
+
 	/** Leaves whose fruit ripens one stage further, as olives turn from green to black on the tree. */
 	static final class TwoStageFruit extends FruitingLeavesBlock {
 		static final IntegerProperty STAGE = BlockStateProperties.AGE_3;
