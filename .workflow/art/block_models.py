@@ -1190,9 +1190,10 @@ def fruit_tree(tree, tint, flower, fruits, hanging=None, seed=1):
         palette.update(colours)
         textures[f"fruiting{i}"] = stamp(leaves, shape, FRUIT_SPOTS_ON_LEAVES)
     if hanging:
-        size, colours = hanging
+        size, colours = hanging[0], hanging[-1]
+        tall = hanging[1] if len(hanging) == 3 else size
         palette.update(colours)
-        textures["fruit_side"] = shaded_side("PQRS", size, light_columns=(6, 7))
+        textures["fruit_side"] = shaded_side("PQRS", tall, light_columns=(6, 7))
         textures["fruit_top"] = ["".join("k" if 7 <= x <= 8 and 7 <= y <= 8 else "Q" for x in range(16)) for y in range(16)]
         textures["stalk"] = stalk_strip(["k" * 16])
 
@@ -1203,7 +1204,8 @@ def fruit_tree(tree, tint, flower, fruits, hanging=None, seed=1):
 
     def hang(x, z, drop):
         size = hanging[0]
-        return ball(size, size, "fruit_side", "fruit_top", ground=-drop - size, centre=(x, z)) + [rod(x, z, -drop, 0, "stalk")]
+        tall = hanging[1] if len(hanging) == 3 else size
+        return ball(size, tall, "fruit_side", "fruit_top", ground=-drop - tall, centre=(x, z)) + [rod(x, z, -drop, 0, "stalk")]
     stages = [cube("leaves"), cube("blossom")] + [cube(f"fruiting{i}") for i in range(len(fruits))]
     build(f"{tree}_leaves", palette, textures, stages, "leaves")
     with open(f"{A}/blockstates/{tree}_leaves.json", "w") as f:
@@ -1250,6 +1252,90 @@ def sapling(name, palette, grid):
     write_model(name, {"parent": "minecraft:block/cross", "textures": {"cross": NS + name}})
 
 
+LEMON = ["..k.", ".QRQ", "QRSR", ".QRQ", "..P."]
+BERRY_CLUSTER = [".k.", "RQR", "QRQ", ".R."]
+SPIKY_POD = ["R.R", "RTR", "TRT", ".R."]
+STAR = ["P.P", ".Q.", "PQP"]
+POD = ["kP", "PQ", "QP", "PQ", "Q."]
+# The flush of new leaves on trees picked for their leaves, a brighter green than the old ones.
+FLUSH = ["fe", "ef"]
+
+
+def tree_sapling(tree, tint, trunk="#5a4028", palm=False):
+    """A tree's sapling in its own green: a stem with small leaves, or a few fronds for a palm."""
+    palette = {**tinted(tint), "h": trunk, "i": trunk}
+    grid = (["d...d..", ".d.c.d.", "..cbc..", ".c.i.c.", "c..i..c", "...i...", "...h...", "..hh..."] if palm else
+            ["..d.c..", ".dcd.d.", "c.bdc.d", ".c.ib..", "...i.c.", "..hi...", "...h...", "...h...", "..hh..."])
+    sapling(f"{tree}_sapling", palette, grid)
+
+
+def tropical_and_more():
+    """The rest of the fruit trees: stone fruit, citrus, the trees picked for leaves or buds, spices, and palms."""
+    k = {"k": "#4a3420"}
+    green_k = {"k": "#3a5a20"}
+    cream = ([".W.", "WYW", ".W."], {"W": "#f8f0d8", "Y": "#e8c84a"})
+    tiny_white = (["W"], {"W": "#f4f4ea"})
+    fruit_tree("almond", "#6ea040", APPLE_FLOWER, [(["k.", "GG", "GH"], {**green_k, "G": "#86a85a", "H": "#b0c488"})], seed=21)
+    fruit_tree("apricot", "#66a23e", APPLE_FLOWER, [(ROUND_FRUIT, {**k, "P": "#b05a18", "Q": "#e08a30", "R": "#f4b050", "S": "#fcd890"})],
+               hanging=(3, {**k, "P": "#b05a18", "Q": "#e08a30", "R": "#f4b050", "S": "#fcd890"}), seed=22)
+    fruit_tree("ume", "#5e9a44", APPLE_FLOWER, [(ROUND_FRUIT, {**k, "P": "#6a8a20", "Q": "#9ab83a", "R": "#c8d860", "S": "#e8f0a0"})], seed=23)
+    yellow = {**green_k, "P": "#b89a10", "Q": "#e0c020", "R": "#f4dc40", "S": "#fff490"}
+    fruit_tree("lemon", "#3e8a3a", WHITE_FLOWER, [(LEMON, yellow)], hanging=(3, 4, yellow), seed=24)
+    lime = {**green_k, "P": "#2e6a1a", "Q": "#4e9a2a", "R": "#7ac040", "S": "#b8e080"}
+    fruit_tree("lime", "#3a8436", WHITE_FLOWER, [(ROUND_FRUIT, lime)], hanging=(3, lime), seed=25)
+    flush = {"e": "#8cc85a", "f": "#b8e48a"}
+    fruit_tree("makrut_lime", "#2e7032", tiny_white, [(FLUSH, flush)], seed=26)
+    fruit_tree("bay_laurel", "#3e7a3a", (["Y"], {"Y": "#e8dc7a"}), [(FLUSH, flush)], seed=27)
+    fruit_tree("yerba_mate", "#4a8a3a", tiny_white, [(FLUSH, flush)], seed=28)
+    # Cinnamon is harvested for its bark, so its leaves never flower or fruit: one leaf block, flecked with the red of its
+    # new leaves.
+    palette = {**tinted("#3e7a34"), "e": "#c0503a", "f": "#e0806a"}
+    draw("cinnamon_leaves", stamp(leafy(29), FLUSH, FRUIT_SPOTS_ON_LEAVES), palette)
+    write_model("cinnamon_leaves", {"parent": "minecraft:block/block", "textures": {"particle": NS + "cinnamon_leaves"},
+                                    "elements": [{"from": [0, 0, 0], "to": [16, 16, 16],
+                                                  "faces": {d: {"uv": [0, 0, 16, 16], "texture": "#particle", "cullface": d}
+                                                            for d in ("north", "south", "east", "west", "up", "down")}}]})
+    with open(f"{A}/blockstates/cinnamon_leaves.json", "w") as f:
+        json.dump({"variants": {"": {"model": NS + "cinnamon_leaves"}}}, f, indent=2)
+        f.write("\n")
+    fruit_tree("clove", "#3e7a34", tiny_white, [(BERRY_CLUSTER, {"k": "#3a5a20", "R": "#c0403a", "Q": "#e07a5a"})], seed=30)
+    fruit_tree("coffee", "#2e6a2a", cream, [(BERRY_CLUSTER, {"k": "#3a5a20", "R": "#b01c22", "Q": "#e0443a"})], seed=31)
+    fruit_tree("allspice", "#3e7234", tiny_white, [(BERRY_CLUSTER, {"k": "#3a5a20", "R": "#3a2418", "Q": "#5a3a28"})], seed=32)
+    fruit_tree("annatto", "#4a8a3e", (["P.P", ".Y.", "P.P"], {"P": "#f0a0c0", "Y": "#f0d050"}),
+               [(SPIKY_POD, {"R": "#a81c20", "T": "#e0403a"})], seed=33)
+    nutmeg = {**green_k, "P": "#b88a30", "Q": "#e0b450", "R": "#f0d070", "S": "#d02a2a"}
+    fruit_tree("nutmeg", "#2e6a34", cream, [(ROUND_FRUIT, nutmeg)], hanging=(3, nutmeg), seed=34)
+    fruit_tree("star_anise", "#3a6a3a", (["R"], {"R": "#d84a5a"}), [(STAR, {"P": "#6a3a1a", "Q": "#9a5a2a"})], seed=35)
+    tamarind = {"k": "#4a3420", "P": "#5a3a1a", "Q": "#8a6038", "R": "#a87a4a", "S": "#c8a070"}
+    fruit_tree("tamarind", "#5a9640", (["Y", "R"], {"Y": "#f0d050", "R": "#e07040"}), [(POD, tamarind)],
+               hanging=(2, 5, tamarind), seed=36)
+    mango = {**green_k, "P": "#6a8a2a", "Q": "#c8a830", "R": "#f0a030", "S": "#e85a3a"}
+    fruit_tree("mango", "#3e7a34", (["W", "V"], {"W": "#f4e8c8", "V": "#e8b0a0"}), [(LEMON, mango)], hanging=(3, 4, mango), seed=37)
+    papaya = {**green_k, "P": "#3a6a1a", "Q": "#5a8a2a", "R": "#8ab040", "S": "#c8d870"}
+    fruit_tree("papaya", "#5a9a40", tiny_white, [(LEMON, papaya)], hanging=(3, 5, papaya), seed=38)
+    coconut = {"k": "#5a4a20", "P": "#4a5a20", "Q": "#6a7a30", "R": "#8a9a40", "S": "#b0b870"}
+    fruit_tree("coconut", "#5a9a3a", cream, [(ROUND_FRUIT, coconut)], hanging=(4, coconut), seed=39)
+    oil_palm = {"k": "#3a2a18", "P": "#6a1a10", "Q": "#b03a18", "R": "#e06a20", "S": "#f8a040"}
+    fruit_tree("oil_palm", "#4a8a34", cream, [(BERRY_CLUSTER, oil_palm)], hanging=(3, oil_palm), seed=40)
+    for tree, tint, trunk in [("apple", "#6ea83c", "#5a4028"), ("sweet_cherry", "#5ea444", "#4a2a28"), ("plum", "#5a9a44", "#5a4028"),
+                              ("orange", "#3e8a3a", "#5a4028"), ("olive", "#86a466", "#6a5a48"), ("almond", "#6ea040", "#6a5038"),
+                              ("apricot", "#66a23e", "#6a5038"), ("ume", "#5e9a44", "#4a2a28"), ("lemon", "#3e8a3a", "#5a4028"),
+                              ("lime", "#3a8436", "#5a4a30"), ("makrut_lime", "#2e7032", "#5a4a30"), ("bay_laurel", "#3e7a3a", "#5a4028"),
+                              ("yerba_mate", "#4a8a3a", "#5a4a30"), ("cinnamon", "#3e7a34", "#7a4a2a"), ("clove", "#3e7a34", "#5a4a30"),
+                              ("coffee", "#2e6a2a", "#5a4a30"), ("allspice", "#3e7234", "#6a5a48"), ("annatto", "#4a8a3e", "#5a4a30"),
+                              ("nutmeg", "#2e6a34", "#5a4a30"), ("star_anise", "#3a6a3a", "#5a4a30"), ("tamarind", "#5a9640", "#6a5038"),
+                              ("mango", "#3e7a34", "#5a4a30")]:
+        tree_sapling(tree, tint, trunk)
+    for tree, tint in [("papaya", "#5a9a40"), ("coconut", "#5a9a3a"), ("oil_palm", "#4a8a34")]:
+        tree_sapling(tree, tint, "#8a7a50", palm=True)
+    for tree in ("apple", "sweet_cherry", "plum", "orange", "olive", "almond", "apricot", "ume", "lemon", "lime", "makrut_lime",
+                 "bay_laurel", "yerba_mate", "cinnamon", "clove", "coffee", "allspice", "annatto", "nutmeg", "star_anise", "tamarind",
+                 "mango", "papaya", "coconut", "oil_palm"):
+        with open(f"{A}/blockstates/{tree}_sapling.json", "w") as f:
+            json.dump({"variants": {f"stage={stage}": {"model": NS + f"{tree}_sapling"} for stage in (0, 1)}}, f, indent=2)
+            f.write("\n")
+
+
 def fruit_trees():
     fruit_tree("apple", "#6ea83c", APPLE_FLOWER,
                [(ROUND_FRUIT, {"k": "#5a4020", "P": "#7a1418", "Q": "#b8222a", "R": "#e04a3a", "S": "#f49a80"})],
@@ -1266,6 +1352,7 @@ def fruit_trees():
                [(ELDER_BERRIES, {"k": "#4a3420", "P": "#24102c", "Q": "#4a2a5a"})], seed=16)
     sapling("elder_sapling", {"a": "#2a4e24", "b": "#3c6a30", "c": "#58884a", "d": "#78a860", "h": "#5a4028", "i": "#7a5a38"},
             ["..d.c..", ".dcd.d.", "c.bdc.d", ".c.ib..", "...i.c.", "..hi...", "...h...", "...h...", "..hh..."])
+    tropical_and_more()
     fruit_tree("olive", "#86a466", OLIVE_FLOWER,
                [(GREEN_OLIVES, {"k": "#5a6a40", "G": "#9ab440"}), (BLACK_OLIVES, {"k": "#5a6a40", "R": "#3a2440", "U": "#8a6aa0"})], seed=15)
 

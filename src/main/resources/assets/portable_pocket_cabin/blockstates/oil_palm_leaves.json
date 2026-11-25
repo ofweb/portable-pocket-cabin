@@ -6,8 +6,19 @@
     "age=1": {
       "model": "portable_pocket_cabin:block/oil_palm_leaves_stage1"
     },
-    "age=2": {
-      "model": "portable_pocket_cabin:block/oil_palm_leaves_stage2"
-    }
+    "age=2": [
+      {
+        "model": "portable_pocket_cabin:block/oil_palm_leaves_stage2",
+        "weight": 6
+      },
+      {
+        "model": "portable_pocket_cabin:block/oil_palm_leaves_stage2_one",
+        "weight": 3
+      },
+      {
+        "model": "portable_pocket_cabin:block/oil_palm_leaves_stage2_two",
+        "weight": 1
+      }
+    ]
   }
 }

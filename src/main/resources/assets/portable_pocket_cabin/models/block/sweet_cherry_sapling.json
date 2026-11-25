@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "minecraft:block/cherry_sapling"
+    "cross": "portable_pocket_cabin:block/sweet_cherry_sapling"
   }
 }
