@@ -84,8 +84,8 @@ Milk settles in the dairy pan into cream and skimmed milk. Cream churns into but
 **Pastry, chocolate, and more.** Puff, choux, and strudel pastry, noodle and dumpling wrappers, pretzels, cheeses such as queso Oaxaca, condensed milk and dulce de leche, and a full cocoa chain from fermented beans to chocolate round out the kitchen. With them come Tarte Tatin, Profiteroles, Gougères, Brigadeiros, Brunsviger, and hot and cold chocolate.
 
 **Garden.** Cooking plants grow wild in the biomes they come from, and wandering traders and farmers sometimes sell their seeds. The plains, meadows, and forests come first:
-- **Field crops:** barley, rye, corn, rapeseed, mustard, caraway, white beans, asparagus, cabbage, courgette, lettuce, radish, spring onion, garlic, onions, shallots, cilantro, dill, and parsley. Plant them on farmland with water nearby. Cilantro left to flower gives coriander seed.
-- **Vines:** cucumber, white grapes, and hops climb a trellis on farmland. Picking a ripe vine leaves it to fruit again.
+- **Field crops:** barley, rye, corn, rapeseed, mustard, caraway, white beans, asparagus, cabbage, courgette, lettuce, radish, spring onion, garlic, onions, shallots, cilantro, dill, and parsley. Plant them on farmland with water nearby. Cilantro left to flower gives coriander seed. Corn and dill grow two blocks tall, so they need open air above them.
+- **Vines:** cucumber, white grapes, and hops climb a trellis on farmland. Picking a ripe vine leaves it to fruit again. Stack a second trellis on a tomato or grape vine and it climbs that too, growing two blocks tall.
 - **Bushes:** thyme, marjoram, strawberries, raspberries, and oyster mushrooms regrow after picking. The elder gives elderflower, then elderberries.
 - **Trees:** plum and apple trees grow from saplings. About one leaf block in eight flowers and fruits, and fruits again after picking; breaking it, shears included, gives one or two fruit. Apple trees grow wild in forests and plains, oak and dark oak leaves rarely drop an apple sapling, and wandering traders sometimes sell one.
 - **Rosehips:** shears pick them from rose bushes.

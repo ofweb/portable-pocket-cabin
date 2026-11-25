@@ -86,7 +86,7 @@ final class CookingPlants {
 	 * it is free, vines up a second trellis stacked on their own.
 	 */
 	private static final Map<String, Integer> TALL_FROM = Map.of("corn", 4, "blue_corn", 4, "purple_corn", 4, "dill", 4,
-		"tomato_vine", 4, "white_grape_vine", 4);
+		"tomato_vine", 4, "white_grape_vine", 4, "grape_vine", 4, "red_grape_vine", 4);
 	static final Item CUCUMBER = ingredient("cucumber", food(2, 1.2F));
 	static final Item WHITE_GRAPE = ingredient("white_grape", food(2, 1.2F));
 	static final Item HOPS = ingredient("hops", null);

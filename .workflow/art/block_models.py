@@ -354,7 +354,7 @@ CABBAGE = {"a": "#1e3a30", "b": "#2c5440", "c": "#3e6e52", "d": "#58896a", "e": 
            "g": "#d6ecb2"}
 
 
-def cabbage():
+def cabbage(plant="cabbage", palette=CABBAGE):
     side = shaded_side("deff", 9)
     # Two wrapper-leaf edges curving round the head, a shade darker than the leaf they lie on.
     for x in range(6, 16):
@@ -396,7 +396,59 @@ def cabbage():
         head(8, 8) + ring_of("wrapper_leaf", W, 4, 62, out=3.5, turn=45) + ring_of("large_leaf", L, 5, 38, out=2.5),
         head(10, 9) + ring_of("wrapper_leaf", W, 5, 65, out=4.5, turn=20) + ring_of("large_leaf", L, 6, 40, out=3.5),
     ]
-    build("cabbage", CABBAGE, textures, stages, "large_leaf")
+    build(plant, palette, textures, stages, "large_leaf")
+
+
+# Red cabbage: the same plant, its leaves and head a waxy purple shading to blue-green on the outer leaves.
+RED_CABBAGE = {"a": "#2a2438", "b": "#3c3050", "c": "#56426c", "d": "#6e4e86", "e": "#8a5e9a", "f": "#a874b0", "g": "#c898c8"}
+
+
+# Lettuce: a loose rosette of pale, frilly leaves, no head, then bolting to a tall stalk of small yellow flowers.
+LETTUCE = {"a": "#3a6a28", "b": "#4e8a32", "c": "#68a640", "d": "#88c050", "e": "#a8d670", "f": "#c8e898",
+           "g": "#e0f4bc", "Y": "#f0d84a", "Z": "#c8a830"}
+
+
+def frilly(grid):
+    """A leaf with a ruffled edge: every other pixel along its rim pushed out a pixel, a shade lighter."""
+    rows = [list(r) for r in grid]
+    for y, row in enumerate(rows):
+        filled = [x for x, ch in enumerate(row) if ch != "."]
+        if filled and y % 2 == 0:
+            for x in (filled[0] - 1, filled[-1] + 1):
+                if 0 <= x < len(row):
+                    row[x] = "e"
+    return ["".join(r) for r in rows]
+
+
+def lettuce():
+    textures = {"seed_leaf": padded(leaf_grid(4, 4)), "small_leaf": padded(frilly(recolour(leaf_grid(5, 6), STEP_LIGHTER))),
+                "leaf": padded(frilly(recolour(leaf_grid(7, 8), STEP_LIGHTER))),
+                "heart": padded(frilly(recolour(recolour(leaf_grid(5, 6), STEP_LIGHTER), STEP_LIGHTER))),
+                "stalk": stalk_strip(["cdccdcccdccdccdc"]), "flower": padded([".Y.", "YZY", ".Y."])}
+    M, S, H = (7, 8), (5, 6), (5, 6)
+
+    def rosette(outer, inner, out=0.0, tilt=40):
+        return ring_of("leaf", M, outer, tilt, out=out) + ring_of("heart", H, inner, 70, turn=30)
+
+    def bolted():
+        # A tall stalk with a few small leaves up it and a spray of small yellow flowers at the top.
+        parts = ring_of("leaf", M, 4, 25, out=1) + [stalk("stalk", 15, 0, 0)]
+        for k, y in enumerate((5, 9, 12)):
+            parts.append(leaf("small_leaf", S, k * 120, 35, 0, y - GROUND))
+        for heading, out, y in [(0, 0, 15), (60, 2, 14), (180, 2, 13), (280, 2, 14.5), (120, 1.5, 12)]:
+            x, z = 8 + out * _m.sin(_m.radians(heading)), 8 - out * _m.cos(_m.radians(heading))
+            face = {"uv": [0, 0, 3, 3], "texture": "#flower"}
+            parts.append({"from": [x - 1.5, GROUND + y, z - 1.5], "to": [x + 1.5, GROUND + y, z + 1.5], "shade": False,
+                          "faces": {"up": face, "down": face}})
+        return parts
+    stages = [
+        ring_of("seed_leaf", (4, 4), 2, 35, rise=1),
+        ring_of("seed_leaf", (4, 4), 2, 30, rise=1) + ring_of("small_leaf", S, 2, 50, turn=90),
+        ring_of("small_leaf", S, 5, 45),
+        rosette(4, 2), rosette(5, 3, out=0.5), rosette(6, 3, out=1, tilt=35), rosette(7, 4, out=1.5, tilt=32),
+        bolted(),
+    ]
+    build("lettuce", LETTUCE, textures, stages, "leaf")
 
 
 # Tomato: a seedling, a young plant, then a vine up the trellis that flowers, sets trusses of green cherry tomatoes,
@@ -522,11 +574,11 @@ BARLEY_TURNS = [10, 55, 100, 145, 30, 80, 125, 170]
 BARLEY_LEANS = [6, -8, 4, -5, 9, -7, 5, -6]
 
 
-def barley():
+def barley(plant="barley", palette=BARLEY, eared=BARLEY_EARED):
     textures = {"shoot": bottom_padded(BARLEY_SHOOT), "leafy": bottom_padded(BARLEY_LEAFY),
-                "eared": bottom_padded(BARLEY_EARED),
-                "turning": bottom_padded(recolour(BARLEY_EARED, {"f": "k", "e": "f"})),
-                "ripe": bottom_padded(recolour(BARLEY_EARED, {"e": "k", "f": "j", "d": "i", "c": "i", "b": "h"}))}
+                "eared": bottom_padded(eared),
+                "turning": bottom_padded(recolour(eared, {"f": "k", "e": "f"})),
+                "ripe": bottom_padded(recolour(eared, {"e": "k", "f": "j", "d": "i", "c": "i", "b": "h"}))}
 
     def clump(texture, size, count, droop=0):
         parts = []
@@ -537,7 +589,14 @@ def barley():
     stages = [clump("shoot", (5, 6), 3), clump("shoot", (5, 6), 6), clump("leafy", (7, 13), 5), clump("leafy", (7, 13), 6),
               clump("leafy", (7, 13), 8), clump("eared", (7, 16), 8), clump("turning", (7, 16), 8),
               clump("ripe", (7, 16), 8, droop=10)]
-    build("barley", BARLEY, textures, stages, "leafy")
+    build(plant, palette, textures, stages, "leafy")
+
+
+# Rye: taller and bluer than barley, its ear long and slender with short beards, ripening a greyish tan.
+RYE = {"a": "#24402e", "b": "#33583e", "c": "#487052", "d": "#668e6a", "e": "#86aa84", "f": "#a8c4a0",
+       "h": "#7a6a48", "i": "#a8946a", "j": "#c8b48a", "k": "#e0d4b0"}
+RYE_EARED = ["..e..", ".e.e.", "..f..", ".fdf.", "..d..", ".fdf.", "..d..", ".fdf.", "..d..", ".fdf.", "..d..", "..c..",
+             "..cd.", ".dc..", "..c..", "..c.."]
 
 
 # Onion: tall, hollow, blue-green leaves fanning from a pale neck over a round bulb sitting on the soil, the leaves
@@ -547,9 +606,16 @@ ONION = {"b": "#2e5a3a", "c": "#457a4c", "d": "#5e9660", "e": "#86b47c", "f": "#
          "h": "#8a7a3a", "i": "#b0a050", "j": "#c8b868",
          "m": "#6e3e1a", "n": "#a0622a", "o": "#c88a44", "p": "#e0b070", "q": "#f0d4a0"}
 RED_ONION = {**ONION, "m": "#4a1430", "n": "#7a2048", "o": "#9e3460", "p": "#c0587e", "q": "#dc90aa"}
+# Garlic: a papery white bulb streaked with purple, sitting mostly underground under flat grey-green leaves.
+GARLIC = {**ONION, "n": "#b8a8b8", "o": "#e4dcd4", "p": "#f2ece4", "q": "#fffaf2"}
+# Shallot: a cluster of small, coppery bulbs.
+SHALLOT = {**ONION, "m": "#5a2e1a", "n": "#8a4a2a", "o": "#b06a40", "p": "#cc8a5e", "q": "#e8b08a"}
+SHALLOT_CLUSTER = ((-1.6, -1.2, 0.62), (1.7, -0.6, 0.6), (0.1, 1.8, 0.58))
 
 
-def onion_build(plant, palette):
+def onion_build(plant, palette, bulbs=((0, 0, 1.0),), sink=1):
+    """An onion-like plant: bulbs is (dx, dz, scale) for each bulb, so a shallot grows a cluster; sink is how deep the
+    bulbs sit, deeper for garlic, which is mostly underground."""
     side = shaded_side("nnop", 8)
     side = ["".join("n" if x % 4 == 1 and ch in "op" else ch for x, ch in enumerate(row)) for row in side]
     top = ["".join("f" if _m.hypot(x - 7.5, y - 7.5) < 1.5 else "q" if _m.hypot(x - 7.5, y - 7.5) < 2.6 else "p"
@@ -561,9 +627,12 @@ def onion_build(plant, palette):
         return [stalk("leaf", length, turn + i * 360 / count, tilt, ground=ground, column=column) for i in range(count)]
 
     def plant_with_bulb(d, h, neck, leaves):
-        top_y = ball_top(d, h, sink=1)
-        return (ball(d, h, "bulb_side", "bulb_top", sink=1)
-                + [solid((7, top_y, 7), (9, top_y + neck, 9), "neck")] + leaves(top_y + neck))
+        parts = []
+        for dx, dz, scale in bulbs:
+            bd, bh = max(2, round(d * scale)), max(2, round(h * scale))
+            parts += ball(bd, bh, "bulb_side", "bulb_top", sink=sink, centre=(8 + dx, 8 + dz))
+        top_y = ball_top(d, h, sink=sink) if len(bulbs) == 1 else GROUND + 1
+        return parts + [solid((7, top_y, 7), (9, top_y + neck, 9), "neck")] + leaves(top_y + neck)
     stages = [
         fan(2, 5, 8, GROUND), fan(3, 7, 10, GROUND), fan(4, 9, 12, GROUND), fan(5, 11, 12, GROUND),
         plant_with_bulb(4, 4, 2, lambda y: fan(5, 12, 12, y)),
@@ -572,6 +641,23 @@ def onion_build(plant, palette):
         plant_with_bulb(9, 8, 2, lambda y: fan(5, 10, 76, y, column=1, turn=20)),
     ]
     build(plant, palette, textures, stages, "bulb_side")
+
+
+# Spring onion: thin, upright tube leaves from a slim white base, no bulb, then a tall stalk topped with a round white
+# flower head when it goes to seed.
+
+def spring_onion():
+    textures = {"leaf": stalk_strip(["dddcdddcdddcdddw", "cdddcdddcdddcwww"]), "base": padded(["ww", "fw", "ww", "fw"]),
+                "flower_side": shaded_side("efww", 4, light_columns=(5, 6)),
+                "flower_top": ["".join("w" if (x + y) % 3 else "f" for x in range(16)) for y in range(16)]}
+
+    def fan(count, length, lean, turn=0):
+        return ([solid((7.25, GROUND, 7.25), (8.75, GROUND + 3, 8.75), "base")]
+                + [stalk("leaf", length, turn + i * 360 / count, lean, ground=GROUND, column=i % 2) for i in range(count)])
+    stages = [fan(2, 4, 6), fan(3, 6, 8), fan(4, 8, 8), fan(4, 10, 9), fan(5, 11, 9), fan(5, 13, 10), fan(6, 14, 10),
+              fan(4, 11, 14) + [stalk("leaf", 15, 0, 0, column=0)]
+              + ball(4, 4, "flower_side", "flower_top", ground=GROUND + 14)]
+    build("spring_onion", ONION, textures, stages, "leaf")
 
 
 # Radish: seed leaves, then oval leaves held up on pale stalks over a round, bright red root sitting on the soil.
@@ -711,26 +797,34 @@ def strawberry():
 
 CORN = {"a": "#1e4a1e", "b": "#2c6428", "c": "#3e7e34", "d": "#58983e", "e": "#7cb456", "f": "#a8d07c",
         "h": "#a8883e", "i": "#ccac5a", "j": "#e8d088", "y": "#b8a040", "z": "#d8c868",
-        "H": "#78a84a", "I": "#a4c870", "T": "#c0a860", "U": "#dcc890", "k": "#e8c888", "m": "#6a3e1c"}
+        "H": "#78a84a", "I": "#a4c870", "T": "#c0a860", "U": "#dcc890", "k": "#e8c888", "m": "#6a3e1c",
+        "K": "#f0c030", "L": "#d89a18"}
+BLUE_CORN = {**CORN, "K": "#4a5a9a", "L": "#2e3a6e"}
+PURPLE_CORN = {**CORN, "K": "#5a1e4a", "L": "#3a0e30"}
 
 
-def corn():
+def corn(plant="corn", palette=CORN):
     strap = [".d."] + ["ded"] * 5 + ["cec"] * 6 + ["cdc"] * 4
     husk = ["".join("I" if x % 3 == 0 else "H" for x in range(16)) for _ in range(16)]
     tassel = ["i.j.i", ".iji.", "j.i.j", ".hih.", "..h..", "..h.."]
     textures = {"leaf": padded(strap), "old_leaf": padded(recolour(strap, {"d": "z", "e": "z", "c": "y"})),
                 "stalk": stalk_strip(["cdccdcccdccdccdc", "dcdcccdcdcccdcdc"]),
                 "tassel": bottom_padded(tassel), "brown_tassel": bottom_padded(recolour(tassel, {"i": "h", "j": "i"})),
-                "husk": husk, "silk": padded(["kk.", "kkk", ".kk"]), "brown_silk": padded(["mm.", "mmm", ".mm"])}
+                "husk": husk, "silk": padded(["kk.", "kkk", ".kk"]), "brown_silk": padded(["mm.", "mmm", ".mm"]),
+                "dry_husk": recolour(husk, {"I": "U", "H": "T"}),
+                "kernels": ["".join("K" if (x + y) % 2 else "L" for x in range(16)) for y in range(16)]}
 
     def cob(heading, y, silk):
-        # A husked cob leaning out from the stalk, tapering to its tuft of silk.
+        # A husked cob leaning out from the stalk, tapering to its tuft of silk. Ripe, its husk dries and opens at the
+        # tip to show the kernels, the colour of the corn.
         rotation = {"origin": [8, y, 8], "x": -20, "y": heading, "z": 0}
-        return [solid((6.5, y, 4), (9.5, y + 5, 7), "husk", rotation=rotation),
-                solid((7, y + 5, 4.5), (9, y + 7, 6.5), "husk", top=silk, rotation=rotation),
+        ripe = silk == "brown_silk"
+        husk = "dry_husk" if ripe else "husk"
+        return [solid((6.5, y, 4), (9.5, y + 5, 7), husk, rotation=rotation),
+                solid((7, y + 5, 4.5), (9, y + 7, 6.5), "kernels" if ripe else husk, top=silk, rotation=rotation),
                 solid((7.5, y + 7, 5), (8.5, y + 8.5, 6), silk, rotation=rotation)]
 
-    def plant(height, leaves, length, tassel=None, cobs=(), silk="silk", old=0):
+    def stalk_plant(height, leaves, length, tassel=None, cobs=(), silk="silk", old=0):
         parts = column(8, 8, GROUND, GROUND + height, "stalk")
         for k in range(leaves):
             y = GROUND + 2 + k * (height - 4) / max(1, leaves)
@@ -744,12 +838,12 @@ def corn():
         return parts
     # Up to its fourth stage corn stays within its block; from then on it is two blocks tall, its tassel near the top.
     stages = [
-        plant(2, 3, 6), plant(4, 4, 8), plant(8, 5, 10), plant(12, 6, 12), plant(20, 8, 14),
-        plant(25, 10, 16, tassel="tassel"),
-        plant(25, 10, 16, tassel="tassel", cobs=[(40, 11), (220, 14)]),
-        plant(25, 10, 16, tassel="brown_tassel", cobs=[(40, 11), (220, 14)], silk="brown_silk", old=2),
+        stalk_plant(2, 3, 6), stalk_plant(4, 4, 8), stalk_plant(8, 5, 10), stalk_plant(12, 6, 12), stalk_plant(20, 8, 14),
+        stalk_plant(25, 10, 16, tassel="tassel"),
+        stalk_plant(25, 10, 16, tassel="tassel", cobs=[(40, 11), (220, 14)]),
+        stalk_plant(25, 10, 16, tassel="brown_tassel", cobs=[(40, 11), (220, 14)], silk="brown_silk", old=2),
     ]
-    build("corn", CORN, textures, stages, "leaf")
+    build(plant, palette, textures, stages, "leaf")
 
 
 # White grape: a cutting, a young vine, then a woody vine trained along the trellis rails with big lobed leaves,
@@ -799,7 +893,7 @@ def stamped(stamps, cane_row=None):
     return ["".join(r) for r in grid]
 
 
-def grape():
+def grape(plant="white_grape_vine", palette=GRAPE):
     young = ["." * 16] * 6 + [
         "......dd........",
         ".....dced.......",
@@ -845,7 +939,12 @@ def grape():
         7: climbed([(4.5, front, 17, big, "ripe"), (11.5, front, 16, [3, 3, 2, 2, 1], "ripe"), (8, front, 19, [3, 3, 3, 2, 1], "ripe"),
                     (6, back, 17, big, "ripe"), (11, back, 18, [3, 3, 2, 2, 1], "ripe")]),
     }
-    build("white_grape_vine", GRAPE, textures, stages, "vine", extra={"post": "minecraft:block/stripped_oak_log"}, tall=tall)
+    build(plant, palette, textures, stages, "vine", extra={"post": "minecraft:block/stripped_oak_log"}, tall=tall)
+
+
+# Black and red table grapes: the same vine, ripening dark blue-purple or red.
+BLACK_GRAPE = {**GRAPE, "P": "#8a6ab0", "Q": "#5a3a86", "R": "#341e56"}
+RED_GRAPE = {**GRAPE, "P": "#e07a8e", "Q": "#b03a5a", "R": "#7a1e3c"}
 
 
 # Rice: a clump of grassy shoots rising out of standing water, then green heads that droop as they fill and ripen
@@ -862,7 +961,7 @@ RICE_HEADING = ["..ff.", ".f..f", "....f", "..e.f", ".e.d.", "e.d.d", ".dcd.", "
                 "..cc.", "..c..", "..c..", "..c.."]
 
 
-def rice():
+def rice(plant="rice", palette=RICE):
     textures = {"blades": bottom_padded(RICE_BLADES), "heading": bottom_padded(RICE_HEADING),
                 "ripe": bottom_padded(recolour(RICE_HEADING, {"f": "j", "e": "i", "d": "g", "c": "k"})),
                 "stems": bottom_padded([".c.c."] * 16)}
@@ -878,7 +977,11 @@ def rice():
         return parts
     stages = [clump("blades", 3, 16), clump("blades", 5, 18), clump("blades", 7, 20), clump("blades", 9, 22),
               clump("blades", 9, 24), clump("heading", 9, 26), clump("heading", 9, 27), clump("ripe", 9, 27)]
-    build("rice", RICE, textures, stages, "blades")
+    build(plant, palette, textures, stages, "blades")
+
+
+# Glutinous rice: the same plant, its ripe grains a chalky cream rather than gold.
+GLUTINOUS_RICE = {**RICE, "i": "#d4c89a", "j": "#efe6c4"}
 
 
 # Rhubarb: red buds breaking from the crown, then huge, crinkled leaves held up on thick red stalks.
@@ -1382,6 +1485,17 @@ def main():
     wakame()
     white_bean()
     redcurrant()
+    cabbage("red_cabbage", RED_CABBAGE)
+    lettuce()
+    corn("blue_corn", BLUE_CORN)
+    corn("purple_corn", PURPLE_CORN)
+    grape("grape_vine", BLACK_GRAPE)
+    grape("red_grape_vine", RED_GRAPE)
+    rice("glutinous_rice", GLUTINOUS_RICE)
+    barley("rye", RYE, RYE_EARED)
+    onion_build("garlic", GARLIC, sink=5)
+    onion_build("shallot", SHALLOT, SHALLOT_CLUSTER)
+    spring_onion()
 
 
 if __name__ == "__main__":

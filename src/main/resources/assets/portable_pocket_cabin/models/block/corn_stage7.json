@@ -7,7 +7,8 @@
     "old_leaf": "portable_pocket_cabin:block/corn_old_leaf",
     "leaf": "portable_pocket_cabin:block/corn_leaf",
     "brown_tassel": "portable_pocket_cabin:block/corn_brown_tassel",
-    "husk": "portable_pocket_cabin:block/corn_husk",
+    "dry_husk": "portable_pocket_cabin:block/corn_dry_husk",
+    "kernels": "portable_pocket_cabin:block/corn_kernels",
     "brown_silk": "portable_pocket_cabin:block/corn_brown_silk"
   },
   "elements": [
@@ -1237,7 +1238,7 @@
             3.0,
             5
           ],
-          "texture": "#husk"
+          "texture": "#dry_husk"
         },
         "south": {
           "uv": [
@@ -1246,7 +1247,7 @@
             3.0,
             5
           ],
-          "texture": "#husk"
+          "texture": "#dry_husk"
         },
         "east": {
           "uv": [
@@ -1255,7 +1256,7 @@
             3,
             5
           ],
-          "texture": "#husk"
+          "texture": "#dry_husk"
         },
         "west": {
           "uv": [
@@ -1264,7 +1265,7 @@
             3,
             5
           ],
-          "texture": "#husk"
+          "texture": "#dry_husk"
         },
         "up": {
           "uv": [
@@ -1273,7 +1274,7 @@
             3.0,
             3
           ],
-          "texture": "#husk"
+          "texture": "#dry_husk"
         },
         "down": {
           "uv": [
@@ -1282,7 +1283,7 @@
             3.0,
             3
           ],
-          "texture": "#husk"
+          "texture": "#dry_husk"
         }
       },
       "rotation": {
@@ -1315,7 +1316,7 @@
             2,
             2
           ],
-          "texture": "#husk"
+          "texture": "#kernels"
         },
         "south": {
           "uv": [
@@ -1324,7 +1325,7 @@
             2,
             2
           ],
-          "texture": "#husk"
+          "texture": "#kernels"
         },
         "east": {
           "uv": [
@@ -1333,7 +1334,7 @@
             2.0,
             2
           ],
-          "texture": "#husk"
+          "texture": "#kernels"
         },
         "west": {
           "uv": [
@@ -1342,7 +1343,7 @@
             2.0,
             2
           ],
-          "texture": "#husk"
+          "texture": "#kernels"
         },
         "up": {
           "uv": [
@@ -1360,7 +1361,7 @@
             2,
             2.0
           ],
-          "texture": "#husk"
+          "texture": "#kernels"
         }
       },
       "rotation": {
@@ -1471,7 +1472,7 @@
             3.0,
             5
           ],
-          "texture": "#husk"
+          "texture": "#dry_husk"
         },
         "south": {
           "uv": [
@@ -1480,7 +1481,7 @@
             3.0,
             5
           ],
-          "texture": "#husk"
+          "texture": "#dry_husk"
         },
         "east": {
           "uv": [
@@ -1489,7 +1490,7 @@
             3,
             5
           ],
-          "texture": "#husk"
+          "texture": "#dry_husk"
         },
         "west": {
           "uv": [
@@ -1498,7 +1499,7 @@
             3,
             5
           ],
-          "texture": "#husk"
+          "texture": "#dry_husk"
         },
         "up": {
           "uv": [
@@ -1507,7 +1508,7 @@
             3.0,
             3
           ],
-          "texture": "#husk"
+          "texture": "#dry_husk"
         },
         "down": {
           "uv": [
@@ -1516,7 +1517,7 @@
             3.0,
             3
           ],
-          "texture": "#husk"
+          "texture": "#dry_husk"
         }
       },
       "rotation": {
@@ -1549,7 +1550,7 @@
             2,
             2
           ],
-          "texture": "#husk"
+          "texture": "#kernels"
         },
         "south": {
           "uv": [
@@ -1558,7 +1559,7 @@
             2,
             2
           ],
-          "texture": "#husk"
+          "texture": "#kernels"
         },
         "east": {
           "uv": [
@@ -1567,7 +1568,7 @@
             2.0,
             2
           ],
-          "texture": "#husk"
+          "texture": "#kernels"
         },
         "west": {
           "uv": [
@@ -1576,7 +1577,7 @@
             2.0,
             2
           ],
-          "texture": "#husk"
+          "texture": "#kernels"
         },
         "up": {
           "uv": [
@@ -1594,7 +1595,7 @@
             2,
             2.0
           ],
-          "texture": "#husk"
+          "texture": "#kernels"
         }
       },
       "rotation": {

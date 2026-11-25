@@ -1,6 +1,148 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/potatoes_stage0"
-  }
+    "particle": "portable_pocket_cabin:block/shallot_bulb_side",
+    "leaf": "portable_pocket_cabin:block/shallot_leaf"
+  },
+  "elements": [
+    {
+      "from": [
+        7.5,
+        -1,
+        7.5
+      ],
+      "to": [
+        8.5,
+        4,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1,
+          8
+        ],
+        "x": -8,
+        "y": 0.0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            11,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "south": {
+          "uv": [
+            0,
+            11,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "east": {
+          "uv": [
+            0,
+            11,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "west": {
+          "uv": [
+            0,
+            11,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "up": {
+          "uv": [
+            0,
+            11,
+            1,
+            12
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        -1,
+        7.5
+      ],
+      "to": [
+        8.5,
+        4,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1,
+          8
+        ],
+        "x": -8,
+        "y": 180.0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            11,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "south": {
+          "uv": [
+            0,
+            11,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "east": {
+          "uv": [
+            0,
+            11,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "west": {
+          "uv": [
+            0,
+            11,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "up": {
+          "uv": [
+            0,
+            11,
+            1,
+            12
+          ],
+          "texture": "#leaf"
+        }
+      }
+    }
+  ]
 }

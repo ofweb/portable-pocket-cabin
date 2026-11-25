@@ -1,6 +1,541 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/beetroots_stage3"
-  }
+    "particle": "portable_pocket_cabin:block/lettuce_leaf",
+    "leaf": "portable_pocket_cabin:block/lettuce_leaf",
+    "stalk": "portable_pocket_cabin:block/lettuce_stalk",
+    "small_leaf": "portable_pocket_cabin:block/lettuce_small_leaf",
+    "flower": "portable_pocket_cabin:block/lettuce_flower"
+  },
+  "elements": [
+    {
+      "from": [
+        4.5,
+        -1.4663076581549985,
+        -1.103377918962492
+      ],
+      "to": [
+        11.5,
+        -1.4663076581549985,
+        6.896622081037508
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.4663076581549985,
+          8
+        ],
+        "x": 25,
+        "y": 0.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            7,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            7,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        4.5,
+        -1.4663076581549985,
+        -1.103377918962492
+      ],
+      "to": [
+        11.5,
+        -1.4663076581549985,
+        6.896622081037508
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.4663076581549985,
+          8
+        ],
+        "x": 25,
+        "y": 90.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            7,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            7,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        4.5,
+        -1.4663076581549985,
+        -1.103377918962492
+      ],
+      "to": [
+        11.5,
+        -1.4663076581549985,
+        6.896622081037508
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.4663076581549985,
+          8
+        ],
+        "x": 25,
+        "y": 180.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            7,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            7,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        4.5,
+        -1.4663076581549985,
+        -1.103377918962492
+      ],
+      "to": [
+        11.5,
+        -1.4663076581549985,
+        6.896622081037508
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.4663076581549985,
+          8
+        ],
+        "x": 25,
+        "y": 270.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            7,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            7,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        -1,
+        7.5
+      ],
+      "to": [
+        8.5,
+        14,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1,
+          8
+        ],
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            1,
+            1,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "south": {
+          "uv": [
+            0,
+            1,
+            1,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            1,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "west": {
+          "uv": [
+            0,
+            1,
+            1,
+            16
+          ],
+          "texture": "#stalk"
+        },
+        "up": {
+          "uv": [
+            0,
+            1,
+            1,
+            2
+          ],
+          "texture": "#stalk"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        5.0,
+        2.0
+      ],
+      "to": [
+        10.5,
+        5.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          5.0,
+          8
+        ],
+        "x": 35,
+        "y": 0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        9.0,
+        2.0
+      ],
+      "to": [
+        10.5,
+        9.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          9.0,
+          8
+        ],
+        "x": 35,
+        "y": 120,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        12.0,
+        2.0
+      ],
+      "to": [
+        10.5,
+        12.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          12.0,
+          8
+        ],
+        "x": 35,
+        "y": 240,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        6.5,
+        14,
+        6.5
+      ],
+      "to": [
+        9.5,
+        14,
+        9.5
+      ],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "texture": "#flower"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "texture": "#flower"
+        }
+      }
+    },
+    {
+      "from": [
+        8.232050807568877,
+        13,
+        5.5
+      ],
+      "to": [
+        11.232050807568877,
+        13,
+        8.5
+      ],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "texture": "#flower"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "texture": "#flower"
+        }
+      }
+    },
+    {
+      "from": [
+        6.5,
+        12,
+        8.5
+      ],
+      "to": [
+        9.5,
+        12,
+        11.5
+      ],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "texture": "#flower"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "texture": "#flower"
+        }
+      }
+    },
+    {
+      "from": [
+        4.530384493975584,
+        13.5,
+        6.15270364466614
+      ],
+      "to": [
+        7.530384493975584,
+        13.5,
+        9.15270364466614
+      ],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "texture": "#flower"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "texture": "#flower"
+        }
+      }
+    },
+    {
+      "from": [
+        7.799038105676658,
+        11,
+        7.25
+      ],
+      "to": [
+        10.799038105676658,
+        11,
+        10.25
+      ],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "texture": "#flower"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            3,
+            3
+          ],
+          "texture": "#flower"
+        }
+      }
+    }
+  ]
 }
