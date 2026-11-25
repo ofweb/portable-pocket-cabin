@@ -85,8 +85,9 @@ final class CookingPlants {
 	 * The plants that grow taller than a block, and the stage from which they do: field crops into the block above while
 	 * it is free, vines up a second trellis stacked on their own.
 	 */
-	private static final Map<String, Integer> TALL_FROM = Map.of("corn", 4, "blue_corn", 4, "purple_corn", 4, "dill", 4,
-		"tomato_vine", 4, "white_grape_vine", 4, "grape_vine", 4, "red_grape_vine", 4);
+	private static final Map<String, Integer> TALL_FROM = java.util.stream.Stream.of("corn", "blue_corn", "purple_corn", "dill",
+		"tomato_vine", "white_grape_vine", "grape_vine", "red_grape_vine", "cucumber_vine", "hop_vine", "long_bean_vine",
+		"peppercorn_vine", "vanilla_vine", "betel_vine").collect(java.util.stream.Collectors.toUnmodifiableMap(plant -> plant, plant -> 4));
 	static final Item CUCUMBER = ingredient("cucumber", food(2, 1.2F));
 	static final Item WHITE_GRAPE = ingredient("white_grape", food(2, 1.2F));
 	static final Item HOPS = ingredient("hops", null);

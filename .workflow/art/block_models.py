@@ -1465,6 +1465,191 @@ def white_bean():
     build("white_bean", BEAN, textures, stages, "leaf")
 
 
+# Climbing vines on a trellis, built one way: stems winding up the trellis with the vine's own leaves along them, its
+# flowers among the leaves, and its fruit hanging in 3D in front of and behind the trellis. A vine that climbs a second
+# trellis stacked on its own covers both, its fruit hanging the full height.
+
+def vine_texture(seed, leaf_shape, height=16, stems=(5, 11), flowers=None):
+    """A vine face: stems winding up from the root to `height` pixels, leaves stamped alternately either side of them,
+    some a shade lighter, and flowers (shape, count) stamped among the leaves if given."""
+    import random
+    rng = random.Random(seed)
+    grid = [["."] * 16 for _ in range(16)]
+    for k, x0 in enumerate(stems):
+        phase = rng.random() * 6
+        points = [(x0 + round(1.6 * _m.sin(y * 0.45 + phase)), y) for y in range(15, 15 - height, -1)]
+        for x, y in points:
+            if 0 <= x < 16:
+                grid[y][x] = "s"
+        for i, (x, y) in enumerate(points[1::3]):
+            side = 1 if (i + k) % 2 else -1
+            w = len(leaf_shape[0])
+            x0l = x + 1 if side > 0 else x - w
+            light = rng.random() < 0.4
+            for dy, row in enumerate(leaf_shape):
+                for dx, ch in enumerate(row if side > 0 else row[::-1]):
+                    px, py = x0l + dx, y - len(leaf_shape) + 1 + dy
+                    if ch != "." and 0 <= px < 16 and 0 <= py < 16:
+                        grid[py][px] = STEP_LIGHTER[ch] if light else ch
+    if flowers:
+        shape, count = flowers
+        leafy_spots = [(x, y) for y in range(16) for x in range(16) if grid[y][x] in "bcde"]
+        for x, y in rng.sample(leafy_spots, min(count, len(leafy_spots))):
+            for dy, row in enumerate(shape):
+                for dx, ch in enumerate(row):
+                    if ch != "." and 0 <= x + dx < 16 and 0 <= y + dy < 16:
+                        grid[y + dy][x + dx] = ch
+    return ["".join(r) for r in grid]
+
+
+FRONT, BACK = 10.4, 5.6
+SHORT_SPOTS = [(4.5, FRONT, 14), (11, FRONT, 9.5), (7.5, BACK, 12.5), (12, BACK, 6.5), (6, FRONT, 6)]
+TALL_SPOTS = [(4.5, FRONT, 29), (11, FRONT, 24), (7.5, BACK, 27.5), (12, BACK, 21), (5, FRONT, 19), (9.5, BACK, 15),
+              (11.5, FRONT, 12), (5.5, BACK, 9)]
+
+
+def trellis_vine(plant, palette, leaf_shape, flower, hang, seed, flowering_fruit=2, ripe_fruit=None):
+    """A trellis vine through its eight stages: a seedling, a young vine half up the trellis, the full vine, then in
+    flower with young fruit, then hung with ripe fruit. From its fifth stage it can climb a stacked trellis, and its
+    two-block models cover both. hang(x, z, top, ripe) gives the parts of one hanging fruit or cluster."""
+    textures = {"seedling": vine_texture(seed, leaf_shape, 6), "young": vine_texture(seed, leaf_shape, 12),
+                "vine": vine_texture(seed, leaf_shape), "flowering": vine_texture(seed, leaf_shape, flowers=(flower, 6)),
+                "vine_top": vine_texture(seed + 1, leaf_shape, stems=(4, 8, 12)),
+                "flowering_top": vine_texture(seed + 1, leaf_shape, stems=(4, 8, 12), flowers=(flower, 7))}
+
+    def on_trellis(lower, upper=None, fruit=(), ripe=False):
+        parts = trellis_frame() + trellis_planes("#" + lower)
+        if upper:
+            parts += trellis_planes("#" + upper, 16)
+        for x, z, top in fruit:
+            parts += hang(x, z, top, ripe)
+        return parts
+    ripe_fruit = ripe_fruit or len(SHORT_SPOTS)
+    stages = [on_trellis("seedling"), on_trellis("seedling"), on_trellis("young"), on_trellis("young"), on_trellis("vine"),
+              on_trellis("vine"), on_trellis("flowering", fruit=SHORT_SPOTS[:flowering_fruit]),
+              on_trellis("vine", fruit=SHORT_SPOTS[:ripe_fruit], ripe=True)]
+    tall = {4: on_trellis("vine", "vine_top"), 5: on_trellis("vine", "vine_top"),
+            6: on_trellis("flowering", "flowering_top", fruit=TALL_SPOTS[:flowering_fruit + 1]),
+            7: on_trellis("vine", "vine_top", fruit=TALL_SPOTS[:ripe_fruit + 3], ripe=True)}
+    # Textures the vine's fruit uses beyond these, drawn by the vine itself as <plant>_<name>.
+    extra = {"post": "minecraft:block/stripped_oak_log"}
+    for elements in stages + list(tall.values()):
+        for element in elements:
+            for face in element["faces"].values():
+                key = face["texture"][1:]
+                if key not in textures and key != "post":
+                    extra[key] = f"{plant}_{key}"
+    build(plant, palette, textures, stages, "vine", extra=extra, tall=tall)
+
+
+def hanging_solid(x, z, top, width, length, texture, top_texture=None, tilt=0):
+    """A fruit hanging from a short stalk at `top`: a box `width` across and `length` long below it."""
+    rotation = {"origin": [x, top, z], "x": tilt, "y": 0, "z": 0} if tilt else None
+    return [rod(x, z, top - 1, top, "stem"),
+            solid((x - width / 2, top - 1 - length, z - width / 2), (x + width / 2, top - 1, z + width / 2), texture,
+                  top=top_texture, rotation=rotation)]
+
+
+VINE_GREENS = {"a": "#1e4424", "b": "#2c5e30", "c": "#3f7c3a", "d": "#5c9a44", "e": "#8cc05a", "f": "#b4dc84"}
+
+
+# Cucumber: rough, lobed leaves and yellow flowers, then long green cucumbers hanging among them.
+CUCUMBER = {**VINE_GREENS, "s": "#4a7a2e", "Y": "#f0d030", "Z": "#c89a18", "G": "#2c5a20", "H": "#3e7a2a", "I": "#7aa848",
+            "k": "#3e6a22"}
+
+
+def cucumber():
+    skin = ["".join("I" if (x * 3 + y * 7) % 9 == 0 else "H" if (x + y) % 3 else "G" for x in range(16)) for y in range(16)]
+    palette = CUCUMBER
+
+    def hang(x, z, top, ripe):
+        return hanging_solid(x, z, top, 1.6, 6 if ripe else 3, "cucumber", tilt=8)
+    trellis_vine("cucumber_vine", palette, ["d.d.", "dcdc", "cedc", ".cb."], [".Y.", "YZY", ".Y."], hang, seed=21)
+    draw("cucumber_vine_cucumber", skin, palette)
+    draw("cucumber_vine_stem", stalk_strip(["k" * 16]), palette)
+
+
+# Hops: bines of three-lobed leaves, then clusters of pale, papery cones.
+HOPS = {**VINE_GREENS, "s": "#5a7a2e", "P": "#7aa040", "Q": "#a8c860", "R": "#d0e490", "S": "#e8f4b8", "k": "#4a6a28"}
+
+
+def hops():
+    def hang(x, z, top, ripe):
+        parts = [rod(x, z, top - 1, top, "stem")]
+        size = 3 if ripe else 2
+        for dx, dy in ((0, 0), (-1.2, -1.6), (1.2, -2.2)):
+            parts += ball(size, size + 1, "cone_side", "cone_top", ground=top - 1 - size - 1 + dy, centre=(x + dx, z))
+        return parts
+    trellis_vine("hop_vine", HOPS, ["c.c", "dcd", ".b."], ["Q", "R"], hang, seed=22, flowering_fruit=3)
+    draw("hop_vine_cone_side", ["".join("R" if (x + y // 2) % 2 else "Q" for x in range(16)) for y in range(16)], HOPS)
+    draw("hop_vine_cone_top", ["".join("S" if (x + y) % 3 else "R" for x in range(16)) for y in range(16)], HOPS)
+    draw("hop_vine_stem", stalk_strip(["k" * 16]), HOPS)
+
+
+# Long bean: three-part leaves and lilac flowers, then very long, slim pods hanging in pairs.
+LONG_BEAN = {**VINE_GREENS, "s": "#4e7a30", "L": "#b89ad8", "M": "#8a6ab8", "G": "#4e8a2a", "H": "#6aa83a", "k": "#3e6a22"}
+
+
+def long_bean():
+    def hang(x, z, top, ripe):
+        length = 8 if ripe else 4
+        return hanging_solid(x - 0.5, z, top, 0.5, length, "pod") + hanging_solid(x + 0.5, z, top - 1, 0.5, length - 2, "pod")
+    trellis_vine("long_bean_vine", LONG_BEAN, [".d.", "dcd", "cdc", ".b."], ["L.", "ML"], hang, seed=23, flowering_fruit=3)
+    draw("long_bean_vine_pod", ["".join("H" if x % 2 else "G" for x in range(16)) for _ in range(16)], LONG_BEAN)
+    draw("long_bean_vine_stem", stalk_strip(["k" * 16]), LONG_BEAN)
+
+
+# Peppercorn: glossy, heart-shaped leaves, then long spikes of small berries, green, ripening red.
+PEPPERCORN = {**VINE_GREENS, "s": "#5a5a2a", "G": "#4e8a2a", "H": "#7ab040", "R": "#a81c1c", "T": "#e04030", "k": "#4a5a24",
+              "W": "#e8ecc8"}
+
+
+def peppercorn():
+    def hang(x, z, top, ripe):
+        parts = [rod(x, z, top - 6, top, "stem")]
+        berry = "ripe_berry" if ripe else "green_berry"
+        for k in range(5):
+            bx = x + (0.5 if k % 2 else -0.5)
+            by = top - 1.2 * (k + 1)
+            parts.append(solid((bx - 0.5, by, z - 0.5), (bx + 0.5, by + 1, z + 0.5), berry))
+        return parts
+    trellis_vine("peppercorn_vine", PEPPERCORN, [".dd.", "dcec", "cdcb", ".cb."], ["W", "W"], hang, seed=24, flowering_fruit=3)
+    draw("peppercorn_vine_green_berry", padded(["HG", "GH"]), PEPPERCORN)
+    draw("peppercorn_vine_ripe_berry", padded(["TR", "RT"]), PEPPERCORN)
+    draw("peppercorn_vine_stem", stalk_strip(["k" * 16]), PEPPERCORN)
+
+
+# Vanilla: a thick green orchid vine with fleshy, oblong leaves and waxy pale yellow-green flowers, then bunches of
+# long green pods.
+VANILLA = {**VINE_GREENS, "s": "#5a9a3a", "Y": "#eef0b0", "Z": "#d0d870", "G": "#4a7a2a", "H": "#6a9a3a", "k": "#4a7a2a"}
+
+
+def vanilla():
+    def hang(x, z, top, ripe):
+        length = 7 if ripe else 3
+        parts = []
+        for dx in (-0.7, 0, 0.7):
+            parts += hanging_solid(x + dx, z, top - abs(dx), 0.6, length - abs(dx) * 2, "pod")
+        return parts
+    trellis_vine("vanilla_vine", VANILLA, ["dd", "ce", "dc", "cd", "b."], ["Y.", "ZY", "Y."], hang, seed=25, flowering_fruit=2,
+                 ripe_fruit=4)
+    draw("vanilla_vine_pod", ["".join("H" if x % 2 else "G" for x in range(16)) for _ in range(16)], VANILLA)
+    draw("vanilla_vine_stem", stalk_strip(["k" * 16]), VANILLA)
+
+
+# Betel: picked for its leaves, so it grows lusher and glossier rather than fruiting, with a few pale catkins.
+BETEL = {**VINE_GREENS, "s": "#4a6a2a", "W": "#e8e4c0", "V": "#c8c098", "k": "#4a6a2a"}
+
+
+def betel():
+    def hang(x, z, top, ripe):
+        return hanging_solid(x, z, top, 0.8, 4, "catkin")
+    trellis_vine("betel_vine", BETEL, [".dd.", "dceed", "cdedc", ".cdc.", "..b.."], ["e", "f"], hang, seed=26,
+                 flowering_fruit=2, ripe_fruit=3)
+    draw("betel_vine_catkin", ["".join("W" if (x + y) % 2 else "V" for x in range(16)) for y in range(16)], BETEL)
+    draw("betel_vine_stem", stalk_strip(["k" * 16]), BETEL)
+
+
 def main():
     cabbage()
     tomato()
@@ -1496,6 +1681,12 @@ def main():
     onion_build("garlic", GARLIC, sink=5)
     onion_build("shallot", SHALLOT, SHALLOT_CLUSTER)
     spring_onion()
+    cucumber()
+    hops()
+    long_bean()
+    peppercorn()
+    vanilla()
+    betel()
 
 
 if __name__ == "__main__":

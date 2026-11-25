@@ -2,9 +2,9 @@
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
   "textures": {
-    "particle": "minecraft:block/cave_vines_plant",
+    "particle": "portable_pocket_cabin:block/peppercorn_vine_vine",
     "post": "minecraft:block/stripped_oak_log",
-    "plant": "minecraft:block/cave_vines_plant"
+    "seedling": "portable_pocket_cabin:block/peppercorn_vine_seedling"
   },
   "elements": [
     {
@@ -164,6 +164,72 @@
         },
         "down": {
           "texture": "#post"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        6.9
+      ],
+      "to": [
+        16,
+        16,
+        6.9
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#seedling"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#seedling"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        9.1
+      ],
+      "to": [
+        16,
+        16,
+        9.1
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#seedling"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#seedling"
         }
       }
     }

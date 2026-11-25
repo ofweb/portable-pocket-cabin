@@ -2,9 +2,11 @@
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
   "textures": {
-    "particle": "minecraft:block/cave_vines_plant",
+    "particle": "portable_pocket_cabin:block/cucumber_vine_vine",
     "post": "minecraft:block/stripped_oak_log",
-    "plant": "minecraft:block/cave_vines_plant"
+    "flowering": "portable_pocket_cabin:block/cucumber_vine_flowering",
+    "stem": "portable_pocket_cabin:block/cucumber_vine_stem",
+    "cucumber": "portable_pocket_cabin:block/cucumber_vine_cucumber"
   },
   "elements": [
     {
@@ -169,25 +171,15 @@
     },
     {
       "from": [
-        0.8,
         0,
-        8
+        0,
+        6.9
       ],
       "to": [
-        15.2,
         16,
-        8
+        16,
+        6.9
       ],
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          8
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
-      },
       "shade": false,
       "faces": {
         "north": {
@@ -197,7 +189,7 @@
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#flowering"
         },
         "south": {
           "uv": [
@@ -206,51 +198,297 @@
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#flowering"
         }
       }
     },
     {
       "from": [
-        8,
         0,
-        0.8
+        0,
+        9.1
       ],
       "to": [
-        8,
         16,
-        15.2
+        16,
+        9.1
       ],
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          8
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
-      },
       "shade": false,
       "faces": {
-        "east": {
+        "north": {
           "uv": [
             0,
             0,
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#flowering"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#flowering"
+        }
+      }
+    },
+    {
+      "from": [
+        4.0,
+        13,
+        9.9
+      ],
+      "to": [
+        5.0,
+        14,
+        10.9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            15,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            0,
+            15,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "east": {
+          "uv": [
+            0,
+            15,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "west": {
+          "uv": [
+            0,
+            15,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        }
+      }
+    },
+    {
+      "from": [
+        3.7,
+        10,
+        9.6
+      ],
+      "to": [
+        5.3,
+        13,
+        11.200000000000001
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            1.5999999999999996,
+            3
+          ],
+          "texture": "#cucumber"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1.5999999999999996,
+            3
+          ],
+          "texture": "#cucumber"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1.6000000000000014,
+            3
+          ],
+          "texture": "#cucumber"
         },
         "west": {
           "uv": [
             0,
             0,
-            16,
+            1.6000000000000014,
+            3
+          ],
+          "texture": "#cucumber"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1.5999999999999996,
+            1.6000000000000014
+          ],
+          "texture": "#cucumber"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            1.5999999999999996,
+            1.6000000000000014
+          ],
+          "texture": "#cucumber"
+        }
+      },
+      "rotation": {
+        "origin": [
+          4.5,
+          14,
+          10.4
+        ],
+        "x": 8,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "from": [
+        10.5,
+        8.5,
+        9.9
+      ],
+      "to": [
+        11.5,
+        9.5,
+        10.9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            15.0,
+            1,
             16
           ],
-          "texture": "#plant"
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            0,
+            15.0,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "east": {
+          "uv": [
+            0,
+            15.0,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "west": {
+          "uv": [
+            0,
+            15.0,
+            1,
+            16
+          ],
+          "texture": "#stem"
         }
+      }
+    },
+    {
+      "from": [
+        10.2,
+        5.5,
+        9.6
+      ],
+      "to": [
+        11.8,
+        8.5,
+        11.200000000000001
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            1.6000000000000014,
+            3.0
+          ],
+          "texture": "#cucumber"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1.6000000000000014,
+            3.0
+          ],
+          "texture": "#cucumber"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1.6000000000000014,
+            3.0
+          ],
+          "texture": "#cucumber"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1.6000000000000014,
+            3.0
+          ],
+          "texture": "#cucumber"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1.6000000000000014,
+            1.6000000000000014
+          ],
+          "texture": "#cucumber"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            1.6000000000000014,
+            1.6000000000000014
+          ],
+          "texture": "#cucumber"
+        }
+      },
+      "rotation": {
+        "origin": [
+          11,
+          9.5,
+          10.4
+        ],
+        "x": 8,
+        "y": 0,
+        "z": 0
       }
     }
   ]

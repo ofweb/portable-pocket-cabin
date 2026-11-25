@@ -26,7 +26,7 @@ final class PlantModelScreenshots {
 	}
 
 	static void capture(ClientGameTestContext context) {
-		String[] plants = System.getenv().getOrDefault("PPC_PLANTS", "cabbage,tomato_vine,barley,onion,red_onion,radish,courgette,strawberry_bush,corn,white_grape_vine,rice,rhubarb,dill,plum_leaves,raspberry_bush,asparagus,wakame_plant,white_bean,redcurrant_bush,red_cabbage,lettuce,blue_corn,purple_corn,grape_vine,red_grape_vine,glutinous_rice,rye,garlic,shallot,spring_onion").split(",");
+		String[] plants = System.getenv().getOrDefault("PPC_PLANTS", "cabbage,tomato_vine,barley,onion,red_onion,radish,courgette,strawberry_bush,corn,white_grape_vine,rice,rhubarb,dill,plum_leaves,raspberry_bush,asparagus,wakame_plant,white_bean,redcurrant_bush,red_cabbage,lettuce,blue_corn,purple_corn,grape_vine,red_grape_vine,glutinous_rice,rye,garlic,shallot,spring_onion,cucumber_vine,hop_vine,long_bean_vine,peppercorn_vine,vanilla_vine,betel_vine").split(",");
 		try (TestSingleplayerContext world = context.worldBuilder().create()) {
 			// One pad for every plant, fixed above where the player first stands; taken afresh from the player each time,
 			// it would climb with the camera until it passed the top of the world.
@@ -165,6 +165,8 @@ final class PlantModelScreenshots {
 				context.waitTicks(30);
 				context.getInput().setCursorPos(0, 0);
 				context.runOnClient(client -> client.gui.toastManager().clear());
+				// Blocks cleared for this plant can drop items a few ticks later; clear them again before the picture.
+				world.getServer().runOnServer(server -> server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "kill @e[type=item]"));
 				context.waitTick();
 				context.takeScreenshot(TestScreenshotOptions.of("plant-" + plant).disableCounterPrefix());
 				// The same row from a front corner, since crossed planes look different from the diagonal.
