@@ -26,7 +26,7 @@ final class PlantModelScreenshots {
 	}
 
 	static void capture(ClientGameTestContext context) {
-		String[] plants = System.getenv().getOrDefault("PPC_PLANTS", "cabbage,tomato_vine,barley,onion,red_onion,radish,courgette,strawberry_bush,corn,white_grape_vine,rice,rhubarb,dill,plum_leaves,raspberry_bush,asparagus,wakame_plant,white_bean,redcurrant_bush,red_cabbage,lettuce,blue_corn,purple_corn,grape_vine,red_grape_vine,glutinous_rice,rye,garlic,shallot,spring_onion,cucumber_vine,hop_vine,long_bean_vine,peppercorn_vine,vanilla_vine,betel_vine,blackcurrant_bush,tea_bush,thyme_bush,marjoram_bush,oregano_bush,savory_bush,mint_bush,rosemary_bush,pandan_bush,red_chili,green_chili,paprika_pepper,aji_amarillo,birds_eye_chili,bell_pepper,poblano_chili,aubergine,thai_aubergine,tomatillo,azuki_bean,black_bean,chickpea,soybean,peanut,cilantro,parsley,celery,anise,caraway,cumin,basil,holy_basil,thai_basil,mustard,rapeseed,sesame").split(",");
+		String[] plants = System.getenv().getOrDefault("PPC_PLANTS", "cabbage,tomato_vine,barley,onion,red_onion,radish,courgette,strawberry_bush,corn,white_grape_vine,rice,rhubarb,dill,plum_leaves,raspberry_bush,asparagus,wakame_plant,white_bean,redcurrant_bush,red_cabbage,lettuce,blue_corn,purple_corn,grape_vine,red_grape_vine,glutinous_rice,rye,garlic,shallot,spring_onion,cucumber_vine,hop_vine,long_bean_vine,peppercorn_vine,vanilla_vine,betel_vine,blackcurrant_bush,tea_bush,thyme_bush,marjoram_bush,oregano_bush,savory_bush,mint_bush,rosemary_bush,pandan_bush,red_chili,green_chili,paprika_pepper,aji_amarillo,birds_eye_chili,bell_pepper,poblano_chili,aubergine,thai_aubergine,tomatillo,azuki_bean,black_bean,chickpea,soybean,peanut,cilantro,parsley,celery,anise,caraway,cumin,basil,holy_basil,thai_basil,mustard,rapeseed,sesame,ginger,galangal,turmeric,cardamom,lemongrass,water_chestnut,pineapple,cassava,sweet_potato,wasabi,roselle,cardoon,oyster_mushrooms").split(",");
 		try (TestSingleplayerContext world = context.worldBuilder().create()) {
 			// One pad for every plant, fixed above where the player first stands; taken afresh from the player each time,
 			// it would climb with the camera until it passed the top of the world.
@@ -91,7 +91,9 @@ final class PlantModelScreenshots {
 						player.teleportTo(level, base.getX() + .5, base.getY() + 1.5, base.getZ() + 3.8, Set.of(), 180, 24, false);
 						return;
 					}
-					var block = CookingPlants.PLANTS.get(plant);
+					// Every cooking plant, or any other block of the mod's with an age, such as the cardoon.
+					var block = CookingPlants.PLANTS.containsKey(plant) ? CookingPlants.PLANTS.get(plant)
+						: net.minecraft.core.registries.BuiltInRegistries.BLOCK.getValue(PortablePocketCabin.id(plant));
 					var age = (IntegerProperty) block.getStateDefinition().getProperty("age");
 					int maxAge = age.getPossibleValues().stream().mapToInt(Integer::intValue).max().orElseThrow();
 					// One plant per growth stage, left to right: paddy crops standing in water on mud, walled in so the
@@ -136,6 +138,8 @@ final class PlantModelScreenshots {
 						var pos = base.offset((stage - maxAge / 2) * spacing, 0, 0);
 						if (paddy) {
 							level.setBlockAndUpdate(pos.below(), Blocks.MUD.defaultBlockState());
+						} else if (plant.equals("oyster_mushrooms")) {
+							level.setBlockAndUpdate(pos.below(), Blocks.OAK_LOG.defaultBlockState());
 						} else if (block instanceof CropBlock) {
 							level.setBlockAndUpdate(pos.below(), Blocks.FARMLAND.defaultBlockState().setValue(FarmlandBlock.MOISTURE, 7));
 						}

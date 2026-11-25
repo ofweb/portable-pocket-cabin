@@ -2174,6 +2174,225 @@ def herbs_and_oilseeds():
     sesame()
 
 
+# Roots, rhizomes and the tropical crops.
+ROOT_GREENS = {"a": "#1e4424", "b": "#2c5e30", "c": "#3f7c3a", "d": "#5c9a44", "e": "#8cc05a", "f": "#b4dc84"}
+
+
+def lance(width, length):
+    """A long, narrow, pointed leaf with a pale midrib, such as ginger's or cardamom's."""
+    rows = []
+    for y in range(length):
+        t = y / max(1, length - 1)
+        half = max(0, round(width / 2 * _m.sin(_m.pi * min(1, t * 1.1 + 0.05))))
+        row = "." * (width // 2 - half) + ("d" * (half - 1) + "e" + "d" * (half - 1) if half > 0 else "") 
+        row = row.ljust(width, ".")[:width]
+        rows.append(row if y < length - 1 else ("." * (width // 2) + "c").ljust(width, "."))
+    return rows
+
+
+def leafy_stems(plant, palette, stems, height, leaf_size, leaves_per_stem, base=None, base_parts=None, flat=False):
+    """Reed-like stems, each with long leaves up it alternately either side: ginger, galangal and cardamom. Turmeric's
+    broad leaves rise straight from the ground (flat). base_parts(stage) adds what shows at the foot at harvest."""
+    palette = {**ROOT_GREENS, **palette}
+    textures = {"leaf": padded(lance(*leaf_size)), "stem": stalk_strip(["c" * 16]), **(base or {})}
+    spots = [(8, 8), (6, 9.5), (10, 6.5), (6.5, 6), (10, 10), (8, 5)]
+
+    def clump(count, h, n):
+        parts = []
+        for i in range(count):
+            x, z = spots[i]
+            heading = i * 67
+            if flat:
+                parts.append(leaf("leaf", leaf_size, heading, 62 - i * 3, 0, 0.5))
+                continue
+            parts.append(rod(x, z, GROUND, GROUND + h, "stem") if h <= 16 else rod(x, z, GROUND, GROUND + 16, "stem"))
+            for k in range(n):
+                y = 2 + k * (h - 2) / max(1, n)
+                side = 1 if k % 2 else -1
+                parts.append({**leaf("leaf", leaf_size, heading + 90 * side, 45, 0, y),
+                              "rotation": {"origin": [8, GROUND + y, 8], "x": 45, "y": heading + 90 * side, "z": 0}})
+        return [p for p in parts if not isinstance(p, list)]
+    sizes = [(1, 3, 1), (2, 4, 1), (3, height * 0.4, 2), (3, height * 0.55, 2), (4, height * 0.7, leaves_per_stem - 1),
+             (5, height * 0.85, leaves_per_stem), (6, height, leaves_per_stem), (6, height, leaves_per_stem)]
+    stages = []
+    for k, (count, h, n) in enumerate(sizes):
+        parts = clump(count, h, n)
+        if base_parts:
+            parts += base_parts(k)
+        stages.append(parts)
+    build(plant, palette, textures, stages, "leaf")
+
+
+def knobs(texture, count=3):
+    """Knobbly rhizomes or tubers showing at the soil at harvest."""
+    def parts(stage):
+        if stage < 7:
+            return []
+        out = []
+        for i, (x, z) in enumerate([(5.5, 9), (10.5, 8), (8, 11), (9, 5.5)][:count]):
+            out.append(solid((x - 1.5, GROUND, z - 1), (x + 1.5, GROUND + 1.5, z + 1), texture))
+        return out
+    return parts
+
+
+def rhizome_texture(dark, mid, light):
+    return ["".join(light if (x * 5 + y * 3) % 7 == 0 else dark if x % 5 == 0 else mid for x in range(16)) for y in range(16)]
+
+
+def zingibers():
+    ginger = {"K": "#8a6a3a", "L": "#c8a468", "M": "#e8cc98"}
+    leafy_stems("ginger", ginger, 6, 12, (3, 7), 4, base={"rhizome": rhizome_texture("K", "L", "M")}, base_parts=knobs("rhizome"))
+    galangal = {"K": "#8a5a3a", "L": "#d8a888", "M": "#f0d4c0"}
+    leafy_stems("galangal", galangal, 6, 14, (3, 8), 5, base={"rhizome": rhizome_texture("K", "L", "M")}, base_parts=knobs("rhizome"))
+    turmeric = {"K": "#9a5a10", "L": "#e08a18", "M": "#f8b840"}
+    leafy_stems("turmeric", turmeric, 6, 12, (6, 12), 1, base={"rhizome": rhizome_texture("K", "L", "M")}, base_parts=knobs("rhizome"),
+                flat=True)
+    cardamom = {"G": "#5a8a3a", "H": "#8ab05a"}
+
+    def pods(stage):
+        if stage < 6:
+            return []
+        return [solid((x - 0.75, GROUND, z - 0.75), (x + 0.75, GROUND + 1.5, z + 0.75), "pod")
+                for x, z in [(5, 10), (6, 11), (11, 9), (10.5, 10.5), (9, 4.5), (10, 5)]]
+    leafy_stems("cardamom", cardamom, 6, 15, (3, 9), 5, base={"pod": padded(["GH", "HG"])}, base_parts=pods)
+
+
+def grass_clump(plant, palette, blade, base_texture=None, heights=(6, 8, 10, 12, 13, 14, 15, 15), counts=(2, 3, 4, 5, 6, 7, 8, 8),
+                ripe=None, ground=GROUND):
+    """A clump of upright, arching blades: lemongrass, and water chestnut's tubular rushes rising out of its water."""
+    palette = {**ROOT_GREENS, **palette}
+    textures = {"blade": bottom_padded(blade), **({"ripe_blade": bottom_padded(recolour(blade, ripe))} if ripe else {}),
+                **(base_texture or {})}
+    spots = [(8, 8), (6.5, 6.5), (9.5, 6.5), (6.5, 9.5), (9.5, 9.5), (8, 5.5), (5.5, 8), (10.5, 8)]
+    stages = []
+    for k, (h, n) in enumerate(zip(heights, counts)):
+        name = "ripe_blade" if ripe and k == 7 else "blade"
+        parts = []
+        for i in range(n):
+            lean = (-1) ** i * (6 + i)
+            # Taller than a texture: the full blade stands on a stem cut from the blade's foot.
+            below = max(0, h - 16)
+            parts += tuft(name, (5, min(16, h)), spots[i], i * 47, lean, ground=ground + below)
+            if below:
+                parts += tuft(name, (5, below), spots[i], i * 47, lean / 2, ground=ground)
+        if base_texture:
+            parts.append(solid((6.5, ground, 6.5), (9.5, ground + 2, 9.5), list(base_texture)[0]))
+        stages.append(parts)
+    build(plant, palette, textures, stages, "blade")
+
+
+def clumps():
+    grass_clump("lemongrass", {"d": "#7aa85a", "e": "#a0c880", "w": "#e8ecc8", "x": "#c8d8a0"},
+                ["..e..", ".ed..", ".d.e.", "e.d..", ".dd..", "..d.e", ".dd..", "..d..", ".ed..", "..d..", ".dd..", "..d..",
+                 "..d..", ".dd..", "..d..", "..d.."], base_texture={"bulb": padded(["wx", "xw"])})
+    grass_clump("water_chestnut", {"c": "#3e7a3a", "d": "#5a9a48", "h": "#8a7a3a", "i": "#b0a058"},
+                ["..d..", "..d..", ".dd..", "..d..", "..dd.", "..d..", ".dd..", "..d..", "..d..", "..dd.", "..d..", ".dd..",
+                 "..d..", "..d..", "..dd.", "..d.."], ripe={"d": "i", "c": "h"}, heights=(16, 17, 18, 20, 22, 24, 26, 26),
+                ground=0)
+
+
+def pineapple():
+    palette = {**ROOT_GREENS, "a": "#2a4a3a", "b": "#3a5e48", "c": "#4e7a5a", "d": "#6a966e", "e": "#90b490",
+               "R": "#c83a6a", "S": "#8a2a5a", "G": "#4a7a3a", "H": "#7aa04a", "P": "#a87a20", "Q": "#e0a830", "U": "#f4d060"}
+    spike = [".d.", ".d.", "dcd", "dcd", "cec", "cec", "cdc", "cdc", "bcb", "bcb", "bcb", "bcb"]
+    textures = {"leaf": padded(spike), "flower": ["".join("R" if (x + y) % 3 else "S" for x in range(16)) for y in range(16)],
+                "green": ["".join("H" if (x + y) % 3 == 0 else "G" for x in range(16)) for y in range(16)],
+                "ripe": ["".join("U" if (x + y) % 4 == 0 else "P" if (x - y) % 4 == 0 else "Q" for x in range(16)) for y in range(16)],
+                "crown": bottom_padded(["d.d.d", ".ded.", "..d.."])}
+
+    def rosette(count, length, tilt):
+        return [leaf("leaf", (3, length), i * 360 / count + i * 13, tilt + (i % 3) * 8, 0.5, 0.5) for i in range(count)]
+
+    def fruit(kind, size):
+        parts = [stalk("leaf", 3, 0, 0, width=2)] if False else []
+        s = size / 2
+        parts.append(solid((8 - s, GROUND + 3, 8 - s), (8 + s, GROUND + 3 + size * 1.3, 8 + s), kind))
+        parts += tuft("crown", (5, 3), (8, 8), 20, 0, ground=GROUND + 3 + size * 1.3)
+        return parts
+    stages = [rosette(3, 4, 40), rosette(5, 5, 40), rosette(7, 7, 38), rosette(9, 8, 35), rosette(11, 9, 32),
+              rosette(12, 10, 30) + fruit("flower", 2.5), rosette(12, 10, 30) + fruit("green", 4),
+              rosette(12, 10, 30) + fruit("ripe", 4)]
+    build("pineapple", palette, textures, stages, "leaf")
+
+
+def stalked(plant, palette, leaf_rows, leaf_size, rises, leans, counts, tilt=35, extras=None, stem_letter="c"):
+    """Leaves held up on stalks from the crown, more and higher each stage: cassava, sweet potato, wasabi."""
+    palette = {**ROOT_GREENS, **palette}
+    textures = {"seed_leaf": padded(leaf_grid(4, 4)), "leaf": padded(leaf_rows), "stalk": stalk_strip([stem_letter * 16]),
+                **(extras[0] if extras else {})}
+    stages = [ring_of("seed_leaf", (4, 4), 2, 30, rise=1)]
+    for k in range(1, 8):
+        parts = on_stalks("leaf", leaf_size, counts[k], tilt, rises[k], leans[k], turn=k * 23)
+        if extras:
+            parts += extras[1](k)
+        stages.append(parts)
+    build(plant, palette, textures, stages, "leaf")
+
+
+def stalked_crops():
+    palmate = ["d...d...d", ".d..d..d.", "..dcecd..", "d.cdedc.d", ".dcceccd.", "..cbcbc..", "....c....", "....c...."]
+    stalked("cassava", {"s": "#8a2a3a"}, palmate, (9, 8), [0, 3, 5, 7, 9, 11, 13, 14], [0, 10, 15, 18, 20, 22, 24, 24],
+            [0, 2, 3, 4, 5, 6, 7, 8], stem_letter="s")
+    heart = [".dd.dd.", "dceceed", "dcedecd", ".dcedc.", "..dcd..", "...c...", "...c..."]
+    tubers = ({"tuber": rhizome_texture("K", "L", "M")},
+              lambda k: [solid((x - 1.5, GROUND, z - 1), (x + 1.5, GROUND + 1.5, z + 1), "tuber") for x, z in [(5, 10), (11, 9)]]
+              if k == 7 else [])
+    stalked("sweet_potato", {"K": "#6a1e2a", "L": "#a8384a", "M": "#d06a70"}, heart, (7, 7), [0, 1, 2, 2, 3, 3, 3, 3],
+            [0, 30, 40, 45, 50, 55, 55, 55], [0, 2, 3, 4, 6, 7, 8, 8], tilt=15, extras=tubers)
+    round_leaf = [".ddd.", "dcecd", "decec", "dcecd", ".dcd.", "..c..", "..c.."]
+    stem = ({"rhizome": rhizome_texture("K", "L", "M")},
+            lambda k: [solid((6.5, GROUND, 6.5), (9.5, GROUND + 3, 9.5), "rhizome")] if k >= 6 else [])
+    stalked("wasabi", {"K": "#3a6a3a", "L": "#6a9a5a", "M": "#9ac088"}, round_leaf, (5, 7), [0, 2, 3, 4, 5, 6, 7, 7],
+            [0, 15, 20, 22, 25, 28, 30, 30], [0, 2, 3, 4, 5, 6, 7, 8], tilt=30, extras=stem)
+
+
+def roselle():
+    palette = {**NIGHTSHADE, "s": "#8a1e2a", "W": "#f4e8a0", "Y": "#8a1e2a", "G": "#6a9a3a", "H": "#8ab850", "I": "#b8d880",
+               "P": "#7a0e1e", "Q": "#b81e30", "R": "#e0485a"}
+    fruiting_plant("roselle", palette, (5, 6), round_fruit(3), height=12)
+
+
+def cardoon():
+    palette = {"a": "#2a3a34", "b": "#3e5248", "c": "#566e60", "d": "#748e7c", "e": "#98ae9e", "f": "#bccabe",
+               "P": "#7a3a9a", "Q": "#a868c8", "G": "#5a6a4a", "H": "#7a8a5a"}
+    jagged = ["d.d.d.", ".dcdc.", "d.ced.", ".dcec.", "d.ced.", ".dcdc.", "d.c.d.", "..c...", "..c..."]
+    textures = {"leaf": padded(jagged), "stem": stalk_strip(["c" * 16]),
+                "head": ["".join("H" if (x + y) % 2 else "G" for x in range(16)) for y in range(16)],
+                "tuft": bottom_padded(["P.Q.P", ".QPQ.", "PQPQP"])}
+    big = (6, 9)
+    stages = [ring_of("leaf", big, 4, 40), ring_of("leaf", big, 6, 35), ring_of("leaf", big, 8, 30) + ring_of("leaf", big, 3, 60, turn=30),
+              ring_of("leaf", big, 8, 25) + [rod(8, 8, GROUND, GROUND + 13, "stem"),
+                                             solid((6.5, GROUND + 13, 6.5), (9.5, GROUND + 15, 9.5), "head")]
+              + tuft("tuft", (5, 3), (8, 8), 20, 0, ground=GROUND + 15)]
+    build("cardoon", palette, textures, stages, "leaf")
+
+
+def oyster_mushrooms():
+    palette = {"a": "#8a8478", "b": "#aaa498", "c": "#c8c2b4", "d": "#e0dace", "e": "#f0ece2"}
+    cap = ["".join("e" if (x + y) % 5 == 0 else "d" if y < 8 else "c" for x in range(16)) for y in range(16)]
+    gills = ["".join("b" if x % 2 else "a" for x in range(16)) for _ in range(16)]
+    textures = {"cap": cap, "gills": gills}
+
+    def shelf(x, z, y, w, d):
+        faces = {"up": {"uv": [0, 0, w, d], "texture": "#cap"}, "down": {"uv": [0, 0, w, d], "texture": "#gills"},
+                 "north": {"uv": [0, 0, w, 1], "texture": "#cap"}, "south": {"uv": [0, 0, w, 1], "texture": "#cap"},
+                 "east": {"uv": [0, 0, d, 1], "texture": "#cap"}, "west": {"uv": [0, 0, d, 1], "texture": "#cap"}}
+        return {"from": [x - w / 2, GRASS + y, z - d / 2], "to": [x + w / 2, GRASS + y + 1, z + d / 2], "faces": faces}
+    layout = [(6, 6, 0, 4, 3), (10, 9, 1, 5, 4), (7, 10, 2, 4, 3), (9.5, 5.5, 3, 4, 3), (6, 8, 4, 5, 4), (10, 7, 5, 4, 3)]
+    stages = [[shelf(*l) for l in layout[:n]] for n in (1, 3, 4, 6)]
+    build("oyster_mushrooms", palette, textures, stages, "cap")
+
+
+def roots_and_tropicals():
+    zingibers()
+    clumps()
+    pineapple()
+    stalked_crops()
+    roselle()
+    cardoon()
+    oyster_mushrooms()
+
+
 def main():
     cabbage()
     tomato()
@@ -2196,6 +2415,7 @@ def main():
     other_beans()
     nightshades()
     herbs_and_oilseeds()
+    roots_and_tropicals()
     bushes()
     cabbage("red_cabbage", RED_CABBAGE)
     lettuce()

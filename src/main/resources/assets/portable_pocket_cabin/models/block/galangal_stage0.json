@@ -1,6 +1,103 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/carrots_stage0"
-  }
+    "particle": "portable_pocket_cabin:block/galangal_leaf",
+    "stem": "portable_pocket_cabin:block/galangal_stem",
+    "leaf": "portable_pocket_cabin:block/galangal_leaf"
+  },
+  "elements": [
+    {
+      "from": [
+        7.5,
+        -1,
+        7.5
+      ],
+      "to": [
+        8.5,
+        2,
+        8.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            13,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            0,
+            13,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "east": {
+          "uv": [
+            0,
+            13,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "west": {
+          "uv": [
+            0,
+            13,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        }
+      }
+    },
+    {
+      "from": [
+        6.5,
+        1.0,
+        0.0
+      ],
+      "to": [
+        9.5,
+        1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          1.0,
+          8
+        ],
+        "x": 45,
+        "y": -90,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            3,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            3,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    }
+  ]
 }

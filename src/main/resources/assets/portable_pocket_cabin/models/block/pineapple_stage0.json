@@ -1,6 +1,136 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/beetroots_stage0"
-  }
+    "particle": "portable_pocket_cabin:block/pineapple_leaf",
+    "leaf": "portable_pocket_cabin:block/pineapple_leaf"
+  },
+  "elements": [
+    {
+      "from": [
+        6.5,
+        -0.9195498155886399,
+        3.347296355333861
+      ],
+      "to": [
+        9.5,
+        -0.9195498155886399,
+        7.347296355333861
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -0.9195498155886399,
+          8
+        ],
+        "x": 40,
+        "y": 0.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            3,
+            4
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            3,
+            4
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        6.5,
+        -1.0553062574145964,
+        3.252761725067696
+      ],
+      "to": [
+        9.5,
+        -1.0553062574145964,
+        7.252761725067696
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0553062574145964,
+          8
+        ],
+        "x": 48,
+        "y": 133.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            3,
+            4
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            3,
+            4
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        6.5,
+        -1.2412804842563703,
+        3.1058541750143
+      ],
+      "to": [
+        9.5,
+        -1.2412804842563703,
+        7.1058541750143
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.2412804842563703,
+          8
+        ],
+        "x": 56,
+        "y": 266.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            3,
+            4
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            3,
+            4
+          ],
+          "texture": "#leaf"
+        }
+      }
+    }
+  ]
 }
