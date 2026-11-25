@@ -1253,67 +1253,226 @@ def fruit_trees():
                [(GREEN_OLIVES, {"k": "#5a6a40", "G": "#9ab440"}), (BLACK_OLIVES, {"k": "#5a6a40", "R": "#3a2440", "U": "#8a6aa0"})], seed=15)
 
 
-# Redcurrant, made like Minecraft's azalea: a leafy box on woody stems, its sides' leaves hanging ragged over the edge,
-# growing from a twiggy cutting to a full bush that flowers, then hangs strings of red currants round its foot.
+# Bushes, made like Minecraft's azalea: a leafy box on woody stems, its sides' leaves hanging ragged over the edge. Woody
+# shrubs (currants, elder, tea) grow to fill their block; herbs (thyme, marjoram, oregano, savory, mint, rosemary) stay
+# low mounds. Each has its own leaves: clumps for the shrubs, fine small leaves for most herbs, needles for rosemary.
 
-CURRANT = {"a": "#1c3a1e", "b": "#2a5428", "c": "#3c6e36", "d": "#548a44", "e": "#70a656",
-           "h": "#4a3420", "i": "#6a4e30", "j": "#8a6a44", "G": "#c8d080", "R": "#7a1020", "S": "#c42234", "T": "#ee5a64"}
+WOODY = [(5, 11, 7, 3), (3, 13, 10, 6), (1, 15, 13, 9), (0, 16, 14, 10)]
+HERB = [(6, 10, 4, 2), (4, 12, 6, 4), (3, 13, 8, 5), (2, 14, 9, 6)]
+TALL_HERB = [(6, 10, 5, 3), (4, 12, 8, 5), (3, 13, 10, 7), (2, 14, 12, 8)]
+
+
+def ragged(grid, seed, start=11):
+    """A bush side: its bottom rows more and more broken, so the leaves hang over the edge."""
+    rows = [list(r) for r in grid]
+    for y in range(start, 16):
+        for x in range(16):
+            if noise(x, y, seed + 7) < (y - start + 1) / (17 - start):
+                rows[y][x] = "."
+    return ["".join(r) for r in rows]
 
 
 def ragged_side(seed):
-    """The side of a leafy bush box: leaves, the bottom rows more and more broken, so the leaves hang over the edge."""
-    grid = [list(r) for r in vanilla_leaves(seed=seed, holes=0.12)]
-    for y in range(11, 16):
-        for x in range(16):
-            if noise(x, y, seed + 7) < (y - 10) / 6:
-                grid[y][x] = "."
+    return ragged(vanilla_leaves(seed=seed, holes=0.12), seed)
+
+
+def needles(seed):
+    """Rosemary's foliage: short, narrow needles pointing up and out, grey-green with paler undersides."""
+    import random
+    rng = random.Random(seed)
+    grid = [["."] * 16 for _ in range(16)]
+    for _ in range(70):
+        x, y = rng.randrange(16), rng.randrange(16)
+        lean = rng.choice((-1, 0, 1))
+        for k, tone in enumerate("dcb"):
+            px, py = (x + (lean if k == 2 else 0)) % 16, (y + k) % 16
+            grid[py][px] = tone if rng.random() > 0.15 else "a"
     return ["".join(r) for r in grid]
 
 
-def redcurrant():
-    twigs = bottom_padded(["j.i.j", ".i.i.", "..h..", ".h.h.", "..h..", "..h..", ".h...", "..h..", "..h.."])
-    side = ragged_side(5)
-    flowers = stamp(side, ["G"], [(3, 6), (11, 4), (7, 9), (13, 10), (1, 9)])
-    berries = stamp(side, ["T", "S"], [(2, 7), (10, 5), (6, 10), (13, 9), (4, 2), (12, 12)])
-    textures = {"top": vanilla_leaves(seed=6), "side": side, "flowering_side": flowers, "fruiting_side": berries,
-                "twigs": twigs, "berry": padded(["TS", "SR"]), "stalk": stalk_strip(["iiiiiiiiiiiiiiii"])}
-
-    def stems(height):
-        parts = []
-        for i, (x, z) in enumerate([(8, 8), (6, 9), (10, 7)]):
-            parts += tuft("twigs", (5, min(9, height)), (x, z), i * 60, (-1) ** i * 10, ground=GRASS)
-        return parts
-
-    def box(lo, hi, top, depth, side):
-        # A leafy top and four sides hanging from it, each side seen from inside the bush too.
-        face_top = {"uv": [lo, lo, hi, hi], "texture": "#top"}
-        uv = [0, 16 - depth, hi - lo, 16]
-        flipped = [hi - lo, 16 - depth, 0, 16]
-        y0 = top - depth
-        return [
-            {"from": [lo, top, lo], "to": [hi, top, hi], "faces": {"up": face_top, "down": face_top}},
-            {"from": [lo, y0, lo], "to": [hi, top, lo + 0.01], "faces": {"north": {"uv": uv, "texture": "#" + side}, "south": {"uv": flipped, "texture": "#" + side}}},
-            {"from": [lo, y0, hi - 0.01], "to": [hi, top, hi], "faces": {"south": {"uv": uv, "texture": "#" + side}, "north": {"uv": flipped, "texture": "#" + side}}},
-            {"from": [lo, y0, lo], "to": [lo + 0.01, top, hi], "faces": {"west": {"uv": uv, "texture": "#" + side}, "east": {"uv": flipped, "texture": "#" + side}}},
-            {"from": [hi - 0.01, y0, lo], "to": [hi, top, hi], "faces": {"east": {"uv": uv, "texture": "#" + side}, "west": {"uv": flipped, "texture": "#" + side}}},
-        ]
-
-    def strings():
-        # Strings of currants hanging from under the leaves round the bush's edge.
-        parts = []
-        for x, z in [(2, 5), (5, 14.5), (11, 1.5), (14.5, 10), (8, 14.5), (1.5, 11)]:
-            parts.append(rod(x, z, 6, 9, "stalk"))
-            for k in range(4):
-                bx, by = x + (0.4 if k % 2 else -0.4), 8 - 1.3 * (k + 1)
-                parts.append(solid((bx - 0.6, by, z - 0.6), (bx + 0.6, by + 1.2, z + 0.6), "berry"))
-        return parts
-    stages = [
-        stems(6) + box(5, 11, 7, 3, "side"),
-        stems(8) + box(3, 13, 10, 6, "side"),
-        stems(9) + box(1, 15, 13, 9, "flowering_side"),
-        stems(9) + box(0, 16, 14, 10, "fruiting_side") + strings(),
+def bush_box(lo, hi, top, depth, side, top_texture="top"):
+    """A leafy top and four sides hanging from it, each side seen from inside the bush too."""
+    face_top = {"uv": [lo, lo, hi, hi], "texture": "#" + top_texture}
+    uv = [0, 16 - depth, hi - lo, 16]
+    flipped = [hi - lo, 16 - depth, 0, 16]
+    y0 = top - depth
+    s = "#" + side
+    return [
+        {"from": [lo, top, lo], "to": [hi, top, hi], "faces": {"up": face_top, "down": face_top}},
+        {"from": [lo, y0, lo], "to": [hi, top, lo + 0.01], "faces": {"north": {"uv": uv, "texture": s}, "south": {"uv": flipped, "texture": s}}},
+        {"from": [lo, y0, hi - 0.01], "to": [hi, top, hi], "faces": {"south": {"uv": uv, "texture": s}, "north": {"uv": flipped, "texture": s}}},
+        {"from": [lo, y0, lo], "to": [lo + 0.01, top, hi], "faces": {"west": {"uv": uv, "texture": s}, "east": {"uv": flipped, "texture": s}}},
+        {"from": [hi - 0.01, y0, lo], "to": [hi, top, hi], "faces": {"east": {"uv": uv, "texture": s}, "west": {"uv": flipped, "texture": s}}},
     ]
-    build("redcurrant_bush", CURRANT, textures, stages, "top")
+
+
+def bush_stems(height, spots=((8, 8), (6, 9), (10, 7))):
+    parts = []
+    for i, (x, z) in enumerate(spots):
+        parts += tuft("twigs", (5, min(9, height)), (x, z), i * 60, (-1) ** i * 10, ground=GRASS)
+    return parts
+
+
+def flat_flowers(spots, texture, y, size=5):
+    """Flat heads of small flowers lying on top of a bush, like elderflower."""
+    face = {"uv": [0, 0, size, size], "texture": "#" + texture}
+    return [{"from": [x - size / 2, y, z - size / 2], "to": [x + size / 2, y, z + size / 2], "shade": False,
+             "faces": {"up": face, "down": face}} for x, z in spots]
+
+
+def shrub(plant, palette, foliage, sizes, sides, tops=None, extras=None, twigs=None, stems=9):
+    """A bush through its four stages: sizes gives each stage's box as (lo, hi, top, depth), sides and tops each stage's
+    side and top texture names, extras each stage's further parts. foliage maps texture names to grids."""
+    twigs = twigs or ["j.i.j", ".i.i.", "..h..", ".h.h.", "..h..", "..h..", ".h...", "..h..", "..h.."]
+    textures = {"twigs": bottom_padded(twigs), **foliage}
+    tops = tops or ["top"] * 4
+    extras = extras or [[], [], [], []]
+    stages = []
+    for k, (lo, hi, top, depth) in enumerate(sizes):
+        stages.append(bush_stems(min(stems, top - 1)) + bush_box(lo, hi, top, depth, sides[k], tops[k]) + extras[k])
+    build(plant, palette, textures, stages, tops[-1])
+    return stages
+
+
+def currant_strings(berry):
+    parts = []
+    for x, z in [(2, 5), (5, 14.5), (11, 1.5), (14.5, 10), (8, 14.5), (1.5, 11)]:
+        parts.append(rod(x, z, 6, 9, "stalk"))
+        for k in range(4):
+            bx, by = x + (0.4 if k % 2 else -0.4), 8 - 1.3 * (k + 1)
+            parts.append(solid((bx - 0.6, by, z - 0.6), (bx + 0.6, by + 1.2, z + 0.6), berry))
+    return parts
+
+
+def currant(plant, palette, seed):
+    side = ragged_side(seed)
+    foliage = {"top": vanilla_leaves(seed=seed + 1), "side": side,
+               "flowering_side": stamp(side, ["G"], [(3, 6), (11, 4), (7, 9), (13, 10), (1, 9)]),
+               "fruiting_side": stamp(side, ["T", "S"], [(2, 7), (10, 5), (6, 10), (13, 9), (4, 2), (12, 12)]),
+               "berry": padded(["TS", "SR"]), "stalk": stalk_strip(["i" * 16])}
+    shrub(plant, palette, foliage, WOODY, ["side", "side", "flowering_side", "fruiting_side"],
+          extras=[[], [], [], currant_strings("berry")])
+
+
+CURRANT = {"a": "#1c3a1e", "b": "#2a5428", "c": "#3c6e36", "d": "#548a44", "e": "#70a656",
+           "h": "#4a3420", "i": "#6a4e30", "j": "#8a6a44", "G": "#c8d080", "R": "#7a1020", "S": "#c42234", "T": "#ee5a64"}
+BLACKCURRANT = {**CURRANT, "R": "#120a1c", "S": "#2a1a3a", "T": "#5a4670"}
+
+
+def redcurrant():
+    currant("redcurrant_bush", CURRANT, 5)
+
+
+# Elder: a big woody shrub with flat, creamy heads of tiny flowers, then heads of small dark purple berries.
+ELDER = {**CURRANT, "W": "#f6f0d8", "V": "#e0d8b0", "P": "#2a1430", "Q": "#4a2850"}
+
+
+def elder():
+    side = ragged_side(9)
+    foliage = {"top": vanilla_leaves(seed=10), "side": side,
+               "flowering_side": stamp(side, ["WV", "VW"], [(2, 4), (10, 2), (6, 9), (13, 7)]),
+               "fruiting_side": stamp(side, ["PQ", "QP"], [(2, 5), (10, 3), (6, 10), (13, 8)]),
+               "umbel": padded([".W.V.", "WVWVW", ".WVW.", "WVWVW", ".V.W."]),
+               "berries": padded([".P.Q.", "PQPQP", ".QPQ.", "PQPQP", ".Q.P."])}
+    heads = [(4, 4), (11, 5), (7, 11), (12, 12), (3, 11)]
+    shrub("elder_bush", ELDER, foliage, WOODY, ["side", "side", "flowering_side", "fruiting_side"],
+          extras=[[], [], flat_flowers(heads, "umbel", 13.2), flat_flowers(heads, "berries", 14.2)])
+
+
+# Tea: a clipped hedge of glossy dark leaves, its top flushing with pale new shoots when ready to pick; grown in shade,
+# the flush is a deeper blue-green.
+TEA = {"a": "#16301c", "b": "#22482a", "c": "#2f5e36", "d": "#447a46", "e": "#5e9658",
+       "h": "#4a3420", "i": "#6a4e30", "j": "#8a6a44", "F": "#9ccc5a", "G": "#c4e486", "M": "#2a6a4a", "N": "#3e8a5e"}
+
+
+def tea():
+    top = leafy(31, cover=0.9)
+    side = ragged(leafy(32, cover=0.85), 32, start=13)
+    flush = stamp(top, ["G", "F"], [(x, y) for y in range(0, 16, 3) for x in range((y // 3) % 2 * 2, 16, 4)])
+    shaded = stamp(top, ["N", "M"], [(x, y) for y in range(0, 16, 3) for x in range((y // 3) % 2 * 2, 16, 4)])
+    foliage = {"top": top, "side": side, "flush": flush, "shaded_flush": shaded}
+    sizes = [(5, 11, 6, 3), (3, 13, 9, 6), (1, 15, 11, 8), (1, 15, 12, 9)]
+    stages = shrub("tea_bush", TEA, foliage, sizes, ["side"] * 4, tops=["top", "top", "top", "flush"])
+    # The shaded bush at picking time: its flush the deeper green, chosen by the blockstate when it grows under a roof.
+    lo, hi, top_y, depth = sizes[3]
+    elements = bush_stems(9) + bush_box(lo, hi, top_y, depth, "side", "shaded_flush")
+    write_model("tea_bush_stage3_shaded", built_model({"particle": "tea_bush_flush", "twigs": "tea_bush_twigs",
+                                                        "side": "tea_bush_side", "shaded_flush": "tea_bush_shaded_flush"}, elements))
+    variants = {f"age={age},shaded={str(sh).lower()}": {"model": NS + f"tea_bush_stage{age}" + ("_shaded" if sh and age == 3 else "")}
+                for age in range(4) for sh in (False, True)}
+    with open(f"{A}/blockstates/tea_bush.json", "w") as f:
+        json.dump({"variants": variants}, f, indent=2)
+        f.write("\n")
+
+
+# Herbs: low mounds of small leaves on green-brown stems, flowering a little at picking time.
+HERB_TWIGS = ["..e..", ".e.e.", "..h..", ".h.h.", "..h..", "..h..", ".h..."]
+
+
+def herb(plant, palette, leaves, flower, seed, sizes=HERB, flowers=9):
+    side = ragged(leaves(seed), seed, start=12)
+    top = leaves(seed + 1)
+    import random
+    rng = random.Random(seed)
+    spots = [(rng.randrange(14), rng.randrange(10)) for _ in range(flowers)]
+    foliage = {"top": top, "side": side, "flowering_top": stamp(top, flower, spots),
+               "flowering_side": stamp(side, flower, spots[: flowers // 2])}
+    shrub(plant, palette, foliage, sizes, ["side", "side", "side", "flowering_side"],
+          tops=["top", "top", "top", "flowering_top"], twigs=HERB_TWIGS)
+
+
+def fine(seed):
+    return leafy(seed, cover=0.9)
+
+
+THYME = {"a": "#34482e", "b": "#4c6442", "c": "#668058", "d": "#849c70", "e": "#a2b48c", "h": "#5a4430",
+         "P": "#c88ac8", "Q": "#9a5aa8"}
+MARJORAM = {"a": "#38502e", "b": "#506c40", "c": "#6c8a58", "d": "#8caa74", "e": "#b0c89a", "h": "#5a4a30",
+            "W": "#f4eef0", "V": "#e0c8d8"}
+OREGANO = {"a": "#22401e", "b": "#34582c", "c": "#4a743c", "d": "#669450", "e": "#88b46c", "h": "#5a3a2a",
+           "P": "#d88ab8", "Q": "#a85a8a"}
+SAVORY = {"a": "#1e3420", "b": "#2c4a2c", "c": "#3e623a", "d": "#567e4c", "e": "#749c66", "h": "#4a3a28",
+          "W": "#f0ecf4", "V": "#c8b8dc"}
+MINT = {"a": "#1e4a24", "b": "#2c6630", "c": "#3e8a3e", "d": "#58a850", "e": "#80c86c", "h": "#4a5a2a",
+        "P": "#c8a8e0", "Q": "#9a7ac0"}
+ROSEMARY = {"a": "#2a3a34", "b": "#3c5048", "c": "#52685e", "d": "#6e8478", "e": "#9aaca0", "h": "#5a4a3a",
+            "B": "#a8c0e8", "C": "#7890c8"}
+
+
+def herbs():
+    herb("thyme_bush", THYME, fine, [".P", "PQ"], 41)
+    herb("marjoram_bush", MARJORAM, fine, ["WV"], 42)
+    herb("oregano_bush", OREGANO, fine, ["P.", "QP"], 43)
+    herb("savory_bush", SAVORY, fine, ["W", "V"], 44)
+    herb("mint_bush", MINT, lambda seed: leafy(seed, cover=0.9), ["P", "Q", "P"], 45, sizes=TALL_HERB, flowers=7)
+    herb("rosemary_bush", ROSEMARY, needles, ["B", "C"], 46, sizes=TALL_HERB)
+
+
+# Pandan: a fountain of long, glossy, strap-shaped leaves arching out from a short stem.
+PANDAN = {"a": "#1a4a22", "b": "#246030", "c": "#307a3a", "d": "#44964a", "e": "#64b05e", "h": "#6a5a30"}
+
+
+def pandan():
+    strap = [".d."] + ["ded"] * 5 + ["cdc"] * 6 + ["bcb"] * 4
+    textures = {"leaf": padded(strap), "stem": stalk_strip(["h" * 16, "c" * 16])}
+
+    def fountain(count, length, rise=1):
+        parts = [stalk("stem", 2 + rise, 0, 0, ground=GRASS, width=2)]
+        for i in range(count):
+            parts += arching_leaf("leaf", 3, i * 360 / count + i * 11, GRASS + rise, length // 2, length - length // 2,
+                                  rise_tilt=55 - (i % 3) * 8, droop=-25, out=0.5)
+        return parts
+    stages = [fountain(4, 8), fountain(6, 10), fountain(8, 13, 2), fountain(10, 15, 3)]
+    build("pandan_bush", PANDAN, textures, stages, "leaf")
+
+
+def bushes():
+    redcurrant()
+    currant("blackcurrant_bush", BLACKCURRANT, 7)
+    elder()
+    tea()
+    herbs()
+    pandan()
 
 
 # Raspberry: a bush of arching, reddish canes with toothed leaves along them, white flowers, then red berries hanging
@@ -1669,7 +1828,7 @@ def main():
     asparagus()
     wakame()
     white_bean()
-    redcurrant()
+    bushes()
     cabbage("red_cabbage", RED_CABBAGE)
     lettuce()
     corn("blue_corn", BLUE_CORN)

@@ -22,7 +22,7 @@
       "model": "portable_pocket_cabin:block/tea_bush_stage3"
     },
     "age=3,shaded=true": {
-      "model": "portable_pocket_cabin:block/tea_bush_stage3"
+      "model": "portable_pocket_cabin:block/tea_bush_stage3_shaded"
     }
   }
 }
