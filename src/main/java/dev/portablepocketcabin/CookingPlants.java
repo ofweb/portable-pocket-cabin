@@ -76,8 +76,9 @@ final class CookingPlants {
 	static final Block CARAWAY_CROP = fieldCrop("caraway", "caraway_seed");
 
 	// Delivery 1: climbing plants on trellises.
+	// Never solid, as a fence is not, so the farmland under it stays farmland.
 	static final Block TRELLIS = registerBlockWithItem("trellis", TrellisBlock::new, BlockBehaviour.Properties.of()
-		.strength(0.5F).sound(SoundType.WOOD).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY));
+		.strength(0.5F).sound(SoundType.WOOD).noOcclusion().forceSolidOff().ignitedByLava().pushReaction(PushReaction.DESTROY));
 	/** The upper block of a tall plant: corn and the like once grown, and a second trellis that a vine has climbed. */
 	static final Block PLANT_TOP = registerBlock("plant_top", PlantTopBlock::new, BlockBehaviour.Properties.of()
 		.strength(0.3F).sound(SoundType.CROP).noOcclusion().pushReaction(PushReaction.DESTROY));
@@ -630,7 +631,7 @@ final class CookingPlants {
 		// Vines with seeds are planted from them; every other vine from a cutting that shears take from it.
 		boolean cuttings = !seed.endsWith("_seeds");
 		block[0] = registerBlock(plant, properties -> new TrellisCropBlock(properties, () -> seeds[0], produce, cuttings), BlockBehaviour.Properties.of()
-			.randomTicks().strength(0.3F).sound(SoundType.CROP).noOcclusion().pushReaction(PushReaction.DESTROY));
+			.randomTicks().strength(0.3F).sound(SoundType.CROP).noOcclusion().forceSolidOff().pushReaction(PushReaction.DESTROY));
 		seeds[0] = registerItem(seed, properties -> new BlockItem(block[0], properties.useItemDescriptionPrefix()));
 		PLANTS.put(plant, block[0]);
 		PLANTED_FROM.put(plant, seeds[0]);

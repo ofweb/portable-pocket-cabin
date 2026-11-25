@@ -3,7 +3,7 @@
   "ambientocclusion": false,
   "textures": {
     "particle": "portable_pocket_cabin:block/peppercorn_vine_vine",
-    "post": "minecraft:block/stripped_oak_log",
+    "post": "portable_pocket_cabin:block/trellis_wood",
     "flowering": "portable_pocket_cabin:block/peppercorn_vine_flowering",
     "stem": "portable_pocket_cabin:block/peppercorn_vine_stem",
     "green_berry": "portable_pocket_cabin:block/peppercorn_vine_green_berry"

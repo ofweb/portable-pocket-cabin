@@ -106,6 +106,24 @@ public final class CabinPlantGameTest {
 	}
 
 	@GameTest
+	public void aTrellisKeepsItsFarmland(GameTestHelper helper) {
+		helper.setBlock(BASE.west(), Blocks.WATER);
+		helper.setBlock(BASE.below(), Blocks.FARMLAND);
+		helper.setBlock(BASE, CookingPlants.TRELLIS);
+		// A vine planted on a trellis keeps its farmland too.
+		helper.setBlock(BASE.east(2).west(), Blocks.WATER);
+		helper.setBlock(BASE.east(2).below(), Blocks.FARMLAND);
+		helper.setBlock(BASE.east(2), ((net.minecraft.world.level.block.CropBlock) CookingPlants.CUCUMBER_VINE).getStateForAge(3));
+		helper.runAfterDelay(5, () -> {
+			helper.assertBlockPresent(Blocks.FARMLAND, BASE.below());
+			helper.assertBlockPresent(CookingPlants.TRELLIS, BASE);
+			helper.assertBlockPresent(Blocks.FARMLAND, BASE.east(2).below());
+			helper.assertBlockPresent(CookingPlants.CUCUMBER_VINE, BASE.east(2));
+			helper.succeed();
+		});
+	}
+
+	@GameTest
 	public void tallCropsTakeTheBlockAboveAndGoWithIt(GameTestHelper helper) {
 		var level = helper.getLevel();
 		var corn = (FieldCropBlock) CookingPlants.CORN_CROP;

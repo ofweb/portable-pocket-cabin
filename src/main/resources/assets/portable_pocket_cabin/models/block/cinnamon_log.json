@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "end": "minecraft:block/jungle_log_top",
-    "side": "minecraft:block/jungle_log"
+    "end": "portable_pocket_cabin:block/cinnamon_log_top",
+    "side": "portable_pocket_cabin:block/cinnamon_log"
   }
 }

@@ -556,7 +556,7 @@ def tomato():
         7: climbed("vine", [(4.5, front, 23, [r, r, o, g, g]), (9, front, 28, [r, r, r, o, g]), (12.5, front, 17, [r, o, g, g]),
                             (6, front, 12, [r, r, o]), (6, back, 25, [r, r, o, o, g]), (11, back, 19, [r, r, g, g]), (9, back, 11, [r, o])]),
     }
-    build("tomato_vine", TOMATO, textures, stages, "vine", extra={"post": "minecraft:block/stripped_oak_log"}, tall=tall)
+    build("tomato_vine", TOMATO, textures, stages, "vine", extra={"post": NS + "trellis_wood"}, tall=tall)
 
 
 # Barley: grassy shoots, then slender stems with long arching leaves, then slim ears with long, parallel beards that
@@ -939,7 +939,7 @@ def grape(plant="white_grape_vine", palette=GRAPE):
         7: climbed([(4.5, front, 17, big, "ripe"), (11.5, front, 16, [3, 3, 2, 2, 1], "ripe"), (8, front, 19, [3, 3, 3, 2, 1], "ripe"),
                     (6, back, 17, big, "ripe"), (11, back, 18, [3, 3, 2, 2, 1], "ripe")]),
     }
-    build(plant, palette, textures, stages, "vine", extra={"post": "minecraft:block/stripped_oak_log"}, tall=tall)
+    build(plant, palette, textures, stages, "vine", extra={"post": NS + "trellis_wood"}, tall=tall)
 
 
 # Black and red table grapes: the same vine, ripening dark blue-purple or red.
@@ -1890,7 +1890,7 @@ def trellis_vine(plant, palette, leaf_shape, flower, hang, seed, flowering_fruit
             6: on_trellis("flowering", "flowering_top", fruit=TALL_SPOTS[:flowering_fruit + 1]),
             7: on_trellis("vine", "vine_top", fruit=TALL_SPOTS[:ripe_fruit + 3], ripe=True)}
     # Textures the vine's fruit uses beyond these, drawn by the vine itself as <plant>_<name>.
-    extra = {"post": "minecraft:block/stripped_oak_log"}
+    extra = {"post": NS + "trellis_wood"}
     for elements in stages + list(tall.values()):
         for element in elements:
             for face in element["faces"].values():
@@ -2393,6 +2393,150 @@ def roots_and_tropicals():
     oyster_mushrooms()
 
 
+# Sea plants and shellfish beds, under water: laver in dark red-purple ribbons, sea lettuce in bright green frilly sheets,
+# mussels in blue-black clusters, oysters in rough grey shells; each fuller at each of its four stages.
+def sea_life():
+    def blades(plant, palette, blade, counts, heights, frills=False):
+        textures = {"blade": bottom_padded(blade)}
+        stages = []
+        for n, h in zip(counts, heights):
+            parts = []
+            for i in range(n):
+                parts += tuft("blade", (5, h), WAKAME_SPOTS[i], i * 61, (-1) ** i * (14 + i * 3), ground=0)
+            stages.append(parts)
+        build(plant, palette, textures, stages, "blade")
+        with open(f"{A}/blockstates/{plant}.json", "w") as f:
+            json.dump({"variants": {f"age={a}": {"model": NS + f"{plant}_stage{a}"} for a in range(4)}}, f, indent=2)
+            f.write("\n")
+    laver = {"a": "#2a0e1e", "b": "#45182e", "c": "#62263e", "d": "#80364c", "e": "#a04e62"}
+    blades("laver_plant", laver, ["..e..", ".edc.", "edcbd", ".dcbc", "cdbc.", ".cbd.", "dcb..", ".bcd.", "..cb.", ".bc..",
+                                   "..b..", "..b.."], (2, 3, 5, 6), (5, 7, 9, 11))
+    sea_lettuce = {"a": "#1e5a24", "b": "#2c7a2e", "c": "#40983a", "d": "#5cb84a", "e": "#8ad868"}
+    blades("sea_lettuce_plant", sea_lettuce, ["e.e.e", "dedcd", "cdedc", "ecdce", "dcecd", ".dcd.", "..c..", "..b.."],
+           (2, 3, 4, 6), (4, 6, 7, 8))
+
+    def shells(plant, palette, shell, spots, sizes):
+        textures = {"shell": shell, "inside": ["".join("i" if (x + y) % 3 else "j" for x in range(16)) for y in range(16)]}
+        stages = []
+        for count in (2, 4, 6, 8):
+            parts = []
+            for i, (x, z, turn) in enumerate(spots[:count]):
+                w, l, h = sizes[i % len(sizes)]
+                rotation = {"origin": [x, 0, z], "x": 0, "y": turn, "z": 0}
+                parts.append(solid((x - w / 2, 0, z - l / 2), (x + w / 2, h, z + l / 2), "shell", top="shell", rotation=rotation))
+            stages.append(parts)
+        build(plant, palette, textures, stages, "shell")
+        with open(f"{A}/blockstates/{plant}.json", "w") as f:
+            json.dump({"variants": {f"age={a}": {"model": NS + f"{plant}_stage{a}"} for a in range(4)}}, f, indent=2)
+            f.write("\n")
+    spots = [(6, 7, 20), (10, 9, 110), (8, 11, 60), (11, 5, 160), (5, 11, 80), (9, 6, 30), (12, 12, 140), (4, 5, 100)]
+    mussel = {"a": "#10141e", "b": "#1e2636", "c": "#2e3a52", "d": "#4a5a7a", "i": "#e0a860", "j": "#c88a48"}
+    shells("mussel_bed", mussel, ["".join("d" if x in (3, 4) and y % 4 else "c" if (x + y) % 5 else "b" for x in range(16))
+                                   for y in range(16)], spots, [(2, 4.5, 1.5), (1.8, 4, 1.3)])
+    oyster = {"a": "#4a4a44", "b": "#6e6a60", "c": "#928c80", "d": "#b8b2a4", "i": "#e8e4dc", "j": "#d0ccc0"}
+    shells("oyster_bed", oyster, ["".join("d" if (x * 3 + y) % 7 == 0 else "b" if y % 3 == 0 else "c" for x in range(16))
+                                  for y in range(16)], spots, [(4, 5, 1.5), (3.5, 4, 1.2)])
+
+
+# The prawn trap: a wicker frame round netting, with a funnel mouth.
+def prawn_trap():
+    palette = {"h": "#5a4024", "i": "#8a6a40", "j": "#b0905a", "n": "#c8c0a0", "m": "#7a7460"}
+    net = ["".join("n" if (x + y) % 4 == 0 or (x - y) % 4 == 0 else "." for x in range(16)) for y in range(16)]
+    frame = [("i" * 16) if y in (0, 15) else "".join("i" if x in (0, 15) else "." for x in range(16)) for y in range(16)]
+    side = ["".join(frame[y][x] if frame[y][x] != "." else net[y][x] for x in range(16)) for y in range(16)]
+    mouth = ["".join("h" if 5 <= x <= 10 and 5 <= y <= 10 and (x in (5, 10) or y in (5, 10)) else side[y][x] for x in range(16))
+             for y in range(16)]
+    draw("prawn_trap_side", side, palette)
+    draw("prawn_trap_mouth", mouth, palette)
+    faces = {d: {"texture": "#side"} for d in ("north", "south", "up", "down")}
+    faces["east"] = faces["west"] = {"texture": "#mouth"}
+    model = {"parent": "minecraft:block/block", "textures": {"particle": NS + "prawn_trap_side", "side": NS + "prawn_trap_side",
+                                                             "mouth": NS + "prawn_trap_mouth"},
+             "elements": [{"from": [2, 0, 3], "to": [14, 8, 13], "faces": faces},
+                          {"from": [2.01, 0.01, 3.01], "to": [13.99, 7.99, 12.99],
+                           "faces": {d: {"texture": "#side"} for d in ("north", "south", "east", "west", "up", "down")}}]}
+    write_model("prawn_trap", model)
+
+
+# Rich soil and rich farmland: dark, crumbly loam flecked with compost; rock salt ore: stone veined with pink-white salt;
+# palm and cinnamon trunks with their own bark; and the trellis in pale cane.
+def speckled(base, flecks, seed, chance=0.18):
+    return ["".join(flecks[int(noise(x, y, seed) * len(flecks) * 7) % len(flecks)] if noise(x, y, seed + 3) < chance else base[(x + y * 3) % len(base)]
+                    for x in range(16)) for y in range(16)]
+
+
+def small_blocks():
+    soil = {"a": "#2a1c12", "b": "#3a2818", "c": "#4a3420", "d": "#5e4428", "g": "#4a5a2a", "h": "#7a6040"}
+    draw("rich_soil", speckled("bcbcab", "ghd", 51), soil)
+    farm = {**soil, "m": "#1e140c", "n": "#2a1c12"}
+    top = ["".join("m" if y % 4 == 0 else ch for ch in row) for y, row in enumerate(speckled("bcb", "ghd", 52))]
+    draw("rich_farmland", top, farm)
+    draw("rich_farmland_moist", recolour(top, {"b": "a", "c": "b", "d": "c", "m": "a"}), farm)
+    write_model("rich_soil", {"parent": "minecraft:block/cube_all", "textures": {"all": NS + "rich_soil"}})
+    for name, top_name in (("rich_farmland", "rich_farmland"), ("rich_farmland_moist", "rich_farmland_moist")):
+        write_model(name, {"parent": "minecraft:block/template_farmland", "textures": {"dirt": NS + "rich_soil", "top": NS + top_name}})
+
+    stone = {"a": "#6a6a6a", "b": "#7e7e7e", "c": "#929292", "p": "#e8c8c8", "q": "#f8ecec", "r": "#c89a9a"}
+    ore = [list(r) for r in speckled("bcbab", "c", 53, 0.1)]
+    for x0, y0 in [(2, 3), (9, 2), (5, 9), (12, 10), (1, 12)]:
+        for dx, dy, ch in [(0, 0, "q"), (1, 0, "p"), (0, 1, "p"), (1, 1, "r"), (2, 1, "p"), (1, 2, "r")]:
+            if x0 + dx < 16 and y0 + dy < 16:
+                ore[y0 + dy][x0 + dx] = ch
+    draw("rock_salt_ore", ["".join(r) for r in ore], stone)
+    write_model("rock_salt_ore", {"parent": "minecraft:block/cube_all", "textures": {"all": NS + "rock_salt_ore"}})
+
+    palm = {"a": "#3a2e20", "b": "#5a4a34", "c": "#7a6648", "d": "#9a8462", "s": "#e0a030", "t": "#f8d070", "w": "#c8b088"}
+    palm_side = ["".join("a" if y % 4 == 3 else "c" if (x + (y // 4) * 2) % 4 == 0 else "b" for x in range(16)) for y in range(16)]
+    tapped = [list(r) for r in palm_side]
+    for y in range(6, 11):
+        for x in range(6, 10):
+            tapped[y][x] = "w"
+    for x, y in [(7, 10), (8, 11), (7, 12), (8, 13)]:
+        tapped[y][x] = "s" if y % 2 else "t"
+    palm_end = ["".join("a" if round(_m.hypot(x - 7.5, y - 7.5)) % 3 == 0 else "d" for x in range(16)) for y in range(16)]
+    draw("palm_log", palm_side, palm)
+    draw("palm_log_tapped", ["".join(r) for r in tapped], palm)
+    draw("palm_log_top", palm_end, palm)
+    cinnamon = {"a": "#3a1e12", "b": "#5a2e1a", "c": "#7a4228", "d": "#9a5a38", "e": "#c07a4a", "f": "#d89a6a"}
+    bark = ["".join("a" if x % 5 == 0 else "c" if (x + y) % 3 else "b" for x in range(16)) for y in range(16)]
+    stripped = ["".join("e" if x % 4 == 0 else "f" if (x + y * 2) % 7 == 0 else "d" for x in range(16)) for y in range(16)]
+    ends = ["".join("b" if round(_m.hypot(x - 7.5, y - 7.5)) % 3 == 0 else "e" for x in range(16)) for y in range(16)]
+    draw("cinnamon_log", bark, cinnamon)
+    draw("cinnamon_log_stripped", stripped, cinnamon)
+    draw("cinnamon_log_top", ends, cinnamon)
+    logs = {"palm_log": ("palm_log_tapped", "palm_log"), "cinnamon_log": ("cinnamon_log", "cinnamon_log_stripped")}
+    for log, (ready_side, spent_side) in logs.items():
+        variants = {}
+        for ready, side in ((True, ready_side), (False, spent_side)):
+            name = f"{log}_{'ready' if ready else 'spent'}"
+            write_model(name, {"parent": "minecraft:block/cube_column", "textures": {"end": NS + f"{log}_top", "side": NS + side}})
+            write_model(name + "_horizontal", {"parent": "minecraft:block/cube_column_horizontal",
+                                               "textures": {"end": NS + f"{log}_top", "side": NS + side}})
+            r = str(ready).lower()
+            variants[f"axis=y,ready={r}"] = {"model": NS + name}
+            variants[f"axis=x,ready={r}"] = {"model": NS + name + "_horizontal", "x": 90, "y": 90}
+            variants[f"axis=z,ready={r}"] = {"model": NS + name + "_horizontal", "x": 90}
+        with open(f"{A}/blockstates/{log}.json", "w") as f:
+            json.dump({"variants": variants}, f, indent=2)
+            f.write("\n")
+        # The trunk's item and its old models now point at the bark.
+        write_model(log, {"parent": "minecraft:block/cube_column", "textures": {"end": NS + f"{log}_top", "side": NS + ready_side}})
+
+    cane = {"h": "#8a6a3a", "i": "#b8955a", "j": "#d8b87a", "k": "#ecd49a"}
+    draw("trellis_wood", ["".join("k" if x % 4 == 1 else "h" if y % 6 == 5 else "j" if x % 4 == 2 else "i" for x in range(16))
+                          for y in range(16)], cane)
+    frame = [{**part, "faces": {side: {"texture": "#post"} for side in ("north", "south", "east", "west", "up", "down")}}
+             for part in TRELLIS_FRAME]
+    write_model("trellis", {"parent": "minecraft:block/block", "textures": {"particle": NS + "trellis_wood", "post": NS + "trellis_wood"},
+                            "elements": frame})
+
+
+def sea_and_small():
+    sea_life()
+    prawn_trap()
+    small_blocks()
+
+
 def main():
     cabbage()
     tomato()
@@ -2416,6 +2560,7 @@ def main():
     nightshades()
     herbs_and_oilseeds()
     roots_and_tropicals()
+    sea_and_small()
     bushes()
     cabbage("red_cabbage", RED_CABBAGE)
     lettuce()

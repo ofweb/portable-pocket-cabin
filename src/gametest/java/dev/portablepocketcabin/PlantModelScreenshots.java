@@ -26,7 +26,7 @@ final class PlantModelScreenshots {
 	}
 
 	static void capture(ClientGameTestContext context) {
-		String[] plants = System.getenv().getOrDefault("PPC_PLANTS", "cabbage,tomato_vine,barley,onion,red_onion,radish,courgette,strawberry_bush,corn,white_grape_vine,rice,rhubarb,dill,plum_leaves,raspberry_bush,asparagus,wakame_plant,white_bean,redcurrant_bush,red_cabbage,lettuce,blue_corn,purple_corn,grape_vine,red_grape_vine,glutinous_rice,rye,garlic,shallot,spring_onion,cucumber_vine,hop_vine,long_bean_vine,peppercorn_vine,vanilla_vine,betel_vine,blackcurrant_bush,tea_bush,thyme_bush,marjoram_bush,oregano_bush,savory_bush,mint_bush,rosemary_bush,pandan_bush,red_chili,green_chili,paprika_pepper,aji_amarillo,birds_eye_chili,bell_pepper,poblano_chili,aubergine,thai_aubergine,tomatillo,azuki_bean,black_bean,chickpea,soybean,peanut,cilantro,parsley,celery,anise,caraway,cumin,basil,holy_basil,thai_basil,mustard,rapeseed,sesame,ginger,galangal,turmeric,cardamom,lemongrass,water_chestnut,pineapple,cassava,sweet_potato,wasabi,roselle,cardoon,oyster_mushrooms").split(",");
+		String[] plants = System.getenv().getOrDefault("PPC_PLANTS", "cabbage,tomato_vine,barley,onion,red_onion,radish,courgette,strawberry_bush,corn,white_grape_vine,rice,rhubarb,dill,plum_leaves,raspberry_bush,asparagus,wakame_plant,white_bean,redcurrant_bush,red_cabbage,lettuce,blue_corn,purple_corn,grape_vine,red_grape_vine,glutinous_rice,rye,garlic,shallot,spring_onion,cucumber_vine,hop_vine,long_bean_vine,peppercorn_vine,vanilla_vine,betel_vine,blackcurrant_bush,tea_bush,thyme_bush,marjoram_bush,oregano_bush,savory_bush,mint_bush,rosemary_bush,pandan_bush,red_chili,green_chili,paprika_pepper,aji_amarillo,birds_eye_chili,bell_pepper,poblano_chili,aubergine,thai_aubergine,tomatillo,azuki_bean,black_bean,chickpea,soybean,peanut,cilantro,parsley,celery,anise,caraway,cumin,basil,holy_basil,thai_basil,mustard,rapeseed,sesame,ginger,galangal,turmeric,cardamom,lemongrass,water_chestnut,pineapple,cassava,sweet_potato,wasabi,roselle,cardoon,oyster_mushrooms,laver_plant,sea_lettuce_plant,mussel_bed,oyster_bed,small_blocks").split(",");
 		try (TestSingleplayerContext world = context.worldBuilder().create()) {
 			// One pad for every plant, fixed above where the player first stands; taken afresh from the player each time,
 			// it would climb with the camera until it passed the top of the world.
@@ -92,6 +92,24 @@ final class PlantModelScreenshots {
 						return;
 					}
 					// Every cooking plant, or any other block of the mod's with an age, such as the cardoon.
+					// The mod's small blocks in a row: rich soil and farmland, rock salt ore, the palm and cinnamon trunks ready and
+					// harvested, the trellis, and the prawn trap.
+					if (plant.equals("small_blocks")) {
+						String[] names = {"rich_soil", "rich_farmland", "rock_salt_ore", "palm_log", "palm_log", "cinnamon_log", "cinnamon_log",
+							"trellis", "prawn_trap"};
+						for (int i = 0; i < names.length; i++) {
+							var found = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getValue(PortablePocketCabin.id(names[i]));
+							var state = found.defaultBlockState();
+							for (var property : state.getProperties()) {
+								if (property.getName().equals("ready")) state = state.setValue((net.minecraft.world.level.block.state.properties.BooleanProperty) property, i % 2 == 1);
+							}
+							var at = base.offset(i - names.length / 2, 0, 0);
+							if (names[i].equals("trellis")) level.setBlock(at.below(), Blocks.FARMLAND.defaultBlockState().setValue(FarmlandBlock.MOISTURE, 7), Block.UPDATE_CLIENTS);
+							level.setBlock(at, state, Block.UPDATE_CLIENTS);
+						}
+						player.teleportTo(level, base.getX() + .5, base.getY() + 1.8, base.getZ() + 4.6, Set.of(), 180, 22, false);
+						return;
+					}
 					var block = CookingPlants.PLANTS.containsKey(plant) ? CookingPlants.PLANTS.get(plant)
 						: net.minecraft.core.registries.BuiltInRegistries.BLOCK.getValue(PortablePocketCabin.id(plant));
 					var age = (IntegerProperty) block.getStateDefinition().getProperty("age");

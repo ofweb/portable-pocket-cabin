@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "minecraft:block/calcite"
+    "all": "portable_pocket_cabin:block/rock_salt_ore"
   }
 }
