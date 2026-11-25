@@ -1672,22 +1672,28 @@ BEAN_LEAF = ["...ddd...", "..dcecd..", "..cdedc..", "dd.ccc.dd", "dcd.c.dcd", "c
 BEAN_POD_SPOTS = [(20, 3.5, 6), (100, 4, 5), (170, 3.5, 6), (240, 4, 5), (310, 3.5, 6), (60, 2, 5)]
 
 
-def white_bean():
+def white_bean(plant="white_bean", palette=BEAN, leaf_grid_rows=BEAN_LEAF, leaf_size=(9, 8), pod_width=1.5, pod_length=5,
+               scale=1.0, pods_show=True):
+    """A bush bean; the other beans use it with their own leaves, pods and colours. scale shrinks a low plant, such as the
+    peanut, whose pods grow underground and so do not show."""
     pod = ["".join("I" if y % 3 == 1 and x % 2 == 0 else "H" if x % 2 else "G" for x in range(16)) for y in range(16)]
-    textures = {"seed_leaf": padded(leaf_grid(4, 4)), "leaf": padded(BEAN_LEAF),
-                "old_leaf": padded(recolour(BEAN_LEAF, {"d": "z", "e": "z", "c": "y"})),
+    textures = {"seed_leaf": padded(leaf_grid(4, 4)), "leaf": padded(leaf_grid_rows),
+                "old_leaf": padded(recolour(leaf_grid_rows, {"d": "z", "e": "z", "c": "y"})),
                 "stalk": stalk_strip(["cdccdcccdccdccdc"]), "pod": pod, "dry_pod": recolour(pod, {"G": "h", "H": "i", "I": "j"}),
                 "flower": padded(["W.W", ".Y.", "W.W"])}
 
     def leaves(n, rise, lean, texture="leaf", turn=0):
-        return on_stalks(texture, (9, 8), n, 30, rise, lean, turn)
+        return on_stalks(texture, leaf_size, n, 30, rise * scale, lean, turn)
 
-    def pods(kind, count, length=5):
+    def pods(kind, count, length=pod_length):
+        if not pods_show:
+            return []
         parts = []
         for heading, out, top in BEAN_POD_SPOTS[:count]:
             x, z = 8 + out * _m.sin(_m.radians(heading)), 8 - out * _m.cos(_m.radians(heading))
             rotation = {"origin": [x, GROUND + top, z], "x": 12, "y": heading, "z": 0}
-            parts.append(solid((x - 0.75, GROUND + top - length, z - 0.5), (x + 0.75, GROUND + top, z + 0.5), kind, rotation=rotation))
+            parts.append(solid((x - pod_width / 2, GROUND + top - length, z - 0.5), (x + pod_width / 2, GROUND + top, z + 0.5), kind,
+                               rotation=rotation))
         return parts
 
     def flowers(count):
@@ -1695,7 +1701,8 @@ def white_bean():
         for heading, out, top in BEAN_POD_SPOTS[:count]:
             x, z = 8 + out * _m.sin(_m.radians(heading)), 8 - out * _m.cos(_m.radians(heading))
             face = {"uv": [0, 0, 3, 3], "texture": "#flower"}
-            parts.append({"from": [x - 1.5, GROUND + top, z - 1.5], "to": [x + 1.5, GROUND + top, z + 1.5], "shade": False,
+            y = GROUND + top * scale
+            parts.append({"from": [x - 1.5, y, z - 1.5], "to": [x + 1.5, y, z + 1.5], "shade": False,
                           "faces": {"up": face, "down": face}})
         return parts
     stages = [
@@ -1708,7 +1715,112 @@ def white_bean():
         leaves(6, 7, 22) + leaves(3, 9, 8, turn=30) + pods("pod", 6),
         leaves(4, 7, 26, "old_leaf") + leaves(2, 8, 10, turn=40) + pods("dry_pod", 6),
     ]
-    build("white_bean", BEAN, textures, stages, "leaf")
+    build(plant, palette, textures, stages, "leaf")
+
+
+# The other beans: azuki with yellow flowers and pods ripening near black; black bean with purple flowers; chickpea with
+# small, feathery leaves and short, puffy pods; soybean with purple flowers and short, fuzzy pods; and peanut, a low plant
+# with yellow flowers whose pods grow underground.
+CHICKPEA_LEAF = ["..d.d..", ".d.c.d.", "..dcd..", ".d.c.d.", "..dcd..", ".d.c.d.", "...c...", "...b..."]
+BEANS = {
+    "azuki_bean": {**BEAN, "W": "#f0d84a", "Y": "#c8a020", "h": "#2a2018", "i": "#4a3a28", "j": "#6a5a40"},
+    "black_bean": {**BEAN, "W": "#c8a0e0", "Y": "#f0f0f0", "h": "#5a4430", "i": "#8a6a48", "j": "#a88a60"},
+    "chickpea": {**BEAN, "W": "#f0d0e0", "Y": "#c87aa0", "h": "#a8905a", "i": "#c8b07a", "j": "#e0cc98"},
+    "soybean": {**BEAN, "W": "#b890d8", "Y": "#f0f0f0", "h": "#8a6a3a", "i": "#a88a5a", "j": "#c8aa7a"},
+    "peanut": {**BEAN, "W": "#f0c830", "Y": "#d89a18"},
+}
+
+
+def other_beans():
+    white_bean("azuki_bean", BEANS["azuki_bean"], pod_width=1.0, pod_length=5)
+    white_bean("black_bean", BEANS["black_bean"])
+    white_bean("chickpea", BEANS["chickpea"], CHICKPEA_LEAF, (7, 8), pod_width=2, pod_length=2.5)
+    white_bean("soybean", BEANS["soybean"], pod_width=1.5, pod_length=3)
+    white_bean("peanut", BEANS["peanut"], scale=0.6, pods_show=False)
+
+
+# Peppers, chilies, aubergines and tomatillo: a stem with leaves at each level, small flowers, then fruit, green at first
+# and ripe at harvest. Each names its leaf size, its fruit's shape and its colours.
+
+NIGHTSHADE = {"a": "#1e4424", "b": "#2c5e30", "c": "#3f7c3a", "d": "#5c9a44", "e": "#8cc05a", "f": "#b4dc84",
+              "s": "#4a7a2e", "W": "#f8f8f0", "Y": "#f0d050",
+              "G": "#6a9a2a", "H": "#9ac448", "I": "#c8e478"}
+
+
+def fruit_skin(dark, mid, light):
+    """A glossy fruit skin: its middle colour, a band of shine down one side, and darker at its edges."""
+    return ["".join(dark if x in (0, 15) else light if x in (4, 5) else mid for x in range(16)) for _ in range(16)]
+
+
+def fruiting_plant(plant, palette, leaf_size, fruit, flower=("W", "Y"), height=10, levels=4):
+    """fruit(x, z, top, ripe) gives one fruit's parts hanging from `top` at (x, z)."""
+    textures = {"seed_leaf": padded(leaf_grid(4, 4)), "leaf": padded(leaf_grid(*leaf_size)),
+                "stem": stalk_strip(["s" * 16]), "flower": padded([f".{flower[0]}.", f"{flower[0]}{flower[1]}{flower[0]}", f".{flower[0]}."])}
+    for name in ("green", "ripe"):
+        textures[name] = fruit_skin(*{"green": "GHI", "ripe": "PQR"}[name])
+
+    def plant_at(h, n, flowers=0, fruits=0, ripe=False):
+        parts = [stalk("stem", max(2, h), 0, 0)]
+        for k in range(n):
+            y = GROUND + 1.5 + k * (h - 1.5) / max(1, n)
+            for j in range(2):
+                parts.append(leaf("leaf", leaf_size, k * 90 + j * 180 + 20, 35 - k * 3, 0.5, y - GROUND))
+        spots = [(40, 4, 0.55), (160, 4.2, 0.7), (280, 3.8, 0.45), (100, 4.4, 0.85)]
+        for i, (heading, out, at) in enumerate(spots[:flowers]):
+            x, z = 8 + out * _m.sin(_m.radians(heading)), 8 - out * _m.cos(_m.radians(heading))
+            face = {"uv": [0, 0, 3, 3], "texture": "#flower"}
+            y = GROUND + h * at
+            parts.append({"from": [x - 1.5, y, z - 1.5], "to": [x + 1.5, y, z + 1.5], "shade": False, "faces": {"up": face, "down": face}})
+        for i, (heading, out, at) in enumerate(spots[:fruits]):
+            x, z = 8 + out * _m.sin(_m.radians(heading)), 8 - out * _m.cos(_m.radians(heading))
+            parts += fruit(x, z, GROUND + h * at, ripe)
+        return parts
+    H = height
+    stages = [ring_of("seed_leaf", (4, 4), 2, 30, rise=1),
+              ring_of("seed_leaf", (4, 4), 2, 25, rise=1) + [leaf("leaf", leaf_size, 90, 40, 0.5, 2), leaf("leaf", leaf_size, 270, 40, 0.5, 2)],
+              plant_at(H * 0.4, 2), plant_at(H * 0.6, 3), plant_at(H * 0.8, levels), plant_at(H, levels, flowers=3),
+              plant_at(H, levels, flowers=1, fruits=3), plant_at(H, levels, fruits=4, ripe=True)]
+    build(plant, palette, textures, stages, "leaf")
+
+
+def hanging_fruit(width, length, tilt=10, upright=False):
+    """A fruit `width` across and `length` long, hanging from its stalk, or pointing up for a chili that grows upright;
+    unripe fruit is three-fifths the size."""
+    def fruit(x, z, top, ripe):
+        w, l = (width, length) if ripe else (width * 0.85, length * 0.75)
+        texture = "ripe" if ripe else "green"
+        if upright:
+            return [rod(x, z, top, top + 1, "stem"), solid((x - w / 2, top + 1, z - w / 2), (x + w / 2, top + 1 + l, z + w / 2), texture,
+                                                            rotation={"origin": [x, top, z], "x": tilt, "y": 0, "z": 0})]
+        return [rod(x, z, top - 1, top, "stem"), solid((x - w / 2, top - 1 - l, z - w / 2), (x + w / 2, top - 1, z + w / 2), texture,
+                                                        rotation={"origin": [x, top, z], "x": tilt, "y": 0, "z": 0})]
+    return fruit
+
+
+def round_fruit(diameter):
+    def fruit(x, z, top, ripe):
+        d = diameter if ripe else max(2, diameter - 1)
+        return [rod(x, z, top - 1, top, "stem")] + ball(d, d, "ripe" if ripe else "green", "ripe" if ripe else "green",
+                                                         ground=top - 1 - d, centre=(x, z))
+    return fruit
+
+
+def nightshades():
+    def shade(**colours):
+        return {**NIGHTSHADE, **colours}
+    red = dict(P="#8a1418", Q="#c8221e", R="#f0503a")
+    fruiting_plant("red_chili", shade(**red), (4, 6), hanging_fruit(1.0, 5))
+    fruiting_plant("green_chili", shade(P="#0e3a0c", Q="#1e5a14", R="#5a9a3a"), (4, 6), hanging_fruit(1.0, 5))
+    fruiting_plant("paprika_pepper", shade(P="#7a1010", Q="#b81e18", R="#e04a30"), (5, 6), hanging_fruit(1.6, 6))
+    fruiting_plant("aji_amarillo", shade(P="#b86a10", Q="#f0a020", R="#f8d050"), (4, 6), hanging_fruit(1.3, 6))
+    fruiting_plant("birds_eye_chili", shade(**red), (3, 5), hanging_fruit(0.8, 2.5, tilt=-10, upright=True), height=8)
+    fruiting_plant("bell_pepper", shade(P="#8a1010", Q="#d02a1e", R="#f86848"), (5, 7), hanging_fruit(2.8, 3, tilt=0))
+    fruiting_plant("poblano_chili", shade(P="#10320e", Q="#1e4a18", R="#3e7a2e"), (5, 7), hanging_fruit(2.2, 4.5))
+    fruiting_plant("aubergine", shade(P="#24102e", Q="#40204e", R="#7a4a8a", W="#c8a0e0", Y="#f0d050"), (6, 7),
+                   hanging_fruit(2.6, 5, tilt=6), flower=("W", "Y"))
+    fruiting_plant("thai_aubergine", shade(P="#3a6a2a", Q="#c8dca8", R="#f0f4e0", W="#d8b0e8"), (5, 6), round_fruit(3))
+    fruiting_plant("tomatillo", shade(P="#6a8a3a", Q="#a8c070", R="#d8e4a8", W="#f0d84a", Y="#5a3a20"), (5, 6), round_fruit(3),
+                   flower=("W", "Y"))
 
 
 # Climbing vines on a trellis, built one way: stems winding up the trellis with the vine's own leaves along them, its
@@ -1915,6 +2027,8 @@ def main():
     asparagus()
     wakame()
     white_bean()
+    other_beans()
+    nightshades()
     bushes()
     cabbage("red_cabbage", RED_CABBAGE)
     lettuce()

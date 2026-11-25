@@ -1,6 +1,94 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/potatoes_stage0"
-  }
+    "particle": "portable_pocket_cabin:block/thai_aubergine_leaf",
+    "seed_leaf": "portable_pocket_cabin:block/thai_aubergine_seed_leaf"
+  },
+  "elements": [
+    {
+      "from": [
+        6.0,
+        0.0,
+        4.0
+      ],
+      "to": [
+        10.0,
+        0.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          0.0,
+          8
+        ],
+        "x": 30,
+        "y": 0.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#seed_leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#seed_leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        6.0,
+        0.0,
+        4.0
+      ],
+      "to": [
+        10.0,
+        0.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          0.0,
+          8
+        ],
+        "x": 30,
+        "y": 180.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#seed_leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#seed_leaf"
+        }
+      }
+    }
+  ]
 }
