@@ -1,12 +1,13 @@
 """Fruit-tree shapes, set on each tree's configured feature from Minecraft's own trunk and foliage placers.
 
 Run from the repository root: python3 .workflow/art/tree_shapes.py
-Orchard trees in life have a short trunk that forks low into a broad, rounded crown, wider than tall. Two shapes
-come closest in Minecraft's terms: a spreading tree on a forked trunk, like the cherry tree's, for apple, sweet cherry,
-apricot, and almond; and a rounder tree on a fancy oak's branching trunk for plum, ume, the citrus trees, olive, bay
-laurel, and most of the tropical spice trees. Coffee is a shrub-tree, tamarind spreads flat like an acacia, papaya is a
-slim trunk with a tuft on top, and the palms carry a flat crown on a tall trunk. Each tree keeps its own log and leaves;
-only the trunk and foliage placers change. Cinnamon keeps its straight trunk, whose bark is harvested.
+Each kind gets a shape of its own from Minecraft's layouts, so an orchard of mixed trees looks mixed: apple spreads
+wide on a forked trunk and apricot lower and wider still; sweet cherry grows tall and upright; plum is a round crown on
+a branching trunk; almond, ume and annatto are gnarled and open on bending trunks; the citrus trees and yerba mate are
+low, dense mounds; olive forks low under a silvery crown; bay laurel, nutmeg, clove and star anise are dense cones like
+spruces; mango and cinnamon are big domes; allspice holds a small crown high on a tall trunk; coffee is a shrub-tree;
+tamarind spreads flat like an acacia; papaya is a slim trunk under a small crown; the coconut palm leans and the oil
+palm stands straight. Each tree keeps its own log and leaves; only the trunk and foliage placers change.
 """
 import json
 
@@ -50,10 +51,55 @@ PALM = (
     {"type": "minecraft:straight_trunk_placer", "base_height": 5, "height_rand_a": 2, "height_rand_b": 0},
     {"type": "minecraft:acacia_foliage_placer", "radius": 2, "offset": 0},
 )
-SHAPES = {**{tree: SPREADING for tree in ("apple", "sweet_cherry", "apricot", "almond")},
-          **{tree: ROUND for tree in ("plum", "ume", "lemon", "orange", "lime", "makrut_lime", "olive", "bay_laurel", "mango", "nutmeg",
-                                      "clove", "allspice", "annatto", "star_anise", "yerba_mate")},
-          "coffee": SHRUB, "tamarind": FLAT, "papaya": TUFT, "coconut": PALM, "oil_palm": PALM}
+# More of Minecraft's layouts, so trees of different kinds look different.
+UPRIGHT = (
+    {"type": "minecraft:fancy_trunk_placer", "base_height": 6, "height_rand_a": 3, "height_rand_b": 0},
+    {"type": "minecraft:fancy_foliage_placer", "radius": 2, "offset": 4, "height": 4},
+)
+LOW_SPREADING = (
+    {"type": "minecraft:cherry_trunk_placer", "base_height": 4, "height_rand_a": 1, "height_rand_b": 0,
+     "branch_count": {"type": "minecraft:weighted_list", "distribution": [{"data": 2, "weight": 1}, {"data": 3, "weight": 2}]},
+     "branch_horizontal_length": uniform(3, 4), "branch_start_offset_from_top": {"min_inclusive": -2, "max_inclusive": -1},
+     "branch_end_offset_from_top": uniform(-1, 0)},
+    {"type": "minecraft:cherry_foliage_placer", "radius": 3, "offset": 0, "height": 4, "corner_hole_chance": 0.3,
+     "hanging_leaves_chance": 0.12, "hanging_leaves_extension_chance": 0.3, "wide_bottom_layer_hole_chance": 0.3},
+)
+GNARLED = (
+    {"type": "minecraft:bending_trunk_placer", "base_height": 3, "height_rand_a": 2, "height_rand_b": 0, "min_height_for_leaves": 2,
+     "bend_length": uniform(1, 3)},
+    {"type": "minecraft:random_spread_foliage_placer", "radius": 3, "offset": 0, "foliage_height": 3, "leaf_placement_attempts": 70},
+)
+MOUND = (
+    {"type": "minecraft:straight_trunk_placer", "base_height": 4, "height_rand_a": 1, "height_rand_b": 0},
+    {"type": "minecraft:blob_foliage_placer", "radius": 3, "offset": 0, "height": 3},
+)
+FORKED = (
+    {"type": "minecraft:forking_trunk_placer", "base_height": 3, "height_rand_a": 1, "height_rand_b": 1},
+    {"type": "minecraft:blob_foliage_placer", "radius": 2, "offset": 0, "height": 3},
+)
+CONE = (
+    {"type": "minecraft:straight_trunk_placer", "base_height": 5, "height_rand_a": 2, "height_rand_b": 1},
+    {"type": "minecraft:spruce_foliage_placer", "radius": uniform(2, 3), "offset": uniform(0, 1), "trunk_height": uniform(1, 2)},
+)
+DOME = (
+    {"type": "minecraft:straight_trunk_placer", "base_height": 6, "height_rand_a": 2, "height_rand_b": 0},
+    {"type": "minecraft:blob_foliage_placer", "radius": 3, "offset": 0, "height": 4},
+)
+TALL_TOP = (
+    {"type": "minecraft:straight_trunk_placer", "base_height": 6, "height_rand_a": 2, "height_rand_b": 0},
+    {"type": "minecraft:blob_foliage_placer", "radius": 2, "offset": 0, "height": 3},
+)
+LEANING_PALM = (
+    {"type": "minecraft:bending_trunk_placer", "base_height": 5, "height_rand_a": 2, "height_rand_b": 0, "min_height_for_leaves": 4,
+     "bend_length": uniform(2, 3)},
+    {"type": "minecraft:acacia_foliage_placer", "radius": 2, "offset": 0},
+)
+SHAPES = {"apple": SPREADING, "apricot": LOW_SPREADING, "sweet_cherry": UPRIGHT, "plum": ROUND,
+          **{tree: GNARLED for tree in ("almond", "ume", "annatto")},
+          **{tree: MOUND for tree in ("lemon", "lime", "orange", "makrut_lime", "yerba_mate")},
+          "olive": FORKED, **{tree: CONE for tree in ("bay_laurel", "nutmeg", "clove", "star_anise")},
+          "mango": DOME, "cinnamon": DOME, "allspice": TALL_TOP,
+          "coffee": SHRUB, "tamarind": FLAT, "papaya": TUFT, "coconut": LEANING_PALM, "oil_palm": PALM}
 
 
 def main():
