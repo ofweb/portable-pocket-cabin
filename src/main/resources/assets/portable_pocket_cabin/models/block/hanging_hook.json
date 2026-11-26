@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "minecraft:block/iron_chain",
-    "chain": "minecraft:block/iron_chain"
+    "particle": "portable_pocket_cabin:block/station_chain",
+    "chain": "portable_pocket_cabin:block/station_chain"
   },
   "elements": [
     {

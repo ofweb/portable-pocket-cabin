@@ -1,8 +1,9 @@
 {
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "side": "minecraft:block/stripped_oak_log",
-    "bottom": "minecraft:block/stripped_oak_log_top",
-    "top": "minecraft:block/stripped_oak_log_top"
+    "side": "portable_pocket_cabin:block/station_oak_wood",
+    "bottom": "portable_pocket_cabin:block/station_end_grain",
+    "top": "portable_pocket_cabin:block/station_end_grain",
+    "particle": "portable_pocket_cabin:block/station_oak_wood"
   }
 }

@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "minecraft:block/iron_block",
-    "mesh": "minecraft:block/iron_bars",
-    "rim": "minecraft:block/iron_block"
+    "particle": "portable_pocket_cabin:block/station_iron",
+    "mesh": "portable_pocket_cabin:block/station_mesh",
+    "rim": "portable_pocket_cabin:block/station_iron"
   },
   "elements": [
     {

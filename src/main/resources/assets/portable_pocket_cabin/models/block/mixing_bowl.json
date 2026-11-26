@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "minecraft:block/terracotta",
-    "side": "minecraft:block/terracotta",
-    "inner": "minecraft:block/white_terracotta"
+    "particle": "portable_pocket_cabin:block/station_terracotta",
+    "side": "portable_pocket_cabin:block/station_terracotta",
+    "inner": "portable_pocket_cabin:block/station_glaze"
   },
   "elements": [
     {

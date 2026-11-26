@@ -1,8 +1,9 @@
 {
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "top": "minecraft:block/barrel_top",
-    "bottom": "minecraft:block/barrel_bottom",
-    "side": "minecraft:block/barrel_side"
+    "top": "portable_pocket_cabin:block/station_barrel_top",
+    "bottom": "portable_pocket_cabin:block/station_barrel_top",
+    "side": "portable_pocket_cabin:block/station_barrel_side",
+    "particle": "portable_pocket_cabin:block/station_barrel_side"
   }
 }

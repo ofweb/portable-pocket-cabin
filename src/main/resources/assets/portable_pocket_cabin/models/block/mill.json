@@ -1,8 +1,9 @@
 {
   "parent": "minecraft:block/orientable",
   "textures": {
-    "top": "minecraft:block/smooth_stone",
-    "front": "minecraft:block/grindstone_side",
-    "side": "minecraft:block/stone_bricks"
+    "top": "portable_pocket_cabin:block/station_stone",
+    "front": "portable_pocket_cabin:block/station_millstone",
+    "side": "portable_pocket_cabin:block/station_stone",
+    "particle": "portable_pocket_cabin:block/station_stone"
   }
 }

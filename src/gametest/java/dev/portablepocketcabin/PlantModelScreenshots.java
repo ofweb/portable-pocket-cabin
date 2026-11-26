@@ -92,6 +92,34 @@ final class PlantModelScreenshots {
 						return;
 					}
 					// Every cooking plant, or any other block of the mod's with an age, such as the cardoon.
+					// Every cooking station facing the camera, in two rows; the fired ones lit in the back row.
+					if (plant.equals("stations")) {
+						String[] front = {"cutting_board", "skillet", "wok", "aebleskive_pan", "cooking_pot", "dairy_pan", "mixing_bowl", "mortar",
+							"strainer", "proofing_basket", "meat_grinder", "sausage_stuffer", "fermentation_crock"};
+						String[] back = {"stove", "oven", "grill", "prep_counter", "butcher_block", "brine_barrel", "butter_churn", "cheese_press",
+							"press", "mill", "ageing_shelf", "drying_rack", "hanging_hook"};
+						String[][] rows = {back, front};
+						for (int r = 0; r < 2; r++) {
+							for (int i = 0; i < rows[r].length; i++) {
+								var found = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getValue(PortablePocketCabin.id(rows[r][i]));
+								var state = found.defaultBlockState();
+								for (var property : state.getProperties()) {
+									if (property.getName().equals("facing") && property.getPossibleValues().contains(net.minecraft.core.Direction.SOUTH)) {
+										state = state.setValue((net.minecraft.world.level.block.state.properties.EnumProperty<net.minecraft.core.Direction>) property,
+											net.minecraft.core.Direction.SOUTH);
+									}
+									if (property.getName().equals("lit")) state = state.setValue((net.minecraft.world.level.block.state.properties.BooleanProperty) property, true);
+									if (property.getName().equals("hanging")) state = state.setValue((net.minecraft.world.level.block.state.properties.BooleanProperty) property, false);
+								}
+								var at = base.offset(i - 6, 0, r * 2 - 2);
+								if (rows[r][i].equals("hanging_hook")) level.setBlock(at.north(), Blocks.OAK_PLANKS.defaultBlockState(), Block.UPDATE_CLIENTS);
+								level.setBlock(at, state, Block.UPDATE_CLIENTS);
+							}
+						}
+						server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "kill @e[type=item]");
+						player.teleportTo(level, base.getX() + .5, base.getY() + 2.4, base.getZ() + 6.5, Set.of(), 180, 22, false);
+						return;
+					}
 					// The mod's small blocks in a row: rich soil and farmland, rock salt ore, the palm and cinnamon trunks ready and
 					// harvested, the trellis, and the prawn trap.
 					if (plant.equals("small_blocks")) {

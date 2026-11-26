@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "minecraft:block/stripped_spruce_log",
-    "leg": "minecraft:block/stripped_spruce_log",
-    "board": "minecraft:block/scaffolding_top"
+    "particle": "portable_pocket_cabin:block/station_spruce_wood",
+    "leg": "portable_pocket_cabin:block/station_spruce_wood",
+    "board": "portable_pocket_cabin:block/station_slats"
   },
   "elements": [
     {

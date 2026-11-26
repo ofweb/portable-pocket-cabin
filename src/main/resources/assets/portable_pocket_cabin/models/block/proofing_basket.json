@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "minecraft:block/bamboo_planks",
-    "side": "minecraft:block/bamboo_planks",
-    "inner": "minecraft:block/bamboo_planks"
+    "particle": "portable_pocket_cabin:block/station_wicker",
+    "side": "portable_pocket_cabin:block/station_wicker",
+    "inner": "portable_pocket_cabin:block/station_wicker"
   },
   "elements": [
     {

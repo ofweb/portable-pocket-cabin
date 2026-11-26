@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "minecraft:block/stripped_oak_log",
-    "side": "minecraft:block/stripped_oak_log",
-    "inner": "minecraft:block/oak_planks"
+    "particle": "portable_pocket_cabin:block/station_oak_wood",
+    "side": "portable_pocket_cabin:block/station_oak_wood",
+    "inner": "portable_pocket_cabin:block/station_oak_planks"
   },
   "elements": [
     {

@@ -2537,6 +2537,331 @@ def sea_and_small():
     small_blocks()
 
 
+# Cooking stations: the same shapes as before, painted in their own materials. Each texture is a 16x16 grid drawn from a
+# function of (x, y) to a colour, lit from the upper left like the plants.
+
+def paint(name, fn):
+    img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    for y in range(16):
+        for x in range(16):
+            c = fn(x, y)
+            if c:
+                img.putpixel((x, y), (*rgb(c), 255))
+    path = f"{A}/textures/block/{name}.png"
+    img.save(path)
+
+
+def shade(c, k):
+    r, g, b = rgb(c)
+    return "#%02x%02x%02x" % tuple(max(0, min(255, round(v * k))) for v in (r, g, b))
+
+
+def planks(light, mid, dark, seed):
+    """Boards running across, each a shade of its own, with grain and a dark seam between them."""
+    def fn(x, y):
+        board = y // 4
+        if y % 4 == 3:
+            return dark
+        base = (light, mid, mid, light)[(board + seed) % 4]
+        if noise(x, y, seed) < 0.12 or (x + board * 5 + seed) % 16 == 0:
+            return shade(base, 0.85)
+        return base
+    return fn
+
+
+def log_side(light, mid, dark, seed):
+    """Wood seen along the grain: long streaks running up."""
+    def fn(x, y):
+        streak = noise(x, 0, seed)
+        c = light if streak < 0.3 else mid if streak < 0.8 else dark
+        return shade(c, 0.9) if noise(x, y, seed + 1) < 0.08 else c
+    return fn
+
+
+def end_grain(light, mid, dark):
+    """A cut log end: growth rings round the middle."""
+    def fn(x, y):
+        r = _m.hypot(x - 7.5, y - 7.5)
+        if r > 7.3:
+            return dark
+        return mid if round(r) % 3 == 0 else light
+    return fn
+
+
+def metal(base, seed, speckle=0.1, shine=True):
+    """Metal: one tone, lighter along the upper left edge, darker along the lower right, flecked a little."""
+    def fn(x, y):
+        c = base
+        if shine and (x == 0 or y == 0):
+            c = shade(base, 1.25)
+        elif x == 15 or y == 15:
+            c = shade(base, 0.7)
+        elif noise(x, y, seed) < speckle:
+            c = shade(base, 1.12 if noise(x, y, seed + 2) < 0.5 else 0.88)
+        return c
+    return fn
+
+
+def glaze(base, seed):
+    """Fired clay or glaze: smooth, with a soft sheen across the middle."""
+    def fn(x, y):
+        c = base
+        if 4 <= x <= 6 and 2 <= y <= 13:
+            c = shade(base, 1.12)
+        if noise(x, y, seed) < 0.06:
+            c = shade(base, 0.9)
+        return c
+    return fn
+
+
+def bricks(brick, mortar, seed):
+    def fn(x, y):
+        row = y // 4
+        if y % 4 == 3 or (x + (4 if row % 2 else 0)) % 8 == 7:
+            return mortar
+        return shade(brick, 1.1 if noise(x // 8 + row * 3, row, seed) < 0.4 else 0.95)
+    return fn
+
+
+def wicker(light, dark):
+    def fn(x, y):
+        return light if ((x // 2) + (y // 2)) % 2 else dark
+    return fn
+
+
+def chain(x, y):
+    if 6 <= x <= 9:
+        link = y % 6
+        if (link in (0, 5) and 7 <= x <= 8) or (link in (1, 2, 3, 4) and x in (6, 9)):
+            return "#5a5e66" if x == 9 else "#9aa0aa"
+    return None
+
+
+def stove_front(lit):
+    def fn(x, y):
+        if 3 <= x <= 12 and 6 <= y <= 13:                 # the oven door
+            if 5 <= x <= 10 and 8 <= y <= 11:              # its window
+                return ("#f8a030" if (x + y) % 2 else "#e86a18") if lit else "#1a1a1e"
+            return "#3a3c42" if y == 6 or x in (3, 12) else "#2e3036"
+        if y == 7 and x in (1, 14):
+            return "#8a8e96"                               # door hinges
+        if 1 <= y <= 3 and x in (3, 6, 9, 12):
+            return "#c8ccd2" if y == 2 else "#6a6e76"      # dials
+        return metal("#24262c", 31)(x, y)
+    return fn
+
+
+def stove_top(x, y):
+    for cx, cy in ((4, 4), (11, 4), (4, 11), (11, 11)):
+        r = _m.hypot(x - cx + 0.5, y - cy + 0.5)
+        if 1.5 < r < 3.2:
+            return "#4a4c54" if r > 2.4 else "#6a6c74"
+    return metal("#2a2c32", 32, shine=False)(x, y)
+
+
+def oven_front(lit):
+    def fn(x, y):
+        r = _m.hypot((x - 7.5) / 5.5, (y - 12) / 7.5)
+        if r < 1 and y >= 5:
+            if lit:
+                return "#f8c040" if r < 0.5 else "#e86a18" if r < 0.8 else "#8a2a10"
+            return "#120c0a" if r < 0.85 else "#2a1a14"
+        if 0.95 <= r < 1.2 and y >= 4:
+            return "#8a3a28"                              # arch of bricks round the mouth
+        return bricks("#a8502e", "#c8b8a0", 33)(x, y)
+    return fn
+
+
+def grill_front(lit):
+    def fn(x, y):
+        if 3 <= y <= 12 and x % 3 == 1 and 2 <= x <= 13:
+            return ("#f08a20" if y > 8 else "#c84a10") if lit else "#0e0e10"   # vents
+        return metal("#2c2a2a", 34)(x, y)
+    return fn
+
+
+def grate(x, y):
+    if x % 3 == 0:
+        return "#5a5a5e"
+    return "#1a1818" if y % 4 else "#3a3a3e"
+
+
+def millstone(x, y):
+    r = _m.hypot(x - 7.5, y - 7.5)
+    if r < 1.6:
+        return "#3a3a3a"
+    if r < 7.5:
+        a = _m.atan2(y - 7.5, x - 7.5)
+        return "#8a8680" if int((a + _m.pi) * 4 / _m.pi) % 2 else "#a8a49c"
+    return "#6a6660"
+
+
+def stone(seed):
+    def fn(x, y):
+        n = noise(x, y, seed)
+        return "#8a8a88" if n < 0.3 else "#9a9a96" if n < 0.8 else "#727270"
+    return fn
+
+
+def barrel_side(x, y):
+    if y in (2, 3, 12, 13):
+        return "#3a3c42" if y in (3, 12) else "#6a6e76"           # iron hoops
+    stave = x // 4
+    c = ("#8a6238", "#7a5430", "#946a40", "#806034")[stave]
+    return shade(c, 0.75) if x % 4 == 3 else c
+
+
+def barrel_top(x, y):
+    r = _m.hypot(x - 7.5, y - 7.5)
+    if r > 7.2:
+        return "#3a3c42"
+    return "#6a4a28" if x % 4 == 3 else "#8a6238"
+
+
+def counter_top(x, y):
+    if x in (0, 15) or y in (0, 15):
+        return "#6a4a30"
+    return "#c8c4bc" if noise(x, y, 35) < 0.7 else "#b8b4ac"
+
+
+def cupboard(x, y):
+    if y < 2:
+        return "#6a4a30"
+    if x in (0, 7, 8, 15) or y in (2, 15):
+        return "#5a3e28"
+    if y == 8 and x in (5, 10):
+        return "#c8b060"                                          # knobs
+    return planks("#94704a", "#86643e", "#5a3e28", 2)(x, y)
+
+
+def screw_front(wood_light, wood_mid, wood_dark):
+    """A press: a frame of posts round slats, a screw down the middle."""
+    def fn(x, y):
+        if x in (7, 8):
+            return "#6a6e76" if (y + x) % 2 else "#9aa0aa"
+        if x in (0, 1, 14, 15) or y in (0, 1):
+            return wood_dark
+        return wood_light if (x // 3) % 2 else wood_mid
+    return fn
+
+
+def station_textures():
+    oak, spruce, dark_oak = ("#b8905a", "#a8804c", "#6a4a2a"), ("#8a6440", "#7a5634", "#4a3420"), ("#5a3e24", "#4a321c", "#2a1c10")
+    paint("station_oak_planks", planks(*oak, 1))
+    paint("station_spruce_planks", planks(*spruce, 2))
+    paint("station_oak_wood", log_side("#c8a070", "#b48a5a", "#8a6640", 3))
+    paint("station_spruce_wood", log_side("#a07850", "#8a6440", "#6a4a2c", 4))
+    paint("station_dark_wood", log_side("#5a3e24", "#4a321c", "#2a1c10", 5))
+    paint("station_end_grain", end_grain("#d0aa78", "#a8804c", "#7a5634"))
+    paint("station_cast_iron", metal("#2a2a2e", 6))
+    paint("station_iron", metal("#8a8e96", 7))
+    paint("station_copper", metal("#c06a38", 8))
+    paint("station_copper_inside", metal("#8a4a2a", 9, shine=False))
+    paint("station_terracotta", glaze("#9a5a3a", 10))
+    paint("station_glaze", glaze("#e8dcc0", 11))
+    paint("station_brown_glaze", glaze("#6a3a22", 12))
+    paint("station_enamel", glaze("#f4f4ee", 13))
+    paint("station_stone", stone(14))
+    paint("station_wicker", wicker("#d8b878", "#a88848"))
+    paint("station_slats", lambda x, y: "#a07850" if x % 4 < 3 else None)
+    paint("station_mesh", lambda x, y: "#8a8e96" if x % 3 == 0 or y % 3 == 0 else None)
+    paint("station_chain", chain)
+    paint("station_bricks", bricks("#a8502e", "#c8b8a0", 15))
+    paint("station_stove_front", stove_front(False))
+    paint("station_stove_front_on", stove_front(True))
+    paint("station_stove_top", stove_top)
+    paint("station_stove_side", metal("#24262c", 16))
+    paint("station_oven_front", oven_front(False))
+    paint("station_oven_front_on", oven_front(True))
+    paint("station_grill_front", grill_front(False))
+    paint("station_grill_front_on", grill_front(True))
+    paint("station_grate", grate)
+    paint("station_millstone", millstone)
+    paint("station_barrel_side", barrel_side)
+    paint("station_barrel_top", barrel_top)
+    paint("station_counter_top", counter_top)
+    paint("station_cupboard", cupboard)
+    paint("station_press_front", screw_front("#a07850", "#8a6440", "#5a3e28"))
+    paint("station_cheese_press_front", screw_front("#c8a070", "#b48a5a", "#7a5634"))
+    paint("station_screw_top", lambda x, y: "#9aa0aa" if _m.hypot(x - 7.5, y - 7.5) < 2.5 else
+          planks("#a07850", "#8a6440", "#5a3e28", 3)(x, y))
+    paint("station_hopper", lambda x, y: "#1a1a1e" if _m.hypot(x - 7.5, y - 7.5) < 4.5 else metal("#8a8e96", 17)(x, y))
+
+
+# What each station's textures become, by the role its model gives them.
+STATION_TEXTURES = {
+    "aebleskive_pan": {"particle": "cast_iron", "iron": "cast_iron", "handle": "dark_wood"},
+    "ageing_shelf": {"particle": "spruce_planks", "leg": "spruce_wood", "board": "spruce_planks"},
+    "brine_barrel": {"top": "barrel_top", "bottom": "barrel_top", "side": "barrel_side"},
+    "butcher_block": {"side": "oak_wood", "bottom": "end_grain", "top": "end_grain"},
+    "butter_churn": {"particle": "oak_wood", "side": "oak_wood", "inner": "oak_planks"},
+    "cheese_press": {"top": "screw_top", "front": "cheese_press_front", "side": "oak_wood"},
+    "cooking_pot": {"particle": "copper", "side": "copper", "inside": "copper_inside"},
+    "cutting_board": {"particle": "oak_planks", "board": "oak_planks"},
+    "dairy_pan": {"particle": "copper", "side": "copper", "inner": "enamel"},
+    "drying_rack": {"particle": "spruce_wood", "leg": "spruce_wood", "board": "slats"},
+    "fermentation_crock": {"particle": "brown_glaze", "side": "brown_glaze", "inner": "glaze"},
+    "grill": {"bottom": "cast_iron", "front": "grill_front", "side": "cast_iron", "top": "grate"},
+    "grill_on": {"bottom": "cast_iron", "front": "grill_front_on", "side": "cast_iron", "top": "grate"},
+    "hanging_hook": {"particle": "chain", "chain": "chain"},
+    "hanging_hook_wall": {"particle": "chain", "chain": "chain"},
+    "mill": {"top": "stone", "front": "millstone", "side": "stone"},
+    "mixing_bowl": {"particle": "terracotta", "side": "terracotta", "inner": "glaze"},
+    "mortar": {"particle": "stone", "side": "stone", "inner": "stone"},
+    "oven": {"bottom": "bricks", "front": "oven_front", "side": "bricks", "top": "bricks"},
+    "oven_on": {"bottom": "bricks", "front": "oven_front_on", "side": "bricks", "top": "bricks"},
+    "prep_counter": {"top": "counter_top", "bottom": "spruce_planks", "side": "cupboard"},
+    "press": {"top": "screw_top", "front": "press_front", "side": "spruce_wood"},
+    "proofing_basket": {"particle": "wicker", "side": "wicker", "inner": "wicker"},
+    "skillet": {"particle": "cast_iron", "pan": "cast_iron", "handle": "oak_wood"},
+    "stove": {"bottom": "cast_iron", "front": "stove_front", "side": "stove_side", "top": "stove_top"},
+    "stove_on": {"bottom": "cast_iron", "front": "stove_front_on", "side": "stove_side", "top": "stove_top"},
+    "strainer": {"particle": "iron", "mesh": "mesh", "rim": "iron"},
+    "wok": {"particle": "cast_iron", "pan": "cast_iron", "handle": "dark_wood"},
+}
+
+
+def iron_box(start, end, side="side", top=None):
+    """A box of the station's metal, its faces showing the texture's matching part."""
+    (x0, y0, z0), (x1, y1, z1) = start, end
+    top = top or side
+    faces = {"north": {"uv": [x0, 16 - y1, x1, 16 - y0], "texture": "#" + side}, "south": {"uv": [x0, 16 - y1, x1, 16 - y0], "texture": "#" + side},
+             "east": {"uv": [z0, 16 - y1, z1, 16 - y0], "texture": "#" + side}, "west": {"uv": [z0, 16 - y1, z1, 16 - y0], "texture": "#" + side},
+             "up": {"uv": [x0, z0, x1, z1], "texture": "#" + top}, "down": {"uv": [x0, z0, x1, z1], "texture": "#" + side}}
+    return {"from": [x0, y0, z0], "to": [x1, y1, z1], "faces": faces}
+
+
+def grinder_models():
+    """The meat grinder clamped to its board, a barrel, a hopper on top, a crank on its side; and the sausage stuffer, an
+    upright cylinder on a base, a plunger and crank on top, a spout at its foot. Both within the outlines they had."""
+    grinder = [iron_box((4, 0, 4), (12, 2, 12)), iron_box((7, 2, 7), (9, 4, 9)), iron_box((5, 4, 3), (11, 9, 13)),
+               iron_box((4, 9, 5), (12, 12, 11), top="top"), iron_box((11, 6, 7.5), (13, 7, 8.5)), iron_box((12, 6, 7.5), (13, 10, 8.5)),
+               {**iron_box((12.5, 9, 7), (13, 11, 9), side="handle"), "from": [12, 9.5, 7], "to": [13, 11.5, 9]}]
+    write_model("meat_grinder", {"parent": "minecraft:block/block", "textures": {"particle": NS + "station_iron", "side": NS + "station_iron",
+                                                                                  "top": NS + "station_hopper", "handle": NS + "station_dark_wood"},
+                                 "elements": grinder})
+    stuffer = [iron_box((4, 0, 3), (12, 1, 13)), iron_box((5, 1, 5), (11, 11, 11), top="top"), iron_box((7, 11, 7), (9, 13, 9)),
+               iron_box((4, 13, 7.5), (12, 14, 8.5)), iron_box((4, 12, 7.5), (5, 14, 8.5), side="handle"),
+               iron_box((7.5, 2, 11), (8.5, 3, 14))]
+    write_model("sausage_stuffer", {"parent": "minecraft:block/block", "textures": {"particle": NS + "station_iron", "side": NS + "station_iron",
+                                                                                     "top": NS + "station_hopper", "handle": NS + "station_dark_wood"},
+                                    "elements": stuffer})
+
+
+def stations():
+    station_textures()
+    for model, textures in STATION_TEXTURES.items():
+        path = f"{A}/models/block/{model}.json"
+        data = json.load(open(path))
+        data["textures"] = {role: NS + "station_" + texture for role, texture in textures.items()}
+        if "particle" not in data["textures"]:
+            data["textures"]["particle"] = NS + "station_" + textures.get("side", next(iter(textures.values())))
+        with open(path, "w") as f:
+            json.dump(data, f, indent=2)
+            f.write("\n")
+    grinder_models()
+
+
 def main():
     cabbage()
     tomato()
@@ -2561,6 +2886,7 @@ def main():
     herbs_and_oilseeds()
     roots_and_tropicals()
     sea_and_small()
+    stations()
     bushes()
     cabbage("red_cabbage", RED_CABBAGE)
     lettuce()

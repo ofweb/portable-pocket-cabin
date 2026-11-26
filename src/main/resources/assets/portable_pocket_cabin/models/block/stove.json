@@ -1,9 +1,10 @@
 {
   "parent": "minecraft:block/orientable_with_bottom",
   "textures": {
-    "bottom": "minecraft:block/smoker_bottom",
-    "front": "minecraft:block/blast_furnace_front",
-    "side": "minecraft:block/blast_furnace_side",
-    "top": "minecraft:block/blast_furnace_top"
+    "bottom": "portable_pocket_cabin:block/station_cast_iron",
+    "front": "portable_pocket_cabin:block/station_stove_front",
+    "side": "portable_pocket_cabin:block/station_stove_side",
+    "top": "portable_pocket_cabin:block/station_stove_top",
+    "particle": "portable_pocket_cabin:block/station_stove_side"
   }
 }

@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "minecraft:block/polished_andesite",
-    "side": "minecraft:block/polished_andesite",
-    "inner": "minecraft:block/polished_andesite"
+    "particle": "portable_pocket_cabin:block/station_stone",
+    "side": "portable_pocket_cabin:block/station_stone",
+    "inner": "portable_pocket_cabin:block/station_stone"
   },
   "elements": [
     {

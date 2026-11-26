@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "minecraft:block/blackstone",
-    "iron": "minecraft:block/blackstone",
-    "handle": "minecraft:block/stripped_dark_oak_log"
+    "particle": "portable_pocket_cabin:block/station_cast_iron",
+    "iron": "portable_pocket_cabin:block/station_cast_iron",
+    "handle": "portable_pocket_cabin:block/station_dark_wood"
   },
   "elements": [
     {

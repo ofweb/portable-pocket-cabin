@@ -1,8 +1,9 @@
 {
   "parent": "minecraft:block/orientable",
   "textures": {
-    "top": "minecraft:block/piston_top",
-    "front": "minecraft:block/composter_side",
-    "side": "minecraft:block/stripped_spruce_log"
+    "top": "portable_pocket_cabin:block/station_screw_top",
+    "front": "portable_pocket_cabin:block/station_press_front",
+    "side": "portable_pocket_cabin:block/station_spruce_wood",
+    "particle": "portable_pocket_cabin:block/station_spruce_wood"
   }
 }

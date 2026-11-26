@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "minecraft:block/copper_block",
-    "side": "minecraft:block/copper_block",
-    "inner": "minecraft:block/white_concrete"
+    "particle": "portable_pocket_cabin:block/station_copper",
+    "side": "portable_pocket_cabin:block/station_copper",
+    "inner": "portable_pocket_cabin:block/station_enamel"
   },
   "elements": [
     {
