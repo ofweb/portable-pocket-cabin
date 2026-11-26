@@ -1,10 +1,693 @@
 {
-  "parent": "minecraft:block/orientable_with_bottom",
+  "parent": "minecraft:block/block",
   "textures": {
-    "bottom": "portable_pocket_cabin:block/station_cast_iron",
+    "particle": "portable_pocket_cabin:block/station_stove_side",
+    "body": "portable_pocket_cabin:block/station_stove_side",
     "front": "portable_pocket_cabin:block/station_stove_front_on",
-    "side": "portable_pocket_cabin:block/station_stove_side",
     "top": "portable_pocket_cabin:block/station_stove_top",
-    "particle": "portable_pocket_cabin:block/station_stove_side"
-  }
+    "iron": "portable_pocket_cabin:block/station_cast_iron",
+    "dial": "portable_pocket_cabin:block/station_dial"
+  },
+  "elements": [
+    {
+      "from": [
+        0.5,
+        0,
+        0.5
+      ],
+      "to": [
+        2.5,
+        2,
+        2.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            13.5,
+            14,
+            15.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "south": {
+          "uv": [
+            0.5,
+            14,
+            2.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "east": {
+          "uv": [
+            13.5,
+            14,
+            15.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "west": {
+          "uv": [
+            0.5,
+            14,
+            2.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "up": {
+          "uv": [
+            0.5,
+            0.5,
+            2.5,
+            2.5
+          ],
+          "texture": "#iron"
+        },
+        "down": {
+          "uv": [
+            0.5,
+            13.5,
+            2.5,
+            15.5
+          ],
+          "texture": "#iron"
+        }
+      }
+    },
+    {
+      "from": [
+        0.5,
+        0,
+        13.5
+      ],
+      "to": [
+        2.5,
+        2,
+        15.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            13.5,
+            14,
+            15.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "south": {
+          "uv": [
+            0.5,
+            14,
+            2.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "east": {
+          "uv": [
+            0.5,
+            14,
+            2.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "west": {
+          "uv": [
+            13.5,
+            14,
+            15.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "up": {
+          "uv": [
+            0.5,
+            13.5,
+            2.5,
+            15.5
+          ],
+          "texture": "#iron"
+        },
+        "down": {
+          "uv": [
+            0.5,
+            0.5,
+            2.5,
+            2.5
+          ],
+          "texture": "#iron"
+        }
+      }
+    },
+    {
+      "from": [
+        13.5,
+        0,
+        0.5
+      ],
+      "to": [
+        15.5,
+        2,
+        2.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0.5,
+            14,
+            2.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "south": {
+          "uv": [
+            13.5,
+            14,
+            15.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "east": {
+          "uv": [
+            13.5,
+            14,
+            15.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "west": {
+          "uv": [
+            0.5,
+            14,
+            2.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "up": {
+          "uv": [
+            13.5,
+            0.5,
+            15.5,
+            2.5
+          ],
+          "texture": "#iron"
+        },
+        "down": {
+          "uv": [
+            13.5,
+            13.5,
+            15.5,
+            15.5
+          ],
+          "texture": "#iron"
+        }
+      }
+    },
+    {
+      "from": [
+        13.5,
+        0,
+        13.5
+      ],
+      "to": [
+        15.5,
+        2,
+        15.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0.5,
+            14,
+            2.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "south": {
+          "uv": [
+            13.5,
+            14,
+            15.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "east": {
+          "uv": [
+            0.5,
+            14,
+            2.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "west": {
+          "uv": [
+            13.5,
+            14,
+            15.5,
+            16.0
+          ],
+          "texture": "#iron"
+        },
+        "up": {
+          "uv": [
+            13.5,
+            13.5,
+            15.5,
+            15.5
+          ],
+          "texture": "#iron"
+        },
+        "down": {
+          "uv": [
+            13.5,
+            0.5,
+            15.5,
+            2.5
+          ],
+          "texture": "#iron"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        2,
+        1
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            14
+          ],
+          "texture": "#front"
+        },
+        "south": {
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            14
+          ],
+          "texture": "#body"
+        },
+        "east": {
+          "uv": [
+            0.0,
+            0.0,
+            15,
+            14
+          ],
+          "texture": "#body"
+        },
+        "west": {
+          "uv": [
+            1,
+            0.0,
+            16.0,
+            14
+          ],
+          "texture": "#body"
+        },
+        "up": {
+          "uv": [
+            0.0,
+            1,
+            16.0,
+            16.0
+          ],
+          "texture": "#top"
+        },
+        "down": {
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            15
+          ],
+          "texture": "#iron"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        10,
+        0
+      ],
+      "to": [
+        12,
+        10.8,
+        0.6
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            5.2,
+            12,
+            6
+          ],
+          "texture": "#dial"
+        },
+        "south": {
+          "uv": [
+            4,
+            5.2,
+            12,
+            6
+          ],
+          "texture": "#dial"
+        },
+        "east": {
+          "uv": [
+            15.4,
+            5.2,
+            16.0,
+            6
+          ],
+          "texture": "#dial"
+        },
+        "west": {
+          "uv": [
+            0.0,
+            5.2,
+            0.6,
+            6
+          ],
+          "texture": "#dial"
+        },
+        "up": {
+          "uv": [
+            4,
+            0.0,
+            12,
+            0.6
+          ],
+          "texture": "#dial"
+        },
+        "down": {
+          "uv": [
+            4,
+            15.4,
+            12,
+            16.0
+          ],
+          "texture": "#dial"
+        }
+      }
+    },
+    {
+      "from": [
+        2.8,
+        13.2,
+        0.2
+      ],
+      "to": [
+        4.199999999999999,
+        14.6,
+        1
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            11.8,
+            1.4,
+            13.2,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "south": {
+          "uv": [
+            2.8,
+            1.4,
+            4.2,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "east": {
+          "uv": [
+            15,
+            1.4,
+            15.8,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "west": {
+          "uv": [
+            0.2,
+            1.4,
+            1,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "up": {
+          "uv": [
+            2.8,
+            0.2,
+            4.2,
+            1
+          ],
+          "texture": "#dial"
+        },
+        "down": {
+          "uv": [
+            2.8,
+            15,
+            4.2,
+            15.8
+          ],
+          "texture": "#dial"
+        }
+      }
+    },
+    {
+      "from": [
+        5.8,
+        13.2,
+        0.2
+      ],
+      "to": [
+        7.199999999999999,
+        14.6,
+        1
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8.8,
+            1.4,
+            10.2,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "south": {
+          "uv": [
+            5.8,
+            1.4,
+            7.2,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "east": {
+          "uv": [
+            15,
+            1.4,
+            15.8,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "west": {
+          "uv": [
+            0.2,
+            1.4,
+            1,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "up": {
+          "uv": [
+            5.8,
+            0.2,
+            7.2,
+            1
+          ],
+          "texture": "#dial"
+        },
+        "down": {
+          "uv": [
+            5.8,
+            15,
+            7.2,
+            15.8
+          ],
+          "texture": "#dial"
+        }
+      }
+    },
+    {
+      "from": [
+        8.8,
+        13.2,
+        0.2
+      ],
+      "to": [
+        10.200000000000001,
+        14.6,
+        1
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5.8,
+            1.4,
+            7.2,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "south": {
+          "uv": [
+            8.8,
+            1.4,
+            10.2,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "east": {
+          "uv": [
+            15,
+            1.4,
+            15.8,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "west": {
+          "uv": [
+            0.2,
+            1.4,
+            1,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "up": {
+          "uv": [
+            8.8,
+            0.2,
+            10.2,
+            1
+          ],
+          "texture": "#dial"
+        },
+        "down": {
+          "uv": [
+            8.8,
+            15,
+            10.2,
+            15.8
+          ],
+          "texture": "#dial"
+        }
+      }
+    },
+    {
+      "from": [
+        11.8,
+        13.2,
+        0.2
+      ],
+      "to": [
+        13.200000000000001,
+        14.6,
+        1
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            2.8,
+            1.4,
+            4.2,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "south": {
+          "uv": [
+            11.8,
+            1.4,
+            13.2,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "east": {
+          "uv": [
+            15,
+            1.4,
+            15.8,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "west": {
+          "uv": [
+            0.2,
+            1.4,
+            1,
+            2.8
+          ],
+          "texture": "#dial"
+        },
+        "up": {
+          "uv": [
+            11.8,
+            0.2,
+            13.2,
+            1
+          ],
+          "texture": "#dial"
+        },
+        "down": {
+          "uv": [
+            11.8,
+            15,
+            13.2,
+            15.8
+          ],
+          "texture": "#dial"
+        }
+      }
+    }
+  ]
 }

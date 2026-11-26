@@ -2862,6 +2862,220 @@ def stations():
     grinder_models()
 
 
+# Stations built in 3D. Fronts face north; round things are rings of thin panels turned round their middle, with
+# octagonal floors and discs, so they read as round. Surfaces that items are drawn on stay where the renderers expect
+# them: the grill's grate and the butcher block's top at the block's top, the stove's top for a pot, the counter's for
+# the stations stood on it, and the pans' floors at their old heights.
+
+def part(start, end, tex, rotation=None):
+    """A box; tex is one texture key, or a dict of side/top/bottom/front/back keys. UVs follow its place in the block."""
+    (x0, y0, z0), (x1, y1, z1) = start, end
+    t = tex if isinstance(tex, dict) else {"side": tex}
+    side = t.get("side")
+    keys = {"north": t.get("front", side), "south": t.get("back", side), "east": side, "west": side,
+            "up": t.get("top", side), "down": t.get("bottom", side)}
+    def uv(a0, a1, b0, b1):
+        clip = lambda v: max(0.0, min(16.0, v))
+        return [clip(a0), clip(b0), clip(a1), clip(b1)]
+    uvs = {"north": uv(16 - x1, 16 - x0, 16 - y1, 16 - y0), "south": uv(x0, x1, 16 - y1, 16 - y0),
+           "east": uv(16 - z1, 16 - z0, 16 - y1, 16 - y0), "west": uv(z0, z1, 16 - y1, 16 - y0),
+           "up": uv(x0, x1, z0, z1), "down": uv(x0, x1, 16 - z1, 16 - z0)}
+    faces = {}
+    for face, key in keys.items():
+        if key:
+            u = uvs[face]
+            # A face that sticks out past the block has no texture of its own there: take a sliver at the edge.
+            for lo, hi in ((0, 2), (1, 3)):
+                if u[lo] == u[hi]:
+                    if u[hi] >= 16:
+                        u[lo] = 15.5
+                    else:
+                        u[hi] = u[lo] + 0.5
+            faces[face] = {"uv": [round(v, 3) for v in u], "texture": "#" + key}
+    element = {"from": [x0, y0, z0], "to": [x1, y1, z1], "faces": faces}
+    if rotation:
+        element["rotation"] = rotation
+    return element
+
+
+def ring(cx, cz, r, y0, y1, side, inner=None, n=12, wall=1.0, rim=None):
+    """A round wall: n panels a wall thick, their outsides showing `side`, their insides `inner`, their tops `rim`."""
+    w = 2 * r * _m.tan(_m.pi / n) + 0.25
+    parts = []
+    for i in range(n):
+        p = part((cx - w / 2, y0, cz - r), (cx + w / 2, y1, cz - r + wall),
+                 {"side": side, "back": inner or side, "top": rim or side, "bottom": side})
+        for face in ("east", "west"):
+            p["faces"].pop(face, None)
+        p["faces"]["north"]["uv"] = [0, round(16 - (y1 - y0), 3), round(min(16, w), 3), 16]
+        p["faces"]["south"]["uv"] = [0, round(16 - (y1 - y0), 3), round(min(16, w), 3), 16]
+        p["rotation"] = {"origin": [cx, y0, cz], "x": 0, "y": round(i * 360 / n, 3), "z": 0}
+        parts.append(p)
+    return parts
+
+
+def disc(cx, cz, r, y0, y1, top, side=None, n=12):
+    """A round, flat piece: a fan of n narrow panels from the middle out, so its edge is round and stays within r."""
+    w = 2 * r * _m.tan(_m.pi / n)
+    parts = []
+    for i in range(n):
+        p = part((cx - w / 2, y0, cz - r), (cx + w / 2, y1, cz), {"side": side or top, "top": top, "bottom": side or top})
+        for face in ("east", "west", "south"):
+            p["faces"].pop(face, None)
+        p["rotation"] = {"origin": [cx, y0, cz], "x": 0, "y": round(i * 360 / n, 3), "z": 0}
+        parts.append(p)
+    return parts
+
+
+def vessel(cx, cz, r, y0, y1, side, inner, floor=True, n=12, wall=1.0, rim=None, floor_at=None):
+    parts = ring(cx, cz, r, y0, y1, side, inner, n, wall, rim)
+    if floor:
+        f = y0 if floor_at is None else floor_at
+        parts += disc(cx, cz, r - wall * 0.6, f, f + 1, inner, side)
+    return parts
+
+
+def legs(x0, z0, x1, z1, y1, tex, t=2):
+    return [part((x, 0, z), (x + t, y1, z + t), tex) for x in (x0, x1 - t) for z in (z0, z1 - t)]
+
+
+def station_model(name, textures, elements, particle):
+    write_model(name, {"parent": "minecraft:block/block",
+                       "textures": {"particle": NS + "station_" + particle, **{k: NS + "station_" + v for k, v in textures.items()}},
+                       "elements": elements})
+
+
+def staves(x, y):
+    stave = x // 4
+    c = ("#8a6238", "#7a5430", "#946a40", "#806034")[stave]
+    return shade(c, 0.75) if x % 4 == 3 else c
+
+
+def stations_3d():
+    paint("station_staves", staves)
+    paint("station_dial", lambda x, y: "#c8ccd2" if (x + y) % 3 else "#6a6e76")
+
+    # Stove: a cast-iron range on short legs, its oven door's handle and its dials standing out from the front.
+    for name, front in (("stove", "stove_front"), ("stove_on", "stove_front_on")):
+        station_model(name, {"body": "stove_side", "front": front, "top": "stove_top", "iron": "cast_iron", "dial": "dial"},
+                      legs(0.5, 0.5, 15.5, 15.5, 2, "iron")
+                      + [part((0, 2, 1), (16, 16, 16), {"side": "body", "front": "front", "top": "top", "bottom": "iron"}),
+                         part((4, 10, 0), (12, 10.8, 0.6), "dial")]
+                      + [part((x, 13.2, 0.2), (x + 1.4, 14.6, 1), "dial") for x in (2.8, 5.8, 8.8, 11.8)],
+                      "stove_side")
+
+    # Oven: a brick oven on a plinth, a stepped dome, a chimney at the back, a stone sill before its mouth.
+    for name, front in (("oven", "oven_front"), ("oven_on", "oven_front_on")):
+        station_model(name, {"brick": "bricks", "front": front, "stone": "stone"},
+                      [part((0, 0, 0), (16, 3, 16), "stone"),
+                       part((1, 3, 1), (15, 12, 16), {"side": "brick", "front": "front"}),
+                       part((2, 12, 2), (14, 14, 15.5), "brick"), part((4, 14, 4), (12, 15, 14), "brick"),
+                       part((6, 12, 11), (10, 16, 15), "brick"), part((4, 3, 0), (12, 4, 1), "stone")],
+                      "bricks")
+
+    # Grill: a firebox on four legs with a shelf between them, the grate on top where the skewers lie.
+    for name, front in (("grill", "grill_front"), ("grill_on", "grill_front_on")):
+        station_model(name, {"iron": "cast_iron", "front": front, "grate": "grate"},
+                      legs(1, 1, 15, 15, 8, "iron")
+                      + [part((1.5, 3, 1.5), (14.5, 4, 14.5), "iron"),
+                         part((1, 8, 1), (15, 15, 15), {"side": "iron", "front": "front"}),
+                         part((0.5, 15, 0.5), (15.5, 16, 15.5), {"side": "iron", "top": "grate"}),
+                         part((-0.5, 12, 7), (1, 13, 9), "iron"), part((15, 12, 7), (16.5, 13, 9), "iron")],
+                      "cast_iron")
+
+    # Mill: a quern, a round upper stone turning on a squared lower one, a peg to turn it, a spout for the flour.
+    station_model("mill", {"stone": "stone", "face": "millstone", "wood": "oak_wood"},
+                  [part((1, 0, 1), (15, 5, 15), "stone"), part((0, 4, 0), (16, 5, 16), "stone")]
+                  + disc(8, 8, 6.5, 5, 9, "face", "stone")
+                  + [part((10.5, 9, 7.5), (11.5, 13, 8.5), "wood"), part((7, 2, -0.5), (9, 3, 1), "stone")],
+                  "stone")
+
+    # Fruit press: a slatted round basket on a tray with a spout, between two posts and a beam, a screw and plate above.
+    station_model("press", {"wood": "spruce_wood", "plank": "spruce_planks", "slats": "slats", "iron": "iron"},
+                  [part((0, 0, 0), (16, 1.5, 16), "plank"), part((7, 0.5, -1), (9, 1.5, 0), "plank")]
+                  + ring(8, 8, 5.5, 1.5, 11, "slats", "slats", n=12, wall=0.6)
+                  + [part((0.5, 1.5, 7), (2.5, 16, 9), "wood"), part((13.5, 1.5, 7), (15.5, 16, 9), "wood"),
+                     part((0.5, 13, 7), (15.5, 15, 9), "wood"), part((7.5, 9, 7.5), (8.5, 16, 8.5), "iron")]
+                  + disc(8, 8, 4.5, 9, 10, "plank", "plank") + [part((5, 15.2, 7.5), (11, 16, 8.5), "iron")],
+                  "spruce_planks")
+
+    # Cheese press: a round mould on a board, a follower plate pressed down by a screw from a beam on two posts.
+    station_model("cheese_press", {"wood": "oak_wood", "plank": "oak_planks", "iron": "iron"},
+                  [part((1, 0, 1), (15, 1.5, 15), "plank")]
+                  + vessel(8, 8, 4, 1.5, 7, "plank", "plank", floor=False, n=10)
+                  + disc(8, 8, 3.4, 7, 8, "plank", "plank")
+                  + [part((2, 1.5, 7), (4, 14, 9), "wood"), part((12, 1.5, 7), (14, 14, 9), "wood"),
+                     part((2, 11, 7), (14, 13, 9), "wood"), part((7.5, 8, 7.5), (8.5, 15, 8.5), "iron"),
+                     part((5.5, 14, 7.5), (10.5, 15, 8.5), "iron")],
+                  "oak_planks")
+
+    # Brine barrel: bellied staves in iron hoops under a round lid.
+    tiers = [(0, 2, 6.2), (2, 5, 6.8), (5, 11, 7.2), (11, 14, 6.8), (14, 16, 6.2)]
+    barrel = []
+    for y0, y1, r in tiers:
+        barrel += ring(8, 8, r, y0, y1, "staves", "staves", n=14, wall=1.2)
+    for y0, r in ((2.5, 7.0), (12.5, 7.0)):
+        barrel += ring(8, 8, r + 0.25, y0, y0 + 1, "iron", "iron", n=14, wall=0.5)
+    barrel += disc(8, 8, 6.0, 0, 1, "lid", "staves") + disc(8, 8, 5.6, 14.5, 15.3, "lid", "staves")
+    station_model("brine_barrel", {"staves": "staves", "iron": "cast_iron", "lid": "barrel_top"}, barrel, "staves")
+
+    # Butcher block: a thick block of end grain on four stout legs braced near the floor.
+    station_model("butcher_block", {"wood": "oak_wood", "grain": "end_grain"},
+                  [part((0, 9, 0), (16, 16, 16), {"side": "wood", "top": "grain", "bottom": "grain"})]
+                  + legs(1, 1, 15, 15, 9, "wood", t=3)
+                  + [part((2.5, 2, 2.5), (13.5, 3, 4), "wood"), part((2.5, 2, 12), (13.5, 3, 13.5), "wood")],
+                  "end_grain")
+
+    # Prep counter: a stone top overhanging a cupboard of doors, a dark plinth at its foot.
+    def doors(z, front):
+        return [part((1.6, 1.2, z), (7.8, 13, z + 0.6), {"side": "door", front: "door"}),
+                part((8.2, 1.2, z), (14.4, 13, z + 0.6), {"side": "door", front: "door"}),
+                part((6.8, 7, z - 0.5 if front == "front" else z + 0.6), (7.4, 8, z if front == "front" else z + 1.1), "knob"),
+                part((8.6, 7, z - 0.5 if front == "front" else z + 0.6), (9.2, 8, z if front == "front" else z + 1.1), "knob")]
+    paint("station_door", planks("#94704a", "#86643e", "#5a3e28", 6))
+    paint("station_knob", lambda x, y: "#c8b060")
+    station_model("prep_counter", {"top": "counter_top", "wood": "spruce_planks", "door": "door", "knob": "knob", "dark": "dark_wood"},
+                  [part((0, 14, 0), (16, 16, 16), {"side": "wood", "top": "top"}), part((1.5, 1, 1.5), (14.5, 14, 14.5), "wood"),
+                   part((2, 0, 2), (14, 1, 14), "dark")] + doors(0.9, "front") + doors(14.5, "back"),
+                  "counter_top")
+
+    # Round vessels and pans, their floors where the renderers set things on them.
+    station_model("cooking_pot", {"side": "copper", "inside": "copper_inside"},
+                  vessel(8, 8, 6, 0, 10, "side", "inside", floor_at=1) + disc(8, 8, 5.4, 0, 1, "side")
+                  + [part((0.5, 7, 7), (2.5, 8, 9), "side"), part((13.5, 7, 7), (15.5, 8, 9), "side")], "copper")
+    station_model("skillet", {"pan": "cast_iron", "handle": "oak_wood"},
+                  vessel(8, 8, 6, 0, 2, "pan", "pan", floor_at=0) + [part((13.5, 1, 7), (16, 2, 9), "handle")], "cast_iron")
+    station_model("wok", {"pan": "cast_iron", "handle": "dark_wood"},
+                  disc(8, 8, 4, 0, 1, "pan") + vessel(8, 8, 5.6, 1, 2, "pan", "pan", floor_at=1)
+                  + ring(8, 8, 7, 2, 5, "pan", "pan", wall=1) + [part((14.5, 3, 7), (16, 4, 9), "handle")], "cast_iron")
+    station_model("aebleskive_pan", {"iron": "cast_iron", "handle": "dark_wood"},
+                  disc(8, 8, 7, 0, 2, "iron") + ring(8, 8, 7, 2, 3, "iron", "iron") + [part((14.5, 1, 7), (16, 2, 9), "handle")],
+                  "cast_iron")
+    station_model("strainer", {"mesh": "mesh", "rim": "iron"},
+                  disc(8, 8, 4, 0, 1, "mesh") + ring(8, 8, 5, 1, 5, "mesh", "mesh", wall=0.5)
+                  + ring(8, 8, 6, 5, 6, "rim", "rim", wall=1.5), "iron")
+    station_model("mixing_bowl", {"side": "terracotta", "inner": "glaze"},
+                  disc(8, 8, 3.6, 0, 1, "side") + vessel(8, 8, 4.6, 1, 3, "side", "inner", floor_at=1)
+                  + ring(8, 8, 5.4, 3, 6, "side", "inner"), "terracotta")
+    station_model("mortar", {"side": "stone", "inner": "stone"},
+                  disc(8, 8, 4, 0, 2, "side") + ring(8, 8, 4.4, 2, 6, "side", "inner", wall=1.5), "stone")
+    station_model("dairy_pan", {"side": "copper", "inner": "enamel"},
+                  vessel(8, 8, 7, 0, 4, "side", "inner", n=14, floor_at=0), "copper")
+    station_model("proofing_basket", {"side": "wicker", "inner": "wicker"},
+                  vessel(8, 8, 6, 0, 5, "side", "inner", floor_at=0), "wicker")
+    crock = []
+    for y0, y1, r in ((0, 2, 5.4), (2, 9, 6.2), (9, 12, 5.6), (12, 14, 4.6)):
+        crock += ring(8, 8, r, y0, y1, "side", "inner", wall=1.2)
+    station_model("fermentation_crock", {"side": "brown_glaze", "inner": "glaze"},
+                  crock + disc(8, 8, 5, 0, 1, "inner", "side") + [part((1.2, 9, 7), (2.5, 10.5, 9), "side"),
+                                                                  part((13.5, 9, 7), (14.8, 10.5, 9), "side")], "brown_glaze")
+    station_model("butter_churn", {"side": "oak_wood", "inner": "oak_planks", "iron": "cast_iron"},
+                  ring(8, 8, 5, 0, 7, "side", "inner") + ring(8, 8, 4.5, 7, 14, "side", "inner")
+                  + ring(8, 8, 5.3, 2, 3, "iron", "iron", wall=0.5) + ring(8, 8, 4.8, 11, 12, "iron", "iron", wall=0.5)
+                  + disc(8, 8, 4.3, 0, 1, "inner") + disc(8, 8, 4, 13, 14, "inner", "side")
+                  + [part((7.25, 1, 7.25), (8.75, 16, 8.75), "inner"), part((6, 15, 7.5), (10, 16, 8.5), "inner")], "oak_wood")
+
+
 def main():
     cabbage()
     tomato()
@@ -2887,6 +3101,7 @@ def main():
     roots_and_tropicals()
     sea_and_small()
     stations()
+    stations_3d()
     bushes()
     cabbage("red_cabbage", RED_CABBAGE)
     lettuce()
