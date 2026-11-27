@@ -76,8 +76,19 @@ final class CookingPlants {
 	static final Block CARAWAY_CROP = fieldCrop("caraway", "caraway_seed");
 
 	// Delivery 1: climbing plants on trellises.
+	// Never solid, as a fence is not, so the farmland under it stays farmland.
 	static final Block TRELLIS = registerBlockWithItem("trellis", TrellisBlock::new, BlockBehaviour.Properties.of()
-		.strength(0.5F).sound(SoundType.WOOD).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY));
+		.strength(0.5F).sound(SoundType.WOOD).noOcclusion().forceSolidOff().ignitedByLava().pushReaction(PushReaction.DESTROY));
+	/** The upper block of a tall plant: corn and the like once grown, and a second trellis that a vine has climbed. */
+	static final Block PLANT_TOP = registerBlock("plant_top", PlantTopBlock::new, BlockBehaviour.Properties.of()
+		.strength(0.3F).sound(SoundType.CROP).noOcclusion().pushReaction(PushReaction.DESTROY));
+	/**
+	 * The plants that grow taller than a block, and the stage from which they do: field crops into the block above while
+	 * it is free, vines up a second trellis stacked on their own.
+	 */
+	private static final Map<String, Integer> TALL_FROM = java.util.stream.Stream.of("corn", "blue_corn", "purple_corn", "dill",
+		"tomato_vine", "white_grape_vine", "grape_vine", "red_grape_vine", "cucumber_vine", "hop_vine", "long_bean_vine",
+		"peppercorn_vine", "vanilla_vine", "betel_vine").collect(java.util.stream.Collectors.toUnmodifiableMap(plant -> plant, plant -> 4));
 	static final Item CUCUMBER = ingredient("cucumber", food(2, 1.2F));
 	static final Item WHITE_GRAPE = ingredient("white_grape", food(2, 1.2F));
 	static final Item HOPS = ingredient("hops", null);
@@ -95,7 +106,9 @@ final class CookingPlants {
 	/** The elder flowers, then fruits: elderflower at its flowering stage, elderberries when ripe. */
 	static final Item ELDERFLOWER = ingredient("elderflower", null);
 	static final Item ELDERBERRY = ingredient("elderberry", null);
-	static final Block ELDER_BUSH = bush("elder_bush", "elder_cutting", () -> ELDERFLOWER, () -> ELDERBERRY);
+	/** The elder grows from a cutting into a small tree three or four blocks high; its leaves flower, then fruit. */
+	static final Block ELDER_LEAVES = fruitTree("elder", properties -> new FruitingLeavesBlock.Elder(properties, () -> ELDERFLOWER,
+		() -> ELDERBERRY), List.of(ELDERFLOWER, ELDERBERRY), false, "elder_cutting");
 	// Delivery 1: fruit trees. Each species has a sapling and fruiting leaves on a vanilla trunk.
 	static final Item PLUM = ingredient("plum", food(3, 1.8F));
 	static final Block PLUM_LEAVES = fruitTree("plum", () -> PLUM);
@@ -561,6 +574,11 @@ final class CookingPlants {
 		return all;
 	}
 
+	/** The stage from which a plant fills the block above too, or -1 when it stays within one block. */
+	static int tallFrom(Block block) {
+		return TALL_FROM.getOrDefault(BuiltInRegistries.BLOCK.getKey(block).getPath(), -1);
+	}
+
 	static Item item(String name) {
 		return BuiltInRegistries.ITEM.getValue(PortablePocketCabin.id(name));
 	}
@@ -613,21 +631,12 @@ final class CookingPlants {
 		// Vines with seeds are planted from them; every other vine from a cutting that shears take from it.
 		boolean cuttings = !seed.endsWith("_seeds");
 		block[0] = registerBlock(plant, properties -> new TrellisCropBlock(properties, () -> seeds[0], produce, cuttings), BlockBehaviour.Properties.of()
-			.randomTicks().strength(0.3F).sound(SoundType.CROP).noOcclusion().pushReaction(PushReaction.DESTROY));
+			.randomTicks().strength(0.3F).sound(SoundType.CROP).noOcclusion().forceSolidOff().pushReaction(PushReaction.DESTROY));
 		seeds[0] = registerItem(seed, properties -> new BlockItem(block[0], properties.useItemDescriptionPrefix()));
 		PLANTS.put(plant, block[0]);
 		PLANTED_FROM.put(plant, seeds[0]);
 		GIVES.put(plant, List.of(produce.get()));
 		return block[0];
-	}
-
-	/** A bush planted from a cutting, giving {@code flowering} at its flowering stage when not null, and {@code ripe} when ripe. */
-	private static Block bush(String plant, String cutting, java.util.function.Supplier<Item> flowering, java.util.function.Supplier<Item> ripe) {
-		Block block = registerBlock(plant, properties -> new HerbBushBlock(properties, flowering, ripe, true), bushProperties());
-		PLANTED_FROM.put(plant, registerItem(cutting, properties -> new BlockItem(block, properties.useItemDescriptionPrefix())));
-		PLANTS.put(plant, block);
-		GIVES.put(plant, flowering == null ? List.of(ripe.get()) : List.of(flowering.get(), ripe.get()));
-		return block;
 	}
 
 	/** A bush that gives {@code produce} when picked, and is planted from a {@code cutting} that shears take from it. */
@@ -674,11 +683,25 @@ final class CookingPlants {
 	 * tree's sapling can also be planted on sand.
 	 */
 	private static Block fruitTree(String tree, java.util.function.Function<BlockBehaviour.Properties, Block> factory, List<Item> gives, boolean beach) {
+		return fruitTree(tree, factory, gives, beach, null);
+	}
+
+	/** A fruit tree whose sapling is planted from an item of another name, such as the elder's cutting, when given. */
+	private static Block fruitTree(String tree, java.util.function.Function<BlockBehaviour.Properties, Block> factory, List<Item> gives, boolean beach,
+		String plantedFrom) {
 		Block leaves = registerBlockWithItem(tree + "_leaves", factory, BlockBehaviour.Properties.of()
 			.strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY)
 			.isValidSpawn((state, level, pos, type) -> false).isSuffocating((state, level, pos) -> false).isViewBlocking((state, level, pos) -> false));
-		Block sapling = registerBlockWithItem(tree + "_sapling", properties -> new FruitSaplingBlock(FruitSaplingBlock.grower(tree), beach, properties),
-			saplingProperties());
+		java.util.function.Function<BlockBehaviour.Properties, Block> saplingFactory =
+			properties -> new FruitSaplingBlock(FruitSaplingBlock.grower(tree), beach, properties);
+		Block sapling;
+		if (plantedFrom == null) {
+			sapling = registerBlockWithItem(tree + "_sapling", saplingFactory, saplingProperties());
+		} else {
+			sapling = registerBlock(tree + "_sapling", saplingFactory, saplingProperties());
+			Block planted = sapling;
+			registerItem(plantedFrom, properties -> new BlockItem(planted, properties.useItemDescriptionPrefix()));
+		}
 		PLANTS.put(tree + "_leaves", leaves);
 		PLANTED_FROM.put(tree + "_leaves", sapling.asItem());
 		GIVES.put(tree + "_leaves", gives);

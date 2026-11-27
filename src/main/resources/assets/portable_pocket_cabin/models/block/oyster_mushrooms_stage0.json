@@ -1,6 +1,79 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "cross": "minecraft:block/brown_mushroom"
-  }
+    "particle": "portable_pocket_cabin:block/oyster_mushrooms_cap",
+    "cap": "portable_pocket_cabin:block/oyster_mushrooms_cap",
+    "gills": "portable_pocket_cabin:block/oyster_mushrooms_gills"
+  },
+  "elements": [
+    {
+      "from": [
+        4.0,
+        0,
+        4.5
+      ],
+      "to": [
+        8.0,
+        1,
+        7.5
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            3
+          ],
+          "texture": "#cap"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            3
+          ],
+          "texture": "#gills"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            1
+          ],
+          "texture": "#cap"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            1
+          ],
+          "texture": "#cap"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "texture": "#cap"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "texture": "#cap"
+        }
+      }
+    }
+  ]
 }

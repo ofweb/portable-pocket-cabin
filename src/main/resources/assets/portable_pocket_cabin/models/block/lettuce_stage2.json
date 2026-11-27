@@ -1,6 +1,220 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/beetroots_stage1"
-  }
+    "particle": "portable_pocket_cabin:block/lettuce_leaf",
+    "small_leaf": "portable_pocket_cabin:block/lettuce_small_leaf"
+  },
+  "elements": [
+    {
+      "from": [
+        5.5,
+        -1.0,
+        2.0
+      ],
+      "to": [
+        10.5,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 45,
+        "y": 0.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        -1.0,
+        2.0
+      ],
+      "to": [
+        10.5,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 45,
+        "y": 72.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        -1.0,
+        2.0
+      ],
+      "to": [
+        10.5,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 45,
+        "y": 144.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        -1.0,
+        2.0
+      ],
+      "to": [
+        10.5,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 45,
+        "y": 216.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        -1.0,
+        2.0
+      ],
+      "to": [
+        10.5,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 45,
+        "y": 288.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#small_leaf"
+        }
+      }
+    }
+  ]
 }

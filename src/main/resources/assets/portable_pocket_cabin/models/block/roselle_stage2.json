@@ -1,6 +1,248 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/beetroots_stage1"
-  }
+    "particle": "portable_pocket_cabin:block/roselle_leaf",
+    "stem": "portable_pocket_cabin:block/roselle_stem",
+    "leaf": "portable_pocket_cabin:block/roselle_leaf"
+  },
+  "elements": [
+    {
+      "from": [
+        7.5,
+        -1,
+        7.5
+      ],
+      "to": [
+        8.5,
+        3.8000000000000007,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1,
+          8
+        ],
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            11.2,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            0,
+            11.2,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "east": {
+          "uv": [
+            0,
+            11.2,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "west": {
+          "uv": [
+            0,
+            11.2,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "up": {
+          "uv": [
+            0,
+            11.2,
+            1,
+            12.2
+          ],
+          "texture": "#stem"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        0.14989623089514514,
+        1.389612705619272
+      ],
+      "to": [
+        10.5,
+        0.14989623089514514,
+        7.389612705619272
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          0.14989623089514514,
+          8
+        ],
+        "x": 35,
+        "y": 20,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        0.14989623089514514,
+        1.389612705619272
+      ],
+      "to": [
+        10.5,
+        0.14989623089514514,
+        7.389612705619272
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          0.14989623089514514,
+          8
+        ],
+        "x": 35,
+        "y": 200,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        1.8375653240453367,
+        1.410410798318952
+      ],
+      "to": [
+        10.5,
+        1.8375653240453367,
+        7.410410798318952
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          1.8375653240453367,
+          8
+        ],
+        "x": 32,
+        "y": 110,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        1.8375653240453367,
+        1.410410798318952
+      ],
+      "to": [
+        10.5,
+        1.8375653240453367,
+        7.410410798318952
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          1.8375653240453367,
+          8
+        ],
+        "x": 32,
+        "y": 290,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            6
+          ],
+          "texture": "#leaf"
+        }
+      }
+    }
+  ]
 }

@@ -2,9 +2,9 @@
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
   "textures": {
-    "particle": "minecraft:block/cave_vines_plant",
-    "post": "minecraft:block/stripped_oak_log",
-    "plant": "minecraft:block/cave_vines_plant"
+    "particle": "portable_pocket_cabin:block/peppercorn_vine_vine",
+    "post": "portable_pocket_cabin:block/trellis_wood",
+    "young": "portable_pocket_cabin:block/peppercorn_vine_young"
   },
   "elements": [
     {
@@ -169,25 +169,15 @@
     },
     {
       "from": [
-        0.8,
         0,
-        8
+        0,
+        6.9
       ],
       "to": [
-        15.2,
         16,
-        8
+        16,
+        6.9
       ],
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          8
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
-      },
       "shade": false,
       "faces": {
         "north": {
@@ -197,7 +187,7 @@
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#young"
         },
         "south": {
           "uv": [
@@ -206,50 +196,40 @@
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#young"
         }
       }
     },
     {
       "from": [
-        8,
         0,
-        0.8
+        0,
+        9.1
       ],
       "to": [
-        8,
         16,
-        15.2
+        16,
+        9.1
       ],
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          8
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
-      },
       "shade": false,
       "faces": {
-        "east": {
+        "north": {
           "uv": [
             0,
             0,
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#young"
         },
-        "west": {
+        "south": {
           "uv": [
             0,
             0,
             16,
             16
           ],
-          "texture": "#plant"
+          "texture": "#young"
         }
       }
     }

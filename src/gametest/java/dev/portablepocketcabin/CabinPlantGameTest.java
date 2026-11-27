@@ -106,6 +106,156 @@ public final class CabinPlantGameTest {
 	}
 
 	@GameTest
+	public void aTrellisKeepsItsFarmland(GameTestHelper helper) {
+		helper.setBlock(BASE.west(), Blocks.WATER);
+		helper.setBlock(BASE.below(), Blocks.FARMLAND);
+		helper.setBlock(BASE, CookingPlants.TRELLIS);
+		// A vine planted on a trellis keeps its farmland too.
+		helper.setBlock(BASE.east(2).west(), Blocks.WATER);
+		helper.setBlock(BASE.east(2).below(), Blocks.FARMLAND);
+		helper.setBlock(BASE.east(2), ((net.minecraft.world.level.block.CropBlock) CookingPlants.CUCUMBER_VINE).getStateForAge(3));
+		helper.runAfterDelay(5, () -> {
+			helper.assertBlockPresent(Blocks.FARMLAND, BASE.below());
+			helper.assertBlockPresent(CookingPlants.TRELLIS, BASE);
+			helper.assertBlockPresent(Blocks.FARMLAND, BASE.east(2).below());
+			helper.assertBlockPresent(CookingPlants.CUCUMBER_VINE, BASE.east(2));
+			helper.succeed();
+		});
+	}
+
+	@GameTest
+	public void tallCropsTakeTheBlockAboveAndGoWithIt(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var corn = (FieldCropBlock) CookingPlants.CORN_CROP;
+		helper.setBlock(BASE.west(), Blocks.WATER);
+		helper.setBlock(BASE.below(), Blocks.FARMLAND);
+		helper.setBlock(BASE, corn);
+		tick(helper, BASE, 400);
+		var top = helper.absolutePos(BASE.above());
+		helper.assertTrue(age(helper, BASE) == 7 && level.getBlockState(top).is(CookingPlants.PLANT_TOP),
+			"Corn grows to harvest and takes the block above for its top");
+
+		// Using the top acts on the plant, and breaking the top breaks the whole plant with its harvest.
+		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+		helper.assertTrue(level.getBlockState(top).getShape(level, top).max(net.minecraft.core.Direction.Axis.Y) > 0.5,
+			"The top gives the upper block an outline");
+		CookingPlants.PLANT_TOP.playerWillDestroy(level, top, level.getBlockState(top), player);
+		level.removeBlock(top, false);
+		helper.assertTrue(level.getBlockState(helper.absolutePos(BASE)).isAir() && level.getBlockState(top).isAir(),
+			"Breaking the top breaks the corn below");
+
+		// With no room above, corn waits at the stage before it grows tall, and bone meal does nothing.
+		var roofed = BASE.east(3);
+		helper.setBlock(roofed.west(), Blocks.WATER);
+		helper.setBlock(roofed.below(), Blocks.FARMLAND);
+		helper.setBlock(roofed, corn);
+		helper.setBlock(roofed.above(), Blocks.OAK_LEAVES);
+		tick(helper, roofed, 400);
+		var roofedPos = helper.absolutePos(roofed);
+		helper.assertTrue(age(helper, roofed) == corn.tallFrom() - 1, "Corn with no room above stops below its tall stages");
+		helper.assertTrue(!corn.isValidBonemealTarget(level, roofedPos, level.getBlockState(roofedPos)), "Bone meal cannot push it past");
+		helper.assertTrue(!CabinGreenhouseGrowth.canProgress(level, roofedPos, level.getBlockState(roofedPos)),
+			"Greenhouse catch-up does not wait on it");
+
+		// It never grows into another block, not even one that could be replaced such as a light block, nor through a
+		// greenhouse's glass roof.
+		for (var cover : List.of(Blocks.LIGHT, Blocks.GLASS)) {
+			var covered = roofed.east(2);
+			helper.setBlock(covered.west(), Blocks.WATER);
+			helper.setBlock(covered.below(), Blocks.FARMLAND);
+			helper.setBlock(covered, corn);
+			helper.setBlock(covered.above(), cover);
+			tick(helper, covered, 400);
+			helper.assertTrue(age(helper, covered) == corn.tallFrom() - 1 && level.getBlockState(helper.absolutePos(covered.above())).is(cover),
+				"Corn under " + cover.getName().getString() + " waits and leaves it be");
+		}
+
+		// Breaking the plant takes its top with it.
+		helper.setBlock(roofed.above(), Blocks.AIR);
+		tick(helper, roofed, 400);
+		helper.assertTrue(level.getBlockState(helper.absolutePos(roofed.above())).is(CookingPlants.PLANT_TOP), "Given room, it grows on");
+		level.destroyBlock(roofedPos, true);
+		helper.assertTrue(level.getBlockState(helper.absolutePos(roofed.above())).isAir(), "Breaking the plant takes its top too");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void tallVinesClimbAStackedTrellis(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var tomato = (TrellisCropBlock) CookingPlants.PLANTS.get("tomato_vine");
+		var random = RandomSource.create(7);
+		helper.setBlock(BASE.west(), Blocks.WATER);
+		helper.setBlock(BASE.below(), Blocks.FARMLAND);
+		helper.setBlock(BASE, tomato.getStateForAge(0));
+		helper.setBlock(BASE.above(), CookingPlants.TRELLIS);
+		var pos = helper.absolutePos(BASE);
+		var top = pos.above();
+		while (!tomato.isMaxAge(level.getBlockState(pos))) tomato.performBonemeal(level, random, pos, level.getBlockState(pos));
+		helper.assertTrue(level.getBlockState(pos).getValue(TrellisCropBlock.TALL) && level.getBlockState(top).is(CookingPlants.PLANT_TOP)
+			&& level.getBlockState(top).getValue(PlantTopBlock.TRELLIS), "A tomato vine climbs the trellis stacked on its own");
+
+		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
+		var hit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(top), net.minecraft.core.Direction.NORTH, top, false);
+		level.getBlockState(top).useWithoutItem(level, player, hit);
+		helper.assertTrue(age(helper, BASE) == 7 - TrellisCropBlock.PICKED_BACK && level.getBlockState(pos).getValue(TrellisCropBlock.TALL),
+			"Picking from the climbed trellis picks the vine, which stays tall");
+		helper.assertTrue(Block.getDrops(level.getBlockState(top), level, top, null).stream().anyMatch(stack -> stack.is(CookingPlants.TRELLIS.asItem())),
+			"The climbed trellis gives back a trellis");
+
+		level.removeBlock(top, false);
+		helper.assertTrue(!level.getBlockState(pos).getValue(TrellisCropBlock.TALL) && age(helper, BASE) == 7 - TrellisCropBlock.PICKED_BACK,
+			"Without the trellis above, the vine stays, one block high");
+		level.setBlockAndUpdate(top, CookingPlants.TRELLIS.defaultBlockState());
+		level.getBlockState(pos).tick(level, pos, random);
+		helper.assertTrue(level.getBlockState(pos).getValue(TrellisCropBlock.TALL), "A grown vine climbs a trellis stacked on it again");
+
+		// On a single trellis a tall vine grows and fruits at one block high.
+		var single = BASE.east(3);
+		helper.setBlock(single.west(), Blocks.WATER);
+		helper.setBlock(single.below(), Blocks.FARMLAND);
+		helper.setBlock(single, tomato.getStateForAge(0));
+		var singlePos = helper.absolutePos(single);
+		while (!tomato.isMaxAge(level.getBlockState(singlePos))) tomato.performBonemeal(level, random, singlePos, level.getBlockState(singlePos));
+		helper.assertTrue(!level.getBlockState(singlePos).getValue(TrellisCropBlock.TALL) && level.getBlockState(singlePos.above()).isAir(),
+			"On one trellis the vine ripens one block high");
+		helper.assertTrue(CookingPlants.TRELLIS.defaultBlockState().canSurvive(level, singlePos.above()), "A trellis stands on a vine");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void brokenFruitingLeavesDropTheirFruit(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var pos = helper.absolutePos(BASE);
+		var leaves = CookingPlants.PLUM_LEAVES.defaultBlockState().setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
+		helper.setBlock(BASE, leaves.setValue(FruitingLeavesBlock.AGE, FruitingLeavesBlock.FRUITING));
+		int most = 0;
+		for (int i = 0; i < 40; i++) {
+			var drops = Block.getDrops(level.getBlockState(pos), level, pos, null);
+			int plums = count(drops, CookingPlants.PLUM);
+			helper.assertTrue(plums >= 1 && plums <= 2, "Breaking or decaying fruiting plum leaves drops one or two plums, as picking does");
+			most = Math.max(most, plums);
+		}
+		helper.assertTrue(most == 2, "Sometimes two");
+		var shears = new ItemStack(net.minecraft.world.item.Items.SHEARS);
+		var sheared = Block.getDrops(level.getBlockState(pos), level, pos, null, null, shears);
+		helper.assertTrue(has(sheared, CookingPlants.PLUM_LEAVES.asItem()) && has(sheared, CookingPlants.PLUM), "Shears take the leaves and the fruit");
+		helper.setBlock(BASE, leaves.setValue(FruitingLeavesBlock.AGE, 1));
+		helper.assertTrue(!has(Block.getDrops(level.getBlockState(pos), level, pos, null), CookingPlants.PLUM), "Leaves in blossom drop no fruit");
+
+		// Only one leaf block in eight, the same ones each year, flowers and fruits.
+		int bearing = 0;
+		for (int x = 0; x < 40; x++) for (int z = 0; z < 40; z++) if (FruitingLeavesBlock.bears(new BlockPos(x, 70, z))) bearing++;
+		helper.assertTrue(bearing > 1600 / 8 * 0.7 && bearing < 1600 / 8 * 1.3, "About one leaf block in eight bears fruit, found " + bearing + " in 1600");
+		var barren = BlockPos.ZERO;
+		while (FruitingLeavesBlock.bears(helper.absolutePos(barren.offset(BASE)))) barren = barren.east();
+		helper.setBlock(BASE.offset(barren), leaves.setValue(FruitingLeavesBlock.AGE, 0));
+		tick(helper, BASE.offset(barren), 400);
+		helper.assertTrue(level.getBlockState(helper.absolutePos(BASE.offset(barren))).getValue(FruitingLeavesBlock.AGE) == 0,
+			"Leaves that do not bear stay green");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void bushesRegrowAndElderGivesTwoHarvests(GameTestHelper helper) {
 		var level = helper.getLevel();
 		var player = helper.makeMockPlayer(net.minecraft.world.level.GameType.SURVIVAL);
@@ -122,10 +272,17 @@ public final class CabinPlantGameTest {
 		level.getBlockState(pos).useWithoutItem(level, player, hit);
 		helper.assertTrue(level.getBlockState(pos).getValue(HerbBushBlock.AGE) == 1, "Picking leaves the bush to regrow");
 
-		var elder = (HerbBushBlock) CookingPlants.ELDER_BUSH;
-		helper.assertTrue(elder.harvest(elder.defaultBlockState().setValue(HerbBushBlock.AGE, 2)) == CookingPlants.ELDERFLOWER
-			&& elder.harvest(elder.defaultBlockState().setValue(HerbBushBlock.AGE, 3)) == CookingPlants.ELDERBERRY,
+		// The elder is a small tree: its leaves give elderflower while they flower and elderberries when they fruit.
+		var elder = (FruitingLeavesBlock) CookingPlants.ELDER_LEAVES;
+		helper.assertTrue(elder.fruitAt(0) == null && elder.fruitAt(1) == CookingPlants.ELDERFLOWER && elder.fruitAt(2) == CookingPlants.ELDERBERRY,
 			"The elder gives elderflower when flowering and elderberries when ripe");
+		var flowering = elder.defaultBlockState().setValue(FruitingLeavesBlock.AGE, 1).setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
+		helper.setBlock(BASE.west(3), flowering);
+		var elderPos = helper.absolutePos(BASE.west(3));
+		var elderHit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(elderPos), net.minecraft.core.Direction.UP, elderPos, false);
+		level.getBlockState(elderPos).useWithoutItem(level, player, elderHit);
+		helper.assertTrue(level.getBlockState(elderPos).getValue(FruitingLeavesBlock.AGE) == 0, "Picking elderflowers leaves the leaves to flower again");
+		helper.assertTrue(CookingPlants.PLANTED_FROM.get("elder_leaves") == CookingPlants.item("elder_cutting"), "An elder is planted from a cutting");
 
 		helper.setBlock(BASE.east(3).below(), Blocks.OAK_LOG);
 		helper.setBlock(BASE.east(3), CookingPlants.OYSTER_MUSHROOM);
@@ -160,23 +317,23 @@ public final class CabinPlantGameTest {
 	@GameTest
 	public void plumSaplingsGrowTreesThatFruitAgain(GameTestHelper helper) {
 		var level = helper.getLevel();
-		var base = new BlockPos(4, 2, 4);
-		helper.setBlock(base.below(), Blocks.GRASS_BLOCK);
 		var sapling = (net.minecraft.world.level.block.SaplingBlock) ((net.minecraft.world.item.BlockItem) CookingPlants.item("plum_sapling")).getBlock();
-		helper.setBlock(base, sapling);
-		var pos = helper.absolutePos(base);
+		// A plum tree is bigger than the test area, so it grows in open air high above it.
+		var pos = helper.absolutePos(new BlockPos(4, 2, 4)).above(CabinGrowEveryFoodGameTest.TREE_LIFT);
+		level.setBlockAndUpdate(pos.below(), Blocks.GRASS_BLOCK.defaultBlockState());
+		level.setBlockAndUpdate(pos, sapling.defaultBlockState());
 		for (int i = 0; i < 10 && level.getBlockState(pos).is(sapling); i++) {
 			sapling.advanceTree(level, pos, level.getBlockState(pos), RandomSource.create(i));
 		}
 		helper.assertTrue(level.getBlockState(pos).is(Blocks.OAK_LOG), "A plum sapling grows an oak-wood trunk");
 		BlockPos leaves = null;
-		for (BlockPos near : BlockPos.betweenClosed(pos.offset(-3, 1, -3), pos.offset(3, 7, 3))) {
-			if (level.getBlockState(near).is(CookingPlants.PLUM_LEAVES)) {
+		for (BlockPos near : BlockPos.betweenClosed(pos.offset(-6, 1, -6), pos.offset(6, 12, 6))) {
+			if (level.getBlockState(near).is(CookingPlants.PLUM_LEAVES) && FruitingLeavesBlock.bears(near)) {
 				leaves = near.immutable();
 				break;
 			}
 		}
-		helper.assertTrue(leaves != null, "The tree has plum leaves");
+		helper.assertTrue(leaves != null, "The tree has plum leaves that bear fruit");
 		var random = RandomSource.create(7);
 		for (int i = 0; i < 200 && level.getBlockState(leaves).getValue(FruitingLeavesBlock.AGE) < FruitingLeavesBlock.FRUITING; i++) {
 			level.getBlockState(leaves).randomTick(level, leaves, random);
@@ -192,6 +349,7 @@ public final class CabinPlantGameTest {
 		helper.assertTrue(CabinGreenhouseGrowth.canProgress(CookingPlants.PLUM_LEAVES.defaultBlockState())
 			&& !CabinGreenhouseGrowth.canProgress(CookingPlants.PLUM_LEAVES.defaultBlockState().setValue(FruitingLeavesBlock.AGE, 2)),
 			"The greenhouse brings fruit trees into fruit, and stops there");
+		CabinGrowEveryFoodGameTest.clearTree(level, pos);
 		helper.succeed();
 	}
 

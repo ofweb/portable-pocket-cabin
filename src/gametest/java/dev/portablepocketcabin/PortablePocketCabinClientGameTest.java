@@ -51,6 +51,10 @@ public final class PortablePocketCabinClientGameTest
         context.runOnClient(client -> client.options.guiScale().set(3));
         context.getInput().setCursorPos(0, 0);
         boolean captureAll = "1".equals(System.getenv("PPC_CAPTURE_ALL"));
+        if ("1".equals(System.getenv("PPC_CAPTURE_PLANTS"))) {
+            PlantModelScreenshots.capture(context);
+            return;
+        }
         if (captureAll || "1".equals(System.getenv("PPC_CAPTURE_CREATIVE"))) {
             VanillaCreativeScreenshots.capture(context);
             if (!captureAll) {

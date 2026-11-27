@@ -1,6 +1,1761 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/potatoes_stage3"
-  }
+    "particle": "portable_pocket_cabin:block/shallot_bulb_side",
+    "bulb_side": "portable_pocket_cabin:block/shallot_bulb_side",
+    "bulb_top": "portable_pocket_cabin:block/shallot_bulb_top",
+    "neck": "portable_pocket_cabin:block/shallot_neck",
+    "leaf": "portable_pocket_cabin:block/shallot_leaf"
+  },
+  "elements": [
+    {
+      "from": [
+        4.9,
+        -1,
+        5.3
+      ],
+      "to": [
+        7.9,
+        0,
+        8.3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "down": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        }
+      }
+    },
+    {
+      "from": [
+        4.9,
+        -1,
+        5.3
+      ],
+      "to": [
+        7.9,
+        0,
+        8.3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "down": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        }
+      },
+      "rotation": {
+        "origin": [
+          6.4,
+          -1,
+          6.8
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "from": [
+        4.9,
+        0,
+        5.3
+      ],
+      "to": [
+        7.9,
+        1,
+        8.3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        }
+      }
+    },
+    {
+      "from": [
+        4.9,
+        0,
+        5.3
+      ],
+      "to": [
+        7.9,
+        1,
+        8.3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        }
+      },
+      "rotation": {
+        "origin": [
+          6.4,
+          0,
+          6.8
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "from": [
+        5.4,
+        1,
+        5.8
+      ],
+      "to": [
+        7.4,
+        2,
+        7.8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            7.0,
+            7.0,
+            9.0,
+            9.0
+          ],
+          "texture": "#bulb_top"
+        }
+      }
+    },
+    {
+      "from": [
+        5.4,
+        1,
+        5.8
+      ],
+      "to": [
+        7.4,
+        2,
+        7.8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            7.0,
+            7.0,
+            9.0,
+            9.0
+          ],
+          "texture": "#bulb_top"
+        }
+      },
+      "rotation": {
+        "origin": [
+          6.4,
+          1,
+          6.8
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "from": [
+        8.2,
+        -1,
+        5.9
+      ],
+      "to": [
+        11.2,
+        0,
+        8.9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "down": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        }
+      }
+    },
+    {
+      "from": [
+        8.2,
+        -1,
+        5.9
+      ],
+      "to": [
+        11.2,
+        0,
+        8.9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "down": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        }
+      },
+      "rotation": {
+        "origin": [
+          9.7,
+          -1,
+          7.4
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "from": [
+        8.2,
+        0,
+        5.9
+      ],
+      "to": [
+        11.2,
+        1,
+        8.9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        }
+      }
+    },
+    {
+      "from": [
+        8.2,
+        0,
+        5.9
+      ],
+      "to": [
+        11.2,
+        1,
+        8.9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        }
+      },
+      "rotation": {
+        "origin": [
+          9.7,
+          0,
+          7.4
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "from": [
+        8.7,
+        1,
+        6.4
+      ],
+      "to": [
+        10.7,
+        2,
+        8.4
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            7.0,
+            7.0,
+            9.0,
+            9.0
+          ],
+          "texture": "#bulb_top"
+        }
+      }
+    },
+    {
+      "from": [
+        8.7,
+        1,
+        6.4
+      ],
+      "to": [
+        10.7,
+        2,
+        8.4
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            7.0,
+            7.0,
+            9.0,
+            9.0
+          ],
+          "texture": "#bulb_top"
+        }
+      },
+      "rotation": {
+        "origin": [
+          9.7,
+          1,
+          7.4
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "from": [
+        6.6,
+        -1,
+        8.3
+      ],
+      "to": [
+        9.6,
+        0,
+        11.3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "down": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        }
+      }
+    },
+    {
+      "from": [
+        6.6,
+        -1,
+        8.3
+      ],
+      "to": [
+        9.6,
+        0,
+        11.3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        },
+        "down": {
+          "uv": [
+            6.5,
+            14,
+            9.5,
+            15
+          ],
+          "texture": "#bulb_side"
+        }
+      },
+      "rotation": {
+        "origin": [
+          8.1,
+          -1,
+          9.8
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "from": [
+        6.6,
+        0,
+        8.3
+      ],
+      "to": [
+        9.6,
+        1,
+        11.3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        }
+      }
+    },
+    {
+      "from": [
+        6.6,
+        0,
+        8.3
+      ],
+      "to": [
+        9.6,
+        1,
+        11.3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            6.5,
+            13,
+            9.5,
+            14
+          ],
+          "texture": "#bulb_side"
+        }
+      },
+      "rotation": {
+        "origin": [
+          8.1,
+          0,
+          9.8
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "from": [
+        7.1,
+        1,
+        8.8
+      ],
+      "to": [
+        9.1,
+        2,
+        10.8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            7.0,
+            7.0,
+            9.0,
+            9.0
+          ],
+          "texture": "#bulb_top"
+        }
+      }
+    },
+    {
+      "from": [
+        7.1,
+        1,
+        8.8
+      ],
+      "to": [
+        9.1,
+        2,
+        10.8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "south": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "east": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "west": {
+          "uv": [
+            7.0,
+            12,
+            9.0,
+            13
+          ],
+          "texture": "#bulb_side"
+        },
+        "up": {
+          "uv": [
+            7.0,
+            7.0,
+            9.0,
+            9.0
+          ],
+          "texture": "#bulb_top"
+        }
+      },
+      "rotation": {
+        "origin": [
+          8.1,
+          1,
+          9.8
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "from": [
+        7,
+        0,
+        7
+      ],
+      "to": [
+        9,
+        3,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            2,
+            3
+          ],
+          "texture": "#neck"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            2,
+            3
+          ],
+          "texture": "#neck"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            2,
+            3
+          ],
+          "texture": "#neck"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            2,
+            3
+          ],
+          "texture": "#neck"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#neck"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#neck"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        3,
+        7.5
+      ],
+      "to": [
+        8.5,
+        16,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          3,
+          8
+        ],
+        "x": -13,
+        "y": 0.0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "south": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "east": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "west": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "up": {
+          "uv": [
+            0,
+            3,
+            1,
+            4
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        3,
+        7.5
+      ],
+      "to": [
+        8.5,
+        16,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          3,
+          8
+        ],
+        "x": -13,
+        "y": 72.0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "south": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "east": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "west": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "up": {
+          "uv": [
+            0,
+            3,
+            1,
+            4
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        3,
+        7.5
+      ],
+      "to": [
+        8.5,
+        16,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          3,
+          8
+        ],
+        "x": -13,
+        "y": 144.0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "south": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "east": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "west": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "up": {
+          "uv": [
+            0,
+            3,
+            1,
+            4
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        3,
+        7.5
+      ],
+      "to": [
+        8.5,
+        16,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          3,
+          8
+        ],
+        "x": -13,
+        "y": 216.0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "south": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "east": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "west": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "up": {
+          "uv": [
+            0,
+            3,
+            1,
+            4
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        3,
+        7.5
+      ],
+      "to": [
+        8.5,
+        16,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          3,
+          8
+        ],
+        "x": -13,
+        "y": 288.0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "south": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "east": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "west": {
+          "uv": [
+            0,
+            3,
+            1,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "up": {
+          "uv": [
+            0,
+            3,
+            1,
+            4
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        3,
+        7.5
+      ],
+      "to": [
+        8.5,
+        14,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          3,
+          8
+        ],
+        "x": -40,
+        "y": 45.0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            2,
+            5,
+            3,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "south": {
+          "uv": [
+            2,
+            5,
+            3,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "east": {
+          "uv": [
+            2,
+            5,
+            3,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "west": {
+          "uv": [
+            2,
+            5,
+            3,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "up": {
+          "uv": [
+            2,
+            5,
+            3,
+            6
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        3,
+        7.5
+      ],
+      "to": [
+        8.5,
+        14,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          3,
+          8
+        ],
+        "x": -40,
+        "y": 225.0,
+        "z": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            2,
+            5,
+            3,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "south": {
+          "uv": [
+            2,
+            5,
+            3,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "east": {
+          "uv": [
+            2,
+            5,
+            3,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "west": {
+          "uv": [
+            2,
+            5,
+            3,
+            16
+          ],
+          "texture": "#leaf"
+        },
+        "up": {
+          "uv": [
+            2,
+            5,
+            3,
+            6
+          ],
+          "texture": "#leaf"
+        }
+      }
+    }
+  ]
 }

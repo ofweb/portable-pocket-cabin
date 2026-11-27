@@ -1,6 +1,52 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/carrots_stage0"
-  }
+    "particle": "portable_pocket_cabin:block/turmeric_leaf",
+    "leaf": "portable_pocket_cabin:block/turmeric_leaf"
+  },
+  "elements": [
+    {
+      "from": [
+        5.0,
+        -0.5,
+        -4.0
+      ],
+      "to": [
+        11.0,
+        -0.5,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -0.5,
+          8
+        ],
+        "x": 62,
+        "y": 0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            12
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            12
+          ],
+          "texture": "#leaf"
+        }
+      }
+    }
+  ]
 }

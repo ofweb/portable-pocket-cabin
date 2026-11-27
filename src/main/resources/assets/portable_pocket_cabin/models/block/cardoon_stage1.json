@@ -1,6 +1,262 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "cross": "minecraft:block/fern"
-  }
+    "particle": "portable_pocket_cabin:block/cardoon_leaf",
+    "leaf": "portable_pocket_cabin:block/cardoon_leaf"
+  },
+  "elements": [
+    {
+      "from": [
+        5.0,
+        -1.0,
+        -1.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 35,
+        "y": 0.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            9
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            9
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        -1.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 35,
+        "y": 60.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            9
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            9
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        -1.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 35,
+        "y": 120.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            9
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            9
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        -1.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 35,
+        "y": 180.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            9
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            9
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        -1.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 35,
+        "y": 240.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            9
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            9
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        -1.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 35,
+        "y": 300.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            9
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            9
+          ],
+          "texture": "#leaf"
+        }
+      }
+    }
+  ]
 }

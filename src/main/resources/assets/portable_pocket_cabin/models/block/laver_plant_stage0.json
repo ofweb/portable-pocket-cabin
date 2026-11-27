@@ -1,0 +1,182 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "portable_pocket_cabin:block/laver_plant_blade",
+    "blade": "portable_pocket_cabin:block/laver_plant_blade"
+  },
+  "elements": [
+    {
+      "from": [
+        5.5,
+        0,
+        8
+      ],
+      "to": [
+        10.5,
+        5,
+        8
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          0,
+          8
+        ],
+        "x": 14,
+        "y": 0,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            11,
+            5,
+            16
+          ],
+          "texture": "#blade"
+        },
+        "south": {
+          "uv": [
+            0,
+            11,
+            5,
+            16
+          ],
+          "texture": "#blade"
+        }
+      }
+    },
+    {
+      "from": [
+        8,
+        0,
+        5.5
+      ],
+      "to": [
+        8,
+        5,
+        10.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          0,
+          8
+        ],
+        "x": 14,
+        "y": 0,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            11,
+            5,
+            16
+          ],
+          "texture": "#blade"
+        },
+        "west": {
+          "uv": [
+            0,
+            11,
+            5,
+            16
+          ],
+          "texture": "#blade"
+        }
+      }
+    },
+    {
+      "from": [
+        3.5,
+        0,
+        9
+      ],
+      "to": [
+        8.5,
+        5,
+        9
+      ],
+      "rotation": {
+        "origin": [
+          6,
+          0,
+          9
+        ],
+        "x": -17,
+        "y": 61,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            11,
+            5,
+            16
+          ],
+          "texture": "#blade"
+        },
+        "south": {
+          "uv": [
+            0,
+            11,
+            5,
+            16
+          ],
+          "texture": "#blade"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        0,
+        6.5
+      ],
+      "to": [
+        6,
+        5,
+        11.5
+      ],
+      "rotation": {
+        "origin": [
+          6,
+          0,
+          9
+        ],
+        "x": -17,
+        "y": 61,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            11,
+            5,
+            16
+          ],
+          "texture": "#blade"
+        },
+        "west": {
+          "uv": [
+            0,
+            11,
+            5,
+            16
+          ],
+          "texture": "#blade"
+        }
+      }
+    }
+  ]
+}

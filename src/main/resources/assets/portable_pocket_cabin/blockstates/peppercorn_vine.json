@@ -1,28 +1,52 @@
 {
   "variants": {
-    "age=0": {
+    "age=0,tall=false": {
       "model": "portable_pocket_cabin:block/peppercorn_vine_stage0"
     },
-    "age=1": {
+    "age=0,tall=true": {
+      "model": "portable_pocket_cabin:block/peppercorn_vine_stage0"
+    },
+    "age=1,tall=false": {
       "model": "portable_pocket_cabin:block/peppercorn_vine_stage1"
     },
-    "age=2": {
+    "age=1,tall=true": {
+      "model": "portable_pocket_cabin:block/peppercorn_vine_stage1"
+    },
+    "age=2,tall=false": {
       "model": "portable_pocket_cabin:block/peppercorn_vine_stage2"
     },
-    "age=3": {
+    "age=2,tall=true": {
+      "model": "portable_pocket_cabin:block/peppercorn_vine_stage2"
+    },
+    "age=3,tall=false": {
       "model": "portable_pocket_cabin:block/peppercorn_vine_stage3"
     },
-    "age=4": {
+    "age=3,tall=true": {
+      "model": "portable_pocket_cabin:block/peppercorn_vine_stage3"
+    },
+    "age=4,tall=false": {
       "model": "portable_pocket_cabin:block/peppercorn_vine_stage4"
     },
-    "age=5": {
+    "age=4,tall=true": {
+      "model": "portable_pocket_cabin:block/peppercorn_vine_stage4_tall"
+    },
+    "age=5,tall=false": {
       "model": "portable_pocket_cabin:block/peppercorn_vine_stage5"
     },
-    "age=6": {
+    "age=5,tall=true": {
+      "model": "portable_pocket_cabin:block/peppercorn_vine_stage5_tall"
+    },
+    "age=6,tall=false": {
       "model": "portable_pocket_cabin:block/peppercorn_vine_stage6"
     },
-    "age=7": {
+    "age=6,tall=true": {
+      "model": "portable_pocket_cabin:block/peppercorn_vine_stage6_tall"
+    },
+    "age=7,tall=false": {
       "model": "portable_pocket_cabin:block/peppercorn_vine_stage7"
+    },
+    "age=7,tall=true": {
+      "model": "portable_pocket_cabin:block/peppercorn_vine_stage7_tall"
     }
   }
 }

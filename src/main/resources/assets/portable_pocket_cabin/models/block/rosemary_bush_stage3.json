@@ -1,6 +1,430 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "cross": "minecraft:block/sweet_berry_bush_stage3"
-  }
+    "particle": "portable_pocket_cabin:block/rosemary_bush_flowering_top",
+    "twigs": "portable_pocket_cabin:block/rosemary_bush_twigs",
+    "flowering_top": "portable_pocket_cabin:block/rosemary_bush_flowering_top",
+    "flowering_side": "portable_pocket_cabin:block/rosemary_bush_flowering_side"
+  },
+  "elements": [
+    {
+      "from": [
+        5.5,
+        0,
+        8
+      ],
+      "to": [
+        10.5,
+        9,
+        8
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          0,
+          8
+        ],
+        "x": 10,
+        "y": 0,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            7,
+            5,
+            16
+          ],
+          "texture": "#twigs"
+        },
+        "south": {
+          "uv": [
+            0,
+            7,
+            5,
+            16
+          ],
+          "texture": "#twigs"
+        }
+      }
+    },
+    {
+      "from": [
+        8,
+        0,
+        5.5
+      ],
+      "to": [
+        8,
+        9,
+        10.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          0,
+          8
+        ],
+        "x": 10,
+        "y": 0,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            7,
+            5,
+            16
+          ],
+          "texture": "#twigs"
+        },
+        "west": {
+          "uv": [
+            0,
+            7,
+            5,
+            16
+          ],
+          "texture": "#twigs"
+        }
+      }
+    },
+    {
+      "from": [
+        3.5,
+        0,
+        9
+      ],
+      "to": [
+        8.5,
+        9,
+        9
+      ],
+      "rotation": {
+        "origin": [
+          6,
+          0,
+          9
+        ],
+        "x": -10,
+        "y": 60,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            7,
+            5,
+            16
+          ],
+          "texture": "#twigs"
+        },
+        "south": {
+          "uv": [
+            0,
+            7,
+            5,
+            16
+          ],
+          "texture": "#twigs"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        0,
+        6.5
+      ],
+      "to": [
+        6,
+        9,
+        11.5
+      ],
+      "rotation": {
+        "origin": [
+          6,
+          0,
+          9
+        ],
+        "x": -10,
+        "y": 60,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            7,
+            5,
+            16
+          ],
+          "texture": "#twigs"
+        },
+        "west": {
+          "uv": [
+            0,
+            7,
+            5,
+            16
+          ],
+          "texture": "#twigs"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        0,
+        7
+      ],
+      "to": [
+        12.5,
+        9,
+        7
+      ],
+      "rotation": {
+        "origin": [
+          10,
+          0,
+          7
+        ],
+        "x": 10,
+        "y": 120,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            7,
+            5,
+            16
+          ],
+          "texture": "#twigs"
+        },
+        "south": {
+          "uv": [
+            0,
+            7,
+            5,
+            16
+          ],
+          "texture": "#twigs"
+        }
+      }
+    },
+    {
+      "from": [
+        10,
+        0,
+        4.5
+      ],
+      "to": [
+        10,
+        9,
+        9.5
+      ],
+      "rotation": {
+        "origin": [
+          10,
+          0,
+          7
+        ],
+        "x": 10,
+        "y": 120,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            7,
+            5,
+            16
+          ],
+          "texture": "#twigs"
+        },
+        "west": {
+          "uv": [
+            0,
+            7,
+            5,
+            16
+          ],
+          "texture": "#twigs"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        12,
+        2
+      ],
+      "to": [
+        14,
+        12,
+        14
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#flowering_top"
+        },
+        "down": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#flowering_top"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        4,
+        2
+      ],
+      "to": [
+        14,
+        12,
+        2.01
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            12,
+            16
+          ],
+          "texture": "#flowering_side"
+        },
+        "south": {
+          "uv": [
+            12,
+            8,
+            0,
+            16
+          ],
+          "texture": "#flowering_side"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        4,
+        13.99
+      ],
+      "to": [
+        14,
+        12,
+        14
+      ],
+      "faces": {
+        "south": {
+          "uv": [
+            0,
+            8,
+            12,
+            16
+          ],
+          "texture": "#flowering_side"
+        },
+        "north": {
+          "uv": [
+            12,
+            8,
+            0,
+            16
+          ],
+          "texture": "#flowering_side"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        4,
+        2
+      ],
+      "to": [
+        2.01,
+        12,
+        14
+      ],
+      "faces": {
+        "west": {
+          "uv": [
+            0,
+            8,
+            12,
+            16
+          ],
+          "texture": "#flowering_side"
+        },
+        "east": {
+          "uv": [
+            12,
+            8,
+            0,
+            16
+          ],
+          "texture": "#flowering_side"
+        }
+      }
+    },
+    {
+      "from": [
+        13.99,
+        4,
+        2
+      ],
+      "to": [
+        14,
+        12,
+        14
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            12,
+            16
+          ],
+          "texture": "#flowering_side"
+        },
+        "west": {
+          "uv": [
+            12,
+            8,
+            0,
+            16
+          ],
+          "texture": "#flowering_side"
+        }
+      }
+    }
+  ]
 }

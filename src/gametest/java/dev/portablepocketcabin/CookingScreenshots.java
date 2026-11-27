@@ -136,10 +136,9 @@ final class CookingScreenshots {
 				level.setBlockAndUpdate(pos.below(), Blocks.FARMLAND.defaultBlockState());
 				level.setBlockAndUpdate(pos, ((net.minecraft.world.level.block.CropBlock) CookingPlants.PLANTS.get(vines[i])).getStateForAge(7));
 			}
-			String[] bushes = {"thyme_bush", "strawberry_bush", "raspberry_bush", "elder_bush"};
+			String[] bushes = {"thyme_bush", "strawberry_bush", "raspberry_bush"};
 			for (int i = 0; i < bushes.length; i++) {
-				level.setBlockAndUpdate(base.offset(i, 0, 3), CookingPlants.PLANTS.get(bushes[i]).defaultBlockState()
-					.setValue(HerbBushBlock.AGE, bushes[i].equals("elder_bush") ? 2 : 3));
+				level.setBlockAndUpdate(base.offset(i, 0, 3), CookingPlants.PLANTS.get(bushes[i]).defaultBlockState().setValue(HerbBushBlock.AGE, 3));
 			}
 			// Delivery 2: taiga crops and currants, and wasabi in a gravel bed beside flowing water.
 			level.setBlockAndUpdate(base.offset(-4, -1, 5), Blocks.FARMLAND.defaultBlockState());
@@ -160,7 +159,7 @@ final class CookingScreenshots {
 			}
 			for (BlockPos near : BlockPos.betweenClosed(treePos.offset(-3, 1, -3), treePos.offset(3, 8, 3))) {
 				var state = level.getBlockState(near);
-				if (state.is(CookingPlants.PLUM_LEAVES)) level.setBlockAndUpdate(near, state.setValue(FruitingLeavesBlock.AGE, (near.getX() + near.getZ()) % 3 == 0 ? 1 : 2));
+				if (state.is(CookingPlants.PLUM_LEAVES) && FruitingLeavesBlock.bears(near)) level.setBlockAndUpdate(near, state.setValue(FruitingLeavesBlock.AGE, 2));
 			}
 			player.teleportTo(level, base.getX() + .5, base.getY(), base.getZ() + 10.5, java.util.Set.of(), 180, 25, false);
 		});

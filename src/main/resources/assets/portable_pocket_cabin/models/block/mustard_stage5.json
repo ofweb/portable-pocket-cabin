@@ -1,6 +1,766 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/wheat_stage5"
-  }
+    "particle": "portable_pocket_cabin:block/mustard_leaf",
+    "leaf": "portable_pocket_cabin:block/mustard_leaf",
+    "stem": "portable_pocket_cabin:block/mustard_stem",
+    "flowers": "portable_pocket_cabin:block/mustard_flowers"
+  },
+  "elements": [
+    {
+      "from": [
+        5.0,
+        -1.0,
+        0.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 25,
+        "y": 0.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        0.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 25,
+        "y": 72.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        0.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 25,
+        "y": 144.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        0.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 25,
+        "y": 216.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        -1.0,
+        0.0
+      ],
+      "to": [
+        11.0,
+        -1.0,
+        8.0
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1.0,
+          8
+        ],
+        "x": 25,
+        "y": 288.0,
+        "z": 0
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ],
+          "texture": "#leaf"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        -1,
+        5.5
+      ],
+      "to": [
+        8.5,
+        7,
+        6.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "east": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        4,
+        6
+      ],
+      "to": [
+        10.5,
+        12,
+        6
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          4,
+          6
+        ],
+        "x": 8,
+        "y": 0,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        }
+      }
+    },
+    {
+      "from": [
+        8,
+        4,
+        3.5
+      ],
+      "to": [
+        8,
+        12,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          4,
+          6
+        ],
+        "x": 8,
+        "y": 0,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        }
+      }
+    },
+    {
+      "from": [
+        9.5,
+        -1,
+        8.0
+      ],
+      "to": [
+        10.5,
+        7,
+        9.0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "east": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        4,
+        8.5
+      ],
+      "to": [
+        12.5,
+        12,
+        8.5
+      ],
+      "rotation": {
+        "origin": [
+          10,
+          4,
+          8.5
+        ],
+        "x": -8,
+        "y": 45,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        }
+      }
+    },
+    {
+      "from": [
+        10,
+        4,
+        6.0
+      ],
+      "to": [
+        10,
+        12,
+        11.0
+      ],
+      "rotation": {
+        "origin": [
+          10,
+          4,
+          8.5
+        ],
+        "x": -8,
+        "y": 45,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        -1,
+        8.5
+      ],
+      "to": [
+        6.5,
+        7,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "east": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        }
+      }
+    },
+    {
+      "from": [
+        3.5,
+        4,
+        9
+      ],
+      "to": [
+        8.5,
+        12,
+        9
+      ],
+      "rotation": {
+        "origin": [
+          6,
+          4,
+          9
+        ],
+        "x": 8,
+        "y": 90,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        4,
+        6.5
+      ],
+      "to": [
+        6,
+        12,
+        11.5
+      ],
+      "rotation": {
+        "origin": [
+          6,
+          4,
+          9
+        ],
+        "x": 8,
+        "y": 90,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        }
+      }
+    },
+    {
+      "from": [
+        8.0,
+        -1,
+        10.0
+      ],
+      "to": [
+        9.0,
+        7,
+        11.0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "east": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            1,
+            16
+          ],
+          "texture": "#stem"
+        }
+      }
+    },
+    {
+      "from": [
+        6.0,
+        4,
+        10.5
+      ],
+      "to": [
+        11.0,
+        12,
+        10.5
+      ],
+      "rotation": {
+        "origin": [
+          8.5,
+          4,
+          10.5
+        ],
+        "x": -8,
+        "y": 135,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        }
+      }
+    },
+    {
+      "from": [
+        8.5,
+        4,
+        8.0
+      ],
+      "to": [
+        8.5,
+        12,
+        13.0
+      ],
+      "rotation": {
+        "origin": [
+          8.5,
+          4,
+          10.5
+        ],
+        "x": -8,
+        "y": 135,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            5,
+            16
+          ],
+          "texture": "#flowers"
+        }
+      }
+    }
+  ]
 }

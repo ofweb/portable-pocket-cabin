@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "portable_pocket_cabin:block/elder_sapling"
+  }
+}

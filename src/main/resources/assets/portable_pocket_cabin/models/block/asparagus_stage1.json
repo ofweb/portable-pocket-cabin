@@ -1,6 +1,182 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
   "textures": {
-    "crop": "minecraft:block/carrots_stage0"
-  }
+    "particle": "portable_pocket_cabin:block/asparagus_fern",
+    "fern": "portable_pocket_cabin:block/asparagus_fern"
+  },
+  "elements": [
+    {
+      "from": [
+        4.5,
+        -1,
+        8
+      ],
+      "to": [
+        11.5,
+        8,
+        8
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1,
+          8
+        ],
+        "x": 10,
+        "y": 0,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            7,
+            7,
+            16
+          ],
+          "texture": "#fern"
+        },
+        "south": {
+          "uv": [
+            0,
+            7,
+            7,
+            16
+          ],
+          "texture": "#fern"
+        }
+      }
+    },
+    {
+      "from": [
+        8,
+        -1,
+        4.5
+      ],
+      "to": [
+        8,
+        8,
+        11.5
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          -1,
+          8
+        ],
+        "x": 10,
+        "y": 0,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            7,
+            7,
+            16
+          ],
+          "texture": "#fern"
+        },
+        "west": {
+          "uv": [
+            0,
+            7,
+            7,
+            16
+          ],
+          "texture": "#fern"
+        }
+      }
+    },
+    {
+      "from": [
+        2.5,
+        -1,
+        9.5
+      ],
+      "to": [
+        9.5,
+        8,
+        9.5
+      ],
+      "rotation": {
+        "origin": [
+          6,
+          -1,
+          9.5
+        ],
+        "x": -10,
+        "y": 47,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            7,
+            7,
+            16
+          ],
+          "texture": "#fern"
+        },
+        "south": {
+          "uv": [
+            0,
+            7,
+            7,
+            16
+          ],
+          "texture": "#fern"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        -1,
+        6.0
+      ],
+      "to": [
+        6,
+        8,
+        13.0
+      ],
+      "rotation": {
+        "origin": [
+          6,
+          -1,
+          9.5
+        ],
+        "x": -10,
+        "y": 47,
+        "z": 0
+      },
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            7,
+            7,
+            16
+          ],
+          "texture": "#fern"
+        },
+        "west": {
+          "uv": [
+            0,
+            7,
+            7,
+            16
+          ],
+          "texture": "#fern"
+        }
+      }
+    }
+  ]
 }

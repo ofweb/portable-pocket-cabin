@@ -19,10 +19,11 @@ import java.util.Set;
 import java.util.function.Function;
 
 final class CookingBlocks {
-	static final Block STOVE = register("stove", CookingStationBlock.Stove::new, BlockBehaviour.Properties.of()
+	// Stations built in 3D do not fill their block, so none of them hides the faces of the blocks beside it.
+	static final Block STOVE = register("stove", CookingStationBlock.Stove::new, BlockBehaviour.Properties.of().noOcclusion()
 		.strength(3.5F).sound(SoundType.METAL).requiresCorrectToolForDrops()
 		.lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 13 : 0));
-	static final Block OVEN = register("oven", CookingStationBlock.Oven::new, BlockBehaviour.Properties.of()
+	static final Block OVEN = register("oven", CookingStationBlock.Oven::new, BlockBehaviour.Properties.of().noOcclusion()
 		.strength(3.5F).sound(SoundType.STONE).requiresCorrectToolForDrops()
 		.lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 13 : 0));
 	static final Block COOKING_POT = register("cooking_pot", CookingStationBlock.Pot::new, BlockBehaviour.Properties.of()
@@ -33,12 +34,12 @@ final class CookingBlocks {
 	static final Block CUTTING_BOARD = register("cutting_board", CookingStationBlock.CuttingBoard::new, BlockBehaviour.Properties.of()
 		.strength(1.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava());
 
-	static final Block PREP_COUNTER = register("prep_counter", CookingStationBlock.PrepCounter::new, BlockBehaviour.Properties.of()
+	static final Block PREP_COUNTER = register("prep_counter", CookingStationBlock.PrepCounter::new, BlockBehaviour.Properties.of().noOcclusion()
 		.strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
 	static final Block STRAINER = register("strainer", CookingStationBlock.Strainer::new, BlockBehaviour.Properties.of()
 		.strength(1.0F).sound(SoundType.METAL).noOcclusion().pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY));
 
-	static final Block GRILL = register("grill", CookingStationBlock.Grill::new, BlockBehaviour.Properties.of()
+	static final Block GRILL = register("grill", CookingStationBlock.Grill::new, BlockBehaviour.Properties.of().noOcclusion()
 		.strength(3.5F).sound(SoundType.METAL).requiresCorrectToolForDrops()
 		.lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 13 : 0));
 	static final Block WOK = register("wok", CookingStationBlock.Wok::new, BlockBehaviour.Properties.of()
@@ -47,12 +48,12 @@ final class CookingBlocks {
 	static final Block AEBLESKIVE_PAN = register("aebleskive_pan", CookingStationBlock.AebleskivePan::new, BlockBehaviour.Properties.of()
 		.strength(1.5F).sound(SoundType.METAL).noOcclusion());
 
-	static final Block PRESS = register("press", CookingStationBlock.Press::new, BlockBehaviour.Properties.of()
+	static final Block PRESS = register("press", CookingStationBlock.Press::new, BlockBehaviour.Properties.of().noOcclusion()
 		.strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
 
 	static final Block MILL = register("mill", properties -> new ProcessStationBlock(properties,
 		ProcessStationBlock.Config.of(CookingMenu.Kind.MILL, () -> CookingBlocks.MILL_ENTITY)),
-		BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.STONE).requiresCorrectToolForDrops());
+		BlockBehaviour.Properties.of().noOcclusion().strength(3.0F).sound(SoundType.STONE).requiresCorrectToolForDrops());
 	static final Block MIXING_BOWL = register("mixing_bowl", properties -> new ProcessStationBlock.CounterTopStation(properties,
 		ProcessStationBlock.Config.of(CookingMenu.Kind.MIXING_BOWL, () -> CookingBlocks.MIXING_BOWL_ENTITY)
 			.shape(Block.box(3, 0, 3, 13, 6, 13)).tool(() -> CookingItems.SPOON, SoundEvents.WOOD_HIT)),
@@ -78,7 +79,7 @@ final class CookingBlocks {
 		BlockBehaviour.Properties.of().strength(1.5F).sound(SoundType.DECORATED_POT).noOcclusion());
 	static final Block BRINE_BARREL = register("brine_barrel", properties -> new ProcessStationBlock(properties,
 		ProcessStationBlock.Config.of(CookingMenu.Kind.BRINE, () -> CookingBlocks.BRINE_BARREL_ENTITY)),
-		BlockBehaviour.Properties.of().strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
+		BlockBehaviour.Properties.of().noOcclusion().strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
 	static final Block AGEING_SHELF = register("ageing_shelf", properties -> new ProcessStationBlock.SpotStation(properties,
 		() -> CookingBlocks.AGEING_SHELF_ENTITY, SpotStationBlockEntity::ageingShelf, Block.box(0, 0, 0, 16, 10, 16)),
 		BlockBehaviour.Properties.of().strength(2.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava());
@@ -87,7 +88,7 @@ final class CookingBlocks {
 		BlockBehaviour.Properties.of().strength(1.0F).sound(SoundType.WOOD).noOcclusion().ignitedByLava());
 	static final Block CHEESE_PRESS = register("cheese_press", properties -> new ProcessStationBlock(properties,
 		ProcessStationBlock.Config.of(CookingMenu.Kind.CHEESE_PRESS, () -> CookingBlocks.CHEESE_PRESS_ENTITY)),
-		BlockBehaviour.Properties.of().strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
+		BlockBehaviour.Properties.of().noOcclusion().strength(2.5F).sound(SoundType.WOOD).ignitedByLava());
 
 	/** Rock salt ore, in dripstone caves and badlands stone and terracotta. */
 	static final Block ROCK_SALT_ORE = register("rock_salt_ore", Block::new, BlockBehaviour.Properties.of()

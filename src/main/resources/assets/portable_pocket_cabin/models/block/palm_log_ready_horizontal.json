@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "portable_pocket_cabin:block/palm_log_top",
+    "side": "portable_pocket_cabin:block/palm_log_tapped"
+  }
+}

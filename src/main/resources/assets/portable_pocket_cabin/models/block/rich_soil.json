@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "minecraft:block/rooted_dirt"
+    "all": "portable_pocket_cabin:block/rich_soil"
   }
 }

@@ -58,17 +58,17 @@ public final class CabinGrowEveryFoodGameTest {
 	@GameTest
 	public void appleTreesGrowAndBearVanillaApples(GameTestHelper helper) {
 		var level = helper.getLevel();
-		helper.setBlock(BASE.below(), Blocks.GRASS_BLOCK);
-		clearAbove(helper, BASE);
 		var sapling = (net.minecraft.world.level.block.SaplingBlock) ((net.minecraft.world.item.BlockItem) CookingPlants.item("apple_sapling")).getBlock();
-		BlockPos pos = helper.absolutePos(BASE);
+		// An apple tree spreads wider and taller than the test area, so it grows in open air high above it.
+		BlockPos pos = helper.absolutePos(BASE).above(TREE_LIFT);
+		level.setBlockAndUpdate(pos.below(), Blocks.GRASS_BLOCK.defaultBlockState());
 		level.setBlockAndUpdate(pos, sapling.defaultBlockState());
 		for (int i = 0; i < 10 && level.getBlockState(pos).is(sapling); i++) {
 			sapling.advanceTree(level, pos, level.getBlockState(pos), net.minecraft.util.RandomSource.create(i));
 		}
 		helper.assertTrue(level.getBlockState(pos).is(Blocks.OAK_LOG), "An apple sapling grows an oak-wood trunk");
 		BlockPos leaves = null;
-		for (BlockPos near : BlockPos.betweenClosed(pos.offset(-3, 1, -3), pos.offset(3, 7, 3))) {
+		for (BlockPos near : BlockPos.betweenClosed(pos.offset(-7, 1, -7), pos.offset(7, 14, 7))) {
 			if (level.getBlockState(near).is(CookingPlants.APPLE_LEAVES)) {
 				leaves = near.immutable();
 				break;
@@ -82,6 +82,7 @@ public final class CabinGrowEveryFoodGameTest {
 		helper.assertTrue(level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(leaves).inflate(2)).stream()
 			.anyMatch(entity -> entity.getItem().is(net.minecraft.world.item.Items.APPLE)), "Picking apple leaves gives vanilla apples");
 		helper.assertTrue(level.getBlockState(leaves).getValue(FruitingLeavesBlock.AGE) == 0, "The leaves fruit again after picking");
+		clearTree(level, pos);
 		helper.succeed();
 	}
 
@@ -101,6 +102,18 @@ public final class CabinGrowEveryFoodGameTest {
 		helper.assertTrue(saplings > 0 && saplings < 120, "About 1 in 200 oak leaves drops an apple sapling, found " + saplings + " in 6000");
 		helper.assertTrue(apples > 0, "Oak leaves still drop vanilla apples");
 		helper.succeed();
+	}
+
+	/** How far above its test area a whole tree is grown, clear of the area's barrier walls and ceiling. */
+	static final int TREE_LIFT = 24;
+
+	/** Removes a tree grown above a test area, with the ground it stood on and anything it dropped. */
+	static void clearTree(net.minecraft.server.level.ServerLevel level, BlockPos pos) {
+		for (BlockPos near : BlockPos.betweenClosed(pos.offset(-8, -1, -8), pos.offset(8, 15, 8))) {
+			if (!level.getBlockState(near).isAir()) level.setBlock(near, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS | Block.UPDATE_SUPPRESS_DROPS);
+		}
+		level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(9, 16, 9))
+			.forEach(net.minecraft.world.entity.Entity::discard);
 	}
 
 	/** Clears the GameTest structure's barrier ceiling above a position, so the sky is open above it. */

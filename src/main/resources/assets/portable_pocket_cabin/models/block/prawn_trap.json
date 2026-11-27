@@ -1,21 +1,53 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "minecraft:block/barrel_side",
-    "side": "minecraft:block/barrel_side",
-    "top": "minecraft:block/barrel_top"
+    "particle": "portable_pocket_cabin:block/prawn_trap_side",
+    "side": "portable_pocket_cabin:block/prawn_trap_side",
+    "mouth": "portable_pocket_cabin:block/prawn_trap_mouth"
   },
   "elements": [
     {
       "from": [
         2,
         0,
-        2
+        3
       ],
       "to": [
         14,
-        10,
-        14
+        8,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "up": {
+          "texture": "#side"
+        },
+        "down": {
+          "texture": "#side"
+        },
+        "east": {
+          "texture": "#mouth"
+        },
+        "west": {
+          "texture": "#mouth"
+        }
+      }
+    },
+    {
+      "from": [
+        2.01,
+        0.01,
+        3.01
+      ],
+      "to": [
+        13.99,
+        7.99,
+        12.99
       ],
       "faces": {
         "north": {
@@ -31,10 +63,10 @@
           "texture": "#side"
         },
         "up": {
-          "texture": "#top"
+          "texture": "#side"
         },
         "down": {
-          "texture": "#top"
+          "texture": "#side"
         }
       }
     }
