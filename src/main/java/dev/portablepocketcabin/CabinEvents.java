@@ -48,6 +48,20 @@ final class CabinEvents {
 				return leave(serverPlayer, interiorCabin);
 			}
 
+			// The arboretum doors and planting board are for guests too.
+			var used = serverLevel.getBlockState(hit.getBlockPos());
+			if (used.getBlock() instanceof ArboretumDoorBlock door) return door.use(serverPlayer, hit.getBlockPos(), used);
+			if (used.is(ArboretumBlocks.PLANTING_BOARD) && CabinArboretum.isArboretum(serverLevel))
+				return CabinArboretumMenu.open(serverPlayer, hit.getBlockPos());
+			if (CabinArboretum.isArboretum(serverLevel) && player.getItemInHand(hand).getItem() instanceof net.minecraft.world.item.BlockItem held
+				&& held.getBlock() instanceof net.minecraft.world.level.block.SaplingBlock) {
+				var grove = CabinArboretum.cabinAt(serverLevel.getServer(), hit.getBlockPos()).orElse(null);
+				if (grove != null && CabinArboretumPlanting.isSpotCell(grove, hit.getBlockPos().relative(hit.getDirection()))) {
+					player.sendSystemMessage(Component.literal("The grove plants this spot itself. Choose its trees at the planting board."));
+					return InteractionResult.FAIL;
+				}
+			}
+
 			CabinRecord controlledCabin = CabinProtection.findInteriorController(serverLevel, hit.getBlockPos())
 				.orElse(null);
 			if (controlledCabin != null) {
@@ -99,6 +113,10 @@ final class CabinEvents {
 				? InteractionResult.FAIL : InteractionResult.PASS);
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
 			var player = handler.player;
+			if (CabinArboretum.isArboretum(player.level())) {
+				CabinArboretum.cabinAt(server, player.blockPosition()).ifPresent(cabin -> CabinOccupancyData.get(server).enter(player.getUUID(), cabin));
+				return;
+			}
 			if (!player.level().dimension().equals(PocketDimension.LEVEL_KEY)) return;
 			CabinRegistry.get(server).findByCell(PocketDimension.cellIndexAt(player.blockPosition()).orElse(-1L))
 				.ifPresent(cabin -> CabinOccupancyData.get(server).enter(player.getUUID(), cabin));
@@ -190,6 +208,10 @@ final class CabinEvents {
 	}
 
 	private static void recoverOfflineOccupant(ServerPlayer player) {
+		if (CabinArboretum.isArboretum(player.level())) {
+			recoverGroveOccupant(player);
+			return;
+		}
 		if (!player.level().dimension().equals(PocketDimension.LEVEL_KEY)) {
 			CabinOccupancyData.get(player.level().getServer()).clear(player.getUUID());
 			return;
@@ -235,6 +257,28 @@ final class CabinEvents {
 				"No safe destination was available outside your inactive cabin. Ask an operator for help."
 			));
 		}
+	}
+
+	/** A player who logs in inside a grove whose cabin was packed, moved or lost since they left goes outside it. */
+	private static void recoverGroveOccupant(ServerPlayer player) {
+		var server = player.level().getServer();
+		var occupancy = CabinOccupancyData.get(server);
+		var stay = occupancy.find(player.getUUID()).orElse(null);
+		var cabin = CabinArboretum.cabinAt(server, player.blockPosition()).orElse(null);
+		boolean stays = cabin != null && cabin.lifecycle() == CabinLifecycle.DEPLOYED && stay != null
+			&& stay.cabinId().equals(cabin.uuid()) && stay.packedItemGeneration() == cabin.packedItemGeneration();
+		if (stays) return;
+		var destination = cabin != null ? SafeDestinationResolver.resolveForCabin(player, cabin)
+			: java.util.Optional.<SafeDestinationResolver.Destination>empty();
+		if (destination.isEmpty() || !destination.get().teleport(player, 0.0F)) {
+			var spawn = CabinRespawning.worldSpawn(player);
+			if (spawn.isEmpty() || !spawn.get().teleport(player, 0.0F)) {
+				player.sendSystemMessage(Component.literal("No safe destination was available outside the arboretum. Ask an operator for help."));
+				return;
+			}
+		}
+		occupancy.clear(player.getUUID());
+		player.sendSystemMessage(Component.literal("Your cabin moved while you were offline, so you were returned to a safe location."));
 	}
 
 	static boolean requiresMainRoomReturn(BlockPos position, CabinRecord cabin, CabinOccupancyData.Stay stay, boolean pendingMove) {

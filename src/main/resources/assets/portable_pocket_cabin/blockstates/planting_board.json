@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=south": {
+      "model": "portable_pocket_cabin:block/planting_board"
+    },
+    "facing=west": {
+      "model": "portable_pocket_cabin:block/planting_board",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "portable_pocket_cabin:block/planting_board",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "portable_pocket_cabin:block/planting_board",
+      "y": 270
+    }
+  }
+}

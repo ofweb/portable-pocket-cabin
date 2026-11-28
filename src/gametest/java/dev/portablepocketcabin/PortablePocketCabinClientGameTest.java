@@ -51,6 +51,10 @@ public final class PortablePocketCabinClientGameTest
         context.runOnClient(client -> client.options.guiScale().set(3));
         context.getInput().setCursorPos(0, 0);
         boolean captureAll = "1".equals(System.getenv("PPC_CAPTURE_ALL"));
+        if ("1".equals(System.getenv("PPC_TEST_ARBORETUM"))) {
+            captureArboretum(context);
+            return;
+        }
         if ("1".equals(System.getenv("PPC_CAPTURE_PLANTS"))) {
             PlantModelScreenshots.capture(context);
             return;
@@ -76,6 +80,7 @@ public final class PortablePocketCabinClientGameTest
         if (!captureAll && "1".equals(System.getenv("PPC_TEST_BOOKS"))) return;
         captureGreenhouse(context);
         if (!captureAll && "1".equals(System.getenv("PPC_TEST_GREENHOUSE"))) return;
+        captureArboretum(context);
         captureCrafting(context);
         if (!captureAll && "1".equals(System.getenv("PPC_TEST_CRAFTING"))) return;
         captureExterior(context);
@@ -405,6 +410,140 @@ public final class PortablePocketCabinClientGameTest
         menu.clicked(slot, 0, net.minecraft.world.inventory.ContainerInput.PICKUP, player);
         menu.clicked(CabinUpgradeMenu.BOOK_SLOT, 0, net.minecraft.world.inventory.ContainerInput.PICKUP, player);
         return !menu.bookStack().isEmpty();
+    }
+
+    /** The arboretum (B-0023): buy it, walk through its door, teach and plant at the board, grow it, and come back. */
+    private static void captureArboretum(ClientGameTestContext context) {
+        try (TestSingleplayerContext world = context.worldBuilder().create()) {
+            UUID cabinId = createCabin(world, false);
+            world.getServer().runOnServer(server -> {
+                var registry = CabinRegistry.get(server);
+                var player = world.getConnection().getServerPlayer();
+                player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+                var cabin = registry.find(cabinId).orElseThrow();
+                PocketDimension.applyGeneralSpaceExpansion(player.level(), cabin, 5);
+                cabin = registry.expandGeneralSpace(cabinId, cabin.owner(), 3, 5, 21);
+                registry.updateUpgradeState(cabinId, cabin.upgrades().withArboretum(CabinArboretumState.EMPTY.reveal()));
+                arboretumSize(server, world, cabinId, 1);
+                cabin = registry.find(cabinId).orElseThrow();
+                var door = CabinArboretum.door(cabin);
+                check(player.level().getBlockState(door).is(ArboretumBlocks.ARBORETUM_DOOR), "The corridor has the arboretum door");
+                player.teleportTo(player.level(), door.getX() + .5, door.getY(), door.getZ() - 3.5, Set.of(), 0, 10, false);
+            });
+            world.getConnection().waitForClientboundPackets();
+            world.getConnection().waitForChunksRender();
+            context.waitTicks(10);
+            capture(context, "arboretum-door");
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                var cabin = CabinRegistry.get(server).find(cabinId).orElseThrow();
+                check(CabinArboretum.enter(player, CabinArboretum.door(cabin)).consumesAction(), "The door leads into the grove");
+                check(CabinArboretum.inGrove(player, cabin) && CabinReconciliation.isOccupant(player, cabin), "The player is in the grove, still in the cabin");
+                player.getInventory().clearContent();
+                player.getInventory().setItem(0, new ItemStack(net.minecraft.world.item.Items.OAK_SAPLING, 20));
+                check(CabinArboretumMenu.open(player, CabinArboretum.world(cabin, CabinArboretum.BOARD)).consumesAction(), "The board opens");
+            });
+            world.getConnection().waitForClientboundPackets();
+            context.waitFor(client -> client.level != null && client.level.dimension().equals(CabinArboretum.LEVEL_KEY)
+                && client.gui.screen() instanceof CabinArboretumScreen && CabinStationClient.entries(client.player.containerMenu.containerId) != null);
+            context.waitTicks(3);
+            enchantingButton(context, world, CabinArboretumMenu.CHOICE_BASE);
+            capture(context, "arboretum-board-teach");
+            enchantingButton(context, world, CabinArboretumMenu.TEACH);
+            enchantingButton(context, world, CabinArboretumMenu.CHOICE_BASE);
+            capture(context, "arboretum-board-planting");
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                var cabin = CabinRegistry.get(server).find(cabinId).orElseThrow();
+                check(cabin.upgrades().arboretum().taught().contains(CabinArboretumPlanting.id(net.minecraft.world.item.Items.OAK_SAPLING))
+                    && player.getInventory().getItem(0).getCount() == 5, "Teaching takes fifteen saplings once");
+                check(cabin.upgrades().arboretum().selected().size() == 1, "The taught type is selected");
+                for (var spot : CabinArboretum.spots(cabin))
+                    check(player.level().getBlockState(spot).is(net.minecraft.world.level.block.Blocks.OAK_SAPLING), "Selecting plants every spot");
+                player.closeContainer();
+                growTrees(player.level(), cabin);
+                var arrival = CabinArboretum.world(cabin, CabinArboretum.ARRIVAL);
+                player.teleportTo(player.level(), arrival.getX() + .5, arrival.getY(), arrival.getZ() + .5, Set.of(), 0, 15, false);
+                server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "time set noon");
+            });
+            groveShot(context, world, "arboretum-grove-7x7");
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                var cabin = CabinRegistry.get(server).find(cabinId).orElseThrow();
+                var spot = CabinArboretum.world(cabin, new BlockPos(-1, 1, 3));
+                player.teleportTo(player.level(), spot.getX() + .5, spot.getY(), spot.getZ() + .5, Set.of(), 214, 15, false);
+            });
+            groveShot(context, world, "arboretum-board");
+            world.getServer().runOnServer(server -> server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "time set midnight"));
+            groveShot(context, world, "arboretum-grove-7x7-night");
+            for (int level = 2; level <= 3; level++) {
+                final int size = level;
+                world.getServer().runOnServer(server -> {
+                    var player = world.getConnection().getServerPlayer();
+                    server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "time set noon");
+                    var registry = CabinRegistry.get(server);
+                    arboretumSize(server, world, cabinId, size);
+                    var cabin = registry.find(cabinId).orElseThrow();
+                    var state = cabin.upgrades().arboretum();
+                    var more = size == 2 ? List.of(net.minecraft.world.item.Items.BIRCH_SAPLING)
+                        : List.of(net.minecraft.world.item.Items.BIRCH_SAPLING, BuiltInRegistries.ITEM.getValue(PortablePocketCabin.id("apple_sapling")));
+                    var selected = new java.util.ArrayList<>(List.of(CabinArboretumPlanting.id(net.minecraft.world.item.Items.OAK_SAPLING)));
+                    for (var type : more) { state = state.teach(CabinArboretumPlanting.id(type)); selected.add(CabinArboretumPlanting.id(type)); }
+                    cabin = registry.updateUpgradeState(cabinId, cabin.upgrades().withArboretum(state.select(selected)));
+                    CabinArboretumPlanting.applySelection(player.level(), cabin);
+                    growTrees(player.level(), cabin);
+                    // From above the glass roof, looking down over the canopy and the walls.
+                    var view = CabinArboretum.world(cabin, new BlockPos(0, CabinArboretum.HEIGHTS[size] + 6 + 4 * size, -4 - 2 * size));
+                    player.teleportTo(player.level(), view.getX() + .5, view.getY(), view.getZ() + .5, Set.of(), 0, 45, false);
+                    player.getAbilities().mayfly = true;
+                    player.getAbilities().flying = true;
+                    player.onUpdateAbilities();
+                });
+                groveShot(context, world, "arboretum-grove-" + CabinArboretum.SIZES[size] + "x" + CabinArboretum.SIZES[size]);
+            }
+            world.getServer().runOnServer(server -> {
+                var player = world.getConnection().getServerPlayer();
+                var cabin = CabinRegistry.get(server).find(cabinId).orElseThrow();
+                check(CabinArboretum.leave(player, CabinArboretum.world(cabin, CabinArboretum.EXIT)).consumesAction(), "The exit door leads back");
+                check(player.level().dimension().equals(PocketDimension.LEVEL_KEY)
+                    && player.blockPosition().closerThan(CabinArboretum.door(cabin), 3), "Back in the corridor by the arboretum door");
+            });
+            world.getConnection().waitForClientboundPackets();
+            context.waitFor(client -> client.level != null && client.level.dimension().equals(PocketDimension.LEVEL_KEY));
+        }
+    }
+
+    private static void arboretumSize(net.minecraft.server.MinecraftServer server, TestSingleplayerContext world, UUID cabinId, int level) {
+        var registry = CabinRegistry.get(server);
+        var player = world.getConnection().getServerPlayer();
+        var cabin = registry.find(cabinId).orElseThrow();
+        var requirements = CabinUpgradeCatalog.arboretumRequirements(cabin, level);
+        var target = CabinUpgradeState.Target.arboretum(level);
+        var stacks = requirements.stream().map(r -> new ItemStack(BuiltInRegistries.ITEM.getOptional(r.itemId()).orElseThrow(), r.count())).toList();
+        registry.updateUpgradeState(cabinId, cabin.upgrades().withFund(new CabinUpgradeState.Fund(target, requirements, stacks)));
+        var pocket = server.getLevel(PocketDimension.LEVEL_KEY);
+        var result = CabinUpgradeService.install(registry, cabinId, player.getUUID(), target,
+            registry.find(cabinId).orElseThrow().upgrades().fundRevision(), registry.worldAttunement().orElseThrow(),
+            CabinUpgradeDefinitions.current(), new CabinUpgradeEffect(server, pocket), () -> CabinRegistry.flush(server));
+        check(result.success(), result.message());
+    }
+
+    /** Grows every sapling in the grove into its tree, as time would. */
+    private static void growTrees(net.minecraft.server.level.ServerLevel level, CabinRecord cabin) {
+        var random = net.minecraft.util.RandomSource.create(cabin.cellIndex());
+        for (int attempt = 0; attempt < 40; attempt++)
+            for (var spot : CabinArboretum.spots(cabin)) {
+                var state = level.getBlockState(spot);
+                if (state.getBlock() instanceof net.minecraft.world.level.block.SaplingBlock sapling) sapling.advanceTree(level, spot, state, random);
+            }
+    }
+
+    private static void groveShot(ClientGameTestContext context, TestSingleplayerContext world, String name) {
+        world.getConnection().waitForClientboundPackets();
+        context.waitFor(client -> client.level != null && client.level.dimension().equals(CabinArboretum.LEVEL_KEY) && client.gui.screen() == null);
+        world.getConnection().waitForChunksRender();
+        context.waitTicks(20);
+        capture(context, name);
     }
 
     private static void captureGreenhouse(ClientGameTestContext context) {

@@ -380,10 +380,12 @@ final class CabinRespawning {
 	}
 
 	private static boolean teleportToWorldSpawn(ServerPlayer player) {
-		ServerLevel overworld = player.level().getServer().overworld();
-		Optional<SafeDestinationResolver.Destination> spawn = SafeDestinationResolver.search(
-			overworld, overworld.getRespawnData().pos().above(), player
-		);
+		Optional<SafeDestinationResolver.Destination> spawn = worldSpawn(player);
 		return spawn.isPresent() && spawn.get().teleport(player, 0.0F);
+	}
+
+	static Optional<SafeDestinationResolver.Destination> worldSpawn(ServerPlayer player) {
+		ServerLevel overworld = player.level().getServer().overworld();
+		return SafeDestinationResolver.search(overworld, overworld.getRespawnData().pos().above(), player);
 	}
 }

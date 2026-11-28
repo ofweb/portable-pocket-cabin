@@ -1,6 +1,6 @@
 # Arboretum opens into woodlands
 
-Status: Ready
+Status: Ready (part 1, the enclosed grove, implemented)
 Feature ID: B-0023
 
 ## Goal
@@ -27,17 +27,17 @@ Story: An owner expands and selects tree types.
 
 Acceptance:
 
-- Enclosed tiers (usable floor / clear height): 7×7 / 5, 19×19 / 10, 29×29 / 15 blocks; then woodlands around the same core.
+- Enclosed tiers (usable floor / clear height): 7×7 / 9, 19×19 / 12, 29×29 / 15 blocks; then woodlands around the same core.
 - Tier limits are 1, 2, 3, and 4 selected tree types.
 - Fixed core grid: centered 2×2 in 7×7, four blocks apart. Extend with at least one floor block before enclosed walls: 4, 20, 42 positions.
 - Selected species mix randomly across the grid.
 - Selection replaces deselected core saplings and their transition counterparts, filling available spots. Grown trees and biome planting stay intact; new transition planting uses current selections.
 - Fixed entrance centered on the north wall; expand equally east–west and southward, preserving floor height and contents.
-- Core accepts any tree type regardless of biome or payment species.
+- Core accepts any taught tree type regardless of biome or payment species. The household teaches a type once at the planting interface with 15 of its saplings, vanilla and mod trees alike.
 - Purchases fund planting and replanting.
 - No sapling drops; retained saplings replant trees without entering inventory or storage.
 
-Purchases require four sapling types, one each. BOP means Biomes O' Plenty; parentheses give shared 1:1 vanilla fallbacks under [PDR-0014](../../decisions/pdr/0014-use-preferred-upgrade-materials-with-shared-fallbacks.md).
+Purchases require four sapling types, one each, plus wall logs (16, 32, 48) and glass (32, 48, 64) for the enclosed tiers. BOP means Biomes O' Plenty; parentheses give shared 1:1 vanilla fallbacks under [PDR-0014](../../decisions/pdr/0014-use-preferred-upgrade-materials-with-shared-fallbacks.md).
 
 | Purchase | Required saplings |
 |---|---|
@@ -111,6 +111,7 @@ Installation, cultivation, woodland exploration, and return landmarks.
 - [Shared rooms](../B-0005/brief.md).
 - [Automatic room actions](../B-0026/brief.md).
 - [Entrance transfer experiment](../../../experiments/arboretum-transfer/README.md).
+- [Part 1 design: the enclosed grove](design.md).
 
 ## Open questions and assumptions
 

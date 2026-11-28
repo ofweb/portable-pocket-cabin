@@ -491,6 +491,10 @@ public final class CabinRegistry extends SavedData {
 				throw new IllegalStateException("Kitchen level changed");
 			progression = progression.withCorridor(CabinCorridor.EAST).withRoom(new CabinRoom(
 				installation.operationId(), CabinKitchen.TYPE, cabin.cellIndex(), Optional.of(CabinKitchen.space(cabin))));
+		} else if (installation.target().isArboretum()) {
+			if (cabin.upgrades().arboretum().level() != installation.expectedState())
+				throw new IllegalStateException("Arboretum size changed");
+			progression = progression.withCorridor(CabinCorridor.WEST);
 		} else if (installation.target().isStorage()) {
 			int current = cabin.upgrades().storage().level();
 			if (current != installation.expectedState()) throw new IllegalStateException("Storage level changed");
@@ -515,6 +519,8 @@ public final class CabinRegistry extends SavedData {
 			completed = completed.withCrafting(cabin.upgrades().crafting().upgrade(installation.targetState()));
 		if (installation.target().isKitchen())
 			completed = completed.withKitchen(cabin.upgrades().kitchen().install());
+		if (installation.target().isArboretum())
+			completed = completed.withArboretum(cabin.upgrades().arboretum().upgrade(installation.targetState()));
 		if (installation.target().isStorage())
 			completed = completed.withStorage(cabin.upgrades().storage().upgrade(installation.targetState()));
 		CabinRecord updated = copyProgressionAndUpgrades(

@@ -28,6 +28,7 @@ final class CabinSimulation {
 		private final Map<Long, Set<ChunkPos>> activeCells = new java.util.LinkedHashMap<>();
 		private long registryRevision = Long.MIN_VALUE;
 		private Set<UUID> pendingCorridors = Set.of();
+		private final Map<UUID, Set<ChunkPos>> activeGroves = new java.util.LinkedHashMap<>();
 	}
 
 	private CabinSimulation() {
@@ -73,8 +74,37 @@ final class CabinSimulation {
 				active.put(entry.getKey(), entry.getValue());
 			}
 		}
+		syncGroves(server, registry, state);
 		state.registryRevision = revision;
 		state.pendingCorridors = pending;
+	}
+
+	/** Deployed cabins keep their arboretum grove simulated too, wherever their players are (B-0023). */
+	private static void syncGroves(MinecraftServer server, CabinRegistry registry, State state) {
+		ServerLevel grove = server.getLevel(CabinArboretum.LEVEL_KEY);
+		if (grove == null) return;
+		Map<UUID, Set<ChunkPos>> desired = new java.util.LinkedHashMap<>();
+		for (CabinRecord cabin : registry.cabins())
+			if (shouldSimulate(cabin) && cabin.upgrades().arboretum().level() > 0) desired.put(cabin.uuid(), CabinArboretum.chunks(cabin));
+		for (var entry : new ArrayList<>(state.activeGroves.entrySet())) {
+			if (!entry.getValue().equals(desired.get(entry.getKey()))) {
+				for (ChunkPos chunk : entry.getValue()) grove.getChunkSource().removeTicketWithRadius(CABIN_SIMULATION_TICKET, chunk, FULL_SIMULATION_RADIUS);
+				state.activeGroves.remove(entry.getKey());
+			}
+		}
+		for (var entry : desired.entrySet()) {
+			if (state.activeGroves.containsKey(entry.getKey())) continue;
+			for (ChunkPos chunk : entry.getValue()) {
+				grove.getChunkSource().addTicketWithRadius(CABIN_SIMULATION_TICKET, chunk, FULL_SIMULATION_RADIUS);
+				grove.getChunk(chunk.x(), chunk.z());
+			}
+			state.activeGroves.put(entry.getKey(), entry.getValue());
+		}
+	}
+
+	static boolean isGroveTicketed(MinecraftServer server, UUID cabin) {
+		State state = STATES.get(server);
+		return state != null && state.activeGroves.containsKey(cabin);
 	}
 
 	static boolean shouldSimulate(CabinRecord cabin) {

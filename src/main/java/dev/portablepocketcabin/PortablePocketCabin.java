@@ -35,6 +35,9 @@ public final class PortablePocketCabin implements ModInitializer {
 		CabinCrafting.register();
 		CabinEnchanting.register();
 		CabinEnchantingMenu.register();
+		ArboretumBlocks.register();
+		CabinArboretumMenu.register();
+		CabinArboretumPlanting.register();
 		CabinStation.register();
 		CabinStationPayload.register();
 		CommandRegistrationCallback.EVENT.register(CabinCommands::register);
@@ -61,6 +64,7 @@ public final class PortablePocketCabin implements ModInitializer {
 			CabinGreenhouseStartupCheck.onServerStarted(server);
 			CabinEnchantingStartupCheck.onServerStarted(server);
 			CabinKitchenStartupCheck.onServerStarted(server);
+			CabinArboretumStartupCheck.onServerStarted(server);
 		});
 	}
 

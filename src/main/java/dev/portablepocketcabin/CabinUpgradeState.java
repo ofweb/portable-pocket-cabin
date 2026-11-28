@@ -28,7 +28,8 @@ record CabinUpgradeState(
 	CabinCraftingState crafting,
 	CabinGreenhouseState greenhouse,
 	CabinEnchantingState enchanting,
-	CabinKitchenState kitchen
+	CabinKitchenState kitchen,
+	CabinArboretumState arboretum
 ) {
 	static final CabinUpgradeState EMPTY = new CabinUpgradeState(
 		List.of(), Optional.empty(), 0L, CabinWindowState.EMPTY, Optional.empty()
@@ -45,7 +46,8 @@ record CabinUpgradeState(
 		CabinCraftingState.CODEC.optionalFieldOf("crafting", CabinCraftingState.EMPTY).forGetter(CabinUpgradeState::crafting),
 		CabinGreenhouseState.CODEC.optionalFieldOf("greenhouse", CabinGreenhouseState.EMPTY).forGetter(CabinUpgradeState::greenhouse),
 		CabinEnchantingState.CODEC.optionalFieldOf("enchanting", CabinEnchantingState.EMPTY).forGetter(CabinUpgradeState::enchanting),
-		CabinKitchenState.CODEC.optionalFieldOf("kitchen", CabinKitchenState.EMPTY).forGetter(CabinUpgradeState::kitchen)
+		CabinKitchenState.CODEC.optionalFieldOf("kitchen", CabinKitchenState.EMPTY).forGetter(CabinUpgradeState::kitchen),
+		CabinArboretumState.CODEC.optionalFieldOf("arboretum", CabinArboretumState.EMPTY).forGetter(CabinUpgradeState::arboretum)
 	).apply(instance, CabinUpgradeState::new));
 
 	private static final Codec<CabinUpgradeState> LEGACY_CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -68,6 +70,7 @@ record CabinUpgradeState(
 		Objects.requireNonNull(greenhouse, "greenhouse");
 		Objects.requireNonNull(enchanting, "enchanting");
 		Objects.requireNonNull(kitchen, "kitchen");
+		Objects.requireNonNull(arboretum, "arboretum");
 		funds = List.copyOf(funds);
 		if (fundRevision < 0) {
 			throw new IllegalArgumentException("Upgrade fund revision must not be negative");
@@ -150,7 +153,7 @@ record CabinUpgradeState(
 		if (!replaced) {
 			updated.add(value);
 		}
-		return new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows, reversal, storage, crafting, greenhouse, enchanting, kitchen);
+		return new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows, reversal, storage, crafting, greenhouse, enchanting, kitchen, arboretum);
 	}
 
 	CabinUpgradeState withoutFund(Target target) {
@@ -160,25 +163,25 @@ record CabinUpgradeState(
 		List<Fund> updated = funds.stream().filter(value -> !value.target().equals(target)).toList();
 		return updated.size() == funds.size()
 			? this
-			: new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows, reversal, storage, crafting, greenhouse, enchanting, kitchen);
+			: new CabinUpgradeState(updated, installation, Math.addExact(fundRevision, 1L), windows, reversal, storage, crafting, greenhouse, enchanting, kitchen, arboretum);
 	}
 
 	CabinUpgradeState withInstallation(Installation value) {
 		if (operationInProgress()) {
 			throw new IllegalStateException("A cabin upgrade operation is already in progress");
 		}
-		return new CabinUpgradeState(funds, Optional.of(value), fundRevision, windows, reversal, storage, crafting, greenhouse, enchanting, kitchen);
+		return new CabinUpgradeState(funds, Optional.of(value), fundRevision, windows, reversal, storage, crafting, greenhouse, enchanting, kitchen, arboretum);
 	}
 
 	CabinUpgradeState completeInstallation(Target target) {
 		List<Fund> remaining = funds.stream().filter(value -> !value.target().equals(target)).toList();
 		return new CabinUpgradeState(
-			remaining, Optional.empty(), Math.addExact(fundRevision, 1L), windows, reversal, storage, crafting, greenhouse, enchanting, kitchen
+			remaining, Optional.empty(), Math.addExact(fundRevision, 1L), windows, reversal, storage, crafting, greenhouse, enchanting, kitchen, arboretum
 		);
 	}
 
 	CabinUpgradeState withWindows(CabinWindowState value) {
-		return new CabinUpgradeState(funds, installation, fundRevision, value, reversal, storage, crafting, greenhouse, enchanting, kitchen);
+		return new CabinUpgradeState(funds, installation, fundRevision, value, reversal, storage, crafting, greenhouse, enchanting, kitchen, arboretum);
 	}
 
 	boolean operationInProgress() {
@@ -189,7 +192,7 @@ record CabinUpgradeState(
 		if (operationInProgress()) {
 			throw new IllegalStateException("A cabin upgrade operation is already in progress");
 		}
-		return new CabinUpgradeState(funds, installation, fundRevision, windows, Optional.of(value), storage, crafting, greenhouse, enchanting, kitchen);
+		return new CabinUpgradeState(funds, installation, fundRevision, windows, Optional.of(value), storage, crafting, greenhouse, enchanting, kitchen, arboretum);
 	}
 
 	CabinUpgradeState commitReversal(CabinWindowState resultingWindows) {
@@ -202,7 +205,7 @@ record CabinUpgradeState(
 		List<Fund> remaining = funds.stream().filter(fund -> !invalidated.contains(fund.target())).toList();
 		return new CabinUpgradeState(
 			remaining, installation, Math.addExact(fundRevision, 1L), resultingWindows,
-			Optional.of(value.withPhase(ReversalPhase.EJECTION_PENDING)), storage, crafting, greenhouse, enchanting, kitchen
+			Optional.of(value.withPhase(ReversalPhase.EJECTION_PENDING)), storage, crafting, greenhouse, enchanting, kitchen, arboretum
 		);
 	}
 
@@ -211,7 +214,7 @@ record CabinUpgradeState(
 		if (value.phase() != ReversalPhase.EJECTION_PENDING) {
 			throw new IllegalStateException("Window reversal has not reached refund ejection");
 		}
-		return new CabinUpgradeState(funds, installation, fundRevision, windows, Optional.empty(), storage, crafting, greenhouse, enchanting, kitchen);
+		return new CabinUpgradeState(funds, installation, fundRevision, windows, Optional.empty(), storage, crafting, greenhouse, enchanting, kitchen, arboretum);
 	}
 
 	CabinUpgradeState(List<Fund> funds, Optional<Installation> installation, long fundRevision,
@@ -241,24 +244,34 @@ record CabinUpgradeState(
 		this(funds, installation, fundRevision, windows, reversal, storage, crafting, greenhouse, enchanting, CabinKitchenState.EMPTY);
 	}
 
+	CabinUpgradeState(List<Fund> funds, Optional<Installation> installation, long fundRevision,
+		CabinWindowState windows, Optional<WindowReversal> reversal, CabinStorageState storage,
+		CabinCraftingState crafting, CabinGreenhouseState greenhouse, CabinEnchantingState enchanting, CabinKitchenState kitchen) {
+		this(funds, installation, fundRevision, windows, reversal, storage, crafting, greenhouse, enchanting, kitchen, CabinArboretumState.EMPTY);
+	}
+
+	CabinUpgradeState withArboretum(CabinArboretumState value) {
+		return new CabinUpgradeState(funds, installation, fundRevision, windows, reversal, storage, crafting, greenhouse, enchanting, kitchen, value);
+	}
+
 	CabinUpgradeState withKitchen(CabinKitchenState value) {
-		return new CabinUpgradeState(funds, installation, fundRevision, windows, reversal, storage, crafting, greenhouse, enchanting, value);
+		return new CabinUpgradeState(funds, installation, fundRevision, windows, reversal, storage, crafting, greenhouse, enchanting, value, arboretum);
 	}
 
 	CabinUpgradeState withEnchanting(CabinEnchantingState value) {
-		return new CabinUpgradeState(funds, installation, fundRevision, windows, reversal, storage, crafting, greenhouse, value, kitchen);
+		return new CabinUpgradeState(funds, installation, fundRevision, windows, reversal, storage, crafting, greenhouse, value, kitchen, arboretum);
 	}
 
 	CabinUpgradeState withGreenhouse(CabinGreenhouseState value) {
-		return new CabinUpgradeState(funds, installation, fundRevision, windows, reversal, storage, crafting, value, enchanting, kitchen);
+		return new CabinUpgradeState(funds, installation, fundRevision, windows, reversal, storage, crafting, value, enchanting, kitchen, arboretum);
 	}
 
 	CabinUpgradeState withCrafting(CabinCraftingState value) {
-		return new CabinUpgradeState(funds, installation, fundRevision, windows, reversal, storage, value, greenhouse, enchanting, kitchen);
+		return new CabinUpgradeState(funds, installation, fundRevision, windows, reversal, storage, value, greenhouse, enchanting, kitchen, arboretum);
 	}
 
 	CabinUpgradeState withStorage(CabinStorageState value) {
-		return new CabinUpgradeState(funds, installation, fundRevision, windows, reversal, value, crafting, greenhouse, enchanting, kitchen);
+		return new CabinUpgradeState(funds, installation, fundRevision, windows, reversal, value, crafting, greenhouse, enchanting, kitchen, arboretum);
 	}
 
 	CabinUpgradeState(List<Fund> funds, Optional<Installation> installation, long fundRevision) {
@@ -289,6 +302,7 @@ record CabinUpgradeState(
 		private static final Identifier ENCHANTING = PortablePocketCabin.id("enchanting");
 		private static final Identifier CRAFTING = PortablePocketCabin.id("crafting");
 		private static final Identifier KITCHEN = PortablePocketCabin.id("kitchen");
+		private static final Identifier ARBORETUM = PortablePocketCabin.id("arboretum");
 		private static final Identifier STORAGE = PortablePocketCabin.id("storage");
 		private static final Identifier WINDOW = PortablePocketCabin.id("window");
 		static final Codec<Target> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -323,6 +337,9 @@ record CabinUpgradeState(
 				if (level < 1 || level > 3) throw new IllegalArgumentException("Invalid crafting level");
 			} else if (type.equals(KITCHEN)) {
 				if (Integer.parseInt(key) != 1) throw new IllegalArgumentException("Invalid kitchen level");
+			} else if (type.equals(ARBORETUM)) {
+				int level = Integer.parseInt(key);
+				if (level < 1 || level > CabinArboretumState.MAX_LEVEL) throw new IllegalArgumentException("Invalid arboretum size");
 			} else if (type.equals(STORAGE)) {
 				int level = Integer.parseInt(key);
 				if (level < 1 || level > 6) throw new IllegalArgumentException("Invalid storage level");
@@ -351,6 +368,9 @@ record CabinUpgradeState(
 
 		static Target kitchen() { return new Target(KITCHEN, "1"); }
 		boolean isKitchen() { return type.equals(KITCHEN); }
+
+		static Target arboretum(int level) { return new Target(ARBORETUM, Integer.toString(level)); }
+		boolean isArboretum() { return type.equals(ARBORETUM); }
 
 		static Target storage(int level) { return new Target(STORAGE, Integer.toString(level)); }
 		boolean isStorage() { return type.equals(STORAGE); }
@@ -618,6 +638,10 @@ record CabinUpgradeState(
 					throw new IllegalArgumentException("Crafting must advance one level");
 			} else if (target.isKitchen()) {
 				if (expectedState != 0 || targetState != 1) throw new IllegalArgumentException("Kitchen installs once");
+			} else if (target.isArboretum()) {
+				if (expectedState < 0 || expectedState >= CabinArboretumState.MAX_LEVEL || targetState != expectedState + 1
+					|| Integer.parseInt(target.key()) != targetState)
+					throw new IllegalArgumentException("Arboretum must advance one size");
 			} else if (target.isStorage()) {
 				if (expectedState < 0 || expectedState >= 6 || targetState != expectedState + 1
 					|| Integer.parseInt(target.key()) != targetState)

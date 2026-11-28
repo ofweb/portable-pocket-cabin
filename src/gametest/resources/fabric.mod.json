@@ -10,6 +10,7 @@
       "dev.portablepocketcabin.CabinCorridorGameTest",
       "dev.portablepocketcabin.CabinCraftingGameTest",
       "dev.portablepocketcabin.CabinEnchantingGameTest",
+      "dev.portablepocketcabin.CabinArboretumGameTest",
       "dev.portablepocketcabin.CabinGreenhouseGameTest",
       "dev.portablepocketcabin.CabinCookingGameTest",
       "dev.portablepocketcabin.CabinCookingStationGameTest",

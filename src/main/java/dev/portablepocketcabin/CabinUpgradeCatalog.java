@@ -187,7 +187,34 @@ final class CabinUpgradeCatalog {
 					current == 4 ? List.of() : greenhouseRequirements(next), current == 4,
 					current == 0 && cabin.progression().generalSize() < 5 ? "Expand the main room to 5x5 first" : ""))));
 		}
+		if (cabin.upgrades().arboretum().revealed()) {
+			int current = cabin.upgrades().arboretum().level();
+			int max = CabinArboretumState.MAX_LEVEL;
+			int next = Math.min(max, current + 1);
+			Identifier icon = Identifier.withDefaultNamespace("oak_sapling");
+			groups.add(new Group(PortablePocketCabin.id("arboretum"), "Arboretum", icon, List.of(new Offer(
+				CabinUpgradeState.Target.arboretum(next), "Arboretum",
+				current == max ? "Fully grown" : (next == 1 ? "Install a " : "Grow a ") + CabinArboretum.SIZES[next] + "x"
+					+ CabinArboretum.SIZES[next] + " grove, " + CabinArboretumState.limit(next) + (next == 1 ? " tree type" : " tree types"),
+				icon, current, next, current == max ? List.of() : arboretumRequirements(cabin, next), current == max,
+				current == 0 && cabin.progression().generalSize() < 5 ? "Expand the main room to 5x5 first"
+					: current == 0 && !CabinArboretum.hasRegion(cabin) ? "This world has no arboretum space left" : ""))));
+		}
 		return List.copyOf(groups);
+	}
+
+	/** Each grove size costs four saplings, one of each kind, and wall logs and glass for its shell (B-0023). */
+	static List<CabinUpgradeState.Requirement> arboretumRequirements(CabinRecord cabin, int level) {
+		String[][] saplings = {{"oak_sapling", "birch_sapling", "spruce_sapling", "biomesoplenty:flowering_oak_sapling"},
+			{"jungle_sapling", "acacia_sapling", "biomesoplenty:red_maple_sapling", "biomesoplenty:willow_sapling"},
+			{"dark_oak_sapling", "cherry_sapling", "biomesoplenty:fir_sapling", "biomesoplenty:mahogany_sapling"}};
+		var counts = new java.util.LinkedHashMap<Identifier, Integer>();
+		counts.merge(BuiltInRegistries.ITEM.getKey(cabin.palette().walls().structuralWoodBlock().asItem()), new int[]{16, 32, 48}[level - 1], Integer::sum);
+		counts.merge(Identifier.withDefaultNamespace("glass"), new int[]{32, 48, 64}[level - 1], Integer::sum);
+		for (String sapling : saplings[level - 1]) counts.merge(CabinIngredientFallbacks.resolve(Identifier.parse(sapling)), 1, Integer::sum);
+		var result = new ArrayList<CabinUpgradeState.Requirement>();
+		counts.forEach((item, count) -> result.add(new CabinUpgradeState.Requirement(item, count)));
+		return List.copyOf(result);
 	}
 
 	static Optional<Offer> offer(

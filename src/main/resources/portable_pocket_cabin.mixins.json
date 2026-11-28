@@ -20,7 +20,8 @@
     "CabinStationMenuMixin",
     "CabinStationButtonMixin",
     "CabinStationRecipeMixin",
-    "CabinStationQuickMoveMixin"
+    "CabinStationQuickMoveMixin",
+    "ArboretumTreeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

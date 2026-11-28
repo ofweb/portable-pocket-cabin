@@ -1,0 +1,13 @@
+{
+  "type": "portable_pocket_cabin:arboretum",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "portable_pocket_cabin:arboretum_grove",
+      "features": false,
+      "lakes": false,
+      "layers": [],
+      "structure_overrides": []
+    }
+  }
+}

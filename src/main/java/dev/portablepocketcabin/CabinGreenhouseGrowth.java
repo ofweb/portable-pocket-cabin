@@ -27,24 +27,31 @@ final class CabinGreenhouseGrowth extends SavedData {
 			UUIDUtil.STRING_CODEC.fieldOf("cabin").forGetter(Sleep::cabin),
 			Codec.LONG.fieldOf("clock").forGetter(Sleep::clock)).apply(i, Sleep::new));
 	}
-	private record State(long clock, List<Sleep> sleeps) {
+	private record State(long clock, List<Sleep> sleeps, List<Sleep> groveSleeps) {
 		static final Codec<State> CODEC = RecordCodecBuilder.create(i -> i.group(
 			Codec.LONG.fieldOf("clock").forGetter(State::clock),
-			Sleep.CODEC.listOf().fieldOf("sleeps").forGetter(State::sleeps)).apply(i, State::new));
+			Sleep.CODEC.listOf().fieldOf("sleeps").forGetter(State::sleeps),
+			Sleep.CODEC.listOf().optionalFieldOf("grove_sleeps", List.of()).forGetter(State::groveSleeps)).apply(i, State::new));
 	}
 	static final Codec<CabinGreenhouseGrowth> CODEC = State.CODEC.xmap(CabinGreenhouseGrowth::new,
-		data -> new State(data.clock, data.sleeps.entrySet().stream().map(e -> new Sleep(e.getKey(), e.getValue())).toList()));
+		data -> new State(data.clock, data.sleeps.entrySet().stream().map(e -> new Sleep(e.getKey(), e.getValue())).toList(),
+			data.groveSleeps.entrySet().stream().map(e -> new Sleep(e.getKey(), e.getValue())).toList()));
 	private static final SavedDataType<CabinGreenhouseGrowth> TYPE = new SavedDataType<>(
 		PortablePocketCabin.id("greenhouse_growth"), CabinGreenhouseGrowth::new, CODEC, DataFixTypes.SAVED_DATA_COMMAND_STORAGE);
 	private static final Set<String> FARMERS_DELIGHT_CROPS = Set.of("cabbages", "onions", "tomatoes", "tomatoes_on_rope", "rice", "rice_panicles");
 	private long clock;
 	private final Map<UUID, Long> sleeps = new LinkedHashMap<>();
+	/** Arboretum groves asleep since this clock (B-0023): the grove catches up like the greenhouse. */
+	private final Map<UUID, Long> groveSleeps = new LinkedHashMap<>();
 	private CabinGreenhouseGrowth() { }
 	private CabinGreenhouseGrowth(State state) {
 		clock = state.clock();
 		for (var sleep : state.sleeps()) sleeps.put(sleep.cabin(), sleep.clock());
+		for (var sleep : state.groveSleeps()) groveSleeps.put(sleep.cabin(), sleep.clock());
 	}
 	static boolean hasPending(MinecraftServer server, UUID cabin) { return Files.exists(journal(server, cabin)); }
+	static boolean hasGrovePending(MinecraftServer server, UUID cabin) { return Files.exists(groveJournal(server, cabin)); }
+	boolean groveSleeping(UUID cabin) { return groveSleeps.containsKey(cabin); }
 	static CabinGreenhouseGrowth get(MinecraftServer server) {
 		return server.overworld().getDataStorage().computeIfAbsent(TYPE);
 	}
@@ -63,6 +70,7 @@ final class CabinGreenhouseGrowth extends SavedData {
 		var data = get(server);
 		var pocket = server.getLevel(PocketDimension.LEVEL_KEY);
 		if (pocket == null) return;
+		syncGroves(server, data);
 		for (var cabin : CabinRegistry.get(server).cabins()) {
 			if (cabin.upgrades().greenhouse().level() == 0) continue;
 			boolean asleep = cabin.lifecycle() == CabinLifecycle.PACKED
@@ -73,6 +81,78 @@ final class CabinGreenhouseGrowth extends SavedData {
 				resume(pocket, cabin, data);
 			}
 		}
+	}
+
+	private static void syncGroves(MinecraftServer server, CabinGreenhouseGrowth data) {
+		var grove = server.getLevel(CabinArboretum.LEVEL_KEY);
+		if (grove == null) return;
+		for (var cabin : CabinRegistry.get(server).cabins()) {
+			if (cabin.upgrades().arboretum().level() == 0) continue;
+			boolean asleep = cabin.lifecycle() == CabinLifecycle.PACKED
+				&& server.getPlayerList().getPlayers().stream().noneMatch(p -> CabinReconciliation.isOccupant(p, cabin));
+			if (asleep && !data.groveSleeps.containsKey(cabin.uuid())) {
+				data.groveSleeps.put(cabin.uuid(), data.clock); data.setDirty();
+			} else if (CabinSimulation.shouldSimulate(cabin) && (data.groveSleeps.containsKey(cabin.uuid()) || hasGrovePending(server, cabin.uuid()))) {
+				resumeGrove(grove, cabin, data);
+			}
+		}
+	}
+
+	/**
+	 * Catches a grove up after its cabin was packed: first the felled spots whose wait has passed are planted, then
+	 * saplings grow and fruit ripens for the elapsed time. A receipt makes a repeat after a crash give the same grove.
+	 */
+	private static void resumeGrove(ServerLevel level, CabinRecord cabin, CabinGreenhouseGrowth data) {
+		Path path = groveJournal(level.getServer(), cabin.uuid());
+		CompoundTag receipt;
+		if (Files.exists(path)) receipt = read(path);
+		else {
+			receipt = new CompoundTag();
+			receipt.putLong("elapsed", Math.max(0, data.clock - data.groveSleeps.getOrDefault(cabin.uuid(), data.clock)));
+			receipt.putLong("seed", level.getRandom().nextLong());
+			receipt.put("blocks", snapshot(level, CabinArboretum.growingSpace(cabin)));
+			write(path, receipt);
+		}
+		var original = restore(receipt);
+		long elapsed = receipt.getLongOr("elapsed", 0);
+		CabinCorridors.applyWorldEffect(() -> {
+			original.forEach((pos, state) -> {
+				if (!level.getBlockState(pos).equals(state)) level.setBlock(pos, state, CabinCorridorSnapshot.FLAGS);
+			});
+			waitForLight(level, original.keySet());
+			var random = RandomSource.create(receipt.getLongOr("seed", 0));
+			// Elapsed time is counted in random-tick selections, randomTickSpeed per server tick.
+			if (elapsed >= (long) CabinArboretumPlanting.REPLANT_DELAY * level.getGameRules().get(GameRules.RANDOM_TICK_SPEED))
+				CabinArboretumPlanting.plantAll(level, cabin, random);
+			catchUp(level, original.keySet(), elapsed, random.nextLong());
+		});
+		level.getServer().saveEverything(false, true, false);
+		data.groveSleeps.remove(cabin.uuid()); data.setDirty();
+		level.getServer().saveEverything(false, true, false);
+		try {
+			Files.delete(path);
+			try (var directory = FileChannel.open(path.getParent(), StandardOpenOption.READ)) { directory.force(true); }
+		} catch (java.io.IOException e) { throw new IllegalStateException("Cannot finish arboretum catch-up", e); }
+	}
+
+	private static ListTag snapshot(ServerLevel level, Set<BlockPos> volume) {
+		var blocks = new ListTag();
+		for (var pos : volume) {
+			var entry = new CompoundTag();
+			CabinCorridorSnapshot.putPosition(entry, "pos", pos);
+			entry.put("state", BlockState.CODEC.encodeStart(NbtOps.INSTANCE, level.getBlockState(pos)).getOrThrow());
+			blocks.add(entry);
+		}
+		return blocks;
+	}
+
+	private static LinkedHashMap<BlockPos, BlockState> restore(CompoundTag receipt) {
+		var original = new LinkedHashMap<BlockPos, BlockState>();
+		for (var tag : receipt.getListOrEmpty("blocks")) {
+			var entry = (CompoundTag) tag;
+			original.put(CabinCorridorSnapshot.position(entry, "pos"), BlockState.CODEC.parse(NbtOps.INSTANCE, entry.get("state")).getOrThrow());
+		}
+		return original;
 	}
 
 	private static void resume(ServerLevel level, CabinRecord cabin, CabinGreenhouseGrowth data) {
@@ -156,7 +236,7 @@ final class CabinGreenhouseGrowth extends SavedData {
 	private static boolean tick(ServerLevel level, BlockPos pos, RandomSource random, java.util.Map<BlockPos, Integer> failedTrees) {
 		var state = level.getBlockState(pos);
 		if (!canProgress(level, pos, state) || !state.canSurvive(level, pos) || !state.isRandomlyTicking()) return false;
-		if (state.getBlock() instanceof FruitSaplingBlock sapling) {
+		if (state.getBlock() instanceof SaplingBlock sapling) {
 			if (failedTrees.getOrDefault(pos, 0) >= TREE_ATTEMPTS) return false;
 			if (level.getMaxLocalRawBrightness(pos.above()) >= 9 && random.nextInt(7) == 0) {
 				boolean lastStage = state.getValue(net.minecraft.world.level.block.SaplingBlock.STAGE) == 1;
@@ -196,8 +276,8 @@ final class CabinGreenhouseGrowth extends SavedData {
 			|| id.getNamespace().equals("farmersdelight") && FARMERS_DELIGHT_CROPS.contains(id.getPath())
 			|| id.getNamespace().equals(PortablePocketCabin.MOD_ID) && block instanceof CookingPlant;
 		if (state.is(Blocks.BAMBOO_SAPLING)) return true;
-		// Fruit-tree saplings grow into their tree, and cinnamon and palm trunks grow bark back or fill with sap.
-		if (block instanceof FruitSaplingBlock) return true;
+		// Saplings, vanilla and fruit trees alike, grow into their tree, and cinnamon and palm trunks grow bark back or fill with sap.
+		if (block instanceof SaplingBlock) return true;
 		if (block instanceof HarvestTrunkBlock) return !state.getValue(HarvestTrunkBlock.READY);
 		if (id.getNamespace().equals("minecraft") && (block instanceof SugarCaneBlock || block instanceof CactusBlock)) return true;
 		if (id.getNamespace().equals("minecraft") && block instanceof BambooStalkBlock) return state.getValue(BambooStalkBlock.STAGE) == 0;
@@ -207,6 +287,9 @@ final class CabinGreenhouseGrowth extends SavedData {
 			if (property instanceof IntegerProperty age && age.getName().equals("age"))
 				return state.getValue(age) < age.getPossibleValues().stream().mapToInt(Integer::intValue).max().orElse(0);
 		return false;
+	}
+	private static Path groveJournal(MinecraftServer server, UUID cabin) {
+		return server.getWorldPath(LevelResource.ROOT).resolve("data/portable_pocket_cabin/arboretum_growth/" + cabin + ".nbt");
 	}
 	private static Path journal(MinecraftServer server, UUID cabin) {
 		return server.getWorldPath(LevelResource.ROOT).resolve("data/portable_pocket_cabin/greenhouse_growth/" + cabin + ".nbt");

@@ -11,6 +11,7 @@ public final class CabinProtection {
 
 	public static boolean isProtected(ServerLevel level, BlockPos pos) {
 		CabinRegistry registry = CabinRegistry.get(level.getServer());
+		if (CabinArboretum.isArboretum(level)) return CabinArboretum.isProtected(level.getServer(), pos);
 		for (CabinRecord cabin : registry.cabins()) {
 			if (level.dimension().equals(PocketDimension.LEVEL_KEY)
 				&& (PocketDimension.isInteriorShell(

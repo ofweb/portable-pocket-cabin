@@ -25,6 +25,7 @@ final class CabinItems {
 	private static final String PALETTE = "portable_pocket_cabin_palette";
 
 	static final Item GREENHOUSE_BOOK = registerBook("greenhouse_book", CabinBookItem.Type.GREENHOUSE);
+	static final Item ARBORETUM_BOOK = registerBook("arboretum_book", CabinBookItem.Type.ARBORETUM);
 	static final Item ENCHANTING_BOOK = registerBook("enchanting_book", CabinBookItem.Type.ENCHANTING);
 	static final Item CRAFTING_BOOK = registerBook("crafting_book", CabinBookItem.Type.CRAFTING);
 	static final Item KITCHEN_BOOK = registerBook("kitchen_book", CabinBookItem.Type.KITCHEN);

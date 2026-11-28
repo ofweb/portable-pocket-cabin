@@ -40,6 +40,8 @@ Install a Greenhouse Cabin Book through the **Books** tab, then fund the next pu
 
 For development, obtain the book with `/give @s portable_pocket_cabin:greenhouse_book`. Book vendors and trades remain deferred. [Greenhouse implementation notes](docs/greenhouse.md) describe packed growth, supported plants, optional ingredients, and verification.
 
+Install an Arboretum Book, then fund the next purchase in the Arboretum category. The first purchase needs 5×5 main space and puts a door in the west corridor's south wall, past the greenhouse. The door leads into the cabin's own grove: 7×7 with nine blocks of clear height, then 19×19 with twelve, then 29×29 with fifteen, under a glass roof. Each size costs wall logs, glass, and four kinds of sapling, and keeps everything already growing. Teach the grove a tree type at its planting board with 15 of that type's saplings, from installed storage first; any vanilla tree or the mod's fruit and spice trees can be taught. Then choose which taught types it plants: one, two, or three by size. The grove plants a fixed grid of 4, 20, or 42 spots, mixing the chosen types, and replants a felled spot 30 seconds later. Its leaves and planted saplings give no saplings back, but logs, sticks, apples, and fruit drop as usual. While the cabin is deployed the grove keeps growing whether anyone is there or not; while it is packed the grove waits, then catches up when the cabin is set down again. Packing moves anyone in the grove outside, as it does for the cabin. For development, use `/give @s portable_pocket_cabin:arboretum_book`. The woodlands beyond the grove come later.
+
 ### Cooking
 
 Food is cooked only at cooking stations. The vanilla furnace, smoker, campfire, and crafting table no longer cook food, and a campfire no longer accepts raw food. Each station works like a furnace or campfire. [Cooking screenshots](screenshots/cooking) show the stations, their screens, and the cookbook.
@@ -185,7 +187,7 @@ Main-room expansion moves installed wings and their contents outward. It require
 ./gradlew runServer
 ```
 
-The build runs server-side GameTests and headless dedicated-server startup and reload checks. The [GameTests](src/gametest/java/dev/portablepocketcabin/PortablePocketCabinGameTest.java) validate cabins, crafting, expansion, and upgrades. The corridor checks save interrupted and committed expansions, then verify recovery in a separate server process. Run them separately with `./gradlew runCorridorReloadTest`. Greenhouse checks verify interrupted room expansion and growth catch-up across separate server processes with `./gradlew runGreenhouseReloadTest`. Enchanting checks verify interrupted upgrades, knowledge, displaced contents, packing, and redeployment with `./gradlew runEnchantingReloadTest`. Development-world operators also have these inspection and recovery commands:
+The build runs server-side GameTests and headless dedicated-server startup and reload checks. The [GameTests](src/gametest/java/dev/portablepocketcabin/PortablePocketCabinGameTest.java) validate cabins, crafting, expansion, and upgrades. The corridor checks save interrupted and committed expansions, then verify recovery in a separate server process. Run them separately with `./gradlew runCorridorReloadTest`. Greenhouse checks verify interrupted room expansion and growth catch-up across separate server processes with `./gradlew runGreenhouseReloadTest`. Enchanting checks verify interrupted upgrades, knowledge, displaced contents, packing, and redeployment with `./gradlew runEnchantingReloadTest`. Arboretum checks build every grove size in the real dimensions, keep trees inside the walls, and verify planting, drops, packed catch-up, and the door moving with the main room across a restart with `./gradlew runArboretumReloadTest`. Development-world operators also have these inspection and recovery commands:
 
 ```text
 /cabin create [player]
@@ -205,6 +207,8 @@ just test-client
 # Or: ./gradlew runClientGameTest
 # Book installation and screenshots only:
 PPC_TEST_BOOKS=1 ./gradlew runClientGameTest
+# Arboretum walk-through and screenshots only:
+PPC_TEST_ARBORETUM=1 ./gradlew runClientGameTest
 # Regenerate every screenshot, including vanilla references:
 just screenshots
 ```

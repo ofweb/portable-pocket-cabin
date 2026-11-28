@@ -22,6 +22,7 @@ public final class CabinCorridors {
 	public static boolean applyingWorldEffect() { return WORLD_EFFECT.get(); }
 
 	public static boolean mayChange(ServerLevel level, UUID actor, BlockPos pos) {
+		if (CabinArboretum.isArboretum(level)) return CabinArboretum.mayChange(level, actor, pos);
 		if (!level.dimension().equals(PocketDimension.LEVEL_KEY)) return true;
 		if (isPaused(level, pos)) return false;
 		CabinRecord cabin = CabinRegistry.get(level.getServer()).findByCell(PocketDimension.cellIndexAt(pos).orElse(-1L)).orElse(null);
@@ -138,7 +139,8 @@ public final class CabinCorridors {
 			return CabinUpgradeService.Outcome.failure("A legacy disconnected room has no safe relocation geometry.");
 		}
 		for (var player : pocket.getServer().getPlayerList().getPlayers()) {
-			if (CabinReconciliation.isOccupant(player, cabin) && !PocketDimension.isWithinUsable(
+			// Players in the arboretum grove stay there: the grove does not move.
+			if (CabinReconciliation.isOccupant(player, cabin) && !CabinArboretum.inGrove(player, cabin) && !PocketDimension.isWithinUsable(
 				cabin.cellIndex(), cabin.progression().generalSize(), player.blockPosition())) {
 				String wing = cabin.progression().corridors().stream().filter(c -> CabinCorridorLayout.volume(
 					cabin.cellIndex(), cabin.progression().generalSize(), c).contains(player.blockPosition()))
@@ -201,7 +203,7 @@ public final class CabinCorridors {
 
 	private static Set<net.minecraft.world.level.block.Block> structuralBlocks(CabinRecord cabin) {
 		return new HashSet<>(List.of(cabin.palette().floor().planksBlock(), cabin.palette().walls().planksBlock(),
-			cabin.palette().walls().structuralWoodBlock(), cabin.palette().roof().planksBlock()));
+			cabin.palette().walls().structuralWoodBlock(), cabin.palette().roof().planksBlock(), ArboretumBlocks.ARBORETUM_DOOR));
 	}
 
 	private static void applyMove(ServerLevel pocket, CabinRecord cabin, CompoundTag tag) {

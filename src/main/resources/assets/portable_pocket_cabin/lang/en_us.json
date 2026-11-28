@@ -2027,5 +2027,12 @@
   "screen.portable_pocket_cabin.cookbook.model.bed": "Set it in water. Gather a grown bed by hand for two or three, and it grows back.",
   "screen.portable_pocket_cabin.cookbook.model.mushroom": "Pick the mushrooms and they grow back. Plant them on a log.",
   "screen.portable_pocket_cabin.cookbook.spreads": "It slowly spreads to suitable water beside it.",
-  "screen.portable_pocket_cabin.cookbook.traded": "Wandering traders sometimes sell it."
+  "screen.portable_pocket_cabin.cookbook.traded": "Wandering traders sometimes sell it.",
+  "item.portable_pocket_cabin.arboretum_book": "Arboretum Book",
+  "book.portable_pocket_cabin.arboretum_1": "Arboretum 1: a 7x7 grove behind its own door",
+  "book.portable_pocket_cabin.arboretum_2": "Arboretum 2: a 19x19 grove, two tree types",
+  "book.portable_pocket_cabin.arboretum_3": "Arboretum 3: a 29x29 grove, three tree types",
+  "block.portable_pocket_cabin.arboretum_door": "Arboretum Door",
+  "block.portable_pocket_cabin.grove_door": "Cabin Door",
+  "block.portable_pocket_cabin.planting_board": "Planting Board"
 }

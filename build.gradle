@@ -61,6 +61,20 @@ loom {
 			vmArg "-Dportable-pocket-cabin.kitchen-test=verify"
 			programArg "nogui"
 		}
+		arboretumTest {
+			server()
+			name "Arboretum Installation and Catch-up Seed Test"
+			runDir "build/arboretum-test"
+			vmArg "-Dportable-pocket-cabin.arboretum-test=seed"
+			programArg "nogui"
+		}
+		arboretumReloadTest {
+			server()
+			name "Arboretum Restart Recovery Test"
+			runDir "build/arboretum-test"
+			vmArg "-Dportable-pocket-cabin.arboretum-test=verify"
+			programArg "nogui"
+		}
 		greenhouseTest {
 			server()
 			name "Greenhouse Installation and Catch-up Seed Test"
@@ -175,6 +189,7 @@ tasks.named("check").configure {
 	dependsOn tasks.named("runGreenhouseReloadTest")
 	dependsOn tasks.named("runEnchantingReloadTest")
 	dependsOn tasks.named("runKitchenReloadTest")
+	dependsOn tasks.named("runArboretumReloadTest")
 }
 
 tasks.named("runCorridorTest").configure {
@@ -265,6 +280,24 @@ publishing {
 		doLast {
 			def logFile = layout.projectDirectory.file("build/kitchen-test/logs/latest.log").asFile
 			if (!logFile.exists() || !logFile.text.contains(marker)) throw new GradleException("Kitchen check did not finish: " + marker)
+		}
+	}
+}
+
+["runArboretumTest": "ARBORETUM_INSTALLATION_TEST_PASSED", "runArboretumReloadTest": "ARBORETUM_RECOVERY_TEST_PASSED"].each { taskName, marker ->
+	tasks.named(taskName).configure {
+		if (taskName == "runArboretumReloadTest") dependsOn tasks.named("runArboretumTest")
+		doFirst {
+			def runDirectory = layout.projectDirectory.dir("build/arboretum-test").asFile
+			if (taskName == "runArboretumTest") project.delete(new File(runDirectory, "world"))
+			runDirectory.mkdirs()
+			new File(runDirectory, "logs/latest.log").delete()
+			new File(runDirectory, "eula.txt").text = "eula=true\n"
+			new File(runDirectory, "server.properties").text = "server-port=0\nonline-mode=false\n"
+		}
+		doLast {
+			def logFile = layout.projectDirectory.file("build/arboretum-test/logs/latest.log").asFile
+			if (!logFile.exists() || !logFile.text.contains(marker)) throw new GradleException("Arboretum check did not finish: " + marker)
 		}
 	}
 }

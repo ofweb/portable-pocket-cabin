@@ -272,6 +272,7 @@ final class CabinReconciliation {
 	}
 
 	static boolean isOccupant(ServerPlayer player, CabinRecord cabin) {
+		if (CabinArboretum.inGrove(player, cabin)) return true;
 		if (!player.level().dimension().equals(PocketDimension.LEVEL_KEY)) {
 			return false;
 		}
